@@ -25,12 +25,12 @@ jobs:
             echo "::set-output name=column-name::${{ env.ICEBOX_COLUMN_NAME }}"; \
           fi
 
-      # - name: add issue to column
-      #   uses: alex-page/github-project-automation-plus@v0.2.4
-      #   with:
-      #     project: ${{ env.PROJECT_BOARD }}
-      #     column: ${{ steps.column.outputs.column-name }}
-      #     repo-token: ${{ secrets.ORG_PROJECT_TOKEN }}
+      - name: add issue to column
+        uses: alex-page/github-project-automation-plus@v0.2.4
+        with:
+          project: ${{ env.PROJECT_BOARD }}
+          column: ${{ steps.column.outputs.column-name }}
+          repo-token: ${{ secrets.ORG_PROJECT_TOKEN }}
 
   create-issue-branch:
     name: "create issue branch"
