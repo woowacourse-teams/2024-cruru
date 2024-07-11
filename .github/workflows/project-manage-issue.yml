@@ -1,0 +1,67 @@
+name: pm / issues
+
+on:
+  issues:
+    types: [opened, assigned]
+
+env:
+  PROJECT_BOARD: "칸반"
+  ICEBOX_COLUMN_NAME: "할일"
+  STARTED_COLUMN_NAME: "진행중"
+  BEFORE_REVIEW_COLUMN_NAME: "검토중"
+
+jobs:
+  add-issue-to-project-board:
+    name: "add issue to project board"
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened' || github.event.action == 'assigned'
+    steps:
+      - name: get column name
+        id: column
+        run: |
+          if [[ "${{ github.event.action }}" == "assigned" ]]; then \
+            echo "::set-output name=column-name::${{ env.STARTED_COLUMN_NAME }}"; \
+          else \
+            echo "::set-output name=column-name::${{ env.ICEBOX_COLUMN_NAME }}"; \
+          fi
+
+      - name: add issue to column
+        uses: alex-page/github-project-automation-plus@v0.2.4
+        with:
+          project: ${{ env.PROJECT_BOARD }}
+          column: ${{ steps.column.outputs.column-name }}
+          repo-token: ${{ secrets.ORG_PROJECT_TOKEN }}
+
+  create-issue-branch:
+    name: "create issue branch"
+    runs-on: ubuntu-latest
+    if: github.event.action == 'assigned'
+    steps:
+      - name: create the issue branch
+        uses: robvanderleek/create-issue-branch@master
+        id: create-issue-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: choose a pr template
+        if: steps.create-issue-branch.outputs.branchName != ''
+        id: template
+        env:
+          BRANCH_NAME: ${{ steps.create-issue-branch.outputs.branchName }}
+        run: |
+          branch="pull_request_template.md"
+          echo "::set-output name=template-name::$template"
+
+      - name: add pr link in comment
+        uses: mshick/add-pr-comment@master
+        if: steps.create-issue-branch.outputs.branchName != ''
+        env:
+          PULL_REQUEST_URL: ${{ format('https://github.com/{0}/compare/{1}...{2}?quick_pull=1&template={3}', github.repository, github.event.repository.default_branch, steps.create-issue-branch.outputs.branchName, steps.template.outputs.template-name) }}
+          TEMPLATE: ${{ steps.template.outputs.template-name }}
+        with:
+          message: |
+            ## Pull Request ![](https://raw.githubusercontent.com/primer/octicons/master/icons/git-pull-request-16.svg)
+
+            [Create a pull request](${{ env.PULL_REQUEST_URL }}) for the issue branch using the `${{ env.TEMPLATE }}` template.
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: "github-actions[bot]"
