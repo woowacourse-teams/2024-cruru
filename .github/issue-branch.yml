@@ -1,4 +1,4 @@
-branchName: '${issue.number}-${issue.title[-20]}'
+branchName: '${issue.number}-${issue.body[-20]}'
 gitSafeReplacementChar: ""
 openDraftPR: true
 autoCloseIssue: true
