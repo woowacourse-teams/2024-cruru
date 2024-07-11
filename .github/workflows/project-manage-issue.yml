@@ -38,7 +38,7 @@ jobs:
     if: github.event.action == 'assigned'
     steps:
       - name: create the issue branch
-        uses: robvanderleek/create-issue-branch@master
+        uses: robvanderleek/create-issue-branch@main
         id: create-issue-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +53,7 @@ jobs:
           echo "::set-output name=template-name::$template"
 
       - name: add pr link in comment
-        uses: mshick/add-pr-comment@master
+        uses: mshick/add-pr-comment@main
         if: steps.create-issue-branch.outputs.branchName != ''
         env:
           PULL_REQUEST_URL: ${{ format('https://github.com/{0}/compare/{1}...{2}?quick_pull=1&template={3}', github.repository, github.event.repository.default_branch, steps.create-issue-branch.outputs.branchName, steps.template.outputs.template-name) }}
