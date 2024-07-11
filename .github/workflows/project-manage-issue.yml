@@ -30,7 +30,7 @@ jobs:
         with:
           project: ${{ env.PROJECT_BOARD }}
           column: ${{ steps.column.outputs.column-name }}
-          repo-token: ${{ secrets.ORG_PROJECT_TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
   create-issue-branch:
     name: "create issue branch"
