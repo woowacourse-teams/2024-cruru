@@ -1,0 +1,31 @@
+{
+  "ignorePatterns": ["**/*.dev.js", "**/*.prod.js", "**/*.config.js"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "globals": {
+    "browser": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "airbnb", "airbnb/hooks"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "jsx-a11y"],
+  "rules": {
+    "no-console": "warn",
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js"] }],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
+    "react/jsx-uses-vars": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": ["plugin:@typescript-eslint/recommended"]
+    }
+  ]
+}
