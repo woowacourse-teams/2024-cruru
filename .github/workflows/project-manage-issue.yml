@@ -26,9 +26,9 @@ jobs:
         id: column
         run: |
           if [[ "${{ github.event.action }}" == "assigned" ]]; then \
-            echo "::set-output name=column-name::${{ env.STARTED_COLUMN_NAME }}"; \
+            echo "::set-output name=column-name::${{ env.STARTED_OPTION }}"; \
           else \
-            echo "::set-output name=column-name::${{ env.ICEBOX_COLUMN_NAME }}"; \
+            echo "::set-output name=column-name::${{ env.ICEBOX_OPTION }}"; \
           fi
 
       - name: add issue to column
