@@ -1,0 +1,37 @@
+branchName: '${issue.number}-${issue.title[-20]}'
+gitSafeReplacementChar: ""
+openDraftPR: true
+autoCloseIssue: true
+branches:
+  - label: 
+    - feature
+    - backend
+    prefix: be-
+    name: be/develop
+  - label:
+    - feature
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: '*'
+    skip: true
+  # - label: docs
+  #   prefix: docs/
+  # - label: hotfix
+  #   prefix: hotfix/
+  # - label: refactor
+  #   prefix: refactor/
+  # - label: chore
+  #   prefix: chore/
+  # - label: release
+  #   prefix: release/
+  # - label: test
+  #   prefix: test/
+  # - label: fix
+  #   prefix: fix/
+commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
+ 
