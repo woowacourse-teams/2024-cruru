@@ -11,7 +11,7 @@ permissions:
   pull-requests: write
   
 env:
-  PROJECT_BOARD: "칸반"
+  PROJECT_BOARD: "2024-cruru"
   ICEBOX_COLUMN_NAME: "할일"
   STARTED_COLUMN_NAME: "진행중"
   BEFORE_REVIEW_COLUMN_NAME: "검토중"
