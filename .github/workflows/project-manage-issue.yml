@@ -12,9 +12,9 @@ permissions:
   
 env:
   PROJECT_BOARD: "2024-cruru"
-  ICEBOX_OPTION: "할일"
-  STARTED_OPTION: "진행중"
-  BEFORE_REVIEW_COLUMN_OPTION: "검토중"
+  ICEBOX_OPTION: "TODO"
+  STARTED_OPTION: "In Progress"
+  BEFORE_REVIEW_COLUMN_OPTION: "Pending"
 
 jobs:
   add-issue-to-project-board:
