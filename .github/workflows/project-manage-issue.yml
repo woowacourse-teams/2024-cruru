@@ -33,7 +33,7 @@ jobs:
           branch=$BRANCH_NAME
           template="pull_request_template.md"
           echo "::set-output name=template-name::$template";
-          echo "${{ steps.create-issue-branch.outputs }}"
+          echo "${{ env.BRANCH_NAME }}"
 
       - name: add pr link in comment
         uses: mshick/add-pr-comment@main
