@@ -31,12 +31,21 @@ jobs:
             echo "::set-output name=column-name::${{ env.ICEBOX_OPTION }}"; \
           fi
 
-      - name: add issue to column
-        uses: alex-page/github-project-automation-plus@v0.8.3
+      # - name: add issue to column
+      #   uses: alex-page/github-project-automation-plus@v0.8.3
+      #   with:
+      #     project: ${{ env.PROJECT_BOARD }}
+      #     column: ${{ steps.column.outputs.column-name }}
+      #     repo-token: ${{ secrets.PAT_TEST_B }}
+        
+      - name: Add new issue to project card
+        if: github.event.action == 'opened'
+        uses: actions/add-to-project@RELEASE_VERSION
         with:
-          project: ${{ env.PROJECT_BOARD }}
-          column: ${{ steps.column.outputs.column-name }}
-          repo-token: ${{ secrets.PAT_TEST_B }}
+          project-url: https://github.com/Dobby-Kim/projects/4
+          github-token: ${{ secrets.PAT_TEST_B }}
+          labeled: hotfix
+          label-operator: NOT
 
   create-issue-branch:
     name: "create issue branch"
