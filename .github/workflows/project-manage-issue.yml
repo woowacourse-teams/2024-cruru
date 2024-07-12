@@ -1,52 +1,10 @@
-name: pm / issues
+name: issue - branch Create Automation
 
 on:
   issues:
     types: [opened, assigned]
 
-permissions:
-  issues: write
-  contents: write
-  repository-projects: write
-  pull-requests: write
-  
-env:
-  PROJECT_BOARD: "2024-cruru"
-  ICEBOX_OPTION: "TODO"
-  STARTED_OPTION: "In Progress"
-  BEFORE_REVIEW_COLUMN_OPTION: "Pending"
-
 jobs:
-  add-issue-to-project-board:
-    name: "add issue to project board"
-    runs-on: ubuntu-latest
-    if: github.event.action == 'opened' || github.event.action == 'assigned'
-    steps:
-      - name: get column name
-        id: column
-        run: |
-          if [[ "${{ github.event.action }}" == "assigned" ]]; then \
-            echo "::set-output name=column-name::${{ env.STARTED_OPTION }}"; \
-          else \
-            echo "::set-output name=column-name::${{ env.ICEBOX_OPTION }}"; \
-          fi
-
-      # - name: add issue to column
-      #   uses: alex-page/github-project-automation-plus@v0.8.3
-      #   with:
-      #     project: ${{ env.PROJECT_BOARD }}
-      #     column: ${{ steps.column.outputs.column-name }}
-      #     repo-token: ${{ secrets.PAT_TEST_B }}
-        
-      - name: Add new issue to project card
-        if: github.event.action == 'opened'
-        uses: actions/add-to-project@v1.0.2
-        with:
-          project-url: https://github.com/Dobby-Kim/projects/4
-          github-token: ${{ secrets.PAT_TEST_B }}
-          labeled: hotfix
-          label-operator: NOT
-
   create-issue-branch:
     name: "create issue branch"
     runs-on: ubuntu-latest
@@ -78,6 +36,7 @@ jobs:
           message: |
             ## Pull Request ![](https://raw.githubusercontent.com/primer/octicons/master/icons/git-pull-request-16.svg)
 
-            [Create a pull request](${{ env.PULL_REQUEST_URL }}) for the issue branch using the `${{ env.TEMPLATE }}` template.
+            이슈에 할당된 feature 브랜치가 성공적으로 생성되었습니다!
+            [이슈와 연결된 PR 생성하기](${{ env.PULL_REQUEST_URL }}).
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: "github-actions[bot]"
