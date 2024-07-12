@@ -36,7 +36,7 @@ jobs:
         with:
           project: ${{ env.PROJECT_BOARD }}
           column: ${{ steps.column.outputs.column-name }}
-          repo-token: ${{ secrets.PAT_TEST }}
+          repo-token: ${{ secrets.PAT_TEST_B }}
 
   create-issue-branch:
     name: "create issue branch"
