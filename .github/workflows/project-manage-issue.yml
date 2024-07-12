@@ -34,6 +34,7 @@ jobs:
           template="pull_request_template.md"
           echo "::set-output name=template-name::$template";
           echo "${{ env.BRANCH_NAME }}"
+          echo "${{ github }}"
 
       - name: add pr link in comment
         uses: mshick/add-pr-comment@main
