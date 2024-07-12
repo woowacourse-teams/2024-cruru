@@ -40,7 +40,7 @@ jobs:
         
       - name: Add new issue to project card
         if: github.event.action == 'opened'
-        uses: actions/add-to-project@RELEASE_VERSION
+        uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/Dobby-Kim/projects/4
           github-token: ${{ secrets.PAT_TEST_B }}
