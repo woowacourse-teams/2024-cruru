@@ -55,7 +55,8 @@ jobs:
         env:
           BRANCH_NAME: ${{ steps.create-issue-branch.outputs.branchName }}
         run: |
-          branch="pull_request_template.md"
+          branch=$BRANCH_NAME
+          template="pull_request_template.md"
           echo "::set-output name=template-name::$template"
 
       - name: add pr link in comment
