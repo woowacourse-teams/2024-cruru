@@ -39,7 +39,7 @@ jobs:
         uses: mshick/add-pr-comment@main
         if: env.BRANCH_NAME != ''
         env:
-          PULL_REQUEST_URL: ${{ github.event.issues.issue.pull_request.url }}
+          PULL_REQUEST_URL: ${{ github.event.issues.pull_request.url }}
           TEMPLATE: pull_request_template.md
           SOURCE_BRANCH: ${{ env.BRANCH_NAME }}
 
