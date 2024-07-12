@@ -6,6 +6,8 @@ on:
 
 jobs:
   create-issue-branch:
+    outputs:
+      created-branch: ${{ steps.create-issue-branch.outputs.branchName }}
     name: "create issue branch"
     runs-on: ubuntu-latest
     if: github.event.action == 'assigned'
@@ -18,13 +20,15 @@ jobs:
 
   create-PR-link-comment:
     name: "create Draft PR Link on issue"
+    needs: create-issue-branch
+    env:
+        BRANCH_NAME: ${{ needs.create-issue-branch.outputs.created-branch }}
     runs-on: ubuntu-latest
     steps:
       - name: choose a pr template
-        if: steps.create-issue-branch.outputs.branchName != ''
+        if: env.BRANCH_NAME != ''
         id: template
-        env:
-          BRANCH_NAME: ${{ steps.create-issue-branch.outputs.branchName }}
+        
         run: |
           branch=$BRANCH_NAME
           template="pull_request_template.md"
@@ -33,11 +37,11 @@ jobs:
 
       - name: add pr link in comment
         uses: mshick/add-pr-comment@main
-        if: steps.create-issue-branch.outputs.branchName != ''
+        if: env.BRANCH_NAME != ''
         env:
           PULL_REQUEST_URL: ${{ github.event.issues.issue.pull_request.url }}
           TEMPLATE: pull_request_template.md
-          SOURCE_BRANCH: ${{ steps.create-issue-branch.outputs.branchName }}
+          SOURCE_BRANCH: ${{ env.BRANCH_NAME }}
 
         with:
           message: |
