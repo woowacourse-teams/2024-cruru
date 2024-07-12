@@ -32,7 +32,7 @@ jobs:
           fi
 
       - name: add issue to column
-        uses: alex-page/github-project-automation-plus@v0.8.4
+        uses: alex-page/github-project-automation-plus@v0.8.3
         with:
           project: ${{ env.PROJECT_BOARD }}
           column: ${{ steps.column.outputs.column-name }}
