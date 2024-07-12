@@ -43,7 +43,7 @@ jobs:
           message: |
             ## Pull Request ![](https://raw.githubusercontent.com/primer/octicons/master/icons/git-pull-request-16.svg)
 
-            ${{ SOURCE_BRANCH }} -> develop Draft PR이 생성되었습니다!
+            ${{ env.SOURCE_BRANCH }} -> develop Draft PR이 생성되었습니다!
             [이슈와 연결된 PR 바로가기](${{ env.PULL_REQUEST_URL }}).
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: "github-actions[bot]"
