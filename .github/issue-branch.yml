@@ -33,10 +33,12 @@ branches:
 commentMessage: |
   🚀 안녕하세요 @${assignee.login}님! 작업을 시작하셨군요?
   
-  편하게 작업하실 수 있게 feature 브랜치인 ${branchName}을 현재 이슈 ✨${issue.title}✨에 연결하여 생성헤드렸어요!
+  작업하실 브랜치를 컨벤션에 맞게 현재 이슈 ✨${issue.title}✨에 연결하여 생성헤드렸어요!
+  생성된 브랜치명:
+  ${branchName}
   
-  또 해당 브랜치가 연결된 ⚡️[Draft PR](${repository.html_url}/issues/?q=head:${branchName})⚡️ 생성되었으니 확인해보세요
-
+  해당 브랜치가 연결된 ⚡️[Draft PR](${repository.html_url}/issues/?q=head:${branchName})⚡️ 생성되었으니 확인해보세요
+  
   작업이 완료된 후, 리뷰어를 선택하고 Draft PR 내부의 `Ready for review` 버튼을 눌러주시면 됩니다! :)
   제가 Slack으로 리뷰어에게 DM으로 알려드릴게요
   
