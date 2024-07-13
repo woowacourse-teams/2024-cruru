@@ -1,0 +1,51 @@
+branchName: '${issue.number}-${issue.body[-20]}'
+gitSafeReplacementChar: ""
+openDraftPR: true
+autoCloseIssue: true
+branches:
+  - label: 
+    - feature
+    - backend
+    prefix: be-
+    name: be/develop
+  - label:
+    - feature
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: '*'
+    skip: true
+  # - label: docs
+  #   prefix: docs/
+  # - label: hotfix
+  #   prefix: hotfix/
+  # - label: refactor
+  #   prefix: refactor/
+  # - label: chore
+  #   prefix: chore/
+  # - label: release
+  #   prefix: release/
+  # - label: test
+  #   prefix: test/
+  # - label: fix
+  #   prefix: fix/
+
+commentMessage: |
+  🚀 안녕하세요 @${assignee.login}님! 작업을 시작하셨군요?
+  
+  작업하실 브랜치를 컨벤션에 맞게 현재 이슈 ✨${issue.title}✨에 연결하여 생성헤드렸어요!
+  생성된 브랜치명:
+  ${branchName}
+  
+  해당 브랜치가 연결된 ⚡️[Draft PR](${repository.html_url}/issues/?q=head:${branchName})⚡️ 생성되었으니 확인해보세요
+  
+  작업이 완료된 후, 리뷰어를 선택하고 Draft PR 내부의 `Ready for review` 버튼을 눌러주시면 됩니다! :)
+  제가 Slack으로 리뷰어에게 DM으로 알려드릴게요
+  
+
+copyIssueDescriptionToPR: true
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
+ 
