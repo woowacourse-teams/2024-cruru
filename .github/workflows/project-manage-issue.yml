@@ -6,8 +6,6 @@ on:
 
 jobs:
   create-issue-branch:
-    outputs:
-      created-branch: ${{ steps.create-issue-branch.outputs.branchName }}
     name: "create issue branch"
     runs-on: ubuntu-latest
     if: github.event.action == 'assigned'
