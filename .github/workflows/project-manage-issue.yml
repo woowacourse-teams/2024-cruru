@@ -6,9 +6,6 @@ on:
 
 jobs:
   create-issue-branch:
-    outputs:
-      created-branch: ${{ steps.create-issue-branch.outputs.branchName }}
-      result: ${{ steps.create-issue-branch.outputs }}
     name: "create issue branch"
     runs-on: ubuntu-latest
     if: github.event.action == 'assigned'
@@ -18,40 +15,39 @@ jobs:
         id: create-issue-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+        outputs:
+          branchName: ${{ steps.create-issue-branch.outputs.branchName }}
+          result: ${{ steps.create-issue-branch.outputs }}
 
   create-PR-link-comment:
     name: "create Draft PR Link on issue"
     needs: create-issue-branch
-    env:
-        BRANCH_NAME: ${{ needs.create-issue-branch.outputs.created-branch }}
-        OUTPUT_ALL: ${{ needs.create-issue-branch.outputs.output-all }}
     runs-on: ubuntu-latest
+    env:
+        BRANCH_NAME: ${{ needs.create-issue-branch.outputs.branchName }}
+        OUTPUT_ALL: ${{ needs.create-issue-branch.outputs.result }}
     steps:
       - name: choose a pr template
         if: env.BRANCH_NAME != ''
         id: template
-        
         run: |
           branch=$BRANCH_NAME
           template="pull_request_template.md"
-          echo "::set-output name=template-name::$template";
+          echo "::set-output name=template-name::$template"
           echo "${{ env.BRANCH_NAME }}"
           echo "${{ toJSON(github) }}"
-          echo "${{ toJSON(env.OUTPUT_ALL) }}
-
+          echo "${{ toJSON(env.OUTPUT_ALL) }}"
+          
       - name: add pr link in comment
         uses: mshick/add-pr-comment@main
         if: env.BRANCH_NAME != ''
         env:
-          PULL_REQUEST_URL: ${{ github.event.issues.pull_request.url }}
+          PULL_REQUEST_URL: ${{ github.event.issue.pull_request.url }}
           TEMPLATE: pull_request_template.md
           SOURCE_BRANCH: ${{ env.BRANCH_NAME }}
-
         with:
           message: |
             ## Pull Request ![](https://raw.githubusercontent.com/primer/octicons/master/icons/git-pull-request-16.svg)
-
             ${{ env.SOURCE_BRANCH }} -> develop Draft PR이 생성되었습니다!
             [이슈와 연결된 PR 바로가기](${{ env.PULL_REQUEST_URL }}).
           repo-token: ${{ secrets.GITHUB_TOKEN }}
