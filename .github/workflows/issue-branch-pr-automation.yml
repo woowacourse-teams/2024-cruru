@@ -4,6 +4,16 @@ on:
   issues:
     types: [opened, assigned]
 
+env:
+  Dobby-Kim: "U07BJABU6G1"
+  Chocochip101: "U07BUEJDS8G"
+  xogns1514: "U07AZ26UC2J"
+  lurgi: "U07BJB1M53K"
+  llqqssttyy: "U07AZ2992CW"
+  cutehumanS2: "U07B88ZQDU4"
+  HyungHoKim00: "U07B5HBKZM1"
+  seongjinme: "U07B9HQDF4M"
+
 jobs:
   create-issue-branch:
     name: "create issue branch"
@@ -15,4 +25,32 @@ jobs:
         id: create-issue-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  specific_review_requested:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set assignee variables
+        id: set-vars
+        run: |
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.assignee.login] }}" >> $GITHUB_ENV
+
+      - name: 작업 시작 -> Slack 체널 알림
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.IN_PROGRESS_SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "pr review request",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚀 <@${{ env.ASSIGNEE_SLACK_ID }}> 님이 \n <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}> 작업을 시작했습니다! :muscle::muscle:"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           
