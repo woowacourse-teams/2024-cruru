@@ -39,7 +39,13 @@ jobs:
               console.error(`Error parsing JSON: ${error}`);
               process.exit(1);
             }
-            const mention = context.payload.pull_request.requested_reviewers.map((user) => {
+            console.log(`Context payload: ${JSON.stringify(context.payload, null, 2)}`);
+            const pr = context.payload.pull_request;
+            if (!pr || !pr.requested_reviewers) {
+              console.error(`No requested reviewers found in the payload`);
+              process.exit(1);
+            }
+            const mention = pr.requested_reviewers.map((user) => {
               const login = user.login;
               const mappedValue = workers[login];
               return mappedValue ? `<@${mappedValue}>` : `No mapping found for ${login}`;
