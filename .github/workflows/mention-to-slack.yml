@@ -2,7 +2,7 @@ name: mention-to-slack-actions
 
 on:
   pull_request:
-    types: [review_requested]
+    types: [review_requested, ready for review]
   pull_request_review:
     types: [submitted]
 #  pull_request_review_comment: 기능 추가 예정
