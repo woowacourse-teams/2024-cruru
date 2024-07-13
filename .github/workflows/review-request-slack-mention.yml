@@ -1,0 +1,46 @@
+name: send slack mention message to requested reviewer
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [review_requested]
+
+env:
+  Dobby-Kim: "U07BJABU6G1"
+  Chocochip101: "U07BUEJDS8G"
+  xogns1514: "U07AZ26UC2J"
+  lurgi: "U07BJB1M53K"
+  llqqssttyy: "U07AZ2992CW"
+  cutehumanS2: "U07B88ZQDU4"
+  HyungHoKim00: "U07B5HBKZM1"
+  seongjinme: "U07B9HQDF4M"
+
+jobs:
+  specific_review_requested:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set reviewer and sender variables
+        id: set-vars
+        run: |
+          echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
+          echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
+
+      - name: pr reviewer 되면 slack 알림 보냄
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "pr review request",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "<@${{ env.REVIEWER_SLACK_ID }}> 님! \n 🚀 <@${{ env.SENDER_SLACK_ID }}>님에게서 **${{ github.event.pull_request.title }}**에 대한 리뷰 요청이 왔습니다! \n ✨ 바쁘시겠지만 아래의 링크에서 확인주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
