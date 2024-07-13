@@ -8,6 +8,7 @@ jobs:
   create-issue-branch:
     outputs:
       created-branch: ${{ steps.create-issue-branch.outputs.branchName }}
+      outputs-all: ${{ steps.create-issue-branch.outputs }}
     name: "create issue branch"
     runs-on: ubuntu-latest
     if: github.event.action == 'assigned'
@@ -17,12 +18,14 @@ jobs:
         id: create-issue-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
 
   create-PR-link-comment:
     name: "create Draft PR Link on issue"
     needs: create-issue-branch
     env:
         BRANCH_NAME: ${{ needs.create-issue-branch.outputs.created-branch }}
+        OUTPUT_ALL: ${{ needs.create-issue-branch.outputs.outputs-all }}
     runs-on: ubuntu-latest
     steps:
       - name: choose a pr template
@@ -35,6 +38,7 @@ jobs:
           echo "::set-output name=template-name::$template";
           echo "${{ env.BRANCH_NAME }}"
           echo "${{ toJSON(github) }}"
+          echo "${{ toJSON(env.OUTPUT_ALL) }}
 
       - name: add pr link in comment
         uses: mshick/add-pr-comment@main
