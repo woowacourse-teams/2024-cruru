@@ -1,4 +1,4 @@
-name: Send mention to Request Review
+name: Pull Request
 
 on:
   workflow_dispatch:
@@ -23,12 +23,16 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             const filePath = path.join(process.env.GITHUB_WORKSPACE, '.github', 'workflows', 'reviewers.json');
-            const workers = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            console.log(`Reading JSON file from: ${filePath}`);
+            const fileContent = fs.readFileSync(filePath, 'utf8');
+            console.log(`File content: ${fileContent}`);
+            const workers = JSON.parse(fileContent);
             const mention = context.payload.pull_request.requested_reviewers.map((user) => {
               const login = user.login;
               const mappedValue = workers[login];
               return mappedValue ? `<@${mappedValue}>` : `No mapping found for ${login}`;
             });
+            console.log(`Mentions: ${mention.join(', ')}`);
             return mention.join(', ');
           result-encoding: string
 
