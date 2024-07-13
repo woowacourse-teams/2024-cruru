@@ -29,7 +29,8 @@ branches:
   #   prefix: test/
   # - label: fix
   #   prefix: fix/
-commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
+commentMessage: 'Branch명 ${branchName}이 생성되었습니다. \\n 현재 이슈 (${issue.title})에 연결되어 [Draft PR](${issue.pull_request.url})이 생성되었습니다. \\n 작업이 완료된 후, `Ready To Review` 버튼을 눌러주세요 :) '
+copyIssueDescriptionToPR: true
 copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: true
