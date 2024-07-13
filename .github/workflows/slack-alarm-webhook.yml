@@ -1,21 +1,43 @@
-name: mention-to-slack-actions
+name: Pull Request
 
 on:
   pull_request:
-    branches: [ "be/develop", "fe/develop" ]
-    types: [ opened, review_requested, ready_for_review ]
-  pull_request_review:
-    types: [ submitted ]
-#  pull_request_review_comment: 기능 추가 예정
-#    types: [created, edited]
+    types: [review_requested]
 
 jobs:
-  mention-to-slack:
+  specific_review_requested:
     runs-on: ubuntu-latest
     steps:
-      - name: Mention to Slack Actions
-        uses: Laurenfrost/mention-to-slack@latest
+      - name: Get Reviewers List
+        id: reviewers
+        uses: actions/github-script@v6
         with:
-          configuration-path: .github/mention-to-slack.yml
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          script: |
+            const fs = require('fs');
+            const workers = JSON.parse(fs.readFileSync('.github/workflows/reviewers.json'));
+            const mention = context.payload.pull_request.requested_reviewers.map((user) => {
+              const login = user.login;
+              const mappedValue = workers[login];
+              return mappedValue ? `<@${mappedValue}>` : `No mapping found for ${login}`;
+            });
+            return mention.join(', ');
+          result-encoding: string
+      - name: pr reviewer 되면 slack 알림 보냄
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.TEST_CHANNEL }}
+          payload: |
+            {
+              "text": "pr review request",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ steps.reviewers.outputs.result }}\\n 🚀 리뷰어로 요청이 왔습니다!\\n ✨제목: ${{ github.event.pull_request.title }}\\n \\n • 링크: <${{ github.event.pull_request.html_url }}|PR 확인하러 가기>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.TEST_BOT_TOKEN }}
