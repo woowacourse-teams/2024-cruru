@@ -24,9 +24,21 @@ jobs:
             const path = require('path');
             const filePath = path.join(process.env.GITHUB_WORKSPACE, '.github', 'workflows', 'reviewers.json');
             console.log(`Reading JSON file from: ${filePath}`);
-            const fileContent = fs.readFileSync(filePath, 'utf8');
-            console.log(`File content: ${fileContent}`);
-            const workers = JSON.parse(fileContent);
+            let fileContent;
+            try {
+              fileContent = fs.readFileSync(filePath, 'utf8');
+              console.log(`File content: ${fileContent}`);
+            } catch (error) {
+              console.error(`Error reading file: ${error}`);
+              process.exit(1);
+            }
+            let workers;
+            try {
+              workers = JSON.parse(fileContent);
+            } catch (error) {
+              console.error(`Error parsing JSON: ${error}`);
+              process.exit(1);
+            }
             const mention = context.payload.pull_request.requested_reviewers.map((user) => {
               const login = user.login;
               const mappedValue = workers[login];
