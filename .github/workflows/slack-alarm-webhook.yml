@@ -66,13 +66,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": | 
-                    "${{ steps.reviewers.outputs.result }} 님!
-                    🚀 리뷰 요청이 왔습니다!
-                    바쁘시더라도 확인해주시면 좋을 것 같아요 :근육:
-                    ✨ 대상 PR: ${{ github.event.pull_request.title }}
-                    
-                    ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "text": "${{ steps.reviewers.outputs.result }} 님! \n 🚀 리뷰 요청이 왔습니다! \n 확인주세요:근육: \n ✨ 대상 PR: ${{ github.event.pull_request.title }} \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
                   }
                 }
               ]
