@@ -17,7 +17,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         outputs:
           branchName: ${{ steps.create-issue-branch.outputs.branchName }}
-          result: ${{ steps.create-issue-branch.outputs }}
+          result: ${{ steps.create-issue-branch.outputs.result }}
 
   create-PR-link-comment:
     name: "create Draft PR Link on issue"
