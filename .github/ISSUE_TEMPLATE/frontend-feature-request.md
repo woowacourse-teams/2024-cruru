@@ -2,7 +2,7 @@
 name: FrontEnd Feature request
 about: 프론트엔드 기능 이슈 템플릿입니다.
 title: ''
-labels: feat, frontend
+labels: feature, frontend
 assignees: ''
 
 ---
