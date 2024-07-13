@@ -2,7 +2,7 @@ name: mention-to-slack-actions
 
 on:
   pull_request:
-    types: [review_requested, ready_for_review]
+    types: [opened, review_requested, ready_for_review]
   pull_request_review:
     types: [submitted]
 #  pull_request_review_comment: 기능 추가 예정
@@ -18,7 +18,3 @@ jobs:
           configuration-path: .github/mention-to-slack.yml
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          icon-url: https://github.githubassets.com/images/modules/logos_page/Octocat.png
-          bot-name: 크루루 Github봇
-          run-id: ${{ github.run_id }}
-          debug-flag: false
