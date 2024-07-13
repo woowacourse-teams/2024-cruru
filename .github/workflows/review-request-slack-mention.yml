@@ -66,7 +66,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ steps.reviewers.outputs.result }} 님! \n 🚀 ${{ github.event.pull_request.title }}에 대한 리뷰 요청이 왔습니다! \n ✨ 아래의 링크에서 확인주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "text": "${{ steps.reviewers.outputs.result }} 님! \n 🚀 ${{ github.event.pull_request.assignee }}으로부터 ${{ github.event.pull_request.title }}에 대한 리뷰 요청이 왔습니다! \n ✨ 바쁘시겠지만 아래의 링크에서 확인주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
                   }
                 }
               ]
