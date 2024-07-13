@@ -1,4 +1,4 @@
-name: Pull Request
+name: Send mention to Request Review
 
 on:
   workflow_dispatch:
@@ -9,13 +9,21 @@ jobs:
   specific_review_requested:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: List files for debugging
+        run: ls -R .github/workflows/
+
       - name: Get Reviewers List
         id: reviewers
         uses: actions/github-script@v6
         with:
           script: |
             const fs = require('fs');
-            const workers = JSON.parse(fs.readFileSync('.github/workflows/reviewers.json'));
+            const path = require('path');
+            const filePath = path.join(process.env.GITHUB_WORKSPACE, '.github', 'workflows', 'reviewers.json');
+            const workers = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             const mention = context.payload.pull_request.requested_reviewers.map((user) => {
               const login = user.login;
               const mappedValue = workers[login];
@@ -23,6 +31,7 @@ jobs:
             });
             return mention.join(', ');
           result-encoding: string
+
       - name: pr reviewer 되면 slack 알림 보냄
         uses: slackapi/slack-github-action@v1.24.0
         with:
