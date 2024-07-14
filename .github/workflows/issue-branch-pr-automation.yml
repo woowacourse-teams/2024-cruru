@@ -16,7 +16,7 @@ env:
 
 jobs:
   create-issue-branch:
-    name: "create issue branch"
+    name: "feature 이슈 할당 -> 브랜치-PR 자동 생성"
     runs-on: ubuntu-latest
     if: github.event.action == 'assigned'
     steps:
@@ -26,8 +26,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  specific_review_requested:
+  notify-start-issue:
+    name: "이슈 작업 시작 -> Slack 체널 알림"
     runs-on: ubuntu-latest
+    if: github.event.action == 'assigned'
     steps:
       - name: Set assignee variables
         id: set-vars
