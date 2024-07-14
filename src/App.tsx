@@ -9,7 +9,10 @@ const StyledDiv = styled.div`
 export default function App() {
   return (
     <StyledDiv className="app">
-      <img src={cat} />
+      <img
+        src={cat}
+        alt="cat"
+      />
       렛서 판다 붐은 온다
     </StyledDiv>
   );
