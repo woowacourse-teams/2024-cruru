@@ -1,4 +1,5 @@
 import { styled } from 'styled-system/jsx';
+import cat from '@/assets/images/cat.svg';
 
 const StyledDiv = styled.div`
   background-color: red;
@@ -6,5 +7,10 @@ const StyledDiv = styled.div`
 `;
 
 export default function App() {
-  return <StyledDiv className="app">렛서 판다 붐은 온다</StyledDiv>;
+  return (
+    <StyledDiv className="app">
+      <img src={cat} />
+      렛서 판다 붐은 온다
+    </StyledDiv>
+  );
 }
