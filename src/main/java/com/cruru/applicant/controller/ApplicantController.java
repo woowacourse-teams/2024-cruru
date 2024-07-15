@@ -18,7 +18,8 @@ public class ApplicantController {
     private final ApplicantService applicantService;
 
     @PutMapping("/move-process/{processId}")
-    public ResponseEntity<Void> updateApplicantProcess(@PathVariable long processId,
+    public ResponseEntity<Void> updateApplicantProcess(
+            @PathVariable long processId,
             @RequestBody ApplicantMoveRequest moveRequest) {
 
         applicantService.updateApplicantProcess(processId, moveRequest);
