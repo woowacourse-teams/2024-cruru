@@ -43,7 +43,7 @@ class ApplicantServiceTest {
                 new Applicant(2L, null, null, null, beforeProcess), new Applicant(3L, null, null, null, beforeProcess),
                 new Applicant(4L, null, null, null, beforeProcess), new Applicant(5L, null, null, null, beforeProcess));
 
-        // When
+        // when
         List<Long> applicantIds = List.of(1L, 2L, 3L, 4L, 5L);
         ApplicantMoveRequest moveRequest = new ApplicantMoveRequest(applicantIds);
         applicantService.updateApplicantProcess(2L, moveRequest);
