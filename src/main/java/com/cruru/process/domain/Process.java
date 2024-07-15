@@ -1,17 +1,12 @@
 package com.cruru.process.domain;
 
 import com.cruru.dashboard.domain.Dashboard;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.util.Objects;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -24,6 +19,8 @@ public class Process {
     @Column(name = "process_id")
     private Long id;
 
+    private Integer sequence;
+
     private String name;
 
     private String description;
@@ -31,6 +28,13 @@ public class Process {
     @ManyToOne
     @JoinColumn(name = "dashboard_id")
     private Dashboard dashboard;
+
+    public Process(int sequence, String name, String description, Dashboard dashboard) {
+        this.sequence = sequence;
+        this.name = name;
+        this.description = description;
+        this.dashboard = dashboard;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,10 +56,11 @@ public class Process {
     @Override
     public String toString() {
         return "Process{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", description='" + description + '\'' +
-               ", dashboard=" + dashboard +
-               '}';
+                "id=" + id +
+                ", sequence=" + sequence +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dashboard=" + dashboard +
+                '}';
     }
 }
