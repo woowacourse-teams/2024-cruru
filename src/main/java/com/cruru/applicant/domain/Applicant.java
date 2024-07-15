@@ -68,5 +68,4 @@ public class Applicant extends BaseEntity {
                 ", process=" + process +
                 '}';
     }
-
 }
