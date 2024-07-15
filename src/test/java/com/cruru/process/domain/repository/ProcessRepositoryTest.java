@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("프로세스 레포지토리 테스트")
 @DataJpaTest
 class ProcessRepositoryTest {
 
