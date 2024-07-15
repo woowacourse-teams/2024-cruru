@@ -33,7 +33,7 @@ class ApplicantServiceTest {
     @DisplayName("다건의 지원서를 요청된 프로세스로 일괄 변경한다.")
     @Test
     void updateApplicantProcess() {
-        // Given
+        // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard(1L, "모집 공고1", null));
         Process beforeProcess = new Process(1L, "이전 프로세스", "프로세스 설명1", dashboard);
         Process afterProcess = new Process(2L, "이후 프로세스", "프로세스 설명2", dashboard);
