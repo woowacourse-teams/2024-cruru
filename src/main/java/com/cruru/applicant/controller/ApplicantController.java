@@ -22,7 +22,6 @@ public class ApplicantController {
             @RequestBody ApplicantMoveRequest moveRequest) {
 
         applicantService.updateApplicantProcess(processId, moveRequest);
-        return ResponseEntity.ok()
-                .build();
+        return ResponseEntity.ok().build();
     }
 }
