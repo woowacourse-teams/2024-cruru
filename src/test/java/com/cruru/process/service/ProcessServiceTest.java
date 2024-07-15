@@ -1,11 +1,10 @@
 package com.cruru.process.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -13,6 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ProcessServiceTest {
@@ -47,5 +49,16 @@ class ProcessServiceTest {
         assertThat(byDashboardId.processResponses()).hasSize(1);
         assertThat(byDashboardId.processResponses().get(0).processId()).isEqualTo(process.getId());
         assertThat(byDashboardId.processResponses().get(0).dashboardApplicantDtos().get(0).applicantId()).isEqualTo(applicant.getId());
+    }
+
+    @DisplayName("대시보드가 존재하지 않는 경우, 예외가 발생한다.")
+    @Test
+    void invalidDashboardId() {
+        // given
+        long invalidId = 0;
+
+        // when&then
+        assertThatThrownBy(() -> processService.findByDashboardId(invalidId))
+                .isInstanceOf(DashboardNotFoundException.class);
     }
 }
