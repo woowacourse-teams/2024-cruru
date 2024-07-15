@@ -19,7 +19,7 @@
   "rules": {
     "no-console": "warn",
     "@pandacss/no-debug": "error",
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", ".ts"] }],
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "warn",
