@@ -2,17 +2,12 @@ package com.cruru.applicant.domain;
 
 import com.cruru.BaseEntity;
 import com.cruru.process.domain.Process;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.util.Objects;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -34,6 +29,13 @@ public class Applicant extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "process_id")
     private Process process;
+
+    public Applicant(String name, String email, String phone, Process process) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.process = process;
+    }
 
     public void updateProcess(Process process) {
         this.process = process;
