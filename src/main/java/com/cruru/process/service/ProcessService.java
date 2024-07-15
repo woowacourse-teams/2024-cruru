@@ -3,6 +3,8 @@ package com.cruru.process.service;
 import com.cruru.applicant.controller.dto.DashboardApplicantDto;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
@@ -20,8 +22,12 @@ public class ProcessService {
 
     private final ApplicantRepository applicantRepository;
     private final ProcessRepository processRepository;
+    private final DashboardRepository dashboardRepository;
 
     public ProcessesResponse findByDashboardId(Long dashboardId) {
+        dashboardRepository.findById(dashboardId)
+                .orElseThrow(DashboardNotFoundException::new);
+
         return new ProcessesResponse(processRepository.findAllByDashboardId(dashboardId)
                 .stream()
                 .map(this::toProcessResponse)
