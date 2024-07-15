@@ -8,12 +8,18 @@
   "globals": {
     "browser": true
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "airbnb", "airbnb/hooks"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@pandacss/recommended",
+    "airbnb",
+    "airbnb/hooks"
+  ],
   "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "jsx-a11y"],
   "rules": {
     "no-console": "warn",
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", ".ts"] }],
-    "react/react-in-jsx-scope": "off",
+    "@pandacss/no-debug": "error",
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js"] }],
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "warn",
     "react-hooks/rules-of-hooks": "error",
