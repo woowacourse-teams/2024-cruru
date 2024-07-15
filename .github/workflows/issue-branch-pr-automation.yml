@@ -34,7 +34,7 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.assignee.login] }}" >> $GITHUB_ENV
 
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.24.0
