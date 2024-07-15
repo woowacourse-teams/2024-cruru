@@ -48,7 +48,7 @@ class ApplicantServiceTest {
         ApplicantMoveRequest moveRequest = new ApplicantMoveRequest(applicantIds);
         applicantService.updateApplicantProcess(2L, moveRequest);
 
-        // when
+        // then
         List<Applicant> actualApplicants = applicantRepository.findAllById(applicantIds);
         List<Process> actualProcesses = actualApplicants.stream()
                 .map(Applicant::getProcess)
