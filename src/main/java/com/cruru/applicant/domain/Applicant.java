@@ -35,6 +35,10 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
+    public void updateProcess(Process process) {
+        this.process = process;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,11 +59,12 @@ public class Applicant extends BaseEntity {
     @Override
     public String toString() {
         return "Applicant{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", email='" + email + '\'' +
-               ", phone='" + phone + '\'' +
-               ", process=" + process +
-               '}';
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", process=" + process +
+                '}';
     }
+
 }
