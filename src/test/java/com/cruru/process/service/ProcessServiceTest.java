@@ -5,13 +5,19 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
+import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Comparator;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,15 +26,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ProcessServiceTest {
 
+    @PersistenceContext
+    EntityManager em;
     @Autowired
     private DashboardRepository dashboardRepository;
-
     @Autowired
     private ProcessRepository processRepository;
-
     @Autowired
     private ApplicantRepository applicantRepository;
-
     @Autowired
     private ProcessService processService;
 
@@ -61,5 +66,31 @@ class ProcessServiceTest {
         // when&then
         assertThatThrownBy(() -> processService.findByDashboardId(invalidId))
                 .isInstanceOf(DashboardNotFoundException.class);
+    }
+
+    @DisplayName("새로운 프로세스를 생성한다.")
+    @Test
+    void create() {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+        dashboard = dashboardRepository.save(dashboard);
+        Process process1 = new Process(0, "name", "description", dashboard);
+        process1 = processRepository.save(process1);
+        Process process2 = new Process(1, "name", "description", dashboard);
+        process2 = processRepository.save(process2);
+
+        // when
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process1.getId());
+        processService.create(dashboard.getId(), processCreateRequest);
+
+        // then
+        List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboard.getId())
+                .stream()
+                .sorted(Comparator.comparingInt(Process::getSequence))
+                .toList();
+
+
+        assertThat(allByDashboardId).hasSize(3);
+        assertThat(allByDashboardId.get(1).getName()).isEqualTo("면접");
     }
 }
