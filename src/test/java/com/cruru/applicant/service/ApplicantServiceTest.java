@@ -55,7 +55,6 @@ class ApplicantServiceTest {
                 .toList();
         assertThat(actualProcesses.stream()
                 .allMatch(process -> process.equals(afterProcess))).isTrue();
-
     }
 }
 
