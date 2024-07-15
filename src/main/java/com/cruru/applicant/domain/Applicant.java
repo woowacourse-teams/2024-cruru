@@ -37,6 +37,10 @@ public class Applicant extends BaseEntity {
         this.process = process;
     }
 
+    public void updateProcess(Process process) {
+        this.process = process;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
