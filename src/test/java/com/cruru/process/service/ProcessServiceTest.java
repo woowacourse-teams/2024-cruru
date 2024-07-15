@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayName("프로세스 서비스 테스트")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ProcessServiceTest {
 
@@ -31,7 +32,7 @@ class ProcessServiceTest {
     @Autowired
     private ProcessService processService;
 
-    @DisplayName("Id에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
+    @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
     void findByDashboardId() {
         // given
