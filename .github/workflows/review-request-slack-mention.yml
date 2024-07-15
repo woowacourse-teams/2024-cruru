@@ -2,7 +2,10 @@ name: send slack mention message to requested reviewer
 
 on:
   pull_request:
-    types: [review_requested]
+    types:
+      - review_requested
+    branches:
+      - '*'
 
 env:
   Dobby-Kim: "U07BJABU6G1"
