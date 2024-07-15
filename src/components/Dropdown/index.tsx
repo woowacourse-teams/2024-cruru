@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import S from './style';
+import ChevronButton from '../ChevronButton';
 
 export default function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,13 @@ export default function Dropdown() {
 
   return (
     <S.DropdownContainer>
-      <S.DropdownButton onClick={handleToggle}>{selected}</S.DropdownButton>
+      <S.DropdownButton onClick={handleToggle}>
+        {selected}
+        <ChevronButton
+          direction="down"
+          size="sm"
+        />
+      </S.DropdownButton>
       {isOpen && (
         <S.DropdownList>
           <S.DropdownListItem onClick={() => handleSelect('프로세스 1')}>프로세스 1</S.DropdownListItem>
