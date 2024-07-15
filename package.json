@@ -2,15 +2,14 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack-dev-server --config webpack.dev.js --open --hot",
-    "prepare": "panda codegen",
-    "panda": "npx panda",
-    "panda:dev": "npx panda --watch",
     "test": "jest",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.5.3"
@@ -19,8 +18,6 @@
     "@chromatic-com/storybook": "^1.6.1",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.6.0",
-    "@pandacss/dev": "^0.42.0",
-    "@pandacss/eslint-plugin": "^0.1.9",
     "@storybook/addon-essentials": "^8.2.1",
     "@storybook/addon-interactions": "^8.2.1",
     "@storybook/addon-links": "^8.2.1",
