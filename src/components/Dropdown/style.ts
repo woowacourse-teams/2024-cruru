@@ -1,4 +1,4 @@
-import { styled } from 'styled-system/jsx';
+import styled from '@emotion/styled';
 
 const DropdownContainer = styled.div`
   position: relative;
