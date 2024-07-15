@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/applicants")
+@RequestMapping("/api/v1/applicants")
 @RequiredArgsConstructor
 public class ApplicantController {
 
