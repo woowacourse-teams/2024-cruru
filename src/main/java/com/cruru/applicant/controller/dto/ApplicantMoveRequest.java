@@ -7,5 +7,4 @@ public record ApplicantMoveRequest(
         @JsonProperty(value = "applicant_ids")
         List<Long> applicantIds
 ) {
-
 }
