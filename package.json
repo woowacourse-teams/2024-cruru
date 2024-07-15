@@ -20,6 +20,7 @@
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.6.0",
     "@pandacss/dev": "^0.42.0",
+    "@pandacss/eslint-plugin": "^0.1.9",
     "@storybook/addon-essentials": "^8.2.1",
     "@storybook/addon-interactions": "^8.2.1",
     "@storybook/addon-links": "^8.2.1",
