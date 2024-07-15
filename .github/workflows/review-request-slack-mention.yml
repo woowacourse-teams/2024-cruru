@@ -1,7 +1,6 @@
 name: send slack mention message to requested reviewer
 
 on:
-  workflow_dispatch:
   pull_request:
     types: [review_requested]
 
