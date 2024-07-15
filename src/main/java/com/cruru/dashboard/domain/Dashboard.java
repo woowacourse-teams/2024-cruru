@@ -1,17 +1,12 @@
 package com.cruru.dashboard.domain;
 
 import com.cruru.club.domain.Club;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import java.util.Objects;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -29,6 +24,11 @@ public class Dashboard {
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
+
+    public Dashboard(String name, Club club) {
+        this.name = name;
+        this.club = club;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -50,9 +50,9 @@ public class Dashboard {
     @Override
     public String toString() {
         return "Dashboard{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", club=" + club +
-               '}';
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", club=" + club +
+                '}';
     }
 }
