@@ -5,6 +5,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
+import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
@@ -51,5 +52,22 @@ public class ProcessService {
 
     private DashboardApplicantDto toApplicantDto(Applicant applicant) {
         return new DashboardApplicantDto(applicant.getId(), applicant.getName(), applicant.getCreatedDate());
+    }
+
+    @Transactional
+    public void create(long dashboardId, ProcessCreateRequest request) {
+        List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
+        Process priorProcess = processRepository.findById(request.priorProcessId()).orElseThrow();
+
+        allByDashboardId.stream()
+                .filter(process -> process.getSequence() > priorProcess.getSequence())
+                .forEach(Process::increaseSequenceNumber);
+
+        processRepository.save(
+                new Process(priorProcess.getSequence() + 1,
+                        request.name(),
+                        request.description(),
+                        dashboardRepository.findById(dashboardId).orElseThrow())
+        );
     }
 }
