@@ -36,6 +36,10 @@ public class Process {
         this.dashboard = dashboard;
     }
 
+    public void increaseSequenceNumber() {
+        this.sequence++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
