@@ -1,35 +1,17 @@
-import React from 'react';
-import S, { ButtonSize } from './style';
-
-interface ButtonProps extends React.ComponentProps<'button'> {
-  label?: string;
-  icon?: React.ReactNode;
-  size: ButtonSize;
-  outline?: boolean;
-  borderRadius?: string;
-}
+import React, { PropsWithChildren } from 'react';
+import S from './style';
 
 export default function Button({
+  children,
   onClick,
   type = 'button',
-
-  label,
-  icon,
-  size = 'lg',
-  outline = false,
-  borderRadius = '0.8rem',
-}: ButtonProps) {
+}: PropsWithChildren<React.ComponentProps<'button'>>) {
   return (
     <S.Button
       type={type}
       onClick={onClick}
-      size={size}
-      outline={outline}
-      borderRadius={borderRadius}
-      buttonType={icon ? 'icon' : 'label'}
     >
-      {icon && <S.IconWrapper size={size}>{icon}</S.IconWrapper>}
-      {label && label}
+      {children}
     </S.Button>
   );
 }

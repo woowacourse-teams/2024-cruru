@@ -1,8 +1,8 @@
 import plusIcon from '@assets/images/plus.svg';
 import ApplicantCard from './components/ApplicantCard';
-import Button from './components/Button';
 
 import styled from '@emotion/styled';
+import IconButton from './components/IconButton';
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -13,18 +13,17 @@ export default function App() {
   return (
     <AppContainer>
       <ApplicantCard />
-      <Button
+      <IconButton
         type="button"
         onClick={() => console.log('clicked')}
-        icon={
-          <img
-            src={plusIcon}
-            alt="플러스 아이콘"
-          />
-        }
         size="sm"
         outline={true}
-      />
+      >
+        <img
+          src={plusIcon}
+          alt="플러스 아이콘"
+        />
+      </IconButton>
     </AppContainer>
   );
 }
