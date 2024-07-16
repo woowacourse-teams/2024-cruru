@@ -11,7 +11,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@pandacss/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     "airbnb",
     "airbnb/hooks"
   ],
