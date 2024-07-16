@@ -9,8 +9,7 @@ import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +25,25 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ProcessServiceTest {
 
-    @PersistenceContext
-    EntityManager em;
     @Autowired
     private DashboardRepository dashboardRepository;
+
     @Autowired
     private ProcessRepository processRepository;
+
     @Autowired
     private ApplicantRepository applicantRepository;
+
     @Autowired
     private ProcessService processService;
+
+    @BeforeEach
+    void setUp() {
+        applicantRepository.deleteAll();
+        processRepository.deleteAll();
+        dashboardRepository.deleteAll();
+    }
+
 
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
@@ -92,5 +100,21 @@ class ProcessServiceTest {
 
         assertThat(allByDashboardId).hasSize(3);
         assertThat(allByDashboardId.get(1).getName()).isEqualTo("면접");
+    }
+
+    @DisplayName("프로세스를 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+        dashboard = dashboardRepository.save(dashboard);
+        Process process1 = new Process(0, "name", "description", dashboard);
+        process1 = processRepository.save(process1);
+
+        // when
+        processService.delete(process1.getId());
+
+        // then
+        assertThat(processRepository.findAll()).hasSize(0);
     }
 }
