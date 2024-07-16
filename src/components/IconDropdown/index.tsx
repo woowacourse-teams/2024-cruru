@@ -1,5 +1,5 @@
-import IconButton from '@component/IconButton';
-import { useState } from 'react';
+import IconButton from '@components/IconButton';
+import { PropsWithChildren, useState } from 'react';
 import S from './style';
 
 interface IItem {
@@ -7,12 +7,11 @@ interface IItem {
   onClick: () => void;
 }
 
-interface IIconDropdownProps {
-  icon: string;
+interface IIconDropdownProps extends PropsWithChildren {
   items: IItem[];
 }
 
-export default function IconDropdown({ icon, items }: IIconDropdownProps) {
+export default function IconDropdown({ children, items }: IIconDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => setIsOpen(!isOpen);
@@ -25,8 +24,10 @@ export default function IconDropdown({ icon, items }: IIconDropdownProps) {
     <S.DropdownContainer>
       <IconButton
         onClick={handleToggle}
-        icon={icon}
-      />
+        size="sm"
+      >
+        {children}
+      </IconButton>
       {isOpen && (
         <S.DropdownList>
           {items.map((item) => (

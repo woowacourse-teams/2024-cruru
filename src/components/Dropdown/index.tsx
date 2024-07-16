@@ -1,10 +1,15 @@
+import chevronDown from '@assets/images/chevronDown.svg';
 import { useState } from 'react';
 import S from './style';
-import ChevronButton from '../ChevronButton';
+
+interface IItem {
+  name: string;
+  onClick: () => void;
+}
 
 interface DropdownProps {
   defaultSelected: string;
-  items: string[];
+  items: IItem[];
 }
 
 export default function Dropdown({ defaultSelected, items }: DropdownProps) {
@@ -12,8 +17,9 @@ export default function Dropdown({ defaultSelected, items }: DropdownProps) {
   const [selected, setSelected] = useState(defaultSelected);
 
   const handleToggle = () => setIsOpen(!isOpen);
-  const handleSelect = (item: string) => {
-    setSelected(item);
+  const handleSelect = (item: IItem) => {
+    setSelected(item.name);
+    item.onClick();
     setIsOpen(false);
   };
 
@@ -21,19 +27,19 @@ export default function Dropdown({ defaultSelected, items }: DropdownProps) {
     <S.DropdownContainer>
       <S.DropdownButton onClick={handleToggle}>
         {selected}
-        <ChevronButton
-          direction="down"
-          size="sm"
+        <img
+          src={chevronDown}
+          alt="chevron"
         />
       </S.DropdownButton>
       {isOpen && (
         <S.DropdownList>
           {items.map((item) => (
             <S.DropdownListItem
-              key={item}
+              key={item.name}
               onClick={() => handleSelect(item)}
             >
-              {item}
+              {item.name}
             </S.DropdownListItem>
           ))}
         </S.DropdownList>

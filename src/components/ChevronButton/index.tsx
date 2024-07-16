@@ -1,4 +1,4 @@
-import IconButton from '@component/IconButton';
+import IconButton from '@components/IconButton';
 
 import chevronLeft from '@assets/images/chevronLeft.svg';
 import chevronRight from '@assets/images/chevronRight.svg';
@@ -19,9 +19,11 @@ const iconMap = {
 
 export default function ChevronButton({ direction, size }: ChevronButtonProps) {
   return (
-    <IconButton
-      icon={iconMap[direction]}
-      size={size}
-    ></IconButton>
+    <IconButton size={size}>
+      <img
+        src={iconMap[direction]}
+        alt="chevron"
+      />
+    </IconButton>
   );
 }
