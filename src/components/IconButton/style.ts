@@ -17,7 +17,7 @@ const IconWrapper = styled.div<IconButtonStyleProps>`
   display: flex;
   align-items: center;
 
-  padding: '0.4rem';
+  padding: 0.4rem;
   border-radius: ${({ borderRadius }) => borderRadius};
   border: ${({ outline, theme }) => (outline ? `1px solid ${theme.colors.grayscale[300]}` : 'none')};
 

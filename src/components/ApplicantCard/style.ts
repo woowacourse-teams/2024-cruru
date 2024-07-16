@@ -30,12 +30,26 @@ const DropdownWrapper = styled.div`
   align-self: center;
 `;
 
+const DropdownDefault = styled.div`
+  padding: 8px 16px;
+  font-size: 16px;
+  width: 120px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid grey;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const S = {
   CardContainer,
   CardDetail,
   CardHeader,
   CardDate,
   DropdownWrapper,
+  DropdownDefault,
 };
 
 export default S;
