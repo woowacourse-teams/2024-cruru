@@ -35,13 +35,14 @@ class ApplicantServiceTest {
     void updateApplicantProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard(1L, "모집 공고1", null));
-        Process beforeProcess = new Process(1L, "이전 프로세스", "프로세스 설명1", dashboard);
-        Process afterProcess = new Process(2L, "이후 프로세스", "프로세스 설명2", dashboard);
+        Process beforeProcess = new Process(1L, 0, "이전 프로세스", "프로세스 설명1", dashboard);
+        Process afterProcess = new Process(2L, 1, "이후 프로세스", "프로세스 설명2", dashboard);
         List<Process> processes = List.of(beforeProcess, afterProcess);
         processRepository.saveAll(processes);
         List<Applicant> applicants = List.of(new Applicant(1L, null, null, null, beforeProcess),
                 new Applicant(2L, null, null, null, beforeProcess), new Applicant(3L, null, null, null, beforeProcess),
                 new Applicant(4L, null, null, null, beforeProcess), new Applicant(5L, null, null, null, beforeProcess));
+        applicantRepository.saveAll(applicants);
 
         // when
         List<Long> applicantIds = List.of(1L, 2L, 3L, 4L, 5L);
@@ -50,11 +51,10 @@ class ApplicantServiceTest {
 
         // then
         List<Applicant> actualApplicants = applicantRepository.findAllById(applicantIds);
-        List<Process> actualProcesses = actualApplicants.stream()
+        boolean processAllMoved = actualApplicants.stream()
                 .map(Applicant::getProcess)
-                .toList();
-        assertThat(actualProcesses.stream()
-                .allMatch(process -> process.equals(afterProcess))).isTrue();
+                .allMatch(process -> process.equals(afterProcess));
+        assertThat(processAllMoved).isTrue();
     }
 }
 
