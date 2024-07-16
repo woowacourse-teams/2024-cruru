@@ -19,6 +19,7 @@ public class ApplicantService {
     private final ApplicantRepository applicantRepository;
     private final ProcessRepository processRepository;
 
+    @Transactional
     public void updateApplicantProcess(long processId, ApplicantMoveRequest moveRequest) {
         Process process = processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
