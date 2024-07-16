@@ -11,4 +11,5 @@ public record ProcessCreateRequest(
         @JsonProperty("prior_process_id")
         Long priorProcessId
 ) {
+
 }

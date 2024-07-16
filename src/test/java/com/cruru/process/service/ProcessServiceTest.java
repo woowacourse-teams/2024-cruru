@@ -1,25 +1,25 @@
 package com.cruru.process.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
+import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import java.util.Comparator;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Comparator;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("프로세스 서비스 테스트")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -61,8 +61,9 @@ class ProcessServiceTest {
 
         // then
         assertThat(byDashboardId.processResponses()).hasSize(1);
-        assertThat(byDashboardId.processResponses().get(0).processId()).isEqualTo(process.getId());
-        assertThat(byDashboardId.processResponses().get(0).dashboardApplicantDtos().get(0).applicantId()).isEqualTo(applicant.getId());
+        ProcessResponse firstProcessResponse = byDashboardId.processResponses().get(0);
+        assertThat(firstProcessResponse.processId()).isEqualTo(process.getId());
+        assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).applicantId()).isEqualTo(applicant.getId());
     }
 
     @DisplayName("대시보드가 존재하지 않는 경우, 예외가 발생한다.")
@@ -85,7 +86,7 @@ class ProcessServiceTest {
         Process process1 = new Process(0, "name", "description", dashboard);
         process1 = processRepository.save(process1);
         Process process2 = new Process(1, "name", "description", dashboard);
-        process2 = processRepository.save(process2);
+        processRepository.save(process2);
 
         // when
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process1.getId());
@@ -96,7 +97,6 @@ class ProcessServiceTest {
                 .stream()
                 .sorted(Comparator.comparingInt(Process::getSequence))
                 .toList();
-
 
         assertThat(allByDashboardId).hasSize(3);
         assertThat(allByDashboardId.get(1).getName()).isEqualTo("면접");
