@@ -1,8 +1,6 @@
 branchName: '${issue.number}-${issue.body[-20]}'
 gitSafeReplacementChar: ""
 openDraftPR: true
-conventionalPrTitles: true
-conventionalStyle: semver-no-gitmoji
 autoCloseIssue: true
 branches:
   - label: 
@@ -15,15 +13,57 @@ branches:
     - frontend
     prefix: fe-
     name: fe/develop
+  - label: 
+    - refactor
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - refactor
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - chore
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - chore
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - test
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - test
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - fix
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - fix
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - hotfix
+    - backend
+    prefix: be-hotfix-
+    name: be/release
+  - label: 
+    - hotfix
+    - frontend
+    prefix: fe-hotfix-
+    name: fe/release
   - label: docs
-    skip: true
-  - label: refactor
-    skip: true
-  - label: chore
-    skip: true
-  - label: test
-    skip: true
-  - label: fix
     skip: true
   - label: '*'
     skip: true
@@ -46,20 +86,3 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
-
-conventionalLabels:
-  fix:
-    fix: '🔨'
-  feat:
-    feature: '✨'
-  chore:
-    chore:
-  docs:
-    docs: '📝'
-  style:
-    style: '💎'
-  refactor:
-    refactor: '♻️'
-  test:
-    test: '✅'
-    
