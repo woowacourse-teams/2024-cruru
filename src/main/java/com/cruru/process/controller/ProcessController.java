@@ -27,4 +27,10 @@ public class ProcessController {
         processService.create(dashboardId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @DeleteMapping("/{process_id}")
+    public ResponseEntity<Void> delete(@PathVariable(name = "process_id") Long processId) {
+        processService.delete(processId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -70,4 +70,9 @@ public class ProcessService {
                         dashboardRepository.findById(dashboardId).orElseThrow())
         );
     }
+
+    @Transactional
+    public void delete(long processId) {
+        processRepository.deleteById(processId);
+    }
 }
