@@ -10,6 +10,7 @@ import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.process.exception.ProcessBadRequestException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProcessService {
 
+    public static final int MAX_PROCESS_COUNT = 5;
     private final ApplicantRepository applicantRepository;
     private final ProcessRepository processRepository;
     private final DashboardRepository dashboardRepository;
@@ -56,6 +58,11 @@ public class ProcessService {
     @Transactional
     public void create(long dashboardId, ProcessCreateRequest request) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
+
+        if (allByDashboardId.size() == MAX_PROCESS_COUNT) {
+            throw new ProcessBadRequestException();
+        }
+
         Process priorProcess = processRepository.findById(request.priorProcessId()).orElseThrow();
 
         allByDashboardId.stream()

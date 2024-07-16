@@ -13,6 +13,7 @@ import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.process.exception.ProcessBadRequestException;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,6 +101,29 @@ class ProcessServiceTest {
 
         assertThat(allByDashboardId).hasSize(3);
         assertThat(allByDashboardId.get(1).getName()).isEqualTo("면접");
+    }
+
+    @DisplayName("프로세스 최대 개수를 초과하면, 예외가 발생한다.")
+    @Test
+    void createOverProcessMaxCount() {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard savedDashboard = dashboardRepository.save(dashboard);
+        Process process1 = new Process(0, "name", "description", dashboard);
+        process1 = processRepository.save(process1);
+        Process process2 = new Process(1, "name", "description", dashboard);
+        processRepository.save(process2);
+        Process process3 = new Process(2, "name", "description", dashboard);
+        processRepository.save(process3);
+        Process process4 = new Process(3, "name", "description", dashboard);
+        processRepository.save(process4);
+        Process process5 = new Process(4, "name", "description", dashboard);
+        processRepository.save(process5);
+
+        // when&then
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process1.getId());
+        assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
+                .isInstanceOf(ProcessBadRequestException.class);
     }
 
     @DisplayName("프로세스를 삭제한다.")
