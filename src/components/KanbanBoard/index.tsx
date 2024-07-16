@@ -13,6 +13,7 @@ export default function KanbanBoard({ processes }: KanbanBoardProps) {
     <S.Wrapper>
       {processes.map((process) => (
         <ProcessColumn
+          key={process.processId}
           process={process}
           processNameList={processNameList}
         />

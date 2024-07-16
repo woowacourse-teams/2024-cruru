@@ -28,7 +28,12 @@ export default function Dropdown({ processNameList }: DropdownProps) {
       {isOpen && (
         <S.DropdownList>
           {processNameList.map((processName) => (
-            <S.DropdownListItem onClick={() => handleSelect(processName)}>{processName}</S.DropdownListItem>
+            <S.DropdownListItem
+              key={processName}
+              onClick={() => handleSelect(processName)}
+            >
+              {processName}
+            </S.DropdownListItem>
           ))}
         </S.DropdownList>
       )}

@@ -21,18 +21,6 @@ const Title = styled.h2`
   font-size: 24px;
 `;
 
-const OptionButton = styled.button`
-  width: 48px;
-  height: 48px;
-  background: white;
-  border-radius: 50%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  padding: 12px;
-  cursor: pointer;
-`;
-
 const OptionButtonContainer = styled.div({
   width: '48px',
   height: '48px',
@@ -56,7 +44,6 @@ const S = {
   ProcessWrapper,
   Header,
   Title,
-  OptionButton,
   OptionButtonContainer,
   ApplicantList,
 };
