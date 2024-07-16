@@ -8,17 +8,25 @@
   "globals": {
     "browser": true
   },
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "airbnb", "airbnb/hooks"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "airbnb",
+    "airbnb/hooks"
+  ],
   "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "jsx-a11y"],
   "rules": {
     "no-console": "warn",
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", ".ts"] }],
-    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", "ts"] }],
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "warn",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "react/require-default-props": "off",
+    "react/jsx-wrap-multilines": "off",
+    "react/react-in-jsx-scope": "off",
 
     "import/extensions": [
       "error",
