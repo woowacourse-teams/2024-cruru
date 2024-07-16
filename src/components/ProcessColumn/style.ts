@@ -33,6 +33,18 @@ const OptionButton = styled.button`
   cursor: pointer;
 `;
 
+const OptionButtonContainer = styled.div({
+  width: '48px',
+  height: '48px',
+  backgroundColor: 'white',
+  borderRadius: '50%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '12px',
+  cursor: 'pointer',
+});
+
 const ApplicantList = styled.ul`
   width: 100%;
   display: flex;
@@ -45,6 +57,7 @@ const S = {
   Header,
   Title,
   OptionButton,
+  OptionButtonContainer,
   ApplicantList,
 };
 
