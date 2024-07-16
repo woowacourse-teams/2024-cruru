@@ -1,5 +1,5 @@
-import chevronDown from '@assets/images/chevronDown.svg';
-import { useState } from 'react';
+import IconButton from '@components/IconButton';
+import { PropsWithChildren, useState } from 'react';
 import S from './style';
 
 interface IItem {
@@ -7,31 +7,27 @@ interface IItem {
   onClick: () => void;
 }
 
-interface DropdownProps {
-  defaultSelected: string;
+interface IIconDropdownProps extends PropsWithChildren {
   items: IItem[];
 }
 
-export default function Dropdown({ defaultSelected, items }: DropdownProps) {
+export default function IconDropdown({ children, items }: IIconDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(defaultSelected);
 
   const handleToggle = () => setIsOpen(!isOpen);
   const handleSelect = (item: IItem) => {
-    setSelected(item.name);
     item.onClick();
     setIsOpen(false);
   };
 
   return (
     <S.DropdownContainer>
-      <S.DropdownButton onClick={handleToggle}>
-        {selected}
-        <img
-          src={chevronDown}
-          alt="chevron"
-        />
-      </S.DropdownButton>
+      <IconButton
+        onClick={handleToggle}
+        size="sm"
+      >
+        {children}
+      </IconButton>
       {isOpen && (
         <S.DropdownList>
           {items.map((item) => (
