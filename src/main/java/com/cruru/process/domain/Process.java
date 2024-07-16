@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Process {
 
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*()]{1,32}$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*() ]{1,32}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
