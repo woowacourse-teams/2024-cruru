@@ -57,4 +57,12 @@ class ProcessControllerTest {
                 .when().post("/api/v1/processes?dashboard_id=" + dashboard.getId())
                 .then().log().all().statusCode(201);
     }
+
+    @DisplayName("프로세스 삭제 성공 시, 204를 응답한다.")
+    @Test
+    void delete() {
+        RestAssured.given().log().all()
+                .when().delete("/api/v1/processes/" + process.getId())
+                .then().log().all().statusCode(204);
+    }
 }
