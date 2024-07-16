@@ -16,7 +16,10 @@ export default function ApplicantCard({ name, createdAt, processNameList }: Appl
         <S.CardDate>{`지원 일자: ${formatDate(createdAt)}`}</S.CardDate>
       </S.CardDetail>
       <S.DropdownWrapper>
-        <Dropdown processNameList={processNameList} />
+        <Dropdown
+          defaultSelectedValue={'단계'}
+          processNameList={processNameList}
+        />
       </S.DropdownWrapper>
     </S.CardContainer>
   );

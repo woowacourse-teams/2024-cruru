@@ -1,29 +1,19 @@
-import chevronDown from '@assets/images/chevronDown.svg';
 import { useState } from 'react';
+import chevronDown from '@assets/images/chevronDown.svg';
 import S from './style';
 
-interface IItem {
-  name: string;
-  onClick: () => void;
-}
-
 interface DropdownProps {
-  defaultSelected: string;
-  items: IItem[];
-}
-
-interface DropdownProps {
+  defaultSelectedValue: string;
   processNameList: string[];
 }
 
-export default function Dropdown({ processNameList }: DropdownProps) {
+export default function Dropdown({ defaultSelectedValue, processNameList }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(defaultSelected);
+  const [selected, setSelected] = useState(defaultSelectedValue);
 
   const handleToggle = () => setIsOpen(!isOpen);
-  const handleSelect = (item: IItem) => {
-    setSelected(item.name);
-    item.onClick();
+  const handleSelect = (item: string) => {
+    setSelected(item);
     setIsOpen(false);
   };
 
