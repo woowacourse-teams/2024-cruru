@@ -1,22 +1,24 @@
 import S from './style';
 import Dropdown from '../Dropdown';
+import formatDate from '@/utils/formatDate';
 
-export default function ApplicantCard() {
-  const items = [
-    { name: '프로세스1', onClick: () => console.log('프로세스1') },
-    { name: '프로세스2', onClick: () => console.log('프로세스2') },
-    { name: '프로세스3', onClick: () => console.log('프로세스3') },
-  ];
+interface ApplicantCardProps {
+  name: string;
+  createdAt: string;
+  processNameList: string[];
+}
+
+export default function ApplicantCard({ name, createdAt, processNameList }: ApplicantCardProps) {
   return (
     <S.CardContainer>
       <S.CardDetail>
-        <S.CardHeader>김다은</S.CardHeader>
-        <S.CardDate>지원 일자: 24. 07. 15</S.CardDate>
+        <S.CardHeader>{name}</S.CardHeader>
+        <S.CardDate>{`지원 일자: ${formatDate(createdAt)}`}</S.CardDate>
       </S.CardDetail>
       <S.DropdownWrapper>
         <Dropdown
-          defaultSelected="단계"
-          items={items}
+          defaultSelectedValue={'단계'}
+          processNameList={processNameList}
         />
       </S.DropdownWrapper>
     </S.CardContainer>
