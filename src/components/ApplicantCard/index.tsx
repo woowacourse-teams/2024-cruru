@@ -9,7 +9,10 @@ export default function ApplicantCard() {
         <S.CardDate>지원 일자: 24. 07. 15</S.CardDate>
       </S.CardDetail>
       <S.DropdownWrapper>
-        <Dropdown />
+        <Dropdown
+          defaultSelected="단계"
+          items={['프로세스1', '프로세스2', '프로세스3']}
+        />
       </S.DropdownWrapper>
     </S.CardContainer>
   );
