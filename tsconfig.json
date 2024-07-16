@@ -34,5 +34,5 @@
       "styled-system/*": ["src/styled-system/*"]
     }
   },
-  "include": ["src", "src/styled-system", "setupTests.ts"]
+  "include": ["src/**.*", "src/styled-system", "setupTests.ts"]
 }
