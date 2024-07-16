@@ -91,7 +91,7 @@ class ProcessServiceTest {
         processRepository.save(process2);
 
         // when
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process1.getId());
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", 1);
         processService.create(dashboard.getId(), processCreateRequest);
 
         // then
@@ -122,7 +122,7 @@ class ProcessServiceTest {
         processRepository.save(process5);
 
         // when&then
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process1.getId());
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", 1);
         assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
                 .isInstanceOf(ProcessBadRequestException.class);
     }

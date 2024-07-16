@@ -53,7 +53,7 @@ class ProcessControllerTest {
     @DisplayName("프로세스 생성 성공 시, 201을 응답한다.")
     @Test
     void create() {
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process2.getId());
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", 2);
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)

@@ -64,17 +64,16 @@ public class ProcessService {
             throw new ProcessBadRequestException();
         }
 
-        Process priorProcess = processRepository.findById(request.priorProcessId()).orElseThrow();
-
         allByDashboardId.stream()
-                .filter(process -> process.getSequence() > priorProcess.getSequence())
+                .filter(process -> process.getSequence() >= request.sequence())
                 .forEach(Process::increaseSequenceNumber);
 
-        processRepository.save(
-                new Process(priorProcess.getSequence() + 1,
-                        request.name(),
-                        request.description(),
-                        dashboardRepository.findById(dashboardId).orElseThrow())
+        processRepository.save(new Process(
+                request.sequence(),
+                request.name(),
+                request.description(),
+                dashboardRepository.findById(dashboardId)
+                        .orElseThrow(DashboardNotFoundException::new))
         );
     }
 
