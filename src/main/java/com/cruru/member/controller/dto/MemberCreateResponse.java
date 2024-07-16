@@ -6,4 +6,5 @@ public record MemberCreateResponse(
         @JsonProperty(value = "member_id")
         Long id
 ) {
+
 }
