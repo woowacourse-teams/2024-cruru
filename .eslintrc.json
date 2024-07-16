@@ -12,7 +12,7 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "jsx-a11y"],
   "rules": {
     "no-console": "warn",
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", ".ts"] }],
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "warn",
