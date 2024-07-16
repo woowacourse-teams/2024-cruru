@@ -2,7 +2,11 @@ import { useState } from 'react';
 import S from './style';
 import ChevronButton from '../ChevronButton';
 
-export default function Dropdown() {
+interface DropdownProps {
+  processNameList: string[];
+}
+
+export default function Dropdown({ processNameList }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('단계');
 
@@ -23,10 +27,9 @@ export default function Dropdown() {
       </S.DropdownButton>
       {isOpen && (
         <S.DropdownList>
-          <S.DropdownListItem onClick={() => handleSelect('프로세스 1')}>프로세스 1</S.DropdownListItem>
-          <S.DropdownListItem onClick={() => handleSelect('프로세스 2')}>프로세스 2</S.DropdownListItem>
-          <S.DropdownListItem onClick={() => handleSelect('프로세스 3')}>프로세스 3</S.DropdownListItem>
-          <S.DropdownListItem onClick={() => handleSelect('프로세스 4')}>프로세스 4</S.DropdownListItem>
+          {processNameList.map((processName) => (
+            <S.DropdownListItem onClick={() => handleSelect(processName)}>{processName}</S.DropdownListItem>
+          ))}
         </S.DropdownList>
       )}
     </S.DropdownContainer>

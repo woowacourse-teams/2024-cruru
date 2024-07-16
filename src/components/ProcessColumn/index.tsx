@@ -1,17 +1,19 @@
 import { Process } from '@/types/process';
-import S from './style';
 import { EllipsisIcon } from '@/assets/icons';
-import formatDate from '@/utils/formatDate';
+import ApplicantCard from '../ApplicantCard';
+
+import S from './style';
 
 interface ProcessColumnProps extends React.PropsWithChildren {
   process: Process;
+  processNameList: string[];
 }
 
-export default function ProcessColumn({ process }: ProcessColumnProps) {
+export default function ProcessColumn({ process, processNameList }: ProcessColumnProps) {
   return (
     <S.ProcessWrapper>
       <S.Header>
-        <S.Title>Process Name</S.Title>
+        <S.Title>{process.name}</S.Title>
         <S.OptionButton>
           <img
             alt="옵션 버튼"
@@ -21,10 +23,12 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
       </S.Header>
       <S.ApplicantList>
         {process.applicants.map(({ id, name, createdAt }) => (
-          <li key={id}>
-            <h3>{name}</h3>
-            <small>{`지원 일자: ${formatDate(createdAt)}`}</small>
-          </li>
+          <ApplicantCard
+            key={id}
+            name={name}
+            createdAt={createdAt}
+            processNameList={processNameList}
+          />
         ))}
       </S.ApplicantList>
     </S.ProcessWrapper>

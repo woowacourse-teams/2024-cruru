@@ -1,8 +1,9 @@
-import plusIcon from '@assets/images/plus.svg';
-import ApplicantCard from './components/ApplicantCard';
-
 import styled from '@emotion/styled';
+import plusIcon from '@assets/images/plus.svg';
+import KanbanBoard from './components/KanbanBoard';
 import IconButton from './components/IconButton';
+
+import processMockData from './mocks/processMockData';
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -12,12 +13,12 @@ const AppContainer = styled.div`
 export default function App() {
   return (
     <AppContainer>
-      <ApplicantCard />
+      <KanbanBoard processes={processMockData} />
       <IconButton
         type="button"
         onClick={() => console.log('clicked')}
         size="sm"
-        outline={true}
+        outline
       >
         <img
           src={plusIcon}

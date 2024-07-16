@@ -7,10 +7,15 @@ interface KanbanBoardProps {
 }
 
 export default function KanbanBoard({ processes }: KanbanBoardProps) {
+  const processNameList = processes.map((process) => process.name);
+
   return (
     <S.Wrapper>
       {processes.map((process) => (
-        <ProcessColumn process={process} />
+        <ProcessColumn
+          process={process}
+          processNameList={processNameList}
+        />
       ))}
     </S.Wrapper>
   );
