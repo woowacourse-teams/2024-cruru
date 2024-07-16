@@ -60,5 +60,5 @@ jobs:
 
       - name: Start server
         run: |
-          nohup java -jar build/libs/cruru-0.0.1-SNAPSHOT.jar &
+          sudo nohup java -jar build/libs/cruru-0.0.1-SNAPSHOT.jar &
           echo "Lastest Backend API Server started."
