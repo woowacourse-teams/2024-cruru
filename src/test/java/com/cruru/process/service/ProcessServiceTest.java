@@ -2,6 +2,7 @@ package com.cruru.process.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -132,7 +133,7 @@ class ProcessServiceTest {
         // given
         Dashboard dashboard = new Dashboard("name", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "name", "description", dashboard);
+        Process process1 = new Process(1, "name", "description", dashboard);
         process1 = processRepository.save(process1);
 
         // when
@@ -140,5 +141,24 @@ class ProcessServiceTest {
 
         // then
         assertThat(processRepository.findAll()).hasSize(0);
+    }
+
+    @DisplayName("첫번째 프로세스 혹은 마지막 프로세스를 삭제하면 예외가 발생한다.")
+    @Test
+    void deleteFirstOrLastProcess() {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+        dashboard = dashboardRepository.save(dashboard);
+        Process process1 = new Process(0, "name", "description", dashboard);
+        processRepository.save(process1);
+        Process process2 = new Process(1, "name", "description", dashboard);
+        processRepository.save(process2);
+
+        // when&then
+        assertAll(() -> assertThatThrownBy(() -> processService.delete(process1.getId()))
+                        .isInstanceOf(ProcessBadRequestException.class),
+                () -> assertThatThrownBy(() -> processService.delete(process2.getId()))
+                        .isInstanceOf(ProcessBadRequestException.class)
+        );
     }
 }

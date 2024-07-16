@@ -11,6 +11,7 @@ import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.process.exception.ProcessNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,14 @@ public class ProcessService {
 
     @Transactional
     public void delete(long processId) {
+        Process process = processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+        long processCount = processRepository.countByDashboard(process.getDashboard());
+
+        if (process.getSequence() == 0 || process.getSequence() == processCount - 1) {
+            throw new ProcessBadRequestException();
+        }
+
         processRepository.deleteById(processId);
     }
 }

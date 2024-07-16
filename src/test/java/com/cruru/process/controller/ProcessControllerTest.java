@@ -29,13 +29,17 @@ class ProcessControllerTest {
 
     private Dashboard dashboard;
 
-    private Process process;
+    private Process process1;
+    private Process process2;
+    private Process process3;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
         dashboard = dashboardRepository.save(new Dashboard("name", null));
-        process = processRepository.save(new Process(0, "면접", "1차 면접", dashboard));
+        process1 = processRepository.save(new Process(0, "면접", "1차 면접", dashboard));
+        process2 = processRepository.save(new Process(1, "면접", "1차 면접", dashboard));
+        process3 = processRepository.save(new Process(2, "면접", "1차 면접", dashboard));
     }
 
     @DisplayName("프로세스 조회 성공 시, 200을 응답한다.")
@@ -49,7 +53,7 @@ class ProcessControllerTest {
     @DisplayName("프로세스 생성 성공 시, 201을 응답한다.")
     @Test
     void create() {
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process.getId());
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", process2.getId());
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
@@ -62,7 +66,7 @@ class ProcessControllerTest {
     @Test
     void delete() {
         RestAssured.given().log().all()
-                .when().delete("/api/v1/processes/" + process.getId())
+                .when().delete("/api/v1/processes/" + process2.getId())
                 .then().log().all().statusCode(204);
     }
 }
