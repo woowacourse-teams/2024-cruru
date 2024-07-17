@@ -46,7 +46,6 @@ class ProcessServiceTest {
         dashboardRepository.deleteAll();
     }
 
-
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
     void findByDashboardId() {
@@ -110,19 +109,18 @@ class ProcessServiceTest {
         // given
         Dashboard dashboard = new Dashboard("name", null);
         Dashboard savedDashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "name", "description", dashboard);
-        process1 = processRepository.save(process1);
-        Process process2 = new Process(1, "name", "description", dashboard);
-        processRepository.save(process2);
-        Process process3 = new Process(2, "name", "description", dashboard);
-        processRepository.save(process3);
-        Process process4 = new Process(3, "name", "description", dashboard);
-        processRepository.save(process4);
-        Process process5 = new Process(4, "name", "description", dashboard);
-        processRepository.save(process5);
+        processRepository.saveAll(
+                List.of(
+                        new Process(0, "서류", "서류", dashboard),
+                        new Process(1, "코딩 테스트", "온라인", dashboard),
+                        new Process(2, "CS 테스트", "온라인", dashboard),
+                        new Process(3, "1차 면접", "화상 면접", dashboard),
+                        new Process(4, "최종 면접", "대면 면접", dashboard)
+                )
+        );
 
         // when&then
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", 1);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
         assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
                 .isInstanceOf(ProcessBadRequestException.class);
     }

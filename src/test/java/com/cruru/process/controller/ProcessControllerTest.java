@@ -7,6 +7,7 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,17 +30,17 @@ class ProcessControllerTest {
 
     private Dashboard dashboard;
 
-    private Process process1;
-    private Process process2;
-    private Process process3;
-
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
         dashboard = dashboardRepository.save(new Dashboard("name", null));
-        process1 = processRepository.save(new Process(0, "면접", "1차 면접", dashboard));
-        process2 = processRepository.save(new Process(1, "면접", "1차 면접", dashboard));
-        process3 = processRepository.save(new Process(2, "면접", "1차 면접", dashboard));
+
+        processRepository.saveAll(
+                List.of(
+                        new Process(0, "서류", "서류", dashboard),
+                        new Process(2, "최종 면접", "대면 면접", dashboard)
+                )
+        );
     }
 
     @DisplayName("프로세스 조회 성공 시, 200을 응답한다.")
@@ -53,7 +54,7 @@ class ProcessControllerTest {
     @DisplayName("프로세스 생성 성공 시, 201을 응답한다.")
     @Test
     void create() {
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", 2);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
@@ -65,8 +66,10 @@ class ProcessControllerTest {
     @DisplayName("프로세스 삭제 성공 시, 204를 응답한다.")
     @Test
     void delete() {
+        Process process = processRepository.save(new Process(1, "1차 면접", "화상 면접", dashboard));
+
         RestAssured.given().log().all()
-                .when().delete("/api/v1/processes/" + process2.getId())
+                .when().delete("/api/v1/processes/" + process.getId())
                 .then().log().all().statusCode(204);
     }
 }
