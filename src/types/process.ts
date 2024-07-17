@@ -1,7 +1,7 @@
 export interface ApplicantCardInfo {
-  id: number;
-  name: string;
-  createdAt: string;
+  applicant_id: number;
+  applicant_name: string;
+  created_at: string;
 }
 
 export interface Process {
