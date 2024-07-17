@@ -13,7 +13,6 @@ interface IProcessColumnProps extends React.PropsWithChildren {
 
 export default function ProcessColumn({ process }: IProcessColumnProps) {
   const { processNameList } = useProcess();
-
   return (
     <S.ProcessWrapper>
       <S.Header>
