@@ -8,8 +8,8 @@ public record ProcessCreateRequest(
 
         String description,
 
-        @JsonProperty("prior_process_id")
-        Long priorProcessId
+        @JsonProperty("order_index")
+        int sequence
 ) {
 
 }
