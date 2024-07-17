@@ -9,7 +9,7 @@ public record ProcessCreateRequest(
         String description,
 
         @JsonProperty("order_index")
-        Integer sequence
+        int sequence
 ) {
 
 }

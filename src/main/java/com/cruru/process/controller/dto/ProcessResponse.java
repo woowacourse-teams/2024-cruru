@@ -6,10 +6,10 @@ import java.util.List;
 
 public record ProcessResponse(
         @JsonProperty("process_id")
-        Long processId,
+        long processId,
 
         @JsonProperty("order_index")
-        Integer sequence,
+        int sequence,
 
         String name,
         String description,
