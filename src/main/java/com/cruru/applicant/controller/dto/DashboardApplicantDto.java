@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public record DashboardApplicantDto(
         @JsonProperty("applicant_id")
-        Long applicantId,
+        long applicantId,
 
         @JsonProperty("applicant_name")
         String name,
