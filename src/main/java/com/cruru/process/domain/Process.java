@@ -56,6 +56,10 @@ public class Process {
         this.sequence++;
     }
 
+    public boolean isSameSequence(int other) {
+        return this.sequence == other;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

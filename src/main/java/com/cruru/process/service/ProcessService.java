@@ -59,10 +59,7 @@ public class ProcessService {
     @Transactional
     public void create(long dashboardId, ProcessCreateRequest request) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
-
-        if (allByDashboardId.size() == MAX_PROCESS_COUNT) {
-            throw new ProcessBadRequestException();
-        }
+        validateProcessCount(allByDashboardId);
 
         allByDashboardId.stream()
                 .filter(process -> process.getSequence() >= request.sequence())
@@ -77,16 +74,24 @@ public class ProcessService {
         );
     }
 
+    private void validateProcessCount(List<Process> processes) {
+        if (processes.size() == MAX_PROCESS_COUNT) {
+            throw new ProcessBadRequestException();
+        }
+    }
+
     @Transactional
     public void delete(long processId) {
         Process process = processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
-        long processCount = processRepository.countByDashboard(process.getDashboard());
+        int processCount = (int) processRepository.countByDashboard(process.getDashboard());
+        validateFirstOrLastProcess(process, processCount);
+        processRepository.deleteById(processId);
+    }
 
-        if (process.getSequence() == 0 || process.getSequence() == processCount - 1) {
+    private void validateFirstOrLastProcess(Process process, int processCount) {
+        if (process.isSameSequence(0) || process.isSameSequence(processCount - 1)) {
             throw new ProcessBadRequestException();
         }
-
-        processRepository.deleteById(processId);
     }
 }
