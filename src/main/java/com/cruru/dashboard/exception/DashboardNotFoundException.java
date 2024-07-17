@@ -4,7 +4,7 @@ import com.cruru.advice.NotFoundException;
 
 public class DashboardNotFoundException extends NotFoundException {
 
-    private static final String message = "";
+    private static final String message = "존재하지 않는 대시보드입니다.";
 
     public DashboardNotFoundException() {
         super(message);
