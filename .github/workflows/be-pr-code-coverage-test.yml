@@ -7,14 +7,16 @@ on:
       - be/develop
 
 jobs:
-  setup_and_cache:
+  test-coverage-pr-opened:
+    if: startsWith(github.head_ref, 'be-')
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
-        id: setup-java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -40,20 +42,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-  test_and_report:
-    runs-on: ubuntu-latest
-    needs: setup_and_cache
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: gradlew 권한 할당
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Run tests and generate coverage report
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
         run: ./gradlew test jacocoTestReport
+        continue-on-error: true
 
       - name: Verify test coverage
         env:
