@@ -43,7 +43,7 @@ jobs:
           echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
           echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
 
-      - name: pr reviewer 되면 slack 알림 보냄
+      - name: pr reviewe 요청 시 slack 알림 보내기
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
@@ -64,7 +64,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           
   review-submitted_alert:
-    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED' && env[github.event.pull_request.login] != ''
+    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED' 
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and reviewee variables
@@ -73,7 +73,8 @@ jobs:
           echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
           echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.login] }}" >> $GITHUB_ENV
 
-      - name: pr 리뷰 요청시 reviewer에게 slack 알림 발송
+      - name: pr 리뷰 완료 후 submit되면 reviewee에게 slack 알림 발송
+        if: env.ASSIGNEE_SLACK_ID != ''
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
@@ -102,7 +103,7 @@ jobs:
         run: |
           echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
 
-      - name: pr reviewer 되면 slack 알림 보냄
+      - name: pr reviewer가 Approve 하면 slack 알림 보냄
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
