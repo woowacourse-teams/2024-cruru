@@ -36,9 +36,9 @@ public class Applicant extends BaseEntity {
     private Process process;
 
     @Column(name = "is_rejected")
-    private boolean isRejected;
+    private Boolean isRejected;
 
-    public Applicant(String name, String email, String phone, Process process, boolean isRejected) {
+    public Applicant(String name, String email, String phone, Process process, Boolean isRejected) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -75,6 +75,7 @@ public class Applicant extends BaseEntity {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", process=" + process +
+                ", isRejected=" + isRejected +
                 '}';
     }
 }

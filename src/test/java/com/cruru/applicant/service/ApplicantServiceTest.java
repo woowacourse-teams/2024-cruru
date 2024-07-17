@@ -40,8 +40,10 @@ class ApplicantServiceTest {
         List<Process> processes = List.of(beforeProcess, afterProcess);
         processRepository.saveAll(processes);
         List<Applicant> applicants = List.of(new Applicant(1L, null, null, null, beforeProcess, false),
-                new Applicant(2L, null, null, null, beforeProcess, false), new Applicant(3L, null, null, null, beforeProcess, false),
-                new Applicant(4L, null, null, null, beforeProcess, false), new Applicant(5L, null, null, null, beforeProcess, false));
+                new Applicant(2L, null, null, null, beforeProcess, false),
+                new Applicant(3L, null, null, null, beforeProcess, false),
+                new Applicant(4L, null, null, null, beforeProcess, false),
+                new Applicant(5L, null, null, null, beforeProcess, false));
         applicantRepository.saveAll(applicants);
 
         // when
