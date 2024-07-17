@@ -22,11 +22,6 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
         java-package: 'jdk'
-        check-latest: false
-        server-id: github
-        server-username: ${{ secrets.GITHUB_ACTOR }}
-        server-password: ${{ secrets.GITHUB_TOKEN }}
-        overwrite-settings: true
 
     - name: Cache Gradle wrapper
       uses: actions/cache@v3
@@ -51,7 +46,11 @@ jobs:
       run: chmod +x gradlew
 
     - name: Run tests and generate coverage report
-      run: ./gradlew test
+      run: ./gradlew test jacocoTestReport
+
+    - name: Verify test coverage
+      run: ./gradlew jacocoTestCoverageVerification
+      continue-on-error: true
 
     - name: 테스트 커버리지를 PR에 코멘트로 등록
       uses: madrapps/jacoco-report@v1.6.1
