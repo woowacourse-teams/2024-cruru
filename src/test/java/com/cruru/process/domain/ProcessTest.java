@@ -12,14 +12,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 class ProcessTest {
 
     @DisplayName("잘못된 프로세스 이름으로 생성 시 예외가 발생한다.")
-    @ValueSource(strings = {"", "abcdefghabcdefghabcdefghabcdefgh!", "process--"})
+    @ValueSource(strings = {"", "thisstringmustexceedthirtytwochar", "invalidSpecialChar--"})
     @ParameterizedTest
     void InvalidProcessName(String InvalidName) {
         // given
-        Dashboard dashboard = new Dashboard("대시보드", null);
+        Dashboard dashboard = new Dashboard("7기 모집", null);
 
         // when&then
-        assertThatThrownBy(() -> new Process(1, InvalidName, "설명", dashboard))
+        assertThatThrownBy(() -> new Process(1, InvalidName, "온라인", dashboard))
                 .isInstanceOf(ProcessBadRequestException.class);
     }
 }
