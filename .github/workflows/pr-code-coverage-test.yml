@@ -1,0 +1,56 @@
+name: PR open시 테스트 커버리지 검증
+
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - be/develop
+
+jobs:
+  test-coverage-pr-opened:
+    if: startsWith(github.head_ref, 'be-')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+
+    - name: Cache Gradle wrapper
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-wrapper-
+
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties', '**/settings.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: gradlew 권한 할당
+      run: chmod +x gradlew
+
+    - name: Run tests and generate coverage report
+      run: ./gradlew test
+
+    - name: 테스트 커버리지를 PR에 코멘트로 등록
+      uses: madrapps/jacoco-report@v1.6.1
+      with:
+        title: 📌 Test Coverage Report
+        paths: ${{ github.workspace }}/**/build/reports/jacoco/test/jacocoTestReport.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 80
+        min-coverage-changed-files: 80
