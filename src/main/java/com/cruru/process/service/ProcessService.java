@@ -55,7 +55,7 @@ public class ProcessService {
     }
 
     private DashboardApplicantDto toApplicantDto(Applicant applicant) {
-        return new DashboardApplicantDto(applicant.getId(), applicant.getName(), applicant.getCreatedDate());
+        return new DashboardApplicantDto(applicant.getId(), applicant.getName(), applicant.getCreatedDate(), applicant.isRejected());
     }
 
     @Transactional
