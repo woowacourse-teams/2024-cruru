@@ -17,7 +17,7 @@ export default function ApplicantCard({ name, createdAt, processNameList }: Appl
       </S.CardDetail>
       <S.DropdownWrapper>
         <Dropdown
-          defaultSelectedValue={'단계'}
+          defaultSelectedValue="단계"
           processNameList={processNameList}
         />
       </S.DropdownWrapper>
