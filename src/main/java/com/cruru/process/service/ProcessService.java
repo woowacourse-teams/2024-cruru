@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProcessService {
 
-    public static final int MAX_PROCESS_COUNT = 5;
+    private static final int MAX_PROCESS_COUNT = 5;
     private final ApplicantRepository applicantRepository;
     private final ProcessRepository processRepository;
     private final DashboardRepository dashboardRepository;
