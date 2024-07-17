@@ -1,25 +1,18 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { Process } from '@/types/process';
 import { EllipsisIcon } from '@/assets/icons';
-import ApplicantCard from '../ApplicantCard';
 
 import S from './style';
+import ApplicantCard from '../ApplicantCard';
 import Button from '../Button';
 
-interface ProcessColumnProps extends React.PropsWithChildren {
+import useProcess from '@/hooks/useProcess';
+
+interface IProcessColumnProps extends React.PropsWithChildren {
   process: Process;
 }
 
-export default function ProcessColumn({ process }: ProcessColumnProps) {
-  const queryClient = useQueryClient();
-  const cachedData = queryClient.getQueryData<{ processes: Process[] }>(['dashboard', 1]);
-
-  if (!cachedData) {
-    //TODO: 핸들링
-    return null;
-  }
-
-  const processNameList = cachedData.processes.map((p) => p.name);
+export default function ProcessColumn({ process }: IProcessColumnProps) {
+  const { processNameList } = useProcess();
 
   return (
     <S.ProcessWrapper>

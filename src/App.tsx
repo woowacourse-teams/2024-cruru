@@ -1,10 +1,8 @@
 import styled from '@emotion/styled';
 import plusIcon from '@assets/images/plus.svg';
-import { useQuery } from '@tanstack/react-query';
 import IconButton from '@components/IconButton';
 import KanbanBoard from '@components/KanbanBoard';
-import { getProcesses } from '@/api/process';
-import { Process } from './types/process';
+import useProcess from './hooks/useProcess';
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -12,21 +10,17 @@ const AppContainer = styled.div`
 `;
 
 export default function App() {
-  const ID = 1; // TODO: 수정해야합니다.
-  const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
-    queryKey: ['dashboard', ID],
-    queryFn: () => getProcesses({ id: ID }),
-  });
+  const { processes, isLoading, error } = useProcess();
 
   if (isLoading) {
+    //TODO: Loading 핸들링
     return <div>Loading...</div>;
   }
 
-  if (error || !data) {
-    return <div>Error: {error?.message}</div>;
+  if (error) {
+    //TODO: Error 핸들링
+    return <div>Error</div>;
   }
-
-  const { processes } = data;
 
   return (
     <AppContainer>
