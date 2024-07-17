@@ -8,7 +8,6 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,10 +31,6 @@ class ApplicantControllerTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-    }
-
-    @AfterEach
-    void tearDown() {
         applicantRepository.deleteAll();
         processRepository.deleteAll();
     }
@@ -44,20 +39,20 @@ class ApplicantControllerTest {
     @Test
     void updateApplicantProcess() {
         Process now = new Process(1L, 0, "서류", "서류 전형", null);
-        processRepository.save(now);
+        now = processRepository.save(now);
         Process next = new Process(2L, 1, "최종 합격", "최종 합격", null);
-        processRepository.save(next);
+        next = processRepository.save(next);
         Applicant applicant = new Applicant(1L, "name", "email", "phone", now);
         applicantRepository.save(applicant);
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
-                .when().put("/api/v1/applicants/move-process/" + next.getSequence())
+                .when().put("/api/v1/applicants/move-process/" + next.getId())
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("지원자 정보를 읽어오는 데 성공하면 200을 응답한다.")
+    @DisplayName("지원자의 기본 정보를 읽어오는 데 성공하면 200을 응답한다.")
     @Test
     void read() {
         Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null));
