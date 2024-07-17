@@ -30,7 +30,7 @@ class ApplicantServiceTest {
     @Autowired
     private DashboardRepository dashboardRepository;
 
-    @DisplayName("다건의 지원서를 요청된 프로세스로 일괄 변경한다.")
+    @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")
     @Test
     void updateApplicantProcess() {
         // given

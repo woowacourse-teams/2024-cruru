@@ -10,6 +10,8 @@ import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.process.exception.ProcessNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProcessService {
+
+    private static final int MAX_PROCESS_COUNT = 5;
+    private static final int PROCESS_FIRST_SEQUENCE = 0;
 
     private final ApplicantRepository applicantRepository;
     private final ProcessRepository processRepository;
@@ -56,22 +61,47 @@ public class ProcessService {
     @Transactional
     public void create(long dashboardId, ProcessCreateRequest request) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
-        Process priorProcess = processRepository.findById(request.priorProcessId()).orElseThrow();
+        validateProcessCount(allByDashboardId);
 
         allByDashboardId.stream()
-                .filter(process -> process.getSequence() > priorProcess.getSequence())
+                .filter(process -> process.getSequence() >= request.sequence())
                 .forEach(Process::increaseSequenceNumber);
 
-        processRepository.save(
-                new Process(priorProcess.getSequence() + 1,
-                        request.name(),
-                        request.description(),
-                        dashboardRepository.findById(dashboardId).orElseThrow())
+        processRepository.save(new Process(
+                request.sequence(),
+                request.name(),
+                request.description(),
+                dashboardRepository.findById(dashboardId)
+                        .orElseThrow(DashboardNotFoundException::new))
         );
+    }
+
+    private void validateProcessCount(List<Process> processes) {
+        if (processes.size() == MAX_PROCESS_COUNT) {
+            throw new ProcessBadRequestException();
+        }
     }
 
     @Transactional
     public void delete(long processId) {
+        Process process = processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+        validateFirstOrLastProcess(process);
+        validateExistsApplicant(process);
         processRepository.deleteById(processId);
+    }
+
+    private void validateFirstOrLastProcess(Process process) {
+        int processCount = (int) processRepository.countByDashboard(process.getDashboard());
+        if (process.isSameSequence(PROCESS_FIRST_SEQUENCE) || process.isSameSequence(processCount - 1)) {
+            throw new ProcessBadRequestException();
+        }
+    }
+
+    private void validateExistsApplicant(Process process) {
+        int applicantCount = (int) applicantRepository.countByProcess(process);
+        if (applicantCount > 0) {
+            throw new ProcessBadRequestException();
+        }
     }
 }

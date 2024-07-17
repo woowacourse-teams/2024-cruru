@@ -1,6 +1,7 @@
 package com.cruru.process.domain;
 
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.process.exception.ProcessBadRequestException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class Process {
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*() ]{1,32}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +39,25 @@ public class Process {
     private Dashboard dashboard;
 
     public Process(int sequence, String name, String description, Dashboard dashboard) {
+        validateName(name);
         this.sequence = sequence;
         this.name = name;
         this.description = description;
         this.dashboard = dashboard;
     }
 
+    private void validateName(String name) {
+        if (!NAME_PATTERN.matcher(name).matches()) {
+            throw new ProcessBadRequestException();
+        }
+    }
+
     public void increaseSequenceNumber() {
         this.sequence++;
+    }
+
+    public boolean isSameSequence(int other) {
+        return this.sequence == other;
     }
 
     @Override
