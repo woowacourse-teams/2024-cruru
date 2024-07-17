@@ -25,6 +25,7 @@ public class DashboardService {
     private final ClubRepository clubRepository;
     private final ProcessRepository processRepository;
 
+    @Transactional
     public Long create(long clubId, DashboardCreateDto request) {
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
