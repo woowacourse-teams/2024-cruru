@@ -159,4 +159,20 @@ class ProcessServiceTest {
                         .isInstanceOf(ProcessBadRequestException.class)
         );
     }
+
+    @DisplayName("삭제하려는 프로세스에 해당되는 지원자가 있을 경우 예외가 발생한다.")
+    @Test
+    void deleteExistsApplicantProcess() {
+        // given
+        Dashboard dashboard = new Dashboard("7기 모집", null);
+        dashboard = dashboardRepository.save(dashboard);
+        Process process = new Process(1, "서류", "서류", dashboard);
+        processRepository.save(process);
+        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process);
+        applicantRepository.save(applicant);
+
+        // when&then
+        assertThatThrownBy(() -> processService.delete(process.getId()))
+                .isInstanceOf(ProcessBadRequestException.class);
+    }
 }
