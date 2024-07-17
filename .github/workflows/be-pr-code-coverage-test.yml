@@ -2,7 +2,7 @@ name: PR open시 테스트 커버리지 검증
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, ready_for_review]
     branches:
       - be/develop
 
