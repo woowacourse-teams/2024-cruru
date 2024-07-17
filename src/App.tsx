@@ -1,8 +1,8 @@
-import plusIcon from '@assets/images/plus.svg';
-import ApplicantCard from './components/ApplicantCard';
-
 import styled from '@emotion/styled';
-import IconButton from './components/IconButton';
+import plusIcon from '@assets/images/plus.svg';
+import IconButton from '@components/IconButton';
+import KanbanBoard from '@components/KanbanBoard';
+import useProcess from './hooks/useProcess';
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -10,14 +10,26 @@ const AppContainer = styled.div`
 `;
 
 export default function App() {
+  const { processes, isLoading, error } = useProcess();
+
+  if (isLoading) {
+    //TODO: Loading 핸들링
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    //TODO: Error 핸들링
+    return <div>Error</div>;
+  }
+
   return (
     <AppContainer>
-      <ApplicantCard />
+      <KanbanBoard processes={processes} />
       <IconButton
         type="button"
         onClick={() => console.log('clicked')}
         size="sm"
-        outline={true}
+        outline
       >
         <img
           src={plusIcon}

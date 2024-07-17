@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   entry: './src/main.tsx',
@@ -39,7 +38,7 @@ module.exports = {
       '@': path.resolve(__dirname, 'src/'),
       '@components': path.resolve(__dirname, 'src/components/'),
       '@assets': path.resolve(__dirname, 'src/assets/'),
-      'styled-system': path.resolve(__dirname, 'src/styled-system/'),
+      '@api': path.resolve(__dirname, 'src/api/'),
     },
   },
   output: {
@@ -58,6 +57,5 @@ module.exports = {
         configFile: path.resolve(__dirname, 'tsconfig.json'),
       },
     }),
-    new Dotenv(),
   ],
 };

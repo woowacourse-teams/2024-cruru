@@ -1,0 +1,123 @@
+name: FE PR Review - req, submitted, approve Slack alert
+
+on:
+  pull_request:
+    types: [review_requested]
+    branches:
+      - main
+      - 'be/**'
+      - 'fe/**'
+  pull_request_review:
+    types: [submitted]
+    branches:
+      - main
+      - 'be/**'
+      - 'fe/**'
+
+env:
+  Dobby-Kim: "U07BJABU6G1"
+  U07BJABU6G1: "BE팀 도비"
+  Chocochip101: "U07BUEJDS8G"
+  U07BUEJDS8G: "BE팀 초코칩"
+  xogns1514: "U07AZ26UC2J"
+  U07AZ26UC2J: "BE팀 러쉬"
+  lurgi: "U07BJB1M53K"
+  U07BJB1M53K: "FE팀 러기"
+  llqqssttyy: "U07AZ2992CW"
+  U07AZ2992CW: "FE팀 렛서"
+  cutehumanS2: "U07B88ZQDU4"
+  U07B88ZQDU4: "BE팀 냥인"
+  HyungHoKim00: "U07B5HBKZM1"
+  U07B5HBKZM1: "BE팀 명오"
+  seongjinme: "U07B9HQDF4M"
+  U07B9HQDF4M: "FE팀 아르"
+
+jobs:
+  review-requested_requested:
+    if: github.event.action == 'review_requested'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set reviewer and sender variables
+        id: set-vars
+        run: |
+          echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
+          echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
+
+      - name: pr reviewer 되면 slack 알림 보냄
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "pr review request",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": " --- \n ✨리뷰 요청✨ \n <@${{ env.REVIEWER_SLACK_ID }}> 님! \n 🚀 <@${{ env.SENDER_SLACK_ID }}>님에게서 **${{ github.event.pull_request.title }}**에 대한 리뷰 요청이 왔습니다! \n :muscle: 바쁘시겠지만 아래의 링크에서 확인주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          
+  review-submitted_alert:
+    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set reviewer and reviewee variables
+        id: set-vars
+        run: |
+          echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.login] }}" >> $GITHUB_ENV
+
+      - name: pr 리뷰 요청시 reviewer에게 slack 알림 발송
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "pr review request",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": " --- \n 🔥리뷰 완료🔥 \n <@${{ env.ASSIGNEE_SLACK_ID }}> 님! \n 🚀 <@${{ env.REVIEWER_SLACK_ID }}>님에게서 **${{ github.event.pull_request.title }}**에 대한 리뷰를 남기셨어요! \n ✨ 아래의 링크에서 확인주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          
+  pr-approved_alert:
+    if: github.event.review.state == 'APPROVED'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set assignee variables
+        id: set-vars
+        run: |
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+
+      - name: pr reviewer 되면 slack 알림 보냄
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "text": "pr review request",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": " --- \n 🏁PR 승인🏁 \n <@${{ env.ASSIGNEE_SLACK_ID }}> 님! \n 🚀 작업하신 **${{ github.event.pull_request.title }}** 가 모두 Approve 됐어요! \n :muscle: 아래의 링크에서 Merge를 진행해주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

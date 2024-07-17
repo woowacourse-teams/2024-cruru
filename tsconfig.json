@@ -31,8 +31,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "styled-system/*": ["src/styled-system/*"]
+      "@api/*": ["src/api/*"]
     }
   },
-  "include": ["src/**/*", "src/styled-system", "setupTests.ts"]
+  "include": ["src/**/*", "setupTests.ts"]
 }

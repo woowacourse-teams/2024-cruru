@@ -5,7 +5,7 @@ const DropdownContainer = styled.div`
   display: inline-block;
 `;
 
-const DropdownButton = styled.button`
+const DropdownButton = styled.div`
   padding: 8px 16px;
   font-size: 16px;
   width: 120px;
