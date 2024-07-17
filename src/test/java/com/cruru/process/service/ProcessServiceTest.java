@@ -50,11 +50,11 @@ class ProcessServiceTest {
     @Test
     void findByDashboardId() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process = new Process(0, "name", "description", dashboard);
+        Process process = new Process(0, "서류", "서류", dashboard);
         process = processRepository.save(process);
-        Applicant applicant = new Applicant("name", "email", "phone", process);
+        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process);
         applicant = applicantRepository.save(applicant);
 
         // when
@@ -82,15 +82,15 @@ class ProcessServiceTest {
     @Test
     void create() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "name", "description", dashboard);
+        Process process1 = new Process(0, "서류", "서류", dashboard);
         process1 = processRepository.save(process1);
-        Process process2 = new Process(1, "name", "description", dashboard);
+        Process process2 = new Process(2, "최종 면접", "대면 면접", dashboard);
         processRepository.save(process2);
 
         // when
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("면접", "1차 면접", 1);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
         processService.create(dashboard.getId(), processCreateRequest);
 
         // then
@@ -100,7 +100,7 @@ class ProcessServiceTest {
                 .toList();
 
         assertThat(allByDashboardId).hasSize(3);
-        assertThat(allByDashboardId.get(1).getName()).isEqualTo("면접");
+        assertThat(allByDashboardId.get(1).getName()).isEqualTo("1차 면접");
     }
 
     @DisplayName("프로세스 최대 개수를 초과하면, 예외가 발생한다.")
@@ -129,9 +129,9 @@ class ProcessServiceTest {
     @Test
     void delete() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(1, "name", "description", dashboard);
+        Process process1 = new Process(1, "1차 면접", "화상 면접", dashboard);
         process1 = processRepository.save(process1);
 
         // when
@@ -145,11 +145,11 @@ class ProcessServiceTest {
     @Test
     void deleteFirstOrLastProcess() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "name", "description", dashboard);
+        Process process1 = new Process(0, "서류", "서류", dashboard);
         processRepository.save(process1);
-        Process process2 = new Process(1, "name", "description", dashboard);
+        Process process2 = new Process(1, "최종 면접", "대면 면접", dashboard);
         processRepository.save(process2);
 
         // when&then
