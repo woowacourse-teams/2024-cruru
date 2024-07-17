@@ -28,8 +28,6 @@ class DashboardControllerTest {
     void setUp() {
         RestAssured.port = port;
         club = clubRepository.save(new Club("크루루 동아리", null));
-
-        clubRepository.save(club);
     }
 
     @DisplayName("대시보드 생성 성공 시, 201을 응답한다.")
