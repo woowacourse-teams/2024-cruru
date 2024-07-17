@@ -54,7 +54,7 @@ public class DataLoader implements ApplicationRunner {
 
         List<Applicant> applicants = List.of(
                 new Applicant(1L, "러기", "lurg@mail.com", "01011111111", firstProcess, false),
-                new Applicant(2L, "도비", "doby@mail.com", "01022222222", firstProcess, false),
+                new Applicant(2L, "도비", "doby@mail.com", "01022222222", firstProcess, true),
                 new Applicant(3L, "아르", "arrr@mail.com", "01033333333", lastProcess, false),
                 new Applicant(4L, "초코칩", "choc@mail.com", "01044444444", lastProcess, false),
                 new Applicant(5L, "명오", "myun@mail.com", "01055555555", lastProcess, false),
