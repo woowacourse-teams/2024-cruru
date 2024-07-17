@@ -12,6 +12,7 @@ public record ProcessResponse(
         int sequence,
 
         String name,
+
         String description,
 
         @JsonProperty("applicants")
