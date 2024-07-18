@@ -3,6 +3,7 @@ import plusIcon from '@assets/images/plus.svg';
 
 import IconButton from '@components/IconButton';
 import KanbanBoard from '@components/KanbanBoard';
+import ProcessNavBar from './components/ProcessNavBar';
 import useProcess from './hooks/useProcess';
 
 const AppContainer = styled.div`
@@ -25,6 +26,7 @@ export default function App() {
 
   return (
     <AppContainer>
+      <ProcessNavBar currentMenuKey="applicant" />
       <KanbanBoard processes={processes} />
       <IconButton
         type="button"
