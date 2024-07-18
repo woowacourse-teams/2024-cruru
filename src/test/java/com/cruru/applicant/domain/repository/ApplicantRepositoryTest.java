@@ -19,11 +19,11 @@ class ApplicantRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Applicant applicant = new Applicant("이름", "이메일", "전화번호", null);
+        Applicant applicant = new Applicant("이름", "이메일", "전화번호", null, false);
         Applicant saved = applicantRepository.save(applicant);
 
         //when
-        Applicant updatedApplicant = new Applicant(saved.getId(), "다른이름", "다른이메일", "다른번호", null);
+        Applicant updatedApplicant = new Applicant(saved.getId(), "다른이름", "다른이메일", "다른번호", null, false);
         applicantRepository.save(updatedApplicant);
 
         //then
@@ -37,8 +37,8 @@ class ApplicantRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Applicant applicant1 = new Applicant("이름", "이메일", "전화번호", null);
-        Applicant applicant2 = new Applicant("다른이름", "다른이메일", "다른번호", null);
+        Applicant applicant1 = new Applicant("이름", "이메일", "전화번호", null, false);
+        Applicant applicant2 = new Applicant("다른이름", "다른이메일", "다른번호", null, false);
 
         //when
         Applicant savedApplicant1 = applicantRepository.save(applicant1);
