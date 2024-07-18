@@ -45,9 +45,9 @@ class ClubServiceTest {
 
     @BeforeEach
     void setUp() {
-        applicantRepository.deleteAll();
-        processRepository.deleteAll();
-        dashboardRepository.deleteAll();
+        applicantRepository.deleteAllInBatch();
+        processRepository.deleteAllInBatch();
+        dashboardRepository.deleteAllInBatch();
         clubRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
