@@ -2,7 +2,6 @@ package com.cruru.dashboard.controller;
 
 import com.cruru.dashboard.controller.dto.DashboardCreateDto;
 import com.cruru.dashboard.service.DashboardService;
-import com.cruru.member.controller.dto.MemberCreateResponse;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @PostMapping
-    public ResponseEntity<MemberCreateResponse> create(
+    public ResponseEntity<Void> create(
             @RequestParam(name = "club_id") Long clubId,
             @RequestBody DashboardCreateDto request) {
         long dashboardId = dashboardService.create(clubId, request);
