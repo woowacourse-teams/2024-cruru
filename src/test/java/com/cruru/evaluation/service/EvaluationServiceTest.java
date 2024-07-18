@@ -37,7 +37,6 @@ class EvaluationServiceTest {
 
     private Applicant applicant;
 
-
     @BeforeEach
     void setUp() {
         evaluationRepository.deleteAll();
