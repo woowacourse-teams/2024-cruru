@@ -1,8 +1,10 @@
 package com.cruru.applicant.service;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
+import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
@@ -26,5 +28,21 @@ public class ApplicantService {
 
         List<Applicant> applicants = applicantRepository.findAllById(moveRequest.applicantIds());
         applicants.forEach(applicant -> applicant.updateProcess(process));
+    }
+
+    public ApplicantResponse findById(Long id) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(ApplicantNotFoundException::new);
+        return toApplicantResponse(applicant);
+    }
+
+    private ApplicantResponse toApplicantResponse(Applicant applicant) {
+        return new ApplicantResponse(
+                applicant.getId(),
+                applicant.getName(),
+                applicant.getEmail(),
+                applicant.getPhone(),
+                applicant.getCreatedDate()
+        );
     }
 }
