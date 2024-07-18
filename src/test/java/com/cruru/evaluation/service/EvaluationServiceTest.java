@@ -44,7 +44,7 @@ class EvaluationServiceTest {
         process = processRepository.save(new Process(0, "서류", "서류", null));
 
         applicant = applicantRepository.save(
-                new Applicant(1L, "초코칩", "dev.chocochip@gmail.com", "01012345678", process)
+                new Applicant(1L, "초코칩", "dev.chocochip@gmail.com", "01012345678", process, false)
         );
     }
 
