@@ -26,8 +26,8 @@
     "react/jsx-wrap-multilines": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "react/require-default-props": "off",
-    "react/jsx-wrap-multilines": "off",
     "react/react-in-jsx-scope": "off",
+    "jsx-a11y/label-has-associated-control": "off",
 
     "jsx-a11y/label-has-associated-control": "off",
 

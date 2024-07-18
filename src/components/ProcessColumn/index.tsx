@@ -1,16 +1,18 @@
 import { Process } from '@/types/process';
 import { EllipsisIcon } from '@/assets/icons';
-import ApplicantCard from '../ApplicantCard';
 
 import S from './style';
+import ApplicantCard from '../ApplicantCard';
 import Button from '../Button';
 
-interface ProcessColumnProps extends React.PropsWithChildren {
+import useProcess from '@/hooks/useProcess';
+
+interface IProcessColumnProps extends React.PropsWithChildren {
   process: Process;
-  processNameList: string[];
 }
 
-export default function ProcessColumn({ process, processNameList }: ProcessColumnProps) {
+export default function ProcessColumn({ process }: IProcessColumnProps) {
+  const { processNameList } = useProcess();
   return (
     <S.ProcessWrapper>
       <S.Header>
@@ -28,11 +30,11 @@ export default function ProcessColumn({ process, processNameList }: ProcessColum
         </Button>
       </S.Header>
       <S.ApplicantList>
-        {process.applicants.map(({ id, name, createdAt }) => (
+        {process.applicants.map(({ applicant_id, applicant_name, created_at }) => (
           <ApplicantCard
-            key={id}
-            name={name}
-            createdAt={createdAt}
+            key={applicant_id}
+            name={applicant_name}
+            createdAt={created_at}
             processNameList={processNameList}
           />
         ))}
