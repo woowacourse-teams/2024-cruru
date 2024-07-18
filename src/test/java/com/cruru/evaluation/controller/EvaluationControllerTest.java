@@ -61,11 +61,9 @@ class EvaluationControllerTest {
         int score = 4;
         String content = "서류가 인상적입니다.";
         String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
-
-        // when
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
 
-        // then
+        // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
@@ -85,11 +83,9 @@ class EvaluationControllerTest {
                 process.getId(),
                 invalidApplicantId
         );
-
-        // when
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
 
-        // then
+        // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
@@ -109,11 +105,9 @@ class EvaluationControllerTest {
                 invalidProcessId,
                 applicant.getId()
         );
-
-        // when
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
 
-        // then
+        // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)

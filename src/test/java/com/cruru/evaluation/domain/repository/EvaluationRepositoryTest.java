@@ -32,7 +32,7 @@ class EvaluationRepositoryTest {
         assertThat(findEvaluation.getContent()).isEqualTo("포트폴리오가 인상 깊었습니다.");
     }
 
-    @DisplayName("ID가 없는 프로세스를 저장하면, 순차적으로 ID가 부여하여 저장된다.")
+    @DisplayName("ID가 없는 프로세스를 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {
         //given
