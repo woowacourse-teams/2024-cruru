@@ -159,6 +159,16 @@ const globalStyles = () => css`
 
   html {
     font-size: 62.5%;
+    font-family:
+      'Pretendard',
+      'Apple SD Gothic Neo',
+      'Malgun Gothic',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      'Roboto',
+      sans-serif;
   }
 
   button {
