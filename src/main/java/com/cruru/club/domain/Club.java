@@ -30,6 +30,11 @@ public class Club {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public Club(String name, Member member) {
+        this.name = name;
+        this.member = member;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
