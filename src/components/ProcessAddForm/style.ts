@@ -9,8 +9,8 @@ const Form = styled.form`
   padding: 2.4rem 1.6rem;
 
   border-radius: 0.8rem;
-  border: 0.1rem solid ${({ theme }) => theme.colors.grayscale[300]};
-  background-color: ${({ theme }) => theme.colors.grayscale[100]};
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[300]};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[100]};
 `;
 
 const Label = styled.label`
@@ -22,7 +22,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   font-size: 1.4rem;
-  color: ${({ theme }) => theme.colors.grayscale[900]};
+  color: ${({ theme }) => theme.baseColors.grayscale[900]};
   padding: 0.8rem;
 
   &:focus {
@@ -37,9 +37,14 @@ const FormButton = styled.button<{ color: 'primary' | 'secondary' }>`
   width: 100%;
   padding: 1rem;
 
-  color: ${({ color, theme }) => (color === 'primary' ? theme.colors.grayscale[50] : theme.colors.grayscale[900])};
-  background-color: ${({ color, theme }) =>
-    color === 'primary' ? theme.colors.purplescale[700] : theme.colors.grayscale[300]};
+  color: ${({ color, theme }) => {
+    if (color === 'primary') return theme.baseColors.grayscale[50];
+    return theme.baseColors.grayscale[900];
+  }};
+  background-color: ${({ color, theme }) => {
+    if (color === 'primary') return theme.baseColors.purplescale[700];
+    return theme.baseColors.grayscale[300];
+  }};
 `;
 
 const S = {
