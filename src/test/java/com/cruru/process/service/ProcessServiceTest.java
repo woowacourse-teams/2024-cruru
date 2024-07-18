@@ -9,6 +9,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
+import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
@@ -39,8 +40,12 @@ class ProcessServiceTest {
     @Autowired
     private ProcessService processService;
 
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+
     @BeforeEach
     void setUp() {
+        evaluationRepository.deleteAll();
         applicantRepository.deleteAll();
         processRepository.deleteAll();
         dashboardRepository.deleteAll();
