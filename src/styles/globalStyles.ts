@@ -1,6 +1,27 @@
 import { css } from '@emotion/react';
 
 const globalStyles = () => css`
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    src: url(pre/Pretendard-Bold.woff) format('woff');
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    src: url(pre/Pretendard-SemiBold.woff) format('woff');
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    src: url(pre/Pretendard-Medium.woff) format('woff');
+  }
+  @font-face {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    src: url(pre/Pretendard-Regular.woff) format('woff');
+  }
+
   /* Reset CSS */
   * {
     margin: 0;
