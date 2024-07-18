@@ -13,7 +13,7 @@ class EvaluationTest {
     @DisplayName("잘못된 평가 점수로 생성 시 예외가 발생한다.")
     @ValueSource(ints = {-1, 0, 6})
     @ParameterizedTest
-    void InvalidProcessName(int invalidScore) {
+    void invalidEvaluationScore(int invalidScore) {
         // given
         String content = "포트폴리오가 인상적입니다.";
 
