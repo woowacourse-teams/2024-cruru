@@ -26,6 +26,6 @@ public class EvaluationController {
             @RequestParam(name = "applicant_id") Long applicantId
     ) {
         long evaluationId = evaluationService.create(request, processId, applicantId);
-        return ResponseEntity.created((URI.create("/v1/evaluations/" + evaluationId))).build();
+        return ResponseEntity.created(URI.create("/v1/evaluations/" + evaluationId)).build();
     }
 }
