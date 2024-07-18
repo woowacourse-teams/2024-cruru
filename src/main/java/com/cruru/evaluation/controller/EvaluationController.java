@@ -2,6 +2,7 @@ package com.cruru.evaluation.controller;
 
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
 import com.cruru.evaluation.service.EvaluationService;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class EvaluationController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @RequestBody EvaluationCreateRequest request,
+            @RequestBody @Valid EvaluationCreateRequest request,
             @RequestParam(name = "process_id") Long processId,
             @RequestParam(name = "applicant_id") Long applicantId
     ) {

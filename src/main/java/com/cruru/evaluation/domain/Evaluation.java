@@ -2,6 +2,7 @@ package com.cruru.evaluation.domain;
 
 import com.cruru.BaseEntity;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.evaluation.exception.EvaluationBadRequestException;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,11 +39,18 @@ public class Evaluation extends BaseEntity {
     @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
-    public Evaluation(Integer score, String content, Process process, Applicant applicant) {
+    public Evaluation(int score, String content, Process process, Applicant applicant) {
+        validateScore(score);
         this.score = score;
         this.content = content;
         this.process = process;
         this.applicant = applicant;
+    }
+
+    private void validateScore(int score) {
+        if (score <= 0 || score > 5) {
+            throw new EvaluationBadRequestException();
+        }
     }
 
     @Override

@@ -99,7 +99,6 @@ class EvaluationControllerTest {
 
     @DisplayName("프로세스가 존재하지 않을 경우, 404를 응답한다.")
     @Test
-        // TODO: 메서드 컨벤션 물어보기
     void create_processNotFound() {
         // given
         int score = 4;
