@@ -49,9 +49,9 @@ class EvaluationControllerTest {
 
     @AfterEach
     void tearDown() {
-        evaluationRepository.deleteAll();
-        applicantRepository.deleteAll();
-        processRepository.deleteAll();
+        evaluationRepository.deleteAllInBatch();
+        applicantRepository.deleteAllInBatch();
+        processRepository.deleteAllInBatch();
     }
 
     @DisplayName("평가 생성 성공 시, 201을 응답한다.")
