@@ -35,11 +35,15 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
-    public Applicant(String name, String email, String phone, Process process) {
+    @Column(name = "is_rejected")
+    private Boolean isRejected;
+
+    public Applicant(String name, String email, String phone, Process process, Boolean isRejected) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.process = process;
+        this.isRejected = isRejected;
     }
 
     public void updateProcess(Process process) {
@@ -71,6 +75,7 @@ public class Applicant extends BaseEntity {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", process=" + process +
+                ", isRejected=" + isRejected +
                 '}';
     }
 }
