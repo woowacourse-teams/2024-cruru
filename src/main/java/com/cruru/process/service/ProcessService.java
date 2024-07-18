@@ -5,6 +5,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
+import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
@@ -28,6 +29,7 @@ public class ProcessService {
     private final ApplicantRepository applicantRepository;
     private final ProcessRepository processRepository;
     private final DashboardRepository dashboardRepository;
+    private final EvaluationRepository evaluationRepository;
 
     public ProcessesResponse findByDashboardId(Long dashboardId) {
         dashboardRepository.findById(dashboardId)
@@ -40,10 +42,7 @@ public class ProcessService {
     }
 
     private ProcessResponse toProcessResponse(Process process) {
-        List<DashboardApplicantDto> dashboardApplicantDtos = applicantRepository.findAllByProcess(process)
-                .stream()
-                .map(this::toApplicantDto)
-                .toList();
+        List<DashboardApplicantDto> dashboardApplicantDtos = createDashboardApplicantDtos(process);
 
         return new ProcessResponse(
                 process.getId(),
@@ -54,12 +53,23 @@ public class ProcessService {
         );
     }
 
-    private DashboardApplicantDto toApplicantDto(Applicant applicant) {
+    private List<DashboardApplicantDto> createDashboardApplicantDtos(Process process) {
+        return applicantRepository.findAllByProcess(process)
+                .stream()
+                .map(applicant -> {
+                    int evaluationCount = (int) evaluationRepository.countByApplicantAndProcess(applicant, process);
+                    return toApplicantDto(applicant, evaluationCount);
+                })
+                .toList();
+    }
+
+    private DashboardApplicantDto toApplicantDto(Applicant applicant, int evaluationCount) {
         return new DashboardApplicantDto(
                 applicant.getId(),
                 applicant.getName(),
                 applicant.getCreatedDate(),
-                applicant.getIsRejected()
+                applicant.getIsRejected(),
+                evaluationCount
         );
     }
 

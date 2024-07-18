@@ -9,6 +9,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
+import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
@@ -61,6 +62,8 @@ class ProcessServiceTest {
         process = processRepository.save(process);
         Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
         applicant = applicantRepository.save(applicant);
+        Evaluation evaluation = new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant);
+        evaluationRepository.save(evaluation);
 
         // when
         ProcessesResponse byDashboardId = processService.findByDashboardId(dashboard.getId());
@@ -70,6 +73,7 @@ class ProcessServiceTest {
         ProcessResponse firstProcessResponse = byDashboardId.processResponses().get(0);
         assertThat(firstProcessResponse.processId()).isEqualTo(process.getId());
         assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).applicantId()).isEqualTo(applicant.getId());
+        assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).evaluationCount()).isEqualTo(1);
     }
 
     @DisplayName("대시보드가 존재하지 않는 경우, 예외가 발생한다.")
