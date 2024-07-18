@@ -1,10 +1,14 @@
-package com.cruru.question.domain;
+package com.cruru.chosenresponse.domain;
 
+import com.cruru.applicant.domain.Applicant;
+import com.cruru.choice.domain.Choice;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,16 +18,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class DescriptiveQuestion {
+public class ChosenResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "response_id")
     private Long id;
 
-    private String question;
+    @ManyToOne
+    @JoinColumn(name = "choice_id")
+    private Choice choice;
 
-    private String answer;
+    @ManyToOne
+    @JoinColumn(name = "applicant_id")
+    private Applicant applicant;
+
+    public ChosenResponse(Choice choice, Applicant applicant) {
+        this.choice = choice;
+        this.applicant = applicant;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -33,8 +46,8 @@ public class DescriptiveQuestion {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DescriptiveQuestion descriptiveQuestion = (DescriptiveQuestion) o;
-        return Objects.equals(id, descriptiveQuestion.id);
+        ChosenResponse that = (ChosenResponse) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
@@ -44,10 +57,10 @@ public class DescriptiveQuestion {
 
     @Override
     public String toString() {
-        return "Question{" +
+        return "ChosenResponse{" +
                 "id=" + id +
-                ", question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
+                ", choice=" + choice +
+                ", applicant=" + applicant +
                 '}';
     }
 }
