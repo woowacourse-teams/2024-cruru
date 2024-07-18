@@ -22,6 +22,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Evaluation extends BaseEntity {
 
+    private static final int MIN_SCORE = 1;
+    private static final int MAX_SCORE = 5;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "evaluation_id")
@@ -48,9 +51,13 @@ public class Evaluation extends BaseEntity {
     }
 
     private void validateScore(int score) {
-        if (score <= 0 || score > 5) {
+        if (isOutOfRange(score)) {
             throw new EvaluationBadRequestException();
         }
+    }
+
+    private boolean isOutOfRange(int score) {
+        return score < MIN_SCORE || score > MAX_SCORE;
     }
 
     @Override
