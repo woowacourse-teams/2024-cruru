@@ -59,7 +59,7 @@ class ProcessServiceTest {
         dashboard = dashboardRepository.save(dashboard);
         Process process = new Process(0, "서류", "서류", dashboard);
         process = processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process);
+        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
         applicant = applicantRepository.save(applicant);
 
         // when
@@ -173,7 +173,7 @@ class ProcessServiceTest {
         dashboard = dashboardRepository.save(dashboard);
         Process process = new Process(1, "서류", "서류", dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process);
+        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
         applicantRepository.save(applicant);
 
         // when&then

@@ -53,14 +53,14 @@ public class DataLoader implements ApplicationRunner {
         processRepository.save(lastProcess);
 
         List<Applicant> applicants = List.of(
-                new Applicant(1L, "러기", "lurg@mail.com", "01011111111", firstProcess),
-                new Applicant(2L, "도비", "doby@mail.com", "01022222222", firstProcess),
-                new Applicant(3L, "아르", "arrr@mail.com", "01033333333", lastProcess),
-                new Applicant(4L, "초코칩", "choc@mail.com", "01044444444", lastProcess),
-                new Applicant(5L, "명오", "myun@mail.com", "01055555555", lastProcess),
-                new Applicant(6L, "러시", "rush@mail.com", "01066666666", firstProcess),
-                new Applicant(7L, "냥인", "nyan@mail.com", "01077777777", firstProcess),
-                new Applicant(8L, "렛서", "pand@mail.com", "01088888888", firstProcess)
+                new Applicant(1L, "러기", "lurg@mail.com", "01011111111", firstProcess, false),
+                new Applicant(2L, "도비", "doby@mail.com", "01022222222", firstProcess, true),
+                new Applicant(3L, "아르", "arrr@mail.com", "01033333333", lastProcess, false),
+                new Applicant(4L, "초코칩", "choc@mail.com", "01044444444", lastProcess, false),
+                new Applicant(5L, "명오", "myun@mail.com", "01055555555", lastProcess, false),
+                new Applicant(6L, "러시", "rush@mail.com", "01066666666", firstProcess, false),
+                new Applicant(7L, "냥인", "nyan@mail.com", "01077777777", firstProcess, false),
+                new Applicant(8L, "렛서", "pand@mail.com", "01088888888", firstProcess, false)
         );
         applicantRepository.saveAll(applicants);
     }
