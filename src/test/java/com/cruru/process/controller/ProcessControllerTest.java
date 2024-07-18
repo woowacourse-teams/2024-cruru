@@ -51,6 +51,15 @@ class ProcessControllerTest {
                 .then().log().all().statusCode(200);
     }
 
+    @DisplayName("프로세스 조회 실패 시, 404를 응답한다.")
+    @Test
+    void read_dashboardNotFound() {
+        long invalidDashboardId = 0;
+        RestAssured.given().log().all()
+                .when().get("/api/v1/processes?dashboard_id=" + invalidDashboardId)
+                .then().log().all().statusCode(404);
+    }
+
     @DisplayName("프로세스 생성 성공 시, 201을 응답한다.")
     @Test
     void create() {
