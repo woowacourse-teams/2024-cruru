@@ -7,7 +7,7 @@ type ColorScaleMap = {
 };
 
 export interface BaseColors {
-  grayscale: ColorScaleMap;
+  grayscale: ColorScaleMap & { '950': string };
   purplescale: ColorScaleMap;
   redscale: ColorScaleMap;
   bluescale: ColorScaleMap;
