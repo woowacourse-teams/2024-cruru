@@ -18,7 +18,7 @@ class QuestionRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        questionRepository.deleteAll();
+        questionRepository.deleteAllInBatch();
     }
 
     @DisplayName("이미 DB에 저장되어 있는 ID를 가진 질문을 저장하면, 해당 ID의 질문은 후에 작성된 정보로 업데이트한다.")
@@ -38,7 +38,7 @@ class QuestionRepositoryTest {
         assertThat(findQuestion.getSequence()).isEqualTo(1);
     }
 
-    @DisplayName("ID가 없는 질문을 저장하면, 순차적으로 ID가 부여하여 저장된다.")
+    @DisplayName("ID가 없는 질문을 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {
         //given

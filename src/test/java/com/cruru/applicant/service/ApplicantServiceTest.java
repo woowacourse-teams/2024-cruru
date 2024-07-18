@@ -25,6 +25,7 @@ import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import java.util.Comparator;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,30 @@ class ApplicantServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
     @Autowired
     private QuestionRepository questionRepository;
+
     @Autowired
     private AnswerRepository answerRepository;
+
     @Autowired
     private ChoiceRepository choiceRepository;
+
     @Autowired
     private ChosenResponseRepository chosenResponseRepository;
+
+    @AfterEach
+    void tearDown() {
+        chosenResponseRepository.deleteAllInBatch();
+        choiceRepository.deleteAllInBatch();
+        answerRepository.deleteAllInBatch();
+        questionRepository.deleteAllInBatch();
+
+        applicantRepository.deleteAllInBatch();
+        processRepository.deleteAllInBatch();
+        dashboardRepository.deleteAllInBatch();
+    }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")
     @Test
@@ -86,7 +103,7 @@ class ApplicantServiceTest {
     @Test
     void findById() {
         // given
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null);
+        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null, false);
         applicant = applicantRepository.save(applicant);
 
         // when
@@ -112,7 +129,7 @@ class ApplicantServiceTest {
         dashboardRepository.save(dashboard);
         Process process = new Process(0, "서류", "서류 단계", dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process);
+        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
         applicantRepository.save(applicant);
 
         Question question1 = new Question("좋아하는 동물은?", 0, dashboard);

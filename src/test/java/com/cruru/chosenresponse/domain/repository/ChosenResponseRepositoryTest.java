@@ -23,8 +23,8 @@ class ChosenResponseRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        chosenResponseRepository.deleteAll();
-        choiceRepository.deleteAll();
+        chosenResponseRepository.deleteAllInBatch();
+        choiceRepository.deleteAllInBatch();
     }
 
     @DisplayName("이미 DB에 저장되어 있는 ID를 가진 객관식 응답을 저장하면, 해당 ID의 객관식 응답은 후에 작성된 정보로 업데이트한다.")
@@ -45,7 +45,7 @@ class ChosenResponseRepositoryTest {
         assertThat(foundChosenResponse.getChoice()).isNotNull();
     }
 
-    @DisplayName("ID가 없는 객관식 응답을 저장하면, 순차적으로 ID가 부여하여 저장된다.")
+    @DisplayName("ID가 없는 객관식 응답을 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {
         //given
