@@ -9,6 +9,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
+import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
@@ -39,8 +40,12 @@ class ProcessServiceTest {
     @Autowired
     private ProcessService processService;
 
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+
     @BeforeEach
     void setUp() {
+        evaluationRepository.deleteAll();
         applicantRepository.deleteAll();
         processRepository.deleteAll();
         dashboardRepository.deleteAll();
@@ -54,7 +59,7 @@ class ProcessServiceTest {
         dashboard = dashboardRepository.save(dashboard);
         Process process = new Process(0, "서류", "서류", dashboard);
         process = processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process);
+        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
         applicant = applicantRepository.save(applicant);
 
         // when
@@ -168,7 +173,7 @@ class ProcessServiceTest {
         dashboard = dashboardRepository.save(dashboard);
         Process process = new Process(1, "서류", "서류", dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process);
+        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
         applicantRepository.save(applicant);
 
         // when&then
