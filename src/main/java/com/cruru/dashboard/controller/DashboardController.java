@@ -23,7 +23,7 @@ public class DashboardController {
     public ResponseEntity<MemberCreateResponse> create(
             @RequestParam(name = "club_id") Long clubId,
             @RequestBody DashboardCreateDto request) {
-        Long dashboardId = dashboardService.create(clubId, request);
+        long dashboardId = dashboardService.create(clubId, request);
         return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardId)).build();
     }
 }
