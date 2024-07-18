@@ -81,15 +81,15 @@ class EvaluationServiceTest {
         Evaluation evaluation = evaluationRepository.save(new Evaluation(score, content, process, applicant));
 
         // when
-        List<EvaluationResponse> evaluationResponses = evaluationService.read(process.getId(), applicant.getId())
+        List<EvaluationResponse> responses = evaluationService.read(process.getId(), applicant.getId())
                 .evaluationsResponse();
 
         // then
         assertAll(
-                () -> assertThat(evaluationResponses).hasSize(1),
-                () -> assertThat(evaluationResponses.get(0).evaluationId()).isEqualTo(evaluation.getId()),
-                () -> assertThat(evaluationResponses.get(0).score()).isEqualTo(score),
-                () -> assertThat(evaluationResponses.get(0).content()).isEqualTo(content)
+                () -> assertThat(responses).hasSize(1),
+                () -> assertThat(responses.get(0).evaluationId()).isEqualTo(evaluation.getId()),
+                () -> assertThat(responses.get(0).score()).isEqualTo(score),
+                () -> assertThat(responses.get(0).content()).isEqualTo(content)
         );
     }
 }
