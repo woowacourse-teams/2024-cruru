@@ -1,10 +1,13 @@
 package com.cruru.applicant.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
+import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -56,5 +59,26 @@ class ApplicantServiceTest {
                 .allMatch(process -> process.equals(afterProcess));
         assertThat(processAllMoved).isTrue();
     }
-}
 
+    @DisplayName("id로 지원자를 찾는다.")
+    @Test
+    void findById() {
+        // given
+        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null);
+        applicant = applicantRepository.save(applicant);
+
+        // when
+        ApplicantResponse found = applicantService.findById(applicant.getId());
+
+        // then
+        assertThat(applicant.getId()).isEqualTo(found.id());
+    }
+
+    @DisplayName("id에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")
+    @Test
+    void invalidFindByIdThrowsException() {
+        // given&when&then
+        assertThatThrownBy(() -> applicantService.findById(-1L))
+                .isInstanceOf(ApplicantNotFoundException.class);
+    }
+}

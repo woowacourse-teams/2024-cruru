@@ -1,9 +1,11 @@
 package com.cruru.applicant.controller;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
+import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.service.ApplicantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,5 +26,11 @@ public class ApplicantController {
 
         applicantService.updateApplicantProcess(processId, moveRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{applicant_id}")
+    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") Long id) {
+        ApplicantResponse applicantResponse = applicantService.findById(id);
+        return ResponseEntity.ok().body(applicantResponse);
     }
 }
