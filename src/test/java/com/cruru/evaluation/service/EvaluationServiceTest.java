@@ -1,7 +1,6 @@
 package com.cruru.evaluation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -10,7 +9,6 @@ import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,12 +60,9 @@ class EvaluationServiceTest {
         long evaluationId = evaluationService.create(request, process.getId(), applicant.getId());
 
         // then
-        Optional<Evaluation> evaluation = evaluationRepository.findById(evaluationId);
+        Evaluation evaluation = evaluationRepository.findById(evaluationId).get();
 
-        assertAll(
-                () -> assertThat(evaluation).isNotNull(),
-                () -> assertThat(evaluation.get().getScore()).isEqualTo(score),
-                () -> assertThat(evaluation.get().getContent()).isEqualTo(content)
-        );
+        assertThat(evaluation.getScore()).isEqualTo(score);
+        assertThat(evaluation.getContent()).isEqualTo(content);
     }
 }
