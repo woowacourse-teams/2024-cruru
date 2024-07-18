@@ -11,7 +11,7 @@ const HorizontalLine = styled.div`
 
   margin-top: 1.2rem;
 
-  background-color: ${({ theme }) => theme.colors.grayscale[400]};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const S = {

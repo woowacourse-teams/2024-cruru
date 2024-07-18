@@ -19,7 +19,7 @@ const IconWrapper = styled.div<IconButtonStyleProps>`
 
   padding: 0.4rem;
   border-radius: ${({ borderRadius }) => borderRadius};
-  border: ${({ outline, theme }) => (outline ? `1px solid ${theme.colors.grayscale[300]}` : 'none')};
+  border: ${({ outline, theme }) => (outline ? `1px solid ${theme.baseColors.grayscale[300]}` : 'none')};
 
   img {
     display: block;
@@ -27,7 +27,7 @@ const IconWrapper = styled.div<IconButtonStyleProps>`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayscale[200]};
+    background-color: ${({ theme }) => theme.colors.hover.bg};
   }
 `;
 

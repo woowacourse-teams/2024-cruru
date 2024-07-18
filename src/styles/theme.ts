@@ -3,6 +3,7 @@ import { BaseColors, Colors } from './types';
 
 const baseColors: BaseColors = {
   grayscale: {
+    950: '#111111',
     900: '#3C3C3C',
     800: '#606060',
     700: '#818181',
