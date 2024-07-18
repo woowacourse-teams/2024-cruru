@@ -1,14 +1,17 @@
 package com.cruru.evaluation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
+import com.cruru.evaluation.controller.dto.EvaluationResponse;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,12 +60,36 @@ class EvaluationServiceTest {
 
         // when
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
-        long evaluationId = evaluationService.create(request, process.getId(), applicant.getId());
+        evaluationService.create(request, process.getId(), applicant.getId());
 
         // then
-        Evaluation evaluation = evaluationRepository.findById(evaluationId).get();
+        List<Evaluation> evaluations = evaluationRepository.findAllByProcessIdAndApplicantId(
+                process.getId(), applicant.getId());
+        assertAll(
+                () -> assertThat(evaluations).hasSize(1),
+                () -> assertThat(evaluations.get(0).getScore()).isEqualTo(score),
+                () -> assertThat(evaluations.get(0).getContent()).isEqualTo(content)
+        );
+    }
 
-        assertThat(evaluation.getScore()).isEqualTo(score);
-        assertThat(evaluation.getContent()).isEqualTo(content);
+    @DisplayName("평가를 조회한다.")
+    @Test
+    void read() {
+        // given
+        int score = 1;
+        String content = "인재상과 맞지 않습니다.";
+        Evaluation evaluation = evaluationRepository.save(new Evaluation(score, content, process, applicant));
+
+        // when
+        List<EvaluationResponse> evaluationResponses = evaluationService.read(process.getId(), applicant.getId())
+                .evaluationsResponse();
+
+        // then
+        assertAll(
+                () -> assertThat(evaluationResponses).hasSize(1),
+                () -> assertThat(evaluationResponses.get(0).evaluationId()).isEqualTo(evaluation.getId()),
+                () -> assertThat(evaluationResponses.get(0).score()).isEqualTo(score),
+                () -> assertThat(evaluationResponses.get(0).content()).isEqualTo(content)
+        );
     }
 }
