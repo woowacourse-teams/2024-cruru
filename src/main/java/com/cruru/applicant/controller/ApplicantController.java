@@ -1,5 +1,6 @@
 package com.cruru.applicant.controller;
 
+import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.service.ApplicantService;
@@ -32,5 +33,11 @@ public class ApplicantController {
     public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") Long id) {
         ApplicantResponse applicantResponse = applicantService.findById(id);
         return ResponseEntity.ok().body(applicantResponse);
+    }
+
+    @GetMapping("/{applicant_id}/detail")
+    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicant_id") Long id) {
+        ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(id);
+        return ResponseEntity.ok().body(applicantDetailResponse);
     }
 }
