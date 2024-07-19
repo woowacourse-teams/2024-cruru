@@ -49,13 +49,17 @@ public class EvaluationService {
 
     private EvaluationsResponse toEvaluationsResponse(List<Evaluation> evaluations) {
         List<EvaluationResponse> responses = evaluations.stream()
-                .map(evaluation -> new EvaluationResponse(
-                                evaluation.getId(),
-                                evaluation.getScore(),
-                                evaluation.getContent()
-                        )
-                ).toList();
+                .map(this::toEvaluationResponse)
+                .toList();
 
         return new EvaluationsResponse(responses);
+    }
+
+    private EvaluationResponse toEvaluationResponse(Evaluation evaluation) {
+        return new EvaluationResponse(
+                evaluation.getId(),
+                evaluation.getScore(),
+                evaluation.getContent()
+        );
     }
 }
