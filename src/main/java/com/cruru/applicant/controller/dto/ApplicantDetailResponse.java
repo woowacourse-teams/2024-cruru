@@ -11,7 +11,7 @@ public record ApplicantDetailResponse(
         String dashboardName,
 
         @JsonProperty("details")
-        List<QuestionAndResponse> questionAndResponses
+        List<QnaResponse> qnaResponses
 ) {
 
 }

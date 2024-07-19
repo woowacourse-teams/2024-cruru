@@ -9,14 +9,11 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
-import com.cruru.applicant.controller.dto.QuestionAndResponse;
+import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
-import com.cruru.chosenresponse.domain.ChosenResponse;
-import com.cruru.chosenresponse.domain.repository.ChosenResponseRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -55,12 +52,8 @@ class ApplicantServiceTest {
     @Autowired
     private ChoiceRepository choiceRepository;
 
-    @Autowired
-    private ChosenResponseRepository chosenResponseRepository;
-
     @AfterEach
     void tearDown() {
-        chosenResponseRepository.deleteAllInBatch();
         choiceRepository.deleteAllInBatch();
         answerRepository.deleteAllInBatch();
         questionRepository.deleteAllInBatch();
@@ -133,32 +126,24 @@ class ApplicantServiceTest {
         Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
         applicantRepository.save(applicant);
 
-        Question question1 = new Question("좋아하는 동물은?", 0, dashboard);
-        Question question2 = new Question("성별", 1, dashboard);
-        questionRepository.saveAll(List.of(question1, question2));
-        Answer answer = new Answer("토끼", question1, applicant);
+        Question question = new Question("좋아하는 동물은?", 0, dashboard);
+        questionRepository.save(question);
+        Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
-        Choice choice1 = new Choice("남자", question2);
-        Choice choice2 = new Choice("여자", question2);
-        choiceRepository.saveAll(List.of(choice1, choice2));
-        ChosenResponse chosenResponse = new ChosenResponse(choice1, applicant);
-        chosenResponseRepository.save(chosenResponse);
 
         // when
         ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicant.getId());
 
         //then
-        List<QuestionAndResponse> questionAndResponses = applicantDetailResponse.questionAndResponses()
+        List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses()
                 .stream()
-                .sorted(Comparator.comparingInt(QuestionAndResponse::sequence))
+                .sorted(Comparator.comparingInt(QnaResponse::sequence))
                 .toList();
         assertAll(
                 () -> assertThat(applicantDetailResponse.applicantName()).isEqualTo(applicant.getName()),
                 () -> assertThat(applicantDetailResponse.dashboardName()).isEqualTo(dashboard.getName()),
-                () -> assertThat(questionAndResponses.get(0).question()).isEqualTo(question1.getContent()),
-                () -> assertThat(questionAndResponses.get(0).response()).isEqualTo(answer.getContent()),
-                () -> assertThat(questionAndResponses.get(1).question()).isEqualTo(question2.getContent()),
-                () -> assertThat(questionAndResponses.get(1).response()).isEqualTo(choice1.getContent())
+                () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
+                () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
         );
     }
 }
