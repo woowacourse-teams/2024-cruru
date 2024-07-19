@@ -1,42 +1,33 @@
 import styled from '@emotion/styled';
 
 const ProcessWrapper = styled.section`
-  width: 400px;
-  padding: 48px 32px;
+  width: 340px;
+  height: 100%;
+  padding: 20px 12px 12px 12px;
   border-radius: 8px;
-  background-color: #dedede;
-
-  color: #606060;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[100]};
 `;
 
 const Header = styled.header`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 36px;
+
+  padding: 8px 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const Title = styled.h2`
-  font-weight: 400;
-  font-size: 24px;
+  ${({ theme }) => theme.typography.heading[500]};
+  padding: 4px;
 `;
-
-const OptionButtonContainer = styled.div({
-  width: '48px',
-  height: '48px',
-  backgroundColor: 'white',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '12px',
-  cursor: 'pointer',
-});
 
 const ApplicantList = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 12px;
+
   gap: 12px;
 `;
 
@@ -44,7 +35,6 @@ const S = {
   ProcessWrapper,
   Header,
   Title,
-  OptionButtonContainer,
   ApplicantList,
 };
 

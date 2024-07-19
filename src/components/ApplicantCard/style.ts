@@ -8,7 +8,6 @@ const CardContainer = styled.div`
   padding: 1rem 1.6rem;
   border-radius: 0.8rem;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
-  width: 30rem;
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 `;
 

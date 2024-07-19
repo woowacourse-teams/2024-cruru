@@ -13,7 +13,7 @@ export default function App() {
       },
     ],
     {
-      basename: './', //TODO: 배포할때 해당 루트로 적기
+      basename: '/', //TODO: 배포할때 해당 루트로 적기
     },
   );
 
