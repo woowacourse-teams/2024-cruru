@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
-    long countByApplicantAndProcess(Applicant applicant, Process process);
+    int countByApplicantAndProcess(Applicant applicant, Process process);
 }

@@ -57,7 +57,7 @@ public class ProcessService {
         return applicantRepository.findAllByProcess(process)
                 .stream()
                 .map(applicant -> {
-                    int evaluationCount = (int) evaluationRepository.countByApplicantAndProcess(applicant, process);
+                    int evaluationCount = evaluationRepository.countByApplicantAndProcess(applicant, process);
                     return toApplicantDto(applicant, evaluationCount);
                 })
                 .toList();
