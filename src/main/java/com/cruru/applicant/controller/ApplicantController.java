@@ -1,5 +1,6 @@
 package com.cruru.applicant.controller;
 
+import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.service.ApplicantService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/applicants")
+@RequestMapping("/v1/applicants")
 @RequiredArgsConstructor
 public class ApplicantController {
 
@@ -29,8 +30,14 @@ public class ApplicantController {
     }
 
     @GetMapping("/{applicant_id}")
-    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") Long id) {
-        ApplicantResponse applicantResponse = applicantService.findById(id);
+    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") long applicantId) {
+        ApplicantResponse applicantResponse = applicantService.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
+    }
+
+    @GetMapping("/{applicant_id}/detail")
+    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicant_id") long applicantId) {
+        ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicantId);
+        return ResponseEntity.ok().body(applicantDetailResponse);
     }
 }

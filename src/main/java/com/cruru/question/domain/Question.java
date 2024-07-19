@@ -1,7 +1,6 @@
-package com.cruru.club.domain;
+package com.cruru.question.domain;
 
-import com.cruru.club.exception.ClubBadRequestException;
-import com.cruru.member.domain.Member;
+import com.cruru.dashboard.domain.Dashboard;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,31 +17,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Club {
-
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*() ]{1,32}$");
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "club_id")
+    @Column(name = "question_id")
     private Long id;
 
-    private String name;
+    private String content;
+
+    private int sequence;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "dashboard_id")
+    private Dashboard dashboard;
 
-    public Club(String name, Member member) {
-        validateName(name);
-        this.name = name;
-        this.member = member;
-    }
-
-    private void validateName(String name) {
-        if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new ClubBadRequestException();
-        }
+    public Question(String content, int sequence, Dashboard dashboard) {
+        this.content = content;
+        this.sequence = sequence;
+        this.dashboard = dashboard;
     }
 
     @Override
@@ -54,8 +46,8 @@ public class Club {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Club club = (Club) o;
-        return Objects.equals(id, club.id);
+        Question question = (Question) o;
+        return Objects.equals(id, question.id);
     }
 
     @Override
@@ -65,10 +57,11 @@ public class Club {
 
     @Override
     public String toString() {
-        return "Club{" +
+        return "Question{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", member=" + member +
+                ", content='" + content + '\'' +
+                ", sequence=" + sequence +
+                ", dashboard=" + dashboard +
                 '}';
     }
 }

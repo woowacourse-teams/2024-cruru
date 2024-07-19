@@ -3,6 +3,8 @@ package com.cruru.applicant.controller;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import io.restassured.RestAssured;
@@ -28,11 +30,15 @@ class ApplicantControllerTest {
     @Autowired
     private ApplicantRepository applicantRepository;
 
+    @Autowired
+    private DashboardRepository dashboardRepository;
+
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        applicantRepository.deleteAll();
-        processRepository.deleteAll();
+        applicantRepository.deleteAllInBatch();
+        processRepository.deleteAllInBatch();
+        dashboardRepository.deleteAllInBatch();
     }
 
     @DisplayName("지원자들의 프로세스를 일괄적으로 옮기는 데 성공하면 200을 응답한다.")
@@ -61,4 +67,17 @@ class ApplicantControllerTest {
                 .when().get("/api/v1/applicants/" + applicant.getId())
                 .then().log().all().statusCode(200);
     }
+
+    @DisplayName("지원자의 상세 정보를 읽어오는 데 성공하면 200을 응답한다.")
+    @Test
+    void readDetail() {
+        Dashboard dashboard = dashboardRepository.save(new Dashboard("프론트 부원 모집", null));
+        Process process = processRepository.save(new Process(0, "서류", "서류 단계", dashboard));
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", process, false));
+
+        RestAssured.given().log().all()
+                .when().get("/api/v1/applicants/" + applicant.getId() + "/detail")
+                .then().log().all().statusCode(200);
+    }
+
 }

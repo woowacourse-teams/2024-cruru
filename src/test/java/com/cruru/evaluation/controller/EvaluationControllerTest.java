@@ -114,4 +114,17 @@ class EvaluationControllerTest {
                 .when().post(url)
                 .then().log().all().statusCode(404);
     }
+
+    @DisplayName("평가 조회에 성공할 경우, 200을 응답한다.")
+    @Test
+    void read() {
+        // given
+        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .when().get(url)
+                .then().log().all().statusCode(200);
+    }
 }
