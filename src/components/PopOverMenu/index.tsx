@@ -1,17 +1,12 @@
 import S from './style';
 import DropdownItem from '../DropdownItem';
 
-type Item = {
-  id: number;
-  name: string;
-  isHighlight?: boolean;
-  onClick: () => void;
-};
+import type { PopOverMenuItem } from '@/types/common';
 
 export interface PopOverMenuProps {
   isOpen: boolean;
   size?: 'sm' | 'md';
-  items: Item[];
+  items: PopOverMenuItem[];
 }
 
 export default function PopOverMenu({ isOpen, size = 'sm', items }: PopOverMenuProps) {

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import PopOverMenu, { PopOverMenuProps } from '.';
+import type { PopOverMenuItem } from '@/types/common';
 
 export default {
   component: PopOverMenu,
@@ -12,12 +13,16 @@ const Template: StoryObj<PopOverMenuProps> = {
   render: (args) => <PopOverMenu {...args} />,
 };
 
-const testItem = {
+const testItem: PopOverMenuItem = {
+  id: 'testItem-1',
   name: 'Menu Label',
   onClick: () => console.log('clicked'),
 };
-
-const testItemList = Array.from({ length: 3 }, (_, index) => ({ ...testItem, id: index, isHighlight: index === 2 }));
+const testItemList: PopOverMenuItem[] = Array.from({ length: 3 }, (_, index) => ({
+  ...testItem,
+  id: `testItem-${index}`,
+  isHighlight: index === 2,
+}));
 
 export const Default: StoryObj<PopOverMenuProps> = {
   ...Template,
