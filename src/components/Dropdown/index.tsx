@@ -53,6 +53,7 @@ export default function Dropdown({ children, size = 'sm', items }: DropdownProps
         isOpen={isOpen}
       >
         {selected || 'Default'}
+        {/* TODO: Chevron Down 이미지를 넣어주세요 */}
       </S.Header>
       {isOpen && (
         <S.List>
