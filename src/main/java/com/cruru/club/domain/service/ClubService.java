@@ -19,8 +19,9 @@ public class ClubService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public long create(long memberId, ClubCreateRequest request) {
-        Member member = memberRepository.findById(memberId).orElseThrow(MemberNotFoundException::new);
+    public long create(ClubCreateRequest request, long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
 
         Club club = clubRepository.save(new Club(request.name(), member));
         return club.getId();

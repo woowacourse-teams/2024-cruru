@@ -1,6 +1,7 @@
 package com.cruru.club.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.club.controller.dto.ClubCreateRequest;
@@ -11,8 +12,6 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.process.domain.repository.ProcessRepository;
-import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,11 +29,6 @@ class ClubServiceTest {
     private ClubRepository clubRepository;
 
     @Autowired
-    private ClubService clubService;
-
-    private Member member;
-
-    @Autowired
     private ProcessRepository processRepository;
 
     @Autowired
@@ -42,6 +36,11 @@ class ClubServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ClubService clubService;
+
+    private Member member;
 
     @BeforeEach
     void setUp() {
@@ -60,13 +59,13 @@ class ClubServiceTest {
         ClubCreateRequest request = new ClubCreateRequest("연합동아리");
 
         // when
-        long clubId = clubService.create(member.getId(), request);
+        long clubId = clubService.create(request, member.getId());
 
         // then
-        Optional<Club> club = clubRepository.findById(clubId);
-        Assertions.assertAll(
-                () -> assertThat(club.get().getMember()).isEqualTo(member),
-                () -> assertThat(club.get().getName()).isEqualTo(request.name())
+        Club club = clubRepository.findById(clubId).get();
+        assertAll(
+                () -> assertThat(club.getMember()).isEqualTo(member),
+                () -> assertThat(club.getName()).isEqualTo(request.name())
         );
     }
 }

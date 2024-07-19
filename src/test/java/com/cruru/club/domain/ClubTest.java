@@ -18,7 +18,7 @@ class ClubTest {
         // given
         Member member = new Member("password", "phoneNumber", "phone");
 
-        // when&&then
+        // when&then
         assertThatCode(() -> new Club(name, member)).doesNotThrowAnyException();
     }
 
@@ -29,7 +29,7 @@ class ClubTest {
         // given
         Member member = new Member("password", "phoneNumber", "phone");
 
-        // when&&then
+        // when&then
         assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubBadRequestException.class);
     }
 }
