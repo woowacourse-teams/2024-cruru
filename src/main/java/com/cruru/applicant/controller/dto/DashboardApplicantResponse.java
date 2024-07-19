@@ -3,7 +3,7 @@ package com.cruru.applicant.controller.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
-public record DashboardApplicantDto(
+public record DashboardApplicantResponse(
         @JsonProperty("applicant_id")
         long applicantId,
 

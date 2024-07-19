@@ -3,6 +3,7 @@ package com.cruru.member.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.member.domain.Member;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @BeforeEach
+    void setUp() {
+        memberRepository.deleteAllInBatch();
+    }
 
     @DisplayName("이미 DB에 저장되어 있는 ID를 가진 사용자를 저장하면, 해당 ID의 사용자는 후에 작성된 정보로 업데이트한다.")
     @Test
@@ -32,7 +38,7 @@ class MemberRepositoryTest {
         assertThat(findMember.getPhone()).isEqualTo("newPhoneNumber");
     }
 
-    @DisplayName("ID가 없는 사용자를 저장하면, 순차적으로 ID가 부여하여 저장된다.")
+    @DisplayName("ID가 없는 사용자를 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {
         //given

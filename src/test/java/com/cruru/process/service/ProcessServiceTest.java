@@ -17,17 +17,15 @@ import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.util.ServiceTest;
 import java.util.Comparator;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @DisplayName("프로세스 서비스 테스트")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class ProcessServiceTest {
+class ProcessServiceTest extends ServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
@@ -43,14 +41,6 @@ class ProcessServiceTest {
 
     @Autowired
     private EvaluationRepository evaluationRepository;
-
-    @BeforeEach
-    void setUp() {
-        evaluationRepository.deleteAll();
-        applicantRepository.deleteAll();
-        processRepository.deleteAll();
-        dashboardRepository.deleteAll();
-    }
 
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
@@ -70,9 +60,10 @@ class ProcessServiceTest {
         assertAll(
                 () -> assertThat(byDashboardId.processResponses()).hasSize(1),
                 () -> assertThat(firstProcessResponse.processId()).isEqualTo(process.getId()),
-                () -> assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).applicantId()).isEqualTo(
+                () -> assertThat(firstProcessResponse.dashboardApplicantResponses().get(0).applicantId()).isEqualTo(
                         applicant.getId()),
-                () -> assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).evaluationCount()).isEqualTo(1)
+                () -> assertThat(firstProcessResponse.dashboardApplicantResponses().get(0).evaluationCount()).isEqualTo(
+                        1)
         );
     }
 
@@ -97,9 +88,9 @@ class ProcessServiceTest {
         processRepository.save(process1);
         Process process2 = new Process(2, "최종 면접", "대면 면접", dashboard);
         processRepository.save(process2);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
 
         // when
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
         processService.create(dashboard.getId(), processCreateRequest);
 
         // then
@@ -127,9 +118,9 @@ class ProcessServiceTest {
                         new Process(4, "최종 면접", "대면 면접", dashboard)
                 )
         );
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
 
         // when&then
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
         assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
                 .isInstanceOf(ProcessBadRequestException.class);
     }

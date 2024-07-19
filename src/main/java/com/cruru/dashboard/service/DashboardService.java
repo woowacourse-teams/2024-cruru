@@ -3,7 +3,7 @@ package com.cruru.dashboard.service;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
-import com.cruru.dashboard.controller.dto.DashboardCreateDto;
+import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DashboardService {
 
-    private static final Process DEFAULT_FIRST_PROCESS = new Process(1, "지원 접수", "지원자가 이력서를 제출하는 단계", null);
+    private static final Process DEFAULT_FIRST_PROCESS = new Process(1, "지원 접수", "지원자가 지원서를 제출하는 단계", null);
     private static final Process DEFAULT_LAST_PROCESS = new Process(2, "합격", "지원자가 최종적으로 합격한 단계", null);
 
     private final DashboardRepository dashboardRepository;
@@ -26,10 +26,9 @@ public class DashboardService {
     private final ProcessRepository processRepository;
 
     @Transactional
-    public long create(long clubId, DashboardCreateDto request) {
+    public long create(long clubId, DashboardCreateRequest request) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(ClubNotFoundException::new);
-
         Dashboard savedDashboard = dashboardRepository.save(new Dashboard(request.name(), club));
 
         Process firstProcess = new Process(
@@ -38,7 +37,6 @@ public class DashboardService {
                 DEFAULT_FIRST_PROCESS.getDescription(),
                 savedDashboard
         );
-
         Process lastProcess = new Process(
                 DEFAULT_LAST_PROCESS.getSequence(),
                 DEFAULT_LAST_PROCESS.getName(),
@@ -47,7 +45,6 @@ public class DashboardService {
         );
 
         processRepository.saveAll(List.of(firstProcess, lastProcess));
-
         return savedDashboard.getId();
     }
 }

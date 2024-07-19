@@ -3,22 +3,19 @@ package com.cruru.evaluation.controller;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
-import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.util.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 @DisplayName("평가 컨트롤러 테스트")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EvaluationControllerTest {
+class EvaluationControllerTest extends ControllerTest {
 
     @LocalServerPort
     private int port;
@@ -28,9 +25,6 @@ class EvaluationControllerTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
-
-    @Autowired
-    private EvaluationRepository evaluationRepository;
 
     private Process process;
 
@@ -45,13 +39,6 @@ class EvaluationControllerTest {
         applicant = applicantRepository.save(
                 new Applicant("초코칩", "dev.chocochip@gmail.com", "01012345678", process, false)
         );
-    }
-
-    @AfterEach
-    void tearDown() {
-        evaluationRepository.deleteAllInBatch();
-        applicantRepository.deleteAllInBatch();
-        processRepository.deleteAllInBatch();
     }
 
     @DisplayName("평가 생성 성공 시, 201을 응답한다.")

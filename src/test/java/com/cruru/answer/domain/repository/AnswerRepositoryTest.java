@@ -3,7 +3,7 @@ package com.cruru.answer.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.answer.domain.Answer;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ class AnswerRepositoryTest {
     @Autowired
     private AnswerRepository answerRepository;
 
-    @AfterEach
-    void tearDown() {
+    @BeforeEach
+    void setUp() {
         answerRepository.deleteAllInBatch();
     }
 

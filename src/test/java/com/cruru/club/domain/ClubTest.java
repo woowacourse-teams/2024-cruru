@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@DisplayName("동아리 도메인 테스트")
 class ClubTest {
 
     @DisplayName("동아리 이름은 특수문자와 숫자를 허용한다.")
