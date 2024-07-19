@@ -1,5 +1,6 @@
 package com.cruru.club.domain;
 
+import com.cruru.club.exception.ClubBadRequestException;
 import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class Club {
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*() ]{1,32}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +35,15 @@ public class Club {
     private Member member;
 
     public Club(String name, Member member) {
+        validateName(name);
         this.name = name;
         this.member = member;
+    }
+
+    private void validateName(String name) {
+        if (!NAME_PATTERN.matcher(name).matches()) {
+            throw new ClubBadRequestException();
+        }
     }
 
     @Override
