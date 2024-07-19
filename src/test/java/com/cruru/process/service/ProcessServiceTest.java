@@ -90,7 +90,7 @@ class ProcessServiceTest {
         Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
         Process process1 = new Process(0, "서류", "서류", dashboard);
-        process1 = processRepository.save(process1);
+        processRepository.save(process1);
         Process process2 = new Process(2, "최종 면접", "대면 면접", dashboard);
         processRepository.save(process2);
 

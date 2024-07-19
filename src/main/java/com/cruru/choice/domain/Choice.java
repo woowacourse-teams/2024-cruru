@@ -1,10 +1,13 @@
-package com.cruru.question.domain;
+package com.cruru.choice.domain;
 
+import com.cruru.question.domain.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,16 +17,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class DescriptiveQuestion {
+public class Choice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "choice_id")
     private Long id;
 
-    private String question;
+    private String content;
 
-    private String answer;
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
+
+    public Choice(String content, Question question) {
+        this.content = content;
+        this.question = question;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -33,8 +43,8 @@ public class DescriptiveQuestion {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DescriptiveQuestion descriptiveQuestion = (DescriptiveQuestion) o;
-        return Objects.equals(id, descriptiveQuestion.id);
+        Choice choice = (Choice) o;
+        return Objects.equals(id, choice.id);
     }
 
     @Override
@@ -44,10 +54,10 @@ public class DescriptiveQuestion {
 
     @Override
     public String toString() {
-        return "Question{" +
+        return "Choice{" +
                 "id=" + id +
-                ", question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
+                ", content='" + content + '\'' +
+                ", question=" + question +
                 '}';
     }
 }

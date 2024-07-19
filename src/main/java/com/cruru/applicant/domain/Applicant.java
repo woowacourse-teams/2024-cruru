@@ -1,6 +1,7 @@
 package com.cruru.applicant.domain;
 
 import com.cruru.BaseEntity;
+import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +49,10 @@ public class Applicant extends BaseEntity {
 
     public void updateProcess(Process process) {
         this.process = process;
+    }
+
+    public Dashboard getDashboard() {
+        return process.getDashboard();
     }
 
     @Override
