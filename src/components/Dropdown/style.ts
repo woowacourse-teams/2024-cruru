@@ -1,47 +1,60 @@
 import styled from '@emotion/styled';
 
-const DropdownContainer = styled.div`
+const Container = styled.div<{ size: 'sm' | 'md'; isOpen: boolean }>`
+  width: ${({ size }) => (size === 'sm' ? '150px' : '300px')};
   position: relative;
-  display: inline-block;
+
+  border-radius: ${({ isOpen }) => (isOpen ? '8px 8px 0px 0px' : '8px')};
+  box-shadow: 0px 4px 4px ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
-const DropdownButton = styled.div`
-  padding: 8px 16px;
-  font-size: 16px;
-  width: 120px;
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid grey;
-  background-color: white;
+const Header = styled.div<{ isOpen: boolean }>`
   display: flex;
-  align-items: center;
   justify-content: space-between;
-`;
+  padding: 20px 24px;
 
-const DropdownList = styled.ul`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid grey;
-  border-radius: 4px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: ${({ isOpen }) => (isOpen ? '8px 8px 0px 0px' : '8px')};
+  border-bottom: ${({ isOpen, theme }) => (isOpen ? 'none' : `1px sold ${theme.baseColors.grayscale[400]}`)};
 
-const DropdownListItem = styled.li`
-  padding: 8px 16px;
+  ${({ theme }) => theme.typography.heading[500]}
+  margin-bottom: 0;
   cursor: pointer;
+
+  ${({ isOpen, theme }) =>
+    isOpen &&
+    ` ::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 24px; 
+        right: 24px;
+        height: 1px;
+        background-color: ${theme.baseColors.grayscale[400]};
+      }
+    `}
+`;
+
+const List = styled.div`
+  position: absolute;
+  width: 100%;
+  padding: 8px;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: 0px 0px 8px 8px;
+  border-top: none;
+
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px ${({ theme }) => theme.baseColors.grayscale[400]};
+
+  z-index: 1;
 `;
 
 const S = {
-  DropdownContainer,
-  DropdownButton,
-  DropdownList,
-  DropdownListItem,
+  Container,
+  Header,
+  List,
 };
 
 export default S;
