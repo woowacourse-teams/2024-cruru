@@ -1,4 +1,4 @@
-name: PR open시 테스트 커버리지 검증
+name: BE CI - Test Coverage 검증
 
 on:
   pull_request:
