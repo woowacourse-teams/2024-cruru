@@ -15,8 +15,9 @@
     "airbnb",
     "airbnb/hooks"
   ],
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "jsx-a11y"],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "import", "jsx-a11y", "prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "no-console": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", "ts"] }],
     "react/jsx-uses-react": "off",
@@ -28,11 +29,6 @@
     "react/require-default-props": "off",
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/label-has-associated-control": "off",
-
-    "jsx-a11y/label-has-associated-control": "off",
-
-    "jsx-a11y/label-has-associated-control": "off",
-
     "import/extensions": [
       "error",
       {
@@ -44,7 +40,13 @@
       }
     ],
     "import/no-unresolved": "off",
-    "max-len": ["error", { "code": 120 }]
+    "max-len": ["error", { "code": 120 }],
+    "react/jsx-props-no-spreading": 0,
+    "object-curly-newline": 0,
+    "implicit-arrow-linebreak": 0,
+    "operator-linebreak": 0,
+    "no-confusing-arrow": 0,
+    "indent": 0
   },
   "overrides": [
     {

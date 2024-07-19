@@ -1,43 +1,75 @@
-import { useState } from 'react';
-import chevronDown from '@assets/images/chevronDown.svg';
+import { useState, useRef, useEffect } from 'react';
 import S from './style';
+import DropdownItem from '../DropdownItem';
 
-interface DropdownProps {
-  defaultSelectedValue: string;
-  processNameList: string[];
+type Item = {
+  id: number;
+  name: string;
+  isHighlight?: boolean;
+  onClick: () => void;
+};
+
+export interface DropdownProps {
+  children?: string;
+  size?: 'sm' | 'md';
+  items: Item[];
 }
 
-export default function Dropdown({ defaultSelectedValue, processNameList }: DropdownProps) {
+export default function Dropdown({ children, size = 'sm', items }: DropdownProps) {
+  const [selected, setSelected] = useState(children);
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(defaultSelectedValue);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleToggle = () => setIsOpen(!isOpen);
-  const handleSelect = (item: string) => {
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleClickItem = (item: string) => {
     setSelected(item);
     setIsOpen(false);
   };
 
   return (
-    <S.DropdownContainer>
-      <S.DropdownButton onClick={handleToggle}>
-        {selected}
-        <img
-          src={chevronDown}
-          alt="chevron"
-        />
-      </S.DropdownButton>
+    <S.Container
+      ref={dropdownRef}
+      size={size}
+      isOpen={isOpen}
+    >
+      <S.Header
+        onClick={toggleDropdown}
+        isOpen={isOpen}
+      >
+        {selected || 'Default'}
+        {/* TODO: Chevron Down 이미지를 넣어주세요 */}
+      </S.Header>
       {isOpen && (
-        <S.DropdownList>
-          {processNameList.map((processName) => (
-            <S.DropdownListItem
-              key={processName}
-              onClick={() => handleSelect(processName)}
-            >
-              {processName}
-            </S.DropdownListItem>
+        <S.List>
+          {items.map(({ name, isHighlight, id, onClick }) => (
+            <DropdownItem
+              onClick={() => {
+                onClick();
+                handleClickItem(name);
+              }}
+              key={id}
+              item={name}
+              isHighlight={isHighlight}
+            />
           ))}
-        </S.DropdownList>
+        </S.List>
       )}
-    </S.DropdownContainer>
+    </S.Container>
   );
 }
