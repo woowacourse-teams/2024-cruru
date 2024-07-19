@@ -1,6 +1,5 @@
 package com.cruru.dashboard.domain;
 
-import com.cruru.BaseEntity;
 import com.cruru.club.domain.Club;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Dashboard extends BaseEntity {
+public class Dashboard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
