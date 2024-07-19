@@ -8,9 +8,9 @@ export const processMockData: Process[] = [
     description: '설명',
     applicants: [
       {
-        applicant_id: 1,
-        applicant_name: '아르',
-        created_at: '2024-07-15T14:30:00.000Z',
+        applicantId: 1,
+        applicantName: '아르',
+        createdAt: '2024-07-15T14:30:00.000Z',
       },
     ],
   },
@@ -21,14 +21,14 @@ export const processMockData: Process[] = [
     description: '설명',
     applicants: [
       {
-        applicant_id: 2,
-        applicant_name: '렛서',
-        created_at: '2024-07-15T14:50:00.000Z',
+        applicantId: 2,
+        applicantName: '렛서',
+        createdAt: '2024-07-15T14:50:00.000Z',
       },
       {
-        applicant_id: 3,
-        applicant_name: '러기',
-        created_at: '2024-07-15T15:10:00.000Z',
+        applicantId: 3,
+        applicantName: '러기',
+        createdAt: '2024-07-15T15:10:00.000Z',
       },
     ],
   },

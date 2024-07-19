@@ -1,3 +1,5 @@
+import snakeToCamel from '@/utils/snakeToCamel';
+
 export const getProcesses = async ({ id }: { id: number }) => {
   const response = await fetch(`/api/processes?dashboard_id=${id}`, {
     headers: {
@@ -10,5 +12,5 @@ export const getProcesses = async ({ id }: { id: number }) => {
   }
 
   const data = await response.json();
-  return data;
+  return snakeToCamel(data);
 };
