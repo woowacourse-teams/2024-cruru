@@ -56,14 +56,12 @@ public class ProcessService {
     private List<DashboardApplicantDto> createDashboardApplicantDtos(Process process) {
         return applicantRepository.findAllByProcess(process)
                 .stream()
-                .map(applicant -> {
-                    int evaluationCount = evaluationRepository.countByApplicantAndProcess(applicant, process);
-                    return toApplicantDto(applicant, evaluationCount);
-                })
+                .map(applicant -> toApplicantDto(applicant, process))
                 .toList();
     }
 
-    private DashboardApplicantDto toApplicantDto(Applicant applicant, int evaluationCount) {
+    private DashboardApplicantDto toApplicantDto(Applicant applicant, Process process) {
+        int evaluationCount = evaluationRepository.countByApplicantAndProcess(applicant, process);
         return new DashboardApplicantDto(
                 applicant.getId(),
                 applicant.getName(),
