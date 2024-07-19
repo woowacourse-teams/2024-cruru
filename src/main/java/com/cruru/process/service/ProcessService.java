@@ -32,8 +32,10 @@ public class ProcessService {
     private final EvaluationRepository evaluationRepository;
 
     public ProcessesResponse findByDashboardId(Long dashboardId) {
-        dashboardRepository.findById(dashboardId)
-                .orElseThrow(DashboardNotFoundException::new);
+        boolean dashboardExists = dashboardRepository.existsById(dashboardId);
+        if (!dashboardExists) {
+            throw new DashboardNotFoundException();
+        }
 
         return new ProcessesResponse(processRepository.findAllByDashboardId(dashboardId)
                 .stream()
