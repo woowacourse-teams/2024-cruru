@@ -1,5 +1,6 @@
 package com.cruru.club.domain;
 
+import com.cruru.BaseEntity;
 import com.cruru.club.exception.ClubBadRequestException;
 import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Club {
+public class Club extends BaseEntity {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*() ]{1,32}$");
 
