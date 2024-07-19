@@ -1,38 +1,54 @@
 import styled from '@emotion/styled';
-import { ButtonSize } from '../Button/style';
+import { Theme, css } from '@emotion/react';
 
-const IconSizeMap = {
-  lg: '4.8rem',
-  md: '3.6rem',
-  sm: '2.4rem',
-};
+type IconButtonSize = 'sm' | 'md' | 'lg';
+type IconButtonShape = 'round' | 'square';
 
 export interface IconButtonStyleProps {
-  size: ButtonSize;
+  size?: IconButtonSize;
+  shape?: IconButtonShape;
   outline?: boolean;
-  borderRadius?: string;
 }
 
-const IconWrapper = styled.div<IconButtonStyleProps>`
+const shapeStyles = (shape: IconButtonShape = 'round') => css`
+  border-radius: ${shape === 'round' ? '50%' : '0.8rem'};
+`;
+
+const sizeStyles = (size: IconButtonSize = 'sm') => css`
+  width: ${size === 'sm' ? '2.4rem' : size === 'md' ? '3.6rem' : '4.8rem'};
+  height: ${size === 'sm' ? '2.4rem' : size === 'md' ? '3.6rem' : '4.8rem'};
+`;
+
+const outlineStyles = (theme: Theme) => css`
+  border: 1px solid ${theme.baseColors.grayscale[500]};
+`;
+
+const IconButton = styled.button<IconButtonStyleProps>`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 
-  padding: 0.4rem;
-  border-radius: ${({ borderRadius }) => borderRadius};
-  border: ${({ outline, theme }) => (outline ? `1px solid ${theme.baseColors.grayscale[300]}` : 'none')};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
-  img {
-    display: block;
-    width: ${({ size }) => IconSizeMap[size]};
-  }
+  ${({ shape }) => shapeStyles(shape)}
+  ${({ size }) => sizeStyles(size)}
+  ${({ outline, theme }) => outline && outlineStyles(theme)}
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.hover.bg};
+    border: ${({ outline, theme }) => outline && `1px solid ${theme.colors.hover.border[100]}`};
+  }
+
+  img,
+  svg {
+    width: 100%;
+    height: 100%;
   }
 `;
 
 const S = {
-  IconWrapper,
+  IconButton,
 };
 
 export default S;

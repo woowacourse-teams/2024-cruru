@@ -33,7 +33,8 @@
       "@components/*": ["src/components/*"],
       "@api/*": ["src/api/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@assets/*": ["src/assets/*"]
     }
   },
   "include": ["src/**/*", "setupTests.ts"]
