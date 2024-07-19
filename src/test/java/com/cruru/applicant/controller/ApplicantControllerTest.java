@@ -42,7 +42,7 @@ class ApplicantControllerTest {
         now = processRepository.save(now);
         Process next = new Process(2L, 1, "최종 합격", "최종 합격", null);
         next = processRepository.save(next);
-        Applicant applicant = new Applicant(1L, "name", "email", "phone", now);
+        Applicant applicant = new Applicant(1L, "name", "email", "phone", now, false);
         applicantRepository.save(applicant);
 
         RestAssured.given().log().all()
@@ -55,7 +55,7 @@ class ApplicantControllerTest {
     @DisplayName("지원자의 기본 정보를 읽어오는 데 성공하면 200을 응답한다.")
     @Test
     void read() {
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null));
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
 
         RestAssured.given().log().all()
                 .when().get("/api/v1/applicants/" + applicant.getId())

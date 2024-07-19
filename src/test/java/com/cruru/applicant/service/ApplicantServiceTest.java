@@ -66,7 +66,7 @@ class ApplicantServiceTest {
     @Test
     void findById() {
         // given
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null);
+        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null, false);
         applicant = applicantRepository.save(applicant);
 
         // when
