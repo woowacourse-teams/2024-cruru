@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
+import EllipsisIcon from '../../assets/images/ellipsis.svg';
 
 const CardContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  align-items: center;
+  padding: 1rem 1.6rem;
+  border-radius: 0.8rem;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+  width: 30rem;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 `;
 
 const CardDetail = styled.div`
@@ -14,33 +17,31 @@ const CardDetail = styled.div`
   flex-direction: column;
 `;
 
-const CardHeader = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
+const CardHeader = styled.h3`
+  ${({ theme }) => theme.typography.heading[400]};
+  color: ${({ theme }) => theme.baseColors.grayscale[900]};
+  margin-bottom: 0.4rem;
 `;
 
-const CardDate = styled.div`
-  font-size: 16px;
-  color: grey;
-  margin-bottom: 16px;
+const CardDate = styled.span`
+  ${({ theme }) => theme.typography.heading[300]};
+  color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
-const DropdownWrapper = styled.div`
-  align-self: center;
-`;
-
-const DropdownDefault = styled.div`
-  padding: 8px 16px;
-  font-size: 16px;
-  width: 120px;
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid grey;
-  background-color: white;
+const OptionButton = styled.button`
+  width: 3.6rem;
+  height: 3.6rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  background: url('${EllipsisIcon}') center no-repeat;
+  background-size: 2.4rem;
+  border-radius: 0.8rem;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.hover.bg};
+  }
 `;
 
 const S = {
@@ -48,8 +49,7 @@ const S = {
   CardDetail,
   CardHeader,
   CardDate,
-  DropdownWrapper,
-  DropdownDefault,
+  OptionButton,
 };
 
 export default S;
