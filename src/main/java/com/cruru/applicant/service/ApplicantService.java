@@ -56,7 +56,7 @@ public class ApplicantService {
     public ApplicantDetailResponse findDetailById(long id) {
         Applicant applicant = applicantRepository.findById(id)
                 .orElseThrow(ApplicantNotFoundException::new);
-        List<Answer> answers = answerRepository.findAllByApplicantId(id);
+        List<Answer> answers = answerRepository.findAllByApplicant(applicant);
         Dashboard dashboard = applicant.getDashboard();
         List<QnaResponse> qnaResponses = toQnaResponses(answers);
         return new ApplicantDetailResponse(applicant.getName(), dashboard.getName(), qnaResponses);

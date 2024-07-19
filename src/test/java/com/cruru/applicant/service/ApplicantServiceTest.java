@@ -20,7 +20,6 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
-import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -135,10 +134,7 @@ class ApplicantServiceTest {
         ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicant.getId());
 
         //then
-        List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses()
-                .stream()
-                .sorted(Comparator.comparingInt(QnaResponse::sequence))
-                .toList();
+        List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses();
         assertAll(
                 () -> assertThat(applicantDetailResponse.applicantName()).isEqualTo(applicant.getName()),
                 () -> assertThat(applicantDetailResponse.dashboardName()).isEqualTo(dashboard.getName()),
