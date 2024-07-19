@@ -48,7 +48,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": " --- \n ✨리뷰 요청✨ \n <@${{ env.REVIEWER_SLACK_ID }}> ➡️ <@${{ env.SENDER_SLACK_ID }}> \n **${{ github.event.pull_request.title }}**에 대한 리뷰 요청 도착! \n :muscle: 아래의 링크에서 확인주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n ✨✨✨✨✨✨\n✨리뷰요청✨\n✨✨✨✨✨✨ \n <@${{ env.SENDER_SLACK_ID }}> ➡️ <@${{ env.REVIEWER_SLACK_ID }}> \n\n 💡${{ github.event.pull_request.title }}💡에 대한 리뷰 요청 도착! \n 아래의 링크에서 확인주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }} - 바로가기>"
                   }
                 }
               ]
@@ -79,7 +79,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": " --- \n 🔥리뷰 완료🔥 \n <@${{ env.REVIEWER_SLACK_ID }}> ➡️ <@${{ env.ASSIGNEE_SLACK_ID }}> \n **${{ github.event.pull_request.title }}**에 대한 리뷰 도착! \n ✨ 아래의 링크에서 확인해주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n 🔥🔥🔥🔥🔥🔥\n🔥리뷰완료🔥\n🔥🔥🔥🔥🔥🔥 \n <@${{ env.REVIEWER_SLACK_ID }}> ➡️ <@${{ env.ASSIGNEE_SLACK_ID }}> \n 💡${{ github.event.pull_request.title }}💡에 대한 리뷰 도착! \n ✨ 아래의 링크에서 확인해주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }} - 바로가기>"
                   }
                 }
               ]
@@ -108,7 +108,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": " --- \n 🏁PR 승인🏁 \n <@${{ env.ASSIGNEE_SLACK_ID }}> 님! \n 🚀 작업하신 **${{ github.event.pull_request.title }}** 가 Approve 됐어요! \n :muscle: 아래의 링크에서 Merge를 진행해주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n🏁🏁🏁🏁🏁\n 🏁PR승인🏁 \n🏁🏁🏁🏁🏁\n <@${{ env.ASSIGNEE_SLACK_ID }}> 님! \n 🚀 작업하신 **${{ github.event.pull_request.title }}** 가 Approve 됐어요! \n :muscle: 아래의 링크에서 Merge를 진행해주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
                   }
                 }
               ]
