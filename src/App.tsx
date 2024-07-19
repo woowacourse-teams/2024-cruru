@@ -1,44 +1,26 @@
-import styled from '@emotion/styled';
-import plusIcon from '@assets/images/plus.svg';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ApplicantManage from './pages/ApplicantManage';
 
-import IconButton from '@components/IconButton';
-import KanbanBoard from '@components/KanbanBoard';
-import ProcessNavBar from './components/ProcessNavBar';
-import useProcess from './hooks/useProcess';
-
-const AppContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-`;
+const queryClient = new QueryClient();
 
 export default function App() {
-  const { processes, isLoading, error } = useProcess();
-
-  if (isLoading) {
-    // TODO: Loading 핸들링
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    // TODO: Error 핸들링
-    return <div>Error</div>;
-  }
+  const router = createBrowserRouter(
+    [
+      {
+        path: '/',
+        element: <ApplicantManage />,
+      },
+    ],
+    {
+      basename: './', //TODO: 배포할때 해당 루트로 적기
+    },
+  );
 
   return (
-    <AppContainer>
-      <ProcessNavBar currentMenuKey="applicant" />
-      <KanbanBoard processes={processes} />
-      <IconButton
-        type="button"
-        onClick={() => console.log('clicked')}
-        size="sm"
-        outline
-      >
-        <img
-          src={plusIcon}
-          alt="플러스 아이콘"
-        />
-      </IconButton>
-    </AppContainer>
+    <QueryClientProvider client={queryClient}>
+      {/*Header, SideBar를 여기에 추가하면 됩니다. */}
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
