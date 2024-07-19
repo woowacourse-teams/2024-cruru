@@ -1,11 +1,14 @@
 package com.cruru.evaluation.domain.repository;
 
+import com.cruru.applicant.domain.Applicant;
 import com.cruru.evaluation.domain.Evaluation;
+import com.cruru.process.domain.Process;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
-    List<Evaluation> findAllByProcessIdAndApplicantId(long processId, long applicantId);
+    int countByApplicantAndProcess(Applicant applicant, Process process);
 
+    List<Evaluation> findAllByProcessIdAndApplicantId(long processId, long applicantId);
 }
