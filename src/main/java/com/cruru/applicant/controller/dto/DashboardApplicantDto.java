@@ -14,7 +14,10 @@ public record DashboardApplicantDto(
         LocalDateTime createdAt,
 
         @JsonProperty("is_rejected")
-        Boolean isRejected
+        Boolean isRejected,
+
+        @JsonProperty("evaluation_count")
+        int evaluationCount
 ) {
 
 }
