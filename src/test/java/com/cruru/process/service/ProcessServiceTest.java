@@ -56,24 +56,24 @@ class ProcessServiceTest {
     @Test
     void findByDashboardId() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
-        dashboard = dashboardRepository.save(dashboard);
-        Process process = new Process(0, "서류", "서류", dashboard);
-        process = processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
-        applicant = applicantRepository.save(applicant);
-        Evaluation evaluation = new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant);
-        evaluationRepository.save(evaluation);
+        Dashboard dashboard = dashboardRepository.save(new Dashboard("7기 모집", null));
+        Process process = processRepository.save(new Process(0, "서류", "서류", dashboard));
+        Applicant applicant = applicantRepository.save(new Applicant(
+                "냥인", "nyang@email.com", "01000000000", process, false));
+        evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
 
         // when
         ProcessesResponse byDashboardId = processService.findByDashboardId(dashboard.getId());
 
         // then
-        assertThat(byDashboardId.processResponses()).hasSize(1);
         ProcessResponse firstProcessResponse = byDashboardId.processResponses().get(0);
-        assertThat(firstProcessResponse.processId()).isEqualTo(process.getId());
-        assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).applicantId()).isEqualTo(applicant.getId());
-        assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).evaluationCount()).isEqualTo(1);
+        assertAll(
+                () -> assertThat(byDashboardId.processResponses()).hasSize(1),
+                () -> assertThat(firstProcessResponse.processId()).isEqualTo(process.getId()),
+                () -> assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).applicantId()).isEqualTo(
+                        applicant.getId()),
+                () -> assertThat(firstProcessResponse.dashboardApplicantDtos().get(0).evaluationCount()).isEqualTo(1)
+        );
     }
 
     @DisplayName("대시보드가 존재하지 않는 경우, 예외가 발생한다.")
@@ -162,7 +162,8 @@ class ProcessServiceTest {
         processRepository.save(process2);
 
         // when&then
-        assertAll(() -> assertThatThrownBy(() -> processService.delete(process1.getId()))
+        assertAll(
+                () -> assertThatThrownBy(() -> processService.delete(process1.getId()))
                         .isInstanceOf(ProcessBadRequestException.class),
                 () -> assertThatThrownBy(() -> processService.delete(process2.getId()))
                         .isInstanceOf(ProcessBadRequestException.class)
