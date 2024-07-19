@@ -4,6 +4,7 @@ import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.service.ApplicantService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,21 +23,21 @@ public class ApplicantController {
 
     @PutMapping("/move-process/{processId}")
     public ResponseEntity<Void> updateApplicantProcess(
-            @PathVariable long processId,
-            @RequestBody ApplicantMoveRequest moveRequest) {
-
+            @PathVariable Long processId,
+            @RequestBody @Valid ApplicantMoveRequest moveRequest
+    ) {
         applicantService.updateApplicantProcess(processId, moveRequest);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{applicant_id}")
-    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") long applicantId) {
+    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") Long applicantId) {
         ApplicantResponse applicantResponse = applicantService.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
     @GetMapping("/{applicant_id}/detail")
-    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicant_id") long applicantId) {
+    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicant_id") Long applicantId) {
         ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicantId);
         return ResponseEntity.ok().body(applicantDetailResponse);
     }

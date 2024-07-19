@@ -4,6 +4,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.exception.ProcessBadRequestException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +22,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Process {
 
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z0-9!@#$%^&*() ]{1,32}$");
+    private static final int MIN_NAME_LENGTH = 1;
+    private static final int MAX_NAME_LENGTH = 32;
+    private static final Pattern NAME_PATTERN = Pattern.compile(
+            "^[가-힣a-zA-Z0-9!@#$%^&*() ]{" + MIN_NAME_LENGTH + "," + MAX_NAME_LENGTH + "}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +38,7 @@ public class Process {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dashboard_id")
     private Dashboard dashboard;
 
@@ -48,7 +52,9 @@ public class Process {
 
     private void validateName(String name) {
         if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new ProcessBadRequestException();
+            throw new ProcessBadRequestException(
+                    String.format("동아리 이름이 %d글자 미만이거나 %d글자 초과, 혹은 '_'를 포함하고 있습니다.", MIN_NAME_LENGTH, MAX_NAME_LENGTH)
+            );
         }
     }
 

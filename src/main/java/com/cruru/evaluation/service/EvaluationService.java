@@ -37,11 +37,9 @@ public class EvaluationService {
     }
 
     public EvaluationsResponse read(long processId, long applicantId) {
-        processRepository.findById(processId)
-                .orElseThrow(ProcessNotFoundException::new);
+        processRepository.findById(processId);
 
-        applicantRepository.findById(applicantId)
-                .orElseThrow(ApplicantNotFoundException::new);
+        applicantRepository.findById(applicantId);
 
         List<Evaluation> evaluations = evaluationRepository.findAllByProcessIdAndApplicantId(processId, applicantId);
         return toEvaluationsResponse(evaluations);

@@ -14,8 +14,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void create(MemberCreateRequest request) {
-        Member member = new Member(request.email(), request.password(), request.phone());
-        memberRepository.save(member);
+    @Transactional
+    public long create(MemberCreateRequest request) {
+        Member member = memberRepository.save(new Member(request.email(), request.password(), request.phone()));
+        return member.getId();
     }
 }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public record ApplicantResponse(
         @JsonProperty(value = "applicant_id")
-        Long id,
+        long id,
 
         String name,
 

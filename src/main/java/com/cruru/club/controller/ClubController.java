@@ -1,7 +1,7 @@
 package com.cruru.club.controller;
 
 import com.cruru.club.controller.dto.ClubCreateRequest;
-import com.cruru.club.domain.service.ClubService;
+import com.cruru.club.service.ClubService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;

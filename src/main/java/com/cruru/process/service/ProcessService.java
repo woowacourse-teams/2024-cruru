@@ -1,8 +1,9 @@
 package com.cruru.process.service;
 
-import com.cruru.applicant.controller.dto.DashboardApplicantDto;
+import com.cruru.applicant.controller.dto.DashboardApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
@@ -31,7 +32,7 @@ public class ProcessService {
     private final DashboardRepository dashboardRepository;
     private final EvaluationRepository evaluationRepository;
 
-    public ProcessesResponse findByDashboardId(Long dashboardId) {
+    public ProcessesResponse findByDashboardId(long dashboardId) {
         boolean dashboardExists = dashboardRepository.existsById(dashboardId);
         if (!dashboardExists) {
             throw new DashboardNotFoundException();
@@ -44,27 +45,27 @@ public class ProcessService {
     }
 
     private ProcessResponse toProcessResponse(Process process) {
-        List<DashboardApplicantDto> dashboardApplicantDtos = createDashboardApplicantDtos(process);
+        List<DashboardApplicantResponse> dashboardApplicantResponses = createDashboardApplicantResponses(process);
 
         return new ProcessResponse(
                 process.getId(),
                 process.getSequence(),
                 process.getName(),
                 process.getDescription(),
-                dashboardApplicantDtos
+                dashboardApplicantResponses
         );
     }
 
-    private List<DashboardApplicantDto> createDashboardApplicantDtos(Process process) {
+    private List<DashboardApplicantResponse> createDashboardApplicantResponses(Process process) {
         return applicantRepository.findAllByProcess(process)
                 .stream()
-                .map(applicant -> toApplicantDto(applicant, process))
+                .map(applicant -> toDashboardApplicantResponse(applicant, process))
                 .toList();
     }
 
-    private DashboardApplicantDto toApplicantDto(Applicant applicant, Process process) {
+    private DashboardApplicantResponse toDashboardApplicantResponse(Applicant applicant, Process process) {
         int evaluationCount = evaluationRepository.countByApplicantAndProcess(applicant, process);
-        return new DashboardApplicantDto(
+        return new DashboardApplicantResponse(
                 applicant.getId(),
                 applicant.getName(),
                 applicant.getCreatedDate(),
@@ -77,6 +78,8 @@ public class ProcessService {
     public void create(long dashboardId, ProcessCreateRequest request) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
         validateProcessCount(allByDashboardId);
+        Dashboard dashboard = dashboardRepository.findById(dashboardId)
+                .orElseThrow(DashboardNotFoundException::new);
 
         allByDashboardId.stream()
                 .filter(process -> process.getSequence() >= request.sequence())
@@ -86,14 +89,15 @@ public class ProcessService {
                 request.sequence(),
                 request.name(),
                 request.description(),
-                dashboardRepository.findById(dashboardId)
-                        .orElseThrow(DashboardNotFoundException::new))
+                dashboard)
         );
     }
 
     private void validateProcessCount(List<Process> processes) {
         if (processes.size() == MAX_PROCESS_COUNT) {
-            throw new ProcessBadRequestException();
+            throw new ProcessBadRequestException(
+                    String.format("프로세스 수가 최대 %d개이므로 더 이상 생성할 수 없습니다.", MAX_PROCESS_COUNT)
+            );
         }
     }
 
@@ -109,14 +113,14 @@ public class ProcessService {
     private void validateFirstOrLastProcess(Process process) {
         int processCount = (int) processRepository.countByDashboard(process.getDashboard());
         if (process.isSameSequence(PROCESS_FIRST_SEQUENCE) || process.isSameSequence(processCount - 1)) {
-            throw new ProcessBadRequestException();
+            throw new ProcessBadRequestException("처음과 마지막 프로세스는 삭제할 수 없습니다.");
         }
     }
 
     private void validateExistsApplicant(Process process) {
         int applicantCount = (int) applicantRepository.countByProcess(process);
         if (applicantCount > 0) {
-            throw new ProcessBadRequestException();
+            throw new ProcessBadRequestException("지원자가 존재하는 프로세스는 삭제할 수 없습니다.");
         }
     }
 }

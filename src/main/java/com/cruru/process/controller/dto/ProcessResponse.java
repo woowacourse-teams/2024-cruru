@@ -1,6 +1,6 @@
 package com.cruru.process.controller.dto;
 
-import com.cruru.applicant.controller.dto.DashboardApplicantDto;
+import com.cruru.applicant.controller.dto.DashboardApplicantResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public record ProcessResponse(
         String description,
 
         @JsonProperty("applicants")
-        List<DashboardApplicantDto> dashboardApplicantDtos
+        List<DashboardApplicantResponse> dashboardApplicantResponses
 ) {
 
 }

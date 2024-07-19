@@ -11,16 +11,15 @@ import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.util.ServiceTest;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @DisplayName("평가 서비스 테스트")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class EvaluationServiceTest {
+class EvaluationServiceTest extends ServiceTest {
 
     @Autowired
     private ProcessRepository processRepository;
@@ -40,10 +39,6 @@ class EvaluationServiceTest {
 
     @BeforeEach
     void setUp() {
-        evaluationRepository.deleteAll();
-        applicantRepository.deleteAll();
-        processRepository.deleteAll();
-
         process = processRepository.save(new Process(0, "서류", "서류", null));
 
         applicant = applicantRepository.save(

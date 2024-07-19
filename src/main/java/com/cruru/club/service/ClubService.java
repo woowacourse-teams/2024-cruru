@@ -1,4 +1,4 @@
-package com.cruru.club.domain.service;
+package com.cruru.club.service;
 
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.club.domain.Club;
