@@ -4,7 +4,7 @@ import DropdownItem, { DropdownItemProps } from './index';
 
 export default {
   component: DropdownItem,
-  title: 'DropdownItem',
+  title: 'Components/DropdownItem',
 } as Meta;
 
 const Template: StoryObj<DropdownItemProps> = {

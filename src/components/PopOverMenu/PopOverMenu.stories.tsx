@@ -5,7 +5,7 @@ import type { PopOverMenuItem } from '@/types/common';
 
 export default {
   component: PopOverMenu,
-  title: 'PopOverMenu',
+  title: 'Components/PopOverMenu',
   args: { isOpen: true },
 } as Meta;
 
