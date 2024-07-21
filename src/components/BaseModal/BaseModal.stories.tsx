@@ -4,7 +4,7 @@ import { ModalProvider, useModal } from '@/context/ModalContext';
 import Button from '../Button';
 
 const meta: Meta<typeof BaseModal> = {
-  title: 'Components/BaseModal',
+  title: 'Common/Modal/BaseModal',
   component: BaseModal,
   parameters: {
     layout: 'centered',
