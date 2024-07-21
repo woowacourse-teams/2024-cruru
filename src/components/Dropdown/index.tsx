@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import S from './style';
 import DropdownItem from '../DropdownItem';
+import ChevronButton from '../ChevronButton';
 
 type Item = {
   id: number;
@@ -50,13 +51,18 @@ export default function Dropdown({ children, size = 'sm', items }: DropdownProps
     >
       <S.Header
         onClick={toggleDropdown}
+        size={size}
         isOpen={isOpen}
       >
         {selected || 'Default'}
-        {/* TODO: Chevron Down 이미지를 넣어주세요 */}
+        <ChevronButton
+          direction="down"
+          size={size}
+        />
       </S.Header>
+
       {isOpen && (
-        <S.List>
+        <S.List size={size}>
           {items.map(({ name, isHighlight, id, onClick }) => (
             <DropdownItem
               onClick={() => {
@@ -66,6 +72,7 @@ export default function Dropdown({ children, size = 'sm', items }: DropdownProps
               key={id}
               item={name}
               isHighlight={isHighlight}
+              size={size}
             />
           ))}
         </S.List>

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
-const Item = styled.button<{ isHighlight: boolean }>`
+const Item = styled.button<{ isHighlight: boolean; size: 'sm' | 'md' }>`
   display: block;
   text-align: left;
   width: 100%;
 
-  padding: 12px 16px;
-  ${({ theme }) => theme.typography.common.default};
+  padding: ${({ size }) => (size === 'md' ? '6px 8px' : '6px 4px')};
+  ${({ theme, size }) => (size === 'md' ? theme.typography.common.default : theme.typography.common.small)};
   color: ${({ isHighlight, theme }) => (isHighlight ? theme.baseColors.redscale[500] : 'none')};
   border-radius: 4px;
 

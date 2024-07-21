@@ -7,7 +7,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  width: ${({ size }) => (size === 'sm' ? '150px' : '300px')};
+  width: ${({ size }) => (size === 'sm' ? '90px' : '240px')};
   position: absolute;
   inset: ${({ popOverPosition }) => popOverPosition ?? 'inherit'};
 
@@ -19,9 +19,9 @@ const Container = styled.div<ContainerProps>`
   z-index: 1;
 `;
 
-const List = styled.div`
+const List = styled.div<{ size: 'sm' | 'md' }>`
   width: 100%;
-  padding: 8px;
+  padding: ${({ size }) => (size === 'md' ? '16px' : '8px')};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};

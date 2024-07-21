@@ -1,38 +1,17 @@
 import styled from '@emotion/styled';
 
-const buttonSizes = {
-  sm: '24px',
-  md: '36px',
-  lg: '48px',
+const heightStyle = {
+  sm: '1.2rem',
+  md: '2.0rem',
+  lg: '3.2rem',
 };
 
-interface ButtonProps {
-  size: 'sm' | 'md' | 'lg';
-}
-
-const Button = styled.button<ButtonProps>`
-  width: ${(props) => buttonSizes[props.size]};
-  height: ${(props) => buttonSizes[props.size]};
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-
-  &:hover {
-    background-color: gray;
-  }
-
-  img {
-    width: 60%;
-    height: 60%;
-  }
+const Image = styled.img<{ size: 'sm' | 'md' | 'lg' }>`
+  height: ${({ size }) => heightStyle[size]};
+  aspect-ratio: 1.2;
 `;
-
 const S = {
-  Button,
+  Image,
 };
 
 export default S;
