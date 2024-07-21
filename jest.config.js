@@ -2,7 +2,7 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-fixed-jsdom',
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -18,7 +18,6 @@ module.exports = {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@mocks/(.*)$': '<rootDir>/src/mocks/$1',
   },
-  setupFiles: ['./jest.polyfills.js'],
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
