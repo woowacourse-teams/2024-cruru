@@ -6,14 +6,16 @@ import type { PopOverMenuItem } from '@/types/common';
 export interface PopOverMenuProps {
   isOpen: boolean;
   size?: 'sm' | 'md';
+  popOverPosition?: string;
   items: PopOverMenuItem[];
 }
 
-export default function PopOverMenu({ isOpen, size = 'sm', items }: PopOverMenuProps) {
+export default function PopOverMenu({ isOpen, size = 'sm', popOverPosition, items }: PopOverMenuProps) {
   return (
     <S.Container
       size={size}
       isOpen={isOpen}
+      popOverPosition={popOverPosition}
     >
       {isOpen && (
         <S.List>
