@@ -36,7 +36,8 @@
         "jsx": "never",
         "ts": "never",
         "tsx": "never",
-        "svg": "always"
+        "svg": "always",
+        "json": "always"
       }
     ],
     "import/no-unresolved": "off",

@@ -16,6 +16,11 @@ module.exports = {
     '^@styles/(.*)$': '<rootDir>/src/styles/$1',
     '^@types/(.*)$': '<rootDir>/src/types/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
+    '^@mocks/(.*)$': '<rootDir>/src/mocks/$1',
+  },
+  setupFiles: ['./jest.polyfills.js'],
+  testEnvironmentOptions: {
+    customExportConditions: [''],
   },
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/?(*.)+(spec|test).+(ts|tsx|js)'],
