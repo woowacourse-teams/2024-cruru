@@ -59,13 +59,14 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
     }
   `,
   error: (theme: Theme) => css`
-    color: ${theme.baseColors.grayscale[50]};
-    background-color: ${theme.colors.feedback.error};
-    border: 1px solid ${theme.baseColors.grayscale[950]};
+    color: ${theme.colors.feedback.error};
+    background-color: ${theme.baseColors.grayscale[50]};
+    border: 1px solid ${theme.colors.feedback.error};
 
     &:hover {
-      background-color: ${theme.baseColors.redscale[700]};
-      border: 1px solid ${theme.baseColors.grayscale[950]};
+      color: ${theme.baseColors.grayscale[50]};
+      background-color: ${theme.colors.feedback.error};
+      border: 1px solid ${theme.colors.feedback.error};
     }
   `,
 };
