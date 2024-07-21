@@ -18,14 +18,6 @@ module.exports = () => {
       historyApiFallback: true,
       port: 3000,
       hot: true,
-      proxy: [
-        {
-          context: ['/api'],
-          target: process.env.REACT_APP_CRURU_API_URL,
-          pathRewrite: { '^/api': '' },
-          changeOrigin: true,
-        },
-      ],
     },
   });
 };
