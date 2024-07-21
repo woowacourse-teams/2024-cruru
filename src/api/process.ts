@@ -1,7 +1,9 @@
 import snakeToCamel from '@/utils/snakeToCamel';
+import { createParams } from './utils';
+import { GET_PROCESSES } from './endPoint';
 
 export const getProcesses = async ({ id }: { id: number }) => {
-  const response = await fetch(`/api/processes?dashboard_id=${id}`, {
+  const response = await fetch(`${GET_PROCESSES}?${createParams({ dashboard_id: String(id) })}`, {
     headers: {
       Accept: 'application/json',
     },
