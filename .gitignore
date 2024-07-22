@@ -63,3 +63,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+### Exclude .github directory ###
+/.github/
