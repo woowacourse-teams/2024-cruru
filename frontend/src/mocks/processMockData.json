@@ -1,0 +1,28 @@
+{
+  "processes": [
+    {
+      "process_id": 1,
+      "order_index": 0,
+      "applicants": [
+        { "applicant_id": 1, "applicant_name": "러기", "created_at": "2024-07-16T05:46:08.328593" },
+        { "applicant_id": 2, "applicant_name": "도비", "created_at": "2024-07-16T05:46:08.341936" },
+        { "applicant_id": 6, "applicant_name": "러시", "created_at": "2024-07-16T05:46:08.356121" },
+        { "applicant_id": 7, "applicant_name": "냥인", "created_at": "2024-07-16T05:46:08.359131" },
+        { "applicant_id": 8, "applicant_name": "렛서", "created_at": "2024-07-16T05:46:08.361759" }
+      ],
+      "name": "지원서",
+      "description": "지원서를 확인한다."
+    },
+    {
+      "process_id": 2,
+      "order_index": 0,
+      "applicants": [
+        { "applicant_id": 3, "applicant_name": "아르", "created_at": "2024-07-16T05:46:08.345472" },
+        { "applicant_id": 4, "applicant_name": "초코칩", "created_at": "2024-07-16T05:46:08.350114" },
+        { "applicant_id": 5, "applicant_name": "명오", "created_at": "2024-07-16T05:46:08.352613" }
+      ],
+      "name": "최종 합격",
+      "description": "최종 합격자"
+    }
+  ]
+}
