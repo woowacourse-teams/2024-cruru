@@ -5,8 +5,7 @@
     "test": "jest",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_cdf0c4c991ae32b"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
