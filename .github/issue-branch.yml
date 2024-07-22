@@ -13,22 +13,60 @@ branches:
     - frontend
     prefix: fe-
     name: fe/develop
+  - label: 
+    - refactor
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - refactor
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - chore
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - chore
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - test
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - test
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - fix
+    - backend
+    prefix: be-
+    name: be/develop
+  - label: 
+    - fix
+    - frontend
+    prefix: fe-
+    name: fe/develop
+  - label: 
+    - hotfix
+    - backend
+    prefix: be-hotfix-
+    name: be/release
+  - label: 
+    - hotfix
+    - frontend
+    prefix: fe-hotfix-
+    name: fe/release
+  - label: docs
+    skip: true
   - label: '*'
     skip: true
-  # - label: docs
-  #   prefix: docs/
-  # - label: hotfix
-  #   prefix: hotfix/
-  # - label: refactor
-  #   prefix: refactor/
-  # - label: chore
-  #   prefix: chore/
-  # - label: release
-  #   prefix: release/
-  # - label: test
-  #   prefix: test/
-  # - label: fix
-  #   prefix: fix/
 
 commentMessage: |
   🚀 안녕하세요 @${assignee.login}님! 작업을 시작하셨군요?
@@ -48,4 +86,3 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
- 

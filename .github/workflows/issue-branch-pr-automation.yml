@@ -34,7 +34,7 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.assignee.login] }}" >> $GITHUB_ENV
 
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.24.0
@@ -48,7 +48,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "🚀 <@${{ env.ASSIGNEE_SLACK_ID }}> 님이 \n <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}> 작업을 시작했습니다! :muscle::muscle:"
+                    "text": "--- \n 🚀 작업 시작 🚀 \n <@${{ env.ASSIGNEE_SLACK_ID }}> 님이 \n <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}> 작업을 시작했습니다!:muscle:"
                   }
                 }
               ]
@@ -64,7 +64,7 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.assignee.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
 
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.24.0
@@ -78,7 +78,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":pushpin: <@${{ env.ASSIGNEE_SLACK_ID }}> 님의 할당 이슈인 \n\n :confetti_ball::confetti_ball: <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}> 작업이 완료(종료)됐습니다! :confetti_ball::confetti_ball:"
+                    "text": "--- \n :pushpin: 작업 완료 :pushpin: \n <@${{ env.ASSIGNEE_SLACK_ID }}> 님의 할당 이슈인 \n\n :confetti_ball::confetti_ball: <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}> 작업이 완료(종료)됐습니다! :confetti_ball::confetti_ball:"
                   }
                 }
               ]
