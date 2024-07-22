@@ -10,13 +10,28 @@ export interface IconButtonStyleProps {
   outline?: boolean;
 }
 
+const sizes = {
+  sm: {
+    width: '2.4rem',
+    height: '2.4rem',
+  },
+  md: {
+    width: '3.6rem',
+    height: '3.6rem',
+  },
+  lg: {
+    width: '4.8rem',
+    height: '4.8rem',
+  },
+};
+
 const shapeStyles = (shape: IconButtonShape = 'round') => css`
   border-radius: ${shape === 'round' ? '50%' : '0.8rem'};
 `;
 
 const sizeStyles = (size: IconButtonSize = 'sm') => css`
-  width: ${size === 'sm' ? '2.4rem' : size === 'md' ? '3.6rem' : '4.8rem'};
-  height: ${size === 'sm' ? '2.4rem' : size === 'md' ? '3.6rem' : '4.8rem'};
+  width: ${sizes[size].width};
+  height: ${sizes[size].height};
 `;
 
 const outlineStyles = (theme: Theme) => css`
@@ -30,6 +45,7 @@ const IconButton = styled.button<IconButtonStyleProps>`
   justify-content: center;
 
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+  transition: all 0.2s ease-in-out;
 
   ${({ shape }) => shapeStyles(shape)}
   ${({ size }) => sizeStyles(size)}

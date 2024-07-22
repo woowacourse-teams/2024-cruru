@@ -13,6 +13,8 @@ const commonStyles = (theme: Theme) => css`
   border-radius: 0.8rem;
   ${theme.typography.common.default};
 
+  transition: all 0.2s ease-in-out;
+
   &:hover {
     cursor: pointer;
   }
