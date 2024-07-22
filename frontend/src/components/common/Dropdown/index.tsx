@@ -11,13 +11,13 @@ type Item = {
 };
 
 export interface DropdownProps {
-  children?: string;
+  initValue?: string;
   size?: 'sm' | 'md';
   items: Item[];
 }
 
-export default function Dropdown({ children, size = 'sm', items }: DropdownProps) {
-  const [selected, setSelected] = useState(children);
+export default function Dropdown({ initValue, size = 'sm', items }: DropdownProps) {
+  const [selected, setSelected] = useState(initValue);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

@@ -8,7 +8,7 @@ export default {
 } as Meta;
 
 const Template: StoryObj<DropdownProps> = {
-  render: (args) => <Dropdown {...args} />,
+  render: (args) => <Dropdown {...args}>1323</Dropdown>,
 };
 
 const testItem = {
@@ -31,5 +31,14 @@ export const SmallSize: StoryObj<DropdownProps> = {
   args: {
     size: 'sm',
     items: testItemList,
+  },
+};
+
+export const InitValueTest: StoryObj<DropdownProps> = {
+  ...Template,
+  args: {
+    size: 'md',
+    items: testItemList,
+    initValue: '아무 글자',
   },
 };
