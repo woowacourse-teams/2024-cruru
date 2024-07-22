@@ -1,6 +1,8 @@
 branchName: '${issue.number}-${issue.body[-20]}'
 gitSafeReplacementChar: ""
 openDraftPR: true
+conventionalPrTitles: true
+conventionalStyle: semver-no-gitmoji
 autoCloseIssue: true
 branches:
   - label: 
@@ -13,22 +15,18 @@ branches:
     - frontend
     prefix: fe-
     name: fe/develop
+  - label: docs
+    skip: true
+  - label: refactor
+    skip: true
+  - label: chore
+    skip: true
+  - label: test
+    skip: true
+  - label: fix
+    skip: true
   - label: '*'
     skip: true
-  # - label: docs
-  #   prefix: docs/
-  # - label: hotfix
-  #   prefix: hotfix/
-  # - label: refactor
-  #   prefix: refactor/
-  # - label: chore
-  #   prefix: chore/
-  # - label: release
-  #   prefix: release/
-  # - label: test
-  #   prefix: test/
-  # - label: fix
-  #   prefix: fix/
 
 commentMessage: |
   🚀 안녕하세요 @${assignee.login}님! 작업을 시작하셨군요?
@@ -48,4 +46,19 @@ copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true
 copyIssueProjectsToPR: true
 copyIssueMilestoneToPR: true
- 
+
+conventionalLabels:
+  fix:
+    fix: '🔨'
+  feat:
+    feature: '✨'
+  chore:
+    chore:
+  docs:
+    docs: '📝'
+  style:
+    style: '💎'
+  refactor:
+    refactor: '♻️'
+  test:
+    test: '✅'
