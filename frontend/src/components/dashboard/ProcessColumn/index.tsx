@@ -1,5 +1,6 @@
 import { Process } from '@customTypes/process';
 import useProcess from '@hooks/useProcess';
+import useApplicant from '@hooks/useApplicant';
 
 import S from './style';
 import ApplicantCard from '../ApplicantCard';
@@ -9,13 +10,18 @@ interface ProcessColumnProps {
 }
 
 export default function ProcessColumn({ process }: ProcessColumnProps) {
-  const { processNameList } = useProcess();
+  const { processList } = useProcess();
+  const { moveApplicantProcess } = useApplicant();
 
-  const menuItemsList = processNameList.map((name, index) => ({
-    id: String(index),
-    name,
-    onClick: () => console.log('click'),
-  }));
+  const menuItemsList = ({ applicantId }: { applicantId: number }) =>
+    processList.map(({ processName, processId }) => ({
+      id: processId,
+      name: processName,
+      onClick: ({ targetProcessId }: { targetProcessId: number }) => {
+        console.log(targetProcessId, applicantId);
+        moveApplicantProcess.mutate({ processId: targetProcessId, applicants: [applicantId] });
+      },
+    }));
 
   return (
     <S.ProcessWrapper>
@@ -28,7 +34,7 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
             key={applicantId}
             name={applicantName}
             createdAt={createdAt}
-            popOverMenuItems={menuItemsList}
+            popOverMenuItems={menuItemsList({ applicantId })}
           />
         ))}
       </S.ApplicantList>

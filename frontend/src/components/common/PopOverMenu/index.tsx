@@ -21,7 +21,7 @@ export default function PopOverMenu({ isOpen, size = 'sm', popOverPosition, item
           {items.map(({ name, isHighlight, id, onClick }) => (
             <DropdownItem
               size={size}
-              onClick={onClick}
+              onClick={() => onClick({ targetProcessId: id })}
               key={id}
               item={name}
               isHighlight={isHighlight}
