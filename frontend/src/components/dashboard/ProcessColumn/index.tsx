@@ -18,7 +18,6 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
       id: processId,
       name: processName,
       onClick: ({ targetProcessId }: { targetProcessId: number }) => {
-        console.log(targetProcessId, applicantId);
         moveApplicantProcess.mutate({ processId: targetProcessId, applicants: [applicantId] });
       },
     }));
