@@ -48,7 +48,6 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "--- \n 🚀 작업 시작 🚀 \n <@${{ env.ASSIGNEE_SLACK_ID }}> 님이 \n <${{ github.event.issue.html_url }}|${{ github.event.issue.title }}> 작업을 시작했습니다!:muscle:"
                   }
                 }
               ]
