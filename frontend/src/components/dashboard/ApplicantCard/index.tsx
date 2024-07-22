@@ -60,6 +60,7 @@ export default function ApplicantCard({ name, createdAt, popOverMenuItems }: App
           </IconButton>
           <PopOverMenu
             isOpen={isPopOverOpen}
+            setClose={() => setIsPopOverOpen(false)}
             items={popOverMenuItems}
             popOverPosition="3.5rem 0 0 -6rem"
           />
