@@ -1,3 +1,4 @@
+
 import snakeToCamel from '@utils/snakeToCamel';
 import { APPLICANTS } from './endPoint';
 
