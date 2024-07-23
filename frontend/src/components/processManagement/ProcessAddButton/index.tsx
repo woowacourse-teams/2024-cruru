@@ -3,7 +3,7 @@ import { useState } from 'react';
 import plusIcon from '@assets/images/plus.svg';
 
 import IconButton from '@components/common/IconButton';
-import ProcessAddForm from '@components/dashboard/ProcessAddForm';
+import ProcessAddForm from '@components/processManagement/ProcessAddForm';
 
 import S from './style';
 
