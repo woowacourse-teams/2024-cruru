@@ -44,18 +44,18 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ~/backend/gradlew
+        run: chmod +x ./backend/gradlew
 
       - name: Run tests and generate coverage report
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ~/backend/gradlew test jacocoTestReport
+        run: ./backend/gradlew test jacocoTestReport
         continue-on-error: true
 
       - name: Verify test coverage
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ~/backend/gradlew jacocoTestCoverageVerification
+        run: ./backend/gradlew jacocoTestCoverageVerification
         continue-on-error: true
 
       - name: 테스트 커버리지를 PR에 코멘트로 등록
