@@ -1,9 +1,9 @@
-name: FE/CI - 기능 테스트, 빌드 및 Chromatic 배포
+name: FE/CD - 프로덕션 코드 빌드 및 S3 배포
 
 on:
   push:
     branches:
-      - fe/develop
+      - fe/main
 
 jobs:
   build:
@@ -18,8 +18,6 @@ jobs:
     steps:
       - name: 저장소 checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Node.js 셋업
         uses: actions/setup-node@v4
@@ -41,20 +39,37 @@ jobs:
         run: |
           echo "REACT_APP_CRURU_API_URL=${{ secrets.API_URL }}" >> .env.production
 
-      - name: 애플리케이션 기능 테스트
-        run: npm run test
-
       - name: 애플리케이션 빌드
         run: npm run build
-
-      - name: 컴포넌트 Storybook을 Chromatic으로 배포
-        uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          workingDir: frontend
 
       - name: 빌드된 파일을 artifact로 업로드
         uses: actions/upload-artifact@v4
         with:
-          name: fe-dev-dist
+          name: fe-prod-dist
           path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, linux, cruru-fe]
+
+    steps:
+      - name: 작업 디렉터리 생성 및 이동
+        run: |
+          mkdir -p ~/actions-runner/deploy
+          cd ~/actions-runner/deploy
+
+      - name: 기존 빌드 파일들 삭제
+        run: |
+          cd ~/actions-runner/deploy
+          rm -rf dist
+
+      - name: 새 빌드 파일을 runner instance에 다운로드
+        uses: actions/download-artifact@v4
+        with:
+          name: fe-dev-dist
+          path: ~/actions-runner/deploy/dist
+
+      - name: 다운로드 된 빌드 파일을 S3에 배포
+        run: |
+          cd ~/actions-runner/deploy
+          aws s3 sync dist ${{ secrets.FE_DEPLOY_S3_URI }} --delete
