@@ -22,6 +22,7 @@ export default function InputField({ label, value, onChange, disabled, error, re
         onChange={onChange}
         disabled={disabled}
         isError={!!error}
+        required={required}
         {...props}
       />
 
