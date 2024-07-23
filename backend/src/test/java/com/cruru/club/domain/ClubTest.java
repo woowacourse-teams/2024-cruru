@@ -1,5 +1,6 @@
 package com.cruru.club.domain;
 
+import static com.cruru.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -17,7 +18,7 @@ class ClubTest {
     @ParameterizedTest
     void validClubName(String name) {
         // given
-        Member member = new Member("password", "phoneNumber", "phone");
+        Member member = createMember();
 
         // when&then
         assertThatCode(() -> new Club(name, member)).doesNotThrowAnyException();
@@ -28,7 +29,7 @@ class ClubTest {
     @ParameterizedTest
     void invalidClubNameLength(String name) {
         // given
-        Member member = new Member("password", "phoneNumber", "phone");
+        Member member = createMember();
 
         // when&then
         assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubBadRequestException.class);
