@@ -1,7 +1,7 @@
 import snakeToCamel from '@utils/snakeToCamel';
 import { APPLICANTS } from './endPoint';
 
-export const moveApplicant = async ({ processId, applicants }: { processId: number; applicants: number[] }) => {
+const moveApplicant = async ({ processId, applicants }: { processId: number; applicants: number[] }) => {
   const response = await fetch(`${APPLICANTS}/move-process/${processId}`, {
     method: 'PUT',
     headers: {
@@ -19,7 +19,7 @@ export const moveApplicant = async ({ processId, applicants }: { processId: numb
   return { status: response.status };
 };
 
-export const getSpecificApplicant = async ({ applicantId }: { applicantId: number }) => {
+const getSpecificApplicant = async ({ applicantId }: { applicantId: number }) => {
   const response = await fetch(`${APPLICANTS}/${applicantId}`, {
     headers: {
       Accept: 'application/json',
@@ -33,3 +33,21 @@ export const getSpecificApplicant = async ({ applicantId }: { applicantId: numbe
   const data = await response.json();
   return snakeToCamel(data);
 };
+
+const rejectApplicant = async ({ applicantId }: { applicantId: number }) => {
+  const response = await fetch(`${APPLICANTS}/${applicantId}/reject`, { method: 'PATCH' });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  return { status: response.status };
+};
+
+const applicantApis = {
+  move: moveApplicant,
+  get: getSpecificApplicant,
+  reject: rejectApplicant,
+};
+
+export default applicantApis;
