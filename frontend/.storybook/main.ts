@@ -16,7 +16,6 @@ const config: StorybookConfig = {
     options: {},
   },
   webpackFinal: async (config) => {
-    console.log(__dirname);
     if (config.resolve) {
       config.resolve.alias = {
         ...config.resolve?.alias,
@@ -45,5 +44,6 @@ const config: StorybookConfig = {
       },
     },
   }),
+  staticDirs: ['../public'],
 };
 export default config;

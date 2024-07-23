@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div<{ size: 'sm' | 'md'; isOpen: boolean }>`
-  width: ${({ size }) => (size === 'sm' ? '90px' : '240px')};
+const Container = styled.div<{ size: 'sm' | 'md'; isOpen: boolean; width?: number; isShadow: boolean }>`
+  width: ${({ size, width }) => (width ? `${width}px` : size === 'sm' ? '90px' : '240px')};
   position: relative;
 
   border-radius: ${({ isOpen }) => (isOpen ? '8px 8px 0px 0px' : '8px')};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.baseColors.grayscale[400]};
+  box-shadow: ${({ isShadow, theme }) => (isShadow ? `0px 4px 4px ${theme.baseColors.grayscale[400]}` : 'none')};
 `;
 
 const Header = styled.div<{ isOpen: boolean; size: 'sm' | 'md' }>`
@@ -18,7 +18,8 @@ const Header = styled.div<{ isOpen: boolean; size: 'sm' | 'md' }>`
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 
   border-radius: ${({ isOpen }) => (isOpen ? '8px 8px 0px 0px' : '8px')};
-  border-bottom: ${({ isOpen, theme }) => (isOpen ? 'none' : `1px sold ${theme.baseColors.grayscale[400]}`)};
+  border-bottom: ${({ isOpen, theme }) =>
+    isOpen ? `1px solid ${theme.baseColors.grayscale[200]}` : `1px solid ${theme.baseColors.grayscale[400]}`};
 
   ${({ theme, size }) => (size === 'md' ? theme.typography.heading[500] : theme.typography.heading[200])}
   margin-bottom: 0;
@@ -38,7 +39,7 @@ const Header = styled.div<{ isOpen: boolean; size: 'sm' | 'md' }>`
     `}
 `;
 
-const List = styled.div<{ size: 'sm' | 'md' }>`
+const List = styled.div<{ size: 'sm' | 'md'; isShadow: boolean }>`
   position: absolute;
   width: 100%;
   padding: ${({ size }) => (size === 'md' ? '16px' : '8px')};
@@ -49,7 +50,7 @@ const List = styled.div<{ size: 'sm' | 'md' }>`
   border-top: none;
 
   box-sizing: border-box;
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.baseColors.grayscale[400]};
+  box-shadow: ${({ isShadow, theme }) => (isShadow ? `0px 4px 4px ${theme.baseColors.grayscale[400]}` : 'none')};
 
   z-index: 1;
 `;
