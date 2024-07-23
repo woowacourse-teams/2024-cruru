@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import type { Process } from '@customTypes/process';
-import { getProcesses } from '@api/process';
+import processApis from '@api/process';
 
 interface IUseProcessReturn {
   processes: Process[];
@@ -15,7 +15,7 @@ export default function useProcess(): IUseProcessReturn {
 
   const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
     queryKey: ['dashboard', ID],
-    queryFn: () => getProcesses({ id: ID }),
+    queryFn: () => processApis.get({ id: ID }),
   });
 
   const processes = data?.processes || [];
