@@ -2,6 +2,7 @@ package com.cruru.process.service;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
 import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.fixture.EvaluationFixture.createEvaluation;
 import static com.cruru.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
@@ -54,7 +55,7 @@ class ProcessServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
-        evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
+        evaluationRepository.save(createEvaluation(process, applicant));
 
         // when
         ProcessesResponse byDashboardId = processService.findByDashboardId(dashboard.getId());
