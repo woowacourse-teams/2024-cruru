@@ -1,6 +1,8 @@
 package com.cruru.applicant.service;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -56,8 +58,8 @@ class ApplicantServiceTest extends ServiceTest {
     void updateApplicantProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard("모집 공고1", null));
-        Process beforeProcess = processRepository.save(new Process(0, "이전 프로세스", "프로세스 설명1", dashboard));
-        Process afterProcess = processRepository.save(new Process(1, "이후 프로세스", "프로세스 설명2", dashboard));
+        Process beforeProcess = processRepository.save(createFirstProcess(dashboard));
+        Process afterProcess = processRepository.save(createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
                 createApplicantDobby(beforeProcess),
@@ -109,7 +111,7 @@ class ApplicantServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = new Dashboard("프론트 부원 모집", null);
         dashboardRepository.save(dashboard);
-        Process process = new Process(0, "서류", "서류 단계", dashboard);
+        Process process = createFirstProcess(dashboard);
         processRepository.save(process);
         Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);

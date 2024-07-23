@@ -1,6 +1,8 @@
 package com.cruru.applicant.controller;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.domain.Applicant;
@@ -33,9 +35,9 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Process now = new Process(1L, 0, "서류", "서류 전형", null);
+        Process now = createFirstProcess();
         now = processRepository.save(now);
-        Process next = new Process(2L, 1, "최종 합격", "최종 합격", null);
+        Process next = createFinalProcess();
         next = processRepository.save(next);
         Applicant applicant = createApplicantDobby(now);
         applicantRepository.save(applicant);
@@ -65,7 +67,7 @@ class ApplicantControllerTest extends ControllerTest {
     void readDetail() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard("프론트 부원 모집", null));
-        Process process = processRepository.save(new Process(0, "서류", "서류 단계", dashboard));
+        Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when&then

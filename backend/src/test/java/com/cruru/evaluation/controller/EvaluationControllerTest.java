@@ -1,6 +1,7 @@
 package com.cruru.evaluation.controller;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -36,7 +37,7 @@ class EvaluationControllerTest extends ControllerTest {
     void setUp() {
         RestAssured.port = port;
 
-        process = processRepository.save(new Process(0, "서류", "서류", null));
+        process = processRepository.save(createFirstProcess());
 
         applicant = applicantRepository.save(createApplicantDobby(process));
     }

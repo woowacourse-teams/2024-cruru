@@ -1,5 +1,7 @@
 package com.cruru.process.controller;
 
+import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
+
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
@@ -73,7 +75,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void delete() {
         // given
-        Process process = processRepository.save(new Process(1, "1차 면접", "화상 면접", dashboard));
+        Process process = processRepository.save(createInterviewProcess(dashboard));
         String url = String.format("/v1/processes/%d", process.getId());
 
         // when&then

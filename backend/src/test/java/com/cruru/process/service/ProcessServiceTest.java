@@ -1,6 +1,9 @@
 package com.cruru.process.service;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -48,7 +51,7 @@ class ProcessServiceTest extends ServiceTest {
     void findByDashboardId() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard("7기 모집", null));
-        Process process = processRepository.save(new Process(0, "서류", "서류", dashboard));
+        Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
         evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
 
@@ -84,10 +87,10 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "서류", "서류", dashboard);
-        processRepository.save(process1);
-        Process process2 = new Process(2, "최종 면접", "대면 면접", dashboard);
-        processRepository.save(process2);
+        Process firstProcess = createFirstProcess(dashboard);
+        processRepository.save(firstProcess);
+        Process finalProcess = createFinalProcess(dashboard);
+        processRepository.save(finalProcess);
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
 
         // when
@@ -131,11 +134,11 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(1, "1차 면접", "화상 면접", dashboard);
-        process1 = processRepository.save(process1);
+        Process process = createInterviewProcess(dashboard);
+        process = processRepository.save(process);
 
         // when
-        processService.delete(process1.getId());
+        processService.delete(process.getId());
 
         // then
         assertThat(processRepository.findAll()).hasSize(0);
@@ -147,16 +150,16 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "서류", "서류", dashboard);
-        processRepository.save(process1);
-        Process process2 = new Process(1, "최종 면접", "대면 면접", dashboard);
-        processRepository.save(process2);
+        Process firstProcess = createFirstProcess(dashboard);
+        processRepository.save(firstProcess);
+        Process finalProcess = createFinalProcess(dashboard);
+        processRepository.save(finalProcess);
 
         // when&then
         assertAll(
-                () -> assertThatThrownBy(() -> processService.delete(process1.getId()))
+                () -> assertThatThrownBy(() -> processService.delete(firstProcess.getId()))
                         .isInstanceOf(ProcessBadRequestException.class),
-                () -> assertThatThrownBy(() -> processService.delete(process2.getId()))
+                () -> assertThatThrownBy(() -> processService.delete(finalProcess.getId()))
                         .isInstanceOf(ProcessBadRequestException.class)
         );
     }
@@ -167,7 +170,7 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = new Dashboard("7기 모집", null);
         dashboard = dashboardRepository.save(dashboard);
-        Process process = new Process(1, "서류", "서류", dashboard);
+        Process process = createInterviewProcess(dashboard);
         processRepository.save(process);
         Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
