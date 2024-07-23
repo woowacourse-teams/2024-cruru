@@ -35,7 +35,8 @@ public class ProcessController {
     @PostMapping
     public ResponseEntity<Void> create(
             @RequestParam(name = "dashboard_id") Long dashboardId,
-            @RequestBody @Valid ProcessCreateRequest request) {
+            @RequestBody @Valid ProcessCreateRequest request
+    ) {
         processService.create(dashboardId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -43,7 +44,8 @@ public class ProcessController {
     @PatchMapping("/{process_id}")
     public ResponseEntity<ProcessResponse> update(
             @PathVariable(name = "process_id") Long processId,
-            @RequestBody @Valid ProcessUpdateRequest request) {
+            @RequestBody @Valid ProcessUpdateRequest request
+    ) {
         ProcessResponse response = processService.update(processId, request);
         return ResponseEntity.ok().body(response);
     }

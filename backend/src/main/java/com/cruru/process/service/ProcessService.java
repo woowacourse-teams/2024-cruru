@@ -103,6 +103,7 @@ public class ProcessService {
         }
     }
 
+    @Transactional
     public ProcessResponse update(long processId, @Valid ProcessUpdateRequest request) {
         Process process = processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
