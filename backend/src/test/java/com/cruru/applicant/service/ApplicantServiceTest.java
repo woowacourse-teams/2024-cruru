@@ -1,6 +1,7 @@
 package com.cruru.applicant.service;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +58,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("모집 공고1", null));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process beforeProcess = processRepository.save(createFirstProcess(dashboard));
         Process afterProcess = processRepository.save(createFinalProcess(dashboard));
 
@@ -109,7 +110,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findDetailById() {
         // given
-        Dashboard dashboard = new Dashboard("프론트 부원 모집", null);
+        Dashboard dashboard = createBackendDashboard();
         dashboardRepository.save(dashboard);
         Process process = createFirstProcess(dashboard);
         processRepository.save(process);

@@ -1,5 +1,6 @@
 package com.cruru.process.domain;
 
+import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.dashboard.domain.Dashboard;
@@ -16,7 +17,7 @@ class ProcessTest {
     @ParameterizedTest
     void invalidProcessName(String invalidName) {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
+        Dashboard dashboard = createBackendDashboard();
 
         // when&then
         assertThatThrownBy(() -> new Process(1, invalidName, "온라인", dashboard))

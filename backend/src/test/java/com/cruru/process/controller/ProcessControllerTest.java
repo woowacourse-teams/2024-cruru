@@ -1,5 +1,6 @@
 package com.cruru.process.controller;
 
+import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
 
 import com.cruru.dashboard.domain.Dashboard;
@@ -28,7 +29,7 @@ class ProcessControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        dashboard = dashboardRepository.save(new Dashboard("name", null));
+        dashboard = dashboardRepository.save(createBackendDashboard());
     }
 
     @DisplayName("프로세스 조회 성공 시, 200을 응답한다.")

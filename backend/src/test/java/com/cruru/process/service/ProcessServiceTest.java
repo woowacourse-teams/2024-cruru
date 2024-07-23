@@ -1,6 +1,7 @@
 package com.cruru.process.service;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
@@ -50,7 +51,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void findByDashboardId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("7기 모집", null));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
         evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
@@ -85,7 +86,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
+        Dashboard dashboard = createBackendDashboard();
         dashboard = dashboardRepository.save(dashboard);
         Process firstProcess = createFirstProcess(dashboard);
         processRepository.save(firstProcess);
@@ -110,7 +111,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void createOverProcessMaxCount() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = createBackendDashboard();
         Dashboard savedDashboard = dashboardRepository.save(dashboard);
         processRepository.saveAll(
                 List.of(
@@ -132,7 +133,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void delete() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
+        Dashboard dashboard = createBackendDashboard();
         dashboard = dashboardRepository.save(dashboard);
         Process process = createInterviewProcess(dashboard);
         process = processRepository.save(process);
@@ -148,7 +149,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void deleteFirstOrLastProcess() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
+        Dashboard dashboard = createBackendDashboard();
         dashboard = dashboardRepository.save(dashboard);
         Process firstProcess = createFirstProcess(dashboard);
         processRepository.save(firstProcess);
@@ -168,7 +169,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void deleteExistsApplicantProcess() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
+        Dashboard dashboard = createBackendDashboard();
         dashboard = dashboardRepository.save(dashboard);
         Process process = createInterviewProcess(dashboard);
         processRepository.save(process);

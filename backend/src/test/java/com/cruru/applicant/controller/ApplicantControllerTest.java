@@ -1,6 +1,7 @@
 package com.cruru.applicant.controller;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 
@@ -66,7 +67,7 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void readDetail() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("프론트 부원 모집", null));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
