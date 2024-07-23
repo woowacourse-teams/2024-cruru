@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
 import Button from '@components/common/Button';
+import { processMutaions } from '@hooks/process';
 import S from './style';
 
 interface ProcessAddForm {
@@ -19,6 +20,13 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
     name: '',
     description: '',
   });
+  const { mutate, isSuccess } = processMutaions.useCreateProcess({
+    // TODO: 상수화 한 것으로 변경
+    // TODO: 상수를 전역상태로 관리하는 것으로 변경
+    dashboardId: 1,
+    orderIndex: priorProcessId + 1,
+    ...formState,
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -30,7 +38,12 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ ...formState, priorProcessId });
+    mutate();
+
+    if (isSuccess) {
+      return toggleForm();
+    }
+    return alert('프로세스 추가에 실패했습니다.');
   };
 
   return (
@@ -38,11 +51,11 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
       <InputField
         label="프로세스 이름"
         placeholder="32자 이내로 입력해주세요."
-        required
         value={formState?.name}
         onChange={handleChange}
         maxLength={32}
         name="name"
+        required
       />
 
       <TextField

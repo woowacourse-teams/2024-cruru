@@ -1,6 +1,6 @@
 import snakeToCamel from '@utils/snakeToCamel';
-import { createParams } from './utils';
 import { PROCESSES } from './endPoint';
+import { createParams } from './utils';
 
 const processApis = {
   get: async ({ id }: { id: number }) => {
@@ -16,6 +16,26 @@ const processApis = {
 
     const data = await response.json();
     return snakeToCamel(data);
+  },
+
+  create: async (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) => {
+    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: String(params.dashboardId) })}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        order_index: params.orderIndex,
+        process_name: params.name,
+        description: params?.description,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return { status: response.status };
   },
 };
 
