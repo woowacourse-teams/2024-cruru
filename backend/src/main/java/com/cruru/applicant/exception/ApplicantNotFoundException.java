@@ -4,9 +4,9 @@ import com.cruru.advice.NotFoundException;
 
 public class ApplicantNotFoundException extends NotFoundException {
 
-    private static final String MESSAGE = "존재하지 않는 지원자입니다.";
+    private static final String TARGET = "지원자";
 
     public ApplicantNotFoundException() {
-        super(MESSAGE);
+        super(TARGET);
     }
 }
