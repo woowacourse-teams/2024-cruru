@@ -9,7 +9,6 @@ import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
@@ -57,9 +56,8 @@ public class ApplicantService {
         Applicant applicant = applicantRepository.findById(id)
                 .orElseThrow(ApplicantNotFoundException::new);
         List<Answer> answers = answerRepository.findAllByApplicant(applicant);
-        Dashboard dashboard = applicant.getDashboard();
         List<QnaResponse> qnaResponses = toQnaResponses(answers);
-        return new ApplicantDetailResponse(applicant.getName(), dashboard.getName(), qnaResponses);
+        return new ApplicantDetailResponse(qnaResponses);
     }
 
     private List<QnaResponse> toQnaResponses(List<Answer> answers) {
