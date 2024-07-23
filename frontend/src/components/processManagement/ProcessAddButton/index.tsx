@@ -28,6 +28,7 @@ export default function ProcessAddButton() {
           type="button"
           onClick={toggleProcessAddForm}
           size="sm"
+          shape="square"
           outline
         >
           <img
