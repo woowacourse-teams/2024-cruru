@@ -83,5 +83,4 @@ class ApplicantControllerTest extends ControllerTest {
                 .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
                 .then().log().all().statusCode(200);
     }
-
 }
