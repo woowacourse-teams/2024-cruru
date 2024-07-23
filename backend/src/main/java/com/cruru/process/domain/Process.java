@@ -1,7 +1,9 @@
 package com.cruru.process.domain;
 
 import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.process.exception.ProcessNameBlankException;
+import com.cruru.process.exception.ProcessNameCharacterException;
+import com.cruru.process.exception.ProcessNameLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,10 +24,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Process {
 
-    private static final int MIN_NAME_LENGTH = 1;
     private static final int MAX_NAME_LENGTH = 32;
-    private static final Pattern NAME_PATTERN = Pattern.compile(
-            "^[가-힣a-zA-Z0-9!@#$%^&*() ]{" + MIN_NAME_LENGTH + "," + MAX_NAME_LENGTH + "}$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,11 +51,23 @@ public class Process {
     }
 
     private void validateName(String name) {
-        if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new ProcessBadRequestException(
-                    String.format("동아리 이름이 %d글자 미만이거나 %d글자 초과, 혹은 '_'를 포함하고 있습니다.", MIN_NAME_LENGTH, MAX_NAME_LENGTH)
-            );
+        if (name.isBlank()) {
+            throw new ProcessNameBlankException();
         }
+        if (isLengthOutOfRange(name)) {
+            throw new ProcessNameLengthException(MAX_NAME_LENGTH, name.length());
+        }
+        if (isContainingInvalidCharacter(name)) {
+            throw new ProcessNameCharacterException(name);
+        }
+    }
+
+    private boolean isLengthOutOfRange(String name) {
+        return name.length() > MAX_NAME_LENGTH;
+    }
+
+    private boolean isContainingInvalidCharacter(String name) {
+        return !NAME_PATTERN.matcher(name).matches();
     }
 
     public void increaseSequenceNumber() {

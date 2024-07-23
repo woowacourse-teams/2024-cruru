@@ -1,6 +1,8 @@
 package com.cruru.club.domain;
 
-import com.cruru.club.exception.ClubBadRequestException;
+import com.cruru.club.exception.ClubNameBlankException;
+import com.cruru.club.exception.ClubNameCharacterException;
+import com.cruru.club.exception.ClubNameLengthException;
 import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,10 +24,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Club {
 
-    private static final int MIN_NAME_LENGTH = 1;
     private static final int MAX_NAME_LENGTH = 32;
-    private static final Pattern NAME_PATTERN = Pattern.compile(
-            "^[가-힣a-zA-Z0-9!@#$%^&*() ]{" + MIN_NAME_LENGTH + "," + MAX_NAME_LENGTH + "}$");
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,11 +45,23 @@ public class Club {
     }
 
     private void validateName(String name) {
-        if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new ClubBadRequestException(
-                    String.format("동아리 이름이 %d글자 미만이거나 %d글자 초과, 혹은 '_'를 포함하고 있습니다.", MIN_NAME_LENGTH, MAX_NAME_LENGTH)
-            );
+        if (name.isBlank()) {
+            throw new ClubNameBlankException();
         }
+        if (isLengthOutOfRange(name)) {
+            throw new ClubNameLengthException(MAX_NAME_LENGTH, name.length());
+        }
+        if (isContainingInvalidCharacter(name)) {
+            throw new ClubNameCharacterException(name);
+        }
+    }
+
+    private boolean isLengthOutOfRange(String name) {
+        return name.length() > MAX_NAME_LENGTH;
+    }
+
+    private boolean isContainingInvalidCharacter(String name) {
+        return !NAME_PATTERN.matcher(name).matches();
     }
 
     @Override
