@@ -9,6 +9,7 @@ import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -16,6 +17,7 @@ import com.cruru.process.exception.ProcessCountException;
 import com.cruru.process.exception.ProcessDeleteContainingApplicantException;
 import com.cruru.process.exception.ProcessDeleteEndsException;
 import com.cruru.process.exception.ProcessNotFoundException;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -99,6 +101,16 @@ public class ProcessService {
         if (processes.size() == MAX_PROCESS_COUNT) {
             throw new ProcessCountException(MAX_PROCESS_COUNT);
         }
+    }
+
+    public ProcessResponse update(long processId, @Valid ProcessUpdateRequest request) {
+        Process process = processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+
+        process.updateName(request.name());
+        process.updateDescription(request.description());
+
+        return toProcessResponse(process);
     }
 
     @Transactional

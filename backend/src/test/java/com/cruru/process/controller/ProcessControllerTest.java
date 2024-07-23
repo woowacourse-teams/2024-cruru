@@ -3,6 +3,7 @@ package com.cruru.process.controller;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
+import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
@@ -68,6 +69,24 @@ class ProcessControllerTest extends ControllerTest {
                 .when().post(url)
                 .then().log().all().statusCode(201);
     }
+
+
+    @DisplayName("존재하는 프로세스의 이름과 설명 변경 성공시, 200을 응답한다.")
+    @Test
+    void update_success() {
+        // given
+        Process process = processRepository.save(new Process(1, "1차 면접", "화상 면접", dashboard));
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("임시 과정", "수정된 프로세스");
+        String url = String.format("/v1/processes/%d", process.getId());
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(processUpdateRequest)
+                .when().patch(url)
+                .then().log().all().statusCode(200);
+    }
+
 
     @DisplayName("프로세스 삭제 성공 시, 204를 응답한다.")
     @Test
