@@ -1,4 +1,5 @@
 import applicantApis from '@api/applicant';
+import { SpecificApplicant } from '@customTypes/applicant';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useQuery } from '@tanstack/react-query';
 
@@ -6,22 +7,7 @@ interface UseSpecificApplicantProps {
   applicantId: number;
 }
 
-interface SpecificApplicant {
-  applicantId: number;
-  createdAt: string;
-  name: string;
-  email: string;
-  phone: string;
-  processName: string;
-}
-
-interface UseSpecificApplicantReturn {
-  data: SpecificApplicant | undefined;
-  error: Error | null;
-  isLoading: boolean;
-}
-
-export default function useSpecificApplicant({ applicantId }: UseSpecificApplicantProps): UseSpecificApplicantReturn {
+export default function useSpecificApplicant({ applicantId }: UseSpecificApplicantProps) {
   const { data, error, isLoading } = useQuery<SpecificApplicant>({
     queryKey: [QUERY_KEYS.APPLICANT, applicantId],
     queryFn: () => applicantApis.get({ applicantId }),
