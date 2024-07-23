@@ -1,4 +1,4 @@
-import { moveApplicant } from '@api/applicant';
+import applicantApis from '@api/applicant';
 import { DASHBOARD_ID } from '@constants/constants';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -8,7 +8,7 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
 
   const moveApplicantProcess = useMutation({
     mutationFn: ({ processId, applicants }: { processId: number; applicants: number[] }) =>
-      moveApplicant({ processId, applicants }),
+      applicantApis.move({ processId, applicants }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, DASHBOARD_ID] });
       if (applicantId) {
@@ -17,7 +17,15 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
     },
   });
 
+  const rejectApplicant = useMutation({
+    mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.reject({ applicantId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, DASHBOARD_ID] });
+    },
+  });
+
   return {
     moveApplicantProcess,
+    rejectApplicant,
   };
 }
