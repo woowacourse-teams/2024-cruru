@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - fe/develop
+      - fe-108-CHORE_CI
 
 jobs:
   build:
