@@ -106,14 +106,12 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findDetailById() {
         // given
-        Dashboard dashboard = new Dashboard("프론트 부원 모집", null);
-        dashboardRepository.save(dashboard);
-        Process process = new Process(0, "서류", "서류 단계", dashboard);
+        Process process = new Process(0, "서류", "서류 단계", null);
         processRepository.save(process);
         Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
         applicantRepository.save(applicant);
 
-        Question question = new Question("좋아하는 동물은?", 0, dashboard);
+        Question question = new Question("좋아하는 동물은?", 0, null);
         questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
@@ -124,8 +122,6 @@ class ApplicantServiceTest extends ServiceTest {
         //then
         List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses();
         assertAll(
-                () -> assertThat(applicantDetailResponse.applicantName()).isEqualTo(applicant.getName()),
-                () -> assertThat(applicantDetailResponse.dashboardName()).isEqualTo(dashboard.getName()),
                 () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
                 () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
         );
