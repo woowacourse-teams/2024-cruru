@@ -71,4 +71,17 @@ class ApplicantControllerTest extends ControllerTest {
                 .when().get("/v1/applicants/" + applicant.getId() + "/detail")
                 .then().log().all().statusCode(200);
     }
+
+    @DisplayName("지원자를 불합격시키는 데 성공하면 200을 응답한다.")
+    @Test
+    void reject() {
+        // given
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+
+        // when&then
+        RestAssured.given().log().all()
+                .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
+                .then().log().all().statusCode(200);
+    }
+
 }
