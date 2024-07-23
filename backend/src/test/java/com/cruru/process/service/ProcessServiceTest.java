@@ -13,6 +13,7 @@ import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -123,6 +124,27 @@ class ProcessServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
                 .isInstanceOf(ProcessBadRequestException.class);
+    }
+
+    @DisplayName("프로세스 정보를 변경한다.")
+    @Test
+    void update() {
+        // given
+        Dashboard dashboard = new Dashboard("7기 모집", null);
+        dashboard = dashboardRepository.save(dashboard);
+        Process process = new Process(1, "1차 면접", "화상 면접", dashboard);
+        process = processRepository.save(process);
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
+
+        // when
+        Long processId = process.getId();
+        ProcessResponse actualProcessResponse = processService.update(processId, processUpdateRequest);
+
+        // then
+        assertAll(() -> {
+            assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name());
+            assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description());
+        });
     }
 
     @DisplayName("프로세스를 삭제한다.")
