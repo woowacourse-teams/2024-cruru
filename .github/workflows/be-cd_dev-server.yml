@@ -1,9 +1,9 @@
-name: Build and Deploy
+name: BE/CD - Build and Deploy
 
 on:
   workflow_dispatch:
   push:
-    branches: be/main
+    branches: be/release
 
 jobs:
   build:
@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          path: backend
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -20,13 +22,13 @@ jobs:
           distribution: 'temurin'
 
       - name: Build project using Gradle
-        run: ./gradlew clean bootJar
+        run: ~/backend/gradlew clean bootJar
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: cruru-be-develop-jar
-          path: build/libs/cruru-0.0.1-SNAPSHOT.jar
+          path: ~/backend/build/libs/cruru-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: self-hosted
@@ -37,9 +39,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: cruru-be-develop-jar
-          path: ./build/libs
+          path: ./backend/build/libs
 
-      - name: Check if room-esc server is running on port 8080
+      - name: Check if cruru API server is running on port 8080
         id: check-server-on-port
         run: |
           echo "Checking if port 8080 is in use..."
@@ -58,7 +60,7 @@ jobs:
           kill -9 $PID
           echo "Preivous running Server stopped."
 
-      - name: Start server
+      - name: Start LTS built server .jar
         run: |
-          nohup java -jar build/libs/cruru-0.0.1-SNAPSHOT.jar &
+          nohup java -jar backend/build/libs/cruru-0.0.1-SNAPSHOT.jar &
           echo "Lastest Backend API Server started."

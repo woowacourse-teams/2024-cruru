@@ -1,4 +1,4 @@
-package com.cruru.advice;
+package com.cruru.advice.badrequest;
 
 public class BadRequestException extends RuntimeException {
 

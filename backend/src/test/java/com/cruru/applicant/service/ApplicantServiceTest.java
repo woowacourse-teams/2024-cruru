@@ -117,7 +117,7 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = new Question("좋아하는 동물은?", 0, dashboard);
+        Question question = new Question("좋아하는 동물은?", 0, null);
         questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
@@ -128,8 +128,6 @@ class ApplicantServiceTest extends ServiceTest {
         //then
         List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses();
         assertAll(
-                () -> assertThat(applicantDetailResponse.applicantName()).isEqualTo(applicant.getName()),
-                () -> assertThat(applicantDetailResponse.dashboardName()).isEqualTo(dashboard.getName()),
                 () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
                 () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
         );

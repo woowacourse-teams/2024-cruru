@@ -2,7 +2,7 @@ package com.cruru.evaluation.domain;
 
 import com.cruru.BaseEntity;
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.evaluation.exception.EvaluationBadRequestException;
+import com.cruru.evaluation.exception.EvaluationScoreException;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,9 +53,7 @@ public class Evaluation extends BaseEntity {
 
     private void validateScore(int score) {
         if (isOutOfRange(score)) {
-            throw new EvaluationBadRequestException(
-                    String.format("평가 점수가 %d 미만이거나 %d 초과입니다.", MIN_SCORE, MAX_SCORE)
-            );
+            throw new EvaluationScoreException(MIN_SCORE, MAX_SCORE, score);
         }
     }
 
