@@ -1,9 +1,11 @@
 package com.cruru.process.domain;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.process.exception.ProcessNameCharacterException;
+import com.cruru.process.exception.ProcessNameLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -11,15 +13,38 @@ import org.junit.jupiter.params.provider.ValueSource;
 @DisplayName("프로세스 도메인 테스트")
 class ProcessTest {
 
-    @DisplayName("잘못된 프로세스 이름으로 생성 시 예외가 발생한다.")
-    @ValueSource(strings = {"", "thisstringmustexceedthirtytwochar", "invalidSpecialChar--"})
+    @DisplayName("프로세스 이름은 특수문자와 숫자를 허용한다.")
+    @ValueSource(strings = {"process!!", "(process!@#$%^&*)", "PROCESS123"})
     @ParameterizedTest
-    void invalidProcessName(String invalidName) {
+    void validProcessName(String name) {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
+        Dashboard dashboard = new Dashboard("name", null);
 
         // when&then
-        assertThatThrownBy(() -> new Process(1, invalidName, "온라인", dashboard))
-                .isInstanceOf(ProcessBadRequestException.class);
+        assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
+    }
+
+    @DisplayName("프로세스 이름이 비어있거나 32자 초과시 예외가 발생한다.")
+    @ValueSource(strings = {"", "ThisStringLengthIs33!!!!!!!!!!!!!"})
+    @ParameterizedTest
+    void invalidProcessNameLength(String name) {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+
+        // when&then
+        assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+                .isInstanceOf(ProcessNameLengthException.class);
+    }
+
+    @DisplayName("프로세스 이름에 허용되지 않은 글자가 들어가면 예외가 발생한다.")
+    @ValueSource(strings = {"invalidCharacter|", "invalidCharacter\\"})
+    @ParameterizedTest
+    void invalidProcessNameCharacter(String name) {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+
+        // when&then
+        assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+                .isInstanceOf(ProcessNameCharacterException.class);
     }
 }

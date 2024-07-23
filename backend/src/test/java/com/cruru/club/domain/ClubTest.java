@@ -3,7 +3,8 @@ package com.cruru.club.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.cruru.club.exception.ClubBadRequestException;
+import com.cruru.club.exception.ClubNameCharacterException;
+import com.cruru.club.exception.ClubNameLengthException;
 import com.cruru.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,7 +24,7 @@ class ClubTest {
         assertThatCode(() -> new Club(name, member)).doesNotThrowAnyException();
     }
 
-    @DisplayName("동아리 이름이 1자 미만 32자 초과시 예외가 발생한다.")
+    @DisplayName("동아리 이름이 비어있거나 32자 초과시 예외가 발생한다.")
     @ValueSource(strings = {"", "ThisStringLengthIs33!!!!!!!!!!!!!"})
     @ParameterizedTest
     void invalidClubNameLength(String name) {
@@ -31,6 +32,17 @@ class ClubTest {
         Member member = new Member("password", "phoneNumber", "phone");
 
         // when&then
-        assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubBadRequestException.class);
+        assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubNameLengthException.class);
+    }
+
+    @DisplayName("동아리 이름에 허용되지 않은 글자가 들어가면 예외가 발생한다.")
+    @ValueSource(strings = {"invalidCharacter|", "invalidCharacter\\"})
+    @ParameterizedTest
+    void invalidClubNameCharacter(String name) {
+        // given
+        Member member = new Member("password", "phoneNumber", "phone");
+
+        // when&then
+        assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubNameCharacterException.class);
     }
 }
