@@ -7,17 +7,7 @@ interface InputProps extends ComponentProps<'input'> {
   focus?: boolean;
 }
 
-export default function LabelInput({
-  label,
-  value,
-  onChange,
-  placeholder,
-  disabled,
-  error,
-  type,
-  required,
-  ...props
-}: InputProps) {
+export default function LabelInput({ label, value, onChange, disabled, error, required, ...props }: InputProps) {
   return (
     <S.Wrapper>
       {label && (
@@ -30,9 +20,7 @@ export default function LabelInput({
       <S.Input
         value={value}
         onChange={onChange}
-        placeholder={placeholder}
         disabled={disabled}
-        type={type}
         isError={!!error}
         {...props}
       />
