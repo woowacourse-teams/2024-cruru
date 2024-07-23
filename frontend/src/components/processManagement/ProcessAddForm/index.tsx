@@ -1,8 +1,8 @@
-import React, { FormEvent, useState } from 'react';
+import Button from '@components/common/Button';
 import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
-import Button from '@components/common/Button';
 import { processMutaions } from '@hooks/process';
+import React, { FormEvent, useState } from 'react';
 import S from './style';
 
 interface ProcessAddForm {
@@ -20,13 +20,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
     name: '',
     description: '',
   });
-  const { mutate, isSuccess } = processMutaions.useCreateProcess({
-    // TODO: 상수화 한 것으로 변경
-    // TODO: 상수를 전역상태로 관리하는 것으로 변경
-    dashboardId: 1,
-    orderIndex: priorProcessId + 1,
-    ...formState,
-  });
+  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -38,12 +32,13 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate();
-
-    if (isSuccess) {
-      return toggleForm();
-    }
-    return alert('프로세스 추가에 실패했습니다.');
+    mutate({
+      // TODO: 상수 변경
+      // TODO: 상수를 전역상태로 관리하는 것으로 변경
+      dashboardId: 1,
+      orderIndex: priorProcessId + 1,
+      ...formState,
+    });
   };
 
   return (

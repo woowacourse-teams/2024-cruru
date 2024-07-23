@@ -7,17 +7,23 @@ export const processQueries = {
 };
 
 export const processMutaions = {
-  useCreateProcess: (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) => {
+  useCreateProcess: ({ handleSuccess }: { handleSuccess: () => void }) => {
     // TODO: useInvalidateQueries를 사용하는 것으로 리팩토링
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard', params.dashboardId] });
+      // TODO: 상수 변경
+      queryClient.invalidateQueries({ queryKey: ['dashboard', 1] });
     };
 
     return useMutation({
-      mutationFn: () => processApis.create({ ...params }),
+      mutationFn: (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) =>
+        processApis.create(params),
       onSuccess: () => {
         invalidateQueries();
+        handleSuccess();
+      },
+      onError: () => {
+        alert('프로세스 추가에 실패했습니다.');
       },
     });
   },

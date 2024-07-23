@@ -35,7 +35,7 @@ const processApis = {
       throw new Error('Network response was not ok');
     }
 
-    return { status: response.status };
+    return response;
   },
 };
 
