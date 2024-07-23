@@ -16,9 +16,7 @@ import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import com.cruru.process.exception.ProcessCountException;
-import com.cruru.process.exception.ProcessDeleteContainingApplicantException;
-import com.cruru.process.exception.ProcessDeleteEndsException;
+import com.cruru.process.exception.ProcessBadRequestException;
 import com.cruru.util.ServiceTest;
 import java.util.Comparator;
 import java.util.List;
@@ -124,7 +122,7 @@ class ProcessServiceTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
-                .isInstanceOf(ProcessCountException.class);
+                .isInstanceOf(ProcessBadRequestException.class);
     }
 
     @DisplayName("프로세스를 삭제한다.")
@@ -157,9 +155,9 @@ class ProcessServiceTest extends ServiceTest {
         // when&then
         assertAll(
                 () -> assertThatThrownBy(() -> processService.delete(process1.getId()))
-                        .isInstanceOf(ProcessDeleteEndsException.class),
+                        .isInstanceOf(ProcessBadRequestException.class),
                 () -> assertThatThrownBy(() -> processService.delete(process2.getId()))
-                        .isInstanceOf(ProcessDeleteEndsException.class)
+                        .isInstanceOf(ProcessBadRequestException.class)
         );
     }
 
@@ -176,6 +174,6 @@ class ProcessServiceTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> processService.delete(process.getId()))
-                .isInstanceOf(ProcessDeleteContainingApplicantException.class);
+                .isInstanceOf(ProcessBadRequestException.class);
     }
 }

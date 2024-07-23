@@ -2,7 +2,7 @@ package com.cruru.evaluation.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.cruru.evaluation.exception.EvaluationScoreException;
+import com.cruru.evaluation.exception.EvaluationBadRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -19,6 +19,6 @@ class EvaluationTest {
 
         // when&then
         assertThatThrownBy(() -> new Evaluation(invalidScore, content, null, null))
-                .isInstanceOf(EvaluationScoreException.class);
+                .isInstanceOf(EvaluationBadRequestException.class);
     }
 }
