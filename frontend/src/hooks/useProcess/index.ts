@@ -15,7 +15,7 @@ export default function useProcess(): IUseProcessReturn {
 
   const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
     queryKey: ['dashboard', DASHBOARD_ID],
-    queryFn: () => processApis.get({ id: DASHBOARD_ID }),
+    queryFn: () => getProcesses({ id: DASHBOARD_ID }),
   });
 
   const processes = data?.processes || [];
