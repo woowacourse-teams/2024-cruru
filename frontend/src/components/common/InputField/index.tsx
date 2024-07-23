@@ -3,7 +3,7 @@ import S from './style';
 
 interface InputFieldProps extends ComponentProps<'input'> {
   label?: string;
-  error?: boolean;
+  error?: string;
   focus?: boolean;
 }
 
