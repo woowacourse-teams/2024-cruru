@@ -21,13 +21,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          java-package: 'jdk'
 
       - name: Cache Gradle wrapper
         uses: actions/cache@v3
         with:
           path: |
-            ~/.gradle/wrapper
+            ~/backend/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-wrapper-
@@ -36,32 +35,32 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
+            ~/backend/.gradle/caches
+            ~/backend/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties', '**/settings.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./backend/gradlew
 
       - name: Run tests and generate coverage report
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ./gradlew test jacocoTestReport
+        run: ./backend/gradlew test jacocoTestReport
         continue-on-error: true
 
       - name: Verify test coverage
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ./gradlew jacocoTestCoverageVerification
+        run: ./backend/gradlew jacocoTestCoverageVerification
         continue-on-error: true
 
       - name: 테스트 커버리지를 PR에 코멘트로 등록
         uses: madrapps/jacoco-report@v1.6.1
         with:
           title: 📌 Test Coverage Report
-          paths: ${{ github.workspace }}/**/build/reports/jacoco/test/jacocoTestReport.xml
+          paths: ${{ github.workspace }}/**//backend/build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 80
           min-coverage-changed-files: 80
