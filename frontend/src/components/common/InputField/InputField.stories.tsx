@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import LabelInput from '.';
+import InputField from '.';
 
 const meta = {
-  title: 'Common/Input/LabelInput',
-  component: LabelInput,
+  title: 'Common/Input/InputField',
+  component: InputField,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component:
-          '재사용 가능한 Label Input 컴포넌트입니다. label 유무, focus, error, disabled, required 등의 상태에 따라 스타일이 변경됩니다.',
+          '재사용 가능한 InputField 컴포넌트입니다. label 유무, focus, error, disabled, required 등의 상태에 따라 스타일이 변경됩니다.',
       },
     },
   },
@@ -20,7 +20,7 @@ const meta = {
   argTypes: {
     label: {
       description:
-        'Input 위에 표시되는 라벨입니다. 라벨이 전달되지 않는 경우 표시되지 않으며, Input이 required면 라벨 뒤에 *가 표시됩니다.',
+        'Input 위에 표시되는 레이블입니다. 레이블이 전달되지 않는 경우 표시되지 않으며, Input이 required면 라벨 뒤에 *가 표시됩니다.',
       control: { type: 'text' },
     },
     value: {
@@ -67,7 +67,7 @@ const meta = {
       );
     },
   ],
-} satisfies Meta<typeof LabelInput>;
+} satisfies Meta<typeof InputField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

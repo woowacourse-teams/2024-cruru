@@ -1,13 +1,13 @@
 import { ComponentProps } from 'react';
 import S from './style';
 
-interface InputProps extends ComponentProps<'input'> {
+interface InputFieldProps extends ComponentProps<'input'> {
   label?: string;
   error?: boolean;
   focus?: boolean;
 }
 
-export default function LabelInput({ label, value, onChange, disabled, error, required, ...props }: InputProps) {
+export default function InputField({ label, value, onChange, disabled, error, required, ...props }: InputFieldProps) {
   return (
     <S.Wrapper>
       {label && (
