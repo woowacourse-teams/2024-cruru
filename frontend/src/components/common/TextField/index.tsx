@@ -33,6 +33,7 @@ export default function TextField({
         disabled={disabled}
         isError={!!error}
         resize={resize}
+        required={required}
         {...props}
       />
 
