@@ -1,5 +1,6 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -59,8 +60,8 @@ class ApplicantServiceTest extends ServiceTest {
         Process afterProcess = processRepository.save(new Process(1, "이후 프로세스", "프로세스 설명2", dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                new Applicant(null, null, null, beforeProcess, false),
-                new Applicant(null, null, null, beforeProcess, false)
+                createApplicantDobby(beforeProcess),
+                createApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -81,7 +82,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null, false);
+        Applicant applicant = createApplicantDobby();
         applicant = applicantRepository.save(applicant);
 
         // when
@@ -110,7 +111,7 @@ class ApplicantServiceTest extends ServiceTest {
         dashboardRepository.save(dashboard);
         Process process = new Process(0, "서류", "서류 단계", dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
+        Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
         Question question = new Question("좋아하는 동물은?", 0, dashboard);

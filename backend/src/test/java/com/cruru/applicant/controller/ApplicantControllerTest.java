@@ -1,5 +1,7 @@
 package com.cruru.applicant.controller;
 
+import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -35,7 +37,7 @@ class ApplicantControllerTest extends ControllerTest {
         now = processRepository.save(now);
         Process next = new Process(2L, 1, "최종 합격", "최종 합격", null);
         next = processRepository.save(next);
-        Applicant applicant = new Applicant(1L, "name", "email", "phone", now, false);
+        Applicant applicant = createApplicantDobby(now);
         applicantRepository.save(applicant);
 
         // when&then
@@ -50,7 +52,7 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+        Applicant applicant = applicantRepository.save(createApplicantDobby());
 
         // when&then
         RestAssured.given().log().all()
@@ -64,7 +66,7 @@ class ApplicantControllerTest extends ControllerTest {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard("프론트 부원 모집", null));
         Process process = processRepository.save(new Process(0, "서류", "서류 단계", dashboard));
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", process, false));
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when&then
         RestAssured.given().log().all()

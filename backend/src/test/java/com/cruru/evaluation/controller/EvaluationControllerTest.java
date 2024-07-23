@@ -1,5 +1,7 @@
 package com.cruru.evaluation.controller;
 
+import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
@@ -36,9 +38,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         process = processRepository.save(new Process(0, "서류", "서류", null));
 
-        applicant = applicantRepository.save(
-                new Applicant("초코칩", "dev.chocochip@gmail.com", "01012345678", process, false)
-        );
+        applicant = applicantRepository.save(createApplicantDobby(process));
     }
 
     @DisplayName("평가 생성 성공 시, 201을 응답한다.")

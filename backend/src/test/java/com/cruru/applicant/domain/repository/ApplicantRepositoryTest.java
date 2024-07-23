@@ -1,5 +1,7 @@
 package com.cruru.applicant.domain.repository;
 
+import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.fixture.ApplicantFixture.createApplicantRush;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
@@ -25,7 +27,7 @@ class ApplicantRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Applicant applicant = new Applicant("이름", "이메일", "전화번호", null, false);
+        Applicant applicant = createApplicantDobby();
         Applicant saved = applicantRepository.save(applicant);
 
         //when
@@ -43,8 +45,8 @@ class ApplicantRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Applicant applicant1 = new Applicant("이름", "이메일", "전화번호", null, false);
-        Applicant applicant2 = new Applicant("다른이름", "다른이메일", "다른번호", null, false);
+        Applicant applicant1 = createApplicantDobby();
+        Applicant applicant2 = createApplicantRush();
 
         //when
         Applicant savedApplicant1 = applicantRepository.save(applicant1);

@@ -1,5 +1,6 @@
 package com.cruru.process.service;
 
+import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -48,8 +49,7 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard("7기 모집", null));
         Process process = processRepository.save(new Process(0, "서류", "서류", dashboard));
-        Applicant applicant = applicantRepository.save(new Applicant(
-                "냥인", "nyang@email.com", "01000000000", process, false));
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
         evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
 
         // when
@@ -169,7 +169,7 @@ class ProcessServiceTest extends ServiceTest {
         dashboard = dashboardRepository.save(dashboard);
         Process process = new Process(1, "서류", "서류", dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
+        Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
         // when&then
