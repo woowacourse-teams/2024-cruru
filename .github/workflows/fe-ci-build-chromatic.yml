@@ -1,7 +1,6 @@
 name: FE CI - 기능 테스트, 빌드 및 Chromatic 배포
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - fe/develop
