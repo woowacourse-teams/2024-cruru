@@ -13,8 +13,8 @@ import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessCountException;
-import com.cruru.process.exception.ProcessDeleteContainingApplicantException;
 import com.cruru.process.exception.ProcessDeleteEndsException;
+import com.cruru.process.exception.ProcessDeleteRemainingApplicantException;
 import com.cruru.process.exception.ProcessNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -120,7 +120,7 @@ public class ProcessService {
     private void validateExistsApplicant(Process process) {
         int applicantCount = (int) applicantRepository.countByProcess(process);
         if (applicantCount > 0) {
-            throw new ProcessDeleteContainingApplicantException();
+            throw new ProcessDeleteRemainingApplicantException();
         }
     }
 }

@@ -17,8 +17,8 @@ import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessCountException;
-import com.cruru.process.exception.ProcessDeleteContainingApplicantException;
 import com.cruru.process.exception.ProcessDeleteEndsException;
+import com.cruru.process.exception.ProcessDeleteRemainingApplicantException;
 import com.cruru.util.ServiceTest;
 import java.util.Comparator;
 import java.util.List;
@@ -176,6 +176,6 @@ class ProcessServiceTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> processService.delete(process.getId()))
-                .isInstanceOf(ProcessDeleteContainingApplicantException.class);
+                .isInstanceOf(ProcessDeleteRemainingApplicantException.class);
     }
 }
