@@ -22,3 +22,8 @@ spring:
     defer-datasource-initialization: true
 dataloader:
   enable: true
+
+---
+spring:
+  config:
+    import: classpath:application-dev.yml
