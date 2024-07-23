@@ -3,7 +3,7 @@ import { createParams } from './utils';
 import { PROCESSES } from './endPoint';
 
 export const getProcesses = async ({ id }: { id: number }) => {
-  const response = await fetch(`${PROCESSES}/api/v1?${createParams({ dashboard_id: String(id) })}`, {
+  const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: String(id) })}`, {
     headers: {
       Accept: 'application/json',
     },

@@ -1,7 +1,7 @@
 import { APPLICANTS } from './endPoint';
 
 export const moveApplicant = async ({ processId, applicants }: { processId: number; applicants: number[] }) => {
-  const response = await fetch(`${APPLICANTS}/v1/move-process/${processId}`, {
+  const response = await fetch(`${APPLICANTS}/move-process/${processId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
