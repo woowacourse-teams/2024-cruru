@@ -1,6 +1,7 @@
 package com.cruru.process.domain;
 
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.process.exception.ProcessNameBlankException;
 import com.cruru.process.exception.ProcessNameCharacterException;
 import com.cruru.process.exception.ProcessNameLengthException;
 import jakarta.persistence.Column;
@@ -50,6 +51,9 @@ public class Process {
     }
 
     private void validateName(String name) {
+        if (name.isBlank()) {
+            throw new ProcessNameBlankException();
+        }
         if (isLengthOutOfRange(name)) {
             throw new ProcessNameLengthException(MAX_NAME_LENGTH, name.length());
         }
@@ -59,7 +63,7 @@ public class Process {
     }
 
     private boolean isLengthOutOfRange(String name) {
-        return name.isEmpty() || name.length() > MAX_NAME_LENGTH;
+        return name.length() > MAX_NAME_LENGTH;
     }
 
     private boolean isContainingInvalidCharacter(String name) {

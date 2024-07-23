@@ -4,9 +4,11 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.process.exception.ProcessNameBlankException;
 import com.cruru.process.exception.ProcessNameCharacterException;
 import com.cruru.process.exception.ProcessNameLengthException;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -24,15 +26,26 @@ class ProcessTest {
         assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
     }
 
-    @DisplayName("프로세스 이름이 비어있거나 32자 초과시 예외가 발생한다.")
-    @ValueSource(strings = {"", "ThisStringLengthIs33!!!!!!!!!!!!!"})
+    @DisplayName("프로세스 이름이 비어있으면 예외가 발생한다.")
+    @ValueSource(strings = {"", " "})
     @ParameterizedTest
-    void invalidProcessNameLength(String name) {
+    void processNameBlank(String name) {
         // given
         Dashboard dashboard = new Dashboard("name", null);
 
         // when&then
         assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+                .isInstanceOf(ProcessNameBlankException.class);
+    }
+
+    @DisplayName("프로세스 이름이 32자 초과시 예외가 발생한다.")
+    @Test
+    void invalidProcessNameLength() {
+        // given
+        Dashboard dashboard = new Dashboard("name", null);
+
+        // when&then
+        assertThatThrownBy(() -> new Process(0, "ThisStringLengthIs33!!!!!!!!!!!!!", "desc", dashboard))
                 .isInstanceOf(ProcessNameLengthException.class);
     }
 

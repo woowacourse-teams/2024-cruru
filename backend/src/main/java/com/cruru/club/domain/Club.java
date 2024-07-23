@@ -1,5 +1,6 @@
 package com.cruru.club.domain;
 
+import com.cruru.club.exception.ClubNameBlankException;
 import com.cruru.club.exception.ClubNameCharacterException;
 import com.cruru.club.exception.ClubNameLengthException;
 import com.cruru.member.domain.Member;
@@ -44,6 +45,9 @@ public class Club {
     }
 
     private void validateName(String name) {
+        if (name.isBlank()) {
+            throw new ClubNameBlankException();
+        }
         if (isLengthOutOfRange(name)) {
             throw new ClubNameLengthException(MAX_NAME_LENGTH, name.length());
         }
@@ -53,7 +57,7 @@ public class Club {
     }
 
     private boolean isLengthOutOfRange(String name) {
-        return name.isEmpty() || name.length() > MAX_NAME_LENGTH;
+        return name.length() > MAX_NAME_LENGTH;
     }
 
     private boolean isContainingInvalidCharacter(String name) {
