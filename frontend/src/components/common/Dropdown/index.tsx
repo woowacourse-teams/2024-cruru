@@ -12,11 +12,13 @@ type Item = {
 
 export interface DropdownProps {
   initValue?: string;
+  width?: number;
   size?: 'sm' | 'md';
   items: Item[];
+  isShadow?: boolean;
 }
 
-export default function Dropdown({ initValue, size = 'sm', items }: DropdownProps) {
+export default function Dropdown({ initValue, width, size = 'sm', items, isShadow = true }: DropdownProps) {
   const [selected, setSelected] = useState(initValue);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -48,6 +50,8 @@ export default function Dropdown({ initValue, size = 'sm', items }: DropdownProp
       ref={dropdownRef}
       size={size}
       isOpen={isOpen}
+      width={width}
+      isShadow={isShadow}
     >
       <S.Header
         onClick={toggleDropdown}
@@ -62,7 +66,10 @@ export default function Dropdown({ initValue, size = 'sm', items }: DropdownProp
       </S.Header>
 
       {isOpen && (
-        <S.List size={size}>
+        <S.List
+          size={size}
+          isShadow={isShadow}
+        >
           {items.map(({ name, isHighlight, id, onClick }) => (
             <DropdownItem
               onClick={() => {
