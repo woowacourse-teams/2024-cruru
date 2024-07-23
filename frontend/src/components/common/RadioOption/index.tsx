@@ -9,7 +9,7 @@ interface RadioOptionProps {
 
 export default function RadioOption({ label, checked, onChange }: RadioOptionProps) {
   return (
-    <S.Option onClick={onChange}>
+    <S.Option>
       <Radio
         checked={checked}
         onChange={onChange}
