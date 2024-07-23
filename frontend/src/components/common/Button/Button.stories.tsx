@@ -1,9 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import Button from '.';
 
+const ButtonContainer = ({ ...props }) => (
+  <div style={{ height: '200px' }}>
+    <Button {...props} />
+  </div>
+);
+
 const meta = {
   title: 'Common/Button/Button',
-  component: Button,
+  component: ButtonContainer,
   parameters: {
     layout: 'centered',
     docs: {
@@ -56,5 +62,14 @@ export const ButtonDefault: Story = {
     size: 'md',
     color: 'white',
     children: 'Button',
+  },
+};
+
+export const fillButton: Story = {
+  args: {
+    size: 'md',
+    color: 'white',
+    children: 'FillButton',
+    isFillContainer: true,
   },
 };
