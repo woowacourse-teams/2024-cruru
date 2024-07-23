@@ -1,15 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ApplicantBaseDetail from './index';
 
-const ApplicantBaseDetailContainer = ({ ...props }) => (
-  <div style={{ padding: '20px', minWidth: '400px' }}>
-    <ApplicantBaseDetail {...props} />
-  </div>
-);
-
 const meta: Meta<typeof ApplicantBaseDetail> = {
   title: 'Components/ApplicantBaseDetail',
-  component: ApplicantBaseDetailContainer,
+  component: ApplicantBaseDetail,
   parameters: {
     layout: 'centered',
     docs: {
@@ -26,7 +20,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: { applicantId: 1 },
+  decorators: [
+    (S) => (
+      <div style={{ padding: '20px', minWidth: '400px' }}>
+        <S />
+      </div>
+    ),
+  ],
 };
 
 Default.parameters = {
