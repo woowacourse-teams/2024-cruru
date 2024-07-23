@@ -1,20 +1,40 @@
 import Dropdown from '@components/common/Dropdown';
 import Button from '@components/common/Button';
+import useProcess from '@hooks/useProcess';
+import useApplicant from '@hooks/useApplicant';
+import useSpecificApplicant from '@hooks/useSpecificApplicant';
+import formatDate from '@utils/formatDate';
 import S from './style';
 
-const items = [
-  { id: 1, name: 'Stage 1', onClick: () => console.log('Stage 1') },
-  { id: 2, name: 'Stage 2', onClick: () => console.log('Stage 2') },
-  { id: 3, name: 'Stage 3', onClick: () => console.log('Stage 3') },
-];
+interface ApplicantBaseDetailProps {
+  applicantId: number;
+}
 
-export default function ApplicantBaseDetail() {
+export default function ApplicantBaseDetail({ applicantId }: ApplicantBaseDetailProps) {
+  const { data: applicantBaseDetail } = useSpecificApplicant({ applicantId });
+  const { processList } = useProcess();
+  const { moveApplicantProcess } = useApplicant({ applicantId });
+
+  if (!applicantBaseDetail) {
+    return <div>no data</div>; // TODO: 핸들링
+  }
+
+  const items = processList
+    .filter(({ processName }) => processName !== applicantBaseDetail.processName)
+    .map(({ processId, processName }) => ({
+      id: processId,
+      name: processName,
+      onClick: ({ targetProcessId }: { targetProcessId: number }) => {
+        moveApplicantProcess.mutate({ processId: targetProcessId, applicants: [applicantId] });
+      },
+    }));
+
   return (
     <S.Container>
-      <S.Title>지원자 이름</S.Title>
+      <S.Title>{applicantBaseDetail.name}</S.Title>
       <S.ActionRow>
         <Dropdown
-          initValue="모집 단계 이동"
+          initValue={applicantBaseDetail.processName}
           size="sm"
           items={items}
           width={112}
@@ -30,15 +50,15 @@ export default function ApplicantBaseDetail() {
       <S.DetailContainer>
         <S.DetailRow>
           <S.Label>이메일</S.Label>
-          <S.Value>midekuna@gmail.com</S.Value>
+          <S.Value>{applicantBaseDetail.email}</S.Value>
         </S.DetailRow>
         <S.DetailRow>
           <S.Label>연락처</S.Label>
-          <S.Value>01999999999</S.Value>
+          <S.Value>{applicantBaseDetail.phone}</S.Value>
         </S.DetailRow>
         <S.DetailRow>
           <S.Label>접수일</S.Label>
-          <S.Value>2024.07.05</S.Value>
+          <S.Value>{formatDate(applicantBaseDetail.createdAt)}</S.Value>
         </S.DetailRow>
       </S.DetailContainer>
     </S.Container>

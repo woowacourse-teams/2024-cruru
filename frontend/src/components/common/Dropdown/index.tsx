@@ -1,20 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import DropdownItem from '@components/common/DropdownItem';
 import ChevronButton from '@components/common/ChevronButton';
+import { DropdownListItem } from '@customTypes/common';
 import S from './style';
-
-type Item = {
-  id: number;
-  name: string;
-  isHighlight?: boolean;
-  onClick: () => void;
-};
 
 export interface DropdownProps {
   initValue?: string;
   width?: number;
   size?: 'sm' | 'md';
-  items: Item[];
+  items: DropdownListItem[];
   isShadow?: boolean;
 }
 
@@ -73,7 +67,7 @@ export default function Dropdown({ initValue, width, size = 'sm', items, isShado
           {items.map(({ name, isHighlight, id, onClick }) => (
             <DropdownItem
               onClick={() => {
-                onClick();
+                onClick({ targetProcessId: id });
                 handleClickItem(name);
               }}
               key={id}
