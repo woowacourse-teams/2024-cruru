@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          path: backend
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -20,13 +22,13 @@ jobs:
           distribution: 'temurin'
 
       - name: Build project using Gradle
-        run: ./backend/gradlew clean bootJar
+        run: ~/backend/gradlew clean bootJar
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
           name: cruru-be-develop-jar
-          path: ./backend/build/libs/cruru-0.0.1-SNAPSHOT.jar
+          path: ~/backend/build/libs/cruru-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: self-hosted
