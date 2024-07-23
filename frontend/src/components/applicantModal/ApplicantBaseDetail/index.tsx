@@ -4,6 +4,7 @@ import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
 import useSpecificApplicant from '@hooks/useSpecificApplicant';
 import formatDate from '@utils/formatDate';
+import { useModal } from '@contexts/ModalContext';
 import S from './style';
 
 interface ApplicantBaseDetailProps {
@@ -13,7 +14,8 @@ interface ApplicantBaseDetailProps {
 export default function ApplicantBaseDetail({ applicantId }: ApplicantBaseDetailProps) {
   const { data: applicantBaseDetail } = useSpecificApplicant({ applicantId });
   const { processList } = useProcess();
-  const { moveApplicantProcess } = useApplicant({ applicantId });
+  const { moveApplicantProcess, rejectApplicant } = useApplicant({ applicantId });
+  const { close } = useModal();
 
   if (!applicantBaseDetail) {
     return <div>no data</div>; // TODO: 핸들링
@@ -29,6 +31,11 @@ export default function ApplicantBaseDetail({ applicantId }: ApplicantBaseDetail
       },
     }));
 
+  const rejectAppHandler = () => {
+    rejectApplicant.mutate({ applicantId });
+    close();
+  };
+
   return (
     <S.Container>
       <S.Title>{applicantBaseDetail.name}</S.Title>
@@ -43,6 +50,7 @@ export default function ApplicantBaseDetail({ applicantId }: ApplicantBaseDetail
         <Button
           size="sm"
           color="error"
+          onClick={rejectAppHandler}
         >
           불합격
         </Button>

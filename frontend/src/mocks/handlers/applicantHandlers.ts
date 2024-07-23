@@ -20,11 +20,18 @@ const applicantHandlers = [
     });
 
     const { applicant_ids } = body;
-    console.log(`${applicant_ids}지원자(들을)를 ${processId}에 해당하는 프로세스로 이동합니다.`);
+    console.log(`${applicant_ids}지원자(들)을/를 ${processId}에 해당하는 프로세스로 이동합니다.`);
 
     return HttpResponse.json({ status: 200 });
   }),
   http.get(`${APPLICANTS}/:applicantId`, () => HttpResponse.json(specificApplicant)),
+  http.patch(`${APPLICANTS}/:applicantId/reject`, ({ params }) => {
+    const { applicantId } = params;
+
+    console.log(`${applicantId}지원자(들)을/를 불합격 처리 합니다.`);
+
+    return HttpResponse.json({ status: 200 });
+  }),
 ];
 
 export default applicantHandlers;

@@ -8,32 +8,29 @@ const meta: Meta<typeof ApplicantBaseDetail> = {
     layout: 'centered',
     docs: {
       description: {
-        component: '지원자의 기본적인 상세 정보를 나타내는 컴포넌트 입니다.',
+        component: '모달의 지원자 기본 정보 컴포넌트입니다.',
       },
     },
   },
-
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px', minWidth: '400px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { applicantId: 1 },
-  decorators: [
-    (S) => (
-      <div style={{ padding: '20px', minWidth: '400px' }}>
-        <S />
-      </div>
-    ),
-  ],
+  args: {
+    applicantId: 1,
+  },
 };
 
 Default.parameters = {
-  docs: {
-    description: {
-      story: 'The default state of the ApplicantBaseDetail component.',
-    },
-  },
+  docs: {},
 };
