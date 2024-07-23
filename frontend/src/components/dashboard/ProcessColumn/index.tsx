@@ -11,7 +11,7 @@ interface ProcessColumnProps {
 
 export default function ProcessColumn({ process }: ProcessColumnProps) {
   const { processList } = useProcess();
-  const { moveApplicantProcess } = useApplicant();
+  const { moveApplicantProcess } = useApplicant({});
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) =>
     processList.map(({ processName, processId }) => ({
