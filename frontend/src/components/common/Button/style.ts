@@ -22,10 +22,10 @@ const commonStyles = (theme: Theme) => css`
 
 const sizeStyles = {
   sm: css`
-    padding: 0.8rem 0.4rem;
+    padding: 0 0.4rem;
   `,
   md: css`
-    padding: 1.2rem;
+    padding: 0 1.2rem;
   `,
 };
 
@@ -77,6 +77,8 @@ const Button = styled.button<ButtonStyleProps>`
   ${({ theme }) => commonStyles(theme)}
   ${({ size }) => sizeStyles[size]}
   ${({ color, theme }) => colorStyles[color](theme)}
+
+  height: 100%;
 `;
 
 const S = {
