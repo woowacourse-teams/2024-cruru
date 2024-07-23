@@ -1,12 +1,12 @@
 package com.cruru.club.exception;
 
-import com.cruru.advice.BadRequestException;
+import com.cruru.advice.duplicated.TextBlankException;
 
-public class ClubNameBlankException extends BadRequestException {
+public class ClubNameBlankException extends TextBlankException {
 
-    private static final String MESSAGE = "동아리 이름이 공백입니다.";
+    private static final String TEXT = "동아리 이름";
 
     public ClubNameBlankException() {
-        super(MESSAGE);
+        super(TEXT);
     }
 }

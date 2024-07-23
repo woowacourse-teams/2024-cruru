@@ -1,12 +1,12 @@
 package com.cruru.club.exception;
 
-import com.cruru.advice.BadRequestException;
+import com.cruru.advice.duplicated.TextCharacterException;
 
-public class ClubNameCharacterException extends BadRequestException {
+public class ClubNameCharacterException extends TextCharacterException {
 
-    private static final String MESSAGE = "동아리 이름에 \\ 혹은 |를 포함하고 있습니다. 입력된 이름: %s";
+    private static final String TEXT = "동아리 이름";
 
-    public ClubNameCharacterException(String invalidName) {
-        super(String.format(MESSAGE, invalidName));
+    public ClubNameCharacterException(String invalidText) {
+        super(TEXT, invalidText);
     }
 }

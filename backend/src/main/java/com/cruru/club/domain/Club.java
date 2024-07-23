@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,7 +54,10 @@ public class Club {
             throw new ClubNameLengthException(MAX_NAME_LENGTH, name.length());
         }
         if (isContainingInvalidCharacter(name)) {
-            throw new ClubNameCharacterException(name);
+            String invalidCharacters = Stream.of(NAME_PATTERN.matcher(name).replaceAll("").split(""))
+                    .distinct()
+                    .collect(Collectors.joining(", "));
+            throw new ClubNameCharacterException(invalidCharacters);
         }
     }
 

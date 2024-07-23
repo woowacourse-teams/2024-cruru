@@ -4,9 +4,9 @@ import com.cruru.advice.NotFoundException;
 
 public class ProcessNotFoundException extends NotFoundException {
 
-    private static final String MESSAGE = "존재하지 않는 프로세스입니다.";
+    private static final String TARGET = "프로세스";
 
     public ProcessNotFoundException() {
-        super(MESSAGE);
+        super(TARGET);
     }
 }

@@ -1,12 +1,12 @@
 package com.cruru.process.exception;
 
-import com.cruru.advice.BadRequestException;
+import com.cruru.advice.duplicated.TextBlankException;
 
-public class ProcessNameBlankException extends BadRequestException {
+public class ProcessNameBlankException extends TextBlankException {
 
-    private static final String MESSAGE = "프로세스 이름이 공백입니다.";
+    private static final String TEXT = "프로세스 이름";
 
     public ProcessNameBlankException() {
-        super(MESSAGE);
+        super(TEXT);
     }
 }
