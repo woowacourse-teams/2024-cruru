@@ -1,9 +1,10 @@
-name: FE CI - 기능 테스트, 빌드 및 Chromatic 배포
+name: FE/CI - 기능 테스트, 빌드 및 Chromatic 배포
 
 on:
   push:
     branches:
       - fe/develop
+      - fe-122-DEPLOY_01
 
 jobs:
   build:
@@ -58,3 +59,24 @@ jobs:
         with:
           name: fe-dev-dist
           path: frontend/dist
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, linux, cruru-fe]
+    defaults:
+      run:
+        working-directory: ./deploy
+
+    steps:
+      - name: 기존 빌드 파일들 삭제
+        run: rm -rf dist
+
+      - name: 새 빌드 파일을 runner instance에 다운로드
+        uses: actions/download-artifact@v4
+        with:
+          name: fe-dev-dist
+          path: dist
+
+      - name: 다운로드 된 빌드 파일을 S3에 배포
+        run: |
+          aws s3 sync dist ${{ secrets.FE_DEPLOY_S3_URI }} --delete
