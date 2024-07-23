@@ -4,6 +4,7 @@ import type { Process } from '@customTypes/process';
 import { getProcesses } from '@api/process';
 
 import { DASHBOARD_ID } from '@constants/constants';
+import QUERY_KEYS from '@hooks/queryKeys';
 
 interface SimpleProcess {
   processName: string;
@@ -19,7 +20,7 @@ interface UseProcessReturn {
 
 export default function useProcess(): UseProcessReturn {
   const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
-    queryKey: ['dashboard', DASHBOARD_ID],
+    queryKey: [QUERY_KEYS.DASHBOARD, DASHBOARD_ID],
     queryFn: () => getProcesses({ id: DASHBOARD_ID }),
   });
 
