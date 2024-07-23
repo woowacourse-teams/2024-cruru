@@ -1,6 +1,6 @@
 package com.cruru.club.exception;
 
-import com.cruru.advice.duplicated.TextLengthException;
+import com.cruru.advice.badrequest.TextLengthException;
 
 public class ClubNameLengthException extends TextLengthException {
 

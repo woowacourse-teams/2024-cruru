@@ -1,6 +1,6 @@
 package com.cruru.club.exception;
 
-import com.cruru.advice.duplicated.TextCharacterException;
+import com.cruru.advice.badrequest.TextCharacterException;
 
 public class ClubNameCharacterException extends TextCharacterException {
 

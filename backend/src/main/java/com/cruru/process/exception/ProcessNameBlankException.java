@@ -1,6 +1,6 @@
 package com.cruru.process.exception;
 
-import com.cruru.advice.duplicated.TextBlankException;
+import com.cruru.advice.badrequest.TextBlankException;
 
 public class ProcessNameBlankException extends TextBlankException {
 

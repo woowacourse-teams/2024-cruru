@@ -1,6 +1,6 @@
 package com.cruru.evaluation.exception;
 
-import com.cruru.advice.BadRequestException;
+import com.cruru.advice.badrequest.BadRequestException;
 
 public class EvaluationScoreException extends BadRequestException {
 

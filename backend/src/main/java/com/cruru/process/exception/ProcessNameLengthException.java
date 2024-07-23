@@ -1,6 +1,6 @@
 package com.cruru.process.exception;
 
-import com.cruru.advice.duplicated.TextLengthException;
+import com.cruru.advice.badrequest.TextLengthException;
 
 public class ProcessNameLengthException extends TextLengthException {
 

@@ -1,6 +1,4 @@
-package com.cruru.advice.duplicated;
-
-import com.cruru.advice.BadRequestException;
+package com.cruru.advice.badrequest;
 
 public class TextBlankException extends BadRequestException {
 

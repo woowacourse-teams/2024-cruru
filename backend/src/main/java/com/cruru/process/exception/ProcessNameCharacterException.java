@@ -1,6 +1,6 @@
 package com.cruru.process.exception;
 
-import com.cruru.advice.duplicated.TextCharacterException;
+import com.cruru.advice.badrequest.TextCharacterException;
 
 public class ProcessNameCharacterException extends TextCharacterException {
 

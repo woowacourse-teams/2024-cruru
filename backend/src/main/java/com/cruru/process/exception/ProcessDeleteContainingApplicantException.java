@@ -1,6 +1,6 @@
 package com.cruru.process.exception;
 
-import com.cruru.advice.BadRequestException;
+import com.cruru.advice.badrequest.BadRequestException;
 
 public class ProcessDeleteContainingApplicantException extends BadRequestException {
 
