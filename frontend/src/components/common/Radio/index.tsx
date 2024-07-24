@@ -2,7 +2,7 @@ import S from './style';
 
 interface RadioProps {
   checked: boolean;
-  diameter?: number;
+  diameter?: string;
   onChange: () => void;
 }
 
@@ -13,10 +13,7 @@ export default function Radio({ checked, diameter, onChange }: RadioProps) {
         diameter={diameter}
         checked={checked}
       >
-        <S.RadioInner
-          diameter={diameter}
-          checked={checked}
-        />
+        <S.RadioInner checked={checked} />
       </S.RadioOuter>
     </S.RadioContainer>
   );

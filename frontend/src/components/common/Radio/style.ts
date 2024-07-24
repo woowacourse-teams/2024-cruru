@@ -7,8 +7,8 @@ const RadioContainer = styled.div`
   cursor: pointer;
 `;
 
-const RadioOuter = styled.div<{ diameter?: number; checked: boolean }>`
-  height: ${({ diameter }) => (diameter ? `${diameter}px` : '1.6rem')};
+const RadioOuter = styled.div<{ diameter?: string; checked: boolean }>`
+  height: ${({ diameter }) => diameter ?? '1.6rem'};
   aspect-ratio: 1/1;
   border: 2px solid ${({ checked, theme }) => (checked ? theme.colors.brand.primary : theme.baseColors.grayscale[800])};
   border-radius: 50%;
@@ -19,8 +19,8 @@ const RadioOuter = styled.div<{ diameter?: number; checked: boolean }>`
   transition: all 0.2s ease; //TODO: theme hover로 바꿔야 합니다.
 `;
 
-const RadioInner = styled.div<{ diameter?: number; checked: boolean }>`
-  height: ${({ diameter }) => (diameter ? `${diameter / 2}px` : '0.8rem')};
+const RadioInner = styled.div<{ checked: boolean }>`
+  height: 60%;
   aspect-ratio: 1/1;
   background-color: ${({ checked, theme }) => (checked ? theme.colors.brand.primary : theme.baseColors.grayscale[800])};
   border-radius: 50%;

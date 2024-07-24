@@ -59,7 +59,7 @@ Default.parameters = {
 export const SizeRadio: Story = {
   args: {
     checked: false,
-    diameter: 50,
+    diameter: '5rem',
     onChange: () => console.log('Radio 버튼이 클릭되었습니다!'),
   },
 };
