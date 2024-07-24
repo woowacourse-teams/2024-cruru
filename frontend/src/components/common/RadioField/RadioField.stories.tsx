@@ -1,8 +1,9 @@
+import { useArgs } from '@storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react';
-import RadioField from './index';
+import RadioField from '.';
 
 const meta: Meta<typeof RadioField> = {
-  title: 'Components/RadioField',
+  title: 'Common/Radio/RadioField',
   component: RadioField,
   parameters: {
     layout: 'centered',
@@ -15,15 +16,20 @@ const meta: Meta<typeof RadioField> = {
   tags: ['autodocs'],
   decorators: [
     (Story, context) => {
+      const [args, updateArgs] = useArgs();
       const handleChange = (value: string) => {
-        context.args.onChange(value);
+        console.log(value);
+        updateArgs({ selectedValue: value });
       };
 
       return (
         <div style={{ padding: '20px' }}>
           <Story
-            {...context.args}
-            onChange={handleChange}
+            args={{
+              options: context.args.options,
+              selectedValue: args.selectedValue,
+              onChange: handleChange,
+            }}
           />
         </div>
       );
@@ -52,7 +58,7 @@ const meta: Meta<typeof RadioField> = {
       },
     },
   },
-};
+} satisfies Meta<typeof RadioField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -66,7 +72,7 @@ export const Default: Story = {
       { label: '잘 모르겠어요', value: 'bad' },
       { label: '별로에요', value: 'veryBad' },
     ],
-    onChange: (value: string) => console.log(`${value}값이 클릭되었습니다.`),
+    selectedValue: '',
   },
 };
 

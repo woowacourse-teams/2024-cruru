@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import RadioOption from './index';
 
 const meta: Meta<typeof RadioOption> = {
-  title: 'Components/RadioOption',
+  title: 'Common/Radio/RadioOption',
   component: RadioOption,
   parameters: {
     layout: 'centered',
