@@ -5,7 +5,7 @@ import { processMutaions } from '@hooks/process';
 import React, { FormEvent, useState } from 'react';
 import { Process } from '@customTypes/process';
 import { DASHBOARD_ID } from '@constants/constants';
-import S from './style';
+import C from '../style';
 
 interface ProcessAddFormProps {
   priorProcessId: number;
@@ -38,7 +38,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
   };
 
   return (
-    <S.Form onSubmit={handleSubmit}>
+    <C.ProcessForm onSubmit={handleSubmit}>
       <InputField
         label="프로세스 이름"
         placeholder="32자 이내로 입력해주세요."
@@ -57,7 +57,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
         name="description"
       />
 
-      <S.ButtonWrapper>
+      <C.ButtonWrapper>
         <Button
           type="reset"
           color="white"
@@ -73,7 +73,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
         >
           추가
         </Button>
-      </S.ButtonWrapper>
-    </S.Form>
+      </C.ButtonWrapper>
+    </C.ProcessForm>
   );
 }
