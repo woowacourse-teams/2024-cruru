@@ -13,8 +13,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:3000",
                         "https://localhost:3000",
-                        "www.cruru.kr",
-                        "cruru.kr",
+                        "https://www.cruru.kr",
+                        "https://cruru.kr",
                         "https://dbrc7l2k8z4lk.cloudfront.net"
                 )
                 .allowedMethods("*")
