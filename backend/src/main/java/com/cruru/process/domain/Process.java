@@ -52,6 +52,15 @@ public class Process {
         this.dashboard = dashboard;
     }
 
+    public void updateName(String name) {
+        validateName(name);
+        this.name = name;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
     private void validateName(String name) {
         if (name.isBlank()) {
             throw new ProcessNameBlankException();
