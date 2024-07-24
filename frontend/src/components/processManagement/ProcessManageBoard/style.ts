@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
-import { connectionLine } from '../style';
 
 const Container = styled.div`
-  display: flex;
-  align-items: flex-start;
+  width: 100%;
+  height: 100%;
 
-  position: relative;
-  ${({ theme }) => connectionLine(theme)}
+  display: flex;
+  gap: 1.6rem;
+
+  overflow-x: hidden;
 `;
 
 const S = {
