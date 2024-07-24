@@ -54,6 +54,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-build-cache-
 
+      - name: List Gradle build cache directory
+        run: ls -al ${{ runner.workspace }}/backend/.gradle/build-cache
+
       - name: Grant execute permission for gradlew
         run: |
           chmod +x gradlew
