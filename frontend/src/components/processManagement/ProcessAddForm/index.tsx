@@ -3,12 +3,8 @@ import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
 import { processMutaions } from '@hooks/process';
 import React, { FormEvent, useState } from 'react';
+import { Process } from '@customTypes/process';
 import S from './style';
-
-interface ProcessAddForm {
-  name: string;
-  description: string;
-}
 
 interface ProcessAddFormProps {
   priorProcessId: number;
@@ -16,7 +12,7 @@ interface ProcessAddFormProps {
 }
 
 export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAddFormProps) {
-  const [formState, setFormState] = useState<ProcessAddForm>({
+  const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: '',
     description: '',
   });
