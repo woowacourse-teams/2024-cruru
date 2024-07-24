@@ -48,6 +48,7 @@ public class ApplicantService {
                 applicant.getName(),
                 applicant.getEmail(),
                 applicant.getPhone(),
+                applicant.getProcess().getName(),
                 applicant.getCreatedDate()
         );
     }

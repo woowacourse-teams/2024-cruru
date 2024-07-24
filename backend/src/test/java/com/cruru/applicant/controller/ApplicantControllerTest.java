@@ -50,7 +50,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+        Process process = processRepository.save(new Process(0, "서류", "서류 전형", null));
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", process, false));
 
         // when&then
         RestAssured.given().log().all()

@@ -81,7 +81,8 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null, false);
+        Process process = processRepository.save(new Process(0, "서류", "서류 전형", null));
+        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
         applicant = applicantRepository.save(applicant);
 
         // when
