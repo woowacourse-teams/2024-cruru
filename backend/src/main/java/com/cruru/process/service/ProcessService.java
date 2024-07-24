@@ -15,7 +15,6 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessBadRequestException;
 import com.cruru.process.exception.ProcessNotFoundException;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -77,7 +76,7 @@ public class ProcessService {
     }
 
     @Transactional
-    public void create(long dashboardId, ProcessCreateRequest request) {
+    public void create(ProcessCreateRequest request, long dashboardId) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
         validateProcessCount(allByDashboardId);
         Dashboard dashboard = dashboardRepository.findById(dashboardId)
@@ -104,7 +103,7 @@ public class ProcessService {
     }
 
     @Transactional
-    public ProcessResponse update(long processId, @Valid ProcessUpdateRequest request) {
+    public ProcessResponse update(ProcessUpdateRequest request, long processId) {
         Process process = processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
 

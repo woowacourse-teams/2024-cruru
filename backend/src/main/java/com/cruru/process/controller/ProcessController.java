@@ -37,7 +37,7 @@ public class ProcessController {
             @RequestParam(name = "dashboard_id") Long dashboardId,
             @RequestBody @Valid ProcessCreateRequest request
     ) {
-        processService.create(dashboardId, request);
+        processService.create(request, dashboardId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -46,7 +46,7 @@ public class ProcessController {
             @PathVariable(name = "process_id") Long processId,
             @RequestBody @Valid ProcessUpdateRequest request
     ) {
-        ProcessResponse response = processService.update(processId, request);
+        ProcessResponse response = processService.update(request, processId);
         return ResponseEntity.ok().body(response);
     }
 

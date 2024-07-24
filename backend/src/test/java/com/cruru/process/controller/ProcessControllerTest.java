@@ -70,7 +70,6 @@ class ProcessControllerTest extends ControllerTest {
                 .then().log().all().statusCode(201);
     }
 
-
     @DisplayName("존재하는 프로세스의 이름과 설명 변경 성공시, 200을 응답한다.")
     @Test
     void update_success() {
@@ -86,7 +85,6 @@ class ProcessControllerTest extends ControllerTest {
                 .when().patch(url)
                 .then().log().all().statusCode(200);
     }
-
 
     @DisplayName("프로세스 삭제 성공 시, 204를 응답한다.")
     @Test

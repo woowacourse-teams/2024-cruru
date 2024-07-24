@@ -92,7 +92,7 @@ class ProcessServiceTest extends ServiceTest {
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
 
         // when
-        processService.create(dashboard.getId(), processCreateRequest);
+        processService.create(processCreateRequest, dashboard.getId());
 
         // then
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboard.getId())
@@ -122,7 +122,7 @@ class ProcessServiceTest extends ServiceTest {
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
 
         // when&then
-        assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
+        assertThatThrownBy(() -> processService.create(processCreateRequest, savedDashboard.getId()))
                 .isInstanceOf(ProcessBadRequestException.class);
     }
 
@@ -138,7 +138,7 @@ class ProcessServiceTest extends ServiceTest {
 
         // when
         Long processId = process.getId();
-        ProcessResponse actualProcessResponse = processService.update(processId, processUpdateRequest);
+        ProcessResponse actualProcessResponse = processService.update(processUpdateRequest, processId);
 
         // then
         assertAll(() -> {
