@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const Form = styled.form`
+const ProcessForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -25,9 +25,9 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const S = {
-  Form,
+const C = {
+  ProcessForm,
   ButtonWrapper,
 };
 
-export default S;
+export default C;
