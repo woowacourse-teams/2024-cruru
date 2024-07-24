@@ -26,6 +26,7 @@
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-wrap-multilines": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/prefer-default-export": ["off"],
     "react/require-default-props": "off",
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/label-has-associated-control": "off",

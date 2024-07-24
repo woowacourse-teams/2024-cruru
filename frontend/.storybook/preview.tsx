@@ -6,6 +6,7 @@ import theme from '@styles/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import handlers from '@mocks/handlers';
+import { ModalProvider } from '@contexts/ModalContext';
 
 initialize();
 
@@ -25,12 +26,14 @@ const preview: Preview = {
   decorators: [
     (Story) => {
       return (
-        <QueryClientProvider client={new QueryClient()}>
-          <Global styles={globalStyles()} />
-          <ThemeProvider theme={theme}>
-            <Story />
-          </ThemeProvider>
-        </QueryClientProvider>
+        <ModalProvider>
+          <QueryClientProvider client={new QueryClient()}>
+            <Global styles={globalStyles()} />
+            <ThemeProvider theme={theme}>
+              <Story />
+            </ThemeProvider>
+          </QueryClientProvider>
+        </ModalProvider>
       );
     },
   ],

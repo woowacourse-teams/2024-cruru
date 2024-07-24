@@ -1,30 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
 
 import type { Process } from '@customTypes/process';
-import processApis from '@api/process';
+import { getProcesses } from '@api/process';
 
-interface IUseProcessReturn {
+import { DASHBOARD_ID } from '@constants/constants';
+import QUERY_KEYS from '@hooks/queryKeys';
+
+interface SimpleProcess {
+  processName: string;
+  processId: number;
+}
+
+interface UseProcessReturn {
   processes: Process[];
-  processNameList: string[];
+  processList: SimpleProcess[];
   error: Error | null;
   isLoading: boolean;
 }
 
-export default function useProcess(): IUseProcessReturn {
-  const ID = 1; // TODO: 수정해야합니다.
-
+export default function useProcess(): UseProcessReturn {
   const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
-    queryKey: ['dashboard', DASHBOARD_ID],
+    queryKey: [QUERY_KEYS.DASHBOARD, DASHBOARD_ID],
     queryFn: () => getProcesses({ id: DASHBOARD_ID }),
   });
 
   const processes = data?.processes || [];
 
-  const processNameList = processes.map((p) => p.name);
+  const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
 
   return {
     processes,
-    processNameList,
+    processList,
     error,
     isLoading,
   };
