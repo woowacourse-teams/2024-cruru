@@ -1,4 +1,5 @@
 import processApis from '@api/process';
+import { DASHBOARD_ID } from '@constants/constants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // 제안: 이런식으로 리팩토링 하는 건 어떨지?
@@ -11,8 +12,7 @@ export const processMutaions = {
     // TODO: useInvalidateQueries를 사용하는 것으로 리팩토링
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      // TODO: 상수 변경
-      queryClient.invalidateQueries({ queryKey: ['dashboard', 1] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
     };
 
     return useMutation({
@@ -24,6 +24,40 @@ export const processMutaions = {
       },
       onError: () => {
         alert('프로세스 추가에 실패했습니다.');
+      },
+    });
+  },
+
+  useModifyProcess: () => {
+    const queryClient = useQueryClient();
+    const invalidateQueries = () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
+    };
+
+    return useMutation({
+      mutationFn: (params: { processId: number; name: string; description?: string }) => processApis.modify(params),
+      onSuccess: () => {
+        invalidateQueries();
+      },
+      onError: () => {
+        alert('프로세스 수정에 실패했습니다.');
+      },
+    });
+  },
+
+  useDeleteProcess: () => {
+    const queryClient = useQueryClient();
+    const invalidateQueries = () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
+    };
+
+    return useMutation({
+      mutationFn: (processId: number) => processApis.delete({ processId }),
+      onSuccess: () => {
+        invalidateQueries();
+      },
+      onError: () => {
+        alert('프로세스 삭제에 실패했습니다.');
       },
     });
   },
