@@ -33,11 +33,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: 애플리케이션 의존성 항목들 설치
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: 백엔드 API 연동용 환경변수 설정
         run: |
           echo "REACT_APP_CRURU_API_URL=${{ secrets.API_URL }}" >> .env.production
+
+      - name: 애플리케이션 기능 테스트
+        run: npm run test -- --passWithNoTests
 
       - name: 애플리케이션 빌드
         run: npm run build

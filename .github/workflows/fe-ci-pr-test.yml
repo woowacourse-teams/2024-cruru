@@ -1,25 +1,24 @@
-name: FE/CI - 기능 테스트, 빌드 및 Chromatic 배포
+name: FE/CI - 테스트 실행 및 검증
 
 on:
-  push:
+  pull_request:
+    types: [opened, ready_for_review]
     branches:
       - fe/develop
 
 jobs:
-  build:
+  run-test-pr-opened:
+    if: startsWith(github.head_ref, 'fe-')
     runs-on: ubuntu-22.04
+    permissions:
+      pull-requests: write
     defaults:
       run:
         working-directory: ./frontend
-    concurrency:
-      group: ${{ github.workflow }}
-      cancel-in-progress: true
 
     steps:
       - name: 저장소 checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Node.js 셋업
         uses: actions/setup-node@v4
@@ -44,18 +43,3 @@ jobs:
 
       - name: 애플리케이션 기능 테스트
         run: npm run test -- --passWithNoTests
-
-      - name: 애플리케이션 빌드
-        run: npm run build
-
-      - name: 컴포넌트 Storybook을 Chromatic으로 배포
-        uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          workingDir: frontend
-
-      - name: 빌드된 파일을 artifact로 업로드
-        uses: actions/upload-artifact@v4
-        with:
-          name: fe-dev-dist
-          path: frontend/dist
