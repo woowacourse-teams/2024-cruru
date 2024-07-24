@@ -112,7 +112,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           
   review-submitted_alert:
-    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED'
+    if: github.event.review.state == 'CHANGES_REQUESTED' || github.event.review.state == 'COMMENTED'
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and reviewee variables
