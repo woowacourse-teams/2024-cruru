@@ -49,7 +49,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/.gradle/build-cache
+            ${{ runner.workspace }}/backend/.gradle/build-cache
           key: ${{ runner.os }}-gradle-build-cache-${{ hashFiles('**/*.gradle*', '**/settings.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-build-cache-
