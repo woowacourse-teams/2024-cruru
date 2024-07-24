@@ -33,6 +33,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: 애플리케이션 의존성 항목들 설치
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: 백엔드 API 연동용 환경변수 설정
