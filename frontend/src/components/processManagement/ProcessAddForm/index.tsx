@@ -4,6 +4,7 @@ import TextField from '@components/common/TextField';
 import { processMutaions } from '@hooks/process';
 import React, { FormEvent, useState } from 'react';
 import { Process } from '@customTypes/process';
+import { DASHBOARD_ID } from '@constants/constants';
 import S from './style';
 
 interface ProcessAddFormProps {
@@ -29,9 +30,8 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate({
-      // TODO: 상수 변경
       // TODO: 상수를 전역상태로 관리하는 것으로 변경
-      dashboardId: 1,
+      dashboardId: DASHBOARD_ID,
       orderIndex: priorProcessId + 1,
       ...formState,
     });

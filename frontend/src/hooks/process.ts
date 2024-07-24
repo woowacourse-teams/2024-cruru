@@ -1,4 +1,5 @@
 import processApis from '@api/process';
+import { DASHBOARD_ID } from '@constants/constants';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // 제안: 이런식으로 리팩토링 하는 건 어떨지?
@@ -11,8 +12,7 @@ export const processMutaions = {
     // TODO: useInvalidateQueries를 사용하는 것으로 리팩토링
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      // TODO: 상수 변경
-      queryClient.invalidateQueries({ queryKey: ['dashboard', 1] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
     };
 
     return useMutation({
