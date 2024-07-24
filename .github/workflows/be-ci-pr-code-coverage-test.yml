@@ -78,6 +78,3 @@ jobs:
           key: ${{ runner.os }}-gradle-build-cache-${{ hashFiles('**/*.gradle*', '**/settings.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-build-cache-
-
-      - name: List Gradle build cache directory
-        run: ls -al ${{ github.workspace }}/backend/.gradle/build-cache
