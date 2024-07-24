@@ -26,6 +26,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Set environment variables
+        run: |
+          echo "GRADLE_USER_HOME=${{ github.workspace }}/.gradle" >> $GITHUB_ENV
+
       - name: Set up build cache directory
         run: |
           mkdir -p ${{ github.workspace }}/backend/.gradle/build-cache
@@ -56,13 +60,13 @@ jobs:
       - name: Run tests and generate coverage report
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ./gradlew test jacocoTestReport --info
+        run: ./gradlew test jacocoTestReport --info --build-cache
         continue-on-error: true
 
       - name: Verify test coverage
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ./gradlew jacocoTestCoverageVerification --info
+        run: ./gradlew jacocoTestCoverageVerification --info --build-cache
         continue-on-error: true
 
       - name: 테스트 커버리지를 PR에 코멘트로 등록
