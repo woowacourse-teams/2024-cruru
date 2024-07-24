@@ -1,13 +1,6 @@
 export interface PopOverMenuItem {
-  id: number;
+  id: string;
   name: string;
   isHighlight?: boolean;
-  onClick: ({ targetProcessId }: { targetProcessId: number }) => void;
-}
-
-export interface DropdownListItem {
-  id: number;
-  name: string;
-  isHighlight?: boolean;
-  onClick: ({ targetProcessId }: { targetProcessId: number }) => void;
+  onClick: () => void;
 }

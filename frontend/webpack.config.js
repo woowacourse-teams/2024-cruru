@@ -14,6 +14,9 @@ module.exports = {
             maxSize: 4 * 1024,
           },
         },
+        generator: {
+          filename: 'assets/images/[name]_[contenthash:8][ext]',
+        },
       },
       {
         test: /\.(js|jsx|ts|tsx|mjs)$/,
@@ -46,7 +49,9 @@ module.exports = {
     },
   },
   output: {
+    filename: '[name]_[chunkhash:8].js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
   },
   plugins: [
     new HtmlWebpackPlugin({

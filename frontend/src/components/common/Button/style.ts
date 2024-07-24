@@ -1,8 +1,8 @@
 import { css, SerializedStyles, Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
-export type ButtonSize = 'sm' | 'md' | 'fillContainer';
-export type ButtonColor = 'white' | 'black' | 'primary' | 'secondary' | 'error';
+export type ButtonSize = 'sm' | 'md';
+export type ButtonColor = 'white' | 'black' | 'primary' | 'error';
 
 export interface ButtonStyleProps {
   size: ButtonSize;
@@ -21,18 +21,11 @@ const commonStyles = (theme: Theme) => css`
 `;
 
 const sizeStyles = {
-  sm: (theme: Theme) => css`
-    ${theme.typography.common.small}
+  sm: css`
     padding: 0.8rem 0.4rem;
   `,
-  md: (theme: Theme) => css`
-    ${theme.typography.common.default}
+  md: css`
     padding: 1.2rem;
-  `,
-  fillContainer: (theme: Theme) => css`
-    ${theme.typography.common.default}
-    width: 100%;
-    height: 100%;
   `,
 };
 
@@ -58,16 +51,6 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
     }
   `,
   primary: (theme: Theme) => css`
-    color: ${theme.baseColors.grayscale[50]};
-    background-color: ${theme.baseColors.purplescale[500]};
-    border: 1px solid ${theme.baseColors.purplescale[500]};
-
-    &:hover {
-      background-color: ${theme.baseColors.purplescale[700]};
-      border: 1px solid ${theme.baseColors.purplescale[700]};
-    }
-  `,
-  secondary: (theme: Theme) => css`
     color: ${theme.colors.text.default};
     background-color: ${theme.baseColors.purplescale[50]};
     border: 1px solid ${theme.baseColors.purplescale[500]};
@@ -92,7 +75,7 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
 
 const Button = styled.button<ButtonStyleProps>`
   ${({ theme }) => commonStyles(theme)}
-  ${({ size, theme }) => sizeStyles[size](theme)}
+  ${({ size }) => sizeStyles[size]}
   ${({ color, theme }) => colorStyles[color](theme)}
 `;
 

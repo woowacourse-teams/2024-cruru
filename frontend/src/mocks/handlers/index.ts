@@ -1,6 +1,5 @@
-import applicantHandlers from './applicantHandlers';
 import processHandlers from './processHandlers';
 
-const handlers = [...processHandlers, ...applicantHandlers];
+const handlers = [...processHandlers];
 
 export default handlers;
