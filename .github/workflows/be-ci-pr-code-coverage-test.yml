@@ -52,13 +52,13 @@ jobs:
       - name: Run tests and generate coverage report
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ./gradlew test jacocoTestReport
+        run: ./gradlew test jacocoTestReport --info
         continue-on-error: true
 
       - name: Verify test coverage
         env:
           JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
-        run: ./gradlew jacocoTestCoverageVerification
+        run: ./gradlew jacocoTestCoverageVerification --info
         continue-on-error: true
 
       - name: 테스트 커버리지를 PR에 코멘트로 등록
@@ -69,12 +69,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 80
           min-coverage-changed-files: 80
-
-      - name: Cache Gradle build cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ github.workspace }}/backend/.gradle/build-cache
-          key: ${{ runner.os }}-gradle-build-cache-${{ hashFiles('**/*.gradle*', '**/settings.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-build-cache-
