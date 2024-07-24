@@ -1,5 +1,7 @@
 package com.cruru.club.controller;
 
+import static com.cruru.util.fixture.MemberFixture.createMember;
+
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -21,7 +23,7 @@ class ClubControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(new Member("test", "test1234", "test@test.com"));
+        member = memberRepository.save(createMember());
     }
 
     @DisplayName("동아리 생성 성공 시, 201을 응답한다.")

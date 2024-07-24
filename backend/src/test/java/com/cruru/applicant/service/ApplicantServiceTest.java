@@ -1,5 +1,9 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -55,13 +59,13 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("모집 공고1", null));
-        Process beforeProcess = processRepository.save(new Process(0, "이전 프로세스", "프로세스 설명1", dashboard));
-        Process afterProcess = processRepository.save(new Process(1, "이후 프로세스", "프로세스 설명2", dashboard));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process beforeProcess = processRepository.save(createFirstProcess(dashboard));
+        Process afterProcess = processRepository.save(createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                new Applicant(null, null, null, beforeProcess, false),
-                new Applicant(null, null, null, beforeProcess, false)
+                createApplicantDobby(beforeProcess),
+                createApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -82,9 +86,8 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Process process = processRepository.save(new Process(0, "서류", "서류 전형", null));
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
-        applicant = applicantRepository.save(applicant);
+        Process process = processRepository.save(createFirstProcess());
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when
         ApplicantResponse found = applicantService.findById(applicant.getId());
@@ -108,9 +111,11 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findDetailById() {
         // given
-        Process process = new Process(0, "서류", "서류 단계", null);
+        Dashboard dashboard = createBackendDashboard();
+        dashboardRepository.save(dashboard);
+        Process process = createFirstProcess(dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
+        Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
         Question question = new Question("좋아하는 동물은?", 0, null);

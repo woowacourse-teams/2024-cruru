@@ -1,5 +1,6 @@
 package com.cruru.process.domain;
 
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -20,7 +21,7 @@ class ProcessTest {
     @ParameterizedTest
     void validProcessName(String name) {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = createBackendDashboard();
 
         // when&then
         assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
