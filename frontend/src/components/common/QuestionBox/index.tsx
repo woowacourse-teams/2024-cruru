@@ -3,7 +3,7 @@ import S from './style';
 interface QuestionBoxProps {
   header: string;
   type: 'text' | 'file';
-  content: string;
+  content?: string;
   fileName?: string;
   onFileDownload?: () => void;
 }
