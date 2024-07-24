@@ -1,5 +1,7 @@
 package com.cruru.evaluation.service;
 
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -39,11 +41,9 @@ class EvaluationServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        process = processRepository.save(new Process(0, "서류", "서류", null));
+        process = processRepository.save(createFirstProcess());
 
-        applicant = applicantRepository.save(
-                new Applicant(1L, "초코칩", "dev.chocochip@gmail.com", "01012345678", process, false)
-        );
+        applicant = applicantRepository.save(createApplicantDobby(process));
     }
 
     @DisplayName("새로운 평가를 생성한다.")

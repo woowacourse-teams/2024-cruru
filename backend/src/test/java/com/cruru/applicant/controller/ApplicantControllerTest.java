@@ -1,5 +1,10 @@
 package com.cruru.applicant.controller;
 
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
+
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -31,11 +36,9 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Process now = new Process(1L, 0, "서류", "서류 전형", null);
-        now = processRepository.save(now);
-        Process next = new Process(2L, 1, "최종 합격", "최종 합격", null);
-        next = processRepository.save(next);
-        Applicant applicant = new Applicant(1L, "name", "email", "phone", now, false);
+        Process now = processRepository.save(createFirstProcess());
+        Process next = processRepository.save(createFinalProcess());
+        Applicant applicant = createApplicantDobby(now);
         applicantRepository.save(applicant);
 
         // when&then
@@ -50,7 +53,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+        Process process = processRepository.save(createFirstProcess());
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when&then
         RestAssured.given().log().all()
@@ -62,13 +66,25 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void readDetail() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("프론트 부원 모집", null));
-        Process process = processRepository.save(new Process(0, "서류", "서류 단계", dashboard));
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", process, false));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createFirstProcess(dashboard));
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when&then
         RestAssured.given().log().all()
                 .when().get("/v1/applicants/" + applicant.getId() + "/detail")
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원자를 불합격시키는 데 성공하면 200을 응답한다.")
+    @Test
+    void reject() {
+        // given
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+
+        // when&then
+        RestAssured.given().log().all()
+                .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
                 .then().log().all().statusCode(200);
     }
 }

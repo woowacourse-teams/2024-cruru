@@ -1,5 +1,8 @@
 package com.cruru.process.controller;
 
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
+
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
@@ -27,7 +30,7 @@ class ProcessControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        dashboard = dashboardRepository.save(new Dashboard("name", null));
+        dashboard = dashboardRepository.save(createBackendDashboard());
     }
 
     @DisplayName("프로세스 조회 성공 시, 200을 응답한다.")
@@ -90,7 +93,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void delete() {
         // given
-        Process process = processRepository.save(new Process(1, "1차 면접", "화상 면접", dashboard));
+        Process process = processRepository.save(createInterviewProcess(dashboard));
         String url = String.format("/v1/processes/%d", process.getId());
 
         // when&then
