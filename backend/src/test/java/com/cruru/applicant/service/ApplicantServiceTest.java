@@ -13,6 +13,7 @@ import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
+import com.cruru.applicant.exception.ApplicantRejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -126,5 +127,29 @@ class ApplicantServiceTest extends ServiceTest {
                 () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
                 () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
         );
+    }
+
+    @DisplayName("id로 지원자를 불합격시킨다.")
+    @Test
+    void reject() {
+        // given
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+
+        // when
+        applicantService.reject(applicant.getId());
+
+        // then
+        assertThat(applicantRepository.findById(applicant.getId()).get().getIsRejected()).isTrue();
+    }
+
+    @DisplayName("이미 불합격한 지원자를 불합격시키려 하면 예외가 발생한다.")
+    @Test
+    void reject_alreadyRejected() {
+        // given
+        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, true));
+
+        // when&then
+        assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
+                .isInstanceOf(ApplicantRejectException.class);
     }
 }
