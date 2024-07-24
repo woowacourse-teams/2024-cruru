@@ -2,7 +2,7 @@ package com.cruru.process.service;
 
 import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
 import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.fixture.EvaluationFixture.createEvaluation;
+import static com.cruru.fixture.EvaluationFixture.createEvaluationExcellent;
 import static com.cruru.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
@@ -15,7 +15,6 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
-import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
@@ -57,7 +56,7 @@ class ProcessServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
-        evaluationRepository.save(createEvaluation(process, applicant));
+        evaluationRepository.save(createEvaluationExcellent(process, applicant));
 
         // when
         ProcessesResponse byDashboardId = processService.findByDashboardId(dashboard.getId());
@@ -162,9 +161,9 @@ class ProcessServiceTest extends ServiceTest {
         // when&then
         assertAll(
                 () -> assertThatThrownBy(() -> processService.delete(firstProcess.getId()))
-                        .isInstanceOf(ProcessBadRequestException.class),
+                        .isInstanceOf(ProcessDeleteEndsException.class),
                 () -> assertThatThrownBy(() -> processService.delete(finalProcess.getId()))
-                        .isInstanceOf(ProcessBadRequestException.class)
+                        .isInstanceOf(ProcessDeleteEndsException.class)
         );
     }
 

@@ -6,11 +6,15 @@ import com.cruru.process.domain.Process;
 
 public class EvaluationFixture {
 
-    public static Evaluation createEvaluation() {
-        return new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", null, null);
+    public static Evaluation createEvaluationExcellent() {
+        return new Evaluation(5, "서류가 인상 깊었습니다.", null, null);
     }
 
-    public static Evaluation createEvaluation(Process process, Applicant applicant) {
-        return new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant);
+    public static Evaluation createEvaluationExcellent(Process process, Applicant applicant) {
+        return new Evaluation(5, "서류가 인상 깊었습니다.", process, applicant);
+    }
+
+    public static Evaluation createEvaluationGood() {
+        return new Evaluation(4, "포트폴리오가 인상 깊었습니다.", null, null);
     }
 }
