@@ -42,14 +42,69 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "text": "✨PR 리뷰 요청✨",
               "blocks": [
                 {
-                  "type": "section",
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n✨✨✨✨✨ \n✨리뷰 요청✨ \n✨✨✨✨✨\n <@${{ env.SENDER_SLACK_ID }}> ➡️ <@${{ env.REVIEWER_SLACK_ID }}> \n\n 💡${{ github.event.pull_request.title }}💡에 대한 리뷰 요청 도착! \n 아래의 링크에서 확인주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }} - 바로가기>"
+                    "type": "plain_text",
+                    "text": "✨ 리뷰 요청 ✨",
+                    "emoji": true
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url": "${{ github.event.sender.avatar_url }}",
+                      "alt_text": ""
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "<@${{ env.SENDER_SLACK_ID }}>",
+                      "emoji": true
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "➡️ <@${{ env.REVIEWER_SLACK_ID }}>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "💡*PR 제목:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "⚡️ PR 바로가기 ⚡️",
+                        "emoji": true
+                      },
+                      "value": "PR_LINK",
+                      "url": "${{ github.event.pull_request.html_url }}",
+                      "action_id": "actionId-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
               ]
             }
@@ -57,7 +112,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           
   review-submitted_alert:
-    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED' 
+    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED'
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and reviewee variables
@@ -73,14 +128,69 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "text": "🔥${{ github.event.pull_request.title }}: 리뷰 도착🔥",
               "blocks": [
                 {
-                  "type": "section",
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n🔥🔥🔥🔥🔥\n🔥리뷰 완료🔥\n🔥🔥🔥🔥🔥 \n <@${{ env.REVIEWER_SLACK_ID }}> ➡️ <@${{ env.ASSIGNEE_SLACK_ID }}> \n 💡${{ github.event.pull_request.title }}💡에 대한 리뷰 도착! \n ✨ 아래의 링크에서 확인해주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }} - 바로가기>"
+                    "type": "plain_text",
+                    "text": "🔥리뷰 완료🔥",
+                    "emoji": true
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "image",
+                      "image_url": "${{ github.event.sender.avatar_url }}",
+                      "alt_text": ""
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "<@${{ env.REVIEWER_SLACK_ID }}>",
+                      "emoji": true
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "➡️ <@${{ env.ASSIGNEE_SLACK_ID }}>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "💡*PR 제목:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "⚒️ 받은 리뷰 확인하기 ⚒️",
+                        "emoji": true
+                      },
+                      "value": "PR_LINK",
+                      "url": "${{ github.event.pull_request.html_url }}",
+                      "action_id": "actionId-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
               ]
             }
@@ -102,14 +212,54 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "🏁 ${{ github.event.pull_request.title }}: Approve 알림🏁",
               "blocks": [
                 {
-                  "type": "section",
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n🏁🏁🏁🏁\n🏁PR승인🏁 \n🏁🏁🏁🏁\n <@${{ env.ASSIGNEE_SLACK_ID }}> 님! \n 🚀 작업하신 **${{ github.event.pull_request.title }}** 가 Approve 됐어요! \n :muscle: 아래의 링크에서 Merge를 진행해주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "type": "plain_text",
+                    "text": "🏁 PR 승인 🏁",
+                    "emoji": true
                   }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "<@${{ env.ASSIGNEE_SLACK_ID }}>님! 리뷰어들에게 승인을 받았어요!"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "🚀 *PR 제목:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "🕹️ Merge 하러 가기 🕹️",
+                        "emoji": true
+                      },
+                      "value": "PR_LINK",
+                      "url": "http://www.d.c",
+                      "action_id": "actionId-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
               ]
             }
