@@ -1,6 +1,7 @@
 package com.cruru.process.controller;
 
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 
 import com.cruru.dashboard.domain.Dashboard;
@@ -77,7 +78,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void update_success() {
         // given
-        Process process = processRepository.save(new Process(1, "1차 면접", "화상 면접", dashboard));
+        Process process = processRepository.save(createFirstProcess(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("임시 과정", "수정된 프로세스");
         String url = String.format("/v1/processes/%d", process.getId());
 
