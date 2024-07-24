@@ -42,7 +42,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
       <InputField
         label="프로세스 이름"
         placeholder="32자 이내로 입력해주세요."
-        value={formState?.name}
+        value={formState.name}
         onChange={handleChange}
         maxLength={32}
         name="name"
@@ -52,7 +52,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
       <TextField
         label="프로세스 설명"
         placeholder="프로세스에 대한 설명을 입력해주세요."
-        value={formState?.description}
+        value={formState.description}
         onChange={handleChange}
         name="description"
       />

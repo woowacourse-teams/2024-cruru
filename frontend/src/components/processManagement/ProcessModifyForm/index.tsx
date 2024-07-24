@@ -16,8 +16,8 @@ export default function ProcessModifyForm({ process, isDeletable = false }: Proc
   const { mutate: deleteMutate } = processMutaions.useDeleteProcess();
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
-    name: process.name,
-    description: process.description,
+    name: process.name ?? '',
+    description: process.description ?? '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -44,7 +44,7 @@ export default function ProcessModifyForm({ process, isDeletable = false }: Proc
       <InputField
         label="프로세스 이름"
         placeholder="32자 이내로 입력해주세요."
-        value={formState?.name}
+        value={formState.name}
         onChange={handleChange}
         maxLength={32}
         name="name"
@@ -54,7 +54,7 @@ export default function ProcessModifyForm({ process, isDeletable = false }: Proc
       <TextField
         label="프로세스 설명"
         placeholder="프로세스에 대한 설명을 입력해주세요."
-        value={formState?.description}
+        value={formState.description}
         onChange={handleChange}
         name="description"
       />
