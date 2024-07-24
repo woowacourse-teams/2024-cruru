@@ -18,8 +18,6 @@ export default function HeaderTabContent({ headerTabs, activeTabId, content }: H
       <S.Header>
         {headerTabs.map(({ id, name, onClick }) => (
           <S.Tab
-            // TODO: key값 고치기
-            // eslint-disable-next-line react/no-array-index-key
             key={id}
             active={id === activeTabId}
             onClick={onClick}
