@@ -6,6 +6,8 @@ on:
     types: [opened, ready_for_review]
     branches:
       - be/develop
+    paths:
+      - backend/**
 
 jobs:
   test-coverage-pr-opened:
