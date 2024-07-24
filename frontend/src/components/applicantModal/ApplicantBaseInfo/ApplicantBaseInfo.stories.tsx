@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ApplicantBaseDetail from './index';
+import ApplicantBaseInfo from './index';
 
-const meta: Meta<typeof ApplicantBaseDetail> = {
-  title: 'Components/ApplicantBaseDetail',
-  component: ApplicantBaseDetail,
+const meta: Meta<typeof ApplicantBaseInfo> = {
+  title: 'Components/ApplicantModal/ApplicantBaseInfo',
+  component: ApplicantBaseInfo,
   parameters: {
     layout: 'centered',
     docs: {

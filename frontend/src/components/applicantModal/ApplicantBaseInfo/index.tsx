@@ -7,11 +7,11 @@ import formatDate from '@utils/formatDate';
 import { useModal } from '@contexts/ModalContext';
 import S from './style';
 
-interface ApplicantBaseDetailProps {
+interface ApplicantBaseInfoProps {
   applicantId: number;
 }
 
-export default function ApplicantBaseDetail({ applicantId }: ApplicantBaseDetailProps) {
+export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
   const { data: applicantBaseDetail } = useSpecificApplicant({ applicantId });
   const { processList } = useProcess();
   const { moveApplicantProcess, rejectApplicant } = useApplicant({ applicantId });
