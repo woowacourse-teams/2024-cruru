@@ -9,6 +9,7 @@ import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -77,7 +78,7 @@ public class ProcessService {
     }
 
     @Transactional
-    public void create(long dashboardId, ProcessCreateRequest request) {
+    public void create(ProcessCreateRequest request, long dashboardId) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
         validateProcessCount(allByDashboardId);
         Dashboard dashboard = dashboardRepository.findById(dashboardId)
@@ -99,6 +100,17 @@ public class ProcessService {
         if (processes.size() == MAX_PROCESS_COUNT) {
             throw new ProcessCountException(MAX_PROCESS_COUNT);
         }
+    }
+
+    @Transactional
+    public ProcessResponse update(ProcessUpdateRequest request, long processId) {
+        Process process = processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+
+        process.updateName(request.name());
+        process.updateDescription(request.description());
+
+        return toProcessResponse(process);
     }
 
     @Transactional
