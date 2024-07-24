@@ -6,13 +6,13 @@ interface Tab {
   onClick: () => void;
 }
 
-interface HeaderTabContentProps {
+interface AppDetailHeaderProps {
   headerTabs: Tab[];
   activeTabId: number;
   content: string;
 }
 
-export default function HeaderTabContent({ headerTabs, activeTabId, content }: HeaderTabContentProps) {
+export default function AppDetailHeader({ headerTabs, activeTabId, content }: AppDetailHeaderProps) {
   return (
     <S.Container>
       <S.Header>
