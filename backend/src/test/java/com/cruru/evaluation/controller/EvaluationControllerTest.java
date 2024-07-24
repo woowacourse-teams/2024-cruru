@@ -1,7 +1,7 @@
 package com.cruru.evaluation.controller;
 
-import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;

@@ -1,4 +1,4 @@
-package com.cruru.fixture;
+package com.cruru.util.fixture;
 
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;

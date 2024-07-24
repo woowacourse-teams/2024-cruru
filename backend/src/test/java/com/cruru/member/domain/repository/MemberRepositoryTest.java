@@ -1,6 +1,6 @@
 package com.cruru.member.domain.repository;
 
-import static com.cruru.fixture.MemberFixture.createMember;
+import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.member.domain.Member;

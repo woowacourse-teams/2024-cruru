@@ -1,6 +1,6 @@
 package com.cruru.club.domain;
 
-import static com.cruru.fixture.MemberFixture.createMember;
+import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

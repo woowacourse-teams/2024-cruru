@@ -1,6 +1,6 @@
 package com.cruru.process.domain;
 
-import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

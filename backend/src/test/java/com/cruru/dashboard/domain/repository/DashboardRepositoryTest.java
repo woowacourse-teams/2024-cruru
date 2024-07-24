@@ -1,7 +1,7 @@
 package com.cruru.dashboard.domain.repository;
 
-import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.fixture.DashboardFixture.createFrontendDashboard;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.DashboardFixture.createFrontendDashboard;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.dashboard.domain.Dashboard;

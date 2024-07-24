@@ -1,6 +1,6 @@
 package com.cruru.dashboard.controller;
 
-import static com.cruru.fixture.ClubFixture.createClub;
+import static com.cruru.util.fixture.ClubFixture.createClub;
 
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;

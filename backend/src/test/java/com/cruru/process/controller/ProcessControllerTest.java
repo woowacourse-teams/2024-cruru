@@ -1,7 +1,7 @@
 package com.cruru.process.controller;
 
-import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.fixture.ProcessFixture.createInterviewProcess;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;

@@ -1,6 +1,6 @@
 package com.cruru.club.service;
 
-import static com.cruru.fixture.MemberFixture.createMember;
+import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

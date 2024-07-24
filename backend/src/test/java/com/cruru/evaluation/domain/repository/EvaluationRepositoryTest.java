@@ -1,7 +1,7 @@
 package com.cruru.evaluation.domain.repository;
 
-import static com.cruru.fixture.EvaluationFixture.createEvaluationExcellent;
-import static com.cruru.fixture.EvaluationFixture.createEvaluationGood;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationGood;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.evaluation.domain.Evaluation;

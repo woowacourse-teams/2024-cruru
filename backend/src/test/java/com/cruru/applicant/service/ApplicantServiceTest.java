@@ -1,9 +1,9 @@
 package com.cruru.applicant.service;
 
-import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;

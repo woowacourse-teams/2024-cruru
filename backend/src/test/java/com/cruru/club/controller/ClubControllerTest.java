@@ -1,6 +1,6 @@
 package com.cruru.club.controller;
 
-import static com.cruru.fixture.MemberFixture.createMember;
+import static com.cruru.util.fixture.MemberFixture.createMember;
 
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.member.domain.Member;

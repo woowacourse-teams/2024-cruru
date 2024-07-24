@@ -1,7 +1,7 @@
 package com.cruru.evaluation.service;
 
-import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

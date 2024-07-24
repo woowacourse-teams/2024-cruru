@@ -1,4 +1,4 @@
-package com.cruru.fixture;
+package com.cruru.util.fixture;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.evaluation.domain.Evaluation;

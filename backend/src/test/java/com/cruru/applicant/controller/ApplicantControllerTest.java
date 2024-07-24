@@ -1,9 +1,9 @@
 package com.cruru.applicant.controller;
 
-import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.domain.Applicant;

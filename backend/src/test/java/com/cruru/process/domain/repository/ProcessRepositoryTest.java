@@ -1,7 +1,7 @@
 package com.cruru.process.domain.repository;
 
-import static com.cruru.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.process.domain.Process;

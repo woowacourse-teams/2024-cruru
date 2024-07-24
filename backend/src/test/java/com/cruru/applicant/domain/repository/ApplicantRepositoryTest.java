@@ -1,7 +1,7 @@
 package com.cruru.applicant.domain.repository;
 
-import static com.cruru.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.fixture.ApplicantFixture.createApplicantRush;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantRush;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
