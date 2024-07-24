@@ -1,23 +1,24 @@
 import Button from '@components/common/Button';
 import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
-import { processMutaions } from '@hooks/process';
-import React, { FormEvent, useState } from 'react';
 import { Process } from '@customTypes/process';
-import { DASHBOARD_ID } from '@constants/constants';
+import React, { FormEvent, useState } from 'react';
+import { processMutaions } from '@hooks/process';
 import C from '../style';
 
-interface ProcessAddFormProps {
-  priorProcessId: number;
-  toggleForm: () => void;
+interface ProcessModifyFormProps {
+  process: Process;
+  isDeletable?: boolean;
 }
 
-export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAddFormProps) {
+export default function ProcessModifyForm({ process, isDeletable = false }: ProcessModifyFormProps) {
+  const { mutate: modifyMutate } = processMutaions.useModifyProcess();
+  const { mutate: deleteMutate } = processMutaions.useDeleteProcess();
+
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
-    name: '',
-    description: '',
+    name: process.name ?? '',
+    description: process.description ?? '',
   });
-  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -27,18 +28,19 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
     }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const modifyProcess = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate({
-      // TODO: 상수를 전역상태로 관리하는 것으로 변경
-      dashboardId: DASHBOARD_ID,
-      orderIndex: priorProcessId + 1,
-      ...formState,
-    });
+    modifyMutate({ ...formState, processId: process.processId });
+  };
+
+  const deleteProcess = () => {
+    if (window.confirm('정말로 삭제하시겠습니까?\n삭제하면 지원자들의 정보도 함께 삭제되며 복구할 수 없습니다.')) {
+      deleteMutate(process.processId);
+    }
   };
 
   return (
-    <C.ProcessForm onSubmit={handleSubmit}>
+    <C.ProcessForm onSubmit={modifyProcess}>
       <InputField
         label="프로세스 이름"
         placeholder="32자 이내로 입력해주세요."
@@ -59,20 +61,22 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
 
       <C.ButtonWrapper>
         <Button
-          type="reset"
-          color="white"
-          onClick={toggleForm}
-          size="fillContainer"
-        >
-          취소
-        </Button>
-        <Button
           type="submit"
-          color="primary"
+          color="white"
           size="fillContainer"
         >
-          추가
+          수정
         </Button>
+        {isDeletable && (
+          <Button
+            type="button"
+            color="error"
+            size="fillContainer"
+            onClick={deleteProcess}
+          >
+            삭제
+          </Button>
+        )}
       </C.ButtonWrapper>
     </C.ProcessForm>
   );
