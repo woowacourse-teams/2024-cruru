@@ -1,6 +1,7 @@
 package com.cruru.applicant.service;
 
 import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -138,7 +139,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+        Applicant applicant = applicantRepository.save(createApplicantDobby());
 
         // when
         applicantService.reject(applicant.getId());
@@ -151,7 +152,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject_alreadyRejected() {
         // given
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, true));
+        Applicant applicant = applicantRepository.save(createRejectedApplicantLurgi());
 
         // when&then
         assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
