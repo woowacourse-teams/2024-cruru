@@ -6,8 +6,6 @@ const Container = styled.div`
 
   display: flex;
   gap: 1.6rem;
-
-  overflow-x: hidden;
 `;
 
 const S = {

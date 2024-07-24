@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
-  padding: 34px 0px;
+  width: 100%;
+  height: 100%;
   background-color: white;
   display: flex;
-  flex-direction: row;
   gap: 16px;
 `;
 
