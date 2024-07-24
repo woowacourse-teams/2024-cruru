@@ -61,7 +61,7 @@ public class DataLoader implements ApplicationRunner {
         Dashboard dashboard = new Dashboard(1L, "크루루 모집 공고", club);
         dashboardRepository.save(dashboard);
 
-        Process firstProcess = new Process(1L, 0, "지원서", "지원서를 확인한다.", dashboard);
+        Process firstProcess = new Process(1L, 0, "서류 전형", "지원 서류를 확인한다.", dashboard);
         Process lastProcess = new Process(2L, 1, "최종 합격", "최종 합격자", dashboard);
         processRepository.save(firstProcess);
         processRepository.save(lastProcess);
@@ -78,7 +78,7 @@ public class DataLoader implements ApplicationRunner {
         applicantRepository.saveAll(applicants);
 
         Question choiceQuestion = questionRepository.save(new Question(1L, "성별", 0, dashboard));
-        Question essayQuestion = questionRepository.save((new Question(2L, "좋아하는 숫자가 무엇인가요?", 1, dashboard)));
+        Question essayQuestion = questionRepository.save(new Question(2L, "좋아하는 숫자가 무엇인가요?", 1, dashboard));
 
         Choice maleChoice = choiceRepository.save(new Choice(1L, "남", choiceQuestion));
         Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", choiceQuestion));
