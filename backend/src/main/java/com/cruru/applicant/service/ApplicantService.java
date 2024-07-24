@@ -9,6 +9,7 @@ import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
+import com.cruru.applicant.exception.ApplicantRejectException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
@@ -70,5 +71,19 @@ public class ApplicantService {
     private QnaResponse toQnaResponse(Answer answer) {
         Question question = answer.getQuestion();
         return new QnaResponse(question.getSequence(), question.getContent(), answer.getContent());
+    }
+
+    @Transactional
+    public void reject(long id) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(ApplicantNotFoundException::new);
+        validateRejectable(applicant);
+        applicant.reject();
+    }
+
+    private void validateRejectable(Applicant applicant) {
+        if (applicant.getIsRejected()) {
+            throw new ApplicantRejectException();
+        }
     }
 }
