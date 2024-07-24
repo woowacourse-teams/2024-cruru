@@ -51,6 +51,7 @@ jobs:
         run: |
           cd backend
           chmod +x gradlew
+          ./gradlew init
 
       - name: Run tests and generate coverage report
         env:
