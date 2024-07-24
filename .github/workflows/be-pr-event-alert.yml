@@ -35,8 +35,9 @@ jobs:
         run: |
           echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
           echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
+          echo "SENDER_NICKNAME=${{ env[format('{0}', env.SENDER_SLACK_ID)] }}" >> $GITHUB_ENV
 
-      - name: pr reviewe 요청 시 slack 알림 보내기
+      - name: pr review 요청 -> 리뷰어에게 slack 멘션 알림
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
@@ -58,13 +59,18 @@ jobs:
                   "type": "context",
                   "elements": [
                     {
+                      "type": "plain_text",
+                      "text": "from. ",
+                      "emoji": true
+                    },
+                    {
                       "type": "image",
                       "image_url": "${{ github.event.sender.avatar_url }}",
                       "alt_text": ""
                     },
                     {
                       "type": "plain_text",
-                      "text": "<@${{ env.SENDER_SLACK_ID }}>",
+                      "text": "<@${{ env.SENDER_NICKNAME }}>",
                       "emoji": true
                     }
                   ]
@@ -119,9 +125,10 @@ jobs:
         id: set-vars
         run: |
           echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
 
-      - name: pr 리뷰 완료 후 submit되면 reviewee에게 slack 알림 발송
+      - name: pr 리뷰 submit -> assignee에게 slack 멘션 알림
         if: env.ASSIGNEE_SLACK_ID != ''
         uses: slackapi/slack-github-action@v1.24.0
         with:
@@ -144,13 +151,18 @@ jobs:
                   "type": "context",
                   "elements": [
                     {
+                      "type": "plain_text",
+                      "text": "from. ",
+                      "emoji": true
+                    },
+                    {
                       "type": "image",
                       "image_url": "${{ github.event.sender.avatar_url }}",
                       "alt_text": ""
                     },
                     {
                       "type": "plain_text",
-                      "text": "<@${{ env.REVIEWER_SLACK_ID }}>",
+                      "text": "${{ env.REVIEWER_NICKNAME }}가 리뷰를 남겼습니다.",
                       "emoji": true
                     }
                   ]
@@ -204,7 +216,9 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
+          echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
           echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
 
       - name: pr reviewer가 Approve 하면 slack 알림 보냄
         uses: slackapi/slack-github-action@v1.24.0
@@ -225,11 +239,31 @@ jobs:
                   }
                 },
                 {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "plain_text",
+                      "text": "from. ",
+                      "emoji": true
+                    },
+                    {
+                      "type": "image",
+                      "image_url": "${{ github.event.sender.avatar_url }}",
+                      "alt_text": ""
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "${{ env.REVIEWER_NICKNAME }}",
+                      "emoji": true
+                    }
+                  ]
+                },
+                {
                   "type": "section",
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "<@${{ env.ASSIGNEE_SLACK_ID }}>님! 리뷰어들에게 승인을 받았어요!"
+                      "text": "<@${{ env.ASSIGNEE_SLACK_ID }}>님! \n리뷰어에게 승인을 받았어요!"
                     }
                   ]
                 },
@@ -253,7 +287,7 @@ jobs:
                         "emoji": true
                       },
                       "value": "PR_LINK",
-                      "url": "http://www.d.c",
+                      "url": "${{ github.event.pull_request.html_url }}",
                       "action_id": "actionId-1"
                     }
                   ]
