@@ -1,5 +1,7 @@
 package com.cruru.evaluation.domain.repository;
 
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationGood;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.evaluation.domain.Evaluation;
@@ -25,7 +27,7 @@ class EvaluationRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Evaluation evaluation = new Evaluation(2, "서류가 인상 깊었습니다.", null, null);
+        Evaluation evaluation = createEvaluationExcellent();
         Evaluation saved = evaluationRepository.save(evaluation);
 
         //when
@@ -42,8 +44,8 @@ class EvaluationRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Evaluation evaluation1 = new Evaluation(2, "서류가 인상 깊었습니다.", null, null);
-        Evaluation evaluation2 = new Evaluation(5, "포트폴리오가 인상 깊었습니다.", null, null);
+        Evaluation evaluation1 = createEvaluationExcellent();
+        Evaluation evaluation2 = createEvaluationGood();
 
         //when
         Evaluation savedEvaluation1 = evaluationRepository.save(evaluation1);

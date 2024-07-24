@@ -1,5 +1,6 @@
 package com.cruru.member.domain.repository;
 
+import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.member.domain.Member;
@@ -25,7 +26,7 @@ class MemberRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Member member = new Member("email", "", "");
+        Member member = createMember();
         Member saved = memberRepository.save(member);
 
         //when
@@ -42,8 +43,8 @@ class MemberRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Member member1 = new Member("email", "", "");
-        Member member2 = new Member("email", "", "");
+        Member member1 = createMember();
+        Member member2 = createMember();
 
         //when
         Member savedMember1 = memberRepository.save(member1);

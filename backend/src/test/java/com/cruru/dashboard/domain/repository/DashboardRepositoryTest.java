@@ -1,5 +1,7 @@
 package com.cruru.dashboard.domain.repository;
 
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.DashboardFixture.createFrontendDashboard;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.dashboard.domain.Dashboard;
@@ -25,7 +27,7 @@ class DashboardRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Dashboard dashboard = new Dashboard("프론트 채용", null);
+        Dashboard dashboard = createBackendDashboard();
         Dashboard saved = dashboardRepository.save(dashboard);
 
         //when
@@ -41,8 +43,8 @@ class DashboardRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Dashboard dashboard1 = new Dashboard("프론트 채용", null);
-        Dashboard dashboard2 = new Dashboard("백엔드 채용", null);
+        Dashboard dashboard1 = createBackendDashboard();
+        Dashboard dashboard2 = createFrontendDashboard();
 
         //when
         Dashboard savedDashboard1 = dashboardRepository.save(dashboard1);

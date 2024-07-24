@@ -1,6 +1,6 @@
 package com.cruru.applicant.exception;
 
-import com.cruru.advice.BadRequestException;
+import com.cruru.advice.badrequest.BadRequestException;
 
 public class ApplicantRejectException extends BadRequestException {
 
