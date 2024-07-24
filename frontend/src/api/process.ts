@@ -37,6 +37,40 @@ const processApis = {
 
     return response;
   },
+
+  modify: async (params: { processId: number; name: string; description?: string }) => {
+    const response = await fetch(`${PROCESSES}/${params.processId}`, {
+      method: 'PATCH',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        process_name: params.name,
+        description: params?.description,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return response;
+  },
+
+  delete: async ({ processId }: { processId: number }) => {
+    const response = await fetch(`${PROCESSES}/${processId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return response;
+  },
 };
 
 export default processApis;

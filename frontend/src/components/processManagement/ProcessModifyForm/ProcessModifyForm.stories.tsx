@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ProcessAddForm from '.';
+import ProcessModifyForm from '.';
 
 const meta = {
-  title: 'Components/ProcessManagement/ProcessAddForm',
-  component: ProcessAddForm,
+  title: 'Components/ProcessManagement/ProcessModifyForm',
+  component: ProcessModifyForm,
   parameters: {
     layout: 'centered',
     docs: {
@@ -16,26 +16,24 @@ const meta = {
   tags: ['autodocs'],
 
   argTypes: {
-    priorProcessId: {
-      table: {
-        disable: true,
-      },
-    },
-
-    toggleForm: {
-      table: {
-        disable: true,
-      },
+    process: {
+      description: '수정할 프로세스 정보입니다.',
     },
   },
-} satisfies Meta<typeof ProcessAddForm>;
+} satisfies Meta<typeof ProcessModifyForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    priorProcessId: 0,
-    toggleForm: () => {},
+    process: {
+      processId: 1,
+      name: '서류 접수',
+      description: '',
+      orderIndex: 0,
+      applicants: [],
+    },
+    isDeletable: true,
   },
 };

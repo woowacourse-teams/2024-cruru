@@ -27,4 +27,38 @@ export const processMutaions = {
       },
     });
   },
+
+  useModifyProcess: () => {
+    const queryClient = useQueryClient();
+    const invalidateQueries = () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
+    };
+
+    return useMutation({
+      mutationFn: (params: { processId: number; name: string; description?: string }) => processApis.modify(params),
+      onSuccess: () => {
+        invalidateQueries();
+      },
+      onError: () => {
+        alert('프로세스 수정에 실패했습니다.');
+      },
+    });
+  },
+
+  useDeleteProcess: () => {
+    const queryClient = useQueryClient();
+    const invalidateQueries = () => {
+      queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
+    };
+
+    return useMutation({
+      mutationFn: (processId: number) => processApis.delete({ processId }),
+      onSuccess: () => {
+        invalidateQueries();
+      },
+      onError: () => {
+        alert('프로세스 삭제에 실패했습니다.');
+      },
+    });
+  },
 };
