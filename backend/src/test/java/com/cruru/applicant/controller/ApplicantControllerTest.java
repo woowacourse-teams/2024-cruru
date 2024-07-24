@@ -36,10 +36,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Process now = createFirstProcess();
-        now = processRepository.save(now);
-        Process next = createFinalProcess();
-        next = processRepository.save(next);
+        Process now = processRepository.save(createFirstProcess());
+        Process next = processRepository.save(createFinalProcess());
         Applicant applicant = createApplicantDobby(now);
         applicantRepository.save(applicant);
 
