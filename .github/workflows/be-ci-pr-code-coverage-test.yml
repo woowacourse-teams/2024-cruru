@@ -80,4 +80,4 @@ jobs:
             ${{ runner.os }}-gradle-build-cache-
 
       - name: List Gradle build cache directory
-        run: ls -al ${{ github.workspace }}/2024-cruru/backend/.gradle/build-cache
+        run: ls -al ${{ github.workspace }}/backend/.gradle/build-cache
