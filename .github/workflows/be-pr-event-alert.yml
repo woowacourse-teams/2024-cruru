@@ -133,7 +133,7 @@ jobs:
           echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
 
       - name: Set reviewer and reviewee nickname
-        id: set-vars
+        id: set-nicks
         run: |
           echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
           echo "ASSIGNEE_NICKNAME=${{ env[format('{0}', env.ASSIGNEE_SLACK_ID)] }}" >> $GITHUB_ENV
