@@ -14,13 +14,13 @@ const Template: StoryObj<PopOverMenuProps> = {
 };
 
 const testItem: PopOverMenuItem = {
-  id: 123,
+  id: 'testItem-1',
   name: 'Menu Label',
   onClick: () => console.log('clicked'),
 };
 const testItemList: PopOverMenuItem[] = Array.from({ length: 3 }, (_, index) => ({
   ...testItem,
-  id: index,
+  id: `testItem-${index}`,
   isHighlight: index === 2,
 }));
 

@@ -1,18 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
 import DropdownItem from '@components/common/DropdownItem';
 import ChevronButton from '@components/common/ChevronButton';
-import { DropdownListItem } from '@customTypes/common';
 import S from './style';
+
+type Item = {
+  id: number;
+  name: string;
+  isHighlight?: boolean;
+  onClick: () => void;
+};
 
 export interface DropdownProps {
   initValue?: string;
-  width?: number;
   size?: 'sm' | 'md';
-  items: DropdownListItem[];
-  isShadow?: boolean;
+  items: Item[];
 }
 
-export default function Dropdown({ initValue, width, size = 'sm', items, isShadow = true }: DropdownProps) {
+export default function Dropdown({ initValue, size = 'sm', items }: DropdownProps) {
   const [selected, setSelected] = useState(initValue);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,8 +48,6 @@ export default function Dropdown({ initValue, width, size = 'sm', items, isShado
       ref={dropdownRef}
       size={size}
       isOpen={isOpen}
-      width={width}
-      isShadow={isShadow}
     >
       <S.Header
         onClick={toggleDropdown}
@@ -60,14 +62,11 @@ export default function Dropdown({ initValue, width, size = 'sm', items, isShado
       </S.Header>
 
       {isOpen && (
-        <S.List
-          size={size}
-          isShadow={isShadow}
-        >
+        <S.List size={size}>
           {items.map(({ name, isHighlight, id, onClick }) => (
             <DropdownItem
               onClick={() => {
-                onClick({ targetProcessId: id });
+                onClick();
                 handleClickItem(name);
               }}
               key={id}

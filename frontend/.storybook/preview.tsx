@@ -3,12 +3,6 @@ import { Global, ThemeProvider } from '@emotion/react';
 
 import globalStyles from '@styles/globalStyles';
 import theme from '@styles/theme';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { initialize, mswLoader } from 'msw-storybook-addon';
-import handlers from '@mocks/handlers';
-import { ModalProvider } from '@contexts/ModalContext';
-
-initialize();
 
 const preview: Preview = {
   parameters: {
@@ -18,22 +12,16 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    msw: {
-      handlers: handlers,
-    },
   },
-  loaders: [mswLoader],
   decorators: [
     (Story) => {
       return (
-        <ModalProvider>
-          <QueryClientProvider client={new QueryClient()}>
-            <Global styles={globalStyles()} />
-            <ThemeProvider theme={theme}>
-              <Story />
-            </ThemeProvider>
-          </QueryClientProvider>
-        </ModalProvider>
+        <>
+          <Global styles={globalStyles()} />
+          <ThemeProvider theme={theme}>
+            <Story />
+          </ThemeProvider>
+        </>
       );
     },
   ],

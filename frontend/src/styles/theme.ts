@@ -71,9 +71,6 @@ const colors: Colors = {
     default: baseColors.bluescale[600],
     pressed: baseColors.bluescale[700],
   },
-  brand: {
-    primary: baseColors.purplescale[500],
-  },
 };
 
 const breakpoints = {
@@ -95,54 +92,63 @@ const typography = {
       font-size: 3.5rem;
       line-height: 4rem;
       letter-spacing: 0;
+      margin-bottom: calc(5.2rem - 4rem);
     `,
     800: css`
       font-weight: 700;
       font-size: 2.9rem;
       line-height: 3.2rem;
       letter-spacing: 0;
+      margin-bottom: calc(4rem - 3.2rem);
     `,
     700: css`
       font-weight: 700;
       font-size: 2.4rem;
       line-height: 2.8rem;
       letter-spacing: 0;
+      margin-bottom: calc(4rem - 2.8rem);
     `,
     600: css`
       font-weight: 700;
       font-size: 2rem;
       line-height: 2.4rem;
       letter-spacing: 0;
+      margin-bottom: calc(2.8rem - 2.4rem);
     `,
     500: css`
       font-weight: 600;
       font-size: 1.6rem;
       line-height: 2rem;
       letter-spacing: 0;
+      margin-bottom: calc(2.4rem - 2rem);
     `,
     400: css`
       font-weight: 600;
       font-size: 1.4rem;
       line-height: 1.6rem;
       letter-spacing: 0;
+      margin-bottom: 0;
     `,
     300: css`
       font-weight: 600;
       font-size: 1.2rem;
       line-height: 1.6rem;
       letter-spacing: 0;
+      margin-bottom: calc(2rem - 1.6rem);
     `,
     200: css`
       font-weight: 600;
       font-size: 1.2rem;
       line-height: 1.6rem;
       letter-spacing: 0;
+      margin-bottom: 0;
     `,
     100: css`
       font-weight: 600;
       font-size: 1.1rem;
       line-height: 1.6rem;
       letter-spacing: 0;
+      margin-bottom: 0;
     `,
   },
 
@@ -156,13 +162,13 @@ const typography = {
     paragraph: css`
       font-weight: 400;
       font-size: 1.4rem;
-      line-height: 2.4rem;
+      line-height: 2.8rem;
       letter-spacing: 0;
     `,
     block: css`
-      font-weight: 700;
+      font-weight: 500;
       font-size: 1.4rem;
-      line-height: 2rem;
+      line-height: 20rem;
       letter-spacing: 0;
       margin-bottom: 2.8rem;
     `,
@@ -179,7 +185,7 @@ const typography = {
       letter-spacing: 0;
     `,
     smallAccent: css`
-      font-weight: 700;
+      font-weight: 600;
       font-size: 1.2rem;
       line-height: 1.4rem;
       letter-spacing: 0;
@@ -187,24 +193,6 @@ const typography = {
     smallBlock: css`
       font-weight: 500;
       font-size: 1.2rem;
-      line-height: 2rem;
-      letter-spacing: 0;
-    `,
-    large: css`
-      font-weight: 400;
-      font-size: 1.6rem;
-      line-height: 2rem;
-      letter-spacing: 0;
-    `,
-    largeAccent: css`
-      font-weight: 700;
-      font-size: 1.6rem;
-      line-height: 2rem;
-      letter-spacing: 0;
-    `,
-    largeBlock: css`
-      font-weight: 500;
-      font-size: 1.6rem;
       line-height: 2rem;
       letter-spacing: 0;
     `,

@@ -15,7 +15,7 @@
     },
     {
       "process_id": 2,
-      "order_index": 1,
+      "order_index": 0,
       "applicants": [
         { "applicant_id": 3, "applicant_name": "아르", "created_at": "2024-07-16T05:46:08.345472" },
         { "applicant_id": 4, "applicant_name": "초코칩", "created_at": "2024-07-16T05:46:08.350114" },
