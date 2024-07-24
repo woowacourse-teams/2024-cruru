@@ -2,7 +2,7 @@ rootProject.name = 'cruru'
 
 buildCache {
     local {
-        directory = new File(rootDir, './backend/.gradle/build-cache')
+        directory = new File(rootDir, '.gradle/build-cache')
         removeUnusedEntriesAfterDays = 7
     }
 }
