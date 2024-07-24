@@ -74,10 +74,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ${{ runner.workspace }}/backend/.gradle/build-cache
+            ${{ github.workspace }}/backend/.gradle/build-cache
           key: ${{ runner.os }}-gradle-build-cache-${{ hashFiles('**/*.gradle*', '**/settings.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-build-cache-
 
       - name: List Gradle build cache directory
-        run: ls -al ${{ runner.workspace }}/2024-cruru/backend/.gradle/build-cache
+        run: ls -al ${{ github.workspace }}/2024-cruru/backend/.gradle/build-cache
