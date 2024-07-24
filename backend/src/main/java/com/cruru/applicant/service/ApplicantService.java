@@ -73,7 +73,7 @@ public class ApplicantService {
     }
 
     @Transactional
-    public void rejectById(long id) {
+    public void reject(long id) {
         Applicant applicant = applicantRepository.findById(id)
                 .orElseThrow(ApplicantNotFoundException::new);
         validateRejectable(applicant);

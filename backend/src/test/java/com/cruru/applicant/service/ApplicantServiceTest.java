@@ -135,7 +135,7 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
 
         // when
-        applicantService.rejectById(applicant.getId());
+        applicantService.reject(applicant.getId());
 
         // then
         assertThat(applicantRepository.findById(applicant.getId()).get().getIsRejected()).isTrue();
@@ -148,7 +148,7 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, true));
 
         // when&then
-        assertThatThrownBy(() -> applicantService.rejectById(applicant.getId()))
+        assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
                 .isInstanceOf(ApplicantRejectException.class);
     }
 }
