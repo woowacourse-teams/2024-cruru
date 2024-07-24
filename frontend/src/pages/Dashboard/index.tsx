@@ -1,3 +1,4 @@
+import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
 import ProcessNavBar from '@components/dashboard/ProcessNavBar';
 import useProcess from '@hooks/useProcess';
@@ -20,7 +21,10 @@ export default function Dashboard() {
   return (
     <S.AppContainer>
       <ProcessNavBar currentMenuKey="applicant" />
-      <KanbanBoard processes={processes} />
+
+      <SpecificApplicantIdProvider>
+        <KanbanBoard processes={processes} />
+      </SpecificApplicantIdProvider>
     </S.AppContainer>
   );
 }
