@@ -3,11 +3,16 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   height: 9rem;
   padding: 0 1.6rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 1rem;
 `;
 
