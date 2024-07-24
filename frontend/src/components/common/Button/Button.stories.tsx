@@ -19,18 +19,18 @@ const meta = {
     size: {
       description: '버튼의 사이즈입니다. 두 가지 사이즈를 지원하며 기본값은 md(중간)입니다.',
       control: { type: 'select' },
-      options: ['sm', 'md'],
+      options: ['sm', 'md', 'fillContainer'],
       table: {
-        type: { summary: 'sm | md' },
+        type: { summary: 'sm | md | fillContainer' },
       },
     },
 
     color: {
       description: '버튼의 색상 테마입니다. 4가지 옵션을 지원하며 기본값은 white(흰색)입니다.',
       control: { type: 'select' },
-      options: ['white', 'primary', 'error', 'black'],
+      options: ['white', 'primary', 'secondary', 'error', 'black'],
       table: {
-        type: { summary: 'white | black | primary | error' },
+        type: { summary: 'white | black | primary | secondary | error' },
       },
     },
 
@@ -51,10 +51,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const ButtonDefault: Story = {
+export const SmallButton: Story = {
+  args: {
+    size: 'sm',
+    color: 'white',
+    children: 'Button',
+  },
+};
+
+export const MediumButton: Story = {
   args: {
     size: 'md',
     color: 'white',
     children: 'Button',
   },
+};
+
+export const fillButton: Story = {
+  args: {
+    size: 'fillContainer',
+    color: 'white',
+    children: 'FillButton',
+  },
+
+  decorators: [
+    (StoryComponent) => (
+      <div style={{ height: '200px', width: '200px' }}>
+        <StoryComponent />
+      </div>
+    ),
+  ],
 };

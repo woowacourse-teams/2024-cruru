@@ -31,6 +31,9 @@ export interface Colors {
     default: string;
     pressed: string;
   };
+  brand: {
+    primary: string;
+  };
 }
 
 export interface Breakpoints {
@@ -58,6 +61,10 @@ export interface Typography {
     small: SerializedStyles;
     smallAccent: SerializedStyles;
     smallBlock: SerializedStyles;
+
+    large: SerializedStyles;
+    largeBlock: SerializedStyles;
+    largeAccent: SerializedStyles;
   };
 }
 

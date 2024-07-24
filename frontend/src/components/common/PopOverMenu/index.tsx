@@ -4,12 +4,13 @@ import S from './style';
 
 export interface PopOverMenuProps {
   isOpen: boolean;
+  setClose: () => void;
   size?: 'sm' | 'md';
   popOverPosition?: string;
   items: PopOverMenuItem[];
 }
 
-export default function PopOverMenu({ isOpen, size = 'sm', popOverPosition, items }: PopOverMenuProps) {
+export default function PopOverMenu({ isOpen, setClose, size = 'sm', popOverPosition, items }: PopOverMenuProps) {
   return (
     <S.Container
       size={size}
@@ -21,7 +22,10 @@ export default function PopOverMenu({ isOpen, size = 'sm', popOverPosition, item
           {items.map(({ name, isHighlight, id, onClick }) => (
             <DropdownItem
               size={size}
-              onClick={onClick}
+              onClick={() => {
+                setClose();
+                onClick({ targetProcessId: id });
+              }}
               key={id}
               item={name}
               isHighlight={isHighlight}
