@@ -11,7 +11,6 @@ const DashboardPanel = styled.div<{ isVisible: boolean }>`
   overflow-x: scroll;
   ${hideScrollBar};
 
-  will-change: transform;
   transition: transform 0.2s ease-in-out;
   transform: translateY(${({ isVisible }) => (isVisible ? '0' : '1rem')});
 
