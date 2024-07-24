@@ -22,7 +22,7 @@ class ProcessTest {
     void validProcessName(String name) {
         // given
         Dashboard dashboard = createBackendDashboard();
-      
+
         // when&then
         assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
     }

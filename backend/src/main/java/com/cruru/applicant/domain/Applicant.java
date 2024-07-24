@@ -52,6 +52,10 @@ public class Applicant extends BaseEntity {
         this.process = process;
     }
 
+    public void reject() {
+        this.isRejected = true;
+    }
+
     public Dashboard getDashboard() {
         return process.getDashboard();
     }
