@@ -20,7 +20,12 @@ export default function EvaluationCard({ evaluatorName, evaluatedDate, score, co
           <S.EvaluatedDate>{formatDate(evaluatedDate)}</S.EvaluatedDate>
         </S.EvaluatorDetail>
       </S.EvaluatorDetailContainer>
-      <S.ResultFlag>{EVALUATION_SCORE[score]}</S.ResultFlag>
+      <S.ResultFlag
+        $color={EVALUATION_SCORE[score].color}
+        $bgColor={EVALUATION_SCORE[score].bgColor}
+      >
+        {EVALUATION_SCORE[score].description}
+      </S.ResultFlag>
       <S.ResultComment>{comment}</S.ResultComment>
     </S.CardContainer>
   );

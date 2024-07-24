@@ -37,13 +37,15 @@ const EvaluatedDate = styled.span`
   color: ${({ theme }) => theme.colors.text.block};
 `;
 
-const ResultFlag = styled.div`
+const ResultFlag = styled.div<{ $color: string; $bgColor: string }>`
   ${({ theme }) => theme.typography.common.small};
   width: fit-content;
   display: inline-block;
   border-radius: 0.4rem;
   padding: 0.4rem 0.6rem;
-  background-color: ${({ theme }) => theme.baseColors.grayscale[400]};
+
+  color: ${({ $color }) => $color};
+  background-color: ${({ $bgColor }) => $bgColor};
 `;
 
 const ResultComment = styled.div`
