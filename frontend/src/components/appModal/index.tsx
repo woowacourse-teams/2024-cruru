@@ -57,7 +57,10 @@ export default function ApplicantModal() {
         </S.ModalEvalHeader>
 
         <S.ModalAside>
-          <ApplicantEvalInfo applicantId={applicantId} />
+          <ApplicantEvalInfo
+            applicantId={applicantId}
+            processId={1}
+          />
         </S.ModalAside>
       </S.Container>
     </BaseModal>
