@@ -3,11 +3,11 @@ import ProcessColumn from '@components/dashboard/ProcessColumn';
 import ApplicantModal from '@components/ApplicantModal';
 import S from './style';
 
-interface IKanbanBoardProps {
+interface KanbanBoardProps {
   processes: Process[];
 }
 
-export default function KanbanBoard({ processes }: IKanbanBoardProps) {
+export default function KanbanBoard({ processes }: KanbanBoardProps) {
   return (
     <S.Wrapper>
       {processes.map((process) => (

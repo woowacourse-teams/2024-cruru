@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const NavBar = styled.nav`
+const Container = styled.nav`
   height: 4rem;
   display: flex;
   align-items: center;
@@ -8,20 +8,31 @@ const NavBar = styled.nav`
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
-const NavItemList = styled.ul`
+const Tabs = styled.ul`
   width: 100%;
   list-style-type: none;
 
   display: flex;
   flex-direction: row;
-  gap: 1.2rem;
+  gap: 2.8rem;
 `;
 
-const NavItem = styled.li`
+const Tab = styled.li`
+  position: relative;
   padding: 0.4rem 0;
+
+  &:not(:last-child)::after {
+    content: '•';
+    width: 2.8rem;
+    text-align: center;
+
+    position: absolute;
+    transform: translateY(75%);
+    color: ${({ theme }) => theme.baseColors.grayscale[500]};
+  }
 `;
 
-const NavButton = styled.button<{ isCurrent: boolean }>`
+const TabButton = styled.button<{ isCurrent: boolean }>`
   ${({ theme }) => theme.typography.heading[500]};
   color: ${({ isCurrent, theme }) => (isCurrent ? theme.baseColors.grayscale[950] : theme.baseColors.grayscale[500])};
 
@@ -35,10 +46,10 @@ const NavButton = styled.button<{ isCurrent: boolean }>`
 `;
 
 const S = {
-  NavBar,
-  NavItem,
-  NavItemList,
-  NavButton,
+  Container,
+  Tabs,
+  Tab,
+  TabButton,
 };
 
 export default S;

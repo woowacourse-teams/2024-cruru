@@ -4,7 +4,8 @@ const CardContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 30rem;
+  width: 100%;
+  min-width: 22rem;
   padding: 1rem 1.6rem;
   border-radius: 0.8rem;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
