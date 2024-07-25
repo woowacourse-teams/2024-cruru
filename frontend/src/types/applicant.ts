@@ -7,4 +7,10 @@ export interface SpecificApplicant {
   processName: string;
 }
 
-export type EvaluationScore = 1 | 2 | 3 | 4 | 5;
+export interface EvaluationResult {
+  evaluationId: number;
+  evaluatorName: string;
+  score: string;
+  content: string;
+  createdAt: string;
+}
