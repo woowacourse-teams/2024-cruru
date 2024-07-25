@@ -77,3 +77,7 @@ jobs:
         run: |
           cd ~/actions-runner/deploy
           aws s3 sync dist ${{ secrets.FE_DEPLOY_S3_URI }} --delete
+
+      - name: CloudFront 캐시 무효화
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.FE_DEPLOY_CLOUDFRONT_ID }} --paths "/*"
