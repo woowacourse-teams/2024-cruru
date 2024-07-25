@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import useEvaluationQuery from '@hooks/useEvaluationQuery';
-
-import S from './style';
-import EvaluationCard from './EvaluationCard';
 import EvaluationForm from './EvaluationForm';
 import EvaluationAddButton from './EvaluationAddButton';
+import S from './style';
+import EvaluationCard from './EvaluationCard';
 
 interface ApplicantEvalInfoProps {
   applicantId: number;
+  processId: number;
 }
 
-export default function ApplicantEvalInfo({ applicantId }: ApplicantEvalInfoProps) {
-  const processId = 1;
+export default function ApplicantEvalInfo({ applicantId, processId }: ApplicantEvalInfoProps) {
   const { evaluationList } = useEvaluationQuery({ applicantId, processId });
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false);
 

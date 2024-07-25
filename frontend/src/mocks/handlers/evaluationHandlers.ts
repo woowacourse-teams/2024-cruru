@@ -23,8 +23,6 @@ const evaluationHandlers = [
       });
     }
 
-    console.log(`해당 지원자에 대해 ${body.score}점과 ${body.content} 코멘트를 남겼습니다.`);
-
     return new Response(null, {
       status: 201,
       statusText: 'Created',
