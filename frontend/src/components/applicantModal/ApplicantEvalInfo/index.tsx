@@ -10,14 +10,18 @@ import S from './style';
 import EvaluationCard from './EvaluationCard';
 
 interface ApplicantEvalInfoProps {
+  applicantId: number;
   evaluationResults: EvaluationResult[];
 }
 
-export default function ApplicantEvalInfo({ evaluationResults }: ApplicantEvalInfoProps) {
+export default function ApplicantEvalInfo({ applicantId, evaluationResults }: ApplicantEvalInfoProps) {
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false);
 
   const FormSection = isFormOpened ? (
-    <EvaluationForm onClose={() => setIsFormOpened(false)} />
+    <EvaluationForm
+      applicantId={applicantId}
+      onClose={() => setIsFormOpened(false)}
+    />
   ) : (
     <EvaluationAddButton onClick={() => setIsFormOpened(true)} />
   );

@@ -8,10 +8,11 @@ import { EVALUATION_SCORE } from '../constants';
 import S from './style';
 
 interface EvaluationFormProps {
+  applicantId: number;
   onClose: () => void;
 }
 
-export default function EvaluationForm({ onClose }: EvaluationFormProps) {
+export default function EvaluationForm({ applicantId, onClose }: EvaluationFormProps) {
   const [formState, setFormState] = useState({
     score: '',
     content: '',
@@ -38,6 +39,10 @@ export default function EvaluationForm({ onClose }: EvaluationFormProps) {
     event.preventDefault();
     if (Object.keys(EVALUATION_SCORE).includes(formState.score)) {
       // TODO: API 연결 및 mutation 함수 연결
+
+      console.log(
+        `지원자 ID ${applicantId}에 대한 평가가 등록되었습니다.\n평가점수 : ${formState.score}, 평가내용 : ${formState.content}`,
+      );
 
       onClose();
     }
