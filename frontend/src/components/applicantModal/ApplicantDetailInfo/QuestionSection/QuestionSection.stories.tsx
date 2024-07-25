@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import QuestionSection from './index';
+import QuestionSection from '.';
 
 const meta: Meta<typeof QuestionSection> = {
   title: 'Components/ApplicantModal/ApplicantDetailInfo/QuestionSection',

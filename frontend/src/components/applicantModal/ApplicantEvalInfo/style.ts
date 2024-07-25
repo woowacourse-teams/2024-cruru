@@ -8,8 +8,7 @@ const Wrapper = styled.section`
 `;
 
 const FormContainer = styled.div`
-  padding: 2.4rem 1.6rem;
-  border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
+  padding-bottom: 1.6rem;
   border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
 `;
 

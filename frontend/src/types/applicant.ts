@@ -7,6 +7,15 @@ export interface SpecificApplicant {
   processName: string;
 }
 
+interface DetailInfo {
+  order_index: number;
+  question: string;
+  answer: string;
+}
+export interface ApplicantDetail {
+  details: DetailInfo[];
+}
+
 export interface EvaluationResult {
   evaluationId: number;
   evaluatorName: string;

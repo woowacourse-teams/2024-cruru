@@ -2,7 +2,7 @@ import Dropdown from '@components/common/Dropdown';
 import Button from '@components/common/Button';
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
-import useSpecificApplicant from '@hooks/useSpecificApplicant';
+import specificApplicant from '@hooks/useSpecificApplicant';
 import formatDate from '@utils/formatDate';
 import { useModal } from '@contexts/ModalContext';
 import S from './style';
@@ -12,9 +12,10 @@ interface ApplicantBaseInfoProps {
 }
 
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
-  const { data: applicantBaseDetail } = useSpecificApplicant({ applicantId });
+  const { data: applicantBaseDetail } = specificApplicant.useGetBaseInfo({ applicantId });
+  const { mutate: rejectMutate } = specificApplicant.useRejectApplicant();
   const { processList } = useProcess();
-  const { moveApplicantProcess, rejectApplicant } = useApplicant({ applicantId });
+  const { moveApplicantProcess } = useApplicant({ applicantId });
   const { close } = useModal();
 
   if (!applicantBaseDetail) {
@@ -32,7 +33,7 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
     }));
 
   const rejectAppHandler = () => {
-    rejectApplicant.mutate({ applicantId });
+    rejectMutate({ applicantId });
     close();
   };
 

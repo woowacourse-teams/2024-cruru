@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import QuestionBox from './index';
+import QuestionBox from '.';
 
 const meta: Meta<typeof QuestionBox> = {
-  title: 'Common/QuestionBox/QuestionBox',
+  title: 'Common/QuestionBox',
   component: QuestionBox,
   parameters: {
     layout: 'centered',
@@ -55,7 +55,7 @@ const meta: Meta<typeof QuestionBox> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof QuestionBox>;
 
 export const TextContent: Story = {
   args: {
@@ -63,12 +63,11 @@ export const TextContent: Story = {
     type: 'text',
     content: '뽑아주세요.',
   },
-};
-
-TextContent.parameters = {
-  docs: {
-    description: {
-      story: 'QuestionBox 컴포넌트의 텍스트 콘텐츠 상태입니다.',
+  parameters: {
+    docs: {
+      description: {
+        story: 'QuestionBox 컴포넌트의 텍스트 콘텐츠 상태입니다.',
+      },
     },
   },
 };
@@ -80,6 +79,13 @@ export const FileContent: Story = {
     fileName: '이력서 파일 명_어쩌구.pdf',
     onFileDownload: () => console.log('File downloaded'),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'QuestionBox 컴포넌트의 파일 콘텐츠 상태입니다.',
+      },
+    },
+  },
 };
 
 export const LongContent: Story = {
@@ -90,12 +96,11 @@ export const LongContent: Story = {
       // eslint-disable-next-line max-len
       '행정권은 대통령을 수반으로 하는 정부에 속한다. 대통령은 국가의 원수이며, 외국에 대하여 국가를 대표한다. 이 헌법은 1988년 2월 25일부터 시행한다. 다만, 이 헌법을 시행하기 위하여 필요한 법률의 제정·개정과 이 헌법에 의한 대통령 및 국회의원의 선거 기타 이 헌법시행에 관한 준비는 이 헌법시행 전에 할 수 있다. 원장은 국회의 동의를 얻어 대통령이 임명하고, 그 임기는 4년으로 하며, 1차에 한하여 중임할 수 있다. 지방자치단체는 주민의 복리에 관한 사무를 처리하고 재산을 관리하며, 법령의 범위안에서 자치에 관한 규정을 제정할 수 있다. 대통령은 국회에 출석하여 발언하거나 서한으로 의견을 표시할 수 있다.',
   },
-};
-
-FileContent.parameters = {
-  docs: {
-    description: {
-      story: 'QuestionBox 컴포넌트의 파일 콘텐츠 상태입니다.',
+  parameters: {
+    docs: {
+      description: {
+        story: 'QuestionBox 컴포넌트의 긴 텍스트 콘텐츠 상태입니다.',
+      },
     },
   },
 };

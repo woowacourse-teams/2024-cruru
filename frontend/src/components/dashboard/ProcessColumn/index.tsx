@@ -1,6 +1,8 @@
+import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
 import { Process } from '@customTypes/process';
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
+import { useModal } from '@contexts/ModalContext';
 
 import S from './style';
 import ApplicantCard from '../ApplicantCard';
@@ -12,6 +14,8 @@ interface ProcessColumnProps {
 export default function ProcessColumn({ process }: ProcessColumnProps) {
   const { processList } = useProcess();
   const { moveApplicantProcess } = useApplicant({});
+  const { setApplicantId } = useSpecificApplicantId();
+  const { open } = useModal();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) =>
     processList.map(({ processName, processId }) => ({
@@ -21,6 +25,11 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
         moveApplicantProcess.mutate({ processId: targetProcessId, applicants: [applicantId] });
       },
     }));
+
+  const cardClickHandler = (id: number) => {
+    setApplicantId(id);
+    open();
+  };
 
   return (
     <S.ProcessWrapper>
@@ -34,6 +43,7 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
             name={applicantName}
             createdAt={createdAt}
             popOverMenuItems={menuItemsList({ applicantId })}
+            onCardClick={() => cardClickHandler(applicantId)}
           />
         ))}
       </S.ApplicantList>
