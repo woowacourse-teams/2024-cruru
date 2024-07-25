@@ -11,7 +11,7 @@ interface ProcessManageBoardProps {
 export default function ProcessManageBoard({ processes }: ProcessManageBoardProps) {
   const FIRST_INDEX = 0;
   const LAST_INDEX = processes.length - 1;
-  const isAddable = processes.length !== 5;
+  const isAddable = processes.length < 5;
 
   return (
     <S.Container>
