@@ -44,10 +44,26 @@ const rejectApplicant = async ({ applicantId }: { applicantId: number }) => {
   return { status: response.status };
 };
 
+const getDetailApplicant = async ({ applicantId }: { applicantId: number }) => {
+  const response = await fetch(`${APPLICANTS}/${applicantId}/detail`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return snakeToCamel(data);
+};
+
 const applicantApis = {
   move: moveApplicant,
   get: getSpecificApplicant,
   reject: rejectApplicant,
+  getDetail: getDetailApplicant,
 };
 
 export default applicantApis;

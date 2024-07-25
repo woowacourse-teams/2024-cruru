@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 
 import { APPLICANTS } from '@api/endPoint';
 import specificApplicant from '../specificApplicant.json';
+import applicantDetail from '../applicantDetails.json';
 
 const applicantHandlers = [
   http.put(`${APPLICANTS}/move-process/:processId`, async ({ request, params }) => {
@@ -32,6 +33,7 @@ const applicantHandlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
+  http.get(`${APPLICANTS}/:applicantId/detail`, () => HttpResponse.json(applicantDetail)),
 ];
 
 export default applicantHandlers;

@@ -6,3 +6,12 @@ export interface SpecificApplicant {
   phone: string;
   processName: string;
 }
+
+interface DetailInfo {
+  order_index: number;
+  question: string;
+  answer: string;
+}
+export interface ApplicantDetail {
+  details: DetailInfo[];
+}
