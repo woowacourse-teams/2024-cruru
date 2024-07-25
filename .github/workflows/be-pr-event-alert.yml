@@ -37,8 +37,8 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: slack_msg_id
       - run: |
-          comment_body=${{ steps.thread-id.outputs.comment-body }}
-          slack_msg_id=$(echo $comment_body | jq -r '.slack_msg_id')
+          comment_body='${{ steps.thread-id.outputs.comment-body }}'
+          slack_msg_id=$(echo $comment_body | grep -o '"slack_msg_id" : "[^"]*' | grep -o '[^"]*$')
           echo "SLACK_THREAD_ID=$slack_msg_id" >> $GITHUB_OUTPUT
     outputs:
       SLACK_THREAD_ID: ${{ steps.thread-id.outputs.SLACK_THREAD_ID }}
