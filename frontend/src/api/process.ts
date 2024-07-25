@@ -22,7 +22,7 @@ const processApis = {
     const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: String(params.dashboardId) })}`, {
       method: 'POST',
       headers: {
-        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         order_index: params.orderIndex,
@@ -42,7 +42,7 @@ const processApis = {
     const response = await fetch(`${PROCESSES}/${params.processId}`, {
       method: 'PATCH',
       headers: {
-        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         process_name: params.name,
