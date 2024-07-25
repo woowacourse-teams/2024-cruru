@@ -1,6 +1,7 @@
 package com.cruru.applicant.controller;
 
 import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantRush;
 import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
@@ -55,13 +56,14 @@ class ApplicantControllerTest extends ControllerTest {
         // given
         Process now = processRepository.save(createFirstProcess());
         Process next = processRepository.save(createFinalProcess());
-        Applicant applicant = createApplicantDobby(now);
-        applicantRepository.save(applicant);
+        Applicant dobby = createApplicantDobby(now);
+        Applicant rush = createApplicantRush(now);
+        applicantRepository.saveAll(List.of(dobby, rush));
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .body(new ApplicantMoveRequest(List.of(applicant.getId())))
+                .body(new ApplicantMoveRequest(List.of(dobby.getId(), rush.getId())))
                 .accept(ContentType.JSON)
                 .filter(document("applicant/move-process/",
                         pathParameters(parameterWithName("process_id").description("지원자들이 옮겨질 프로세스의 id")),
@@ -122,7 +124,6 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read_applicantNotFound() {
         // given
-        Process process = processRepository.save(createFirstProcess());
         Long invalidApplicantId = -1L;
 
         // when&then
@@ -149,7 +150,12 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .accept(ContentType.JSON)
                 .filter(document("applicant/read-detail-profile/",
-                        pathParameters(parameterWithName("applicant_id").description("정보를 읽어올 지원자의 id"))
+                        pathParameters(parameterWithName("applicant_id").description("정보를 읽어올 지원자의 id")),
+                        responseFields(fieldWithPath("details").description("지원자의 질의응답"))
+                                .andWithPrefix("details[].",
+                                        fieldWithPath("order_index").description("질문 순서"),
+                                        fieldWithPath("question").description("질문"),
+                                        fieldWithPath("answer").description("응답"))
                 ))
                 .when().get("/v1/applicants/{applicant_id}/detail", applicant.getId())
                 .then().log().all().statusCode(200);

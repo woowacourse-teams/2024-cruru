@@ -87,7 +87,7 @@ class ClubControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .accept(ContentType.JSON)
-                .filter(document("club/create-fail/member-not-found/",
+                .filter(document("club/create-fail/invalid-name/",
                         queryParameters(parameterWithName("member_id").description("존재하지 않는 사용자의 id")),
                         requestFields(fieldWithPath("name").description("조건에 맞지 않는 동아리의 이름"))
                 ))

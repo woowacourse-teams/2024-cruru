@@ -50,4 +50,25 @@ class DashboardControllerTest extends ControllerTest {
                 .when().post(url)
                 .then().log().all().statusCode(201);
     }
+
+    @DisplayName("존재하지 않는 동아리로 대시보드 생성 시, 404를 응답한다.")
+    @Test
+    void read_clubNotFound() {
+        // given
+        DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
+        Long invalidClubId = -1L;
+        String url = String.format("/v1/dashboards?club_id=%d", invalidClubId);
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .accept(ContentType.JSON)
+                .filter(document("dashboard/create-fail/club-not-found",
+                        queryParameters(parameterWithName("club_id").description("존재하지 않는 동아리")),
+                        requestFields(fieldWithPath("name").description("대시보드 이름"))
+                ))
+                .when().post(url)
+                .then().log().all().statusCode(404);
+    }
 }

@@ -17,6 +17,10 @@ public class ApplicantFixture {
         return new Applicant("러쉬", "rush@email.com", "01000000001", null, false);
     }
 
+    public static Applicant createApplicantRush(Process process) {
+        return new Applicant("러쉬", "rush@email.com", "01000000001", process, false);
+    }
+
     public static Applicant createRejectedApplicantLurgi() {
         return new Applicant("러기", "rush@email.com", "01000000001", null, true);
     }

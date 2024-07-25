@@ -1,0 +1,11 @@
+== 대시보드
+
+=== 대시보드 생성
+
+==== 성공
+
+operation::dashboard/create[snippets="http-request,query-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 동아리
+
+operation::dashboard/create-fail/club-not-found[snippets="http-request,query-parameters,request-fields,http-response"]

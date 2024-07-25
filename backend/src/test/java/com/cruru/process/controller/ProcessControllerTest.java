@@ -102,7 +102,7 @@ class ProcessControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .accept(ContentType.JSON)
-                .filter(document("process/read/",
+                .filter(document("process/read-fail/dashboard-not-found/",
                         queryParameters(parameterWithName("dashboard_id").description("존재하지 않는 대시보드 id"))
                 ))
                 .when().get(url)
@@ -235,7 +235,7 @@ class ProcessControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
                 .accept(ContentType.JSON)
-                .filter(document("process/update/",
+                .filter(document("process/update-failed/invalid-name",
                         pathParameters(parameterWithName("process_id").description("수정될 프로세스의 id")),
                         requestFields(
                                 fieldWithPath("process_name").description("조건에 맞지 않는 프로세스 이름"),

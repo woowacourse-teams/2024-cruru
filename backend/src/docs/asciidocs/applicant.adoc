@@ -1,0 +1,45 @@
+== 지원자
+
+=== 지원자들의 프로세스 일괄 수정
+
+==== 성공
+
+operation::applicant/move-process[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 프로세스
+
+operation::applicant/move-process-fail/process-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
+
+=== 지원자 기본 정보 조회
+
+==== 성공
+
+operation::applicant/read-profile[snippets="http-request,path-parameters,http-response,response-fields"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::applicant/read-profile-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+
+=== 지원자 상세 정보 조회
+
+==== 성공
+
+operation::applicant/read-detail-profile[snippets="http-request,path-parameters,http-response,response-fields"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::applicant/read-detail-profile-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+
+=== 지원자 불합격
+
+==== 성공
+
+operation::applicant/reject[snippets="http-request,path-parameters,http-response"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::applicant/reject-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+
+==== 실패: 이미 불합격한 지원자
+
+operation::applicant/reject-fail/already-rejected[snippets="http-request,path-parameters,http-response"]

@@ -194,26 +194,6 @@ class EvaluationControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("존재하지 않는 프로세스의 평가 조회를 시도한 경우, 404을 응답한다.")
-    @Test
-    void read_processNotFound() {
-        // given
-        Long invalidProcessId = -1L;
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", invalidProcessId,
-                applicant.getId());
-
-        // when&then
-        RestAssured.given(spec).log().all()
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .filter(document("evaluation/read-fail/process-not-found/",
-                        queryParameters(processIdAndApplicantIdDescriptor("존재하지 않는", "평가 대상")),
-                        responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
-                ))
-                .when().get(url)
-                .then().log().all().statusCode(200);
-    }
-
     @DisplayName("존재하지 않는 지원자의 평가 조회를 시도한 경우, 200을 응답한다.")
     @Test
     void read_applicantNotFound() {
@@ -228,6 +208,26 @@ class EvaluationControllerTest extends ControllerTest {
                 .accept(ContentType.JSON)
                 .filter(document("evaluation/read-fail/applicant-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "존재하지 않는")),
+                        responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
+                ))
+                .when().get(url)
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하지 않는 프로세스의 평가 조회를 시도한 경우, 200을 응답한다.")
+    @Test
+    void read_processNotFound() {
+        // given
+        Long invalidProcessId = -1L;
+        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", invalidProcessId,
+                applicant.getId());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .filter(document("evaluation/read-fail/process-not-found/",
+                        queryParameters(processIdAndApplicantIdDescriptor("존재하지 않는", "평가 대상")),
                         responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
                 ))
                 .when().get(url)
