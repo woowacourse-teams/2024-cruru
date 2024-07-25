@@ -1,6 +1,11 @@
 package com.cruru.dashboard.controller;
 
 import static com.cruru.util.fixture.ClubFixture.createClub;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
@@ -34,9 +39,14 @@ class DashboardControllerTest extends ControllerTest {
         String url = String.format("/v1/dashboards?club_id=%d", club.getId());
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .accept(ContentType.JSON)
+                .filter(document("dashboard/create/",
+                        queryParameters(parameterWithName("club_id").description("대시보드를 생성할 동아리")),
+                        requestFields(fieldWithPath("name").description("대시보드 이름"))
+                ))
                 .when().post(url)
                 .then().log().all().statusCode(201);
     }
