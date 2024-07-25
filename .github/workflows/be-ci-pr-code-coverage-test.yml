@@ -7,6 +7,18 @@ on:
     branches:
       - be/develop
 
+env:
+  Dobby-Kim: "U07BJABU6G1"
+  U07BJABU6G1: "BE팀 도비"
+  Chocochip101: "U07BUEJDS8G"
+  U07BUEJDS8G: "BE팀 초코칩"
+  xogns1514: "U07AZ26UC2J"
+  U07AZ26UC2J: "BE팀 러쉬"
+  cutehumanS2: "U07B88ZQDU4"
+  U07B88ZQDU4: "BE팀 냥인"
+  HyungHoKim00: "U07B5HBKZM1"
+  U07B5HBKZM1: "BE팀 명오"
+
 jobs:
   pr-ready:
     runs-on: ubuntu-latest
