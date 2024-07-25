@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
-const CardContainer = styled.article`
+const CardContainer = styled.li`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -37,15 +38,48 @@ const EvaluatedDate = styled.span`
   color: ${({ theme }) => theme.colors.text.block};
 `;
 
-const ResultFlag = styled.div<{ $color: string; $bgColor: string }>`
+const ResultFlag = styled.div<{ $score: string }>`
   ${({ theme }) => theme.typography.common.small};
   width: fit-content;
   display: inline-block;
   border-radius: 0.4rem;
   padding: 0.4rem 0.6rem;
 
-  color: ${({ $color }) => $color};
-  background-color: ${({ $bgColor }) => $bgColor};
+  ${({ theme, $score }) => {
+    const score = Number($score);
+    switch (score) {
+      case 1:
+        return css`
+          color: ${theme.baseColors.redscale[500]};
+          background-color: ${theme.baseColors.redscale[50]};
+        `;
+      case 2:
+        return css`
+          color: ${theme.baseColors.redscale[400]};
+          background-color: ${theme.baseColors.redscale[50]};
+        `;
+      case 3:
+        return css`
+          color: ${theme.baseColors.grayscale[700]};
+          background-color: ${theme.baseColors.grayscale[300]};
+        `;
+      case 4:
+        return css`
+          color: ${theme.baseColors.bluescale[400]};
+          background-color: ${theme.baseColors.bluescale[50]};
+        `;
+      case 5:
+        return css`
+          color: ${theme.baseColors.bluescale[500]};
+          background-color: ${theme.baseColors.bluescale[50]};
+        `;
+      default:
+        return css`
+          color: ${theme.baseColors.grayscale[700]};
+          background-color: ${theme.baseColors.grayscale[100]};
+        `;
+    }
+  }}
 `;
 
 const ResultComment = styled.div`
