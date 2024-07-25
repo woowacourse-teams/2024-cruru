@@ -22,7 +22,7 @@ export default function ProcessManageBoard({ processes }: ProcessManageBoardProp
             isDeletable={index !== FIRST_INDEX && index !== LAST_INDEX}
           />
 
-          {isAddable && index !== LAST_INDEX && <ProcessAddButton />}
+          {isAddable && index !== LAST_INDEX && <ProcessAddButton priorOrderIndex={process.orderIndex} />}
         </Fragment>
       ))}
     </S.Container>

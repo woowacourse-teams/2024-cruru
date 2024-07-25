@@ -8,11 +8,11 @@ import { DASHBOARD_ID } from '@constants/constants';
 import C from '../style';
 
 interface ProcessAddFormProps {
-  priorProcessId: number;
+  priorOrderIndex: number;
   toggleForm: () => void;
 }
 
-export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAddFormProps) {
+export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessAddFormProps) {
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: '',
     description: '',
@@ -32,7 +32,7 @@ export default function ProcessAddForm({ priorProcessId, toggleForm }: ProcessAd
     mutate({
       // TODO: 상수를 전역상태로 관리하는 것으로 변경
       dashboardId: DASHBOARD_ID,
-      orderIndex: priorProcessId + 1,
+      orderIndex: priorOrderIndex + 1,
       ...formState,
     });
   };
