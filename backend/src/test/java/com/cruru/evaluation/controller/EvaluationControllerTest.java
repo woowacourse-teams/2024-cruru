@@ -55,7 +55,7 @@ class EvaluationControllerTest extends ControllerTest {
     void create() {
         // given
         int score = 4;
-        String content = "서류가 인상적입니다.";
+        String content = "great";
         String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
 
@@ -63,7 +63,6 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/create/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "평가 대상")),
                         requestFields(scoreAndContentDescriptor())))
@@ -93,7 +92,7 @@ class EvaluationControllerTest extends ControllerTest {
     void create_applicantNotFound() {
         // given
         int score = 4;
-        String content = "서류가 인상적입니다.";
+        String content = "great";
         long invalidApplicantId = -1;
         String url = String.format(
                 "/v1/evaluations?process_id=%d&applicant_id=%d",
@@ -106,7 +105,6 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/create-fail/applicant-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "존재하지 않는")),
                         requestFields(scoreAndContentDescriptor())))
@@ -119,7 +117,7 @@ class EvaluationControllerTest extends ControllerTest {
     void create_processNotFound() {
         // given
         int score = 4;
-        String content = "서류가 인상적입니다.";
+        String content = "great";
         long invalidProcessId = -1;
         String url = String.format(
                 "/v1/evaluations?process_id=%d&applicant_id=%d",
@@ -132,7 +130,6 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/create-fail/process-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("존재하지 않는", "평가 대상")),
                         requestFields(scoreAndContentDescriptor())))
@@ -145,7 +142,7 @@ class EvaluationControllerTest extends ControllerTest {
     void create_invalidScore() {
         // given
         int invalidScore = 6;
-        String content = "서류가 인상적입니다.";
+        String content = "great";
         String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
         EvaluationCreateRequest request = new EvaluationCreateRequest(invalidScore, content);
 
@@ -153,7 +150,6 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/create-fail/invalid-score/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "평가 대상")),
                         requestFields(
@@ -181,7 +177,6 @@ class EvaluationControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/read/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "평가 대상")),
                         responseFields(fieldWithPath("evaluations").description("평가 목록"))
@@ -205,7 +200,6 @@ class EvaluationControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/read-fail/applicant-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "존재하지 않는")),
                         responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
@@ -225,7 +219,6 @@ class EvaluationControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
                 .filter(document("evaluation/read-fail/process-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("존재하지 않는", "평가 대상")),
                         responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))

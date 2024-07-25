@@ -80,7 +80,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
+
                 .filter(document("process/read/",
                         queryParameters(parameterWithName("dashboard_id").description("조회할 프로세스의 대시보드 id")),
                         responseFields(
@@ -101,7 +101,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
+
                 .filter(document("process/read-fail/dashboard-not-found/",
                         queryParameters(parameterWithName("dashboard_id").description("존재하지 않는 대시보드 id"))
                 ))
@@ -113,14 +113,13 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void create() {
         // given
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("name", "description", 1);
         String url = String.format("/v1/processes?dashboard_id=%d", dashboard.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
-                .accept(ContentType.JSON)
                 .filter(document("process/create/",
                         queryParameters(parameterWithName("dashboard_id").description("생성할 프로세스의 대시보드 id")),
                         requestFields(PROCESS_FIELD_DESCRIPTORS)))
@@ -132,7 +131,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void create_dashboardNotFound() {
         // given
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("name", "description", 1);
         Long invalidDashboardId = -1L;
         String url = String.format("/v1/processes?dashboard_id=%d", invalidDashboardId);
 
@@ -140,7 +139,6 @@ class ProcessControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
-                .accept(ContentType.JSON)
                 .filter(document("process/create-fail/dashboard-not-found/",
                         queryParameters(parameterWithName("dashboard_id").description("존재하지 않는 대시보드 id")),
                         requestFields(PROCESS_FIELD_DESCRIPTORS)))
@@ -152,14 +150,13 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void create_invalidName() {
         // given
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("", "화상 면접", 1);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("", "description", 1);
         String url = String.format("/v1/processes?dashboard_id=%d", dashboard.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
-                .accept(ContentType.JSON)
                 .filter(document("process/create-fail/invalid-name/",
                         queryParameters(parameterWithName("dashboard_id").description("생성할 프로세스의 대시보드 id")),
                         requestFields(
@@ -182,14 +179,13 @@ class ProcessControllerTest extends ControllerTest {
                 new Process(3, "1차 면접", "화상 면접", dashboard),
                 new Process(4, "최종 면접", "대면 면접", dashboard)
         ));
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 3);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("name", "description", 3);
         String url = String.format("/v1/processes?dashboard_id=%d", dashboard.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
-                .accept(ContentType.JSON)
                 .filter(document("process/create-fail/process-count-overed/",
                         queryParameters(parameterWithName("dashboard_id").description("생성할 프로세스의 대시보드 id")),
                         requestFields(PROCESS_FIELD_DESCRIPTORS)))
@@ -203,13 +199,12 @@ class ProcessControllerTest extends ControllerTest {
         // given
         Process process = processRepository.save(createFirstProcess(dashboard));
         applicantRepository.save(createApplicantDobby(process));
-        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("임시 과정", "수정된 프로세스");
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("name", "description");
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
-                .accept(ContentType.JSON)
                 .filter(document("process/update/",
                         pathParameters(parameterWithName("process_id").description("수정될 프로세스의 id")),
                         requestFields(
@@ -228,13 +223,12 @@ class ProcessControllerTest extends ControllerTest {
     void update_invalidName() {
         // given
         Process process = processRepository.save(createFirstProcess(dashboard));
-        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("", "수정된 프로세스");
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("", "description");
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
-                .accept(ContentType.JSON)
                 .filter(document("process/update-failed/invalid-name",
                         pathParameters(parameterWithName("process_id").description("수정될 프로세스의 id")),
                         requestFields(
@@ -254,7 +248,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
+
                 .filter(document("process/delete",
                         pathParameters(parameterWithName("process_id").description("삭제할 프로세스의 id"))
                 ))
@@ -270,7 +264,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
+
                 .filter(document("process/delete-fail/process-not-found",
                         pathParameters(parameterWithName("process_id").description("삭제할 프로세스의 id"))
                 ))
@@ -286,7 +280,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
+
                 .filter(document("process/delete-fail/process-order-first-or-last",
                         pathParameters(parameterWithName("process_id").description("삭제할 프로세스의 id"))
                 ))
@@ -303,7 +297,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
+
                 .filter(document("process/delete-fail/process-applicant-exist",
                         pathParameters(parameterWithName("process_id").description("삭제할 프로세스의 id"))
                 ))

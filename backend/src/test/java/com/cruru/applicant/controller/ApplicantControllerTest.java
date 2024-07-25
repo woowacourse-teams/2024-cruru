@@ -64,7 +64,6 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(dobby.getId(), rush.getId())))
-                .accept(ContentType.JSON)
                 .filter(document("applicant/move-process/",
                         pathParameters(parameterWithName("process_id").description("지원자들이 옮겨질 프로세스의 id")),
                         requestFields(fieldWithPath("applicant_ids").description("프로세스를 옮길 지원자들의 id"))
@@ -86,7 +85,6 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
-                .accept(ContentType.JSON)
                 .filter(document("applicant/move-process-fail/process-not-found/",
                         pathParameters(parameterWithName("process_id").description("존재하지 않는 프로세스의 id")),
                         requestFields(fieldWithPath("applicant_ids").description("프로세스를 옮길 지원자들의 id"))
@@ -104,7 +102,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/read-profile/",
                         pathParameters(parameterWithName("applicant_id").description("정보를 읽어올 지원자의 id")),
                         responseFields(
@@ -128,7 +125,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/read-profile-fail/applicant-not-found/",
                         pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
                 ))
@@ -148,7 +144,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/read-detail-profile/",
                         pathParameters(parameterWithName("applicant_id").description("정보를 읽어올 지원자의 id")),
                         responseFields(fieldWithPath("details").description("지원자의 질의응답"))
@@ -169,7 +164,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/read-detail-profile-fail/applicant-not-found/",
                         pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
                 ))
@@ -185,7 +179,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/reject/",
                         pathParameters(parameterWithName("applicant_id").description("불합격시킬 지원자의 id"))
                 ))
@@ -201,7 +194,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/reject-fail/applicant-not-found/",
                         pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
                 ))
@@ -217,7 +209,6 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .accept(ContentType.JSON)
                 .filter(document("applicant/reject-fail/already-rejected/",
                         pathParameters(parameterWithName("applicant_id").description("이미 불합격인 지원자의 id"))
                 ))

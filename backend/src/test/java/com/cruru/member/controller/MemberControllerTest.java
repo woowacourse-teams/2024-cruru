@@ -24,7 +24,6 @@ class MemberControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("member/create/",
                         requestFields(
                                 fieldWithPath("email").description("생성할 사용자의 이메일"),

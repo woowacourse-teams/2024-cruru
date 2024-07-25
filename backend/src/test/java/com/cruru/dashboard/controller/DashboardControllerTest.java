@@ -35,14 +35,13 @@ class DashboardControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
+        DashboardCreateRequest request = new DashboardCreateRequest("dashboard name");
         String url = String.format("/v1/dashboards?club_id=%d", club.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("dashboard/create/",
                         queryParameters(parameterWithName("club_id").description("대시보드를 생성할 동아리")),
                         requestFields(fieldWithPath("name").description("대시보드 이름"))
@@ -55,7 +54,7 @@ class DashboardControllerTest extends ControllerTest {
     @Test
     void read_clubNotFound() {
         // given
-        DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
+        DashboardCreateRequest request = new DashboardCreateRequest("dashboard name");
         Long invalidClubId = -1L;
         String url = String.format("/v1/dashboards?club_id=%d", invalidClubId);
 
@@ -63,7 +62,6 @@ class DashboardControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .accept(ContentType.JSON)
                 .filter(document("dashboard/create-fail/club-not-found",
                         queryParameters(parameterWithName("club_id").description("존재하지 않는 동아리")),
                         requestFields(fieldWithPath("name").description("대시보드 이름"))
