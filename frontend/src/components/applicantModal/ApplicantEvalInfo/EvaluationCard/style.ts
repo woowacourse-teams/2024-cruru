@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-const CardContainer = styled.article`
+const CardContainer = styled.li`
   width: 100%;
   display: flex;
   flex-direction: column;

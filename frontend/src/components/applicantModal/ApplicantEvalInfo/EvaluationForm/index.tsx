@@ -4,16 +4,15 @@ import RadioField from '@components/common/RadioField';
 import Button from '@components/common/Button';
 import TextField from '@components/common/TextField';
 
-import { EvaluationResult } from '@customTypes/applicant';
 import { EVALUATION_SCORE } from '../constants';
 import S from './style';
 
 interface EvaluationFormProps {
-  onCancelSubmit: () => void;
+  onClose: () => void;
 }
 
-export default function EvaluationForm({ onCancelSubmit }: EvaluationFormProps) {
-  const [formState, setFormState] = useState<EvaluationResult>({
+export default function EvaluationForm({ onClose }: EvaluationFormProps) {
+  const [formState, setFormState] = useState({
     score: '',
     content: '',
   });
@@ -35,9 +34,13 @@ export default function EvaluationForm({ onCancelSubmit }: EvaluationFormProps) 
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // TODO: API 연결 및 mutation 함수 연결
+    if (Object.keys(EVALUATION_SCORE).includes(formState.score)) {
+      // TODO: API 연결 및 mutation 함수 연결
+
+      onClose();
+    }
   };
 
   const evaluationOptions = Object.entries(EVALUATION_SCORE).map(([key, value]) => ({
@@ -46,7 +49,7 @@ export default function EvaluationForm({ onCancelSubmit }: EvaluationFormProps) 
   }));
 
   return (
-    <S.EvaluationForm onSubmit={handleSubmit}>
+    <S.EvaluationForm>
       <RadioField
         options={evaluationOptions}
         selectedValue={formState.score}
@@ -64,15 +67,17 @@ export default function EvaluationForm({ onCancelSubmit }: EvaluationFormProps) 
         <Button
           type="reset"
           color="white"
-          onClick={onCancelSubmit}
+          onClick={onClose}
           size="md"
         >
           취소
         </Button>
         <Button
-          type="submit"
+          type="button"
           color="primary"
           size="md"
+          disabled={formState.score === ''}
+          onClick={handleSubmit}
         >
           평가 저장
         </Button>

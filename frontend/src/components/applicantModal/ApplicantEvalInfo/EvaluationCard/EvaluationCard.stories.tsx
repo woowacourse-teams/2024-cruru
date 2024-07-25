@@ -27,11 +27,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    evaluatorName: '평가자 이름',
-    evaluatedDate: '2024-07-16T05:46:08.328593',
-    result: {
+    evaluationResult: {
+      evaluationId: 1,
+      evaluatorName: '평가자 이름',
       score: '4',
       content: '지원자에 대한 평가자의 코멘트가 들어가는 영역입니다.',
+      createdAt: '2024-07-16T05:46:08.328593',
     },
   },
 };

@@ -8,6 +8,9 @@ export interface SpecificApplicant {
 }
 
 export interface EvaluationResult {
+  evaluationId: number;
+  evaluatorName: string;
   score: string;
   content: string;
+  createdAt: string;
 }
