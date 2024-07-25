@@ -37,7 +37,9 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: slack_msg_id
       - run: |
-          echo "SLACK_THREAD_ID=${{ toJSON(steps.thread-id.outputs.comment-body)}}.slack_msg_id" >> $GITHUB_ENV
+          echo "SLACK_THREAD_ID=${{ toJSON(steps.thread-id.outputs.comment-body)}}.slack_msg_id" >> $GITHUB_OUTPUT
+    outputs:
+      SLACK_THREAD_ID: ${{ steps.thread-id.outputs.SLACK_THREAD_ID }}
 
   review-requested_requested:
     needs: set-slack-thread
@@ -62,7 +64,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -161,7 +163,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -260,7 +262,7 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
