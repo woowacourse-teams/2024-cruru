@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import QuestionBox from './index';
+import QuestionBox from '.';
 
 const meta: Meta<typeof QuestionBox> = {
   title: 'Common/QuestionBox/QuestionBox',

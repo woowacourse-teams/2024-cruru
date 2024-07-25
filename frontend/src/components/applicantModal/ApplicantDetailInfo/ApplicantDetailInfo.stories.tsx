@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ApplicantDetailInfo from './index';
+import ApplicantDetailInfo from '.';
 
 const meta: Meta<typeof ApplicantDetailInfo> = {
   title: 'Components/ApplicantDetailInfo',
