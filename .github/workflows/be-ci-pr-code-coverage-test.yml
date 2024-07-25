@@ -40,6 +40,8 @@ jobs:
                     "emoji": true
                   }
                 },
+                {
+                  "type": "section",
                   "text": {
                     "type": "mrkdwn",
                     "text": "\n*진행자:*\n${{ env.ASSIGNEE_NICKNAME }}"
@@ -66,8 +68,10 @@ jobs:
                 {
                   "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
+
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
