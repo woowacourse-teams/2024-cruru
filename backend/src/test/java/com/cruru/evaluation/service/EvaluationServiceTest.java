@@ -58,8 +58,7 @@ class EvaluationServiceTest extends ServiceTest {
         evaluationService.create(request, process.getId(), applicant.getId());
 
         // then
-        List<Evaluation> evaluations = evaluationRepository.findAllByProcessIdAndApplicantId(
-                process.getId(), applicant.getId());
+        List<Evaluation> evaluations = evaluationRepository.findAllByProcessAndApplicant(process, applicant);
         assertAll(
                 () -> assertThat(evaluations).hasSize(1),
                 () -> assertThat(evaluations.get(0).getScore()).isEqualTo(score),
