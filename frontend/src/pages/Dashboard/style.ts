@@ -8,6 +8,10 @@ const AppContainer = styled.div`
 `;
 
 const DashboardPanel = styled.div<{ isVisible: boolean }>`
+  width: 100%;
+  height: 80%;
+  padding: 20px;
+
   overflow-x: scroll;
   ${hideScrollBar};
 
