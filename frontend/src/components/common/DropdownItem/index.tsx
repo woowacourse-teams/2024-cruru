@@ -8,10 +8,15 @@ export interface DropdownItemProps {
 }
 
 export default function DropdownItem({ item, size, onClick, isHighlight = false }: DropdownItemProps) {
+  const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onClick();
+  };
+
   return (
     <S.Item
       size={size}
-      onClick={onClick}
+      onClick={clickHandler}
       isHighlight={isHighlight}
     >
       {item}

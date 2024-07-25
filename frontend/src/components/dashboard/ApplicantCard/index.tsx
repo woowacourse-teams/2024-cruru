@@ -13,9 +13,10 @@ interface ApplicantCardProps {
   name: string;
   createdAt: string;
   popOverMenuItems: PopOverMenuItem[];
+  onCardClick: () => void;
 }
 
-export default function ApplicantCard({ name, createdAt, popOverMenuItems }: ApplicantCardProps) {
+export default function ApplicantCard({ name, createdAt, popOverMenuItems, onCardClick }: ApplicantCardProps) {
   const [isPopOverOpen, setIsPopOverOpen] = useState<boolean>(false);
   const optionButtonWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -40,8 +41,13 @@ export default function ApplicantCard({ name, createdAt, popOverMenuItems }: App
     };
   }, [isPopOverOpen]);
 
+  const cardClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onCardClick();
+  };
+
   return (
-    <S.CardContainer>
+    <S.CardContainer onClick={cardClickHandler}>
       <S.CardDetail>
         <S.CardHeader>{name}</S.CardHeader>
         <S.CardDate>{`지원 일자: ${formatDate(createdAt)}`}</S.CardDate>

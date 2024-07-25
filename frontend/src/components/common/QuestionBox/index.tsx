@@ -1,27 +1,46 @@
 import S from './style';
 
-interface QuestionBoxProps {
+interface TextQuestionBoxProps {
   header: string;
-  type: 'text' | 'file';
+  type: 'text';
   content?: string;
+}
+
+interface FileQuestionBoxProps {
+  header: string;
+  type: 'file';
   fileName?: string;
   onFileDownload?: () => void;
 }
 
-export default function QuestionBox({ header, type, content, fileName, onFileDownload }: QuestionBoxProps) {
+type QuestionBoxProps = TextQuestionBoxProps | FileQuestionBoxProps;
+
+const renderContent = (props: QuestionBoxProps) => {
+  if (props.type === 'text') {
+    return <S.Content>{props.content}</S.Content>;
+  }
+
+  if (props.type === 'file') {
+    return (
+      <S.Content>
+        <S.FileRow>
+          <S.FileName>{props.fileName}</S.FileName>
+          <S.DownloadIcon onClick={props.onFileDownload}>&#x2193;</S.DownloadIcon>
+        </S.FileRow>
+      </S.Content>
+    );
+  }
+
+  return null;
+};
+
+export default function QuestionBox(props: QuestionBoxProps) {
+  const { header } = props;
+
   return (
     <S.Container>
       <S.Header>{header}</S.Header>
-      {type === 'text' ? (
-        <S.Content>{content}</S.Content>
-      ) : (
-        <S.Content>
-          <S.FileRow>
-            <S.FileName>{fileName}</S.FileName>
-            <S.DownloadIcon onClick={onFileDownload}>&#x2193;</S.DownloadIcon>
-          </S.FileRow>
-        </S.Content>
-      )}
+      {renderContent(props)}
     </S.Container>
   );
 }

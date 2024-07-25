@@ -5,8 +5,7 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.baseColors.grayscale[400]};
 
   width: 100%;
-  aspect-ratio: 1/1.414;
-
+  height: 100%;
   overflow-y: scroll;
 
   scrollbar-width: none; /* 파이어폭스 */

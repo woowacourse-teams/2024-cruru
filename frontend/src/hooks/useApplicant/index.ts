@@ -17,15 +17,7 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
     },
   });
 
-  const rejectApplicant = useMutation({
-    mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.reject({ applicantId }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, DASHBOARD_ID] });
-    },
-  });
-
   return {
     moveApplicantProcess,
-    rejectApplicant,
   };
 }

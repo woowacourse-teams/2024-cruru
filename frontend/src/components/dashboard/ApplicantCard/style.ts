@@ -10,6 +10,12 @@ const CardContainer = styled.div`
   border-radius: 0.8rem;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+  //TODO: theme으로 hover 적용하기
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const CardDetail = styled.div`

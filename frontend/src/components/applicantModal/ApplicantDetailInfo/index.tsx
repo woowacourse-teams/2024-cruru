@@ -2,7 +2,11 @@ import AppDetailHeader from './AppDetailHeader';
 import QuestionSection from './QuestionSection';
 import S from './style';
 
-export default function ApplicantDetailInfo() {
+interface ApplicantDetailInfoProps {
+  applicantId: number;
+}
+
+export default function ApplicantDetailInfo({ applicantId }: ApplicantDetailInfoProps) {
   return (
     <S.Container>
       <AppDetailHeader
@@ -21,7 +25,7 @@ export default function ApplicantDetailInfo() {
         activeTabId={0}
         content="지원 시 접수된 지원서 내용입니다."
       />
-      <QuestionSection applicantId={1} />
+      <QuestionSection applicantId={applicantId} />
     </S.Container>
   );
 }
