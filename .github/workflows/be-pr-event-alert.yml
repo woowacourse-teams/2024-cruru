@@ -2,7 +2,7 @@ name: BE/PM - PR Review 슬랙 알림
 
 on:
   pull_request:
-    types: [review_requested]
+    types: [review_requested, ready_for_review]
     branches:
       - main
       - 'be/**'
@@ -26,7 +26,21 @@ env:
   U07B5HBKZM1: "BE팀 명오"
 
 jobs:
+  set-slack-thread:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Comment & Slack Thread ID
+        uses: peter-evans/find-comment@v3
+        id: thread-id
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: slack_msg_id
+        run: |
+          echo "SLACK_THREAD_ID=${{ toJSON(steps.thread-id.outputs.comment-body)}}.slack_msg_id" >> $GITHUB_ENV
+
   review-requested_requested:
+    needs: set-slack-thread
     if: github.event.action == 'review_requested'
     runs-on: ubuntu-latest
     steps:
@@ -48,6 +62,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
+              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -123,6 +138,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           
   review-submitted_alert:
+    needs: set-slack-thread
     if: github.event.review.state == 'CHANGES_REQUESTED' || github.event.review.state == 'COMMENTED'
     runs-on: ubuntu-latest
     steps:
@@ -145,6 +161,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
+              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -220,9 +237,11 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           
   pr-approved_alert:
+    needs: set-slack-thread
     if: github.event.review.state == 'APPROVED'
     runs-on: ubuntu-latest
     steps:
+
       - name: Set assignee variables
         id: set-vars
         run: |
@@ -241,6 +260,7 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
+              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
