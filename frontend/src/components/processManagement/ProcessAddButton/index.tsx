@@ -16,8 +16,6 @@ export default function ProcessAddButton() {
 
   return (
     <S.Container>
-      <S.HorizontalLine />
-
       {isToggled ? (
         <ProcessAddForm
           priorProcessId={0}
@@ -37,8 +35,6 @@ export default function ProcessAddButton() {
           />
         </IconButton>
       )}
-
-      <S.HorizontalLine />
     </S.Container>
   );
 }

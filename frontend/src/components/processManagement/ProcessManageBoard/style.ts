@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 
-const Wrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 100%;
-  background-color: white;
+
   display: flex;
-  gap: 16px;
+  gap: 1.6rem;
 `;
 
 const S = {
-  Wrapper,
+  Container,
 };
 
 export default S;
