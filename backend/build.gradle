@@ -54,30 +54,6 @@ test {
     outputs.dir snippetsDir
 }
 
-//
-//asciidoctor {
-//    inputs.dir snippetsDir
-//    configurations 'asciidoctorExt'
-//    sources {
-//        include("**/index.adoc")
-//    }
-//    baseDirFollowsSourceFile()
-//    dependsOn test
-//}
-//
-//tasks.register('copyDocument', Copy) {
-//    dependsOn asciidoctor
-//    doFirst {
-//        delete file("src/main/resources/static/docs")
-//    }
-//    from asciidoctor.outputDir
-//    into file("src/main/resources/static/docs")
-//}
-//
-//bootJar {
-//    dependsOn asciidoctor
-//    dependsOn copyDocument
-
 asciidoctor {
     configurations 'asciidoctorExt'
     baseDirFollowsSourceFile()
