@@ -33,5 +33,6 @@ export const ApplicantCardDefault: Story = {
         onClick: () => console.log('지원자에 대한 "불합격" 클릭'),
       },
     ],
+    onCardClick: () => console.log('지원자 카드가 클릭되었습니다.'),
   },
 };
