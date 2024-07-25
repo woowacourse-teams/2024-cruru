@@ -206,7 +206,7 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .filter(document("evaluation/read-fail/process-not-found",
+                .filter(document("evaluation/read-fail/process-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("존재하지 않는", "평가 대상")),
                         responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
                 ))
@@ -226,7 +226,7 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .filter(document("evaluation/read-fail/applicant-not-found",
+                .filter(document("evaluation/read-fail/applicant-not-found/",
                         queryParameters(processIdAndApplicantIdDescriptor("평가가 해당되는", "존재하지 않는")),
                         responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
                 ))
