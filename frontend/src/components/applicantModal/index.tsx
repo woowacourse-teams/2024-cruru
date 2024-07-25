@@ -6,6 +6,8 @@ import ModalHeader from '../common/ModalHeader';
 import AppDetailHeader from './ApplicantDetailInfo/AppDetailHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
 import S from './style';
+import ApplicantEvalInfo from './ApplicantEvalInfo';
+import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
 
 export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
@@ -47,7 +49,16 @@ export default function ApplicantModal() {
           <QuestionSection applicantId={applicantId} />
         </S.ModalMain>
 
-        <S.ModalAside>{/*지원자 평가 항목 폼이 들어갑니다 */}</S.ModalAside>
+        <S.ModalEvalHeader>
+          <EvaluationHeader
+            title="지원자 평가"
+            description="지원자 평가에 대한 내용입니다."
+          />
+        </S.ModalEvalHeader>
+
+        <S.ModalAside>
+          <ApplicantEvalInfo applicantId={applicantId} />
+        </S.ModalAside>
       </S.Container>
     </BaseModal>
   );

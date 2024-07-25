@@ -9,7 +9,7 @@ const Container = styled.div`
   grid-template-rows: 1fr 2fr 14fr;
   grid-template-areas:
     'header header header'
-    'sidebar nav aside'
+    'sidebar nav evalHeader'
     'sidebar main aside';
 `;
 
@@ -41,6 +41,14 @@ const ModalMain = styled.div`
 
 const ModalAside = styled.div`
   grid-area: aside;
+  padding: 1.6rem; //TODO: Refactor
+  overflow: auto;
+`;
+
+const ModalEvalHeader = styled.div`
+  grid-area: evalHeader;
+  padding: 1.6rem;
+  border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 
 const S = {
@@ -50,6 +58,7 @@ const S = {
   ModalNav,
   ModalMain,
   ModalAside,
+  ModalEvalHeader,
 };
 
 export default S;
