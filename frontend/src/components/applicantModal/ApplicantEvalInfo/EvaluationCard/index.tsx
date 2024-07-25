@@ -1,16 +1,16 @@
-import { EVALUATION_SCORE } from '@constants/constants';
-import { EvaluationScore } from '@customTypes/applicant';
+import { EvaluationResult } from '@customTypes/applicant';
 import formatDate from '@utils/formatDate';
+
 import S from './style';
+import { EVALUATION_SCORE } from '../constants';
 
 interface EvaluationCardProps {
   evaluatorName: string;
   evaluatedDate: string;
-  score: EvaluationScore;
-  comment: string;
+  result: EvaluationResult;
 }
 
-export default function EvaluationCard({ evaluatorName, evaluatedDate, score, comment }: EvaluationCardProps) {
+export default function EvaluationCard({ evaluatorName, evaluatedDate, result }: EvaluationCardProps) {
   return (
     <S.CardContainer>
       <S.EvaluatorDetailContainer>
@@ -20,13 +20,8 @@ export default function EvaluationCard({ evaluatorName, evaluatedDate, score, co
           <S.EvaluatedDate>{formatDate(evaluatedDate)}</S.EvaluatedDate>
         </S.EvaluatorDetail>
       </S.EvaluatorDetailContainer>
-      <S.ResultFlag
-        $color={EVALUATION_SCORE[score].color}
-        $bgColor={EVALUATION_SCORE[score].bgColor}
-      >
-        {EVALUATION_SCORE[score].description}
-      </S.ResultFlag>
-      <S.ResultComment>{comment}</S.ResultComment>
+      <S.ResultFlag $score={result.score}>{EVALUATION_SCORE[result.score]}</S.ResultFlag>
+      <S.ResultComment>{result.content}</S.ResultComment>
     </S.CardContainer>
   );
 }
