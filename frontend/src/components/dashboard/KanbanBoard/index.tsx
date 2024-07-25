@@ -1,5 +1,6 @@
 import { Process } from '@customTypes/process';
 import ProcessColumn from '@components/dashboard/ProcessColumn';
+import ApplicantModal from '@components/ApplicantModal';
 import S from './style';
 
 interface IKanbanBoardProps {
@@ -15,6 +16,8 @@ export default function KanbanBoard({ processes }: IKanbanBoardProps) {
           process={process}
         />
       ))}
+
+      <ApplicantModal />
     </S.Wrapper>
   );
 }
