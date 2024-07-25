@@ -16,7 +16,7 @@ const meta = {
   tags: ['autodocs'],
 
   argTypes: {
-    priorProcessId: {
+    priorOrderIndex: {
       table: {
         disable: true,
       },
@@ -35,7 +35,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    priorProcessId: 0,
+    priorOrderIndex: 0,
     toggleForm: () => {},
   },
 };
