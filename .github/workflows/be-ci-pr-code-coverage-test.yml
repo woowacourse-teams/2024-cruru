@@ -69,8 +69,10 @@ jobs:
               ],
               "icon_url": "${{ github.event.sender.avatar_url }}"
             }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      - name: Slack 메세지 ID를 comment에 등록
+      - name: Slack 메세지 ID를 PR comment에 등록
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.number }}
