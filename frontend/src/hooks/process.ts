@@ -38,6 +38,7 @@ export const processMutaions = {
       mutationFn: (params: { processId: number; name: string; description?: string }) => processApis.modify(params),
       onSuccess: () => {
         invalidateQueries();
+        alert('프로세스 수정에 성공했습니다.');
       },
       onError: () => {
         alert('프로세스 수정에 실패했습니다.');
