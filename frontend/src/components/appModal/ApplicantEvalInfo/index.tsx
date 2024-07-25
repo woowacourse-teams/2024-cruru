@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import useEvaluationQuery from '@hooks/useEvaluationQuery';
-
-import S from './style';
-import EvaluationCard from './EvaluationCard';
 import EvaluationForm from './EvaluationForm';
 import EvaluationAddButton from './EvaluationAddButton';
+import S from './style';
+import EvaluationCard from './EvaluationCard';
 
 interface ApplicantEvalInfoProps {
   applicantId: number;
