@@ -29,7 +29,6 @@ const Content = styled.div`
 const FileRow = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const FileName = styled.span`
