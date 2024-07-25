@@ -11,6 +11,19 @@ export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
   if (!applicantId) return null;
 
+  const headerTabs = [
+    {
+      id: 0,
+      name: '지원서',
+      onClick: () => console.log('지원서가 클릭되었습니다.'),
+    },
+    {
+      id: 1,
+      name: '이력서',
+      onClick: () => console.log('이력서가 클릭되었습니다.'),
+    },
+  ];
+
   return (
     <BaseModal>
       <S.Container>
@@ -24,18 +37,7 @@ export default function ApplicantModal() {
 
         <S.ModalNav>
           <AppDetailHeader
-            headerTabs={[
-              {
-                id: 0,
-                name: '지원서',
-                onClick: () => console.log('지원서가 클릭되었습니다.'),
-              },
-              {
-                id: 1,
-                name: '이력서',
-                onClick: () => console.log('이력서가 클릭되었습니다.'),
-              },
-            ]}
+            headerTabs={headerTabs}
             activeTabId={0}
             content="지원 시 접수된 지원서 내용입니다."
           />
