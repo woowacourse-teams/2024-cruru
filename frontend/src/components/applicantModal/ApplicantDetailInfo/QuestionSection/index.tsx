@@ -6,6 +6,7 @@ interface ApplicantBaseInfoProps {
 }
 
 export default function QuestionSection({ applicantId }: ApplicantBaseInfoProps) {
+  console.log(applicantId);
   // TODO: useApplicantDetail 훅에서 데이터를 가져와야 합니다. API명세 완료시 진행
   return (
     <S.Container>
