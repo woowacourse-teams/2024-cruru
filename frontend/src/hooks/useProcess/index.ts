@@ -27,9 +27,8 @@ export default function useProcess(): UseProcessReturn {
   const processes = data?.processes || [];
 
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
-
   return {
-    processes,
+    processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
     processList,
     error,
     isLoading,
