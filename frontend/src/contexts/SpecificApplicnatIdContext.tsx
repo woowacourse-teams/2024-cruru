@@ -1,8 +1,8 @@
-import { createContext, useContext, useState, ReactNode, useMemo, useCallback } from 'react';
+import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 
 interface SpecificApplicantIdContext {
   setApplicantId: (Id: number) => void;
-  getApplicantId: () => number | undefined;
+  applicantId: number | undefined;
 }
 
 const SpecificApplicantIdContext = createContext<SpecificApplicantIdContext | undefined>(undefined);
@@ -10,9 +10,7 @@ const SpecificApplicantIdContext = createContext<SpecificApplicantIdContext | un
 export function SpecificApplicantIdProvider({ children }: { children: ReactNode }) {
   const [applicantId, setApplicantId] = useState<number | undefined>(undefined);
 
-  const getApplicantId = useCallback(() => applicantId, [applicantId]);
-
-  const obj = useMemo(() => ({ setApplicantId: (id: number) => setApplicantId(id), getApplicantId }), [getApplicantId]);
+  const obj = useMemo(() => ({ setApplicantId: (id: number) => setApplicantId(id), applicantId }), [applicantId]);
 
   return <SpecificApplicantIdContext.Provider value={obj}>{children}</SpecificApplicantIdContext.Provider>;
 }
