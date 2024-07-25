@@ -1,11 +1,15 @@
 import styled from '@emotion/styled';
+import { hideScrollBar } from '@styles/utils';
 
 const ProcessWrapper = styled.section`
   width: 340px;
-  height: 100%;
+  min-width: min-content;
   padding: 20px 12px 12px 12px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.baseColors.grayscale[100]};
+
+  overflow-y: scroll;
+  ${hideScrollBar};
 `;
 
 const Header = styled.header`
