@@ -35,11 +35,11 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: slack_msg_id
+          body-includes: '^\d{10}\.\d{6}$'
       - run: |
           echo "SLACK_THREAD_ID=${{ steps.thread-id.outputs.comment-body }}" >> $GITHUB_OUTPUT
     outputs:
-      SLACK_THREAD_ID: ${{ toJSON(steps.thread-id.outputs.SLACK_THREAD_ID) }}
+      SLACK_THREAD_ID: ${{ steps.thread-id.outputs.SLACK_THREAD_ID }}
 
   review-requested_requested:
     needs: set-slack-thread
@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV 
           echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-          echo "SLACK_THREAD_ID=${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}" >> $GITHUB_ENV
+          echo "SLACK_THREAD_ID=${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}" >> $GITHUB_ENV
 
       - name: Set reviewer and sender nickname
         id: set-nicks
