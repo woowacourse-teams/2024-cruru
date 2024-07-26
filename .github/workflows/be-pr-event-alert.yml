@@ -51,7 +51,6 @@ jobs:
         run: |
           echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV 
           echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-          echo "SLACK_THREAD_ID=${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}" >> $GITHUB_ENV
 
       - name: Set reviewer and sender nickname
         id: set-nicks
@@ -139,6 +138,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}
 
   review-submitted_alert:
     needs: set-slack-thread
