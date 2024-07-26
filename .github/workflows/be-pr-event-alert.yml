@@ -64,7 +64,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}",
+              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -138,7 +138,8 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          
+          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}
+
   review-submitted_alert:
     needs: set-slack-thread
     if: github.event.review.state == 'CHANGES_REQUESTED' || github.event.review.state == 'COMMENTED'
@@ -163,7 +164,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}",
+              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -237,6 +238,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}
           
   pr-approved_alert:
     needs: set-slack-thread
@@ -262,7 +264,7 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}",
+              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -336,3 +338,4 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}
