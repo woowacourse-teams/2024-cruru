@@ -51,6 +51,7 @@ jobs:
         run: |
           echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
           echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
+          echo "SLACK_THREAD_ID=${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}" >> $GITHUB_ENV
 
       - name: Set reviewer and sender nickname
         id: set-nicks
@@ -59,7 +60,7 @@ jobs:
           echo "SENDER_NICKNAME=${{ env[format('{0}', env.SENDER_SLACK_ID)] }}" >> $GITHUB_ENV
 
       - name: pr review 요청 -> 리뷰어에게 slack 멘션 알림
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
@@ -138,7 +139,6 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}
 
   review-submitted_alert:
     needs: set-slack-thread
