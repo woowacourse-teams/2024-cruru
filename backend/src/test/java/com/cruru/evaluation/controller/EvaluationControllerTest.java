@@ -186,7 +186,7 @@ class EvaluationControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("존재하지 않는 지원자의 평가 조회를 시도한 경우, 200을 응답한다.")
+    @DisplayName("존재하지 않는 지원자의 평가 조회를 시도한 경우, 4044를 응답한다.")
     @Test
     void read_applicantNotFound() {
         // given
@@ -201,14 +201,13 @@ class EvaluationControllerTest extends ControllerTest {
                         queryParameters(
                                 parameterWithName("process_id").description("평가가 해당되는 프로세스의 id"),
                                 parameterWithName("applicant_id").description("존재하지 않는 지원자의 id")
-                        ),
-                        responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
+                        )
                 ))
                 .when().get(url)
-                .then().log().all().statusCode(200);
+                .then().log().all().statusCode(404);
     }
 
-    @DisplayName("존재하지 않는 프로세스의 평가 조회를 시도한 경우, 200을 응답한다.")
+    @DisplayName("존재하지 않는 프로세스의 평가 조회를 시도한 경우, 404를 응답한다.")
     @Test
     void read_processNotFound() {
         // given
@@ -223,10 +222,9 @@ class EvaluationControllerTest extends ControllerTest {
                         queryParameters(
                                 parameterWithName("process_id").description("존재하지 않는 프로세스의 id"),
                                 parameterWithName("applicant_id").description("평가 대상 지원자의 id")
-                        ),
-                        responseFields(fieldWithPath("evaluations").description("빈 평가 목록"))
+                        )
                 ))
                 .when().get(url)
-                .then().log().all().statusCode(200);
+                .then().log().all().statusCode(404);
     }
 }

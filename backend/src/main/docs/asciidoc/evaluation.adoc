@@ -24,10 +24,10 @@ operation::evaluation/create-fail/invalid-score[snippets="http-request,query-par
 
 operation::evaluation/read[snippets="http-request,query-parameters,http-response,response-fields"]
 
-==== 성공: 존재하지 않는 지원자
+==== 실패: 존재하지 않는 지원자
 
-operation::evaluation/read-fail/applicant-not-found[snippets="http-request,query-parameters,http-response,response-fields"]
+operation::evaluation/read-fail/applicant-not-found[snippets="http-request,query-parameters,http-response"]
 
-==== 성공: 존재하지 않는 프로세스
+==== 실패: 존재하지 않는 프로세스
 
-operation::evaluation/read-fail/process-not-found[snippets="http-request,query-parameters,http-response,response-fields"]
+operation::evaluation/read-fail/process-not-found[snippets="http-request,query-parameters,http-response"]

@@ -105,12 +105,15 @@ class ApplicantControllerTest extends ControllerTest {
                 .filter(document("applicant/read-profile/",
                         pathParameters(parameterWithName("applicant_id").description("정보를 읽어올 지원자의 id")),
                         responseFields(
-                                fieldWithPath("applicant_id").description("지원자의 id"),
-                                fieldWithPath("name").description("지원자의 이름"),
-                                fieldWithPath("email").description("지원자의 이메일"),
-                                fieldWithPath("phone").description("지원자의 전화번호"),
-                                fieldWithPath("created_at").description("지원자의 지원 날짜 및 시간"),
-                                fieldWithPath("process_name").description("지원자의 현재 프로세스 이름")
+                                fieldWithPath("applicant").description("지원자 정보"),
+                                fieldWithPath("applicant.id").description("지원자 id"),
+                                fieldWithPath("applicant.name").description("지원자의 이름"),
+                                fieldWithPath("applicant.email").description("지원자의 이메일"),
+                                fieldWithPath("applicant.phone").description("지원자의 전화번호"),
+                                fieldWithPath("applicant.created_at").description("지원자의 지원 날짜 및 시간"),
+                                fieldWithPath("process").description("간단한 프로세스 정보"),
+                                fieldWithPath("process.id").description("프로세스 id"),
+                                fieldWithPath("process.name").description("지원자의 현재 프로세스 이름")
                         )
                 ))
                 .when().get("/v1/applicants/{applicant_id}", applicant.getId())

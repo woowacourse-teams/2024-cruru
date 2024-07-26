@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
+import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
-import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -91,10 +91,10 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when
-        ApplicantResponse found = applicantService.findById(applicant.getId());
+        ApplicantBasicResponse found = applicantService.findById(applicant.getId());
 
         // then
-        assertThat(applicant.getId()).isEqualTo(found.id());
+        assertThat(applicant.getId()).isEqualTo(found.applicantResponse().id());
     }
 
     @DisplayName("id에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")
