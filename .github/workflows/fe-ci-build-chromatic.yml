@@ -5,6 +5,14 @@ on:
     branches:
       - fe/develop
 
+env:
+  lurgi: "U07BJB1M53K"
+  U07BJB1M53K: "FE팀 러기"
+  llqqssttyy: "U07AZ2992CW"
+  U07AZ2992CW: "FE팀 렛서"
+  seongjinme: "U07B9HQDF4M"
+  U07B9HQDF4M: "FE팀 아르"
+
 jobs:
   build:
     runs-on: ubuntu-22.04
