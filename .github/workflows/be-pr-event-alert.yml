@@ -24,7 +24,6 @@ env:
   U07B88ZQDU4: "BE팀 냥인"
   HyungHoKim00: "U07B5HBKZM1"
   U07B5HBKZM1: "BE팀 명오"
-
 jobs:
   set-slack-thread:
     runs-on: ubuntu-latest
@@ -36,10 +35,11 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-regex: '^\d{10}\.\d{6}$'
-      - run: |
-          echo "slack-thread-ts=${{ steps.thread-id.outputs.comment-body }}" >> "$GITHUB_OUTPUT"
+      - name: Set Slack Thread ID
+        run: echo "slack-thread-ts=${{ steps.thread-id.outputs.comment-body }}" >> "$GITHUB_OUTPUT"
+        id: set-thread-id
     outputs:
-      SLACK_THREAD_ID: ${{ steps.thread-id.outputs.slack-thread-ts }}
+      SLACK_THREAD_ID: ${{ steps.set-thread-id.outputs.slack-thread-ts }}
 
   review-requested_requested:
     needs: set-slack-thread
