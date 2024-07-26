@@ -31,14 +31,15 @@ jobs:
     steps:
       - name: Find Comment & Slack Thread ID
         uses: peter-evans/find-comment@v3
+        id: thread-id
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-regex: '^\d{10}\.\d{6}$'
-      - id: thread-id
-        run: echo "SLACK_THREAD_TS=${{ steps.thread-id.outputs.comment-body }}" >> $GITHUB_OUTPUT
+        run: |
+          echo "slack-thread-ts=${{ steps.thread-id.outputs.comment-body }}" >> $GITHUB_OUTPUT
     outputs:
-      SLACK_THREAD_ID: ${{ steps.thread-id.outputs.SLACK_THREAD_TS }}
+      SLACK_THREAD_ID: ${{ steps.thread-id.outputs.slack-thread-ts }}
 
   review-requested_requested:
     needs: set-slack-thread
