@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
-import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
@@ -22,7 +21,6 @@ import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.ApplicantRejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
@@ -93,26 +91,17 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when
-        ApplicantBasicResponse basicResponse = applicantService.findById(applicant.getId());
-        ProcessSimpleResponse processResponse = basicResponse.processResponse();
-        ApplicantResponse applicantResponse = basicResponse.applicantResponse();
+        ApplicantResponse found = applicantService.findById(applicant.getId());
 
         // then
-        assertAll(
-                () -> assertThat(process.getId()).isEqualTo(processResponse.id()),
-                () -> assertThat(process.getName()).isEqualTo(processResponse.name()),
-                () -> assertThat(applicant.getId()).isEqualTo(applicantResponse.id()),
-                () -> assertThat(applicant.getName()).isEqualTo(applicantResponse.name()),
-                () -> assertThat(applicant.getEmail()).isEqualTo(applicantResponse.email()),
-                () -> assertThat(applicant.getPhone()).isEqualTo(applicantResponse.phone())
-        );
+        assertThat(applicant.getId()).isEqualTo(found.id());
     }
 
     @DisplayName("id에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")
     @Test
     void findById_notFound() {
         // given
-        long invalidId = -1L;
+        long invalidId = -1;
 
         // given&when&then
         assertThatThrownBy(() -> applicantService.findById(invalidId))

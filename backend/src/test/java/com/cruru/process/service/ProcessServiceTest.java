@@ -137,7 +137,7 @@ class ProcessServiceTest extends ServiceTest {
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when
-        Long processId = process.getId();
+        long processId = process.getId();
         ProcessResponse actualProcessResponse = processService.update(processUpdateRequest, processId);
 
         // then

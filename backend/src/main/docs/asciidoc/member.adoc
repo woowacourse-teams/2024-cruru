@@ -1,0 +1,7 @@
+== 사용자
+
+=== 사용자 생성
+
+==== 성공
+
+operation::member/create[snippets="http-request,request-fields,http-response"]

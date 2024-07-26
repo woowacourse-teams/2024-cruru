@@ -57,7 +57,7 @@ class DashboardServiceTest extends ServiceTest {
     void create_invalidClub() {
         // given
         DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
-        long invalidClubId = -1L;
+        long invalidClubId = -1;
 
         // when&then
         assertThatThrownBy(() -> dashboardService.create(invalidClubId, request))
