@@ -48,7 +48,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "🎁 Pull Request가 준비되었습니다!",
+                    "text": "🎁 (#${{ github.event.pull_request.number }}) Pull Request가 준비되었습니다!",
                     "emoji": true
                   }
                 },

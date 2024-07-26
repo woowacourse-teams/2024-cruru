@@ -134,7 +134,8 @@ jobs:
                 {
                   "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -163,7 +164,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -233,7 +234,8 @@ jobs:
                 {
                   "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -263,7 +265,7 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ env.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -333,7 +335,8 @@ jobs:
                 {
                   "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
