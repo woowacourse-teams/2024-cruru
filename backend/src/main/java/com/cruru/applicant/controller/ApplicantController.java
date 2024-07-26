@@ -1,8 +1,8 @@
 package com.cruru.applicant.controller;
 
+import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
-import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.service.ApplicantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +32,8 @@ public class ApplicantController {
     }
 
     @GetMapping("/{applicant_id}")
-    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") Long applicantId) {
-        ApplicantResponse applicantResponse = applicantService.findById(applicantId);
+    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicant_id") Long applicantId) {
+        ApplicantBasicResponse applicantResponse = applicantService.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
