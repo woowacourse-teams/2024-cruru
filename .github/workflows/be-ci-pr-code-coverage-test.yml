@@ -92,7 +92,7 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           body: |
-            { "slack_msg_id" : "${{ steps.send-message.outputs.ts }}" }
+            { slack_msg_id : ${{ steps.send-message.outputs.ts }} }
 
   test-coverage-pr-opened:
     defaults:
