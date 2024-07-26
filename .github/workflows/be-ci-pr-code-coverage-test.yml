@@ -7,7 +7,93 @@ on:
     branches:
       - be/develop
 
+env:
+  Dobby-Kim: "U07BJABU6G1"
+  U07BJABU6G1: "BE팀 도비"
+  Chocochip101: "U07BUEJDS8G"
+  U07BUEJDS8G: "BE팀 초코칩"
+  xogns1514: "U07AZ26UC2J"
+  U07AZ26UC2J: "BE팀 러쉬"
+  cutehumanS2: "U07B88ZQDU4"
+  U07B88ZQDU4: "BE팀 냥인"
+  HyungHoKim00: "U07B5HBKZM1"
+  U07B5HBKZM1: "BE팀 명오"
+
 jobs:
+  pr-ready:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set reviewer and sender variables
+        id: set-vars
+        run: |
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+
+      - name: Set reviewer and sender nickname
+        id: set-nicks
+        run: |
+          echo "ASSIGNEE_NICKNAME=${{ env[format('{0}', env.ASSIGNEE_SLACK_ID)] }}" >> $GITHUB_ENV
+
+      - name: pr review 요청 -> 리뷰어에게 slack 멘션 알림
+        id: send-message
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🎁 (#${{ github.event.pull_request.number }}) Pull Request가 준비되었습니다!",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "\n*진행자:*\n${{ env.ASSIGNEE_NICKNAME }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*${{ github.event.pull_request.title }}*"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "👉🏻 PR 바로가기 👈🏻",
+                      "emoji": true
+                    },
+                    "value": "바로가기 링크",
+                    "url": "${{ github.event.pull_request.html_url }}",
+                    "action_id": "button-action"
+                  }
+                },
+                {
+                  "type": "divider"
+                }
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
+            }
+
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Slack 메세지 ID를 PR comment에 등록
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.number }}
+          body: |
+            ${{ steps.send-message.outputs.ts }}
+
   test-coverage-pr-opened:
     defaults:
       run:
