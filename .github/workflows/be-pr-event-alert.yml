@@ -36,7 +36,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-regex: '^\d{10}\.\d{6}$'
-        run: |
+      - run: |
           echo "slack-thread-ts=${{ steps.thread-id.outputs.comment-body }}" >> $GITHUB_OUTPUT
     outputs:
       SLACK_THREAD_ID: ${{ steps.thread-id.outputs.slack-thread-ts }}
