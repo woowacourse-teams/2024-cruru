@@ -228,7 +228,7 @@ class ProcessControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
-                .filter(document("process/update-failed/invalid-name",
+                .filter(document("process/update-fail/invalid-name",
                         pathParameters(parameterWithName("process_id").description("수정될 프로세스의 id")),
                         requestFields(
                                 fieldWithPath("process_name").description("조건에 맞지 않는 프로세스 이름"),

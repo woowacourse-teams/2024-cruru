@@ -36,7 +36,7 @@ operation::process/update[snippets="http-request,path-parameters,request-fields,
 
 ==== 실패: 조건에 맞지 않는 프로세스 이름
 
-operation::process/update-failed/invalid-name[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::process/update-fail/invalid-name[snippets="http-request,path-parameters,request-fields,http-response"]
 
 === 프로세스 삭제
 
