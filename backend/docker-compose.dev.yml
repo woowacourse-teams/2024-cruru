@@ -20,11 +20,11 @@ services:
 
   application:
     container_name: app_container
-    platform: linux/amd64
+    platform: linux/arm64
     depends_on:
       - database-mysql
     restart: always
-    image: cruruTest/cruru:latest
+    image: cruru/cruru:dev-latest
     ports:
       - ${SERVER_PORT}
     environment:
