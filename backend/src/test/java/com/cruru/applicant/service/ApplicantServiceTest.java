@@ -1,11 +1,17 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
+import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
@@ -13,8 +19,10 @@ import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
+import com.cruru.applicant.exception.ApplicantRejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
@@ -54,13 +62,13 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("모집 공고1", null));
-        Process beforeProcess = processRepository.save(new Process(0, "이전 프로세스", "프로세스 설명1", dashboard));
-        Process afterProcess = processRepository.save(new Process(1, "이후 프로세스", "프로세스 설명2", dashboard));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process beforeProcess = processRepository.save(createFirstProcess(dashboard));
+        Process afterProcess = processRepository.save(createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                new Applicant(null, null, null, beforeProcess, false),
-                new Applicant(null, null, null, beforeProcess, false)
+                createApplicantDobby(beforeProcess),
+                createApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -81,14 +89,23 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", null, false);
-        applicant = applicantRepository.save(applicant);
+        Process process = processRepository.save(createFirstProcess());
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
 
         // when
-        ApplicantResponse found = applicantService.findById(applicant.getId());
+        ApplicantBasicResponse basicResponse = applicantService.findById(applicant.getId());
+        ProcessSimpleResponse processResponse = basicResponse.processResponse();
+        ApplicantResponse applicantResponse = basicResponse.applicantResponse();
 
         // then
-        assertThat(applicant.getId()).isEqualTo(found.id());
+        assertAll(
+                () -> assertThat(process.getId()).isEqualTo(processResponse.id()),
+                () -> assertThat(process.getName()).isEqualTo(processResponse.name()),
+                () -> assertThat(applicant.getId()).isEqualTo(applicantResponse.id()),
+                () -> assertThat(applicant.getName()).isEqualTo(applicantResponse.name()),
+                () -> assertThat(applicant.getEmail()).isEqualTo(applicantResponse.email()),
+                () -> assertThat(applicant.getPhone()).isEqualTo(applicantResponse.phone())
+        );
     }
 
     @DisplayName("id에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")
@@ -106,14 +123,14 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findDetailById() {
         // given
-        Dashboard dashboard = new Dashboard("프론트 부원 모집", null);
+        Dashboard dashboard = createBackendDashboard();
         dashboardRepository.save(dashboard);
-        Process process = new Process(0, "서류", "서류 단계", dashboard);
+        Process process = createFirstProcess(dashboard);
         processRepository.save(process);
-        Applicant applicant = new Applicant(1L, "명오", "myun@mail.com", "01012341234", process, false);
+        Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = new Question("좋아하는 동물은?", 0, dashboard);
+        Question question = new Question("좋아하는 동물은?", 0, null);
         questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
@@ -124,10 +141,32 @@ class ApplicantServiceTest extends ServiceTest {
         //then
         List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses();
         assertAll(
-                () -> assertThat(applicantDetailResponse.applicantName()).isEqualTo(applicant.getName()),
-                () -> assertThat(applicantDetailResponse.dashboardName()).isEqualTo(dashboard.getName()),
                 () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
                 () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
         );
+    }
+
+    @DisplayName("id로 지원자를 불합격시킨다.")
+    @Test
+    void reject() {
+        // given
+        Applicant applicant = applicantRepository.save(createApplicantDobby());
+
+        // when
+        applicantService.reject(applicant.getId());
+
+        // then
+        assertThat(applicantRepository.findById(applicant.getId()).get().getIsRejected()).isTrue();
+    }
+
+    @DisplayName("이미 불합격한 지원자를 불합격시키려 하면 예외가 발생한다.")
+    @Test
+    void reject_alreadyRejected() {
+        // given
+        Applicant applicant = applicantRepository.save(createRejectedApplicantLurgi());
+
+        // when&then
+        assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
+                .isInstanceOf(ApplicantRejectException.class);
     }
 }

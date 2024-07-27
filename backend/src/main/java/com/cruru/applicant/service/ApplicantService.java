@@ -2,6 +2,7 @@ package com.cruru.applicant.service;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
+import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
@@ -9,7 +10,8 @@ import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.applicant.exception.ApplicantRejectException;
+import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
@@ -37,19 +39,25 @@ public class ApplicantService {
         applicants.forEach(applicant -> applicant.updateProcess(process));
     }
 
-    public ApplicantResponse findById(long id) {
+    public ApplicantBasicResponse findById(long id) {
         Applicant applicant = applicantRepository.findById(id)
                 .orElseThrow(ApplicantNotFoundException::new);
-        return toApplicantResponse(applicant);
+        return toApplicantBasicResponse(applicant);
     }
 
-    private ApplicantResponse toApplicantResponse(Applicant applicant) {
-        return new ApplicantResponse(
-                applicant.getId(),
-                applicant.getName(),
-                applicant.getEmail(),
-                applicant.getPhone(),
-                applicant.getCreatedDate()
+    private ApplicantBasicResponse toApplicantBasicResponse(Applicant applicant) {
+        return new ApplicantBasicResponse(
+                new ApplicantResponse(
+                        applicant.getId(),
+                        applicant.getName(),
+                        applicant.getEmail(),
+                        applicant.getPhone(),
+                        applicant.getCreatedDate()
+                ),
+                new ProcessSimpleResponse(
+                        applicant.getProcess().getId(),
+                        applicant.getProcess().getName()
+                )
         );
     }
 
@@ -57,9 +65,8 @@ public class ApplicantService {
         Applicant applicant = applicantRepository.findById(id)
                 .orElseThrow(ApplicantNotFoundException::new);
         List<Answer> answers = answerRepository.findAllByApplicant(applicant);
-        Dashboard dashboard = applicant.getDashboard();
         List<QnaResponse> qnaResponses = toQnaResponses(answers);
-        return new ApplicantDetailResponse(applicant.getName(), dashboard.getName(), qnaResponses);
+        return new ApplicantDetailResponse(qnaResponses);
     }
 
     private List<QnaResponse> toQnaResponses(List<Answer> answers) {
@@ -71,5 +78,19 @@ public class ApplicantService {
     private QnaResponse toQnaResponse(Answer answer) {
         Question question = answer.getQuestion();
         return new QnaResponse(question.getSequence(), question.getContent(), answer.getContent());
+    }
+
+    @Transactional
+    public void reject(long id) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(ApplicantNotFoundException::new);
+        validateRejectable(applicant);
+        applicant.reject();
+    }
+
+    private void validateRejectable(Applicant applicant) {
+        if (applicant.getIsRejected()) {
+            throw new ApplicantRejectException();
+        }
     }
 }

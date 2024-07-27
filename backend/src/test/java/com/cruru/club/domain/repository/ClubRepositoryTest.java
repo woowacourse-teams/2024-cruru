@@ -1,5 +1,6 @@
 package com.cruru.club.domain.repository;
 
+import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.club.domain.Club;
@@ -25,7 +26,7 @@ class ClubRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Club club = new Club("써밋", null);
+        Club club = createClub();
         Club saved = clubRepository.save(club);
 
         //when
@@ -41,8 +42,8 @@ class ClubRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Club club1 = new Club("써밋", null);
-        Club club2 = new Club("크루루", null);
+        Club club1 = createClub();
+        Club club2 = createClub();
 
         //when
         Club savedClub1 = clubRepository.save(club1);

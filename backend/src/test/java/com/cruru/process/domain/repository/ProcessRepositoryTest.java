@@ -1,5 +1,7 @@
 package com.cruru.process.domain.repository;
 
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.process.domain.Process;
@@ -25,7 +27,7 @@ class ProcessRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Process process = new Process(0, "면접", "화상 면접", null);
+        Process process = createFirstProcess();
         Process saved = processRepository.save(process);
 
         //when
@@ -43,12 +45,12 @@ class ProcessRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Process process1 = new Process(0, "면접", "화상 면접", null);
-        Process process2 = new Process(1, "새로운 면접", "대면 면접", null);
+        Process firstProcess = createFirstProcess();
+        Process finalProcess = createFinalProcess();
 
         //when
-        Process savedProcess1 = processRepository.save(process1);
-        Process savedProcess2 = processRepository.save(process2);
+        Process savedProcess1 = processRepository.save(firstProcess);
+        Process savedProcess2 = processRepository.save(finalProcess);
 
         //then
         assertThat(savedProcess1.getId() + 1).isEqualTo(savedProcess2.getId());

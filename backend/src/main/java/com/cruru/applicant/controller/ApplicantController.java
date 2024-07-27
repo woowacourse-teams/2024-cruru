@@ -1,13 +1,14 @@
 package com.cruru.applicant.controller;
 
+import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
-import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.service.ApplicantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +32,8 @@ public class ApplicantController {
     }
 
     @GetMapping("/{applicant_id}")
-    public ResponseEntity<ApplicantResponse> read(@PathVariable("applicant_id") Long applicantId) {
-        ApplicantResponse applicantResponse = applicantService.findById(applicantId);
+    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicant_id") Long applicantId) {
+        ApplicantBasicResponse applicantResponse = applicantService.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
@@ -40,5 +41,11 @@ public class ApplicantController {
     public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicant_id") Long applicantId) {
         ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicantId);
         return ResponseEntity.ok().body(applicantDetailResponse);
+    }
+
+    @PatchMapping("/{applicant_id}/reject")
+    public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable("applicant_id") Long applicantId) {
+        applicantService.reject(applicantId);
+        return ResponseEntity.ok().build();
     }
 }

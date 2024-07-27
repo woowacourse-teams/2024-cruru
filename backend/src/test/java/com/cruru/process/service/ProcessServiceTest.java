@@ -1,5 +1,10 @@
 package com.cruru.process.service;
 
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
+import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -13,10 +18,13 @@ import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.process.exception.ProcessCountException;
+import com.cruru.process.exception.ProcessDeleteEndsException;
+import com.cruru.process.exception.ProcessDeleteRemainingApplicantException;
 import com.cruru.util.ServiceTest;
 import java.util.Comparator;
 import java.util.List;
@@ -46,10 +54,9 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void findByDashboardId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard("7기 모집", null));
-        Process process = processRepository.save(new Process(0, "서류", "서류", dashboard));
-        Applicant applicant = applicantRepository.save(new Applicant(
-                "냥인", "nyang@email.com", "01000000000", process, false));
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createFirstProcess(dashboard));
+        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
         evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
 
         // when
@@ -82,16 +89,13 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
-        dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "서류", "서류", dashboard);
-        processRepository.save(process1);
-        Process process2 = new Process(2, "최종 면접", "대면 면접", dashboard);
-        processRepository.save(process2);
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        processRepository.save(createFirstProcess(dashboard));
+        processRepository.save(createFinalProcess(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
 
         // when
-        processService.create(dashboard.getId(), processCreateRequest);
+        processService.create(processCreateRequest, dashboard.getId());
 
         // then
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboard.getId())
@@ -107,8 +111,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void createOverProcessMaxCount() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
-        Dashboard savedDashboard = dashboardRepository.save(dashboard);
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.saveAll(
                 List.of(
                         new Process(0, "서류", "서류", dashboard),
@@ -121,21 +124,38 @@ class ProcessServiceTest extends ServiceTest {
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
 
         // when&then
-        assertThatThrownBy(() -> processService.create(savedDashboard.getId(), processCreateRequest))
-                .isInstanceOf(ProcessBadRequestException.class);
+        assertThatThrownBy(() -> processService.create(processCreateRequest, dashboard.getId()))
+                .isInstanceOf(ProcessCountException.class);
+    }
+
+    @DisplayName("프로세스 정보를 변경한다.")
+    @Test
+    void update() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createFirstProcess(dashboard));
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
+
+        // when
+        Long processId = process.getId();
+        ProcessResponse actualProcessResponse = processService.update(processUpdateRequest, processId);
+
+        // then
+        assertAll(() -> {
+            assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name());
+            assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description());
+        });
     }
 
     @DisplayName("프로세스를 삭제한다.")
     @Test
     void delete() {
-        // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
-        dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(1, "1차 면접", "화상 면접", dashboard);
-        process1 = processRepository.save(process1);
+        // given;
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createInterviewProcess(dashboard));
 
         // when
-        processService.delete(process1.getId());
+        processService.delete(process.getId());
 
         // then
         assertThat(processRepository.findAll()).hasSize(0);
@@ -145,19 +165,16 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void deleteFirstOrLastProcess() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
-        dashboard = dashboardRepository.save(dashboard);
-        Process process1 = new Process(0, "서류", "서류", dashboard);
-        processRepository.save(process1);
-        Process process2 = new Process(1, "최종 면접", "대면 면접", dashboard);
-        processRepository.save(process2);
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
+        Process finalProcess = processRepository.save(createFinalProcess(dashboard));
 
         // when&then
         assertAll(
-                () -> assertThatThrownBy(() -> processService.delete(process1.getId()))
-                        .isInstanceOf(ProcessBadRequestException.class),
-                () -> assertThatThrownBy(() -> processService.delete(process2.getId()))
-                        .isInstanceOf(ProcessBadRequestException.class)
+                () -> assertThatThrownBy(() -> processService.delete(firstProcess.getId()))
+                        .isInstanceOf(ProcessDeleteEndsException.class),
+                () -> assertThatThrownBy(() -> processService.delete(finalProcess.getId()))
+                        .isInstanceOf(ProcessDeleteEndsException.class)
         );
     }
 
@@ -165,15 +182,12 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void deleteExistsApplicantProcess() {
         // given
-        Dashboard dashboard = new Dashboard("7기 모집", null);
-        dashboard = dashboardRepository.save(dashboard);
-        Process process = new Process(1, "서류", "서류", dashboard);
-        processRepository.save(process);
-        Applicant applicant = new Applicant("냥인", "nyang@email.com", "01000000000", process, false);
-        applicantRepository.save(applicant);
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createInterviewProcess(dashboard));
+        applicantRepository.save(createApplicantDobby(process));
 
         // when&then
         assertThatThrownBy(() -> processService.delete(process.getId()))
-                .isInstanceOf(ProcessBadRequestException.class);
+                .isInstanceOf(ProcessDeleteRemainingApplicantException.class);
     }
 }

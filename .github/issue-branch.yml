@@ -1,6 +1,7 @@
 branchName: '${issue.number}-${issue.body[-20]}'
 gitSafeReplacementChar: ""
 openDraftPR: true
+autoLinkIssue: true
 autoCloseIssue: true
 branches:
   - label: 
@@ -80,7 +81,6 @@ commentMessage: |
   작업이 완료된 후, 리뷰어를 선택하고 Draft PR 내부의 `Ready for review` 버튼을 눌러주시면 됩니다! :)
   제가 Slack으로 리뷰어에게 DM으로 알려드릴게요
   
-
 copyIssueDescriptionToPR: true
 copyIssueLabelsToPR: true
 copyIssueAssigneeToPR: true

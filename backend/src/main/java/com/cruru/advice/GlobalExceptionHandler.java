@@ -1,5 +1,6 @@
 package com.cruru.advice;
 
+import com.cruru.advice.badrequest.BadRequestException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;

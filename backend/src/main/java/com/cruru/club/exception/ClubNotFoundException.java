@@ -4,9 +4,9 @@ import com.cruru.advice.NotFoundException;
 
 public class ClubNotFoundException extends NotFoundException {
 
-    private static final String MESSAGE = "존재하지 않는 동아리입니다.";
+    private static final String TARGET = "동아리";
 
     public ClubNotFoundException() {
-        super(MESSAGE);
+        super(TARGET);
     }
 }

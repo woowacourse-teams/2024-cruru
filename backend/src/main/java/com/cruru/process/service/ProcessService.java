@@ -9,10 +9,13 @@ import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import com.cruru.process.exception.ProcessBadRequestException;
+import com.cruru.process.exception.ProcessCountException;
+import com.cruru.process.exception.ProcessDeleteEndsException;
+import com.cruru.process.exception.ProcessDeleteRemainingApplicantException;
 import com.cruru.process.exception.ProcessNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +78,7 @@ public class ProcessService {
     }
 
     @Transactional
-    public void create(long dashboardId, ProcessCreateRequest request) {
+    public void create(ProcessCreateRequest request, long dashboardId) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
         validateProcessCount(allByDashboardId);
         Dashboard dashboard = dashboardRepository.findById(dashboardId)
@@ -95,10 +98,19 @@ public class ProcessService {
 
     private void validateProcessCount(List<Process> processes) {
         if (processes.size() == MAX_PROCESS_COUNT) {
-            throw new ProcessBadRequestException(
-                    String.format("프로세스 수가 최대 %d개이므로 더 이상 생성할 수 없습니다.", MAX_PROCESS_COUNT)
-            );
+            throw new ProcessCountException(MAX_PROCESS_COUNT);
         }
+    }
+
+    @Transactional
+    public ProcessResponse update(ProcessUpdateRequest request, long processId) {
+        Process process = processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+
+        process.updateName(request.name());
+        process.updateDescription(request.description());
+
+        return toProcessResponse(process);
     }
 
     @Transactional
@@ -113,14 +125,14 @@ public class ProcessService {
     private void validateFirstOrLastProcess(Process process) {
         int processCount = (int) processRepository.countByDashboard(process.getDashboard());
         if (process.isSameSequence(PROCESS_FIRST_SEQUENCE) || process.isSameSequence(processCount - 1)) {
-            throw new ProcessBadRequestException("처음과 마지막 프로세스는 삭제할 수 없습니다.");
+            throw new ProcessDeleteEndsException();
         }
     }
 
     private void validateExistsApplicant(Process process) {
         int applicantCount = (int) applicantRepository.countByProcess(process);
         if (applicantCount > 0) {
-            throw new ProcessBadRequestException("지원자가 존재하는 프로세스는 삭제할 수 없습니다.");
+            throw new ProcessDeleteRemainingApplicantException();
         }
     }
 }

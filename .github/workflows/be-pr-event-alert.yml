@@ -1,8 +1,8 @@
-name: BE PR Review 슬랙 알림
+name: BE/PM - PR Review 슬랙 알림
 
 on:
   pull_request:
-    types: [review_requested]
+    types: [review_requested, ready_for_review]
     branches:
       - main
       - 'be/**'
@@ -24,77 +24,240 @@ env:
   U07B88ZQDU4: "BE팀 냥인"
   HyungHoKim00: "U07B5HBKZM1"
   U07B5HBKZM1: "BE팀 명오"
-
 jobs:
+  set-slack-thread:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Comment & Slack Thread ID
+        uses: peter-evans/find-comment@v3
+        id: thread-id
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-regex: '^\d{10}\.\d{6}$'
+      - name: Set Slack Thread ID
+        run: echo "slack-thread-ts=${{ steps.thread-id.outputs.comment-body }}" >> "$GITHUB_OUTPUT"
+        id: set-thread-id
+    outputs:
+      SLACK_THREAD_ID: ${{ steps.set-thread-id.outputs.slack-thread-ts }}
+
   review-requested_requested:
+    needs: set-slack-thread
     if: github.event.action == 'review_requested'
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and sender variables
         id: set-vars
         run: |
-          echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
+          echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV 
           echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
 
-      - name: pr reviewe 요청 시 slack 알림 보내기
-        uses: slackapi/slack-github-action@v1.24.0
+      - name: Set reviewer and sender nickname
+        id: set-nicks
+        run: |
+          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
+          echo "SENDER_NICKNAME=${{ env[format('{0}', env.SENDER_SLACK_ID)] }}" >> $GITHUB_ENV
+
+      - name: pr review 요청 -> 리뷰어에게 slack 멘션 알림
+        uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "text": "✨PR 리뷰 요청✨",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
-                  "type": "section",
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n ✨✨✨✨✨✨\n✨리뷰요청✨\n✨✨✨✨✨✨ \n <@${{ env.SENDER_SLACK_ID }}> ➡️ <@${{ env.REVIEWER_SLACK_ID }}> \n\n 💡${{ github.event.pull_request.title }}💡에 대한 리뷰 요청 도착! \n 아래의 링크에서 확인주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }} - 바로가기>"
+                    "type": "plain_text",
+                    "text": "✨ 리뷰 요청 ✨",
+                    "emoji": true
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "plain_text",
+                      "text": "from.",
+                      "emoji": true
+                    },
+                    {
+                      "type": "image",
+                      "image_url": "${{ github.event.sender.avatar_url }}",
+                      "alt_text": ""
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "${{ env.SENDER_NICKNAME }}",
+                      "emoji": true
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "➡️ <@${{ env.REVIEWER_SLACK_ID }}>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "💡*PR 제목:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "⚡️ PR 바로가기 ⚡️",
+                        "emoji": true
+                      },
+                      "value": "PR_LINK",
+                      "url": "${{ github.event.pull_request.html_url }}",
+                      "action_id": "actionId-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          
+
   review-submitted_alert:
-    if: github.event.action == 'submitted' && github.event.review.state != 'APPROVED' 
+    needs: set-slack-thread
+    if: github.event.review.state == 'CHANGES_REQUESTED' || github.event.review.state == 'COMMENTED'
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and reviewee variables
         id: set-vars
         run: |
           echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
 
-      - name: pr 리뷰 완료 후 submit되면 reviewee에게 slack 알림 발송
+      - name: Set reviewer and reviewee nickname
+        id: set-nicks
+        run: |
+          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_NICKNAME=${{ env[format('{0}', env.ASSIGNEE_SLACK_ID)] }}" >> $GITHUB_ENV
+
+      - name: pr 리뷰 submit -> assignee에게 slack 멘션 알림
         if: env.ASSIGNEE_SLACK_ID != ''
         uses: slackapi/slack-github-action@v1.24.0
         with:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "text": "🔥${{ github.event.pull_request.title }}: 리뷰 도착🔥",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
-                  "type": "section",
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n 🔥🔥🔥🔥🔥🔥\n🔥리뷰완료🔥\n🔥🔥🔥🔥🔥🔥 \n <@${{ env.REVIEWER_SLACK_ID }}> ➡️ <@${{ env.ASSIGNEE_SLACK_ID }}> \n 💡${{ github.event.pull_request.title }}💡에 대한 리뷰 도착! \n ✨ 아래의 링크에서 확인해주세요 :muscle::muscle: \n \n ⚡️ <${{ github.event.pull_request.html_url }}|${{ github.event.pull_request.title }} - 바로가기>"
+                    "type": "plain_text",
+                    "text": "🔥리뷰 완료🔥",
+                    "emoji": true
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "plain_text",
+                      "text": "from.",
+                      "emoji": true
+                    },
+                    {
+                      "type": "image",
+                      "image_url": "${{ github.event.sender.avatar_url }}",
+                      "alt_text": ""
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "${{ env.REVIEWER_NICKNAME }}",
+                      "emoji": true
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "➡️ <@${{ env.ASSIGNEE_SLACK_ID }}>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "💡*PR 제목:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "⚒️ 받은 리뷰 확인하기 ⚒️",
+                        "emoji": true
+                      },
+                      "value": "PR_LINK",
+                      "url": "${{ github.event.pull_request.html_url }}",
+                      "action_id": "actionId-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}
           
   pr-approved_alert:
+    needs: set-slack-thread
     if: github.event.review.state == 'APPROVED'
     runs-on: ubuntu-latest
     steps:
+
       - name: Set assignee variables
         id: set-vars
         run: |
+          echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
           echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+
+      - name: Set reviewer and reviewee nickname
+        id: set-nicks
+        run: |
+          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_NICKNAME=${{ env[format('{0}', env.ASSIGNEE_SLACK_ID)] }}" >> $GITHUB_ENV
 
       - name: pr reviewer가 Approve 하면 slack 알림 보냄
         uses: slackapi/slack-github-action@v1.24.0
@@ -102,16 +265,79 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "🏁 ${{ github.event.pull_request.title }}: Approve 알림🏁",
+              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
-                  "type": "section",
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
                   "text": {
-                    "type": "mrkdwn",
-                    "text": " 〰️〰️〰️〰️〰️〰️〰️〰️〰️ \n🏁🏁🏁🏁🏁\n 🏁PR승인🏁 \n🏁🏁🏁🏁🏁\n <@${{ env.ASSIGNEE_SLACK_ID }}> 님! \n 🚀 작업하신 **${{ github.event.pull_request.title }}** 가 Approve 됐어요! \n :muscle: 아래의 링크에서 Merge를 진행해주세요 \n \n ⚡️ <${{ github.event.pull_request.html_url }}|PR 바로가기 링크>"
+                    "type": "plain_text",
+                    "text": "🏁 PR 승인 🏁",
+                    "emoji": true
                   }
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "plain_text",
+                      "text": "from.",
+                      "emoji": true
+                    },
+                    {
+                      "type": "image",
+                      "image_url": "${{ github.event.sender.avatar_url }}",
+                      "alt_text": ""
+                    },
+                    {
+                      "type": "plain_text",
+                      "text": "${{ env.REVIEWER_NICKNAME }}",
+                      "emoji": true
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "<@${{ env.ASSIGNEE_SLACK_ID }}>님! \n리뷰어에게 승인을 받았어요!"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "🚀 *PR 제목:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "🕹️ Merge 하러 가기 🕹️",
+                        "emoji": true
+                      },
+                      "value": "PR_LINK",
+                      "url": "${{ github.event.pull_request.html_url }}",
+                      "action_id": "actionId-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
                 }
-              ]
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_THREAD_ID: ${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID.slack_msg_id }}

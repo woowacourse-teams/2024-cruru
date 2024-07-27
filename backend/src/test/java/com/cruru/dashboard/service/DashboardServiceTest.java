@@ -1,5 +1,6 @@
 package com.cruru.dashboard.service;
 
+import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -39,7 +40,7 @@ class DashboardServiceTest extends ServiceTest {
     @Test
     void create_createDefaultProcess() {
         // given
-        Club club = new Club("크루루동아리", null);
+        Club club = createClub();
         clubRepository.save(club);
         DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
 

@@ -1,5 +1,7 @@
 package com.cruru.dashboard.controller;
 
+import static com.cruru.util.fixture.ClubFixture.createClub;
+
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
@@ -21,7 +23,7 @@ class DashboardControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(new Club("크루루 동아리", null));
+        club = clubRepository.save(createClub());
     }
 
     @DisplayName("대시보드 생성 성공 시, 201을 응답한다.")
