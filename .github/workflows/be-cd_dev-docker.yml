@@ -92,8 +92,8 @@ jobs:
 
     - name: Stop and remove existing containers
       run: |
-        docker-compose -f docker-compose.dev.yml down 
+        sudo docker-compose -f docker-compose.dev.yml down --rmi all
 
     - name: Deploy
       run: |
-        docker-compose --env-file .env -f docker-compose.dev.yml up -d
+        sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d
