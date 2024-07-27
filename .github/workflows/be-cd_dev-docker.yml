@@ -47,6 +47,7 @@ jobs:
         echo DB_PORT=${{ secrets.DB_PORT }} >> ${{ github.workspace }}/backend/.env
         echo DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }} >> ${{ github.workspace }}/backend/.env
         
+        echo SERVER_BINDING_PORT=${{ secrets.SERVER_BINDING_PORT }} >> ${{ github.workspace }}/backend/.env
         echo SERVER_PORT=${{ secrets.SERVER_PORT }} >> ${{ github.workspace }}/backend/.env
         
         echo DB_URL=${{ secrets.DB_URL }} >> ${{ github.workspace }}/backend/.env
