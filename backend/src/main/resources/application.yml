@@ -22,3 +22,27 @@ spring:
     defer-datasource-initialization: true
 dataloader:
   enable: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    defer-datasource-initialization: true
+dataloader:
+  enable: true
+server:
+  port: ${SERVER_PORT}
