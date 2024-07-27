@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  database-mysql:
+    container_name: database-container
+    image: mysql/mysql-server:latest
+    environment:
+      MYSQL_DATABASE: 'cruru'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_ROOT_PASSWORD: 'cruru'
+      TZ: Asia/Seoul
+    ports:
+      - ${DB_PORT}
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_0900_ai_ci'
+    networks:
+      test_network:
+        ipv4_address: ${DB_IP_ADDRESS}
+
+  application:
+    container_name: app_container
+    platform: linux/amd64
+    depends_on:
+      - database-mysql
+    restart: always
+    image: cruruTest/cruru:latest
+    ports:
+      - ${SERVER_PORT}
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DDL_AUTO: ${DDL_AUTO}
+      SERVER_PORT: ${SERVER_PORT}
+    networks:
+      test_network:
+        ipv4_address: ${APP_IP_ADDRESS}
+
+networks:
+  test_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${SUBNET}
