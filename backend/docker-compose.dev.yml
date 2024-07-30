@@ -24,7 +24,7 @@ services:
     depends_on:
       - database-mysql
     restart: always
-    image: cruru/cruru:dev-latest
+    image: ${DOCKER_REPO_NAME}/cruru:dev-latest
     ports:
       - ${SERVER_BINDING_PORT}
     environment:
@@ -33,6 +33,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DDL_AUTO: ${DDL_AUTO}
       SERVER_PORT: ${SERVER_PORT}
+      DOCKER_REPO_NAME: ${DOCKER_REPO_NAME}
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
