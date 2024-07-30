@@ -4,16 +4,6 @@ on:
   issues:
     types: [opened, assigned, closed]
 
-env:
-  Dobby-Kim: "U07BJABU6G1"
-  Chocochip101: "U07BUEJDS8G"
-  xogns1514: "U07AZ26UC2J"
-  lurgi: "U07BJB1M53K"
-  llqqssttyy: "U07AZ2992CW"
-  cutehumanS2: "U07B88ZQDU4"
-  HyungHoKim00: "U07B5HBKZM1"
-  seongjinme: "U07B9HQDF4M"
-
 jobs:
   create-issue-branch:
     name: "feature 이슈 할당 -> 브랜치-PR 자동 생성"
@@ -34,7 +24,7 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ github.event.issue.assignee.login,, }}" >> $GITHUB_ENV
 
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.24.0
@@ -64,7 +54,7 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
+          echo "ASSIGNEE_SLACK_ID=${{ github.event.issue.assignee.login,, }}" >> $GITHUB_ENV
 
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.24.0
