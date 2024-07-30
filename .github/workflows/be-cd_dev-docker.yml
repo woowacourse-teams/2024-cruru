@@ -1,4 +1,4 @@
-name: Deploy to Docker
+name: BE/CD - Docker image build & deploy
 
 on:
   workflow_dispatch:
@@ -15,10 +15,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: '17'
@@ -39,61 +39,56 @@ jobs:
 
     - name: Image build and push
       run: |
-        docker build --build-arg PROFILE=dev --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_USERNAME }}/cruru:dev-latest --platform linux/arm64 .
-        docker push ${{ secrets.DOCKER_USERNAME }}/cruru:dev-latest
+        docker build --build-arg PROFILE=dev --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:dev-latest --platform linux/arm64 .
+        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:dev-latest
 
-    - name: Extract secrets to .env file
-      run: |
-        echo DB_PORT=${{ secrets.DB_PORT }} >> ${{ github.workspace }}/backend/.env
-        echo DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }} >> ${{ github.workspace }}/backend/.env
-        
-        echo SERVER_BINDING_PORT=${{ secrets.SERVER_BINDING_PORT }} >> ${{ github.workspace }}/backend/.env
-        echo SERVER_PORT=${{ secrets.SERVER_PORT }} >> ${{ github.workspace }}/backend/.env
-        
-        echo DB_URL=${{ secrets.DB_URL }} >> ${{ github.workspace }}/backend/.env
-        echo DB_USER=${{ secrets.DB_USER }} >> ${{ github.workspace }}/backend/.env
-        echo DB_PASSWORD=${{ secrets.DB_PASSWORD }} >> ${{ github.workspace }}/backend/.env
-        echo DDL_AUTO=${{ secrets.DDL_AUTO }} >> ${{ github.workspace }}/backend/.env
-        echo APP_IP_ADDRESS=${{ secrets.APP_IP_ADDRESS }} >> ${{ github.workspace }}/backend/.env
-
-        echo SUBNET=${{ secrets.SUBNET }} >> ${{ github.workspace }}/backend/.env
-
-    - name: Upload .env file
-      uses: actions/upload-artifact@v4
-      with:
-        name: env-file
-        path: backend/.env
-
-
-    - name: Upload docker-compose
+    - name: Upload docker-compose yaml script to artifact
       uses: actions/upload-artifact@v4
       with:
         name: docker-compose
         path: ${{ github.workspace }}/backend/docker-compose.dev.yml
 
   deploy:
-    runs-on: [self-hosted, Linux, be-dev]
+    runs-on: [self-hosted, be-dev]
     needs: build
     defaults:
       run:
         working-directory: backend
     steps:
-    - name: Download docker-compose.dev.yml
+    - name: Set docker-compose YAML script to runner
       uses: actions/download-artifact@v4
       with:
         name: docker-compose
         path: ${{ github.workspace }}/backend
 
-    - name: Download .env file
-      uses: actions/download-artifact@v4
-      with:
-        name: env-file
-        path: ${{ github.workspace }}/backend
+    - name: Extract secrets as .env file
+      run: |
+        cat <<EOF > .env
+        # Docker Hub info from Github Secrets
+        DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
+        
+        # DB Configuration secrets info from Github Secrets
+        MYSQL_DB_NAME=${{ secrets.MYSQL_DB_NAME }}
+        MYSQL_ROOT_HOST=${{ secrets.MYSQL_ROOT_HOST }}
+        MYSQL_TIME_ZONE=${{ secrets.MYSQL_TIME_ZONE }}
+        DB_PORT=${{ secrets.DB_PORT }}
+        DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }}
+        DB_URL=${{ secrets.DB_URL }}
+        DB_USER=${{ secrets.DB_USER }}
+        DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+        DDL_AUTO=${{ secrets.DDL_AUTO }}
+
+        # DB server configuration secrets info from Github Secrets
+        APP_IP_ADDRESS=${{ secrets.APP_IP_ADDRESS }}
+        SERVER_BINDING_PORT=${{ secrets.SERVER_BINDING_PORT }}
+        SERVER_PORT=${{ secrets.SERVER_PORT }}
+        SUBNET=${{ secrets.SUBNET }}
+        EOF
 
     - name: Stop and remove existing containers
       run: |
         sudo docker-compose -f docker-compose.dev.yml down --rmi all
 
-    - name: Deploy
+    - name: Deploy docker container
       run: |
         sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d

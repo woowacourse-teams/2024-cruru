@@ -5,10 +5,10 @@ services:
     container_name: database-container
     image: mysql/mysql-server:latest
     environment:
-      MYSQL_DATABASE: 'cruru'
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: 'cruru'
-      TZ: Asia/Seoul
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: ${MYSQL_TIME_ZONE}
     ports:
       - ${DB_PORT}
     command:
@@ -24,7 +24,7 @@ services:
     depends_on:
       - database-mysql
     restart: always
-    image: cruru/cruru:dev-latest
+    image: ${DOCKER_REPO_NAME}/cruru:dev-latest
     ports:
       - ${SERVER_BINDING_PORT}
     environment:
@@ -33,6 +33,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DDL_AUTO: ${DDL_AUTO}
       SERVER_PORT: ${SERVER_PORT}
+      DOCKER_REPO_NAME: ${DOCKER_REPO_NAME}
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
