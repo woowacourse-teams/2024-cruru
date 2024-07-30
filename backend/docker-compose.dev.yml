@@ -5,10 +5,10 @@ services:
     container_name: database-container
     image: mysql/mysql-server:latest
     environment:
-      MYSQL_DATABASE: 'cruru'
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: 'cruru'
-      TZ: Asia/Seoul
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: ${MYSQL_TIME_ZONE}
     ports:
       - ${DB_PORT}
     command:
