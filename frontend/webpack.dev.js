@@ -4,12 +4,15 @@ const Dotenv = require('dotenv-webpack');
 const dotenv = require('dotenv');
 
 module.exports = () => {
-  dotenv.config({ path: './.env.local' });
+  dotenv.config({ path: ['./.env.local', './.env.sentry-build-plugin'] });
 
   return merge(common, {
     plugins: [
       new Dotenv({
         path: './.env.local',
+      }),
+      new Dotenv({
+        path: './.env.sentry-build-plugin',
       }),
     ],
     mode: 'development',

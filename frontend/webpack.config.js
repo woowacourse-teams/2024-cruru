@@ -1,9 +1,14 @@
+const {
+  sentryWebpackPlugin
+} = require("@sentry/webpack-plugin");
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
   entry: './src/main.tsx',
+
   module: {
     rules: [
       {
@@ -29,6 +34,7 @@ module.exports = {
       },
     ],
   },
+
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs'],
     alias: {
@@ -45,19 +51,24 @@ module.exports = {
       '@mocks': path.resolve(__dirname, 'src/mocks/'),
     },
   },
+
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-      filename: 'index.html',
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      async: false,
-      typescript: {
-        configFile: path.resolve(__dirname, 'tsconfig.json'),
-      },
-    }),
-  ],
+
+  plugins: [new HtmlWebpackPlugin({
+    template: './index.html',
+    filename: 'index.html',
+  }), new ForkTsCheckerWebpackPlugin({
+    async: false,
+    typescript: {
+      configFile: path.resolve(__dirname, 'tsconfig.json'),
+    },
+  }), sentryWebpackPlugin({
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+    org: "cruru",
+    project: "cruru-react"
+  })],
+
+  devtool: "source-map"
 };
