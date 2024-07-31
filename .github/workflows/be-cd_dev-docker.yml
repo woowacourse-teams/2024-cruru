@@ -49,6 +49,7 @@ jobs:
         path: ${{ github.workspace }}/backend/docker-compose.dev.yml
 
   deploy:
+    environment: dev
     runs-on: [self-hosted, be-dev]
     needs: build
     defaults:
