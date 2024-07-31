@@ -1,6 +1,4 @@
-const {
-  sentryWebpackPlugin
-} = require("@sentry/webpack-plugin");
+const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -56,19 +54,23 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
 
-  plugins: [new HtmlWebpackPlugin({
-    template: './index.html',
-    filename: 'index.html',
-  }), new ForkTsCheckerWebpackPlugin({
-    async: false,
-    typescript: {
-      configFile: path.resolve(__dirname, 'tsconfig.json'),
-    },
-  }), sentryWebpackPlugin({
-    authToken: process.env.SENTRY_AUTH_TOKEN,
-    org: "cruru",
-    project: "cruru-react"
-  })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      async: false,
+      typescript: {
+        configFile: path.resolve(__dirname, 'tsconfig.json'),
+      },
+    }),
+    sentryWebpackPlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      org: 'cruru',
+      project: 'cruru-react',
+    }),
+  ],
 
-  devtool: "source-map"
+  devtool: 'source-map',
 };
