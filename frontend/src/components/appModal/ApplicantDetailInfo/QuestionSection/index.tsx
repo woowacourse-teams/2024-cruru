@@ -9,12 +9,14 @@ interface ApplicantBaseInfoProps {
 export default function QuestionSection({ applicantId }: ApplicantBaseInfoProps) {
   const { data } = specificApplicant.useGetDetailInfo({ applicantId });
 
+  //TODO: 로딩 핸들링
+
   return (
     <S.Container>
       <S.InnerContainer>
         {data?.details.map((detail) => (
           <QuestionBox
-            key={detail.order_index}
+            key={detail.orderIndex}
             header={detail.question}
             type="text"
             content={detail.answer}
