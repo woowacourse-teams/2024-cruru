@@ -52,7 +52,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 new AnswerCreateRequest(question2.getId(), List.of("온라인"))
         );
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 answerCreateRequests,
                 true);
 
@@ -78,7 +78,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 new AnswerCreateRequest(question2.getId(), List.of("온라인"))
         );
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 answerCreateRequests,
                 false);
 
@@ -99,7 +99,7 @@ class ApplyFormControllerTest extends ControllerTest {
         Question question = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 0, applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
                 true);
 
