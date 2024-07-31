@@ -1,7 +1,9 @@
 {
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "dev": "webpack-dev-server --config webpack.dev.js --open --hot",
+    "killport": "sh ./killport.sh",
+    "kill": "npm run killport -- 3000",
+    "dev": "npm run kill && webpack-dev-server --config webpack.dev.js --open --hot",
     "test": "jest",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "storybook dev -p 6006",
