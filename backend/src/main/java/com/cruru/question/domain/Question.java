@@ -1,6 +1,6 @@
 package com.cruru.question.domain;
 
-import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.applyform.domain.ApplyForm;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,13 +30,13 @@ public class Question {
     private Integer sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dashboard_id")
-    private Dashboard dashboard;
+    @JoinColumn(name = "apply_form_id")
+    private ApplyForm applyForm;
 
-    public Question(String content, int sequence, Dashboard dashboard) {
+    public Question(String content, int sequence, ApplyForm applyForm) {
         this.content = content;
         this.sequence = sequence;
-        this.dashboard = dashboard;
+        this.applyForm = applyForm;
     }
 
     @Override
@@ -59,10 +59,10 @@ public class Question {
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + id +
+                "applyForm=" + applyForm +
+                ", id=" + id +
                 ", content='" + content + '\'' +
                 ", sequence=" + sequence +
-                ", dashboard=" + dashboard +
                 '}';
     }
 }
