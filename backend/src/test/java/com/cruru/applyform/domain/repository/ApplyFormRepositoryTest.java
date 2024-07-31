@@ -24,8 +24,7 @@ class ApplyFormRepositoryTest {
         applyFormRepository.deleteAllInBatch();
     }
 
-
-    @DisplayName("이미 DB에 저장되어있는 ID를 가진 지원서를 저장하면, 해당 ID의 동아리는 가장 최근 저장된 정보로 업데이트된다.")
+    @DisplayName("이미 DB에 저장되어있는 ID를 가진 지원서를 저장하면, 해당 ID의 지원서는 가장 최근 저장된 정보로 업데이트된다.")
     @Test
     void save_ApplyFormIdUpdate() {
         // given
