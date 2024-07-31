@@ -25,6 +25,8 @@ public class Question {
     @Column(name = "question_id")
     private Long id;
 
+    private QuestionType questionType;
+
     private String content;
 
     private Integer sequence;
@@ -33,7 +35,8 @@ public class Question {
     @JoinColumn(name = "apply_form_id")
     private ApplyForm applyForm;
 
-    public Question(String content, int sequence, ApplyForm applyForm) {
+    public Question(QuestionType type, String content, int sequence, ApplyForm applyForm) {
+        this.questionType = type;
         this.content = content;
         this.sequence = sequence;
         this.applyForm = applyForm;
