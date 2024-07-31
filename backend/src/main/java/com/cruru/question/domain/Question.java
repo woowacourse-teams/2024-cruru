@@ -65,11 +65,11 @@ public class Question {
     @Override
     public String toString() {
         return "Question{" +
-                "applyForm=" + applyForm +
-                ", id=" + id +
+                "id=" + id +
                 ", questionType=" + questionType +
                 ", content='" + content + '\'' +
                 ", sequence=" + sequence +
+                ", applyForm=" + applyForm +
                 '}';
     }
 }
