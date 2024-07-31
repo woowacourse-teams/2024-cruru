@@ -1,5 +1,6 @@
 package com.cruru.applyform.service;
 
+import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -59,8 +60,8 @@ class ApplyFormServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process firstProcess = processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(new Question("자기소개 부탁드려요", 0, applyForm));
-        Question question2 = questionRepository.save(new Question("지원 경로가 어떻게 되나요?", 1, applyForm));
+        Question question1 = questionRepository.save(new Question(SHORT_ANSWER, "자기소개 부탁드려요", 0, applyForm));
+        Question question2 = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 1, applyForm));
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
                 new AnswerCreateRequest(question2.getId(), List.of("온라인"))
@@ -84,7 +85,7 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question = questionRepository.save(new Question("지원 경로가 어떻게 되나요?", 0, applyForm));
+        Question question = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 0, applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),
@@ -103,7 +104,7 @@ class ApplyFormServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question = questionRepository.save(new Question("지원 경로가 어떻게 되나요?", 0, applyForm));
+        Question question = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 0, applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),
@@ -122,7 +123,7 @@ class ApplyFormServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question = questionRepository.save(new Question("지원 경로가 어떻게 되나요?", 0, applyForm));
+        Question question = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 0, applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),

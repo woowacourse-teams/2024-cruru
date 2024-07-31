@@ -1,5 +1,6 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
 import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
@@ -134,7 +135,7 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = new Question("좋아하는 동물은?", 0, null);
+        Question question = new Question(SHORT_ANSWER, "좋아하는 동물은?", 0, null);
         questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
