@@ -61,7 +61,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/applyform/" + applyForm.getId() + "/submit")
+                .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
                 .then().log().all().statusCode(201);
     }
 
@@ -88,7 +88,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/applyform/" + applyForm.getId() + "/submit")
+                .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
                 .then().log().all().statusCode(400);
     }
 
@@ -110,7 +110,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/applyform/" + applyForm.getId() + "/submit")
+                .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
                 .then().log().all().statusCode(500);
     }
 }
