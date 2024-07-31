@@ -1,5 +1,8 @@
 package com.cruru;
 
+import static com.cruru.question.domain.QuestionType.DROPDOWN;
+import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
+
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.domain.Applicant;
@@ -83,11 +86,12 @@ public class DataLoader implements ApplicationRunner {
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
 
-        Question choiceQuestion = questionRepository.save(new Question(1L, "성별", 0, applyForm));
-        Question essayQuestion = questionRepository.save(new Question(2L, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
+        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", 0, applyForm));
+        Question essayQuestion = questionRepository.save(
+                new Question(2L, SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
 
-        Choice maleChoice = choiceRepository.save(new Choice(1L, "남", choiceQuestion));
-        Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", choiceQuestion));
+        Choice maleChoice = choiceRepository.save(new Choice(1L, "남", 1, choiceQuestion));
+        Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", 2, choiceQuestion));
 
         List<Answer> answers = List.of(
                 new Answer(1L, maleChoice.getContent(), choiceQuestion, lurgi),
