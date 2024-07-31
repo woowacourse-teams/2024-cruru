@@ -1,5 +1,6 @@
 package com.cruru.dashboard.service;
 
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
@@ -24,6 +25,7 @@ public class DashboardService {
     private final DashboardRepository dashboardRepository;
     private final ClubRepository clubRepository;
     private final ProcessRepository processRepository;
+    private final ApplyFormRepository applyFormRepository;
 
     @Transactional
     public long create(long clubId, DashboardCreateRequest request) {
