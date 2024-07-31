@@ -8,7 +8,7 @@ export interface SpecificApplicant {
 }
 
 interface DetailInfo {
-  order_index: number;
+  orderIndex: number;
   question: string;
   answer: string;
 }
