@@ -89,4 +89,25 @@ class ApplyFormControllerTest extends ControllerTest {
                 .when().post("/v1/applyform/" + applyForm.getId() + "/submit")
                 .then().log().all().statusCode(400);
     }
+
+    @DisplayName("지원서 폼 제출 시, 대시보드에 프로세스가 존재하지 않으면 500을 반환한다.")
+    @Test
+    void submit_dashboardWithNoProcess() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        Question question = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 0, applyForm));
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "010-0000-0000"),
+                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
+                true);
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/v1/applyform/" + applyForm.getId() + "/submit")
+                .then().log().all().statusCode(500);
+    }
 }
