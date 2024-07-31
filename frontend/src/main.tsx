@@ -52,7 +52,7 @@ const router = createBrowserRouter(
 
 const queryClient = new QueryClient();
 
-setDevMode().then(() =>
+setDevMode().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <ModalProvider>
@@ -64,5 +64,5 @@ setDevMode().then(() =>
         </QueryClientProvider>
       </ModalProvider>
     </React.StrictMode>,
-  ),
-);
+  );
+});
