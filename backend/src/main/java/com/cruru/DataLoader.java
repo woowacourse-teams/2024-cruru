@@ -69,7 +69,7 @@ public class DataLoader implements ApplicationRunner {
         LocalDateTime startDate = LocalDateTime.MIN;
         LocalDateTime dueDate = LocalDateTime.MAX;
         dashboardRepository.save(dashboard);
-        ApplyForm applyForm = new ApplyForm(1L, "크루루 모집 공고", "# 모집 섦명이다.", "www.cruru.kr/form/1", startDate, dueDate,
+        ApplyForm applyForm = new ApplyForm(1L, "크루루 모집 공고", "# 모집 설명이다.", "www.cruru.kr/form/1", startDate, dueDate,
                 dashboard);
         applyFormRepository.save(applyForm);
 
