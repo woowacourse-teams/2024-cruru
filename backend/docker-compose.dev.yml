@@ -27,6 +27,7 @@ services:
     image: ${DOCKER_REPO_NAME}/cruru:dev-latest
     ports:
       - ${SERVER_BINDING_PORT}
+      - ${MONITORING_BINDING_PORT}
     environment:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
@@ -34,6 +35,8 @@ services:
       DDL_AUTO: ${DDL_AUTO}
       SERVER_PORT: ${SERVER_PORT}
       DOCKER_REPO_NAME: ${DOCKER_REPO_NAME}
+      MONITORING_PORT: ${MONITORING_PORT}
+      MONITORING_BASE_PATH: ${MONITORING_BASE_PATH}
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
