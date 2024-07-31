@@ -12,7 +12,7 @@ public record AnswerCreateRequest(
         Long questionId,
 
         @NotNull(message = "응답은 필수 값입니다.")
-        List<String> choices
+        List<String> replies
 ) {
 
 }

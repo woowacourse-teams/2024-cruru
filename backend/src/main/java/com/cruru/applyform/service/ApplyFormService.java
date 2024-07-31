@@ -56,7 +56,7 @@ public class ApplyFormService {
         );
 
         for (AnswerCreateRequest answerCreateRequest : request.answerCreateRequest()) {
-            saveAnswerChoices(answerCreateRequest, applicant);
+            saveAnswerReplies(answerCreateRequest, applicant);
         }
     }
 
@@ -66,10 +66,10 @@ public class ApplyFormService {
         }
     }
 
-    private void saveAnswerChoices(AnswerCreateRequest answerCreateRequest, Applicant applicant) {
-        for (String choice : answerCreateRequest.choices()) {
+    private void saveAnswerReplies(AnswerCreateRequest answerCreateRequest, Applicant applicant) {
+        for (String reply : answerCreateRequest.replies()) {
             Question question = getQuestionById(answerCreateRequest.questionId());
-            Answer answer = new Answer(choice, question, applicant);
+            Answer answer = new Answer(reply, question, applicant);
             answerRepository.save(answer);
         }
     }
