@@ -1,13 +1,32 @@
-name: FE/CD - 프로덕션 코드 빌드 및 S3 배포
+name: FE/CI-CD - Production 테스트, 빌드 및 배포
 
 on:
   push:
     branches:
       - fe/main
 
+env:
+  lurgi: 'U07BJB1M53K'
+  U07BJB1M53K: 'FE팀 러기'
+  llqqssttyy: 'U07AZ2992CW'
+  U07AZ2992CW: 'FE팀 렛서'
+  seongjinme: 'U07B9HQDF4M'
+  U07B9HQDF4M: 'FE팀 아르'
+  Dobby-Kim: 'U07BJABU6G1'
+  U07BJABU6G1: 'BE팀 도비'
+  Chocochip101: 'U07BUEJDS8G'
+  U07BUEJDS8G: 'BE팀 초코칩'
+  xogns1514: 'U07AZ26UC2J'
+  U07AZ26UC2J: 'BE팀 러쉬'
+  cutehumanS2: 'U07B88ZQDU4'
+  U07B88ZQDU4: 'BE팀 냥인'
+  HyungHoKim00: 'U07B5HBKZM1'
+  U07B5HBKZM1: 'BE팀 명오'
+
 jobs:
-  build:
+  test-build:
     runs-on: ubuntu-22.04
+    environment: prod
     defaults:
       run:
         working-directory: ./frontend
@@ -18,6 +37,9 @@ jobs:
     steps:
       - name: 저장소 checkout
         uses: actions/checkout@v4
+        with:
+          # chromatic에서는 fetch-depth를 0으로 설정하지 않으면 에러가 발생
+          fetch-depth: 0
 
       - name: Node.js 셋업
         uses: actions/setup-node@v4
@@ -36,12 +58,18 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: 백엔드 API 연동용 환경변수 설정
+      - name: 환경변수 설정
         run: |
           echo "REACT_APP_CRURU_API_URL=${{ secrets.API_URL }}" >> .env.production
 
+      - name: 코드 문법 테스트
+        run: npm run lint
+
       - name: 애플리케이션 기능 테스트
         run: npm run test -- --passWithNoTests
+
+      - name: Storybook 빌드 테스트
+        run: npm run build-storybook
 
       - name: 애플리케이션 빌드
         run: npm run build
@@ -53,7 +81,7 @@ jobs:
           path: frontend/dist
 
   deploy:
-    needs: build
+    needs: test-build
     runs-on: [self-hosted, linux, cruru-fe]
 
     steps:
@@ -80,4 +108,4 @@ jobs:
 
       - name: CloudFront 캐시 무효화
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.FE_DEPLOY_CLOUDFRONT_ID }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.FE_CLOUDFRONT_ID }} --paths "/*"
