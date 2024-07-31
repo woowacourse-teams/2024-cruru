@@ -64,6 +64,7 @@ public class Question {
         return "Question{" +
                 "applyForm=" + applyForm +
                 ", id=" + id +
+                ", questionType=" + questionType +
                 ", content='" + content + '\'' +
                 ", sequence=" + sequence +
                 '}';
