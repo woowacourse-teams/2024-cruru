@@ -2,7 +2,7 @@ name: ALL/PM - Issue 자동 관리
 
 on:
   issues:
-    types: [opened, assigned, closed]
+    types: [assigned, closed]
 
 jobs:
   create-issue-branch:
@@ -32,7 +32,7 @@ jobs:
           channel-id: ${{ secrets.IN_PROGRESS_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "pr review request",
+              "text": "🔔 작업 시작 알림 🔔",
               "blocks": [
                 {
                   "type": "section",
@@ -63,7 +63,7 @@ jobs:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "pr review request",
+              "text": "🎉 작업 완료 알림 🎉",
               "blocks": [
                 {
                   "type": "section",
