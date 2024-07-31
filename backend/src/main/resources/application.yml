@@ -46,3 +46,19 @@ dataloader:
   enable: true
 server:
   port: ${SERVER_PORT}
+
+management:
+  server:
+    port: ${MONITORING_PORT}
+  endpoints:
+    web:
+      base-path: ${MONITORING_BASE_PATH}
+      exposure:
+        include: prometheus
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+  endpoint:
+    prometheus:
+      enabled: true
