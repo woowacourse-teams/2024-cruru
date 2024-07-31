@@ -8,7 +8,7 @@ import { processMutaions } from '@hooks/process';
 import { useClickOutside } from '@hooks/utils/useClickOutside';
 
 import { Process } from '@customTypes/process';
-import { DASHBOARD_ID } from '@constants/constants';
+import { DASHBOARD_ID, PROCESS } from '@constants/constants';
 import C from '../style';
 
 interface ProcessAddFormProps {
@@ -19,12 +19,12 @@ interface ProcessAddFormProps {
 export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessAddFormProps) {
   const formRef = useClickOutside<HTMLFormElement>(toggleForm);
 
+  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm });
+
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: '',
     description: '',
   });
-
-  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -50,18 +50,18 @@ export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessA
       onSubmit={handleSubmit}
     >
       <InputField
-        label="프로세스 이름"
-        placeholder="32자 이내로 입력해주세요."
+        label={PROCESS.inputField.name.label}
+        placeholder={PROCESS.inputField.name.placeholder}
+        maxLength={PROCESS.inputField.name.maxLength}
         value={formState.name}
         onChange={handleChange}
-        maxLength={32}
         name="name"
         required
       />
 
       <TextField
-        label="프로세스 설명"
-        placeholder="프로세스에 대한 설명을 입력해주세요."
+        label={PROCESS.inputField.description.label}
+        placeholder={PROCESS.inputField.description.placeholder}
         value={formState.description}
         onChange={handleChange}
         name="description"

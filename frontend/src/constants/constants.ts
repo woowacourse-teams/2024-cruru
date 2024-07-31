@@ -4,3 +4,17 @@ export const NAV_BAR_MENU = {
 } as const;
 
 export const DASHBOARD_ID = 1; // TODO: 수정해야합니다.
+
+export const PROCESS = {
+  inputField: {
+    name: {
+      label: '프로세스 이름',
+      maxLength: 32,
+      placeholder: '32자 이내로 입력해주세요.',
+    },
+    description: {
+      label: '프로세스 설명',
+      placeholder: '프로세스에 대한 설명을 입력해주세요.',
+    },
+  },
+} as const;
