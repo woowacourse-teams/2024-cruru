@@ -97,7 +97,7 @@ class ApplyFormServiceTest extends ServiceTest {
                 .isInstanceOf(InternalServerException.class);
     }
 
-    @DisplayName("지원서 폼 제출 시, 개인정보활용 거부할 경우 예외가 발생한다.")
+    @DisplayName("지원서 폼 제출 시, 개인정보 활용 거부할 경우 예외가 발생한다.")
     @Test
     void submit_rejectPersonalDataCollection() {
         // given

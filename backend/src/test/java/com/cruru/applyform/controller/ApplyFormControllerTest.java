@@ -64,7 +64,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(201);
     }
 
-    @DisplayName("지원서 폼 제출 시, 개인정보활용을 거부할 경우 400을 반환한다.")
+    @DisplayName("지원서 폼 제출 시, 개인정보 활용을 거부할 경우 400을 반환한다.")
     @Test
     void submit_rejectPersonalDataCollection() {
         // given
