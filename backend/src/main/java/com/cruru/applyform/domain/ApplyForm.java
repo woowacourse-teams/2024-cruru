@@ -32,7 +32,7 @@ public class ApplyForm extends BaseEntity {
 
     private String url;
 
-    @Column(name = "open_date")
+    @Column(name = "start_date")
     private LocalDateTime startDate;
 
     @Column(name = "due_date")
