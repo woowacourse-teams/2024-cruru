@@ -69,7 +69,8 @@ class ApplyFormServiceTest extends ServiceTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 answerCreateRequests,
-                true);
+                true
+        );
 
         // when
         applyFormService.submit(request, applyForm.getId());
@@ -90,7 +91,8 @@ class ApplyFormServiceTest extends ServiceTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                true);
+                true
+        );
 
         // when&then
         assertThatThrownBy(() -> applyFormService.submit(request, applyForm.getId()))
@@ -109,7 +111,8 @@ class ApplyFormServiceTest extends ServiceTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                false);
+                false
+        );
 
         // when&then
         assertThatThrownBy(() -> applyFormService.submit(request, applyForm.getId()))
@@ -128,7 +131,8 @@ class ApplyFormServiceTest extends ServiceTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                true);
+                true
+        );
 
         // when&then
         assertThatThrownBy(() -> applyFormService.submit(request, -1))

@@ -40,7 +40,8 @@ public class ApplyFormService {
         ApplyForm applyForm = applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
 
-        Process firstProcess = processRepository.findAllByDashboardId(applyForm.getDashboard().getId()).stream()
+        Process firstProcess = processRepository.findAllByDashboardId(applyForm.getDashboard().getId())
+                .stream()
                 .min(Comparator.comparingInt(Process::getSequence))
                 .orElseThrow(InternalServerException::new);
 

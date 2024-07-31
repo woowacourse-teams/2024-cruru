@@ -54,7 +54,8 @@ class ApplyFormControllerTest extends ControllerTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 answerCreateRequests,
-                true);
+                true
+        );
 
         // when&then
         RestAssured.given().log().all()
@@ -80,7 +81,8 @@ class ApplyFormControllerTest extends ControllerTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 answerCreateRequests,
-                false);
+                false
+        );
 
         // when&then
         RestAssured.given().log().all()
@@ -101,7 +103,8 @@ class ApplyFormControllerTest extends ControllerTest {
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                true);
+                true
+        );
 
         // when&then
         RestAssured.given().log().all()
