@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ApplyForm extends BaseEntity {
+public class ApplyForm  extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,13 +42,7 @@ public class ApplyForm extends BaseEntity {
     @JoinColumn(name = "dashboard_id")
     private Dashboard dashboard;
 
-    public ApplyForm(
-            String title,
-            String description,
-            String url,
-            LocalDateTime startDate,
-            LocalDateTime dueDate,
-            Dashboard dashboard) {
+    public ApplyForm(String title, String description, String url, LocalDateTime startDate, LocalDateTime dueDate, Dashboard dashboard) {
         this.title = title;
         this.description = description;
         this.url = url;
