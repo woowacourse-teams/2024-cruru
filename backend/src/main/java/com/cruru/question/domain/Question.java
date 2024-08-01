@@ -1,7 +1,6 @@
 package com.cruru.question.domain;
 
 import com.cruru.applyform.domain.ApplyForm;
-import com.cruru.dashboard.domain.Dashboard;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

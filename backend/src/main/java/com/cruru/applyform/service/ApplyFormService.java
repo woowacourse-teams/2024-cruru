@@ -5,9 +5,13 @@ import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
+import com.cruru.applyform.exception.PersonalDataProcessingException;
+import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -49,10 +53,6 @@ public class ApplyFormService {
         ApplyForm applyForm = applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
 
-        ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
-        Long savedId = savedApplyForm.getId();
-        String generatedUrl = APPLY_FORM_BASE_URL + savedId;
-        savedApplyForm.setUrl(generatedUrl);
         Process firstProcess = processRepository.findFirstByDashboardIdOrderBySequenceAsc(
                         applyForm.getDashboard().getId()
                 )
