@@ -42,6 +42,7 @@ class ChoiceServiceTest extends ServiceTest {
     @DisplayName("특정 객관식 Question에 속하는 다수의 선택지를 저장한다.")
     @Test
     void createAll() {
+        // given
         Question question = questionRepository.save(QuestionFixture.createDropdownQuestion(null));
         List<Choice> choices = ChoiceFixture.createChoices(question);
         List<ChoiceCreateRequest> choiceRequests = choices.stream()
@@ -69,9 +70,12 @@ class ChoiceServiceTest extends ServiceTest {
 
         // when & then
         assertAll(() -> {
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion.getId())).isInstanceOf(
+            Long shortAnswerQuestionId = shortAnswerQuestion.getId();
+            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestionId)).isInstanceOf(
                     ChoiceIllegalSaveException.class);
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion.getId())).isInstanceOf(
+
+            Long longAnswerQuestionId = longAnswerQuestion.getId();
+            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestionId)).isInstanceOf(
                     ChoiceIllegalSaveException.class);
         });
     }
