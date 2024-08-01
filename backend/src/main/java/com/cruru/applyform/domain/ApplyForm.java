@@ -35,7 +35,7 @@ public class ApplyForm extends BaseEntity {
     private String url;
 
     @Column(name = "open_date")
-    private LocalDateTime startDate;
+    private LocalDateTime openDate;
 
     @Column(name = "due_date")
     private LocalDateTime dueDate;
@@ -48,24 +48,24 @@ public class ApplyForm extends BaseEntity {
             String title,
             String description,
             String url,
-            LocalDateTime startDate,
+            LocalDateTime openDate,
             LocalDateTime dueDate,
             Dashboard dashboard
     ) {
         this.title = title;
         this.description = description;
         this.url = url;
-        this.startDate = startDate;
+        this.openDate = openDate;
         this.dueDate = dueDate;
         this.dashboard = dashboard;
     }
 
     public ApplyForm(
-            String title, String description, LocalDateTime startDate, LocalDateTime dueDate,
+            String title, String description, LocalDateTime openDate, LocalDateTime dueDate,
             Dashboard dashboard) {
         this.title = title;
         this.description = description;
-        this.startDate = startDate;
+        this.openDate = openDate;
         this.dueDate = dueDate;
         this.dashboard = dashboard;
     }
@@ -93,7 +93,7 @@ public class ApplyForm extends BaseEntity {
                 ", title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", dashboard=" + dashboard +
-                ", startDate=" + startDate +
+                ", startDate=" + openDate +
                 ", dueDate=" + dueDate +
                 ", description='" + description + '\'' +
                 '}';
