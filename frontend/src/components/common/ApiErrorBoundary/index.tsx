@@ -28,10 +28,14 @@ export default function ApiErrorBoundary({ FallbackComponent, children }: ApiErr
         <ErrorBoundary
           onReset={reset}
           onError={(error, info) => {
+            const apiError = error as ApiError;
+
             Sentry.withScope((scope) => {
               scope.setLevel('error');
+              scope.setTag('statusCode', apiError.statusCode);
+              scope.setTag('method', apiError.method);
               scope.setExtra('componentStack', info.componentStack);
-              scope.captureException(error);
+              scope.captureException(apiError);
             });
           }}
           fallbackRender={fallbackRender}

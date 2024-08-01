@@ -12,7 +12,11 @@ const processApis = {
     });
 
     if (!response.ok) {
-      throw new ApiError({ statusCode: response.status, message: '프로세스 목록을 불러오지 못했습니다.' });
+      throw new ApiError({
+        method: 'GET',
+        statusCode: response.status,
+        message: '프로세스 목록을 불러오지 못했습니다.',
+      });
     }
 
     const data = await response.json();
