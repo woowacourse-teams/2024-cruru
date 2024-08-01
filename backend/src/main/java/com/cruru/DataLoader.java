@@ -69,7 +69,7 @@ public class DataLoader implements ApplicationRunner {
         LocalDateTime startDate = LocalDateTime.MIN;
         LocalDateTime dueDate = LocalDateTime.MAX;
         dashboardRepository.save(dashboard);
-        ApplyForm applyForm = new ApplyForm(1L, "크루루 모집 공고", "# 모집 섦명이다.", "www.cruru.kr/form/1", startDate, dueDate,
+        ApplyForm applyForm = new ApplyForm(1L, "크루루 모집 공고", "# 모집 설명이다.", "www.cruru.kr/form/1", startDate, dueDate,
                 dashboard);
         applyFormRepository.save(applyForm);
 
@@ -91,7 +91,7 @@ public class DataLoader implements ApplicationRunner {
 
         Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", 0, applyForm));
         Question essayQuestion = questionRepository.save(
-                new Question(2L, SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
+                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
 
         Choice maleChoice = choiceRepository.save(new Choice(1L, "남", 1, choiceQuestion));
         Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", 2, choiceQuestion));

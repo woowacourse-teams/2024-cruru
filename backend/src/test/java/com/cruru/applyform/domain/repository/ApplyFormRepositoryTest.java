@@ -1,5 +1,7 @@
 package com.cruru.applyform.domain.repository;
 
+import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
+import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -65,13 +67,14 @@ class ApplyFormRepositoryTest {
     @Test
     void save_NotSavedId() {
         //given
-        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm(null);
-        ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
+        ApplyForm applyForm1 = createBackendApplyForm(null);
+        ApplyForm applyForm2 = createFrontendApplyForm(null);
 
         //when
-        ApplyForm actualSavedApplyForm = applyFormRepository.findById(savedApplyForm.getId()).get();
+        ApplyForm savedApplyForm1 = applyFormRepository.save(applyForm1);
+        ApplyForm savedApplyForm2 = applyFormRepository.save(applyForm2);
 
         //then
-        assertThat(actualSavedApplyForm).isEqualTo(savedApplyForm);
+        assertThat(savedApplyForm1.getId() + 1).isEqualTo(savedApplyForm2.getId());
     }
 }

@@ -45,8 +45,13 @@ public class ApplyForm extends BaseEntity {
     private Dashboard dashboard;
 
     public ApplyForm(
-            String title, String description, String url, LocalDateTime startDate, LocalDateTime dueDate,
-            Dashboard dashboard) {
+            String title,
+            String description,
+            String url,
+            LocalDateTime startDate,
+            LocalDateTime dueDate,
+            Dashboard dashboard
+    ) {
         this.title = title;
         this.description = description;
         this.url = url;

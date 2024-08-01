@@ -1,11 +1,8 @@
 package com.cruru.question.domain.repository;
 
-import static com.cruru.question.domain.QuestionType.DROPDOWN;
-import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.question.domain.Question;
-import com.cruru.question.domain.QuestionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
