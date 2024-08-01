@@ -26,8 +26,7 @@ public class DashboardFacade {
     public long create(long clubId, DashboardCreateRequest request) {
         Dashboard createdDashboard = dashboardService.create(clubId);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
-        List<QuestionCreateRequest> questionRequests = request.questions();
-        questionRequests.forEach(questionCreateRequest -> questionService.create(questionCreateRequest, applyForm));
+        questionService.createAll(request.questions(), applyForm);
         return createdDashboard.getId();
     }
 
