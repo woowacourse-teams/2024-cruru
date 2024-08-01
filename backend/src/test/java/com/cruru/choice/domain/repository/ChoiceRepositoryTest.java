@@ -25,11 +25,11 @@ class ChoiceRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Choice choice = new Choice("남자", 1, null);
+        Choice choice = new Choice("남자", 0, null);
         Choice saved = choiceRepository.save(choice);
 
         //when
-        Choice updateChoice = new Choice(saved.getId(), "여자", 2, null);
+        Choice updateChoice = new Choice(saved.getId(), "여자", 1, null);
         choiceRepository.save(updateChoice);
 
         //then
@@ -41,8 +41,8 @@ class ChoiceRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Choice choice1 = new Choice("남자", 1, null);
-        Choice choice2 = new Choice("여자", 2, null);
+        Choice choice1 = new Choice("남자", 0, null);
+        Choice choice2 = new Choice("여자", 1, null);
 
         //when
         Choice savedChoice1 = choiceRepository.save(choice1);
