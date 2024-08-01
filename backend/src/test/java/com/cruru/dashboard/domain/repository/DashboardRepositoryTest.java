@@ -23,22 +23,6 @@ class DashboardRepositoryTest {
         dashboardRepository.deleteAllInBatch();
     }
 
-    @DisplayName("이미 DB에 저장되어 있는 ID를 가진 대시보드를 저장하면, 해당 ID의 대시보드는 후에 작성된 정보로 업데이트한다.")
-    @Test
-    void sameIdUpdate() {
-        //given
-        Dashboard dashboard = createBackendDashboard();
-        Dashboard saved = dashboardRepository.save(dashboard);
-
-        //when
-        Dashboard updateDashboard = new Dashboard(saved.getId(), "백엔드 채용", null);
-        dashboardRepository.save(updateDashboard);
-
-        //then
-        Dashboard findDashboard = dashboardRepository.findById(saved.getId()).get();
-        assertThat(findDashboard.getName()).isEqualTo("백엔드 채용");
-    }
-
     @DisplayName("ID가 없는 대시보드를 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {

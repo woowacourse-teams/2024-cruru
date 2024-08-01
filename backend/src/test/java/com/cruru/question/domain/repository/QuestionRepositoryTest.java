@@ -1,5 +1,7 @@
 package com.cruru.question.domain.repository;
 
+import static com.cruru.question.domain.QuestionType.DROPDOWN;
+import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.question.domain.Question;
@@ -25,11 +27,11 @@ class QuestionRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Question question = new Question("성별", 0, null);
+        Question question = new Question(DROPDOWN, "성별", 0, null);
         Question saved = questionRepository.save(question);
 
         //when
-        Question updateQuestion = new Question(saved.getId(), "전공", 1, null);
+        Question updateQuestion = new Question(saved.getId(), SHORT_ANSWER, "전공", 1, null);
         questionRepository.save(updateQuestion);
 
         //then
@@ -42,8 +44,8 @@ class QuestionRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Question question1 = new Question("성별", 0, null);
-        Question question2 = new Question("전공", 1, null);
+        Question question1 = new Question(DROPDOWN, "성별", 0, null);
+        Question question2 = new Question(SHORT_ANSWER, "전공", 1, null);
 
         //when
         Question savedQuestion1 = questionRepository.save(question1);

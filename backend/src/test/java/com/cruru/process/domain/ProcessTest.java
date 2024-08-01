@@ -32,7 +32,7 @@ class ProcessTest {
     @ParameterizedTest
     void processNameBlank(String name) {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard(null);
 
         // when&then
         assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
@@ -43,7 +43,7 @@ class ProcessTest {
     @Test
     void invalidProcessNameLength() {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard(null);
 
         // when&then
         assertThatThrownBy(() -> new Process(0, "ThisStringLengthIs33!!!!!!!!!!!!!", "desc", dashboard))
@@ -55,7 +55,7 @@ class ProcessTest {
     @ParameterizedTest
     void invalidProcessNameCharacter(String name) {
         // given
-        Dashboard dashboard = new Dashboard("name", null);
+        Dashboard dashboard = new Dashboard(null);
 
         // when&then
         assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))

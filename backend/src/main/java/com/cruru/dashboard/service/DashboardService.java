@@ -29,7 +29,7 @@ public class DashboardService {
     public long create(long clubId, DashboardCreateRequest request) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(ClubNotFoundException::new);
-        Dashboard savedDashboard = dashboardRepository.save(new Dashboard(request.name(), club));
+        Dashboard savedDashboard = dashboardRepository.save(new Dashboard(club));
 
         Process firstProcess = new Process(
                 DEFAULT_FIRST_PROCESS.getSequence(),

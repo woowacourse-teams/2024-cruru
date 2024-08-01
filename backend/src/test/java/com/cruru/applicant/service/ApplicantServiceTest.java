@@ -1,5 +1,6 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
 import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
@@ -20,6 +21,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.ApplicantRejectException;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.dto.ProcessSimpleResponse;
@@ -48,6 +50,9 @@ class ApplicantServiceTest extends ServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -130,7 +135,7 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = createApplicantDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = new Question("좋아하는 동물은?", 0, null);
+        Question question = new Question(SHORT_ANSWER, "좋아하는 동물은?", 0, null);
         questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);

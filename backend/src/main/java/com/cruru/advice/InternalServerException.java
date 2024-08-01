@@ -2,7 +2,9 @@ package com.cruru.advice;
 
 public class InternalServerException extends RuntimeException {
 
-    public InternalServerException(String message) {
-        super(message);
+    private static final String TEXT = "서버 내부에 오류가 발생했습니다.";
+
+    public InternalServerException() {
+        super(TEXT);
     }
 }

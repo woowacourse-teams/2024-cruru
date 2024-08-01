@@ -25,14 +25,11 @@ public class Dashboard {
     @Column(name = "dashboard_id")
     private Long id;
 
-    private String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
-    public Dashboard(String name, Club club) {
-        this.name = name;
+    public Dashboard(Club club) {
         this.club = club;
     }
 
@@ -57,7 +54,6 @@ public class Dashboard {
     public String toString() {
         return "Dashboard{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", club=" + club +
                 '}';
     }
