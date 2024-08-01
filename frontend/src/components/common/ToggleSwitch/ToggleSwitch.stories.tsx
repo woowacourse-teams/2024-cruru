@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ToggleSwitch from './index';
 
 const meta: Meta<typeof ToggleSwitch> = {
-  title: 'Components/ToggleSwitch',
+  title: 'Common/ToggleSwitch',
   component: ToggleSwitch,
   parameters: {
     layout: 'centered',
