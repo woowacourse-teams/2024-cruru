@@ -17,7 +17,6 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.question.exception.QuestionNotFoundException;
-import java.util.Comparator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +39,9 @@ public class ApplyFormService {
         ApplyForm applyForm = applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
 
-        Process firstProcess = processRepository.findAllByDashboardId(applyForm.getDashboard().getId())
-                .stream()
-                .min(Comparator.comparingInt(Process::getSequence))
+        Process firstProcess = processRepository.findFirstByDashboardIdOrderBySequenceAsc(
+                        applyForm.getDashboard().getId()
+                )
                 .orElseThrow(InternalServerException::new);
 
         Applicant applicant = applicantRepository.save(
