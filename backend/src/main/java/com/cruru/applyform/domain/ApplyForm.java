@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,10 +32,11 @@ public class ApplyForm extends BaseEntity {
 
     private String description;
 
+    @Setter
     private String url;
 
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
+    @Column(name = "open_date")
+    private LocalDateTime openDate;
 
     @Column(name = "due_date")
     private LocalDateTime dueDate;
@@ -47,14 +49,28 @@ public class ApplyForm extends BaseEntity {
             String title,
             String description,
             String url,
-            LocalDateTime startDate,
+            LocalDateTime openDate,
             LocalDateTime dueDate,
             Dashboard dashboard
     ) {
         this.title = title;
         this.description = description;
         this.url = url;
-        this.startDate = startDate;
+        this.openDate = openDate;
+        this.dueDate = dueDate;
+        this.dashboard = dashboard;
+    }
+
+    public ApplyForm(
+            String title,
+            String description,
+            LocalDateTime openDate,
+            LocalDateTime dueDate,
+            Dashboard dashboard
+    ) {
+        this.title = title;
+        this.description = description;
+        this.openDate = openDate;
         this.dueDate = dueDate;
         this.dashboard = dashboard;
     }
@@ -78,13 +94,13 @@ public class ApplyForm extends BaseEntity {
     @Override
     public String toString() {
         return "ApplyForm{" +
-                "id=" + id +
+                "dashboard=" + dashboard +
+                ", id=" + id +
                 ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", dashboard=" + dashboard +
-                ", startDate=" + startDate +
-                ", dueDate=" + dueDate +
                 ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", openDate=" + openDate +
+                ", dueDate=" + dueDate +
                 '}';
     }
 }

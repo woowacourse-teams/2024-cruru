@@ -93,8 +93,8 @@ public class DataLoader implements ApplicationRunner {
         Question essayQuestion = questionRepository.save(
                 new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
 
-        Choice maleChoice = choiceRepository.save(new Choice(1L, "남", choiceQuestion));
-        Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", choiceQuestion));
+        Choice maleChoice = choiceRepository.save(new Choice(1L, "남", 1, choiceQuestion));
+        Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", 2, choiceQuestion));
 
         List<Answer> answers = List.of(
                 new Answer(1L, maleChoice.getContent(), choiceQuestion, lurgi),

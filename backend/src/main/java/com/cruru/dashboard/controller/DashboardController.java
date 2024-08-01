@@ -1,7 +1,7 @@
 package com.cruru.dashboard.controller;
 
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
-import com.cruru.dashboard.service.DashboardService;
+import com.cruru.dashboard.service.facade.DashboardFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DashboardController {
 
-    private final DashboardService dashboardService;
+    private final DashboardFacade dashboardFacade;
 
     @PostMapping
     public ResponseEntity<Void> create(
             @RequestParam(name = "club_id") Long clubId,
             @RequestBody @Valid DashboardCreateRequest request) {
-        long dashboardId = dashboardService.create(clubId, request);
+
+        long dashboardId = dashboardFacade.create(clubId, request);
         return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardId)).build();
     }
 }
