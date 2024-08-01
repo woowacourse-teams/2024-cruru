@@ -4,12 +4,10 @@ import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
-import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
-import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -25,16 +23,10 @@ class DashboardServiceTest extends ServiceTest {
     DashboardService dashboardService;
 
     @Autowired
-    DashboardRepository dashboardRepository;
-
-    @Autowired
     ProcessRepository processRepository;
 
     @Autowired
     ClubRepository clubRepository;
-
-    @Autowired
-    ApplicantRepository applicantRepository;
 
     @DisplayName("새로운 대시보드를 생성시, 기본 프로세스 2개가 생성된다.")
     @Test
@@ -42,13 +34,12 @@ class DashboardServiceTest extends ServiceTest {
         // given
         Club club = createClub();
         clubRepository.save(club);
-        DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
 
         // when
-        long dashboardId = dashboardService.create(club.getId(), request);
+        Dashboard createdDashboard = dashboardService.create(club.getId());
 
         // then
-        List<Process> processes = processRepository.findAllByDashboardId(dashboardId);
+        List<Process> processes = processRepository.findAllByDashboardId(createdDashboard.getId());
         assertThat(processes).hasSize(2);
     }
 
@@ -56,11 +47,10 @@ class DashboardServiceTest extends ServiceTest {
     @Test
     void create_invalidClub() {
         // given
-        DashboardCreateRequest request = new DashboardCreateRequest("크루루대시보드");
         long invalidClubId = -1L;
 
         // when&then
-        assertThatThrownBy(() -> dashboardService.create(invalidClubId, request))
+        assertThatThrownBy(() -> dashboardService.create(invalidClubId))
                 .isInstanceOf(ClubNotFoundException.class);
     }
 }

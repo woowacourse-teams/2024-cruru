@@ -28,12 +28,15 @@ public class Choice {
 
     private String content;
 
+    private Integer sequence;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
 
-    public Choice(String content, Question question) {
+    public Choice(String content, Integer sequence, Question question) {
         this.content = content;
+        this.sequence = sequence;
         this.question = question;
     }
 

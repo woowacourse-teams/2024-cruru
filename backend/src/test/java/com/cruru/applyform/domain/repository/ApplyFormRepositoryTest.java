@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.util.fixture.ApplyFormFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,9 +28,9 @@ class ApplyFormRepositoryTest {
 
     @DisplayName("이미 DB에 저장되어있는 ID를 가진 지원서를 저장하면, 해당 ID의 지원서는 가장 최근 저장된 정보로 업데이트된다.")
     @Test
-    void sameIdUpdate() {
+    void save_ApplyFormIdUpdate() {
         // given
-        ApplyForm applyForm = createBackendApplyForm();
+        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm(null);
         ApplyForm initialApplyForm = applyFormRepository.save(applyForm);
 
         // when
@@ -57,17 +58,17 @@ class ApplyFormRepositoryTest {
             assertThat(actualApplyForm.getTitle()).isEqualTo(title);
             assertThat(actualApplyForm.getDescription()).isEqualTo(description);
             assertThat(actualApplyForm.getUrl()).isEqualTo(url);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
+            assertThat(actualApplyForm.getOpenDate()).isEqualTo(startDate);
             assertThat(actualApplyForm.getDueDate()).isEqualTo(dueDate);
         });
     }
 
     @DisplayName("ID가 없는 지원서 양식을 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
-    void saveNoId() {
+    void save_NotSavedId() {
         //given
-        ApplyForm applyForm1 = createBackendApplyForm();
-        ApplyForm applyForm2 = createFrontendApplyForm();
+        ApplyForm applyForm1 = createBackendApplyForm(null);
+        ApplyForm applyForm2 = createFrontendApplyForm(null);
 
         //when
         ApplyForm savedApplyForm1 = applyFormRepository.save(applyForm1);
