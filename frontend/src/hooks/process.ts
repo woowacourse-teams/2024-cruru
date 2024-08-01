@@ -9,7 +9,6 @@ export const processQueries = {
 
 export const processMutaions = {
   useCreateProcess: ({ handleSuccess }: { handleSuccess: () => void }) => {
-    // TODO: useInvalidateQueries를 사용하는 것으로 리팩토링
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
       queryClient.invalidateQueries({ queryKey: ['dashboard', DASHBOARD_ID] });
