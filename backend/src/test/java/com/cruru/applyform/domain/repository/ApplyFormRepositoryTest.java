@@ -58,7 +58,7 @@ class ApplyFormRepositoryTest {
             assertThat(actualApplyForm.getTitle()).isEqualTo(title);
             assertThat(actualApplyForm.getDescription()).isEqualTo(description);
             assertThat(actualApplyForm.getUrl()).isEqualTo(url);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
+            assertThat(actualApplyForm.getOpenDate()).isEqualTo(startDate);
             assertThat(actualApplyForm.getDueDate()).isEqualTo(dueDate);
         });
     }
