@@ -9,5 +9,4 @@ public class ChoiceEmptyBadRequestException extends BadRequestException {
     public ChoiceEmptyBadRequestException() {
         super(MESSAGE);
     }
-
 }
