@@ -1,9 +1,14 @@
 package com.cruru;
 
+import static com.cruru.question.domain.QuestionType.DROPDOWN;
+import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
+
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.club.domain.Club;
@@ -18,6 +23,7 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +48,7 @@ public class DataLoader implements ApplicationRunner {
     private final ChoiceRepository choiceRepository;
     private final AnswerRepository answerRepository;
     private final EvaluationRepository evaluationRepository;
+    private final ApplyFormRepository applyFormRepository;
 
     @Value("${dataloader.enable}")
     private boolean enableDataLoader;
@@ -58,8 +65,13 @@ public class DataLoader implements ApplicationRunner {
         memberRepository.save(member);
         Club club = new Club(1L, "크루루", member);
         clubRepository.save(club);
-        Dashboard dashboard = new Dashboard(1L, "크루루 모집 공고", club);
+        Dashboard dashboard = new Dashboard(1L, club);
+        LocalDateTime startDate = LocalDateTime.MIN;
+        LocalDateTime dueDate = LocalDateTime.MAX;
         dashboardRepository.save(dashboard);
+        ApplyForm applyForm = new ApplyForm(1L, "크루루 모집 공고", "# 모집 설명이다.", "www.cruru.kr/form/1", startDate, dueDate,
+                dashboard);
+        applyFormRepository.save(applyForm);
 
         Process firstProcess = new Process(1L, 0, "서류 전형", "지원 서류를 확인한다.", dashboard);
         Process lastProcess = new Process(2L, 1, "최종 합격", "최종 합격자", dashboard);
@@ -77,8 +89,9 @@ public class DataLoader implements ApplicationRunner {
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
 
-        Question choiceQuestion = questionRepository.save(new Question(1L, "성별", 0, dashboard));
-        Question essayQuestion = questionRepository.save(new Question(2L, "좋아하는 숫자가 무엇인가요?", 1, dashboard));
+        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", 0, applyForm));
+        Question essayQuestion = questionRepository.save(
+                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
 
         Choice maleChoice = choiceRepository.save(new Choice(1L, "남", choiceQuestion));
         Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", choiceQuestion));

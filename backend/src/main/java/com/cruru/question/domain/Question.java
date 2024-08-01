@@ -1,8 +1,10 @@
 package com.cruru.question.domain;
 
-import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.applyform.domain.ApplyForm;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,18 +27,22 @@ public class Question {
     @Column(name = "question_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private QuestionType questionType;
+
     private String content;
 
     private Integer sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dashboard_id")
-    private Dashboard dashboard;
+    @JoinColumn(name = "apply_form_id")
+    private ApplyForm applyForm;
 
-    public Question(String content, int sequence, Dashboard dashboard) {
+    public Question(QuestionType type, String content, int sequence, ApplyForm applyForm) {
+        this.questionType = type;
         this.content = content;
         this.sequence = sequence;
-        this.dashboard = dashboard;
+        this.applyForm = applyForm;
     }
 
     @Override
@@ -60,9 +66,10 @@ public class Question {
     public String toString() {
         return "Question{" +
                 "id=" + id +
+                ", questionType=" + questionType +
                 ", content='" + content + '\'' +
                 ", sequence=" + sequence +
-                ", dashboard=" + dashboard +
+                ", applyForm=" + applyForm +
                 '}';
     }
 }
