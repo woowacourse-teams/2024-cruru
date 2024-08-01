@@ -1,8 +1,10 @@
+import React, { FormEvent, useState } from 'react';
+
 import Button from '@components/common/Button';
 import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
+
 import { Process } from '@customTypes/process';
-import React, { FormEvent, useState } from 'react';
 import { processMutaions } from '@hooks/process';
 import C from '../style';
 
@@ -34,7 +36,7 @@ export default function ProcessModifyForm({ process, isDeletable = false }: Proc
   };
 
   const deleteProcess = () => {
-    if (window.confirm('정말로 삭제하시겠습니까?\n삭제하면 지원자들의 정보도 함께 삭제되며 복구할 수 없습니다.')) {
+    if (window.confirm('정말로 삭제하시겠습니까?\n')) {
       deleteMutate(process.processId);
     }
   };
