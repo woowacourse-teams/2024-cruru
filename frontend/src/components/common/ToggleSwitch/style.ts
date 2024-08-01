@@ -7,8 +7,10 @@ export interface StyleProps {
 }
 
 const Switch = styled.div<StyleProps>`
-  width: 5rem;
   --parent-width: 5rem;
+  --parent-padding: 0.3rem;
+
+  width: var(--parent-width);
   aspect-ratio: 5/3;
 
   background-color: ${({ isChecked, theme }) =>
@@ -20,12 +22,11 @@ const Switch = styled.div<StyleProps>`
   display: flex;
   align-items: center;
 
-  padding: 0.3rem;
-  --parent-padding: 0.3rem;
+  padding: var(--parent-padding);
 
   cursor: pointer;
   transition: background-color 0.3s;
-
+  outline-offset: -0.1rem;
   ${({ isDisabled, theme }) =>
     isDisabled &&
     css({
