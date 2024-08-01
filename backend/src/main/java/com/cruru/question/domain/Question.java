@@ -45,6 +45,10 @@ public class Question {
         this.applyForm = applyForm;
     }
 
+    public boolean hasChoice() {
+        return questionType.hasChoice();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -26,7 +26,7 @@ public class ChoiceService {
         Question targetQuestion = questionRepository.findById(questionId)
                 .orElseThrow(QuestionNotFoundException::new);
 
-        if (!targetQuestion.getQuestionType().hasChoice()) {
+        if (!targetQuestion.hasChoice()) {
             throw new ChoiceIllegalSaveException();
         }
         if (requests.isEmpty()) {

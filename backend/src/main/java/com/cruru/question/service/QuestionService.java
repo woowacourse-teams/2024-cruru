@@ -29,7 +29,7 @@ public class QuestionService {
         QuestionType questionType = QuestionType.fromString(request.type());
         Question savedQuestion = questionRepository.save(toQuestion(questionType, request, applyForm));
 
-        if (questionType.hasChoice()) {
+        if (savedQuestion.hasChoice()) {
             choiceService.createAll(request.choices(), savedQuestion.getId());
         }
 
