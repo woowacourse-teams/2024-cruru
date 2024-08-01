@@ -1,11 +1,10 @@
 import { http, HttpResponse } from 'msw';
 
 import { PROCESSES } from '@api/endPoint';
-// import processes from '../processMockData.json';
+import processes from '../processMockData.json';
 
 const processHandlers = [
-  // http.get(PROCESSES, () => HttpResponse.json(processes)),
-  http.get(PROCESSES, () => new HttpResponse(null, { status: 404, statusText: 'Not Found' })),
+  http.get(PROCESSES, () => HttpResponse.json(processes)),
 
   http.post(`${PROCESSES}`, async ({ request }) => {
     const url = new URL(request.url);

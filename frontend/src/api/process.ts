@@ -12,7 +12,6 @@ const processApis = {
     });
 
     if (!response.ok) {
-      // return response;
       throw new ApiError({ statusCode: response.status, message: '프로세스 목록을 불러오지 못했습니다.' });
     }
 
