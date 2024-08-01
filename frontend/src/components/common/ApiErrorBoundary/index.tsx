@@ -1,6 +1,7 @@
 import ApiError from '@api/ApiError';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary, ErrorBoundaryPropsWithComponent, FallbackProps } from 'react-error-boundary';
+import * as Sentry from '@sentry/react';
 
 interface ApiErrorBoundaryProps extends ErrorBoundaryPropsWithComponent {
   FallbackComponent: React.ComponentType<FallbackProps>;
@@ -26,8 +27,12 @@ export default function ApiErrorBoundary({ FallbackComponent, children }: ApiErr
       {({ reset }) => (
         <ErrorBoundary
           onReset={reset}
-          onError={() => {
-            console.log('error');
+          onError={(error, info) => {
+            Sentry.withScope((scope) => {
+              scope.setLevel('error');
+              scope.setExtra('componentStack', info.componentStack);
+              scope.captureException(error);
+            });
           }}
           fallbackRender={fallbackRender}
         >
