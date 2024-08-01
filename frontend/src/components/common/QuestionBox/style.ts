@@ -36,6 +36,10 @@ const FileName = styled.span`
 `;
 
 const DownloadIcon = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   font-size: 1.6rem;
   cursor: pointer;
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
