@@ -9,8 +9,8 @@ public enum QuestionType {
     MULTIPLE_CHOICE("MULTIPLE_CHOICE", true),
     ;
 
-    private String type;
-    private boolean hasChoice;
+    private final String type;
+    private final boolean hasChoice;
 
     QuestionType(String type, boolean hasChoice) {
         this.type = type;
