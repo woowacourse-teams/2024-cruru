@@ -3,8 +3,8 @@ package com.cruru.choice.service;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
-import com.cruru.choice.exception.ChoiceBadRequestException;
 import com.cruru.choice.exception.ChoiceEmptyBadRequestException;
+import com.cruru.choice.exception.ChoiceIllegalSaveException;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.question.exception.QuestionNotFoundException;
@@ -22,12 +22,12 @@ public class ChoiceService {
     private final QuestionRepository questionRepository;
 
     @Transactional
-    public List<Choice> createAll(List<ChoiceCreateRequest> requests, Question question) {
-        Question targetQuestion = questionRepository.findById(question.getId())
+    public List<Choice> createAll(List<ChoiceCreateRequest> requests, long questionId) {
+        Question targetQuestion = questionRepository.findById(questionId)
                 .orElseThrow(QuestionNotFoundException::new);
 
         if (!targetQuestion.getQuestionType().hasChoice()) {
-            throw new ChoiceBadRequestException();
+            throw new ChoiceIllegalSaveException();
         }
         if (requests.isEmpty()) {
             throw new ChoiceEmptyBadRequestException();

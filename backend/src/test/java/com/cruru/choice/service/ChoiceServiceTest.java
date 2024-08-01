@@ -1,15 +1,15 @@
 package com.cruru.choice.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.choice.domain.Choice;
-import com.cruru.choice.exception.ChoiceBadRequestException;
 import com.cruru.choice.exception.ChoiceEmptyBadRequestException;
+import com.cruru.choice.exception.ChoiceIllegalSaveException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.domain.Question;
@@ -49,18 +49,16 @@ class ChoiceServiceTest extends ServiceTest {
                 .toList();
 
         // when
-        List<Choice> actualChoices = choiceService.createAll(choiceRequests, question);
+        List<Choice> actualChoices = choiceService.createAll(choiceRequests, question.getId());
 
         // then
-        assertAll(() -> {
-            assertThat(actualChoices).hasSize(choices.size());
-        });
-    }
 
+        assertThat(actualChoices).hasSize(choices.size());
+    }
 
     @DisplayName("주관식 Question의 선택지를 저장을 시도하면 예외를 던진다.")
     @Test
-    void createAll_ShouldThrowsException_WhenSavingChoicesOfAnswerQuestion() {
+    void createAllThrowsWithIllegalSaveException() {
         // given
         Question shortAnswerQuestion = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
         Question longAnswerQuestion = questionRepository.save(QuestionFixture.createLongAnswerQuestion(null));
@@ -71,17 +69,17 @@ class ChoiceServiceTest extends ServiceTest {
 
         // when & then
         assertAll(() -> {
-            assertThrows(ChoiceBadRequestException.class,
-                    () -> choiceService.createAll(choiceRequests, shortAnswerQuestion));
-            assertThrows(ChoiceBadRequestException.class,
-                    () -> choiceService.createAll(choiceRequests, longAnswerQuestion));
+            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion.getId())).isInstanceOf(
+                    ChoiceIllegalSaveException.class);
+            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion.getId())).isInstanceOf(
+                    ChoiceIllegalSaveException.class);
         });
     }
 
 
     @DisplayName("객관식 Question에 선택지가 존재하지 않으면 예외를 던진다.")
     @Test
-    void createAll_ShouldThrowsException_WhenSavingEmptyChoices() {
+    void createAllThrowsWithChoiceEmptyBadRequestException() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
@@ -89,7 +87,8 @@ class ChoiceServiceTest extends ServiceTest {
         List<ChoiceCreateRequest> choiceRequests = List.of();
 
         // when & then
-        assertThrows(
-                ChoiceEmptyBadRequestException.class, () -> choiceService.createAll(choiceRequests, dropdownQuestion));
+        Long questionId = dropdownQuestion.getId();
+        assertThatThrownBy(() -> choiceService.createAll(choiceRequests, questionId)).isInstanceOf(
+                ChoiceEmptyBadRequestException.class);
     }
 }
