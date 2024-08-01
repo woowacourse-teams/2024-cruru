@@ -1,6 +1,7 @@
 package com.cruru.question.controller.dto;
 
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public record QuestionCreateRequest(
 
         List<ChoiceCreateRequest> choices,
 
+        @JsonProperty("order_index")
         int orderIndex
 ) {
 
