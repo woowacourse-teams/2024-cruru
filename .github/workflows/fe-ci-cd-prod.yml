@@ -6,22 +6,22 @@ on:
       - fe/main
 
 env:
-  lurgi: 'U07BJB1M53K'
-  U07BJB1M53K: 'FE팀 러기'
-  llqqssttyy: 'U07AZ2992CW'
-  U07AZ2992CW: 'FE팀 렛서'
-  seongjinme: 'U07B9HQDF4M'
-  U07B9HQDF4M: 'FE팀 아르'
-  Dobby-Kim: 'U07BJABU6G1'
-  U07BJABU6G1: 'BE팀 도비'
-  Chocochip101: 'U07BUEJDS8G'
-  U07BUEJDS8G: 'BE팀 초코칩'
-  xogns1514: 'U07AZ26UC2J'
-  U07AZ26UC2J: 'BE팀 러쉬'
-  cutehumanS2: 'U07B88ZQDU4'
-  U07B88ZQDU4: 'BE팀 냥인'
-  HyungHoKim00: 'U07B5HBKZM1'
-  U07B5HBKZM1: 'BE팀 명오'
+  lurgi: "U07BJB1M53K"
+  U07BJB1M53K: "FE팀 러기"
+  llqqssttyy: "U07AZ2992CW"
+  U07AZ2992CW: "FE팀 렛서"
+  seongjinme: "U07B9HQDF4M"
+  U07B9HQDF4M: "FE팀 아르"
+  Dobby-Kim: "U07BJABU6G1"
+  U07BJABU6G1: "BE팀 도비"
+  Chocochip101: "U07BUEJDS8G"
+  U07BUEJDS8G: "BE팀 초코칩"
+  xogns1514: "U07AZ26UC2J"
+  U07AZ26UC2J: "BE팀 러쉬"
+  cutehumanS2: "U07B88ZQDU4"
+  U07B88ZQDU4: "BE팀 냥인"
+  HyungHoKim00: "U07B5HBKZM1"
+  U07B5HBKZM1: "BE팀 명오"
 
 jobs:
   test-build:
@@ -33,6 +33,11 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
+    env:
+      API_URL: ${{ secrets.API_URL }}
+      API_VERSION: ${{ secrets.API_VERSION }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
     steps:
       - name: 저장소 checkout
@@ -58,10 +63,6 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - name: 환경변수 설정
-        run: |
-          echo "REACT_APP_CRURU_API_URL=${{ secrets.API_URL }}" >> .env.production
-
       - name: 코드 문법 테스트
         run: npm run lint
 
@@ -83,27 +84,28 @@ jobs:
   deploy:
     needs: test-build
     runs-on: [self-hosted, linux, cruru-fe]
+    environment: prod
 
     steps:
       - name: 작업 디렉터리 생성 및 이동
         run: |
-          mkdir -p ~/actions-runner/deploy
-          cd ~/actions-runner/deploy
+          mkdir -p ~/actions-runner/deploy/prod
+          cd ~/actions-runner/deploy/prod
 
       - name: 기존 빌드 파일들 삭제
         run: |
-          cd ~/actions-runner/deploy
+          cd ~/actions-runner/deploy/prod
           rm -rf dist
 
       - name: 새 빌드 파일을 runner instance에 다운로드
         uses: actions/download-artifact@v4
         with:
           name: fe-prod-dist
-          path: ~/actions-runner/deploy/dist
+          path: ~/actions-runner/deploy/prod/dist
 
       - name: 다운로드 된 빌드 파일을 S3에 배포
         run: |
-          cd ~/actions-runner/deploy
+          cd ~/actions-runner/deploy/prod
           aws s3 sync dist ${{ secrets.FE_DEPLOY_S3_URI }} --delete
 
       - name: CloudFront 캐시 무효화
