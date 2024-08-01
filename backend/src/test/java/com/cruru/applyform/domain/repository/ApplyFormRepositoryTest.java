@@ -28,7 +28,7 @@ class ApplyFormRepositoryTest {
     @Test
     void save_ApplyFormIdUpdate() {
         // given
-        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm();
+        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm(null);
         ApplyForm initialApplyForm = applyFormRepository.save(applyForm);
 
         // when
@@ -65,7 +65,7 @@ class ApplyFormRepositoryTest {
     @Test
     void save_NotSavedId() {
         //given
-        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm();
+        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm(null);
         ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
 
         //when

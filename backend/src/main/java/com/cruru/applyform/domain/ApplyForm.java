@@ -14,6 +14,7 @@ import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -30,6 +31,7 @@ public class ApplyForm extends BaseEntity {
 
     private String description;
 
+    @Setter
     private String url;
 
     @Column(name = "open_date")
@@ -48,6 +50,16 @@ public class ApplyForm extends BaseEntity {
         this.title = title;
         this.description = description;
         this.url = url;
+        this.startDate = startDate;
+        this.dueDate = dueDate;
+        this.dashboard = dashboard;
+    }
+
+    public ApplyForm(
+            String title, String description, LocalDateTime startDate, LocalDateTime dueDate,
+            Dashboard dashboard) {
+        this.title = title;
+        this.description = description;
         this.startDate = startDate;
         this.dueDate = dueDate;
         this.dashboard = dashboard;
