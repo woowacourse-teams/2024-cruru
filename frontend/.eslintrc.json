@@ -19,6 +19,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-console": "warn",
+    "no-nested-ternary": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", "ts"] }],
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "warn",
@@ -54,7 +55,7 @@
     {
       "files": ["**/*.ts", "**/*.tsx"],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"],
+      "plugins": ["@typescript-eslint", "prettier"],
       "extends": ["plugin:@typescript-eslint/recommended"]
     }
   ]
