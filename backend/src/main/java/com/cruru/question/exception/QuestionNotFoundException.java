@@ -4,7 +4,7 @@ import com.cruru.advice.NotFoundException;
 
 public class QuestionNotFoundException extends NotFoundException {
 
-    private static final String TEXT = "존재하지 않는 질문입니다.";
+    private static final String TEXT = "질문";
 
     public QuestionNotFoundException() {
         super(TEXT);
