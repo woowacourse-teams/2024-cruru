@@ -50,7 +50,14 @@ const router = createBrowserRouter(
   },
 );
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      throwOnError: true,
+      retry: 0,
+    },
+  },
+});
 
 setDevMode().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
