@@ -28,7 +28,7 @@ async function setDevMode() {
   if (process.env.NODE_ENV === 'development') {
     Sentry.getCurrentScope().setLevel('info');
     const worker = await import('@mocks/browser');
-    worker.default.start();
+    await worker.default.start();
   }
 }
 
