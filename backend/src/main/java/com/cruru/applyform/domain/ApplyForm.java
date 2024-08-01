@@ -61,8 +61,12 @@ public class ApplyForm extends BaseEntity {
     }
 
     public ApplyForm(
-            String title, String description, LocalDateTime openDate, LocalDateTime dueDate,
-            Dashboard dashboard) {
+            String title,
+            String description,
+            LocalDateTime openDate,
+            LocalDateTime dueDate,
+            Dashboard dashboard
+    ) {
         this.title = title;
         this.description = description;
         this.openDate = openDate;
@@ -89,13 +93,13 @@ public class ApplyForm extends BaseEntity {
     @Override
     public String toString() {
         return "ApplyForm{" +
-                "id=" + id +
+                "dashboard=" + dashboard +
+                ", id=" + id +
                 ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", dashboard=" + dashboard +
-                ", startDate=" + openDate +
-                ", dueDate=" + dueDate +
                 ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", openDate=" + openDate +
+                ", dueDate=" + dueDate +
                 '}';
     }
 }
