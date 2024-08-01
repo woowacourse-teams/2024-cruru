@@ -10,8 +10,8 @@ import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.applyform.exception.PersonalDataProcessingException;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
+import com.cruru.applyform.exception.PersonalDataProcessingException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -47,6 +47,16 @@ public class ApplyFormService {
         return savedApplyForm;
     }
 
+    private ApplyForm toApplyForm(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+        return new ApplyForm(
+                request.title(),
+                request.postingContent(),
+                request.startDate(),
+                request.dueDate(),
+                createdDashboard
+        );
+    }
+
     public void submit(ApplyFormSubmitRequest request, long applyFormId) {
         validatePersonalDataCollection(request);
 
@@ -71,16 +81,6 @@ public class ApplyFormService {
         for (AnswerCreateRequest answerCreateRequest : request.answerCreateRequest()) {
             saveAnswerReplies(answerCreateRequest, applicant);
         }
-    }
-
-    public ApplyForm toApplyForm(ApplyFormCreateRequest request, Dashboard createdDashboard) {
-        return new ApplyForm(
-                request.title(),
-                request.postingContent(),
-                request.startDate(),
-                request.dueDate(),
-                createdDashboard
-        );
     }
 
     private void validatePersonalDataCollection(ApplyFormSubmitRequest request) {
