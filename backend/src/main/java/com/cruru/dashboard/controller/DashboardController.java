@@ -1,7 +1,6 @@
 package com.cruru.dashboard.controller;
 
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
-import com.cruru.dashboard.service.DashboardService;
 import com.cruru.dashboard.service.facade.DashboardFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DashboardController {
 
     private final DashboardFacade dashboardFacade;
-    private final DashboardService dashboardService;
 
     @PostMapping
     public ResponseEntity<Void> create(
