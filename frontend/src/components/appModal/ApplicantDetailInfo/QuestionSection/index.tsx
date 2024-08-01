@@ -9,7 +9,7 @@ interface ApplicantBaseInfoProps {
 export default function QuestionSection({ applicantId }: ApplicantBaseInfoProps) {
   const { data } = specificApplicant.useGetDetailInfo({ applicantId });
 
-  //TODO: 로딩 핸들링
+  // TODO: 로딩 핸들링
 
   return (
     <S.Container>
