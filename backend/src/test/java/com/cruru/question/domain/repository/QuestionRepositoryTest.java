@@ -5,7 +5,6 @@ import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.question.domain.Question;
-import com.cruru.question.domain.QuestionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class QuestionRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Question question = new Question(DROPDOWN,"성별", 0, null);
+        Question question = new Question(DROPDOWN, "성별", 0, null);
         Question saved = questionRepository.save(question);
 
         //when
@@ -45,8 +44,8 @@ class QuestionRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Question question1 = new Question(DROPDOWN,"성별", 0, null);
-        Question question2 = new Question(SHORT_ANSWER,"전공", 1, null);
+        Question question1 = new Question(DROPDOWN, "성별", 0, null);
+        Question question2 = new Question(SHORT_ANSWER, "전공", 1, null);
 
         //when
         Question savedQuestion1 = questionRepository.save(question1);
