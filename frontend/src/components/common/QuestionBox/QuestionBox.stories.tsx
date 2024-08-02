@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuestionBox from '.';
 
 const meta: Meta<typeof QuestionBox> = {
-  title: 'Common/QuestionBox',
+  title: 'Components/QuestionBox',
   component: QuestionBox,
   parameters: {
     layout: 'centered',
