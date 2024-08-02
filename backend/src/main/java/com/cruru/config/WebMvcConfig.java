@@ -10,12 +10,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                .allowedOriginPatterns("https://*.cruru.kr")
                 .allowedOrigins(
                         "http://localhost:3000",
                         "https://localhost:3000",
-                        "https://www.cruru.kr",
                         "https://cruru.kr",
-                        "https://dbrc7l2k8z4lk.cloudfront.net"
+                        "https://dbrc7l2k8z4lk.cloudfront.net",
+                        "https://d22au4hc21uq4d.cloudfront.net"
                 )
                 .allowedMethods("*")
                 .allowedHeaders("*")
