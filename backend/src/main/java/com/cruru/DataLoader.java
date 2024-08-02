@@ -89,9 +89,9 @@ public class DataLoader implements ApplicationRunner {
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
 
-        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", 0, applyForm));
+        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", "", 0, applyForm));
         Question essayQuestion = questionRepository.save(
-                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, applyForm));
+                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", "정수로 입력해주세요.", 1, applyForm));
 
         Choice maleChoice = choiceRepository.save(new Choice(1L, "남", 1, choiceQuestion));
         Choice femaleChoice = choiceRepository.save(new Choice(2L, "여", 2, choiceQuestion));
