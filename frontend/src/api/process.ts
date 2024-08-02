@@ -1,6 +1,7 @@
 import snakeToCamel from '@utils/snakeToCamel';
 import { PROCESSES } from './endPoint';
 import { createParams } from './utils';
+import ApiError from './ApiError';
 
 const processApis = {
   get: async ({ id }: { id: number }) => {
@@ -11,7 +12,11 @@ const processApis = {
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new ApiError({
+        method: 'GET',
+        statusCode: response.status,
+        message: '프로세스 목록을 불러오지 못했습니다.',
+      });
     }
 
     const data = await response.json();
