@@ -9,17 +9,11 @@ interface ApiErrorBoundaryProps extends ErrorBoundaryPropsWithComponent {
 
 export default function ApiErrorBoundary({ FallbackComponent, children }: ApiErrorBoundaryProps) {
   const fallbackRender = (props: FallbackProps) => {
-    const error = props.error as ApiError;
-    if (!(error instanceof ApiError)) {
-      throw error;
+    if (!(props.error instanceof ApiError)) {
+      throw props.error;
     }
 
-    return (
-      <FallbackComponent
-        {...props}
-        error={error}
-      />
-    );
+    return <FallbackComponent {...props} />;
   };
 
   return (
