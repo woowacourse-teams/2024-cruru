@@ -14,7 +14,7 @@ const Input = styled.input`
 
   padding: 0.4rem;
   flex: 1;
-
+  text-overflow: ellipsis;
   color: ${({ theme }) => theme.colors.text.default};
 
   border-bottom: 0.1rem solid transparent;
