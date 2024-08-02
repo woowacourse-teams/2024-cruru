@@ -28,6 +28,13 @@ const meta: Meta<typeof Radio> = {
         type: { summary: 'boolean' },
       },
     },
+    isDisabled: {
+      description: '라디오 버튼 활성화 여부를 결정합니다.',
+      control: { type: 'boolean' },
+      table: {
+        type: { summary: 'boolean' },
+      },
+    },
     onChange: {
       description: '체크 상태 변경 시 호출되는 콜백 함수입니다.',
       action: 'changed',
@@ -44,6 +51,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isChecked: false,
+    isDisabled: false,
     onChange: () => console.log('Radio 버튼이 클릭되었습니다!'),
   },
 };
