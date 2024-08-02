@@ -1,5 +1,6 @@
 package com.cruru.applyform.service;
 
+import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
 import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
@@ -15,6 +16,7 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -63,7 +65,7 @@ class ApplyFormServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process firstProcess = processRepository.save(createFirstProcess(dashboard));
         Process finalProcess = processRepository.save(createFinalProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
         Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
 
@@ -93,7 +95,7 @@ class ApplyFormServiceTest extends ServiceTest {
     void submit_dashboardWithNoProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
@@ -113,7 +115,7 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
@@ -133,7 +135,7 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
@@ -144,6 +146,40 @@ class ApplyFormServiceTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> applyFormService.submit(request, -1))
+                .isInstanceOf(ApplyFormNotFoundException.class);
+    }
+
+    @DisplayName("지원서 폼 질문 조회에 성공한다.")
+    @Test
+    void read() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
+        questionRepository.save(createShortAnswerQuestion(applyForm));
+
+        // when
+        ApplyFormResponse response = applyFormService.read(applyForm.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(response.title()).isEqualTo(applyForm.getTitle()),
+                () -> assertThat(response.startDate()).isEqualTo(applyForm.getOpenDate()),
+                () -> assertThat(response.endDate()).isEqualTo(applyForm.getDueDate()),
+                () -> assertThat(response.questionResponses()).hasSize(1)
+        );
+    }
+
+    @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    void read_invalidApplyForm() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        processRepository.save(createFirstProcess(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        questionRepository.save(createShortAnswerQuestion(applyForm));
+
+        // when&then
+        assertThatThrownBy(() -> applyFormService.read(-1))
                 .isInstanceOf(ApplyFormNotFoundException.class);
     }
 }

@@ -1,5 +1,6 @@
 package com.cruru.applyform.controller;
 
+import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
 import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -115,5 +116,37 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
                 .then().log().all().statusCode(500);
+    }
+
+    @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
+    @Test
+    void read() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        processRepository.save(createFirstProcess(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
+        questionRepository.save(createShortAnswerQuestion(applyForm));
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .when().get("/v1/applyform/{apply_form_id}", applyForm.getId())
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 404을 반환한다.")
+    @Test
+    void read_notFound() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        processRepository.save(createFirstProcess(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
+        questionRepository.save(createShortAnswerQuestion(applyForm));
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .when().get("/v1/applyform/{apply_form_id}", -1)
+                .then().log().all().statusCode(404);
     }
 }
