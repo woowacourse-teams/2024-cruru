@@ -1,6 +1,7 @@
 package com.cruru.choice.service;
 
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
+import com.cruru.choice.controller.dto.ChoiceResponse;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.choice.exception.badrequest.ChoiceEmptyBadRequestException;
@@ -39,5 +40,20 @@ public class ChoiceService {
         return requests.stream()
                 .map(request -> new Choice(request.choice(), request.orderIndex(), question))
                 .toList();
+    }
+
+    public List<ChoiceResponse> findAllByQuestionId(long id) {
+        List<Choice> choices = choiceRepository.findAllByQuestionId(id);
+        return toChoiceResponses(choices);
+    }
+
+    private List<ChoiceResponse> toChoiceResponses(List<Choice> choices) {
+        return choices.stream()
+                .map(this::toChoiceResponse)
+                .toList();
+    }
+
+    private ChoiceResponse toChoiceResponse(Choice choice) {
+        return new ChoiceResponse(choice.getId(), choice.getContent(), choice.getSequence());
     }
 }
