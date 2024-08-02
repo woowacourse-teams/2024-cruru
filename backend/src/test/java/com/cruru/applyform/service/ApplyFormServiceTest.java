@@ -16,7 +16,6 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -158,14 +157,13 @@ class ApplyFormServiceTest extends ServiceTest {
         questionRepository.save(createShortAnswerQuestion(applyForm));
 
         // when
-        ApplyFormResponse response = applyFormService.read(applyForm.getId());
+        ApplyForm actualApplyForm = applyFormService.findById(applyForm.getId());
 
         // then
         assertAll(
-                () -> assertThat(response.title()).isEqualTo(applyForm.getTitle()),
-                () -> assertThat(response.startDate()).isEqualTo(applyForm.getOpenDate()),
-                () -> assertThat(response.endDate()).isEqualTo(applyForm.getDueDate()),
-                () -> assertThat(response.questionResponses()).hasSize(1)
+                () -> assertThat(actualApplyForm.getTitle()).isEqualTo(applyForm.getTitle()),
+                () -> assertThat(actualApplyForm.getOpenDate()).isEqualTo(applyForm.getOpenDate()),
+                () -> assertThat(actualApplyForm.getDueDate()).isEqualTo(applyForm.getDueDate())
         );
     }
 
@@ -179,7 +177,7 @@ class ApplyFormServiceTest extends ServiceTest {
         questionRepository.save(createShortAnswerQuestion(applyForm));
 
         // when&then
-        assertThatThrownBy(() -> applyFormService.read(-1))
+        assertThatThrownBy(() -> applyFormService.findById(-1))
                 .isInstanceOf(ApplyFormNotFoundException.class);
     }
 }

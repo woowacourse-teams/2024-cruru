@@ -7,23 +7,18 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.PersonalDataProcessingException;
-import com.cruru.choice.controller.dto.ChoiceResponse;
-import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import com.cruru.question.controller.dto.QuestionResponse;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.question.exception.QuestionNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -109,43 +104,8 @@ public class ApplyFormService {
                 .orElseThrow(QuestionNotFoundException::new);
     }
 
-    public ApplyFormResponse read(long applyFormId) {
-        ApplyForm applyForm = applyFormRepository.findById(applyFormId)
+    public ApplyForm findById(long applyFormId) {
+        return applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
-
-        List<QuestionResponse> responses = questionRepository.findAllByApplyFormId(applyFormId)
-                .stream()
-                .map(this::toQuestionResponse)
-                .toList();
-
-        return new ApplyFormResponse(
-                applyForm.getTitle(),
-                applyForm.getDescription(),
-                applyForm.getOpenDate(),
-                applyForm.getDueDate(),
-                responses
-        );
-    }
-
-    private QuestionResponse toQuestionResponse(Question question) {
-        return new QuestionResponse(
-                question.getId(),
-                question.getQuestionType().name(),
-                question.getContent(),
-                question.getDescription(),
-                question.getSequence(),
-                toChoiceResponses(question)
-        );
-    }
-
-    private List<ChoiceResponse> toChoiceResponses(Question question) {
-        return choiceRepository.findAllByQuestionId(question.getId())
-                .stream()
-                .map(this::toChoiceResponse)
-                .toList();
-    }
-
-    private ChoiceResponse toChoiceResponse(Choice choice) {
-        return new ChoiceResponse(choice.getId(), choice.getContent(), choice.getSequence());
     }
 }

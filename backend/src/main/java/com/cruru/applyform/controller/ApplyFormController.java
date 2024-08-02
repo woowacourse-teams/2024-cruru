@@ -3,6 +3,7 @@ package com.cruru.applyform.controller;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.service.ApplyFormService;
+import com.cruru.applyform.service.facade.ApplyFormFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ApplyFormController {
 
+    private final ApplyFormFacade applyFormFacade;
     private final ApplyFormService applyFormService;
 
     @PostMapping("/{applyform_id}/submit")
@@ -32,7 +34,7 @@ public class ApplyFormController {
 
     @GetMapping("/{applyform_id}")
     public ResponseEntity<ApplyFormResponse> read(@PathVariable(name = "applyform_id") long applyFormId) {
-        ApplyFormResponse response = applyFormService.read(applyFormId);
+        ApplyFormResponse response = applyFormFacade.findApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
     }
 }
