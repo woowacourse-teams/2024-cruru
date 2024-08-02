@@ -57,6 +57,7 @@ public class ApplyFormService {
         );
     }
 
+    @Transactional
     public void submit(ApplyFormSubmitRequest request, long applyFormId) {
         validatePersonalDataCollection(request);
 
