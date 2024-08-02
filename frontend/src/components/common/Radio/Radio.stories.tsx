@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Radio from '.';
 
 const meta: Meta<typeof Radio> = {
-  title: 'Common/Radio/Base',
+  title: 'Common/Radio/Radio',
   component: Radio,
   parameters: {
     layout: 'centered',
@@ -21,7 +21,7 @@ const meta: Meta<typeof Radio> = {
     ),
   ],
   argTypes: {
-    checked: {
+    isChecked: {
       description: '라디오 버튼이 체크되었는지 여부를 결정합니다.',
       control: { type: 'boolean' },
       table: {
@@ -43,7 +43,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    checked: false,
+    isChecked: false,
     onChange: () => console.log('Radio 버튼이 클릭되었습니다!'),
   },
 };
@@ -58,7 +58,7 @@ Default.parameters = {
 
 export const SizeRadio: Story = {
   args: {
-    checked: false,
+    isChecked: false,
     diameter: '5rem',
     onChange: () => console.log('Radio 버튼이 클릭되었습니다!'),
   },
