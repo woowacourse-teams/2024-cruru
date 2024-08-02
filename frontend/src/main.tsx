@@ -29,7 +29,7 @@ async function setDevMode() {
   if (process.env.NODE_ENV === 'development') {
     Sentry.getCurrentScope().setLevel('info');
     const worker = await import('@mocks/browser');
-    worker.default.start();
+    await worker.default.start();
   }
 }
 
@@ -51,7 +51,14 @@ const router = createBrowserRouter(
   },
 );
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      throwOnError: true,
+      retry: 0,
+    },
+  },
+});
 
 setDevMode().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
