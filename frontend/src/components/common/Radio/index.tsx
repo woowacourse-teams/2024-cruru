@@ -4,12 +4,12 @@ interface RadioProps {
   isChecked: boolean;
   isDisabled?: boolean;
   diameter?: string;
-  onChange: () => void;
+  onToggle: () => void;
 }
 
-export default function Radio({ isChecked, isDisabled = false, diameter, onChange }: RadioProps) {
+export default function Radio({ isChecked, isDisabled = false, onToggle, diameter }: RadioProps) {
   return (
-    <S.RadioContainer onClick={onChange}>
+    <S.RadioContainer onClick={onToggle}>
       <S.RadioOuter
         isDisabled={isDisabled}
         diameter={diameter}
