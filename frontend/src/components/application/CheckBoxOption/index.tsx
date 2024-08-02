@@ -5,7 +5,8 @@ import S from './style';
 interface CheckBoxOptionProps {
   isChecked?: boolean;
   isDisabled: boolean;
-  onCheck: () => void;
+  isDeleteBtn?: boolean;
+  onCheck?: () => void;
   onDeleteBtnClick: () => void;
   inputAttrs: React.InputHTMLAttributes<HTMLInputElement>;
 }
@@ -13,8 +14,9 @@ interface CheckBoxOptionProps {
 export default function CheckBoxOption({
   isChecked = false,
   isDisabled,
+  isDeleteBtn = true,
   onDeleteBtnClick,
-  onCheck,
+  onCheck = () => {},
   inputAttrs,
 }: CheckBoxOptionProps) {
   return (
@@ -29,10 +31,13 @@ export default function CheckBoxOption({
         {...inputAttrs}
         placeholder="옵션을 입력하세요."
       />
-
-      <S.DeleteBtn onClick={onDeleteBtnClick}>
-        <HiOutlineX />
-      </S.DeleteBtn>
+      {isDeleteBtn ? (
+        <S.DeleteBtn onClick={onDeleteBtnClick}>
+          <HiOutlineX />
+        </S.DeleteBtn>
+      ) : (
+        <S.Empty />
+      )}
     </S.Container>
   );
 }

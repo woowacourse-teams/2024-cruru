@@ -37,10 +37,15 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
+const Empty = styled.div`
+  width: 1.6rem;
+`;
+
 const S = {
   Container,
   Input,
   DeleteBtn,
+  Empty,
 };
 
 export default S;
