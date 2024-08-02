@@ -20,7 +20,7 @@ import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
+import com.cruru.applicant.exception.ApplicantRejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.dto.ProcessSimpleResponse;
