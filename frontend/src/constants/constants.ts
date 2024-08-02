@@ -1,3 +1,5 @@
+export const BASE_URL = `${process.env.API_URL}/${process.env.API_VERSION}`;
+
 export const NAV_BAR_MENU = {
   applicant: '지원자 관리',
   process: '프로세스 관리',

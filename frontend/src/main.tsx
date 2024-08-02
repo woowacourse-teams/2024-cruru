@@ -7,6 +7,7 @@ import { ModalProvider } from '@contexts/ModalContext';
 
 import { Global, ThemeProvider } from '@emotion/react';
 
+import { BASE_URL } from '@constants/constants';
 import theme from './styles/theme';
 import globalStyles from './styles/globalStyles';
 
@@ -18,7 +19,7 @@ Sentry.init({
   integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
   // Performance Monitoring
   tracesSampleRate: 1.0, //  Capture 100% of the transactions
-  tracePropagationTargets: ['localhost', process.env.REACT_APP_CRURU_API_URL],
+  tracePropagationTargets: ['localhost', BASE_URL],
   // Session Replay
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
