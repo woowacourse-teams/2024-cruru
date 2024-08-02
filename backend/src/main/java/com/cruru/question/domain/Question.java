@@ -33,15 +33,19 @@ public class Question {
 
     private String content;
 
+    private String description;
+
     private Integer sequence;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_form_id")
     private ApplyForm applyForm;
 
-    public Question(QuestionType type, String content, int sequence, ApplyForm applyForm) {
-        this.questionType = type;
+    public Question(
+            QuestionType questionType, String content, String description, Integer sequence, ApplyForm applyForm) {
+        this.questionType = questionType;
         this.content = content;
+        this.description = description;
         this.sequence = sequence;
         this.applyForm = applyForm;
     }
@@ -73,6 +77,7 @@ public class Question {
                 "id=" + id +
                 ", questionType=" + questionType +
                 ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
                 ", sequence=" + sequence +
                 ", applyForm=" + applyForm +
                 '}';

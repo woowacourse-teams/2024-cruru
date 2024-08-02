@@ -1,9 +1,10 @@
 package com.cruru.applyform.controller;
 
-import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
+import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
+import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
@@ -45,8 +46,9 @@ class ApplyFormControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(new Question(SHORT_ANSWER, "자기소개 부탁드려요", 0, applyForm));
-        Question question2 = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 1, applyForm));
+        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
+        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
+
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
                 new AnswerCreateRequest(question2.getId(), List.of("온라인"))
@@ -72,8 +74,9 @@ class ApplyFormControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(new Question(SHORT_ANSWER, "자기소개 부탁드려요", 0, applyForm));
-        Question question2 = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 1, applyForm));
+        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
+        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
+
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
                 new AnswerCreateRequest(question2.getId(), List.of("온라인"))
@@ -98,7 +101,7 @@ class ApplyFormControllerTest extends ControllerTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question = questionRepository.save(new Question(SHORT_ANSWER, "지원 경로가 어떻게 되나요?", 0, applyForm));
+        Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),

@@ -23,22 +23,22 @@ public class QuestionFixture {
     }
 
     public static Question createShortAnswerQuestion(ApplyForm applyForm) {
-        return new Question(SHORT_ANSWER, "주관식 단답형", 1, applyForm);
+        return new Question(SHORT_ANSWER, "주관식 단답형", "50자 이하로 입력해주세요.", 1, applyForm);
     }
 
     public static Question createLongAnswerQuestion(ApplyForm applyForm) {
-        return new Question(LONG_ANSWER, "주관식 장문형", 2, applyForm);
+        return new Question(LONG_ANSWER, "주관식 장문형", "50자 이하로 입력해주세요.", 2, applyForm);
     }
 
     public static Question createDropdownQuestion(ApplyForm applyForm) {
-        return new Question(DROPDOWN, "객관식 단일 선택", 3, applyForm);
+        return new Question(DROPDOWN, "객관식 단일 선택", "단 하나만 골라주세요.", 3, applyForm);
     }
 
     public static Question createCheckboxQuestion(ApplyForm applyForm) {
-        return new Question(CHECK_BOX, "체크 선택", 4, applyForm);
+        return new Question(CHECK_BOX, "체크 선택", "", 4, applyForm);
     }
 
     public static Question createMultipleChoiceQuestion(ApplyForm applyForm) {
-        return new Question(MULTIPLE_CHOICE, "객관식 다중 선택", 5, applyForm);
+        return new Question(MULTIPLE_CHOICE, "객관식 다중 선택", "모두 선택해주세요.", 5, applyForm);
     }
 }

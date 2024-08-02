@@ -37,6 +37,6 @@ public class QuestionService {
     }
 
     private Question toQuestion(QuestionType type, QuestionCreateRequest request, ApplyForm applyForm) {
-        return new Question(type, request.question(), request.orderIndex(), applyForm);
+        return new Question(type, request.question(), request.description(), request.orderIndex(), applyForm);
     }
 }
