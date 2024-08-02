@@ -1,4 +1,4 @@
-package com.cruru.applyform.controller.dto;
+package com.cruru.choice.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

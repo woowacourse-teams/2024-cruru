@@ -1,5 +1,6 @@
 package com.cruru.applyform.controller.dto;
 
+import com.cruru.choice.controller.dto.ChoiceResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
