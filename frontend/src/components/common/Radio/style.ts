@@ -11,7 +11,7 @@ const RadioContainer = styled.div`
 const RadioOuter = styled.div<{ diameter?: string; checked: boolean; isDisabled: boolean }>`
   height: ${({ diameter }) => diameter ?? '1.6rem'};
   aspect-ratio: 1/1;
-  border: 0.2rem solid
+  border: 0.1rem solid
     ${({ checked, theme }) => (checked ? theme.colors.brand.primary : theme.baseColors.grayscale[800])};
   border-radius: 50%;
   display: flex;
