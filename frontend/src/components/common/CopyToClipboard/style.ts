@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
 
   width: 100%;
-  min-width: 40rem;
+  min-width: 20rem;
   height: 4.2rem;
   padding: 0.8rem 1.2rem;
 
