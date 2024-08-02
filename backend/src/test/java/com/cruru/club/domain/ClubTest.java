@@ -4,9 +4,9 @@ import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.cruru.club.exception.ClubNameBlankException;
-import com.cruru.club.exception.ClubNameCharacterException;
-import com.cruru.club.exception.ClubNameLengthException;
+import com.cruru.club.exception.badrequest.ClubNameBlankException;
+import com.cruru.club.exception.badrequest.ClubNameCharacterException;
+import com.cruru.club.exception.badrequest.ClubNameLengthException;
 import com.cruru.member.domain.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

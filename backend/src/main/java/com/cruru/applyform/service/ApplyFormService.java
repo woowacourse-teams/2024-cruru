@@ -14,7 +14,7 @@ import com.cruru.applyform.controller.dto.QuestionResponse;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
-import com.cruru.applyform.exception.PersonalDataProcessingException;
+import com.cruru.applyform.exception.badrequest.PersonalDataProcessingException;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;

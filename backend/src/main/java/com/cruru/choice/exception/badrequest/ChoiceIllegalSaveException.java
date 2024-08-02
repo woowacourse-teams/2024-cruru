@@ -1,4 +1,4 @@
-package com.cruru.choice.exception;
+package com.cruru.choice.exception.badrequest;
 
 import com.cruru.advice.badrequest.BadRequestException;
 

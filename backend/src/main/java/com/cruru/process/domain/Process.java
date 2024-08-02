@@ -1,9 +1,9 @@
 package com.cruru.process.domain;
 
 import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.process.exception.ProcessNameBlankException;
-import com.cruru.process.exception.ProcessNameCharacterException;
-import com.cruru.process.exception.ProcessNameLengthException;
+import com.cruru.process.exception.badrequest.ProcessNameBlankException;
+import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
+import com.cruru.process.exception.badrequest.ProcessNameLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
