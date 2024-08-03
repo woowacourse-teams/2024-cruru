@@ -12,7 +12,6 @@ import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.PersonalDataProcessingException;
-import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -35,7 +34,6 @@ public class ApplyFormService {
     private final QuestionRepository questionRepository;
     private final ApplyFormRepository applyFormRepository;
     private final ProcessRepository processRepository;
-    private final ChoiceRepository choiceRepository;
 
     @Transactional
     public ApplyForm create(ApplyFormCreateRequest request, Dashboard createdDashboard) {
@@ -59,6 +57,7 @@ public class ApplyFormService {
         );
     }
 
+    @Transactional
     public void submit(ApplyFormSubmitRequest request, long applyFormId) {
         validatePersonalDataCollection(request);
 
@@ -104,8 +103,15 @@ public class ApplyFormService {
                 .orElseThrow(QuestionNotFoundException::new);
     }
 
+    @Transactional
     public ApplyForm findById(long applyFormId) {
         return applyFormRepository.findById(applyFormId)
+                .orElseThrow(ApplyFormNotFoundException::new);
+    }
+
+    @Transactional
+    public ApplyForm findByDashboardId(long dashboardId) {
+        return applyFormRepository.findByDashboardId(dashboardId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 }
