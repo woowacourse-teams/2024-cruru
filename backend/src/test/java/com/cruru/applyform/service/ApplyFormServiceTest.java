@@ -173,9 +173,7 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void read_invalidApplyForm() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(null));
         questionRepository.save(createShortAnswerQuestion(applyForm));
 
         // when&then
