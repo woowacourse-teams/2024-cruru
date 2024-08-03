@@ -108,14 +108,16 @@ public class DataLoader implements ApplicationRunner {
         applicantRepository.saveAll(applicants);
 
         Question question0 = questionRepository.save(
-                new Question(SHORT_ANSWER, "현재 재학중이거나 이전에 교육 받은 이력이 있다면 작성해주세요.", "", 0, applyForm));
+                new Question(SHORT_ANSWER, "현재 재학중이거나 이전에 교육 받은 이력이 있다면 작성해주세요.", "", 0, applyForm)
+        );
 
         String description1 = """
                               프로그래밍 학습을 하고 장기간 개발자로 살아가기 위해, 본인만의 효과적인 학습 방식을 찾는 것은 매우 중요합니다. 
                               프로그래밍이 아니더라도 지금까지의 모든 학습 경험을 되돌아봤을 때, 본인에게 유용했던 학습 방식을 찾아낸 과정과 경험을 공유해 주세요. 
                               그리고 이 경험은 현재 본인의 프로그래밍 학습 과정에 어떻게 적용되고 있나요? (1000자 이내)""";
         Question question1 = questionRepository.save(
-                new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", description1, 1, applyForm));
+                new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", description1, 1, applyForm)
+        );
 
         String description2 = """
                               좋은 개발자가 되려면 성장 과정에서 많은 실패와 어려움이 기다리고 있습니다. 
@@ -123,7 +125,8 @@ public class DataLoader implements ApplicationRunner {
                               그리고 이런 경험이 현재 여러분의 성장 방식에 어떤 영향을 주고 있는지 이야기해 주세요.
                               (혼자 겪은 경험도 좋고, 타인과 함께한 협업과정에서의 실패와 어려움도 좋습니다.) (1000자 이내)""";
         Question question2 = questionRepository.save(
-                new Question(LONG_ANSWER, "성장 중 겪은 실패와 극복", description2, 2, applyForm));
+                new Question(LONG_ANSWER, "성장 중 겪은 실패와 극복", description2, 2, applyForm)
+        );
 
         String description3 = """
                               진정한 몰입은 즐거움과 동시에 성장을 이끌어냅니다.
@@ -131,18 +134,21 @@ public class DataLoader implements ApplicationRunner {
                               그 과정에서 어떤 도전을 마주했고, 이 경험으로 무엇을 배우고 얻었는지 '구체적으로' 이야기해 주세요.
                               (반드시 소프트웨어에 대한 경험이 아니어도 괜찮습니다. 만약 몰입한 경험의 결과물을 함께 보여주실 수 있다면 더 좋습니다.) (1000자 이내)""";
         Question question3 = questionRepository.save(
-                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description3, 3, applyForm));
+                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description3, 3, applyForm)
+        );
 
         String description4 = """
                               여러분이 되고 싶은 프로그래머의 모습은 무엇인가요?
                               그 모습에 가까워지기 위해 현재 어떤 구체적인 노력을 기울이고 있는지 알려주세요.
                               여기에 더해 만약 우아한테크코스가 없다고 가정한다면 어떻게 성장해 나갈 것인지도 함께 이야기해 주세요. (1000자 이내)""";
         Question question4 = questionRepository.save(
-                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description4, 4, applyForm));
+                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description4, 4, applyForm)
+        );
 
         String description5 = "우아한테크코스 소식을 처음 접한 곳을 선택해주세요.";
         Question question5 = questionRepository.save(
-                new Question(MULTIPLE_CHOICE, "지원 경로", description5, 5, applyForm));
+                new Question(MULTIPLE_CHOICE, "지원 경로", description5, 5, applyForm)
+        );
 
         Choice homepage = choiceRepository.save(new Choice("우아한테크코스 홈페이지", 1, question5));
         Choice youtube = choiceRepository.save(new Choice("우아한테크코스 유튜브", 2, question5));
@@ -151,7 +157,8 @@ public class DataLoader implements ApplicationRunner {
 
         String description6 = "모든 문항에 답했는지 확인해주세요.";
         Question question6 = questionRepository.save(
-                new Question(CHECK_BOX, "제출 후에 수정이 불가능합니다.", description6, 6, applyForm));
+                new Question(CHECK_BOX, "제출 후에 수정이 불가능합니다.", description6, 6, applyForm)
+        );
 
         Choice yes = choiceRepository.save(new Choice("네, 확인했습니다.", 1, question6));
         Choice no = choiceRepository.save(new Choice("다시 확인하겠습니다.", 2, question6));
@@ -168,95 +175,163 @@ public class DataLoader implements ApplicationRunner {
 
                 new Answer(
                         "저는 효율적인 학습을 위해 주로 플래닝과 시간을 잘 쪼개서 사용하는 방법을 활용합니다. 학습 계획을 세워 목표를 설정하고, 이를 달성하기 위해 매일 꾸준히 공부합니다. 이 방식은 프로그래밍 학습에도 큰 도움이 되고 있습니다.",
-                        question1, lurgi),
+                        question1,
+                        lurgi
+                ),
                 new Answer(
                         "혼자 학습하는 것보다 그룹 스터디를 통해 다른 사람들과 함께 공부하는 것이 저에게는 더 효과적이었습니다. 다양한 시각에서 문제를 바라보고 해결하는 데 큰 도움이 되었습니다.",
-                        question1, dobby),
+                        question1,
+                        dobby
+                ),
                 new Answer(
                         "이해가 안 되는 부분은 여러 번 반복해서 공부하는 방식이 저에게 유효했습니다. 프로그래밍에서도 어려운 부분이 있을 때 계속 반복해서 코드를 작성하고 문제를 해결하면서 실력을 키워가고 있습니다.",
-                        question1, arrr),
+                        question1,
+                        arrr
+                ),
                 new Answer("온라인 강의와 강의 노트를 병행하는 학습 방식이 저에게는 가장 효과적이었습니다. 이를 통해 개념을 더 명확히 이해하고 실전에 적용할 수 있었습니다.",
-                        question1, chocochip),
+                        question1,
+                        chocochip
+                ),
                 new Answer("프로젝트 기반 학습이 저에게는 가장 효과적이었습니다. 실제로 프로젝트를 수행하면서 배우는 것이 이론 학습보다 훨씬 더 잘 이해되고 기억에 오래 남았습니다.",
-                        question1, myungoh),
+                        question1,
+                        myungoh
+                ),
                 new Answer("퀴즈나 테스트를 통해 학습 내용을 점검하는 방식이 저에게는 유효했습니다. 이를 통해 어떤 부분이 약한지 파악하고, 그 부분을 집중적으로 공부할 수 있었습니다.",
-                        question1, rush),
+                        question1,
+                        rush
+                ),
                 new Answer("실제 문제를 풀어보면서 학습하는 것이 저에게는 가장 효과적이었습니다. 이를 통해 학습한 이론을 실전에 적용하고, 문제 해결 능력을 키울 수 있었습니다.",
-                        question1, nyangin),
+                        question1,
+                        nyangin
+                ),
                 new Answer("문제를 해결할 때마다 그 과정을 기록하고 복습하는 방식이 저에게는 가장 효과적이었습니다. 이를 통해 비슷한 문제를 다시 만났을 때 쉽게 해결할 수 있었습니다.",
-                        question1, redpanda),
+                        question1,
+                        redpanda
+                ),
 
                 new Answer(
                         "첫 번째 프로그래밍 프로젝트에서 많은 어려움을 겪었지만, 끈기 있게 문제를 해결하고 프로젝트를 완성했습니다. 이 경험을 통해 문제 해결 능력을 키웠고, 현재도 어려움이 닥쳤을 때 포기하지 않고 해결하는 데 큰 도움이 되고 있습니다.",
-                        question2, lurgi),
+                        question2,
+                        lurgi
+                ),
                 new Answer(
                         "팀 프로젝트에서 협업하는 과정에서 많은 어려움을 겪었지만, 팀원들과의 소통과 협력을 통해 문제를 해결했습니다. 이 경험을 통해 협업의 중요성을 깨달았고, 현재의 학습 과정에도 큰 영향을 미치고 있습니다.",
-                        question2, dobby),
+                        question2,
+                        dobby
+                ),
                 new Answer(
                         "학습 중 여러 번 실패를 경험했지만, 그때마다 새로운 방법을 시도하며 문제를 해결했습니다. 이 경험은 저의 학습 방식에 큰 변화를 주었고, 현재도 다양한 시도를 통해 문제를 해결하고 있습니다.",
-                        question2, arrr),
+                        question2,
+                        arrr
+                ),
                 new Answer(
                         "초기에는 프로그래밍 언어를 배우는 데 많은 어려움을 겪었지만, 꾸준히 학습하고 연습하면서 문제를 해결했습니다. 이 경험은 저에게 인내심과 꾸준함의 중요성을 일깨워주었고, 현재의 학습 방식에도 영향을 미치고 있습니다.",
-                        question2, chocochip),
+                        question2,
+                        chocochip
+                ),
                 new Answer(
                         "프로젝트 진행 중 여러 차례 문제에 부딪혔지만, 그때마다 팀원들과 함께 해결책을 모색하며 문제를 해결했습니다. 이 경험은 협업의 중요성을 깨닫게 했고, 현재의 학습 과정에도 큰 영향을 미치고 있습니다.",
-                        question2, myungoh),
+                        question2,
+                        myungoh
+                ),
                 new Answer(
                         "코딩 테스트에서 여러 번 실패를 경험했지만, 그때마다 부족한 부분을 보완하며 재도전했습니다. 이 경험은 저에게 끈기의 중요성을 일깨워주었고, 현재의 학습 방식에도 큰 영향을 미치고 있습니다.",
-                        question2, rush),
+                        question2,
+                        rush
+                ),
                 new Answer(
                         "프로그래밍 프로젝트에서 발생한 문제를 해결하기 위해 많은 노력을 기울였고, 결국 문제를 해결했습니다. 이 경험은 저에게 문제 해결 능력을 키워주었고, 현재의 학습 방식에도 큰 영향을 미치고 있습니다.",
-                        question2, nyangin),
+                        question2,
+                        nyangin
+                ),
                 new Answer(
                         "협업 프로젝트에서 발생한 갈등을 해결하기 위해 많은 노력을 기울였고, 결국 문제를 해결했습니다. 이 경험은 저에게 협력의 중요성을 깨닫게 했고, 현재의 학습 방식에도 큰 영향을 미치고 있습니다.",
-                        question2, redpanda),
+                        question2,
+                        redpanda
+                ),
 
                 new Answer(
                         "대학생 때, 인공지능 관련 프로젝트에 몰입하여 6개월 동안 연구와 개발에 매진했습니다. 이 과정에서 많은 도전을 마주했지만, 최종적으로 프로젝트를 성공적으로 마무리할 수 있었습니다. 이를 통해 문제 해결 능력과 인내심을 배울 수 있었습니다.",
-                        question3, lurgi),
+                        question3,
+                        lurgi
+                ),
                 new Answer(
                         "개인적으로 웹 애플리케이션을 개발하면서 오랜 시간 몰입했습니다. 이 과정에서 여러 가지 문제를 해결해야 했지만, 이를 통해 개발 능력과 문제 해결 능력을 키울 수 있었습니다.",
-                        question3, dobby),
+                        question3,
+                        dobby
+                ),
                 new Answer(
                         "오픈 소스 프로젝트에 참여하여 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 결국 프로젝트를 성공적으로 완료할 수 있었습니다. 이를 통해 협업 능력과 문제 해결 능력을 키울 수 있었습니다.",
-                        question3, arrr),
+                        question3,
+                        arrr
+                ),
                 new Answer(
                         "대학 졸업 프로젝트에 몰입하여 1년 동안 연구와 개발에 매진했습니다. 이 과정에서 많은 도전을 마주했지만, 최종적으로 프로젝트를 성공적으로 마무리할 수 있었습니다. 이를 통해 문제 해결 능력과 인내심을 배울 수 있었습니다.",
-                        question3, chocochip),
+                        question3,
+                        chocochip
+                ),
                 new Answer(
+
                         "프로그래밍 경진대회에 참여하여 오랜 시간 몰입했습니다. 이 과정에서 여러 가지 문제를 해결해야 했지만, 이를 통해 개발 능력과 문제 해결 능력을 키울 수 있었습니다.",
-                        question3, myungoh),
-                new Answer("프리랜서 개발자로 일하면서 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 이를 통해 문제 해결 능력과 인내심을 배울 수 있었습니다.",
-                        question3, rush),
-                new Answer("개인적으로 블로그를 운영하면서 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 이를 통해 글쓰기 능력과 문제 해결 능력을 키울 수 있었습니다.",
-                        question3, nyangin),
-                new Answer("대학 동아리 활동을 통해 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 이를 통해 협업 능력과 문제 해결 능력을 키울 수 있었습니다.",
-                        question3, redpanda),
+                        question3,
+                        myungoh
+                ),
+                new Answer(
+                        "프리랜서 개발자로 일하면서 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 이를 통해 문제 해결 능력과 인내심을 배울 수 있었습니다.",
+                        question3,
+                        rush
+                ),
+                new Answer(
+                        "개인적으로 블로그를 운영하면서 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 이를 통해 글쓰기 능력과 문제 해결 능력을 키울 수 있었습니다.",
+                        question3,
+                        nyangin
+                ),
+                new Answer(
+                        "대학 동아리 활동을 통해 오랜 시간 몰입했습니다. 이 과정에서 많은 도전을 마주했지만, 이를 통해 협업 능력과 문제 해결 능력을 키울 수 있었습니다.",
+                        question3,
+                        redpanda
+                ),
 
                 new Answer(
                         "저는 존경받는 프로그래머가 되어 여러 사람에게 영감을 주고 싶습니다. 이를 위해 현재 매일 꾸준히 공부하고 있으며, 다양한 프로젝트에 참여하여 실력을 쌓고 있습니다. 만약 우아한테크코스가 없다면, 온라인 강의와 커뮤니티 활동을 통해 지속적으로 성장할 것입니다.",
-                        question4, lurgi),
+                        question4,
+                        lurgi
+                ),
                 new Answer(
                         "저는 문제 해결 능력이 뛰어난 프로그래머가 되고 싶습니다. 이를 위해 현재 다양한 문제를 풀고 있으며, 코드 리뷰를 통해 실력을 향상시키고 있습니다. 만약 우아한테크코스가 없다면, 독학과 스터디 그룹을 통해 지속적으로 성장할 것입니다.",
-                        question4, dobby),
+                        question4,
+                        dobby
+                ),
                 new Answer(
                         "저는 협업 능력이 뛰어난 프로그래머가 되고 싶습니다. 이를 위해 현재 팀 프로젝트에 참여하고 있으며, 다양한 협업 도구를 익히고 있습니다. 만약 우아한테크코스가 없다면, 오픈 소스 프로젝트에 참여하여 지속적으로 성장할 것입니다.",
-                        question4, arrr),
+                        question4,
+                        arrr
+                ),
                 new Answer(
                         "저는 창의적인 프로그래머가 되고 싶습니다. 이를 위해 현재 새로운 아이디어를 시도해 보고 있으며, 다양한 기술을 익히고 있습니다. 만약 우아한테크코스가 없다면, 개인 프로젝트를 통해 지속적으로 성장할 것입니다.",
-                        question4, chocochip),
+                        question4,
+                        chocochip
+                ),
                 new Answer(
                         "저는 효율적인 프로그래머가 되고 싶습니다. 이를 위해 현재 코딩 실력을 향상시키기 위해 노력하고 있으며, 다양한 도구를 익히고 있습니다. 만약 우아한테크코스가 없다면, 독학과 실무 경험을 통해 지속적으로 성장할 것입니다.",
-                        question4, myungoh),
+                        question4,
+                        myungoh
+                ),
                 new Answer(
                         "저는 커뮤니케이션 능력이 뛰어난 프로그래머가 되고 싶습니다. 이를 위해 현재 다양한 사람들과 소통하며 협업하는 방법을 익히고 있습니다. 만약 우아한테크코스가 없다면, 커뮤니티 활동을 통해 지속적으로 성장할 것입니다.",
-                        question4, rush),
+                        question4,
+                        rush
+                ),
                 new Answer(
                         "저는 문제 해결 능력이 뛰어난 프로그래머가 되고 싶습니다. 이를 위해 현재 다양한 문제를 풀고 있으며, 코드 리뷰를 통해 실력을 향상시키고 있습니다. 만약 우아한테크코스가 없다면, 독학과 스터디 그룹을 통해 지속적으로 성장할 것입니다.",
-                        question4, nyangin),
+                        question4,
+                        nyangin
+                ),
                 new Answer(
                         "저는 팀워크를 잘하는 프로그래머가 되고 싶습니다. 이를 위해 현재 팀 프로젝트에 참여하고 있으며, 다양한 협업 도구를 익히고 있습니다. 만약 우아한테크코스가 없다면, 오픈 소스 프로젝트에 참여하여 지속적으로 성장할 것입니다.",
-                        question4, redpanda),
+                        question4,
+                        redpanda
+                ),
 
                 new Answer(homepage.getContent(), question5, lurgi),
                 new Answer(homepage.getContent(), question5, dobby),
