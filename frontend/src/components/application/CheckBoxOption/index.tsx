@@ -5,7 +5,7 @@ import CheckBox from '@components/common/CheckBox';
 import S from './style';
 
 interface InputAttrsProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  ref: RefCallback<HTMLInputElement>;
+  ref?: RefCallback<HTMLInputElement>;
 }
 
 interface CheckBoxOptionProps {

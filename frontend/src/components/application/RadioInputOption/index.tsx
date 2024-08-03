@@ -4,7 +4,7 @@ import Radio from '@components/common/Radio';
 import S from './style';
 
 interface InputAttrsProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  ref: RefCallback<HTMLInputElement>;
+  ref?: RefCallback<HTMLInputElement>;
 }
 
 interface RadioInputOptionProps {
