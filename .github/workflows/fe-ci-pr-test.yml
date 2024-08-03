@@ -10,11 +10,17 @@ jobs:
   run-test-pr-opened:
     if: startsWith(github.head_ref, 'fe-')
     runs-on: ubuntu-22.04
+    environment: dev
     permissions:
       pull-requests: write
     defaults:
       run:
         working-directory: ./frontend
+    env:
+      API_URL: ${{ secrets.API_URL }}
+      API_VERSION: ${{ secrets.API_VERSION }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
     steps:
       - name: 저장소 checkout
@@ -36,10 +42,6 @@ jobs:
       - name: 애플리케이션 의존성 항목들 설치
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
-
-      - name: 백엔드 API 연동용 환경변수 설정
-        run: |
-          echo "REACT_APP_CRURU_API_URL=${{ secrets.API_URL }}" >> .env.production
 
       - name: 코드 문법 테스트
         run: npm run lint

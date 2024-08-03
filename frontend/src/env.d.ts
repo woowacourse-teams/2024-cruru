@@ -1,6 +1,8 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    REACT_APP_CRURU_API_URL: string;
+    API_URL: string;
+    API_VERSION: string;
     SENTRY_DSN: string;
+    SENTRY_AUTH_TOKEN: string;
   }
 }
