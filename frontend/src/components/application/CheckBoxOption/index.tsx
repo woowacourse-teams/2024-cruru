@@ -1,6 +1,12 @@
+/* eslint-disable prefer-arrow-callback */
+import { RefCallback } from 'react';
 import { HiOutlineX } from 'react-icons/hi';
 import CheckBox from '@components/common/CheckBox';
 import S from './style';
+
+interface InputAttrsProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  ref: RefCallback<HTMLInputElement>;
+}
 
 interface CheckBoxOptionProps {
   isChecked?: boolean;
@@ -8,7 +14,7 @@ interface CheckBoxOptionProps {
   isDeleteBtn?: boolean;
   onCheck?: () => void;
   onDeleteBtnClick: () => void;
-  inputAttrs: React.InputHTMLAttributes<HTMLInputElement>;
+  inputAttrs: InputAttrsProps;
 }
 
 export default function CheckBoxOption({
