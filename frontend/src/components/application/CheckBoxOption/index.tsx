@@ -10,7 +10,7 @@ interface InputAttrsProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 interface CheckBoxOptionProps {
   isChecked?: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   isDeleteBtn?: boolean;
   onCheck?: () => void;
   onDeleteBtnClick: () => void;
@@ -19,7 +19,7 @@ interface CheckBoxOptionProps {
 
 export default function CheckBoxOption({
   isChecked = false,
-  isDisabled,
+  isDisabled = false,
   isDeleteBtn = true,
   onDeleteBtnClick,
   onCheck = () => {},

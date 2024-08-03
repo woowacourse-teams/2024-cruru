@@ -14,8 +14,7 @@ const Input = styled.input`
 
   padding: 0.4rem;
   flex: 1;
-
-  font-size: 1rem;
+  text-overflow: ellipsis;
   color: ${({ theme }) => theme.colors.text.default};
 
   border-bottom: 0.1rem solid transparent;
@@ -37,10 +36,15 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
+const Empty = styled.div`
+  width: 1.6rem;
+`;
+
 const S = {
   Container,
   Input,
   DeleteBtn,
+  Empty,
 };
 
 export default S;

@@ -1,20 +1,27 @@
+import { RefCallback } from 'react';
 import { HiOutlineX } from 'react-icons/hi';
 import Radio from '@components/common/Radio';
 import S from './style';
 
+interface InputAttrsProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  ref: RefCallback<HTMLInputElement>;
+}
+
 interface RadioInputOptionProps {
   isChecked?: boolean;
-  isDisabled: boolean;
-  onCheck: () => void;
-  onDeleteBtnClick: () => void;
-  inputAttrs: React.InputHTMLAttributes<HTMLInputElement>;
+  isDisabled?: boolean;
+  isDeleteBtn?: boolean;
+  onCheck?: () => void;
+  onDeleteBtnClick?: () => void;
+  inputAttrs: InputAttrsProps;
 }
 
 export default function RadioInputOption({
   isChecked = false,
-  isDisabled,
+  isDisabled = false,
+  isDeleteBtn = true,
   onDeleteBtnClick,
-  onCheck,
+  onCheck = () => {},
   inputAttrs,
 }: RadioInputOptionProps) {
   return (
@@ -29,10 +36,13 @@ export default function RadioInputOption({
         {...inputAttrs}
         placeholder="옵션을 입력하세요."
       />
-
-      <S.DeleteBtn onClick={onDeleteBtnClick}>
-        <HiOutlineX />
-      </S.DeleteBtn>
+      {isDeleteBtn ? (
+        <S.DeleteBtn onClick={onDeleteBtnClick}>
+          <HiOutlineX />
+        </S.DeleteBtn>
+      ) : (
+        <S.Empty />
+      )}
     </S.Container>
   );
 }
