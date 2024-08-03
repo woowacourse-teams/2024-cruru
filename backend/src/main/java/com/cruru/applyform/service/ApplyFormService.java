@@ -99,17 +99,13 @@ public class ApplyFormService {
 
     private void saveAnswerReplies(AnswerCreateRequest answerCreateRequest, Applicant applicant) {
         for (String reply : answerCreateRequest.replies()) {
-            Question question = getQuestionById(answerCreateRequest.questionId());
+            Question question = questionRepository.findById(answerCreateRequest.questionId())
+                    .orElseThrow(QuestionNotFoundException::new);
             Answer answer = new Answer(reply, question, applicant);
             answerRepository.save(answer);
         }
     }
-
-    private Question getQuestionById(long questionId) {
-        return questionRepository.findById(questionId)
-                .orElseThrow(QuestionNotFoundException::new);
-    }
-
+    
     public ApplyFormResponse read(long applyFormId) {
         ApplyForm applyForm = applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
