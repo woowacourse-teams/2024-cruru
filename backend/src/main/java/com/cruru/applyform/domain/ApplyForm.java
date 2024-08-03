@@ -1,6 +1,7 @@
 package com.cruru.applyform.domain;
 
 import com.cruru.BaseEntity;
+import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
 import com.cruru.dashboard.domain.Dashboard;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -54,12 +55,19 @@ public class ApplyForm extends BaseEntity {
             LocalDateTime endDate,
             Dashboard dashboard
     ) {
+        validateDate(startDate, endDate);
         this.title = title;
         this.description = description;
         this.url = url;
         this.startDate = startDate;
         this.endDate = endDate;
         this.dashboard = dashboard;
+    }
+
+    private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateAfterEndDateException(startDate, endDate);
+        }
     }
 
     public ApplyForm(
@@ -69,6 +77,7 @@ public class ApplyForm extends BaseEntity {
             LocalDateTime endDate,
             Dashboard dashboard
     ) {
+        validateDate(startDate, endDate);
         this.title = title;
         this.description = description;
         this.startDate = startDate;
