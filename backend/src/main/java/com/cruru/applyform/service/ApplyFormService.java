@@ -105,7 +105,7 @@ public class ApplyFormService {
             answerRepository.save(answer);
         }
     }
-    
+
     public ApplyFormResponse read(long applyFormId) {
         ApplyForm applyForm = applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
