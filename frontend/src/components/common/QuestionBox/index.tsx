@@ -1,3 +1,4 @@
+import { HiOutlineDownload } from 'react-icons/hi';
 import S from './style';
 
 interface TextQuestionBoxProps {
@@ -25,7 +26,9 @@ const renderContent = (props: QuestionBoxProps) => {
       <S.Content>
         <S.FileRow>
           <S.FileName>{props.fileName}</S.FileName>
-          <S.DownloadIcon onClick={props.onFileDownload}>&#x2193;</S.DownloadIcon>
+          <S.DownloadIcon onClick={props.onFileDownload}>
+            <HiOutlineDownload size="1.6rem" />
+          </S.DownloadIcon>
         </S.FileRow>
       </S.Content>
     );

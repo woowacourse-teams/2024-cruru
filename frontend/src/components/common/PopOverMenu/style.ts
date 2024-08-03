@@ -7,7 +7,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  width: ${({ size }) => (size === 'sm' ? '90px' : '240px')};
+  min-width: ${({ size }) => (size === 'sm' ? '90px' : '240px')};
   position: absolute;
   inset: ${({ popOverPosition }) => popOverPosition ?? 'inherit'};
 

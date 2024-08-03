@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { Process } from '@customTypes/process';
 
+import processApis from '@api/process';
 import { DASHBOARD_ID } from '@constants/constants';
 import QUERY_KEYS from '@hooks/queryKeys';
-import processApis from '@api/process';
 
 interface SimpleProcess {
   processName: string;
