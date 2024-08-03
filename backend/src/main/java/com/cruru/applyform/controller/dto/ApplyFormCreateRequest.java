@@ -15,7 +15,7 @@ public record ApplyFormCreateRequest(
         LocalDateTime startDate,
 
         @NotBlank(message = "종료 날짜는 필수 값입니다.")
-        LocalDateTime dueDate
+        LocalDateTime endDate
 ) {
 
 }

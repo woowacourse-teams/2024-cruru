@@ -163,8 +163,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // then
         assertAll(
                 () -> assertThat(response.title()).isEqualTo(applyForm.getTitle()),
-                () -> assertThat(response.startDate()).isEqualTo(applyForm.getOpenDate()),
-                () -> assertThat(response.endDate()).isEqualTo(applyForm.getDueDate()),
+                () -> assertThat(response.startDate()).isEqualTo(applyForm.getStartDate()),
+                () -> assertThat(response.endDate()).isEqualTo(applyForm.getEndDate()),
                 () -> assertThat(response.questionResponses()).hasSize(1)
         );
     }

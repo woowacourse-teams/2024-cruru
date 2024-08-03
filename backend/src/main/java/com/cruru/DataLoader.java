@@ -69,7 +69,7 @@ public class DataLoader implements ApplicationRunner {
         clubRepository.save(club);
         Dashboard dashboard = new Dashboard(club);
         LocalDateTime startDate = LocalDateTime.of(2024, 10, 6, 15, 0, 0);
-        LocalDateTime dueDate = LocalDateTime.of(2024, 10, 16, 10, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2024, 10, 16, 10, 0, 0);
         dashboardRepository.save(dashboard);
         String description = """
                              ## 2025 신입생 (7기) 선발 일정
@@ -87,7 +87,7 @@ public class DataLoader implements ApplicationRunner {
                 description,
                 "https://woowacourse.io/apply",
                 startDate,
-                dueDate,
+                endDate,
                 dashboard);
         applyFormRepository.save(applyForm);
 

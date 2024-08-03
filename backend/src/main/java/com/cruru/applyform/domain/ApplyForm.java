@@ -36,11 +36,11 @@ public class ApplyForm extends BaseEntity {
     @Setter
     private String url;
 
-    @Column(name = "open_date")
-    private LocalDateTime openDate;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-    @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @OneToOne
     @JoinColumn(name = "dashboard_id")
@@ -50,29 +50,29 @@ public class ApplyForm extends BaseEntity {
             String title,
             String description,
             String url,
-            LocalDateTime openDate,
-            LocalDateTime dueDate,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Dashboard dashboard
     ) {
         this.title = title;
         this.description = description;
         this.url = url;
-        this.openDate = openDate;
-        this.dueDate = dueDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.dashboard = dashboard;
     }
 
     public ApplyForm(
             String title,
             String description,
-            LocalDateTime openDate,
-            LocalDateTime dueDate,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Dashboard dashboard
     ) {
         this.title = title;
         this.description = description;
-        this.openDate = openDate;
-        this.dueDate = dueDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.dashboard = dashboard;
     }
 
@@ -95,13 +95,13 @@ public class ApplyForm extends BaseEntity {
     @Override
     public String toString() {
         return "ApplyForm{" +
-                "dashboard=" + dashboard +
-                ", id=" + id +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", openDate=" + openDate +
-                ", dueDate=" + dueDate +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", dashboard=" + dashboard +
                 '}';
     }
 }

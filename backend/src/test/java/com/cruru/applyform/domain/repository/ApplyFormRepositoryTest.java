@@ -38,7 +38,7 @@ class ApplyFormRepositoryTest {
         String description = "수정된 상세 내용";
         String url = "www.modified.url";
         LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
-        LocalDateTime dueDate = LocalDateTime.of(2024, 12, 31, 23, 59);
+        LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 23, 59);
 
         ApplyForm expectedApplyForm = applyFormRepository.save(new ApplyForm(
                 initialApplyForm.getId(),
@@ -46,7 +46,7 @@ class ApplyFormRepositoryTest {
                 description,
                 url,
                 startDate,
-                dueDate,
+                endDate,
                 initialApplyForm.getDashboard()
         ));
 
@@ -58,8 +58,8 @@ class ApplyFormRepositoryTest {
             assertThat(actualApplyForm.getTitle()).isEqualTo(title);
             assertThat(actualApplyForm.getDescription()).isEqualTo(description);
             assertThat(actualApplyForm.getUrl()).isEqualTo(url);
-            assertThat(actualApplyForm.getOpenDate()).isEqualTo(startDate);
-            assertThat(actualApplyForm.getDueDate()).isEqualTo(dueDate);
+            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
+            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
         });
     }
 

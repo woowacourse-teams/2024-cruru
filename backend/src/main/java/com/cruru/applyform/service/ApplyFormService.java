@@ -23,6 +23,7 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.question.exception.QuestionNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class ApplyFormService {
                 request.title(),
                 request.postingContent(),
                 request.startDate(),
-                request.dueDate(),
+                request.endDate(),
                 createdDashboard
         );
     }
@@ -118,26 +119,33 @@ public class ApplyFormService {
         return new ApplyFormResponse(
                 applyForm.getTitle(),
                 applyForm.getDescription(),
-                applyForm.getOpenDate(),
-                applyForm.getDueDate(),
+                applyForm.getStartDate(),
+                applyForm.getEndDate(),
                 responses
         );
     }
 
     private QuestionResponse toQuestionResponse(Question question) {
+        List<Choice> choices = getChoices(question);
         return new QuestionResponse(
                 question.getId(),
                 question.getQuestionType().name(),
                 question.getContent(),
                 question.getDescription(),
                 question.getSequence(),
-                toChoiceResponses(question)
+                toChoiceResponses(choices)
         );
     }
 
-    private List<ChoiceResponse> toChoiceResponses(Question question) {
-        return choiceRepository.findAllByQuestionId(question.getId())
-                .stream()
+    private List<Choice> getChoices(Question question) {
+        if (!question.hasChoice()) {
+            return Collections.emptyList();
+        }
+        return choiceRepository.findAllByQuestionId(question.getId());
+    }
+
+    private List<ChoiceResponse> toChoiceResponses(List<Choice> choices) {
+        return choices.stream()
                 .map(this::toChoiceResponse)
                 .toList();
     }
