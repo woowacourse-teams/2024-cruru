@@ -138,10 +138,10 @@ public class ApplyFormService {
     }
 
     private List<Choice> getChoices(Question question) {
-        if (!question.hasChoice()) {
-            return Collections.emptyList();
+        if (question.hasChoice()) {
+            return choiceRepository.findAllByQuestionId(question.getId());
         }
-        return choiceRepository.findAllByQuestionId(question.getId());
+        return Collections.emptyList();
     }
 
     private List<ChoiceResponse> toChoiceResponses(List<Choice> choices) {
