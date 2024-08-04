@@ -111,7 +111,7 @@ public class ApplyFormService {
         ApplyForm applyForm = applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
 
-        List<QuestionResponse> responses = questionRepository.findAllByApplyFormId(applyFormId)
+        List<QuestionResponse> questionResponses = questionRepository.findAllByApplyFormId(applyFormId)
                 .stream()
                 .map(this::toQuestionResponse)
                 .toList();
@@ -121,7 +121,7 @@ public class ApplyFormService {
                 applyForm.getDescription(),
                 applyForm.getStartDate(),
                 applyForm.getEndDate(),
-                responses
+                questionResponses
         );
     }
 
