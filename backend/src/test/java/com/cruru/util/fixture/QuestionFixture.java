@@ -24,7 +24,7 @@ public class QuestionFixture {
     }
 
     public static Question createCheckboxQuestion(ApplyForm applyForm) {
-        return new Question(CHECK_BOX, "체크 선택", "", 4, applyForm);
+        return new Question(CHECK_BOX, "체크 선택", "체크해주세요.", 4, applyForm);
     }
 
     public static Question createMultipleChoiceQuestion(ApplyForm applyForm) {
