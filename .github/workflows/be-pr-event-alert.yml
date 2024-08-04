@@ -120,7 +120,8 @@ jobs:
           if [ -n "${{ needs.find-slack-thread.outputs.SLACK_THREAD_ID }}" ]; then
             echo "slack-thread-ts=${{ needs.find-slack-thread.outputs.SLACK_THREAD_ID }}" >> "$GITHUB_OUTPUT"
           else
-            echo "slack-thread-ts=${{ steps.set-thread-id.outputs.slack-thread-ts }}" >> "$GITHUB_OUTPUT"
+            echo "slack-thread-ts=${{ steps.send-message.outputs.ts }}" >> "$GITHUB_OUTPUT"
+          fi
         
     outputs:
       SLACK_THREAD_ID: ${{ steps.final-thread-id.outputs.slack-thread-ts }}
