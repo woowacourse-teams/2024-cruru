@@ -12,9 +12,11 @@ public record ApplyFormCreateRequest(
         String postingContent,
 
         @NotBlank(message = "시작 날짜는 필수 값입니다.")
+        @JsonProperty("start_date")
         LocalDateTime startDate,
 
         @NotBlank(message = "종료 날짜는 필수 값입니다.")
+        @JsonProperty("end_date")
         LocalDateTime endDate
 ) {
 
