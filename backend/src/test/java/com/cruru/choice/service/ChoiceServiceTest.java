@@ -8,7 +8,7 @@ import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.choice.domain.Choice;
-import com.cruru.choice.exception.badrequest.ChoiceEmptyBadRequestException;
+import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
 import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
@@ -93,6 +93,6 @@ class ChoiceServiceTest extends ServiceTest {
         // when & then
         Long questionId = dropdownQuestion.getId();
         assertThatThrownBy(() -> choiceService.createAll(choiceRequests, questionId)).isInstanceOf(
-                ChoiceEmptyBadRequestException.class);
+                ChoiceEmptyException.class);
     }
 }
