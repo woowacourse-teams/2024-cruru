@@ -1,4 +1,4 @@
-name: FE PR Review 슬랙 알림
+name: FE/PM - PR Review 슬랙 알림
 
 on:
   pull_request:
@@ -13,25 +13,13 @@ on:
       - 'fe/**'
 
 env:
-  lurgi: "U07BJB1M53K"
-  U07BJB1M53K: "FE팀 러기"
-  llqqssttyy: "U07AZ2992CW"
-  U07AZ2992CW: "FE팀 렛서"
-  seongjinme: "U07B9HQDF4M"
-  U07B9HQDF4M: "FE팀 아르"
-  Dobby-Kim: "U07BJABU6G1"
-  U07BJABU6G1: "BE팀 도비"
-  Chocochip101: "U07BUEJDS8G"
-  U07BUEJDS8G: "BE팀 초코칩"
-  xogns1514: "U07AZ26UC2J"
-  U07AZ26UC2J: "BE팀 러쉬"
-  cutehumanS2: "U07B88ZQDU4"
-  U07B88ZQDU4: "BE팀 냥인"
-  HyungHoKim00: "U07B5HBKZM1"
-  U07B5HBKZM1: "BE팀 명오"
-
+  lurgi: "FE팀 러기"
+  llqqssttyy: "FE팀 렛서"
+  seongjinme: "FE팀 아르"
+  
 jobs:
-  set-slack-thread:
+  find-slack-thread:
+    name: Slack Thread ID 검색
     runs-on: ubuntu-latest
     steps:
       - name: Find Comment & Slack Thread ID
@@ -47,22 +35,110 @@ jobs:
     outputs:
       SLACK_THREAD_ID: ${{ steps.set-thread-id.outputs.slack-thread-ts }}
 
+  set-slack-thread-if-not-exist-create:
+    name: Slack Thread ID 미존재시 Thread 생성 및 ID 등록
+    needs: find-slack-thread
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set reviewer and sender variables
+        if: ${{ !needs.find-slack-thread.outputs.SLACK_THREAD_ID }}
+        id: set-vars
+        run: |
+          ASSIGNEE_LOGIN=${{ github.event.pull_request.assignee.login }}
+          echo "ASSIGNEE_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
+          echo "ASSIGNEE_NICKNAME=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+
+      - name: pr review 요청 -> 리뷰어에게 slack 멘션 알림
+        if: ${{ !needs.find-slack-thread.outputs.SLACK_THREAD_ID }}
+        id: send-message
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🎁 (#${{ github.event.pull_request.number }}) Pull Request가 준비되었습니다!",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "\n*진행자:*\n${{ env.ASSIGNEE_NICKNAME }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*${{ github.event.pull_request.title }}*"
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "👉🏻 PR 바로가기 👈🏻",
+                      "emoji": true
+                    },
+                    "value": "바로가기 링크",
+                    "url": "${{ github.event.pull_request.html_url }}",
+                    "action_id": "button-action"
+                  }
+                },
+                {
+                  "type": "divider"
+                }
+              ],
+              "icon_url": "${{ github.event.sender.avatar_url }}"
+            }
+
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Slack Thread ID를 PR comment에 등록
+        if: ${{ !needs.find-slack-thread.outputs.SLACK_THREAD_ID }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.number }}
+          body: |
+            ${{ steps.send-message.outputs.ts }}
+      
+      - name: 생성되거나 이미 존재하는 Slack Thread ID 전달
+        id: final-thread-id
+        run: |
+          if [ -n "${{ needs.find-slack-thread.outputs.SLACK_THREAD_ID }}" ]; then
+            echo "slack-thread-ts=${{ needs.find-slack-thread.outputs.SLACK_THREAD_ID }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "slack-thread-ts=${{ steps.send-message.outputs.ts }}" >> "$GITHUB_OUTPUT"
+          fi
+        
+    outputs:
+      SLACK_THREAD_ID: ${{ steps.final-thread-id.outputs.slack-thread-ts }}
+
   review-requested_requested:
-    needs: set-slack-thread
+    name: Slack Thread로 리뷰 요청 멘션 댓글 생성
+    needs: set-slack-thread-if-not-exist-create
     if: github.event.action == 'review_requested'
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and sender variables
         id: set-vars
         run: |
-          echo "REVIEWER_SLACK_ID=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV 
-          echo "SENDER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-
-      - name: Set reviewer and sender nickname
-        id: set-nicks
-        run: |
-          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
-          echo "SENDER_NICKNAME=${{ env[format('{0}', env.SENDER_SLACK_ID)] }}" >> $GITHUB_ENV
+          SENDER_LOGIN=${{ github.event.sender.login }}
+          echo "SENDER_SLACK_ID=${SENDER_LOGIN@L}" >> ${GITHUB_ENV}
+          echo "SENDER_NICKNAME=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
+          REVIEWER_LOGIN=${{ github.event.requested_reviewer.login }}
+          echo "REVIEWER_SLACK_ID=${REVIEWER_LOGIN@L}" >> ${GITHUB_ENV}
+          echo "REVIEWER_NICKNAME=${{ env[github.event.requested_reviewer.login] }}" >> $GITHUB_ENV
+          
 
       - name: pr review 요청 -> 리뷰어에게 slack 멘션 알림
         uses: slackapi/slack-github-action@v1.26.0
@@ -70,7 +146,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -147,21 +223,20 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
   review-submitted_alert:
-    needs: set-slack-thread
-    if: github.event.review.state == 'CHANGES_REQUESTED' || github.event.review.state == 'COMMENTED'
+    name: Slack Thread로 리뷰 완료 멘션 댓글 생성
+    needs: set-slack-thread-if-not-exist-create
+    if:  ( github.event.review.state == 'CHANGES_REQUESTED' || github.event.review.state == 'COMMENTED' ) && github.event.sender.login != github.event.pull_request.assignee.login
     runs-on: ubuntu-latest
     steps:
       - name: Set reviewer and reviewee variables
         id: set-vars
         run: |
-          echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
-
-      - name: Set reviewer and reviewee nickname
-        id: set-nicks
-        run: |
-          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
-          echo "ASSIGNEE_NICKNAME=${{ env[format('{0}', env.ASSIGNEE_SLACK_ID)] }}" >> $GITHUB_ENV
+          ASSIGNEE_LOGIN=${{ github.event.pull_request.assignee.login }}
+          echo "ASSIGNEE_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
+          echo "ASSIGNEE_NICKNAME=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+          REVIEWER_LOGIN=${{ github.event.sender.login }}
+          echo "REVIEWER_SLACK_ID=${REVIEWER_LOGIN@L}" >> ${GITHUB_ENV} 
+          echo "REVIEWER_NICKNAME=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
 
       - name: pr 리뷰 submit -> assignee에게 slack 멘션 알림
         if: env.ASSIGNEE_SLACK_ID != ''
@@ -170,7 +245,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
@@ -245,9 +320,9 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
+          
   pr-approved_alert:
-    needs: set-slack-thread
+    needs: set-slack-thread-if-not-exist-create
     if: github.event.review.state == 'APPROVED'
     runs-on: ubuntu-latest
     steps:
@@ -255,22 +330,20 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "REVIEWER_SLACK_ID=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
-
-      - name: Set reviewer and reviewee nickname
-        id: set-nicks
-        run: |
-          echo "REVIEWER_NICKNAME=${{ env[format('{0}', env.REVIEWER_SLACK_ID)] }}" >> $GITHUB_ENV
-          echo "ASSIGNEE_NICKNAME=${{ env[format('{0}', env.ASSIGNEE_SLACK_ID)] }}" >> $GITHUB_ENV
+          ASSIGNEE_LOGIN=${{ github.event.pull_request.assignee.login }}
+          echo "ASSIGNEE_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
+          echo "ASSIGNEE_NICKNAME=${{ env[github.event.pull_request.assignee.login] }}" >> $GITHUB_ENV
+          REVIEWER_LOGIN=${{ github.event.sender.login }}
+          echo "REVIEWER_SLACK_ID=${REVIEWER_LOGIN@L}" >> ${GITHUB_ENV} 
+          echo "REVIEWER_NICKNAME=${{ env[github.event.sender.login] }}" >> $GITHUB_ENV
 
       - name: pr reviewer가 Approve 하면 slack 알림 보냄
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v1.26.0
         with:
-          channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
+          channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread.outputs.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
