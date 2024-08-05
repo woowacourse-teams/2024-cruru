@@ -8,19 +8,8 @@ import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.question.domain.Question;
-import java.util.List;
 
 public class QuestionFixture {
-
-    public static List<Question> createAllTypesOfQuestions(ApplyForm applyForm) {
-        return List.of(
-                createShortAnswerQuestion(applyForm),
-                createLongAnswerQuestion(applyForm),
-                createDropdownQuestion(applyForm),
-                createCheckboxQuestion(applyForm),
-                createMultipleChoiceQuestion(applyForm)
-        );
-    }
 
     public static Question createShortAnswerQuestion(ApplyForm applyForm) {
         return new Question(SHORT_ANSWER, "주관식 단답형", "50자 이하로 입력해주세요.", 1, applyForm);
@@ -35,7 +24,7 @@ public class QuestionFixture {
     }
 
     public static Question createCheckboxQuestion(ApplyForm applyForm) {
-        return new Question(CHECK_BOX, "체크 선택", "", 4, applyForm);
+        return new Question(CHECK_BOX, "체크 선택", "체크해주세요.", 4, applyForm);
     }
 
     public static Question createMultipleChoiceQuestion(ApplyForm applyForm) {

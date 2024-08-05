@@ -115,7 +115,7 @@ class ApplicantServiceTest extends ServiceTest {
         // given
         long invalidId = -1L;
 
-        // given&when&then
+        // when&then
         assertThatThrownBy(() -> applicantService.findById(invalidId))
                 .isInstanceOf(ApplicantNotFoundException.class);
     }

@@ -42,7 +42,12 @@ public class Question {
     private ApplyForm applyForm;
 
     public Question(
-            QuestionType questionType, String content, String description, Integer sequence, ApplyForm applyForm) {
+            QuestionType questionType,
+            String content,
+            String description,
+            Integer sequence,
+            ApplyForm applyForm
+    ) {
         this.questionType = questionType;
         this.content = content;
         this.description = description;

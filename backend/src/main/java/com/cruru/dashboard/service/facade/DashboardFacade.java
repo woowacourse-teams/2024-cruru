@@ -46,7 +46,7 @@ public class DashboardFacade {
                 request.title(),
                 request.postingContent(),
                 request.startDate(),
-                request.dueDate()
+                request.endDate()
         );
     }
 

@@ -16,11 +16,12 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
-import com.cruru.applyform.exception.PersonalDataProcessingException;
+import com.cruru.applyform.exception.badrequest.PersonalDataProcessingException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -29,6 +30,7 @@ import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +59,20 @@ class ApplyFormServiceTest extends ServiceTest {
     @Autowired
     private ApplyFormService applyFormService;
 
+    private Dashboard dashboard;
+
+    private ApplyForm applyForm;
+
+    @BeforeEach
+    void setUp() {
+        dashboard = dashboardRepository.save(createBackendDashboard());
+        applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
+    }
+
     @DisplayName("지원서 폼 제출에 성공한다.")
     @Test
     void submit() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process firstProcess = processRepository.save(createFirstProcess(dashboard));
         Process finalProcess = processRepository.save(createFinalProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
@@ -112,7 +123,6 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void submit_rejectPersonalDataCollection() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
@@ -132,7 +142,6 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void submit_invalidApplyForm() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         Question question = questionRepository.save(createShortAnswerQuestion(applyForm));

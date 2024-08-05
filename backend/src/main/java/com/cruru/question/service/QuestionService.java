@@ -21,12 +21,12 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final ChoiceService choiceService;
 
-    public List<Question> createAll(List<QuestionCreateRequest> requests, ApplyForm applyForm) {
-        return requests.stream()
-                .map(questionCreateRequest -> create(questionCreateRequest, applyForm))
-                .toList();
+    @Transactional
+    public void createAll(List<QuestionCreateRequest> requests, ApplyForm applyForm) {
+        requests.forEach(questionCreateRequest -> create(questionCreateRequest, applyForm));
     }
 
+    @Transactional
     public Question create(QuestionCreateRequest request, ApplyForm applyForm) {
         QuestionType questionType = QuestionType.fromString(request.type());
         Question savedQuestion = questionRepository.save(toQuestion(questionType, request, applyForm));

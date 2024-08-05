@@ -1,4 +1,4 @@
-package com.cruru.process.exception;
+package com.cruru.process.exception.badrequest;
 
 import com.cruru.advice.badrequest.TextCharacterException;
 

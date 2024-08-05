@@ -4,8 +4,8 @@ import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.choice.controller.dto.ChoiceResponse;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
-import com.cruru.choice.exception.ChoiceEmptyBadRequestException;
-import com.cruru.choice.exception.ChoiceIllegalSaveException;
+import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
+import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.question.exception.QuestionNotFoundException;
@@ -31,7 +31,7 @@ public class ChoiceService {
             throw new ChoiceIllegalSaveException();
         }
         if (requests.isEmpty()) {
-            throw new ChoiceEmptyBadRequestException();
+            throw new ChoiceEmptyException();
         }
         return choiceRepository.saveAll(toChoices(requests, targetQuestion));
     }
