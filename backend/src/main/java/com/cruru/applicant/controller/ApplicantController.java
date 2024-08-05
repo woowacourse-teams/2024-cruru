@@ -50,9 +50,9 @@ public class ApplicantController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{applicant_id}")
+    @PatchMapping("/{applicantId}")
     private ResponseEntity<Void> update(
-            @PathVariable("applicant_id") Long applicantId,
+            @PathVariable("applicantId") Long applicantId,
             @RequestBody @Valid ApplicantUpdateRequest request) {
         applicantService.update(request, applicantId);
         return ResponseEntity.ok().build();
