@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record ProcessResponse(
-        @JsonProperty("process_id")
         long processId,
 
-        @JsonProperty("order_index")
+        @JsonProperty("orderIndex")
         int sequence,
 
         String name,

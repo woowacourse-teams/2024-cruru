@@ -27,7 +27,7 @@ public class ProcessController {
     private final ProcessService processService;
 
     @GetMapping
-    public ResponseEntity<ProcessesResponse> read(@RequestParam(name = "dashboard_id") Long dashboardId) {
+    public ResponseEntity<ProcessesResponse> read(@RequestParam(name = "dashboardId") Long dashboardId) {
         ProcessesResponse processes = processService.findByDashboardId(dashboardId);
         return ResponseEntity.ok().body(processes);
     }
