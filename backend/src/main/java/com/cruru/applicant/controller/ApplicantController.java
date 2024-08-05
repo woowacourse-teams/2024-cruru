@@ -43,8 +43,8 @@ public class ApplicantController {
         return ResponseEntity.ok().body(applicantDetailResponse);
     }
 
-    @PatchMapping("/{applicant_id}/reject")
-    public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable("applicant_id") Long applicantId) {
+    @PatchMapping("/{applicantId}/reject")
+    public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable("applicantId") Long applicantId) {
         applicantService.reject(applicantId);
         return ResponseEntity.ok().build();
     }
