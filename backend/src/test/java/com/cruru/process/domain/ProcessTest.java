@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.process.exception.ProcessNameBlankException;
-import com.cruru.process.exception.ProcessNameCharacterException;
-import com.cruru.process.exception.ProcessNameLengthException;
+import com.cruru.process.exception.badrequest.ProcessNameBlankException;
+import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
+import com.cruru.process.exception.badrequest.ProcessNameLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

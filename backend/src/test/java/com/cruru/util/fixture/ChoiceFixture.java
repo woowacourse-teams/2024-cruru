@@ -6,6 +6,16 @@ import java.util.List;
 
 public class ChoiceFixture {
 
+    public static List<Choice> createChoices(Question question) {
+        return List.of(
+                createFirstChoice(question),
+                createSecondChoice(question),
+                createThirdChoice(question),
+                createFourthChoice(question),
+                createFifthChoice(question)
+        );
+    }
+
     public static Choice createFirstChoice(Question question) {
         return new Choice("1번 선택지", 1, question);
     }
@@ -24,15 +34,5 @@ public class ChoiceFixture {
 
     public static Choice createFifthChoice(Question question) {
         return new Choice("5번 선택지", 5, question);
-    }
-
-    public static List<Choice> createChoices(Question question) {
-        return List.of(
-                createFirstChoice(question),
-                createSecondChoice(question),
-                createThirdChoice(question),
-                createFourthChoice(question),
-                createFifthChoice(question)
-        );
     }
 }

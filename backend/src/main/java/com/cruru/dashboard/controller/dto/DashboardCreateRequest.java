@@ -25,8 +25,8 @@ public record DashboardCreateRequest(
 
         @NotNull(message = "종료 날짜는 필수 값입니다.")
         @JsonFormat(shape = Shape.STRING)
-        @JsonProperty("due_date")
-        LocalDateTime dueDate
+        @JsonProperty("end_date")
+        LocalDateTime endDate
 ) {
 
 }

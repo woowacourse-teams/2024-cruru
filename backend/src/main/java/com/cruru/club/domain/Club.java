@@ -1,8 +1,8 @@
 package com.cruru.club.domain;
 
-import com.cruru.club.exception.ClubNameBlankException;
-import com.cruru.club.exception.ClubNameCharacterException;
-import com.cruru.club.exception.ClubNameLengthException;
+import com.cruru.club.exception.badrequest.ClubNameBlankException;
+import com.cruru.club.exception.badrequest.ClubNameCharacterException;
+import com.cruru.club.exception.badrequest.ClubNameLengthException;
 import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
