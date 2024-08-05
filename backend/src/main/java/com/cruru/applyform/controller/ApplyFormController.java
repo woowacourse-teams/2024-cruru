@@ -30,8 +30,8 @@ public class ApplyFormController {
         return ResponseEntity.created(URI.create("/v1/applyform/" + applyFormId)).build();
     }
 
-    @GetMapping("/{applyform_id}")
-    public ResponseEntity<ApplyFormResponse> read(@PathVariable(name = "applyform_id") long applyFormId) {
+    @GetMapping("/{applyformId}")
+    public ResponseEntity<ApplyFormResponse> read(@PathVariable(name = "applyformId") long applyFormId) {
         ApplyFormResponse response = applyFormService.read(applyFormId);
         return ResponseEntity.ok(response);
     }
