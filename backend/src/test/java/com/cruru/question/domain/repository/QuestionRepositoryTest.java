@@ -27,11 +27,11 @@ class QuestionRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Question question = new Question(DROPDOWN, "성별", 0, null);
+        Question question = new Question(DROPDOWN, "성별", "", 0, null);
         Question saved = questionRepository.save(question);
 
         //when
-        Question updateQuestion = new Question(saved.getId(), SHORT_ANSWER, "전공", 1, null);
+        Question updateQuestion = new Question(saved.getId(), SHORT_ANSWER, "전공", "전공을 입력해주세요.", 1, null);
         questionRepository.save(updateQuestion);
 
         //then
@@ -44,8 +44,8 @@ class QuestionRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Question question1 = new Question(DROPDOWN, "성별", 0, null);
-        Question question2 = new Question(SHORT_ANSWER, "전공", 1, null);
+        Question question1 = new Question(DROPDOWN, "성별", "성별을 선택해주세요.", 0, null);
+        Question question2 = new Question(SHORT_ANSWER, "전공", "전공을 입력해주세요.", 1, null);
 
         //when
         Question savedQuestion1 = questionRepository.save(question1);
