@@ -2,7 +2,7 @@ package com.cruru.dashboard.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record Stats(
+public record StatsResponse(
         int accept,
 
         int fail,

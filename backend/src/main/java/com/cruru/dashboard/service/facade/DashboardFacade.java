@@ -9,7 +9,7 @@ import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponses;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
-import com.cruru.dashboard.controller.dto.Stats;
+import com.cruru.dashboard.controller.dto.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
 import com.cruru.process.controller.dto.ProcessesResponse;
@@ -71,7 +71,7 @@ public class DashboardFacade {
     private DashboardPreviewResponse createDashboardResponse(Long dashboardId) {
         ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
         List<DashboardApplicantResponse> allApplicants = getAllApplicantsByDashboardId(dashboardId);
-        Stats stats = calculateStats(allApplicants);
+        StatsResponse stats = calculateStats(allApplicants);
         return new DashboardPreviewResponse(
                 dashboardId,
                 applyForm.getTitle(),
@@ -90,12 +90,12 @@ public class DashboardFacade {
                 .toList();
     }
 
-    private Stats calculateStats(List<DashboardApplicantResponse> allApplicants) {
+    private StatsResponse calculateStats(List<DashboardApplicantResponse> allApplicants) {
         int totalApplicants = allApplicants.size();
         int totalFails = (int) allApplicants.stream()
                 .filter(DashboardApplicantResponse::isRejected).count();
         int totalAccepts = totalApplicants - totalFails;
         int totalPending = totalApplicants - (totalAccepts + totalFails);
-        return new Stats(totalAccepts, totalFails, totalPending, totalApplicants);
+        return new StatsResponse(totalAccepts, totalFails, totalPending, totalApplicants);
     }
 }

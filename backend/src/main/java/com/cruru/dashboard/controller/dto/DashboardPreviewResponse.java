@@ -11,7 +11,7 @@ public record DashboardPreviewResponse(
 
         String title,
 
-        Stats stats,
+        StatsResponse stats,
 
         @JsonProperty(value = "post_url")
         String url,
