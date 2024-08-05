@@ -1,36 +1,49 @@
 import { useState } from 'react';
-import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
+import Tab from '@components/common/Tab';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
-import DashboardTab, { DashboardMenus } from '@components/dashboard/DashboardTab';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
+
 import useProcess from '@hooks/useProcess';
+
+import { DASHBOARD_TAB_MENUS } from '@constants/constants';
+import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
+
 import S from './style';
 
+export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
+
 export default function Dashboard() {
-  const [currentMenu, setCurrentMenu] = useState<DashboardMenus>('applicant');
   const { processes } = useProcess();
 
-  const changeMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [currentMenu, setCurrentMenu] = useState<DashboardTabItems>('지원자 관리');
+
+  const moveTab = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { name } = e.currentTarget;
-    setCurrentMenu(name as DashboardMenus);
+    setCurrentMenu(name as DashboardTabItems);
   };
 
   return (
     <S.AppContainer>
-      <DashboardTab
-        currentMenuKey={currentMenu}
-        handleClickTabItem={changeMenu}
-      />
+      <Tab>
+        {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
+          <Tab.TabItem
+            label={label}
+            name={label}
+            isActive={currentMenu === label}
+            handleClickTabItem={moveTab}
+          />
+        ))}
+      </Tab>
 
-      <S.DashboardPanel isVisible={currentMenu === 'applicant'}>
+      <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
         <SpecificApplicantIdProvider>
           <KanbanBoard processes={processes} />
         </SpecificApplicantIdProvider>
-      </S.DashboardPanel>
+      </Tab.TabPanel>
 
-      <S.DashboardPanel isVisible={currentMenu === 'process'}>
+      <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
         <ProcessManageBoard processes={processes} />
-      </S.DashboardPanel>
+      </Tab.TabPanel>
     </S.AppContainer>
   );
 }
