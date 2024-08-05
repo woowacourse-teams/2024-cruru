@@ -34,7 +34,7 @@ public class ProcessController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @RequestParam(name = "dashboard_id") Long dashboardId,
+            @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestBody @Valid ProcessCreateRequest request
     ) {
         processService.create(request, dashboardId);

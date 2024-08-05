@@ -64,7 +64,7 @@ class ProcessControllerTest extends ControllerTest {
     void create() {
         // given
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
-        String url = String.format("/v1/processes?dashboard_id=%d", dashboard.getId());
+        String url = String.format("/v1/processes?dashboardId=%d", dashboard.getId());
 
         // when&then
         RestAssured.given().log().all()
