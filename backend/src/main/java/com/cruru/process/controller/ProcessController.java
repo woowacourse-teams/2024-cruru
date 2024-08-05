@@ -41,9 +41,9 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/{process_id}")
+    @PatchMapping("/{processId}")
     public ResponseEntity<ProcessResponse> update(
-            @PathVariable(name = "process_id") Long processId,
+            @PathVariable(name = "processId") Long processId,
             @RequestBody @Valid ProcessUpdateRequest request
     ) {
         ProcessResponse response = processService.update(request, processId);
