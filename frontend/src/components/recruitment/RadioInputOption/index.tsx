@@ -1,11 +1,7 @@
-import { RefCallback } from 'react';
+import { ComponentPropsWithRef } from 'react';
 import { HiOutlineX } from 'react-icons/hi';
 import Radio from '@components/common/Radio';
 import S from './style';
-
-interface InputAttrsProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  ref?: RefCallback<HTMLInputElement>;
-}
 
 interface RadioInputOptionProps {
   isChecked?: boolean;
@@ -13,7 +9,7 @@ interface RadioInputOptionProps {
   isDeleteBtn?: boolean;
   onCheck?: () => void;
   onDeleteBtnClick?: () => void;
-  inputAttrs: InputAttrsProps;
+  inputAttrs: ComponentPropsWithRef<'input'>;
 }
 
 export default function RadioInputOption({

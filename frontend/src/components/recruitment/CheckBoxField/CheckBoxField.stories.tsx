@@ -35,7 +35,7 @@ const meta: Meta<typeof CheckBoxField> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const defaultOptions = [{ value: '', isChecked: false }];
+const defaultOptions = [{ value: '' }];
 
 export const Default: Story = {
   args: {

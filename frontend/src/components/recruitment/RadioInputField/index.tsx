@@ -32,10 +32,12 @@ export default function RadioInputField({ options, setOptions }: Props) {
   };
 
   const handleOptionBlur = (index: number) => {
-    if (index !== options.length - 1 && options[index].value.trim() === '') {
+    const isLastOption = index === options.length - 1;
+    const isEmptyValue = options[index].value.trim() === '';
+    if (!isLastOption && isEmptyValue) {
       deleteOption(index);
     }
-    if (index === options.length - 1 && options[index].value.trim() !== '') {
+    if (isLastOption && !isEmptyValue) {
       addOption();
     }
   };
