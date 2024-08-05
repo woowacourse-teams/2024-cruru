@@ -31,8 +31,8 @@ public class ApplicantController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{applicant_id}")
-    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicant_id") Long applicantId) {
+    @GetMapping("/{applicantId}")
+    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicantId") Long applicantId) {
         ApplicantBasicResponse applicantResponse = applicantService.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
