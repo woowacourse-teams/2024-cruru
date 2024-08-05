@@ -107,7 +107,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
+        String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", process.getId(), applicant.getId());
 
         // when&then
         RestAssured.given().log().all()

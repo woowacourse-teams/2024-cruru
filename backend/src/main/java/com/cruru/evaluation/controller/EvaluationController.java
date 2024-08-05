@@ -34,8 +34,8 @@ public class EvaluationController {
 
     @GetMapping
     public ResponseEntity<EvaluationsResponse> read(
-            @RequestParam(name = "process_id") Long processId,
-            @RequestParam(name = "applicant_id") Long applicantId
+            @RequestParam(name = "processId") Long processId,
+            @RequestParam(name = "applicantId") Long applicantId
     ) {
         EvaluationsResponse response = evaluationService.read(processId, applicantId);
         return ResponseEntity.ok(response);
