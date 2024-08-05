@@ -1,19 +1,24 @@
 import S from './style';
 
 interface RadioProps {
-  checked: boolean;
+  isChecked: boolean;
+  isDisabled?: boolean;
   diameter?: string;
-  onChange: () => void;
+  onToggle: () => void;
 }
 
-export default function Radio({ checked, diameter, onChange }: RadioProps) {
+export default function Radio({ isChecked, isDisabled = false, onToggle, diameter }: RadioProps) {
   return (
-    <S.RadioContainer onClick={onChange}>
+    <S.RadioContainer onClick={onToggle}>
       <S.RadioOuter
+        isDisabled={isDisabled}
         diameter={diameter}
-        checked={checked}
+        checked={isChecked}
       >
-        <S.RadioInner checked={checked} />
+        <S.RadioInner
+          checked={isChecked}
+          isDisabled={isDisabled}
+        />
       </S.RadioOuter>
     </S.RadioContainer>
   );

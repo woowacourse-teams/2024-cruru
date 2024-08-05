@@ -11,8 +11,8 @@ export default function RadioOption({ label, checked, onChange }: RadioOptionPro
   return (
     <S.Option>
       <Radio
-        checked={checked}
-        onChange={onChange}
+        isChecked={checked}
+        onToggle={onChange}
       />
       <S.Label>{label}</S.Label>
     </S.Option>
