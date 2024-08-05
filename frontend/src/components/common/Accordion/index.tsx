@@ -33,7 +33,6 @@ function Accordion({ title, children }: AccordionProps) {
   );
 }
 
-Accordion.List = S.List;
 Accordion.ListItem = S.ListItem;
 
 export default Accordion;
