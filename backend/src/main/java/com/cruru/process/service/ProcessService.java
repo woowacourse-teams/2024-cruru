@@ -77,6 +77,15 @@ public class ProcessService {
         );
     }
 
+    public List<Process> findAllByDashboardId(long dashboardId) {
+        boolean dashboardExists = dashboardRepository.existsById(dashboardId);
+        if (!dashboardExists) {
+            throw new DashboardNotFoundException();
+        }
+
+        return processRepository.findAllByDashboardId(dashboardId);
+    }
+
     @Transactional
     public void create(ProcessCreateRequest request, long dashboardId) {
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboardId);
@@ -89,10 +98,11 @@ public class ProcessService {
                 .forEach(Process::increaseSequenceNumber);
 
         processRepository.save(new Process(
-                request.sequence(),
-                request.name(),
-                request.description(),
-                dashboard)
+                        request.sequence(),
+                        request.name(),
+                        request.description(),
+                        dashboard
+                )
         );
     }
 

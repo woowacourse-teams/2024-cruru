@@ -1,18 +1,18 @@
 package com.cruru.dashboard.service.facade;
 
-import com.cruru.applicant.controller.dto.DashboardApplicantResponse;
+import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.club.service.ClubService;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
-import com.cruru.dashboard.controller.dto.DashboardPreviewResponses;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
-import com.cruru.process.controller.dto.ProcessesResponse;
+import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import com.cruru.question.service.QuestionService;
 import java.util.Comparator;
@@ -31,6 +31,7 @@ public class DashboardFacade {
     private final ApplyFormService applyFormService;
     private final QuestionService questionService;
     private final ProcessService processService;
+    private final ApplicantService applicantService;
 
     @Transactional
     public long create(long clubId, DashboardCreateRequest request) {
@@ -49,15 +50,13 @@ public class DashboardFacade {
         );
     }
 
-    @Transactional
     public DashboardsOfClubResponse findAllDashboardsByClubId(Long clubId) {
         List<Long> dashboardIds = getDashboardIdsByClubId(clubId);
         String clubName = clubService.findById(clubId).getName();
-        List<DashboardPreviewResponse> dashboardInfos = dashboardIds.stream()
-                .map(this::createDashboardResponse)
+        List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
+                .map(this::createDashboardPreviewResponse)
                 .sorted(Comparator.comparing(DashboardPreviewResponse::endDate))
                 .toList();
-        DashboardPreviewResponses dashboardResponses = new DashboardPreviewResponses(dashboardInfos);
         return new DashboardsOfClubResponse(clubName, dashboardResponses);
     }
 
@@ -68,9 +67,9 @@ public class DashboardFacade {
                 .toList();
     }
 
-    private DashboardPreviewResponse createDashboardResponse(Long dashboardId) {
+    private DashboardPreviewResponse createDashboardPreviewResponse(Long dashboardId) {
         ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
-        List<DashboardApplicantResponse> allApplicants = getAllApplicantsByDashboardId(dashboardId);
+        List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboardId);
         StatsResponse stats = calculateStats(allApplicants);
         return new DashboardPreviewResponse(
                 dashboardId,
@@ -81,21 +80,25 @@ public class DashboardFacade {
         );
     }
 
-    private List<DashboardApplicantResponse> getAllApplicantsByDashboardId(Long dashboardId) {
-        ProcessesResponse processes = processService.findByDashboardId(dashboardId);
-        return processes.processResponses()
-                .stream()
-                .flatMap(processResponse -> processResponse.dashboardApplicantResponses()
+    private List<Applicant> getAllApplicantsByDashboardId(Long dashboardId) {
+        List<Process> processes = processService.findAllByDashboardId(dashboardId);
+        return processes.stream()
+                .flatMap(process -> applicantService.findAllByProcess(process)
                         .stream())
                 .toList();
     }
 
-    private StatsResponse calculateStats(List<DashboardApplicantResponse> allApplicants) {
+    private StatsResponse calculateStats(List<Applicant> allApplicants) {
         int totalApplicants = allApplicants.size();
         int totalFails = (int) allApplicants.stream()
-                .filter(DashboardApplicantResponse::isRejected).count();
-        int totalAccepts = totalApplicants - totalFails;
-        int totalPending = totalApplicants - (totalAccepts + totalFails);
+                .filter(Applicant::isRejected)
+                .count();
+        int totalAccepts = (int) allApplicants.stream()
+                .filter(Applicant::isApproved)
+                .count();
+        int totalPending = (int) allApplicants.stream()
+                .filter(Applicant::isPending)
+                .count();
         return new StatsResponse(totalAccepts, totalFails, totalPending, totalApplicants);
     }
 }
