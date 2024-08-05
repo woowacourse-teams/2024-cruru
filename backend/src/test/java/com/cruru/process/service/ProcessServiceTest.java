@@ -1,6 +1,6 @@
 package com.cruru.process.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -56,7 +56,7 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
-        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
         evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
 
         // when
@@ -184,7 +184,7 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createInterviewProcess(dashboard));
-        applicantRepository.save(createApplicantDobby(process));
+        applicantRepository.save(createPendingApplicantDobby(process));
 
         // when&then
         assertThatThrownBy(() -> processService.delete(process.getId()))

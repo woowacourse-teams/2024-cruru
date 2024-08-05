@@ -1,10 +1,11 @@
 package com.cruru.applicant.domain.repository;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantRush;
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantRush;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.util.fixture.ApplicantFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,11 +28,11 @@ class ApplicantRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Applicant applicant = createApplicantDobby();
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
         Applicant saved = applicantRepository.save(applicant);
 
         //when
-        Applicant updatedApplicant = new Applicant(saved.getId(), "다른이름", "다른이메일", "다른번호", null, false);
+        Applicant updatedApplicant = new Applicant(saved.getId(), "다른이름", "다른이메일", "다른번호", null, PENDING);
         applicantRepository.save(updatedApplicant);
 
         //then
@@ -45,8 +46,8 @@ class ApplicantRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Applicant applicant1 = createApplicantDobby();
-        Applicant applicant2 = createApplicantRush();
+        Applicant applicant1 = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant2 = createPendingApplicantRush();
 
         //when
         Applicant savedApplicant1 = applicantRepository.save(applicant1);

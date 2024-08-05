@@ -1,5 +1,9 @@
 package com.cruru.applicant.domain;
 
+import static com.cruru.applicant.domain.ApplicantState.APPROVED;
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
+import static com.cruru.applicant.domain.ApplicantState.REJECTED;
+
 import com.cruru.BaseEntity;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
@@ -38,15 +42,14 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
-    @Column(name = "is_rejected")
-    private Boolean isRejected;
+    private ApplicantState state;
 
-    public Applicant(String name, String email, String phone, Process process, Boolean isRejected) {
+    public Applicant(String name, String email, String phone, Process process) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.process = process;
-        this.isRejected = isRejected;
+        this.state = PENDING;
     }
 
     public void updateProcess(Process process) {
@@ -54,7 +57,15 @@ public class Applicant extends BaseEntity {
     }
 
     public void reject() {
-        this.isRejected = true;
+        this.state = REJECTED;
+    }
+
+    public void approve() {
+        this.state = APPROVED;
+    }
+
+    public boolean isRejected() {
+        return this.state == REJECTED;
     }
 
     public Dashboard getDashboard() {
@@ -81,12 +92,12 @@ public class Applicant extends BaseEntity {
     @Override
     public String toString() {
         return "Applicant{" +
-                "id=" + id +
+                "email='" + email + '\'' +
+                ", id=" + id +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", process=" + process +
-                ", isRejected=" + isRejected +
+                ", state=" + state +
                 '}';
     }
 }

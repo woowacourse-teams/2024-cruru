@@ -89,7 +89,7 @@ public class ApplicantService {
     }
 
     private void validateRejectable(Applicant applicant) {
-        if (applicant.getIsRejected()) {
+        if (applicant.isRejected()) {
             throw new ApplicantRejectException();
         }
     }

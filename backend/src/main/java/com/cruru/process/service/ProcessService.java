@@ -72,7 +72,7 @@ public class ProcessService {
                 applicant.getId(),
                 applicant.getName(),
                 applicant.getCreatedDate(),
-                applicant.getIsRejected(),
+                applicant.isRejected(),
                 evaluationCount
         );
     }

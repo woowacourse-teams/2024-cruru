@@ -74,8 +74,7 @@ public class ApplyFormService {
                         request.applicantCreateRequest().name(),
                         request.applicantCreateRequest().email(),
                         request.applicantCreateRequest().phone(),
-                        firstProcess,
-                        false
+                        firstProcess
                 )
         );
 

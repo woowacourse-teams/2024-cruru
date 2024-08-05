@@ -5,19 +5,15 @@ import com.cruru.process.domain.Process;
 
 public class ApplicantFixture {
 
-    public static Applicant createApplicantDobby() {
-        return new Applicant("도비", "dobby@email.com", "01000000000", null, false);
+    public static Applicant createPendingApplicantDobby() {
+        return new Applicant("도비", "dobby@email.com", "01000000000", null);
     }
 
-    public static Applicant createApplicantDobby(Process process) {
-        return new Applicant("도비", "dobby@email.com", "01000000000", process, false);
+    public static Applicant createPendingApplicantDobby(Process process) {
+        return new Applicant("도비", "dobby@email.com", "01000000000", process);
     }
 
-    public static Applicant createApplicantRush() {
-        return new Applicant("러쉬", "rush@email.com", "01000000001", null, false);
-    }
-
-    public static Applicant createRejectedApplicantLurgi() {
-        return new Applicant("러기", "rush@email.com", "01000000001", null, true);
+    public static Applicant createPendingApplicantRush() {
+        return new Applicant("러쉬", "rush@email.com", "01000000001", null);
     }
 }

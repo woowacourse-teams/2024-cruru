@@ -1,7 +1,6 @@
 package com.cruru.applicant.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -29,6 +28,7 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplicantFixture;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -68,8 +68,8 @@ class ApplicantServiceTest extends ServiceTest {
         Process afterProcess = processRepository.save(createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                createApplicantDobby(beforeProcess),
-                createApplicantDobby(beforeProcess)
+                createPendingApplicantDobby(beforeProcess),
+                createPendingApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -91,7 +91,7 @@ class ApplicantServiceTest extends ServiceTest {
     void findById() {
         // given
         Process process = processRepository.save(createFirstProcess());
-        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
 
         // when
         ApplicantBasicResponse basicResponse = applicantService.findById(applicant.getId());
@@ -128,7 +128,7 @@ class ApplicantServiceTest extends ServiceTest {
         dashboardRepository.save(dashboard);
         Process process = createFirstProcess(dashboard);
         processRepository.save(process);
-        Applicant applicant = createApplicantDobby(process);
+        Applicant applicant = createPendingApplicantDobby(process);
         applicantRepository.save(applicant);
 
         Question question = questionRepository.save(createShortAnswerQuestion(null));
@@ -151,23 +151,26 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = applicantRepository.save(createApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
 
         // when
         applicantService.reject(applicant.getId());
 
         // then
-        assertThat(applicantRepository.findById(applicant.getId()).get().getIsRejected()).isTrue();
+        assertThat(applicantRepository.findById(applicant.getId()).get().isRejected()).isTrue();
     }
 
     @DisplayName("이미 불합격한 지원자를 불합격시키려 하면 예외가 발생한다.")
     @Test
     void reject_alreadyRejected() {
         // given
-        Applicant applicant = applicantRepository.save(createRejectedApplicantLurgi());
+        Applicant targetApplicant = createPendingApplicantDobby();
+        targetApplicant.reject();
+        Applicant rejectedApplicant = applicantRepository.save(targetApplicant);
 
         // when&then
-        assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
+        Long applicantId = rejectedApplicant.getId();
+        assertThatThrownBy(() -> applicantService.reject(applicantId))
                 .isInstanceOf(ApplicantRejectException.class);
     }
 }
