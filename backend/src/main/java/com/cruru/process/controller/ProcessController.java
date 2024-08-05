@@ -50,8 +50,8 @@ public class ProcessController {
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping("/{process_id}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "process_id") Long processId) {
+    @DeleteMapping("/{processId}")
+    public ResponseEntity<Void> delete(@PathVariable(name = "processId") Long processId) {
         processService.delete(processId);
         return ResponseEntity.noContent().build();
     }
