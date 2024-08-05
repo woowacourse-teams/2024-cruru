@@ -37,8 +37,8 @@ public class ApplicantController {
         return ResponseEntity.ok().body(applicantResponse);
     }
 
-    @GetMapping("/{applicant_id}/detail")
-    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicant_id") Long applicantId) {
+    @GetMapping("/{applicantId}/detail")
+    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicantId") Long applicantId) {
         ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicantId);
         return ResponseEntity.ok().body(applicantDetailResponse);
     }
