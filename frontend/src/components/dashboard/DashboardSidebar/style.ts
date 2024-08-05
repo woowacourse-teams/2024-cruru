@@ -23,7 +23,7 @@ const Contents = styled.div`
 
 const ContentButton = styled.button<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.block}
-  color: ${({ theme, isSelected }) => (isSelected ? theme.baseColors.purplescale[700] : theme.colors.text.default)};
+  color: ${({ theme, isSelected }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.default)};
   margin-bottom: 0;
 `;
 
