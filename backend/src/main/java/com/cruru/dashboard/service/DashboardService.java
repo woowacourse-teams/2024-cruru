@@ -36,7 +36,6 @@ public class DashboardService {
         return savedDashboard;
     }
 
-    @Transactional
     public List<Dashboard> findAllByClubId(long clubId) {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(ClubNotFoundException::new);

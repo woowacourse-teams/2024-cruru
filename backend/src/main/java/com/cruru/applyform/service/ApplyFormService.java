@@ -102,13 +102,11 @@ public class ApplyFormService {
                 .orElseThrow(QuestionNotFoundException::new);
     }
 
-    @Transactional
     public ApplyForm findById(long applyFormId) {
         return applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 
-    @Transactional
     public ApplyForm findByDashboardId(long dashboardId) {
         return applyFormRepository.findByDashboardId(dashboardId)
                 .orElseThrow(ApplyFormNotFoundException::new);
