@@ -160,7 +160,7 @@ const typography = {
       letter-spacing: 0;
     `,
     block: css`
-      font-weight: 700;
+      font-weight: 500;
       font-size: 1.4rem;
       line-height: 2rem;
       letter-spacing: 0;
