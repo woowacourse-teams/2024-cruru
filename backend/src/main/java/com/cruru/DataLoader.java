@@ -3,7 +3,10 @@ package com.cruru;
 import static com.cruru.applicant.domain.ApplicantState.APPROVED;
 import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
+import static com.cruru.question.domain.QuestionType.CHECK_BOX;
 import static com.cruru.question.domain.QuestionType.DROPDOWN;
+import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
+import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 
 import com.cruru.answer.domain.Answer;
@@ -79,7 +82,7 @@ public class DataLoader implements ApplicationRunner {
                              - 1차 합격자 발표: 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보
                              - 최종 코딩 테스트: 2024년 12월 16일(토)
                              - 최종 합격자 발표: 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보
-
+                             
                              ## 2025 신입생 (7기) 교육 기간
                              - 2025년 2월 ~ 11월 (약 10개월)
                              """;
@@ -89,7 +92,8 @@ public class DataLoader implements ApplicationRunner {
                 "https://woowacourse.io/apply",
                 startDate,
                 endDate,
-                dashboard);
+                dashboard
+        );
         applyFormRepository.save(applyForm);
 
         Process firstProcess = new Process(0, "프리코스", "지원 서류를 확인한다.", dashboard);
@@ -165,14 +169,14 @@ public class DataLoader implements ApplicationRunner {
         Choice no = choiceRepository.save(new Choice("다시 확인하겠습니다.", 2, question6));
 
         List<Answer> answers = List.of(
-                new Answer("서울대학교 컴퓨터공학과 졸업", question0, lurgi),
-                new Answer("카이스트 소프트웨어학과 재학 중", question0, dobby),
-                new Answer("부산대학교 전자공학과 졸업", question0, arrr),
-                new Answer("한양대학교 정보통신공학과 졸업", question0, chocochip),
-                new Answer("고려대학교 정보보호학과 졸업", question0, myungoh),
-                new Answer("연세대학교 컴퓨터과학과 재학 중", question0, rush),
-                new Answer("성균관대학교 소프트웨어학과 졸업", question0, nyangin),
-                new Answer("이화여자대학교 컴퓨터공학과 졸업", question0, redpanda),
+                new Answer("서울대학교 컴퓨터공학과 졸업", question1, lurgi),
+                new Answer("카이스트 소프트웨어학과 재학 중", question1, dobby),
+                new Answer("부산대학교 전자공학과 졸업", question1, arrr),
+                new Answer("한양대학교 정보통신공학과 졸업", question1, chocochip),
+                new Answer("고려대학교 정보보호학과 졸업", question1, myungoh),
+                new Answer("연세대학교 컴퓨터과학과 재학 중", question1, rush),
+                new Answer("성균관대학교 소프트웨어학과 졸업", question1, nyangin),
+                new Answer("이화여자대학교 컴퓨터공학과 졸업", question1, redpanda),
 
                 new Answer(
                         "저는 효율적인 학습을 위해 주로 플래닝과 시간을 잘 쪼개서 사용하는 방법을 활용합니다. 학습 계획을 세워 목표를 설정하고, 이를 달성하기 위해 매일 꾸준히 공부합니다. 이 방식은 프로그래밍 학습에도 큰 도움이 되고 있습니다.",
@@ -189,23 +193,28 @@ public class DataLoader implements ApplicationRunner {
                         question1,
                         arrr
                 ),
-                new Answer("온라인 강의와 강의 노트를 병행하는 학습 방식이 저에게는 가장 효과적이었습니다. 이를 통해 개념을 더 명확히 이해하고 실전에 적용할 수 있었습니다.",
+                new Answer(
+                        "온라인 강의와 강의 노트를 병행하는 학습 방식이 저에게는 가장 효과적이었습니다. 이를 통해 개념을 더 명확히 이해하고 실전에 적용할 수 있었습니다.",
                         question1,
                         chocochip
                 ),
-                new Answer("프로젝트 기반 학습이 저에게는 가장 효과적이었습니다. 실제로 프로젝트를 수행하면서 배우는 것이 이론 학습보다 훨씬 더 잘 이해되고 기억에 오래 남았습니다.",
+                new Answer(
+                        "프로젝트 기반 학습이 저에게는 가장 효과적이었습니다. 실제로 프로젝트를 수행하면서 배우는 것이 이론 학습보다 훨씬 더 잘 이해되고 기억에 오래 남았습니다.",
                         question1,
                         myungoh
                 ),
-                new Answer("퀴즈나 테스트를 통해 학습 내용을 점검하는 방식이 저에게는 유효했습니다. 이를 통해 어떤 부분이 약한지 파악하고, 그 부분을 집중적으로 공부할 수 있었습니다.",
+                new Answer(
+                        "퀴즈나 테스트를 통해 학습 내용을 점검하는 방식이 저에게는 유효했습니다. 이를 통해 어떤 부분이 약한지 파악하고, 그 부분을 집중적으로 공부할 수 있었습니다.",
                         question1,
                         rush
                 ),
-                new Answer("실제 문제를 풀어보면서 학습하는 것이 저에게는 가장 효과적이었습니다. 이를 통해 학습한 이론을 실전에 적용하고, 문제 해결 능력을 키울 수 있었습니다.",
+                new Answer(
+                        "실제 문제를 풀어보면서 학습하는 것이 저에게는 가장 효과적이었습니다. 이를 통해 학습한 이론을 실전에 적용하고, 문제 해결 능력을 키울 수 있었습니다.",
                         question1,
                         nyangin
                 ),
-                new Answer("문제를 해결할 때마다 그 과정을 기록하고 복습하는 방식이 저에게는 가장 효과적이었습니다. 이를 통해 비슷한 문제를 다시 만났을 때 쉽게 해결할 수 있었습니다.",
+                new Answer(
+                        "문제를 해결할 때마다 그 과정을 기록하고 복습하는 방식이 저에게는 가장 효과적이었습니다. 이를 통해 비슷한 문제를 다시 만났을 때 쉽게 해결할 수 있었습니다.",
                         question1,
                         redpanda
                 ),

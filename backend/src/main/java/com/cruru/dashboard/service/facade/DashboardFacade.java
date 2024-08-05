@@ -76,7 +76,7 @@ public class DashboardFacade {
                 applyForm.getTitle(),
                 stats,
                 applyForm.getUrl(),
-                applyForm.getDueDate()
+                applyForm.getEndDate()
         );
     }
 

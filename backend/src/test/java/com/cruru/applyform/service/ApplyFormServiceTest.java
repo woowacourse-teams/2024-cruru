@@ -16,7 +16,6 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -61,12 +60,9 @@ class ApplyFormServiceTest extends ServiceTest {
 
     private Dashboard dashboard;
 
-    private ApplyForm applyForm;
-
     @BeforeEach
     void setUp() {
         dashboard = dashboardRepository.save(createBackendDashboard());
-        applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
     }
 
     @DisplayName("지원서 폼 제출에 성공한다.")
@@ -171,8 +167,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // then
         assertAll(
                 () -> assertThat(actualApplyForm.getTitle()).isEqualTo(applyForm.getTitle()),
-                () -> assertThat(actualApplyForm.getOpenDate()).isEqualTo(applyForm.getOpenDate()),
-                () -> assertThat(actualApplyForm.getDueDate()).isEqualTo(applyForm.getDueDate())
+                () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(applyForm.getStartDate()),
+                () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(applyForm.getEndDate())
         );
     }
 

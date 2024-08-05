@@ -25,8 +25,8 @@ public class ApplyFormFacade {
         return new ApplyFormResponse(
                 applyForm.getTitle(),
                 applyForm.getDescription(),
-                applyForm.getOpenDate(),
-                applyForm.getDueDate(),
+                applyForm.getStartDate(),
+                applyForm.getEndDate(),
                 questionResponses
         );
     }

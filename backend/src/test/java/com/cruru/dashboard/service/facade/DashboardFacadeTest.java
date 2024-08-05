@@ -109,7 +109,7 @@ class DashboardFacadeTest extends ServiceTest {
             assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId());
             assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle());
             assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl());
-            assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getDueDate());
+            assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate());
             assertThat(stats.accept()).isEqualTo(0);
             assertThat(stats.fail()).isEqualTo(1);
             assertThat(stats.inProgress()).isEqualTo(2);
