@@ -1,4 +1,4 @@
-package com.cruru.applyform.exception;
+package com.cruru.applyform.exception.badrequest;
 
 import com.cruru.advice.badrequest.BadRequestException;
 

@@ -1,6 +1,7 @@
 package com.cruru.applyform.domain;
 
 import com.cruru.BaseEntity;
+import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
 import com.cruru.dashboard.domain.Dashboard;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,16 +31,17 @@ public class ApplyForm extends BaseEntity {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Setter
     private String url;
 
-    @Column(name = "open_date")
-    private LocalDateTime openDate;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-    @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @OneToOne
     @JoinColumn(name = "dashboard_id")
@@ -49,29 +51,37 @@ public class ApplyForm extends BaseEntity {
             String title,
             String description,
             String url,
-            LocalDateTime openDate,
-            LocalDateTime dueDate,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Dashboard dashboard
     ) {
+        validateDate(startDate, endDate);
         this.title = title;
         this.description = description;
         this.url = url;
-        this.openDate = openDate;
-        this.dueDate = dueDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.dashboard = dashboard;
+    }
+
+    private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateAfterEndDateException(startDate, endDate);
+        }
     }
 
     public ApplyForm(
             String title,
             String description,
-            LocalDateTime openDate,
-            LocalDateTime dueDate,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
             Dashboard dashboard
     ) {
+        validateDate(startDate, endDate);
         this.title = title;
         this.description = description;
-        this.openDate = openDate;
-        this.dueDate = dueDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.dashboard = dashboard;
     }
 
@@ -94,13 +104,13 @@ public class ApplyForm extends BaseEntity {
     @Override
     public String toString() {
         return "ApplyForm{" +
-                "dashboard=" + dashboard +
-                ", id=" + id +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", url='" + url + '\'' +
-                ", openDate=" + openDate +
-                ", dueDate=" + dueDate +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", dashboard=" + dashboard +
                 '}';
     }
 }
