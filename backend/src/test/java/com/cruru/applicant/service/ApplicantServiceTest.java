@@ -173,4 +173,21 @@ class ApplicantServiceTest extends ServiceTest {
         assertThatThrownBy(() -> applicantService.reject(applicantId))
                 .isInstanceOf(ApplicantRejectException.class);
     }
+
+
+    @DisplayName("프로세스 내의 모든 지원자를 조회한다.")
+    @Test
+    void findAllByProcess() {
+        // given
+        Process process = processRepository.save(createFirstProcess());
+        Applicant applicant1 = applicantRepository.save(createPendingApplicantDobby(process));
+        Applicant applicant2 = applicantRepository.save(createPendingApplicantDobby(process));
+        Applicant applicant3 = applicantRepository.save(createPendingApplicantDobby(process));
+
+        // when
+        List<Applicant> applicants = List.of(applicant1, applicant2, applicant3);
+
+        // then
+        assertThat(applicantService.findAllByProcess(process)).containsExactlyElementsOf(applicants);
+    }
 }

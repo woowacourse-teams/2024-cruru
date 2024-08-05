@@ -16,4 +16,9 @@ public class DashboardFixture {
     public static Dashboard createFrontendDashboard() {
         return new Dashboard(null);
     }
+
+    public static Dashboard createFrontendDashboard(Club club) {
+        return new Dashboard(club);
+    }
 }
+
