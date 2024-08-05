@@ -44,7 +44,7 @@ class DashboardControllerTest extends ControllerTest {
                 LocalDateTime.of(2000, 1, 1, 0, 0),
                 LocalDateTime.of(2999, 12, 31, 23, 59)
         );
-        String url = String.format("/v1/dashboards?club_id=%d", club.getId());
+        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
 
         // when&then
         RestAssured.given().log().all()

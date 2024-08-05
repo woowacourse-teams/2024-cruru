@@ -21,7 +21,7 @@ public class DashboardController {
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @RequestParam(name = "club_id") Long clubId,
+            @RequestParam(name = "clubId") Long clubId,
             @RequestBody @Valid DashboardCreateRequest request) {
 
         long dashboardId = dashboardFacade.create(clubId, request);
