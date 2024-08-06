@@ -25,6 +25,13 @@ const NavButton = styled.button<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.block}
   color: ${({ theme, isSelected }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.default)};
   margin-bottom: 0;
+
+  &::before {
+    content: '•';
+    width: 1rem;
+    aspect-ratio: 1/1;
+    margin: 0 0.8rem;
+  }
 `;
 
 const S = {

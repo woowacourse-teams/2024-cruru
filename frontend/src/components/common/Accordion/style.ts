@@ -42,14 +42,6 @@ const List = styled.ul`
 const ListItem = styled.li`
   ${({ theme }) => theme.typography.common.block}
   margin-bottom: 0;
-  padding: 0.4rem 0rem;
-
-  &::before {
-    content: '•';
-    width: 1rem;
-    aspect-ratio: 1/1;
-    margin-right: 0.8rem;
-  }
 `;
 
 const S = {
