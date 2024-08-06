@@ -28,7 +28,6 @@ public class ClubService {
         return club.getId();
     }
 
-    @Transactional
     public Club findById(long id) {
         return clubRepository.findById(id)
                 .orElseThrow(ClubNotFoundException::new);
