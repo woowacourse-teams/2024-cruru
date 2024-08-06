@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 import S from './style';
 
 interface TabProps {
   children: ReactNode;
 }
 
-interface TabItemProps {
+interface TabItemProps extends ComponentProps<'button'> {
   label: string;
   isActive: boolean;
   name: string;
@@ -24,7 +24,7 @@ function Tab({ children }: TabProps) {
   );
 }
 
-function TabItem({ label, isActive, name, handleClickTabItem }: TabItemProps) {
+function TabItem({ label, isActive, name, handleClickTabItem, disabled }: TabItemProps) {
   return (
     <S.Tab>
       <S.TabButton
@@ -32,6 +32,7 @@ function TabItem({ label, isActive, name, handleClickTabItem }: TabItemProps) {
         type="button"
         onClick={handleClickTabItem}
         isActive={isActive}
+        disabled={disabled}
       >
         {label}
       </S.TabButton>

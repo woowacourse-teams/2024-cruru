@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import Tab from '@components/common/Tab';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 
+import useTab from '@components/common/Tab/useTab';
 import useProcess from '@hooks/useProcess';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
@@ -15,12 +15,7 @@ export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
 export default function Dashboard() {
   const { processes } = useProcess();
 
-  const [currentMenu, setCurrentMenu] = useState<DashboardTabItems>('지원자 관리');
-
-  const moveTab = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { name } = e.currentTarget;
-    setCurrentMenu(name as DashboardTabItems);
-  };
+  const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
   return (
     <S.AppContainer>
