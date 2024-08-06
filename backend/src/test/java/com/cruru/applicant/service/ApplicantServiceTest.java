@@ -174,7 +174,6 @@ class ApplicantServiceTest extends ServiceTest {
                 .isInstanceOf(ApplicantRejectException.class);
     }
 
-
     @DisplayName("프로세스 내의 모든 지원자를 조회한다.")
     @Test
     void findAllByProcess() {
