@@ -97,7 +97,7 @@ class ApplicantControllerTest extends ControllerTest {
         String toChangeName = "도비";
         String toChangeEmail = "dev.dobby@gmail.com";
         String toChangePhone = "010111111111";
-        Applicant applicant = applicantRepository.save(createApplicantDobby());
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby());
         ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
 
         // when&then
