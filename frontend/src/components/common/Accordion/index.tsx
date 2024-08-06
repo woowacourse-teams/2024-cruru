@@ -10,10 +10,11 @@ interface AccordionProps {
 }
 
 function Accordion({ title, children }: AccordionProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  // TODO: 현재 아코디언의 오픈값을 True로 설정합니다. 추후에 아코디언이 추가될 경우 변경이 필요합니다.
+  const [isOpen] = useState(true);
 
   const toggleAccordion = () => {
-    setIsOpen(!isOpen);
+    // setIsOpen(!isOpen);
   };
 
   return (

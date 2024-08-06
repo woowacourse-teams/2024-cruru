@@ -13,7 +13,7 @@ const Header = styled.div`
   padding: 0.8rem 0.4rem;
 
   width: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */ // TODO: 추후에 아코디언이 추가될 경우 변경이 필요합니다.
   border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
