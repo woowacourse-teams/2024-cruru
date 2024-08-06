@@ -1,7 +1,6 @@
 package com.cruru.applicant.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -16,7 +15,6 @@ import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
-import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -30,9 +28,9 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplicantFixture;
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +68,8 @@ class ApplicantServiceTest extends ServiceTest {
         Process afterProcess = processRepository.save(createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                createApplicantDobby(beforeProcess),
-                createApplicantDobby(beforeProcess)
+                createPendingApplicantDobby(beforeProcess),
+                createPendingApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -93,7 +91,7 @@ class ApplicantServiceTest extends ServiceTest {
     void findById() {
         // given
         Process process = processRepository.save(createFirstProcess());
-        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
 
         // when
         ApplicantBasicResponse basicResponse = applicantService.findById(applicant.getId());
@@ -130,10 +128,11 @@ class ApplicantServiceTest extends ServiceTest {
         dashboardRepository.save(dashboard);
         Process process = createFirstProcess(dashboard);
         processRepository.save(process);
-        Applicant applicant = createApplicantDobby(process);
+        Applicant applicant = createPendingApplicantDobby(process);
         applicantRepository.save(applicant);
 
         Question question = questionRepository.save(createShortAnswerQuestion(null));
+        questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
 
@@ -152,62 +151,43 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = applicantRepository.save(createApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
 
         // when
         applicantService.reject(applicant.getId());
 
         // then
-        assertThat(applicantRepository.findById(applicant.getId()).get().getIsRejected()).isTrue();
+        assertThat(applicantRepository.findById(applicant.getId()).get().isRejected()).isTrue();
     }
 
     @DisplayName("이미 불합격한 지원자를 불합격시키려 하면 예외가 발생한다.")
     @Test
     void reject_alreadyRejected() {
         // given
-        Applicant applicant = applicantRepository.save(createRejectedApplicantLurgi());
+        Applicant targetApplicant = createPendingApplicantDobby();
+        targetApplicant.reject();
+        Applicant rejectedApplicant = applicantRepository.save(targetApplicant);
 
         // when&then
-        assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
+        Long applicantId = rejectedApplicant.getId();
+        assertThatThrownBy(() -> applicantService.reject(applicantId))
                 .isInstanceOf(ApplicantRejectException.class);
     }
 
-    @DisplayName("지원자의 이름, 이메일, 전화번호 변경에 성공한다.")
+    @DisplayName("프로세스 내의 모든 지원자를 조회한다.")
     @Test
-    void update() {
+    void findAllByProcess() {
         // given
-        String toChangeName = "도비";
-        String toChangeEmail = "dev.dobby@gmail.com";
-        String toChangePhone = "010111111111";
-        Applicant applicant = applicantRepository.save(createApplicantDobby());
-        ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
+        Process process = processRepository.save(createFirstProcess());
+        Applicant applicant1 = applicantRepository.save(createPendingApplicantDobby(process));
+        Applicant applicant2 = applicantRepository.save(createPendingApplicantDobby(process));
+        Applicant applicant3 = applicantRepository.save(createPendingApplicantDobby(process));
+        List<Applicant> applicants = List.of(applicant1, applicant2, applicant3);
 
         // when
-        applicantService.update(request, applicant.getId());
+        List<Applicant> applicantsInProcess = applicantService.findAllByProcess(process);
 
         // then
-        Optional<Applicant> changedApplicant = applicantRepository.findById(applicant.getId());
-        assertAll(
-                () -> assertThat(changedApplicant).isPresent(),
-                () -> assertThat(changedApplicant.get().getName()).isEqualTo(toChangeName),
-                () -> assertThat(changedApplicant.get().getEmail()).isEqualTo(toChangeEmail),
-                () -> assertThat(changedApplicant.get().getPhone()).isEqualTo(toChangePhone),
-                () -> assertThat(changedApplicant.get().getProcess()).isEqualTo(createApplicantDobby().getProcess())
-        );
-    }
-
-    @DisplayName("지원자가 존재하지 않으면 예외가 발생한다.")
-    @Test
-    void update_applicantNotFound() {
-        // given
-        String toChangeName = "도비";
-        String toChangeEmail = "dev.dobby@gmail.com";
-        String toChangePhone = "010111111111";
-        ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
-        long invalidId = -1L;
-
-        // when&then
-        assertThatThrownBy(() -> applicantService.update(request, invalidId))
-                .isInstanceOf(ApplicantNotFoundException.class);
+        assertThat(applicantsInProcess).containsExactlyElementsOf(applicants);
     }
 }

@@ -3,6 +3,7 @@ package com.cruru.applicant.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.util.fixture.ApplicantFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class ApplicantTest {
         String toChangeEmail = "dev.chocochip@gmail.com";
         String toChangePhone = "01000000000";
 
-        Applicant applicant = new Applicant(null, null, null, null, false);
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
 
         // when
         applicant.updateInfo(toChangeName, toChangeEmail, toChangePhone);

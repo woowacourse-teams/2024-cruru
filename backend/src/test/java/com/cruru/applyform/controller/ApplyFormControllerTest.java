@@ -134,7 +134,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 404를 반환한다.")
+    @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 404을 반환한다.")
     @Test
     void read_notFound() {
         // given

@@ -1,5 +1,6 @@
 package com.cruru.applyform.controller.dto;
 
+import com.cruru.question.controller.dto.QuestionResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -40,6 +40,10 @@ public class ApplicantService {
         applicants.forEach(applicant -> applicant.updateProcess(process));
     }
 
+    public List<Applicant> findAllByProcess(Process process) {
+        return applicantRepository.findAllByProcess(process);
+    }
+
     public ApplicantBasicResponse findById(long id) {
         Applicant applicant = applicantRepository.findById(id)
                 .orElseThrow(ApplicantNotFoundException::new);
@@ -90,7 +94,7 @@ public class ApplicantService {
     }
 
     private void validateRejectable(Applicant applicant) {
-        if (applicant.getIsRejected()) {
+        if (applicant.isRejected()) {
             throw new ApplicantRejectException();
         }
     }

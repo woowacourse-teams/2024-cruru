@@ -1,6 +1,6 @@
 package com.cruru.applicant.controller;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -14,6 +14,7 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplicantFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
@@ -39,7 +40,7 @@ class ApplicantControllerTest extends ControllerTest {
         // given
         Process now = processRepository.save(createFirstProcess());
         Process next = processRepository.save(createFinalProcess());
-        Applicant applicant = createApplicantDobby(now);
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby(now);
         applicantRepository.save(applicant);
 
         // when&then
@@ -55,7 +56,7 @@ class ApplicantControllerTest extends ControllerTest {
     void read() {
         // given
         Process process = processRepository.save(createFirstProcess());
-        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
 
         // when&then
         RestAssured.given().log().all()
@@ -69,7 +70,7 @@ class ApplicantControllerTest extends ControllerTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
-        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
 
         // when&then
         RestAssured.given().log().all()
@@ -81,7 +82,7 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = applicantRepository.save(new Applicant("name", "email", "phone", null, false));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
 
         // when&then
         RestAssured.given().log().all()
@@ -96,7 +97,7 @@ class ApplicantControllerTest extends ControllerTest {
         String toChangeName = "도비";
         String toChangeEmail = "dev.dobby@gmail.com";
         String toChangePhone = "010111111111";
-        Applicant applicant = applicantRepository.save(createApplicantDobby());
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby());
         ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
 
         // when&then
