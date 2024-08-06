@@ -1,7 +1,6 @@
 package com.cruru.dashboard.service.facade;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
@@ -17,7 +16,6 @@ import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
@@ -69,21 +67,23 @@ class DashboardFacadeTest extends ServiceTest {
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
                 new QuestionCreateRequest("DROPDOWN", "객관식질문1", "하나를 선택한다.", choiceCreateRequests, 1));
+        String title = "크루루대시보드";
+        String postingContent = "# 공고 내용";
+        LocalDateTime startDate = LocalDateTime.of(2000, 1, 1, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2999, 12, 31, 23, 59);
         DashboardCreateRequest request = new DashboardCreateRequest(
-                "크루루대시보드",
-                "# 공고 내용",
+                title,
+                postingContent,
                 questionCreateRequests,
-                LocalDateTime.of(2000, 1, 1, 0, 0),
-                LocalDateTime.of(2999, 12, 31, 23, 59)
+                startDate,
+                endDate
         );
 
         // when
         long savedDashboardId = dashboardFacade.create(club.getId(), request);
 
         // then
-        assertThatCode(() -> dashboardRepository.findById(savedDashboardId)
-                .orElseThrow(DashboardNotFoundException::new)
-        ).doesNotThrowAnyException();
+        assertThat(dashboardRepository.findById(savedDashboardId)).isPresent();
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")
