@@ -24,13 +24,13 @@ const CardDetail = styled.div`
 `;
 
 const CardHeader = styled.h3`
-  ${({ theme }) => theme.typography.heading[400]};
+  ${({ theme }) => theme.typography.common.block};
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
   margin-bottom: 0.4rem;
 `;
 
 const CardDate = styled.span`
-  ${({ theme }) => theme.typography.heading[300]};
+  ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
