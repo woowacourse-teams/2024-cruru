@@ -50,7 +50,7 @@ public class DashboardFacade {
         );
     }
 
-    public DashboardsOfClubResponse findAllDashboardsByClubId(Long clubId) {
+    public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
         List<Long> dashboardIds = getDashboardIdsByClubId(clubId);
         String clubName = clubService.findById(clubId).getName();
         List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
