@@ -49,6 +49,12 @@ public class Applicant extends BaseEntity {
         this.isRejected = isRejected;
     }
 
+    public void updateInfo(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public void updateProcess(Process process) {
         this.process = process;
     }

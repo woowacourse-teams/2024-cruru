@@ -3,6 +3,7 @@ package com.cruru.applicant.controller;
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
+import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.service.ApplicantService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,14 @@ public class ApplicantController {
     @PatchMapping("/{applicant_id}/reject")
     public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable("applicant_id") Long applicantId) {
         applicantService.reject(applicantId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{applicantId}")
+    private ResponseEntity<Void> update(
+            @PathVariable("applicantId") Long applicantId,
+            @RequestBody @Valid ApplicantUpdateRequest request) {
+        applicantService.update(request, applicantId);
         return ResponseEntity.ok().build();
     }
 }
