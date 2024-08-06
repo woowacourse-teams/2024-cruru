@@ -1,0 +1,90 @@
+{
+  "title": "우리 동아리 관심 있으면 지원해",
+  "postingContent": "hi",
+  "startDate": "1900-01-01T00:00",
+  "endDate": "2999-12-31T23:59",
+  "questions": [
+    {
+      "id": 1,
+      "type": "SHORT_ANSWER",
+      "label": "선택 질문 1",
+      "description": "",
+      "orderIndex": 0,
+      "choices": []
+    },
+    {
+      "id": 2,
+      "type": "LONG_ANSWER",
+      "label": "선택 질문 2",
+      "description": "",
+      "orderIndex": 1,
+      "choices": []
+    },
+    {
+      "id": 4,
+      "type": "MULTIPLE_CHOICE",
+      "label": "선택 질문 2",
+      "description": "",
+      "choices": [
+        {
+          "id": 0,
+          "label": "옵션 1",
+          "orderIndex": 0
+        },
+        {
+          "id": 1,
+          "label": "옵션 2",
+          "orderIndex": 2
+        },
+        {
+          "id": 2,
+          "label": "옵션 3",
+          "orderIndex": 1
+        }
+      ],
+      "orderIndex": 2
+    },
+    {
+      "id": 5,
+      "type": "DROPDOWN",
+      "label": "지원 경로",
+      "description": "이 공고에 대한 소식을 처음 접한 곳을 선택해주세요",
+      "choices": [
+        {
+          "id": 3,
+          "label": "웹사이트",
+          "orderIndex": 0
+        },
+        {
+          "id": 4,
+          "label": "이메일",
+          "orderIndex": 1
+        },
+        {
+          "id": 5,
+          "label": "전화",
+          "orderIndex": 2
+        }
+      ],
+      "orderIndex": 3
+    },
+    {
+      "id": 3,
+      "type": "CHECK_BOX",
+      "label": "8/6일 오리엔테이션에 참여할 수 있습니다.",
+      "choices": [
+        {
+          "id": 6,
+          "label": "네",
+          "orderIndex": 0
+        },
+        {
+          "id": 7,
+          "label": "아니요",
+          "orderIndex": 1
+        }
+      ],
+      "orderIndex": 4
+    }
+  ]
+}

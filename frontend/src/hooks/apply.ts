@@ -6,7 +6,7 @@ const useGetRecruitmentInfo = ({ postId }: { postId: string }) => {
   const queryObj = useQuery({
     queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId],
     queryFn: () => applyApis.get({ postId }),
-    staleTime: 1000 * 60 * 30, // 30 minutes
+    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 
   return queryObj;
