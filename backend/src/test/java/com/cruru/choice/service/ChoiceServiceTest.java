@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
+import com.cruru.choice.controller.dto.ChoiceResponse;
 import com.cruru.choice.domain.Choice;
+import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
 import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
 import com.cruru.dashboard.domain.Dashboard;
@@ -38,6 +40,9 @@ class ChoiceServiceTest extends ServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ChoiceRepository choiceRepository;
 
     @DisplayName("특정 객관식 Question에 속하는 다수의 선택지를 저장한다.")
     @Test
@@ -92,7 +97,25 @@ class ChoiceServiceTest extends ServiceTest {
 
         // when & then
         Long questionId = dropdownQuestion.getId();
-        assertThatThrownBy(() -> choiceService.createAll(choiceRequests, questionId)).isInstanceOf(
-                ChoiceEmptyException.class);
+        assertThatThrownBy(() -> choiceService.createAll(
+                choiceRequests,
+                questionId
+        )).isInstanceOf(ChoiceEmptyException.class);
+    }
+
+    @DisplayName("객관식 질문의 모든 선택지를 조회한다.")
+    @Test
+    void findAllByQuestionId() {
+        // given
+        Question question = questionRepository.save(QuestionFixture.createDropdownQuestion(null));
+        List<Choice> choices = choiceRepository.saveAll(ChoiceFixture.createChoices(question));
+
+        // when
+        long QuestionId = question.getId();
+        List<ChoiceResponse> choiceResponses = choiceService.findAllByQuestionId(QuestionId);
+
+        // then
+        int expectedSize = choices.size();
+        assertThat(choiceResponses).hasSize(expectedSize);
     }
 }
