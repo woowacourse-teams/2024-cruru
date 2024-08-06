@@ -39,6 +39,10 @@
   padding: 1.6rem;
 }
 
+.ql-bubble > .ql-editor {
+  padding: 0;
+}
+
 /* placeholder 스타일 */
 .ql-editor.ql-blank::before {
   /* typography.common.paragraph + baseColors.grayscale[600] */
@@ -70,6 +74,8 @@
   font-size: 3.5rem;
   line-height: 4rem;
   letter-spacing: 0;
+
+  margin-top: 1.6rem;
 }
 
 /* Heading 2 */
@@ -79,6 +85,8 @@
   font-size: 2.4rem;
   line-height: 2.8rem;
   letter-spacing: 0;
+
+  margin-top: 1.2rem;
 }
 
 /* Heading 3 */
@@ -88,6 +96,8 @@
   font-size: 2rem;
   line-height: 2.4rem;
   letter-spacing: 0;
+
+  margin-top: 0.8rem;
 }
 
 /* Normal paragraph */
@@ -97,6 +107,8 @@
   font-size: 1.4rem;
   line-height: 2.4rem;
   letter-spacing: 0;
+
+  padding: 0.2rem;
 }
 
 /* 굵은 서체 */
@@ -124,5 +136,9 @@
 
 .ql-editor ol,
 .ql-editor ul {
-  padding-left: 1.6rem; /* 기본 값은 21px입니다. */
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  padding-left: 0.4rem; /* 기본 값은 21px입니다. */
 }
