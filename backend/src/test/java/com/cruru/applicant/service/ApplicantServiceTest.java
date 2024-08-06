@@ -188,7 +188,7 @@ class ApplicantServiceTest extends ServiceTest {
         // then
         Optional<Applicant> changedApplicant = applicantRepository.findById(applicant.getId());
         assertAll(
-                () -> assertThat(changedApplicant).isNotNull(),
+                () -> assertThat(changedApplicant).isPresent(),
                 () -> assertThat(changedApplicant.get().getName()).isEqualTo(toChangeName),
                 () -> assertThat(changedApplicant.get().getEmail()).isEqualTo(toChangeEmail),
                 () -> assertThat(changedApplicant.get().getPhone()).isEqualTo(toChangePhone),
