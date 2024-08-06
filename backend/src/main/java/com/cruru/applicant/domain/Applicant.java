@@ -9,6 +9,8 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,6 +44,7 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
+    @Enumerated(EnumType.STRING)
     private ApplicantState state;
 
     public Applicant(String name, String email, String phone, Process process) {
