@@ -8,11 +8,11 @@ public record QuestionResponse(
 
         String type,
 
+        @JsonProperty("label")
         String content,
 
         String description,
 
-        @JsonProperty("order_index")
         int orderIndex,
 
         @JsonProperty("choices")

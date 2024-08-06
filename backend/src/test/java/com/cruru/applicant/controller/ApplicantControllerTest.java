@@ -6,6 +6,7 @@ import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
+import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
@@ -86,6 +87,24 @@ class ApplicantControllerTest extends ControllerTest {
         // when&then
         RestAssured.given().log().all()
                 .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원자 정보 변경에 성공하면 200을 응답한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeName = "도비";
+        String toChangeEmail = "dev.dobby@gmail.com";
+        String toChangePhone = "010111111111";
+        Applicant applicant = applicantRepository.save(createApplicantDobby());
+        ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().patch("/v1/applicants/" + applicant.getId())
                 .then().log().all().statusCode(200);
     }
 }

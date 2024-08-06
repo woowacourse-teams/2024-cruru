@@ -1,6 +1,8 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
 import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createRejectedApplicantLurgi;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;

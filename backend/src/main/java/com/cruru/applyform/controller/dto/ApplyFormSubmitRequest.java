@@ -13,7 +13,6 @@ public record ApplyFormSubmitRequest(
         List<AnswerCreateRequest> answerCreateRequest,
 
         @NotNull(message = "개인정보 활용 동의는 필수 값입니다.")
-        @JsonProperty("personal_data_collection")
         Boolean personalDataCollection
 ) {
 

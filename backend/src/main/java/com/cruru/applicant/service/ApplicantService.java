@@ -6,6 +6,7 @@ import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
+import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -96,5 +97,13 @@ public class ApplicantService {
         if (applicant.isRejected()) {
             throw new ApplicantRejectException();
         }
+    }
+
+    @Transactional
+    public void update(ApplicantUpdateRequest request, long applicantId) {
+        Applicant applicant = applicantRepository.findById(applicantId)
+                .orElseThrow(ApplicantNotFoundException::new);
+
+        applicant.updateInfo(request.name(), request.email(), request.phone());
     }
 }

@@ -23,17 +23,17 @@ public class ApplyFormController {
     private final ApplyFormFacade applyFormFacade;
     private final ApplyFormService applyFormService;
 
-    @PostMapping("/{applyform_id}/submit")
+    @PostMapping("/{applyformId}/submit")
     public ResponseEntity<Void> submit(
             @RequestBody @Valid ApplyFormSubmitRequest request,
-            @PathVariable(name = "applyform_id") long applyFormId
+            @PathVariable(name = "applyformId") long applyFormId
     ) {
         applyFormService.submit(request, applyFormId);
         return ResponseEntity.created(URI.create("/v1/applyform/" + applyFormId)).build();
     }
 
-    @GetMapping("/{applyform_id}")
-    public ResponseEntity<ApplyFormResponse> read(@PathVariable(name = "applyform_id") long applyFormId) {
+    @GetMapping("/{applyformId}")
+    public ResponseEntity<ApplyFormResponse> read(@PathVariable(name = "applyformId") long applyFormId) {
         ApplyFormResponse response = applyFormFacade.findApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
     }
