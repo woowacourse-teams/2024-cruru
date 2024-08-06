@@ -55,7 +55,7 @@
 **************************
 
 /* 일반 서체 스타일 */
-.ql-snow .ql-editor > * {
+.ql-editor > * {
   /* typography.common.paragraph */
   font-weight: 400;
   font-size: 1.4rem;
@@ -64,7 +64,7 @@
 }
 
 /* Heading 1 */
-.ql-snow .ql-editor h1 {
+.ql-editor h1 {
   /* typography.heading.900 */
   font-weight: 700;
   font-size: 3.5rem;
@@ -73,7 +73,7 @@
 }
 
 /* Heading 2 */
-.ql-snow .ql-editor h2 {
+.ql-editor h2 {
   /* typography.heading.700 */
   font-weight: 700;
   font-size: 2.4rem;
@@ -82,7 +82,7 @@
 }
 
 /* Heading 3 */
-.ql-snow .ql-editor h3 {
+.ql-editor h3 {
   /* typography.heading.600 */
   font-weight: 700;
   font-size: 2rem;
@@ -91,7 +91,7 @@
 }
 
 /* Normal paragraph */
-.ql-snow .ql-editor p {
+.ql-editor p {
   /* typography.common.paragraph */
   font-weight: 400;
   font-size: 1.4rem;
@@ -100,17 +100,17 @@
 }
 
 /* 굵은 서체 */
-.ql-snow .ql-editor strong {
+.ql-editor strong {
   font-weight: 700;
 }
 
 /* 기울인 서체 */
-.ql-snow .ql-editor em {
+.ql-editor em {
   font-style: italic;
 }
 
 /* 인용구 */
-.ql-snow .ql-editor blockquote {
+.ql-editor blockquote {
   margin: 0.5rem 0;
   border-left: 0.4rem solid #979797;
   padding-left: 1.6rem;
@@ -120,4 +120,9 @@
   font-size: 1.4rem;
   line-height: 2.4rem;
   letter-spacing: 0;
+}
+
+.ql-editor ol,
+.ql-editor ul {
+  padding-left: 1.6rem; /* 기본 값은 21px입니다. */
 }
