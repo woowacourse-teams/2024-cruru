@@ -16,6 +16,7 @@ import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
+import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -31,6 +32,7 @@ import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,5 +170,44 @@ class ApplicantServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> applicantService.reject(applicant.getId()))
                 .isInstanceOf(ApplicantRejectException.class);
+    }
+
+    @DisplayName("지원자의 이름, 이메일, 전화번호 변경에 성공한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeName = "도비";
+        String toChangeEmail = "dev.dobby@gmail.com";
+        String toChangePhone = "010111111111";
+        Applicant applicant = applicantRepository.save(createApplicantDobby());
+        ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
+
+        // when
+        applicantService.update(request, applicant.getId());
+
+        // then
+        Optional<Applicant> changedApplicant = applicantRepository.findById(applicant.getId());
+        assertAll(
+                () -> assertThat(changedApplicant).isPresent(),
+                () -> assertThat(changedApplicant.get().getName()).isEqualTo(toChangeName),
+                () -> assertThat(changedApplicant.get().getEmail()).isEqualTo(toChangeEmail),
+                () -> assertThat(changedApplicant.get().getPhone()).isEqualTo(toChangePhone),
+                () -> assertThat(changedApplicant.get().getProcess()).isEqualTo(createApplicantDobby().getProcess())
+        );
+    }
+
+    @DisplayName("지원자가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void update_applicantNotFound() {
+        // given
+        String toChangeName = "도비";
+        String toChangeEmail = "dev.dobby@gmail.com";
+        String toChangePhone = "010111111111";
+        ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
+        long invalidId = -1L;
+
+        // when&then
+        assertThatThrownBy(() -> applicantService.update(request, invalidId))
+                .isInstanceOf(ApplicantNotFoundException.class);
     }
 }
