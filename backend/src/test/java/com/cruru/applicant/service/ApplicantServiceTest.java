@@ -203,7 +203,6 @@ class ApplicantServiceTest extends ServiceTest {
         String toChangeName = "도비";
         String toChangeEmail = "dev.dobby@gmail.com";
         String toChangePhone = "010111111111";
-        applicantRepository.save(createApplicantDobby());
         ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
         long invalidId = -1L;
 
