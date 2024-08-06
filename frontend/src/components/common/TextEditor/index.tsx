@@ -10,7 +10,7 @@ interface TextEditorProps {
   height?: string;
   toolbarOptions?: ToolbarOptions;
   value: string;
-  onChange: (content: string) => void;
+  onChange?: (content: string) => void;
   onBlur?: () => void;
   placeholder?: string;
   theme?: 'snow' | 'bubble';
@@ -34,6 +34,18 @@ export default function TextEditor({
   placeholder,
   theme = 'snow',
 }: TextEditorProps) {
+  const handleChange = (content: string) => {
+    if (onChange) {
+      onChange(content);
+    }
+  };
+
+  const handleBlur = () => {
+    if (onBlur) {
+      onBlur();
+    }
+  };
+
   return (
     <ReactQuill
       style={{ width, height }}
@@ -41,8 +53,8 @@ export default function TextEditor({
       theme={theme}
       readOnly={theme === 'bubble'}
       value={value}
-      onChange={(content) => onChange(content)}
-      onBlur={() => onBlur}
+      onChange={handleChange}
+      onBlur={handleBlur}
       placeholder={placeholder}
     />
   );
