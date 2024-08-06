@@ -14,9 +14,9 @@ const Switch = styled.div<StyleProps>`
   aspect-ratio: 5/3;
 
   background-color: ${({ isChecked, theme }) =>
-    isChecked ? theme.baseColors.purplescale[600] : theme.baseColors.grayscale[100]};
+    isChecked ? theme.colors.brand.primary : theme.baseColors.grayscale[100]};
   outline: 0.2rem solid
-    ${({ isChecked, theme }) => (isChecked ? theme.baseColors.purplescale[600] : theme.baseColors.grayscale[700])};
+    ${({ isChecked, theme }) => (isChecked ? theme.colors.brand.primary : theme.baseColors.grayscale[700])};
   border-radius: 99rem;
 
   display: flex;
