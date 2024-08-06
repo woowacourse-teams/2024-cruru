@@ -27,31 +27,31 @@ public class ProcessController {
     private final ProcessService processService;
 
     @GetMapping
-    public ResponseEntity<ProcessesResponse> read(@RequestParam(name = "dashboard_id") Long dashboardId) {
+    public ResponseEntity<ProcessesResponse> read(@RequestParam(name = "dashboardId") Long dashboardId) {
         ProcessesResponse processes = processService.findByDashboardId(dashboardId);
         return ResponseEntity.ok().body(processes);
     }
 
     @PostMapping
     public ResponseEntity<Void> create(
-            @RequestParam(name = "dashboard_id") Long dashboardId,
+            @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestBody @Valid ProcessCreateRequest request
     ) {
         processService.create(request, dashboardId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/{process_id}")
+    @PatchMapping("/{processId}")
     public ResponseEntity<ProcessResponse> update(
-            @PathVariable(name = "process_id") Long processId,
+            @PathVariable(name = "processId") Long processId,
             @RequestBody @Valid ProcessUpdateRequest request
     ) {
         ProcessResponse response = processService.update(request, processId);
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping("/{process_id}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "process_id") Long processId) {
+    @DeleteMapping("/{processId}")
+    public ResponseEntity<Void> delete(@PathVariable(name = "processId") Long processId) {
         processService.delete(processId);
         return ResponseEntity.noContent().build();
     }

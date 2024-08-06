@@ -7,13 +7,11 @@ import java.util.List;
 public record ApplyFormResponse(
         String title,
 
-        @JsonProperty("posting_content")
+        @JsonProperty("postingContent")
         String description,
 
-        @JsonProperty("start_date")
         LocalDateTime startDate,
 
-        @JsonProperty("end_date")
         LocalDateTime endDate,
 
         @JsonProperty("questions")

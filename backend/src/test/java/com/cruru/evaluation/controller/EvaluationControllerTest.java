@@ -48,7 +48,7 @@ class EvaluationControllerTest extends ControllerTest {
         // given
         int score = 4;
         String content = "서류가 인상적입니다.";
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
+        String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", process.getId(), applicant.getId());
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
 
         // when&then
@@ -67,7 +67,7 @@ class EvaluationControllerTest extends ControllerTest {
         String content = "서류가 인상적입니다.";
         long invalidApplicantId = -1;
         String url = String.format(
-                "/v1/evaluations?process_id=%d&applicant_id=%d",
+                "/v1/evaluations?processId=%d&applicantId=%d",
                 process.getId(),
                 invalidApplicantId
         );
@@ -89,7 +89,7 @@ class EvaluationControllerTest extends ControllerTest {
         String content = "서류가 인상적입니다.";
         long invalidProcessId = -1;
         String url = String.format(
-                "/v1/evaluations?process_id=%d&applicant_id=%d",
+                "/v1/evaluations?processId=%d&applicantId=%d",
                 invalidProcessId,
                 applicant.getId()
         );
@@ -107,7 +107,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
+        String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", process.getId(), applicant.getId());
 
         // when&then
         RestAssured.given().log().all()
