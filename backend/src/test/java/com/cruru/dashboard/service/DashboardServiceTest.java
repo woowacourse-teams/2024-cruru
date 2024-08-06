@@ -8,9 +8,11 @@ import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.DashboardFixture;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,13 +22,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 class DashboardServiceTest extends ServiceTest {
 
     @Autowired
-    DashboardService dashboardService;
+    private DashboardService dashboardService;
 
     @Autowired
-    ProcessRepository processRepository;
+    private ProcessRepository processRepository;
 
     @Autowired
-    ClubRepository clubRepository;
+    private ClubRepository clubRepository;
+
+    @Autowired
+    private DashboardRepository dashboardRepository;
 
     @DisplayName("새로운 대시보드를 생성시, 기본 프로세스 2개가 생성된다.")
     @Test
@@ -52,5 +57,22 @@ class DashboardServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> dashboardService.create(invalidClubId))
                 .isInstanceOf(ClubNotFoundException.class);
+    }
+
+
+    @DisplayName("동아리 ID로 동아리가 가지고 있는 모든 대시보드 ID를 조회한다.")
+    @Test
+    void findAllByClubId() {
+        // given
+        Club club = clubRepository.save(createClub());
+        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
+        Dashboard frontendDashboard = dashboardRepository.save(DashboardFixture.createFrontendDashboard(club));
+
+        // when & then
+        long clubId = club.getId();
+        assertThat(dashboardService.findAllByClubId(clubId)).containsExactlyInAnyOrder(
+                backendDashboard,
+                frontendDashboard
+        );
     }
 }

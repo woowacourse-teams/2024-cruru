@@ -9,17 +9,17 @@ import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
-import com.cruru.applyform.controller.dto.ChoiceResponse;
-import com.cruru.applyform.controller.dto.QuestionResponse;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.badrequest.PersonalDataProcessingException;
+import com.cruru.choice.controller.dto.ChoiceResponse;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.question.controller.dto.QuestionResponse;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.question.exception.QuestionNotFoundException;
@@ -82,8 +82,7 @@ public class ApplyFormService {
                         request.applicantCreateRequest().name(),
                         request.applicantCreateRequest().email(),
                         request.applicantCreateRequest().phone(),
-                        firstProcess,
-                        false
+                        firstProcess
                 )
         );
 
@@ -152,5 +151,15 @@ public class ApplyFormService {
 
     private ChoiceResponse toChoiceResponse(Choice choice) {
         return new ChoiceResponse(choice.getId(), choice.getContent(), choice.getSequence());
+    }
+
+    public ApplyForm findById(long applyFormId) {
+        return applyFormRepository.findById(applyFormId)
+                .orElseThrow(ApplyFormNotFoundException::new);
+    }
+
+    public ApplyForm findByDashboardId(long dashboardId) {
+        return applyFormRepository.findByDashboardId(dashboardId)
+                .orElseThrow(ApplyFormNotFoundException::new);
     }
 }

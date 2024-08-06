@@ -1,6 +1,6 @@
 package com.cruru.process.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
@@ -56,7 +56,7 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
-        Applicant applicant = applicantRepository.save(createApplicantDobby(process));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
         evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
 
         // when
@@ -150,7 +150,7 @@ class ProcessServiceTest extends ServiceTest {
     @DisplayName("프로세스를 삭제한다.")
     @Test
     void delete() {
-        // given;
+        // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createInterviewProcess(dashboard));
 
@@ -158,7 +158,7 @@ class ProcessServiceTest extends ServiceTest {
         processService.delete(process.getId());
 
         // then
-        assertThat(processRepository.findAll()).hasSize(0);
+        assertThat(processRepository.findAll()).isEmpty();
     }
 
     @DisplayName("첫번째 프로세스 혹은 마지막 프로세스를 삭제하면 예외가 발생한다.")
@@ -184,10 +184,27 @@ class ProcessServiceTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createInterviewProcess(dashboard));
-        applicantRepository.save(createApplicantDobby(process));
+        applicantRepository.save(createPendingApplicantDobby(process));
 
         // when&then
         assertThatThrownBy(() -> processService.delete(process.getId()))
                 .isInstanceOf(ProcessDeleteRemainingApplicantException.class);
+    }
+
+    @DisplayName("대시보드 ID로 존재하는 모든 프로세스를 조회한다.")
+    @Test
+    void findAllByDashboardId() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        List<Process> expectedProcesses = processRepository.saveAll(List.of(
+                createFirstProcess(dashboard),
+                createFinalProcess(dashboard)
+        ));
+
+        // when
+        List<Process> actualProcesses = processService.findAllByDashboardId(dashboard.getId());
+
+        // then
+        assertThat(actualProcesses).containsExactlyInAnyOrderElementsOf(expectedProcesses);
     }
 }

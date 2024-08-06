@@ -3,6 +3,7 @@ package com.cruru.club.service;
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
+import com.cruru.club.exception.ClubNotFoundException;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.member.exception.MemberNotFoundException;
@@ -25,5 +26,10 @@ public class ClubService {
 
         Club club = clubRepository.save(new Club(request.name(), member));
         return club.getId();
+    }
+
+    public Club findById(long id) {
+        return clubRepository.findById(id)
+                .orElseThrow(ClubNotFoundException::new);
     }
 }

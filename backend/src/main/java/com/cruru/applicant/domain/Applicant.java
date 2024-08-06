@@ -1,10 +1,16 @@
 package com.cruru.applicant.domain;
 
+import static com.cruru.applicant.domain.ApplicantState.APPROVED;
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
+import static com.cruru.applicant.domain.ApplicantState.REJECTED;
+
 import com.cruru.BaseEntity;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,15 +44,15 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
-    @Column(name = "is_rejected")
-    private Boolean isRejected;
+    @Enumerated(EnumType.STRING)
+    private ApplicantState state;
 
-    public Applicant(String name, String email, String phone, Process process, Boolean isRejected) {
+    public Applicant(String name, String email, String phone, Process process) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.process = process;
-        this.isRejected = isRejected;
+        this.state = PENDING;
     }
 
     public void updateInfo(String name, String email, String phone) {
@@ -60,7 +66,19 @@ public class Applicant extends BaseEntity {
     }
 
     public void reject() {
-        this.isRejected = true;
+        this.state = REJECTED;
+    }
+
+    public boolean isApproved() {
+        return this.state == APPROVED;
+    }
+
+    public boolean isPending() {
+        return this.state == PENDING;
+    }
+
+    public boolean isRejected() {
+        return this.state == REJECTED;
     }
 
     public Dashboard getDashboard() {
@@ -87,12 +105,12 @@ public class Applicant extends BaseEntity {
     @Override
     public String toString() {
         return "Applicant{" +
-                "id=" + id +
+                "email='" + email + '\'' +
+                ", id=" + id +
                 ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", process=" + process +
-                ", isRejected=" + isRejected +
+                ", state=" + state +
                 '}';
     }
 }
