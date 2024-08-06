@@ -183,11 +183,12 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant1 = applicantRepository.save(createPendingApplicantDobby(process));
         Applicant applicant2 = applicantRepository.save(createPendingApplicantDobby(process));
         Applicant applicant3 = applicantRepository.save(createPendingApplicantDobby(process));
-
-        // when
         List<Applicant> applicants = List.of(applicant1, applicant2, applicant3);
 
+        // when
+        List<Applicant> applicantsInProcess = applicantService.findAllByProcess(process);
+
         // then
-        assertThat(applicantService.findAllByProcess(process)).containsExactlyElementsOf(applicants);
+        assertThat(applicantsInProcess).containsExactlyElementsOf(applicants);
     }
 }

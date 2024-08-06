@@ -1,7 +1,6 @@
 package com.cruru.applicant.domain.repository;
 
 import static com.cruru.applicant.domain.ApplicantState.PENDING;
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantRush;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
@@ -47,7 +46,7 @@ class ApplicantRepositoryTest {
     void saveNoId() {
         //given
         Applicant applicant1 = ApplicantFixture.createPendingApplicantDobby();
-        Applicant applicant2 = createPendingApplicantRush();
+        Applicant applicant2 = ApplicantFixture.createPendingApplicantRush();
 
         //when
         Applicant savedApplicant1 = applicantRepository.save(applicant1);

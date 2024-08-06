@@ -39,7 +39,7 @@ class ApplicantControllerTest extends ControllerTest {
         // given
         Process now = processRepository.save(createFirstProcess());
         Process next = processRepository.save(createFinalProcess());
-        Applicant applicant = createPendingApplicantDobby(now);
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby(now);
         applicantRepository.save(applicant);
 
         // when&then

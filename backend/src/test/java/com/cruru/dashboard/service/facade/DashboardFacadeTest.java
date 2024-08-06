@@ -17,6 +17,7 @@ import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
@@ -80,7 +81,9 @@ class DashboardFacadeTest extends ServiceTest {
         long savedDashboardId = dashboardFacade.create(club.getId(), request);
 
         // then
-        assertThatCode(() -> dashboardRepository.findById(savedDashboardId)).doesNotThrowAnyException();
+        assertThatCode(() -> dashboardRepository.findById(savedDashboardId)
+                .orElseThrow(DashboardNotFoundException::new)
+        ).doesNotThrowAnyException();
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")
@@ -93,15 +96,14 @@ class DashboardFacadeTest extends ServiceTest {
         Applicant failApplicant = ApplicantFixture.createPendingApplicantDobby(firstProcess);
         failApplicant.reject();
         Applicant pendingApplicant1 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        Applicant pendingapplicant2 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        List<Applicant> applicants = List.of(failApplicant, pendingApplicant1, pendingapplicant2);
+        Applicant pendingApplicant2 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
+        List<Applicant> applicants = List.of(failApplicant, pendingApplicant1, pendingApplicant2);
         applicantRepository.saveAll(applicants);
 
         // when
         DashboardsOfClubResponse dashboardsOfClubResponse = dashboardFacade.findAllDashboardsByClubId(club.getId());
 
         // then
-
         DashboardPreviewResponse dashboardPreview = dashboardsOfClubResponse.dashboardPreviewResponses().get(0);
         StatsResponse stats = dashboardPreview.stats();
         assertAll(() -> {

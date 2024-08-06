@@ -21,4 +21,3 @@ public class DashboardFixture {
         return new Dashboard(club);
     }
 }
-
