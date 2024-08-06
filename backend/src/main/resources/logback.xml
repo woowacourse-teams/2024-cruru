@@ -5,8 +5,8 @@
     <property name="CONSOLE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %clr(%5level) %cyan(%logger) - %msg%n"/>
     <property name="INFO_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %logger - %msg%n"/>
-    <property name="WARN_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %logger - %msg%n"/>
-    <property name="ERROR_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %logger - %msg%n %rEx"/>
+    <property name="WARN_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %M %logger - %msg%n"/>
+    <property name="ERROR_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %M %logger - %msg%n"/>
 
     <!-- Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -70,9 +70,6 @@
     <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="INFO"/>
-            <appender-ref ref="WARN"/>
-            <appender-ref ref="ERROR"/>
         </root>
     </springProfile>
 
