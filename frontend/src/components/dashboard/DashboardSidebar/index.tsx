@@ -18,7 +18,7 @@ export default function DashboardSidebar() {
           {options.map(({ text, isSelected }, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <Accordion.ListItem key={index}>
-              <S.ContentButton isSelected={isSelected}>{text}</S.ContentButton>
+              <S.NavButton isSelected={isSelected}>{text}</S.NavButton>
             </Accordion.ListItem>
           ))}
         </Accordion>

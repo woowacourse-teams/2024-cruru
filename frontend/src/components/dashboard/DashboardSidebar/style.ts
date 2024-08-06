@@ -21,7 +21,7 @@ const Contents = styled.div`
   gap: 1.4rem;
 `;
 
-const ContentButton = styled.button<{ isSelected: boolean }>`
+const NavButton = styled.button<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.block}
   color: ${({ theme, isSelected }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.default)};
   margin-bottom: 0;
@@ -31,7 +31,7 @@ const S = {
   Container,
   Logo,
   Contents,
-  ContentButton,
+  NavButton,
 };
 
 export default S;
