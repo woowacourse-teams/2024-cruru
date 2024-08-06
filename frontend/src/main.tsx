@@ -1,18 +1,16 @@
+import { ModalProvider } from '@contexts/ModalContext';
+import * as Sentry from '@sentry/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import * as Sentry from '@sentry/react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ModalProvider } from '@contexts/ModalContext';
 
 import { Global, ThemeProvider } from '@emotion/react';
 
 import { BASE_URL } from '@constants/constants';
-import theme from './styles/theme';
 import globalStyles from './styles/globalStyles';
+import theme from './styles/theme';
 
-import App from './App';
-import Dashboard from './pages/Dashboard';
+import AppRouter from './router/AppRouter';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -33,24 +31,6 @@ async function setDevMode() {
   }
 }
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <App />,
-      children: [
-        {
-          path: '/',
-          element: <Dashboard />,
-        },
-      ],
-    },
-  ],
-  {
-    basename: '/', // TODO: 배포할때 해당 루트로 적기
-  },
-);
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -67,7 +47,7 @@ setDevMode().then(() => {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <Global styles={globalStyles()} />
-            <RouterProvider router={router} />
+            <AppRouter />
           </ThemeProvider>
         </QueryClientProvider>
       </ModalProvider>
