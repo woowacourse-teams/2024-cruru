@@ -42,12 +42,11 @@ public class ChoiceService {
                 .toList();
     }
 
-    public List<ChoiceResponse> findAllByQuestionId(long id) {
-        List<Choice> choices = choiceRepository.findAllByQuestionId(id);
-        return toChoiceResponses(choices);
+    public List<Choice> findAllByQuestionId(long id) {
+        return choiceRepository.findAllByQuestionId(id);
     }
 
-    private List<ChoiceResponse> toChoiceResponses(List<Choice> choices) {
+    public List<ChoiceResponse> toChoiceResponses(List<Choice> choices) {
         return choices.stream()
                 .map(this::toChoiceResponse)
                 .toList();
