@@ -59,7 +59,7 @@ const ButtonContent = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 0.2rem 0.4rem;
+  padding: 0 0.4rem;
   gap: 0.4rem;
 `;
 
