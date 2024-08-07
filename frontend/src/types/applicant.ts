@@ -12,6 +12,7 @@ interface DetailInfo {
   question: string;
   answer: string;
 }
+
 export interface ApplicantDetail {
   details: DetailInfo[];
 }
