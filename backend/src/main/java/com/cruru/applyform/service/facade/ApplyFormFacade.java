@@ -27,7 +27,7 @@ public class ApplyFormFacade {
                 applyForm.getDescription(),
                 applyForm.getStartDate(),
                 applyForm.getEndDate(),
-                questionService.toQuestionResponse(questions)
+                questionService.toQuestionResponses(questions)
         );
     }
 }

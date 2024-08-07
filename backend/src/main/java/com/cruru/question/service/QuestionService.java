@@ -48,20 +48,21 @@ public class QuestionService {
         return questionRepository.findAllByApplyFormId(applyFormId);
     }
 
-    public List<QuestionResponse> toQuestionResponse(List<Question> questions) {
-        List<QuestionResponse> questionResponses = new ArrayList<>();
-        for (Question question : questions) {
-            List<ChoiceResponse> choiceResponses = getChoiceResponses(question);
-            questionResponses.add(new QuestionResponse(
-                    question.getId(),
-                    question.getQuestionType().name(),
-                    question.getContent(),
-                    question.getDescription(),
-                    question.getSequence(),
-                    choiceResponses
-            ));
-        }
-        return questionResponses;
+    public List<QuestionResponse> toQuestionResponses(List<Question> questions) {
+        return questions.stream()
+                .map(this::toQuestionResponse)
+                .toList();
+    }
+
+    private QuestionResponse toQuestionResponse(Question question) {
+        return new QuestionResponse(
+                question.getId(),
+                question.getQuestionType().name(),
+                question.getContent(),
+                question.getDescription(),
+                question.getSequence(),
+                getChoiceResponses(question)
+        );
     }
 
     private List<ChoiceResponse> getChoiceResponses(Question question) {

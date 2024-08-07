@@ -51,7 +51,7 @@ class QuestionServiceTest extends ServiceTest {
                         question.getQuestionType().toString(),
                         question.getContent(),
                         question.getDescription(),
-                        null,
+                        List.of(),
                         question.getSequence()
                 ))
                 .toList();
@@ -88,10 +88,10 @@ class QuestionServiceTest extends ServiceTest {
     }
 
     @DisplayName("Question 엔티티의 정보를 이용하여 Response DTO로 변경한다.")
-    @ParameterizedTest(name = "{index} - {1}")
+    @ParameterizedTest()
     @MethodSource("provideQuestionsAndResponses")
-    void toQuestionResponse(int index, Question expectedQuestion, QuestionResponse actualResponse) {
-        // then
+    void toQuestionResponse(Question expectedQuestion, QuestionResponse actualResponse) {
+        // given & when & then
         assertAll(() -> {
             assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId());
             assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence());
@@ -102,19 +102,18 @@ class QuestionServiceTest extends ServiceTest {
     }
 
     private Stream<Arguments> provideQuestionsAndResponses() {
-        // given & when
         List<Question> savedQuestions = questionRepository.saveAll(QuestionFixture.createAllTypesOfQuestions(null))
                 .stream()
                 .sorted(Comparator.comparing(Question::getSequence))
                 .toList();
 
-        List<QuestionResponse> questionResponses = questionService.toQuestionResponse(savedQuestions)
+        List<QuestionResponse> questionResponses = questionService.toQuestionResponses(savedQuestions)
                 .stream()
                 .sorted(Comparator.comparing(QuestionResponse::orderIndex))
                 .toList();
 
         return IntStream.range(0, savedQuestions.size())
-                .mapToObj(i -> Arguments.of(i, savedQuestions.get(i), questionResponses.get(i)));
+                .mapToObj(i -> Arguments.of(savedQuestions.get(i), questionResponses.get(i)));
     }
 
     @DisplayName("선택지를 가지고 있지 않는 질문은 ChoiceResponse 목록이 비어있어야 한다.")
@@ -125,7 +124,7 @@ class QuestionServiceTest extends ServiceTest {
                 null));
 
         // when
-        List<QuestionResponse> questionResponses = questionService.toQuestionResponse(nonChoiceTypeQuestions);
+        List<QuestionResponse> questionResponses = questionService.toQuestionResponses(nonChoiceTypeQuestions);
 
         // then
         List<ChoiceResponse> choiceResponses1 = questionResponses.get(0).choiceResponses();
