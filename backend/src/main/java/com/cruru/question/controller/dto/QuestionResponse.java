@@ -17,7 +17,9 @@ public record QuestionResponse(
         int orderIndex,
 
         @JsonProperty("choices")
-        List<ChoiceResponse> choiceResponses
+        List<ChoiceResponse> choiceResponses,
+
+        boolean required
 ) {
 
 }
