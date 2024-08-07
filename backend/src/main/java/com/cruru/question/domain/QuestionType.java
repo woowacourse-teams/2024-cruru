@@ -15,10 +15,6 @@ public enum QuestionType {
         this.hasChoice = hasChoice;
     }
 
-    public static QuestionType fromString(String type) {
-        return QuestionType.valueOf(type.toUpperCase());
-    }
-
     public boolean hasChoice() {
         return hasChoice;
     }
