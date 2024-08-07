@@ -82,7 +82,7 @@ public class DataLoader implements ApplicationRunner {
                              - 1차 합격자 발표: 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보
                              - 최종 코딩 테스트: 2024년 12월 16일(토)
                              - 최종 합격자 발표: 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보
-                             
+                                                          
                              ## 2025 신입생 (7기) 교육 기간
                              - 2025년 2월 ~ 11월 (약 10개월)
                              """;
@@ -281,7 +281,6 @@ public class DataLoader implements ApplicationRunner {
                         chocochip
                 ),
                 new Answer(
-
                         "프로그래밍 경진대회에 참여하여 오랜 시간 몰입했습니다. 이 과정에서 여러 가지 문제를 해결해야 했지만, 이를 통해 개발 능력과 문제 해결 능력을 키울 수 있었습니다.",
                         question3,
                         myungoh
