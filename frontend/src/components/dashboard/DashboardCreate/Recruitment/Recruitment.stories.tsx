@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
 import { RecruitmentInfoState } from '@customTypes/dashboard';
 import type { Meta, StoryObj } from '@storybook/react';
