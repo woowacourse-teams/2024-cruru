@@ -13,6 +13,10 @@ const router = createBrowserRouter(
           index: true,
           element: <Dashboard />,
         },
+        {
+          path: 'post/:postId',
+          element: <RecruitmentPost />,
+        },
       ],
     },
   ],
