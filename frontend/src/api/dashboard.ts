@@ -1,6 +1,7 @@
 import { DashboardFormInfo } from '@customTypes/dashboard';
 import { DASHBOARDS } from './endPoint';
 import { convertParamsToQueryString } from './utils';
+import ApiError from './ApiError';
 
 const dashboardApis = {
   create: async ({ clubId, dashboardFormInfo }: { clubId: number; dashboardFormInfo: DashboardFormInfo }) => {
@@ -17,7 +18,7 @@ const dashboardApis = {
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new ApiError({ message: 'Network response was not ok', method: 'POST', statusCode: response.status });
     }
 
     return response;
