@@ -1,9 +1,9 @@
 package com.cruru.evaluation.controller;
 
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
+import com.cruru.evaluation.controller.dto.EvaluationResponses;
 import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
-import com.cruru.evaluation.controller.dto.EvaluationsResponse;
-import com.cruru.evaluation.service.EvaluationService;
+import com.cruru.evaluation.service.facade.EvaluationFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EvaluationController {
 
-    private final EvaluationService evaluationService;
+    private final EvaluationFacade evaluationFacade;
 
     @PostMapping
     public ResponseEntity<Void> create(
@@ -30,17 +30,17 @@ public class EvaluationController {
             @RequestParam(name = "processId") Long processId,
             @RequestParam(name = "applicantId") Long applicantId
     ) {
-        evaluationService.create(request, processId, applicantId);
+        evaluationFacade.create(request, processId, applicantId);
         String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", processId, applicantId);
         return ResponseEntity.created(URI.create(url)).build();
     }
 
     @GetMapping
-    public ResponseEntity<EvaluationsResponse> read(
+    public ResponseEntity<EvaluationResponses> read(
             @RequestParam(name = "processId") Long processId,
             @RequestParam(name = "applicantId") Long applicantId
     ) {
-        EvaluationsResponse response = evaluationService.read(processId, applicantId);
+        EvaluationResponses response = evaluationFacade.readEvaluationsOfApplicantInProcess(processId, applicantId);
         return ResponseEntity.ok(response);
     }
 
@@ -49,7 +49,7 @@ public class EvaluationController {
             @RequestBody EvaluationUpdateRequest request,
             @PathVariable("evaluationId") long evaluationId
     ) {
-        evaluationService.update(request, evaluationId);
+        evaluationFacade.updateSingleEvaluation(request, evaluationId);
         return ResponseEntity.ok().build();
     }
 }
