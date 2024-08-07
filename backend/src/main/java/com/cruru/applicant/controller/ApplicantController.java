@@ -5,7 +5,7 @@ import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.process.service.facade.ApplicantFacade;
+import com.cruru.applicant.service.facade.ApplicantFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

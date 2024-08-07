@@ -1,4 +1,4 @@
-package com.cruru.process.service.facade;
+package com.cruru.applicant.service.facade;
 
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
