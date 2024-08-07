@@ -39,7 +39,7 @@ export const RecruitmentCardDefault: Story = {
       inProgress: 591,
       total: 654,
     },
-    endDate: '2023-09-15T09:00:00Z',
+    endDate: '2024-09-15T09:00:00Z',
     onClick: () => console.log('공고 카드가 클릭되었습니다.'),
   },
 };
