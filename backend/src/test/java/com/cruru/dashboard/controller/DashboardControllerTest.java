@@ -2,12 +2,17 @@ package com.cruru.dashboard.controller;
 
 import static com.cruru.util.fixture.ClubFixture.createClub;
 
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.time.LocalDateTime;
@@ -22,6 +27,12 @@ class DashboardControllerTest extends ControllerTest {
 
     @Autowired
     private ClubRepository clubRepository;
+
+    @Autowired
+    private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
 
     private Club club;
 
@@ -44,7 +55,7 @@ class DashboardControllerTest extends ControllerTest {
                 LocalDateTime.of(2000, 1, 1, 0, 0),
                 LocalDateTime.of(2999, 12, 31, 23, 59)
         );
-        String url = String.format("/v1/dashboards?club_id=%d", club.getId());
+        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
 
         // when&then
         RestAssured.given().log().all()
@@ -52,5 +63,19 @@ class DashboardControllerTest extends ControllerTest {
                 .body(request)
                 .when().post(url)
                 .then().log().all().statusCode(201);
+    }
+
+    @DisplayName("다건의 대시보드 요약 정보 요청 성공 시, 200을 응답한다")
+    @Test
+    void readDashboards_success() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
+        applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
+        String url = String.format("/v1/dashboards?club_id=%d", club.getId());
+
+        // when&then
+        RestAssured.given().log().all()
+                .when().get(url)
+                .then().log().all().statusCode(200);
     }
 }

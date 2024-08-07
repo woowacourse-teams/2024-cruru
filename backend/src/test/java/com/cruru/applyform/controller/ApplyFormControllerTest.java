@@ -64,7 +64,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(201);
     }
 
@@ -92,7 +92,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(400);
     }
 
@@ -114,7 +114,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/applyform/{apply_form_id}/submit", applyForm.getId())
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(500);
     }
 
@@ -130,11 +130,11 @@ class ApplyFormControllerTest extends ControllerTest {
         // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .when().get("/v1/applyform/{apply_form_id}", applyForm.getId())
+                .when().get("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 404를 반환한다.")
+    @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 404을 반환한다.")
     @Test
     void read_notFound() {
         // given
@@ -146,7 +146,7 @@ class ApplyFormControllerTest extends ControllerTest {
         // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .when().get("/v1/applyform/{apply_form_id}", -1)
+                .when().get("/v1/applyform/{applyFormId}", -1)
                 .then().log().all().statusCode(404);
     }
 }

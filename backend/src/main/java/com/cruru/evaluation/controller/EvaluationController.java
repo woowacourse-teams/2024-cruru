@@ -27,18 +27,18 @@ public class EvaluationController {
     @PostMapping
     public ResponseEntity<Void> create(
             @RequestBody @Valid EvaluationCreateRequest request,
-            @RequestParam(name = "process_id") Long processId,
-            @RequestParam(name = "applicant_id") Long applicantId
+            @RequestParam(name = "processId") Long processId,
+            @RequestParam(name = "applicantId") Long applicantId
     ) {
         evaluationService.create(request, processId, applicantId);
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", processId, applicantId);
+        String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", processId, applicantId);
         return ResponseEntity.created(URI.create(url)).build();
     }
 
     @GetMapping
     public ResponseEntity<EvaluationsResponse> read(
-            @RequestParam(name = "process_id") Long processId,
-            @RequestParam(name = "applicant_id") Long applicantId
+            @RequestParam(name = "processId") Long processId,
+            @RequestParam(name = "applicantId") Long applicantId
     ) {
         EvaluationsResponse response = evaluationService.read(processId, applicantId);
         return ResponseEntity.ok(response);

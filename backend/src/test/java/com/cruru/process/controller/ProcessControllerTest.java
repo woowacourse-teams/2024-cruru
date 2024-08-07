@@ -38,7 +38,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        String url = String.format("/v1/processes?dashboard_id=%d", dashboard.getId());
+        String url = String.format("/v1/processes?dashboardId=%d", dashboard.getId());
 
         // when&then
         RestAssured.given().log().all()
@@ -51,7 +51,7 @@ class ProcessControllerTest extends ControllerTest {
     void read_dashboardNotFound() {
         // given
         long invalidDashboardId = 0;
-        String url = String.format("/v1/processes?dashboard_id=%d", invalidDashboardId);
+        String url = String.format("/v1/processes?dashboardId=%d", invalidDashboardId);
 
         // when&then
         RestAssured.given().log().all()
@@ -64,7 +64,7 @@ class ProcessControllerTest extends ControllerTest {
     void create() {
         // given
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
-        String url = String.format("/v1/processes?dashboard_id=%d", dashboard.getId());
+        String url = String.format("/v1/processes?dashboardId=%d", dashboard.getId());
 
         // when&then
         RestAssured.given().log().all()

@@ -1,7 +1,6 @@
 package com.cruru.evaluation.controller;
 
-import static com.cruru.util.fixture.ApplicantFixture.createApplicantDobby;
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
+import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.domain.Applicant;
@@ -46,7 +45,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         process = processRepository.save(createFirstProcess());
 
-        applicant = applicantRepository.save(createApplicantDobby(process));
+        applicant = applicantRepository.save(createPendingApplicantDobby(process));
     }
 
     @DisplayName("평가 생성 성공 시, 201을 응답한다.")
@@ -55,7 +54,7 @@ class EvaluationControllerTest extends ControllerTest {
         // given
         int score = 4;
         String content = "서류가 인상적입니다.";
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
+        String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", process.getId(), applicant.getId());
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
 
         // when&then
@@ -74,7 +73,7 @@ class EvaluationControllerTest extends ControllerTest {
         String content = "서류가 인상적입니다.";
         long invalidApplicantId = -1;
         String url = String.format(
-                "/v1/evaluations?process_id=%d&applicant_id=%d",
+                "/v1/evaluations?processId=%d&applicantId=%d",
                 process.getId(),
                 invalidApplicantId
         );
@@ -96,7 +95,7 @@ class EvaluationControllerTest extends ControllerTest {
         String content = "서류가 인상적입니다.";
         long invalidProcessId = -1;
         String url = String.format(
-                "/v1/evaluations?process_id=%d&applicant_id=%d",
+                "/v1/evaluations?processId=%d&applicantId=%d",
                 invalidProcessId,
                 applicant.getId()
         );
@@ -114,7 +113,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        String url = String.format("/v1/evaluations?process_id=%d&applicant_id=%d", process.getId(), applicant.getId());
+        String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", process.getId(), applicant.getId());
 
         // when&then
         RestAssured.given().log().all()

@@ -22,7 +22,7 @@ public class ClubController {
     @PostMapping
     public ResponseEntity<Void> create(
             @RequestBody @Valid ClubCreateRequest request,
-            @RequestParam(name = "member_id") Long memberId
+            @RequestParam(name = "memberId") Long memberId
     ) {
         long clubId = clubService.create(request, memberId);
         return ResponseEntity.created(URI.create("/v1/clubs/" + clubId)).build();

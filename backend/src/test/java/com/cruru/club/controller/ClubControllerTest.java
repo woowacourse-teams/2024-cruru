@@ -32,7 +32,7 @@ class ClubControllerTest extends ControllerTest {
         // given
         String name = "연합 동아리";
         ClubCreateRequest request = new ClubCreateRequest(name);
-        String url = String.format("/v1/clubs?member_id=%d", member.getId());
+        String url = String.format("/v1/clubs?memberId=%d", member.getId());
 
         // when&then
         RestAssured.given().log().all()
@@ -49,7 +49,7 @@ class ClubControllerTest extends ControllerTest {
         String name = "연합 동아리";
         ClubCreateRequest request = new ClubCreateRequest(name);
         long invalidMemberId = -1;
-        String url = String.format("/v1/clubs?member_id=%d", invalidMemberId);
+        String url = String.format("/v1/clubs?memberId=%d", invalidMemberId);
 
         // when&then
         RestAssured.given().log().all()
