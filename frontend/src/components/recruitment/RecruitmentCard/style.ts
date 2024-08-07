@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { RecruitmentStatusType } from '.';
+import { RecruitmentStatusType } from '@customTypes/recruitment';
 
 const CardWrapper = styled.article`
   width: 38rem;

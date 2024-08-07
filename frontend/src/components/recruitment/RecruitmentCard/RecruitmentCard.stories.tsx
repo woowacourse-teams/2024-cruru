@@ -22,6 +22,7 @@ const meta = {
       inProgress: { control: 'number' },
       total: { control: 'number' },
     },
+    startDate: { control: 'date' },
     endDate: { control: 'date' },
   },
 } satisfies Meta<typeof RecruitmentCard>;
@@ -39,6 +40,7 @@ export const RecruitmentCardDefault: Story = {
       inProgress: 591,
       total: 654,
     },
+    startDate: '2024-07-15T09:00:00Z',
     endDate: '2024-09-15T09:00:00Z',
     onClick: () => console.log('공고 카드가 클릭되었습니다.'),
   },
