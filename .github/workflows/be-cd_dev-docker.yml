@@ -3,7 +3,7 @@ name: BE/CD - Docker image build & deploy
 on:
   workflow_dispatch:
   push:
-    branches: be/main
+    branches: be/develop
 
 jobs:
   build:

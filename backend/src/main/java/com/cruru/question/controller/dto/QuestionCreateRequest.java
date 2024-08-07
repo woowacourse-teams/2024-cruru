@@ -2,6 +2,7 @@ package com.cruru.question.controller.dto;
 
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record QuestionCreateRequest(
@@ -15,7 +16,11 @@ public record QuestionCreateRequest(
 
         List<ChoiceCreateRequest> choices,
 
-        int orderIndex
+        @NotNull
+        Integer orderIndex,
+
+        @NotNull
+        Boolean required
 ) {
 
 }

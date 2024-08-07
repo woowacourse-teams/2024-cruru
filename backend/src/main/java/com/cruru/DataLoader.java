@@ -112,16 +112,16 @@ public class DataLoader implements ApplicationRunner {
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
 
-        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", "", 0, applyForm));
+        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", "", 0, false, applyForm));
         Question essayQuestion = questionRepository.save(
-                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", "정수로 입력해주세요.", 1, applyForm));
+                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", "정수로 입력해주세요.", 1, false, applyForm));
 
         String description1 = """
                               프로그래밍 학습을 하고 장기간 개발자로 살아가기 위해, 본인만의 효과적인 학습 방식을 찾는 것은 매우 중요합니다. 
                               프로그래밍이 아니더라도 지금까지의 모든 학습 경험을 되돌아봤을 때, 본인에게 유용했던 학습 방식을 찾아낸 과정과 경험을 공유해 주세요. 
                               그리고 이 경험은 현재 본인의 프로그래밍 학습 과정에 어떻게 적용되고 있나요? (1000자 이내)""";
         Question question1 = questionRepository.save(
-                new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", description1, 1, applyForm)
+                new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", description1, 1, false, applyForm)
         );
 
         String description2 = """
@@ -130,7 +130,7 @@ public class DataLoader implements ApplicationRunner {
                               그리고 이런 경험이 현재 여러분의 성장 방식에 어떤 영향을 주고 있는지 이야기해 주세요.
                               (혼자 겪은 경험도 좋고, 타인과 함께한 협업과정에서의 실패와 어려움도 좋습니다.) (1000자 이내)""";
         Question question2 = questionRepository.save(
-                new Question(LONG_ANSWER, "성장 중 겪은 실패와 극복", description2, 2, applyForm)
+                new Question(LONG_ANSWER, "성장 중 겪은 실패와 극복", description2, 2, false, applyForm)
         );
 
         String description3 = """
@@ -139,7 +139,7 @@ public class DataLoader implements ApplicationRunner {
                               그 과정에서 어떤 도전을 마주했고, 이 경험으로 무엇을 배우고 얻었는지 '구체적으로' 이야기해 주세요.
                               (반드시 소프트웨어에 대한 경험이 아니어도 괜찮습니다. 만약 몰입한 경험의 결과물을 함께 보여주실 수 있다면 더 좋습니다.) (1000자 이내)""";
         Question question3 = questionRepository.save(
-                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description3, 3, applyForm)
+                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description3, 3, false, applyForm)
         );
 
         String description4 = """
@@ -147,12 +147,12 @@ public class DataLoader implements ApplicationRunner {
                               그 모습에 가까워지기 위해 현재 어떤 구체적인 노력을 기울이고 있는지 알려주세요.
                               여기에 더해 만약 우아한테크코스가 없다고 가정한다면 어떻게 성장해 나갈 것인지도 함께 이야기해 주세요. (1000자 이내)""";
         Question question4 = questionRepository.save(
-                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description4, 4, applyForm)
+                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", description4, 4, false, applyForm)
         );
 
         String description5 = "우아한테크코스 소식을 처음 접한 곳을 선택해주세요.";
         Question question5 = questionRepository.save(
-                new Question(MULTIPLE_CHOICE, "지원 경로", description5, 5, applyForm)
+                new Question(MULTIPLE_CHOICE, "지원 경로", description5, 5, false, applyForm)
         );
 
         Choice homepage = choiceRepository.save(new Choice("우아한테크코스 홈페이지", 1, question5));
@@ -162,7 +162,7 @@ public class DataLoader implements ApplicationRunner {
 
         String description6 = "모든 문항에 답했는지 확인해주세요.";
         Question question6 = questionRepository.save(
-                new Question(CHECK_BOX, "제출 후에 수정이 불가능합니다.", description6, 6, applyForm)
+                new Question(CHECK_BOX, "제출 후에 수정이 불가능합니다.", description6, 6, false, applyForm)
         );
 
         Choice yes = choiceRepository.save(new Choice("네, 확인했습니다.", 1, question6));

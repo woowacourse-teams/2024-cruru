@@ -1,6 +1,7 @@
 package com.cruru.question.service;
 
 import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
+import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
 import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -52,7 +53,8 @@ class QuestionServiceTest extends ServiceTest {
                         question.getContent(),
                         question.getDescription(),
                         List.of(),
-                        question.getSequence()
+                        question.getSequence(),
+                        question.getRequired()
                 ))
                 .toList();
 
@@ -75,7 +77,8 @@ class QuestionServiceTest extends ServiceTest {
                 question1.getContent(),
                 question1.getDescription(),
                 null,
-                0
+                0,
+                question1.getRequired()
         );
 
         // when
