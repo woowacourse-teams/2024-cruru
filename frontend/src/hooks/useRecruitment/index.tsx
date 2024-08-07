@@ -1,4 +1,5 @@
 import { RecruitmentStatusType } from '@customTypes/recruitment';
+import { getCleanDateString } from '@utils/formatDate';
 
 interface GetRecruitmentStatusProps {
   startDate: string;
@@ -6,9 +7,9 @@ interface GetRecruitmentStatusProps {
 }
 
 export function useGetRecruitmentStatus({ startDate, endDate }: GetRecruitmentStatusProps): RecruitmentStatusType {
-  const currentDate = new Date();
+  const currentDate = getCleanDateString();
 
-  if (new Date(startDate) > currentDate) return 'planned';
-  if (new Date(endDate) <= currentDate) return 'closed';
+  if (getCleanDateString(startDate) > currentDate) return 'planned';
+  if (getCleanDateString(endDate) <= currentDate) return 'closed';
   return 'inProgress';
 }
