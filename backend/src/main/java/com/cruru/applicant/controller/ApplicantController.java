@@ -5,6 +5,7 @@ import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.service.ApplicantService;
+import com.cruru.applicant.service.facade.ApplicantFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplicantController {
 
     private final ApplicantService applicantService;
+    private final ApplicantFacade applicantFacade;
 
     @PutMapping("/move-process/{processId}")
     public ResponseEntity<Void> updateApplicantProcess(
@@ -34,7 +36,7 @@ public class ApplicantController {
 
     @GetMapping("/{applicantId}")
     public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicantId") Long applicantId) {
-        ApplicantBasicResponse applicantResponse = applicantService.findById(applicantId);
+        ApplicantBasicResponse applicantResponse = applicantFacade.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
@@ -51,9 +53,10 @@ public class ApplicantController {
     }
 
     @PatchMapping("/{applicantId}")
-    private ResponseEntity<Void> update(
+    public ResponseEntity<Void> update(
             @PathVariable("applicantId") Long applicantId,
-            @RequestBody @Valid ApplicantUpdateRequest request) {
+            @RequestBody @Valid ApplicantUpdateRequest request
+    ) {
         applicantService.update(request, applicantId);
         return ResponseEntity.ok().build();
     }

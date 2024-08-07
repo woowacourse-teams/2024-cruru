@@ -35,6 +35,11 @@ public class ProcessService {
     private final DashboardRepository dashboardRepository;
     private final EvaluationRepository evaluationRepository;
 
+    public Process findById(long processId) {
+        return processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+    }
+
     public ProcessesResponse findByDashboardId(long dashboardId) {
         boolean dashboardExists = dashboardRepository.existsById(dashboardId);
         if (!dashboardExists) {

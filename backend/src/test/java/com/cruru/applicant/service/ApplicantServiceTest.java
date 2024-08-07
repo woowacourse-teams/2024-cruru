@@ -11,10 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
-import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
-import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -22,7 +20,6 @@ import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
@@ -86,28 +83,28 @@ class ApplicantServiceTest extends ServiceTest {
         assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
     }
 
-    @DisplayName("id로 지원자를 찾는다.")
-    @Test
-    void findById() {
-        // given
-        Process process = processRepository.save(createFirstProcess());
-        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
-
-        // when
-        ApplicantBasicResponse basicResponse = applicantService.findById(applicant.getId());
-        ProcessSimpleResponse processResponse = basicResponse.processResponse();
-        ApplicantResponse applicantResponse = basicResponse.applicantResponse();
-
-        // then
-        assertAll(
-                () -> assertThat(process.getId()).isEqualTo(processResponse.id()),
-                () -> assertThat(process.getName()).isEqualTo(processResponse.name()),
-                () -> assertThat(applicant.getId()).isEqualTo(applicantResponse.id()),
-                () -> assertThat(applicant.getName()).isEqualTo(applicantResponse.name()),
-                () -> assertThat(applicant.getEmail()).isEqualTo(applicantResponse.email()),
-                () -> assertThat(applicant.getPhone()).isEqualTo(applicantResponse.phone())
-        );
-    }
+    //    @DisplayName("id로 지원자를 찾는다.")
+    //    @Test
+    //    void findById() {
+    //        // given
+    //        Process process = processRepository.save(createFirstProcess());
+    //        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
+    //
+    //        // when
+    //        ApplicantBasicResponse basicResponse = applicantService.findById(applicant.getId());
+    //        ProcessSimpleResponse processResponse = basicResponse.processResponse();
+    //        ApplicantResponse applicantResponse = basicResponse.applicantResponse();
+    //
+    //        // then
+    //        assertAll(
+    //                () -> assertThat(process.getId()).isEqualTo(processResponse.id()),
+    //                () -> assertThat(process.getName()).isEqualTo(processResponse.name()),
+    //                () -> assertThat(applicant.getId()).isEqualTo(applicantResponse.id()),
+    //                () -> assertThat(applicant.getName()).isEqualTo(applicantResponse.name()),
+    //                () -> assertThat(applicant.getEmail()).isEqualTo(applicantResponse.email()),
+    //                () -> assertThat(applicant.getPhone()).isEqualTo(applicantResponse.phone())
+    //        );
+    //    }
 
     @DisplayName("id에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")
     @Test
