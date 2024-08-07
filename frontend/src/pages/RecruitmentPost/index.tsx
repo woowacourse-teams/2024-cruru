@@ -1,20 +1,15 @@
+import RecruitmentPostTab from '@components/recruitmentPost/RecruitmentPostTab';
 import { applyQueries } from '@hooks/apply';
 import { ISOtoLocaleString } from '@utils/formatDate';
 import { HiOutlineClock } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
-import RecruitmentPostTab from '@components/recruitmentPost/RecruitmentPostTab';
-import PostIdNotFound from './PostIdNotFound';
 
 import S from './style';
 
 export default function RecruitmentPost() {
   const { postId } = useParams<{ postId: string }>();
 
-  if (!postId) {
-    return <PostIdNotFound />;
-  }
-
-  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId });
+  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
   const recruitmentPeriod = {
     startDate: ISOtoLocaleString({ date: recruitmentPost?.startDate }),
     endDate: ISOtoLocaleString({ date: recruitmentPost?.endDate }),
