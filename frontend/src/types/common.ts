@@ -1,3 +1,5 @@
+import { Branded } from './utilTypes';
+
 export interface PopOverMenuItem {
   id: number;
   name: string;
@@ -12,4 +14,4 @@ export interface DropdownListItem {
   onClick: ({ targetProcessId }: { targetProcessId: number }) => void;
 }
 
-export type ISO8601 = string & { __brand: 'ISO8601' };
+export type ISO8601 = Branded<string, 'ISO8601'>;
