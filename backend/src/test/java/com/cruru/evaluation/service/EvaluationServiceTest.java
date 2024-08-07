@@ -1,20 +1,25 @@
 package com.cruru.evaluation.service;
 
 import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
 import com.cruru.evaluation.controller.dto.EvaluationResponse;
+import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
+import com.cruru.evaluation.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,5 +90,41 @@ class EvaluationServiceTest extends ServiceTest {
                 () -> assertThat(responses.get(0).score()).isEqualTo(score),
                 () -> assertThat(responses.get(0).content()).isEqualTo(content)
         );
+    }
+
+    @DisplayName("평가 수정에 성공한다.")
+    @Test
+    void update() {
+        // given
+        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        int score = 2;
+        String content = "맞춤법이 틀렸습니다.";
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+
+        // when
+        evaluationService.update(request, evaluation.getId());
+
+        // then
+        Optional<Evaluation> updatedEvaluation = evaluationRepository.findById(evaluation.getId());
+
+        assertAll(() -> {
+            assertThat(updatedEvaluation).isPresent();
+            assertThat(updatedEvaluation.get().getScore()).isEqualTo(score);
+            assertThat(updatedEvaluation.get().getContent()).isEqualTo(content);
+        });
+    }
+
+    @DisplayName("평가 수정 시, 존재하지 않을 경우 예외가 발생한다.")
+    @Test
+    void update_evaluationNotFound() {
+        // given
+        long invalidId = -1;
+        int score = 2;
+        String content = "맞춤법이 틀렸습니다.";
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+
+        // when&then
+        assertThatThrownBy(() -> evaluationService.update(request, invalidId))
+                .isInstanceOf(EvaluationNotFoundException.class);
     }
 }

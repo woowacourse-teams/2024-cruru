@@ -1,11 +1,15 @@
 package com.cruru.evaluation.controller;
 
 import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
+import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
+import com.cruru.evaluation.domain.Evaluation;
+import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
@@ -28,6 +32,9 @@ class EvaluationControllerTest extends ControllerTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     private Process process;
 
@@ -114,5 +121,38 @@ class EvaluationControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .when().get(url)
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("평가 수정에 성공할 경우, 200을 응답한다.")
+    @Test
+    void update() {
+        // given
+        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        int score = 2;
+        String content = "맞춤법이 틀렸습니다.";
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().patch("/v1/evaluations/{evaluationId}", evaluation.getId())
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("평가 수정시 평가가 존재하지 않을 경우, 404를 응답한다.")
+    @Test
+    void update_evaluationNotFound() {
+        // given
+        int score = 2;
+        String content = "맞춤법이 틀렸습니다.";
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().patch("/v1/evaluations/{evaluationId}", -1)
+                .then().log().all().statusCode(404);
     }
 }
