@@ -1,17 +1,20 @@
 name: BE/PM - PR Review 슬랙 알림
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [ review_requested, ready_for_review ]
     branches:
       - main
       - 'be/**'
+      - 'be-**'
 
   pull_request_review:
     types: [ submitted ]
     branches:
       - main
       - 'be/**'
+      - 'be-**'
 
 env:
   Dobby-Kim: "BE팀 도비"
