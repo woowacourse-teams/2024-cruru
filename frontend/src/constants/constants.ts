@@ -28,3 +28,5 @@ export const PROCESS = {
     },
   },
 } as const;
+
+export const CLUB_ID = 1; // TODO: 수정해야 합니다.
