@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import Button from '@components/common/Button';
 import ChevronButton from '@components/common/ChevronButton';
 import DateInput from '@components/common/DateInput';
@@ -5,6 +6,7 @@ import InputField from '@components/common/InputField';
 import TextEditor from '@components/common/TextEditor';
 import { RecruitmentInfoState } from '@customTypes/dashboard';
 import formatDate from '@utils/formatDate';
+import ReactQuill from 'react-quill-new';
 import S from './style';
 
 interface RecruitmentProps {
@@ -14,11 +16,14 @@ interface RecruitmentProps {
 }
 
 export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoState, nextStep }: RecruitmentProps) {
-  const { endDate, startDate, title, postingContent } = recruitmentInfoState;
+  const quillRef = useRef<ReactQuill | null>(null);
+  const [contentText, setContentText] = useState<string | undefined>('');
+
+  const { endDate, startDate, title } = recruitmentInfoState;
   const today = new Date().toISOString().split('T')[0];
   const startDateText = startDate ? formatDate(startDate) : '';
   const endDateText = endDate ? formatDate(endDate) : '';
-  const isNextButtonDisabled = !!endDate && !!postingContent && !!startDate && !!title;
+  const isNextButtonValid = !!(endDate && contentText && startDate && title);
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => {
@@ -44,12 +49,16 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
     });
   };
 
-  const handlePostingContent = (string: string) => {
+  const handlePostingContentChange = (string: string) => {
     setRecruitmentInfoState((prev) => {
       const temp = { ...prev };
       temp.postingContent = string;
       return temp;
     });
+  };
+
+  const handlePostingContentBlur = () => {
+    setContentText(quillRef.current?.unprivilegedEditor?.getText());
   };
 
   return (
@@ -91,14 +100,16 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
       <S.RecruitDetailContainer>
         <S.Title>상세 정보</S.Title>
         <TextEditor
+          quillRef={quillRef}
           value={recruitmentInfoState.postingContent}
-          onChange={handlePostingContent}
+          onChange={handlePostingContentChange}
+          onBlur={handlePostingContentBlur}
         />
       </S.RecruitDetailContainer>
 
       <S.NextButtonContainer>
         <Button
-          disabled={isNextButtonDisabled}
+          disabled={!isNextButtonValid}
           onClick={nextStep}
           size="sm"
           color="white"
