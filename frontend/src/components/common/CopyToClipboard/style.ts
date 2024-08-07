@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   height: 4.2rem;
   padding: 0.8rem 1.2rem;
 
-  border: 0.1rem solid ${({ theme }) => theme.colors.text.block};
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-radius: 1rem;
 
   svg {

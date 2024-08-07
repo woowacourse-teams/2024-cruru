@@ -20,7 +20,7 @@ const Input = styled.input`
   border-bottom: 0.1rem solid transparent;
 
   &:focus {
-    border-bottom: 0.1rem solid ${({ theme }) => theme.colors.text.block};
+    border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
     outline: none;
   }
 `;

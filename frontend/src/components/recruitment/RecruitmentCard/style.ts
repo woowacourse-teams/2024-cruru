@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const CardWrapper = styled.article`
   width: 38rem;
   height: 20rem;
-  border: 1px solid ${({ theme }) => theme.colors.text.block};
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-radius: 0.9rem;
 
   display: flex;
@@ -12,14 +12,14 @@ const CardWrapper = styled.article`
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.baseColors.grayscale[700]};
-    box-shadow: ${({ theme }) => `0 0.4rem 0.4rem ${theme.colors.text.block}`};
+    box-shadow: ${({ theme }) => `0 0.4rem 0.4rem ${theme.baseColors.grayscale[400]}`};
     cursor: pointer;
   }
 `;
 
 const RecruitmentInfoContainer = styled.div`
   height: 15rem;
-  padding: 3.2rem 1.6rem 1.6rem;
+  padding: 1.6rem;
 
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@ const EndDateContainer = styled.div`
 `;
 
 const RecruitmentResultContainer = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.colors.text.block};
+  border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   padding: 1.6rem;
   position: relative;
 
@@ -79,7 +79,7 @@ const PostStatsContainer = styled.div`
 
   div.totalStats {
     padding-right: 1.6rem;
-    border-right: 1px solid ${({ theme }) => theme.colors.text.block};
+    border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   }
 
   div.stats {

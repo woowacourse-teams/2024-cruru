@@ -14,7 +14,7 @@ const Header = styled.div`
 
   width: 100%;
   /* cursor: pointer; */ // TODO: 추후에 아코디언이 추가될 경우 변경이 필요합니다.
-  border-bottom: 1px solid ${({ theme }) => theme.colors.text.block};
+  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const Title = styled.div`

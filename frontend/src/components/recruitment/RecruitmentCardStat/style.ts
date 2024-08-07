@@ -14,7 +14,7 @@ const StatContainer = styled.div<{ isTotalStats: boolean }>`
     if (isTotalStats) {
       return css`
         padding-right: 1.6rem;
-        border-right: 1px solid ${theme.colors.text.block};
+        border-right: 1px solid ${theme.baseColors.grayscale[400]};
       `;
     }
     return css`

@@ -41,7 +41,7 @@ const CheckBoxContainer = styled.div<ContainerProps>`
   ${({ isDisabled, theme }) =>
     isDisabled &&
     css`
-      background-color: ${theme.colors.text.block};
+      background-color: ${theme.baseColors.grayscale[400]};
       border-color: ${theme.baseColors.grayscale[500]};
     `}
 

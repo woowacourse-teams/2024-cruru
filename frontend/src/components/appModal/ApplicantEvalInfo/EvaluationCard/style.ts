@@ -19,7 +19,7 @@ const EvaluatorImagePlaceholder = styled.div`
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 0.8rem;
-  background-color: ${({ theme }) => theme.colors.text.block};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const EvaluatorDetail = styled.div`

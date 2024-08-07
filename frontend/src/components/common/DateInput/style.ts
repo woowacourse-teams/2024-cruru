@@ -5,7 +5,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 0.1rem solid ${({ theme }) => theme.colors.text.block};
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-radius: 0.8rem;
   padding: 0.8rem 2rem;
   width: 100%;

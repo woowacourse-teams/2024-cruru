@@ -30,7 +30,7 @@ const Switch = styled.div<StyleProps>`
   ${({ isDisabled, theme }) =>
     isDisabled &&
     css({
-      backgroundColor: theme.colors.text.block,
+      backgroundColor: theme.baseColors.grayscale[400],
       outline: `0.2rem solid ${theme.baseColors.grayscale[500]}`,
     })}
 `;

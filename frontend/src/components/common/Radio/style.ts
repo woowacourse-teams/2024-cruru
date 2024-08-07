@@ -22,7 +22,7 @@ const RadioOuter = styled.div<{ diameter?: string; checked: boolean; isDisabled:
     isDisabled &&
     css`
       border-color: ${theme.baseColors.grayscale[500]};
-      background-color: ${theme.colors.text.block};
+      background-color: ${theme.baseColors.grayscale[400]};
     `}
 
   transition: all 0.2s ease; //TODO: theme hover로 바꿔야 합니다.

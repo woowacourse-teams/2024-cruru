@@ -50,8 +50,8 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
   `,
   black: (theme: Theme) => css`
     color: ${theme.baseColors.grayscale[50]};
-    background-color: ${theme.colors.text.default};
-    border: 1px solid ${theme.colors.text.default};
+    background-color: ${theme.baseColors.grayscale[900]};
+    border: 1px solid ${theme.baseColors.grayscale[900]};
 
     &:hover {
       background-color: ${theme.baseColors.grayscale[950]};

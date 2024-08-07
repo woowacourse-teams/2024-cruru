@@ -5,7 +5,7 @@ const Container = styled.nav`
   display: flex;
   align-items: center;
   padding: 3rem 1rem;
-  border-bottom: 0.1rem solid ${({ theme }) => theme.colors.text.block};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const Tabs = styled.ul`

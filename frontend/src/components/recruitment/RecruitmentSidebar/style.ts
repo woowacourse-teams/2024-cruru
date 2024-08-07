@@ -48,7 +48,8 @@ const StepNumber = styled.div<{ isSelected: boolean }>`
   justify-content: center;
 
   border-radius: 50%;
-  background-color: ${({ isSelected, theme }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.block)};
+  background-color: ${({ isSelected, theme }) =>
+    isSelected ? theme.colors.brand.primary : theme.baseColors.grayscale[400]};
   color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   margin-right: 0.6rem;

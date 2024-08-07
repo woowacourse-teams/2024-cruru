@@ -8,7 +8,7 @@ const commonInputStyles = (theme: Theme) => css`
   padding: 1.2rem 1.6rem;
   outline: none;
   background-color: ${theme.baseColors.grayscale[50]};
-  border: 0.1rem solid ${theme.colors.text.block};
+  border: 0.1rem solid ${theme.baseColors.grayscale[400]};
   color: ${theme.colors.text.default};
 `;
 
