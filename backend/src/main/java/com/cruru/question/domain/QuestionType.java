@@ -2,18 +2,16 @@ package com.cruru.question.domain;
 
 public enum QuestionType {
 
-    SHORT_ANSWER("SHORT_ANSWER", false),
-    LONG_ANSWER("LONG_ANSWER", false),
-    DROPDOWN("DROPDOWN", true),
-    CHECK_BOX("CHECK_BOX", true),
-    MULTIPLE_CHOICE("MULTIPLE_CHOICE", true),
+    SHORT_ANSWER(false),
+    LONG_ANSWER(false),
+    DROPDOWN(true),
+    CHECK_BOX(true),
+    MULTIPLE_CHOICE(true),
     ;
 
-    private final String type;
     private final boolean hasChoice;
 
-    QuestionType(String type, boolean hasChoice) {
-        this.type = type;
+    QuestionType(boolean hasChoice) {
         this.hasChoice = hasChoice;
     }
 
