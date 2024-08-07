@@ -72,7 +72,7 @@ class EvaluationServiceTest extends ServiceTest {
         );
     }
 
-    @DisplayName("특정 지원자의 해당 프로세스에서의 평가를 조회한다.")
+    @DisplayName("지원자와 프로세스를 통해 평가를 조회한다.")
     @Test
     void findAllByProcessAndApplicant() {
         // given
