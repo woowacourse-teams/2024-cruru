@@ -6,6 +6,8 @@ on:
     types: [opened, ready_for_review]
     branches:
       - be/develop
+      - be/main
+      - 'be-**'
 
 env:
   Dobby-Kim: "U07BJABU6G1"
