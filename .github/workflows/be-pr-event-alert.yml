@@ -349,7 +349,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"
