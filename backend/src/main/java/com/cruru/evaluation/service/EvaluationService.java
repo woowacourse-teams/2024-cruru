@@ -1,7 +1,6 @@
 package com.cruru.evaluation.service;
 
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
 import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.domain.Evaluation;
@@ -9,7 +8,6 @@ import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.evaluation.exception.EvaluationNotFoundException;
 import com.cruru.evaluation.exception.badrequest.EvaluationNoChangeException;
 import com.cruru.process.domain.Process;
-import com.cruru.process.domain.repository.ProcessRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EvaluationService {
 
-    private final ApplicantRepository applicantRepository;
-    private final ProcessRepository processRepository;
     private final EvaluationRepository evaluationRepository;
 
     @Transactional
