@@ -41,14 +41,16 @@ class QuestionServiceTest extends ServiceTest {
                         question1.getContent(),
                         question1.getDescription(),
                         null,
-                        0
+                        0,
+                        question1.getRequired()
                 ),
                 new QuestionCreateRequest(
                         question2.getQuestionType().toString(),
                         question2.getContent(),
                         question2.getDescription(),
                         null,
-                        1
+                        1,
+                        question2.getRequired()
                 )
         );
 
@@ -71,7 +73,8 @@ class QuestionServiceTest extends ServiceTest {
                 question1.getContent(),
                 question1.getDescription(),
                 null,
-                0
+                0,
+                question1.getRequired()
         );
 
         // when

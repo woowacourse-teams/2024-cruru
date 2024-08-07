@@ -39,7 +39,14 @@ public class QuestionService {
     }
 
     private Question toQuestion(QuestionType type, QuestionCreateRequest request, ApplyForm applyForm) {
-        return new Question(type, request.question(), request.description(), request.orderIndex(), applyForm);
+        return new Question(
+                type,
+                request.question(),
+                request.description(),
+                request.orderIndex(),
+                request.required(),
+                applyForm
+        );
     }
 
     public List<QuestionResponse> findByApplyFormId(Long applyFormId) {
@@ -58,7 +65,8 @@ public class QuestionService {
                 question.getContent(),
                 question.getDescription(),
                 question.getSequence(),
-                choiceResponses
+                choiceResponses,
+                question.getRequired()
         );
     }
 }
