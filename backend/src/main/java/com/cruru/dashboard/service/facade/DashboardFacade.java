@@ -15,6 +15,8 @@ import com.cruru.dashboard.service.DashboardService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import com.cruru.question.service.QuestionService;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -53,14 +55,17 @@ public class DashboardFacade {
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
         List<Long> dashboardIds = getDashboardIdsByClubId(clubId);
         String clubName = clubService.findById(clubId).getName();
+        LocalDateTime now = LocalDateTime.now();
         List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
                 .map(this::createDashboardPreviewResponse)
-                .sorted(Comparator.comparing(DashboardPreviewResponse::endDate))
                 .toList();
-        return new DashboardsOfClubResponse(clubName, dashboardResponses);
+
+        List<DashboardPreviewResponse> sortedDashboardPreviews = sortDashboardPreviews(dashboardResponses, now);
+
+        return new DashboardsOfClubResponse(clubName, sortedDashboardPreviews);
     }
 
-    private List<Long> getDashboardIdsByClubId(Long clubId) {
+    private List<Long> getDashboardIdsByClubId(long clubId) {
         return dashboardService.findAllByClubId(clubId)
                 .stream()
                 .map(Dashboard::getId)
@@ -76,8 +81,31 @@ public class DashboardFacade {
                 applyForm.getTitle(),
                 stats,
                 applyForm.getUrl(),
+                applyForm.getStartDate(),
                 applyForm.getEndDate()
         );
+    }
+
+    private List<DashboardPreviewResponse> sortDashboardPreviews(
+            List<DashboardPreviewResponse> dashboardResponses,
+            LocalDateTime currentTime
+    ) {
+        List<DashboardPreviewResponse> nonExpiredDashboards = dashboardResponses.stream()
+                .filter(d -> d.endDate().isAfter(currentTime))
+                .sorted(Comparator.comparing(DashboardPreviewResponse::endDate)
+                        .thenComparing(DashboardPreviewResponse::startDate))
+                .toList();
+
+        List<DashboardPreviewResponse> expiredDashboards = dashboardResponses.stream()
+                .filter(d -> d.endDate().isBefore(currentTime))
+                .sorted(Comparator.comparing(DashboardPreviewResponse::startDate))
+                .toList();
+
+        List<DashboardPreviewResponse> sortedDashboards = new ArrayList<>();
+        sortedDashboards.addAll(nonExpiredDashboards);
+        sortedDashboards.addAll(expiredDashboards);
+
+        return sortedDashboards;
     }
 
     private List<Applicant> getAllApplicantsByDashboardId(Long dashboardId) {
@@ -91,14 +119,11 @@ public class DashboardFacade {
     private StatsResponse calculateStats(List<Applicant> allApplicants) {
         int totalApplicants = allApplicants.size();
         int totalFails = (int) allApplicants.stream()
-                .filter(Applicant::isRejected)
-                .count();
+                .filter(Applicant::isRejected).count();
         int totalAccepts = (int) allApplicants.stream()
-                .filter(Applicant::isApproved)
-                .count();
+                .filter(Applicant::isApproved).count();
         int totalPending = (int) allApplicants.stream()
-                .filter(Applicant::isPending)
-                .count();
+                .filter(Applicant::isPending).count();
         return new StatsResponse(totalAccepts, totalFails, totalPending, totalApplicants);
     }
 }
