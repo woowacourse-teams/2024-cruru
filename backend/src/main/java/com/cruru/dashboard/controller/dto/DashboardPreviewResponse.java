@@ -15,6 +15,9 @@ public record DashboardPreviewResponse(
         String postUrl,
 
         @JsonFormat(shape = Shape.STRING)
+        LocalDateTime startDate,
+
+        @JsonFormat(shape = Shape.STRING)
         LocalDateTime endDate
 ) {
 
