@@ -16,7 +16,10 @@ export const applyQueries = {
   useGetRecruitmentPost: ({ postId }: { postId: string }) => {
     const { data, ...restQueryObj } = useGetRecruitmentInfo({ postId });
 
+    const isClosed = data ? data.recruitmentPost.endDate < new Date().toISOString() : true;
+
     return {
+      isClosed,
       data: data?.recruitmentPost,
       ...restQueryObj,
     };

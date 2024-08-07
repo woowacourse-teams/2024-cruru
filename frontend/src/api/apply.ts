@@ -1,9 +1,10 @@
+import { ApplyForm, RecruitmentPost } from '@customTypes/apply';
 import ApiError from './ApiError';
 import { dtoToApplyForm, dtoToRecruitmentPost } from './applyDto';
 import { APPLY } from './endPoint';
 
 const applyApis = {
-  get: async ({ postId }: { postId: string }) => {
+  get: async ({ postId }: { postId: string }): Promise<{ recruitmentPost: RecruitmentPost; applyForm: ApplyForm }> => {
     const response = await fetch(`${APPLY}/${postId}`, {
       headers: {
         Accept: 'application/json',
