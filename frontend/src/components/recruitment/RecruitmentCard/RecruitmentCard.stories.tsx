@@ -40,7 +40,6 @@ export const RecruitmentCardDefault: Story = {
       total: 654,
     },
     endDate: '2023-09-15T09:00:00Z',
-    onClickTitle: () => console.log('공고 카드의 제목이 클릭되었습니다.'),
-    onClickShareButton: () => console.log('공고에 대한 URL 공유 카드가 클릭되었습니다.'),
+    onClick: () => console.log('공고 카드가 클릭되었습니다.'),
   },
 };

@@ -1,8 +1,7 @@
-import { HiOutlineClock, HiOutlineShare } from 'react-icons/hi';
+import { HiOutlineClock } from 'react-icons/hi';
 import formatDate from '@utils/formatDate';
 
 import RecruitmentCardStat from '../RecruitmentCardStat';
-import IconButton from '../../common/IconButton';
 import S from './style';
 
 interface RecruitmentStats {
@@ -17,8 +16,7 @@ interface RecruitmentCardProps {
   title: string;
   postStats: RecruitmentStats;
   endDate: string;
-  onClickTitle: (dashboardId: number) => void;
-  onClickShareButton: (dashboardId: number) => void;
+  onClick: (dashboardId: number) => void;
 }
 
 const POST_STATS_KEY: Record<string, string> = {
@@ -28,14 +26,7 @@ const POST_STATS_KEY: Record<string, string> = {
   total: '전체',
 } as const;
 
-export default function RecruitmentCard({
-  dashboardId,
-  title,
-  postStats,
-  endDate,
-  onClickTitle,
-  onClickShareButton,
-}: RecruitmentCardProps) {
+export default function RecruitmentCard({ dashboardId, title, postStats, endDate, onClick }: RecruitmentCardProps) {
   const postStatsMap: [string, number][] = [
     [POST_STATS_KEY.total, postStats.total],
     [POST_STATS_KEY.inProgress, postStats.inProgress],
@@ -44,9 +35,9 @@ export default function RecruitmentCard({
   ];
 
   return (
-    <S.CardWrapper>
+    <S.CardWrapper onClick={() => onClick(dashboardId)}>
       <S.RecruitmentInfoContainer>
-        <S.RecruitmentTitle onClick={() => onClickTitle(dashboardId)}>{title}</S.RecruitmentTitle>
+        <S.RecruitmentTitle>{title}</S.RecruitmentTitle>
         <S.EndDateContainer>
           <HiOutlineClock size="1.6rem" />
           <span>{formatDate(endDate)}</span>
@@ -64,15 +55,6 @@ export default function RecruitmentCard({
             />
           ))}
         </S.PostStatsContainer>
-
-        <IconButton
-          size="sm"
-          color="white"
-          outline={false}
-          onClick={() => onClickShareButton(dashboardId)}
-        >
-          <HiOutlineShare />
-        </IconButton>
       </S.RecruitmentResultContainer>
     </S.CardWrapper>
   );

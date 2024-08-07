@@ -13,6 +13,7 @@ const CardWrapper = styled.article`
   &:hover {
     border: 1px solid ${({ theme }) => theme.baseColors.grayscale[700]};
     box-shadow: ${({ theme }) => `0 0.4rem 0.4rem ${theme.baseColors.grayscale[400]}`};
+    cursor: pointer;
   }
 `;
 
@@ -35,7 +36,6 @@ const RecruitmentTitle = styled.div`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  cursor: pointer;
 `;
 
 const EndDateContainer = styled.div`
