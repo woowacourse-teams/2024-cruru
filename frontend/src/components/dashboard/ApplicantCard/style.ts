@@ -25,7 +25,7 @@ const CardDetail = styled.div`
 
 const CardHeader = styled.h3`
   ${({ theme }) => theme.typography.common.block};
-  color: ${({ theme }) => theme.baseColors.grayscale[900]};
+  color: ${({ theme }) => theme.colors.text.default};
   margin-bottom: 0.4rem;
 `;
 

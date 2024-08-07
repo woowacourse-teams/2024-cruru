@@ -57,7 +57,7 @@ const StepNumber = styled.div<{ isSelected: boolean }>`
 
 const StepLabel = styled.div<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.smallAccent}
-  color: ${({ isSelected, theme }) => (isSelected ? theme.colors.brand.primary : theme.baseColors.grayscale[400])};
+  color: ${({ isSelected, theme }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.block)};
 `;
 
 const S = {
