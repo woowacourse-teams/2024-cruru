@@ -36,12 +36,12 @@ export default function RecruitmentCard({
   onClickTitle,
   onClickShareButton,
 }: RecruitmentCardProps) {
-  const postStatsMap = new Map<string, number>([
+  const postStatsMap: [string, number][] = [
     [POST_STATS_KEY.total, postStats.total],
     [POST_STATS_KEY.inProgress, postStats.inProgress],
     [POST_STATS_KEY.fail, postStats.fail],
     [POST_STATS_KEY.accept, postStats.accept],
-  ]);
+  ];
 
   return (
     <S.CardWrapper>
@@ -55,7 +55,7 @@ export default function RecruitmentCard({
 
       <S.RecruitmentResultContainer>
         <S.PostStatsContainer>
-          {Array.from(postStatsMap).map(([label, value]) => (
+          {postStatsMap.map(([label, value]) => (
             <RecruitmentCardStat
               key={`${dashboardId}-${label}`}
               label={label}
