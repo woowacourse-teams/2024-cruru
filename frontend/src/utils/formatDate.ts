@@ -20,7 +20,7 @@ export default function formatDate(dateString: ISO8601 | string) {
  *
  * @returns {string} 변환된 로케일 날짜 문자열을 반환합니다. `date`가 제공되지 않으면 빈 문자열을 반환합니다.
  */
-export const ISOToLocaleString = ({
+export const ISOtoLocaleString = ({
   date,
   time = false,
   options,

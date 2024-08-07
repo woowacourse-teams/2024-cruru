@@ -1,5 +1,5 @@
 import { applyQueries } from '@hooks/apply';
-import { ISOToLocaleString } from '@utils/formatDate';
+import { ISOtoLocaleString } from '@utils/formatDate';
 import { HiOutlineClock } from 'react-icons/hi2';
 import { useParams } from 'react-router-dom';
 import RecruitmentPostTab from '@components/recruitmentPost/RecruitmentPostTab';
@@ -16,8 +16,8 @@ export default function RecruitmentPost() {
 
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId });
   const recruitmentPeriod = {
-    startDate: ISOToLocaleString({ date: recruitmentPost?.startDate }),
-    endDate: ISOToLocaleString({ date: recruitmentPost?.endDate }),
+    startDate: ISOtoLocaleString({ date: recruitmentPost?.startDate }),
+    endDate: ISOtoLocaleString({ date: recruitmentPost?.endDate }),
   };
 
   return (
