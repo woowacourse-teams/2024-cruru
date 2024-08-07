@@ -4,6 +4,8 @@ import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
 const Nav = styled.nav`
   display: flex;
   align-items: center;
+
+  width: 100%;
   padding: 1.6rem 0;
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
