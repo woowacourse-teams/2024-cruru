@@ -7,10 +7,18 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.6rem;
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  max-width: 30rem;
+  height: 5.2rem;
 `;
 
 const C = {
   ContentContainer,
+  ButtonContainer,
 };
 
 export default C;

@@ -2,6 +2,7 @@ import Tab from '@components/common/Tab';
 import useTab from '@components/common/Tab/useTab';
 import { RECRUITMENT_POST_MENUS } from '@constants/constants';
 import RecruitmentPostDetail from '../RecruitmentPostDetail';
+import ApplyForm from '../ApplyForm';
 
 export type RecruitmentPostTabItems = '모집 공고' | '지원하기';
 
@@ -26,7 +27,7 @@ export default function RecruitmentPostTab() {
         <RecruitmentPostDetail moveTab={moveTab} />
       </Tab.TabPanel>
       <Tab.TabPanel isVisible={currentMenu === '지원하기'}>
-        <div>지원하기</div>
+        <ApplyForm />
       </Tab.TabPanel>
     </>
   );

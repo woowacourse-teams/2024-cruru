@@ -39,7 +39,8 @@
       "@styles/*": ["src/styles/*"],
       "@customTypes/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"],
-      "@mocks/*": ["src/mocks/*"]
+      "@mocks/*": ["src/mocks/*"],
+      "@domain/*": ["src/domain/*"]
     }
   },
   "include": ["src/**/*", "setupTests.ts", ".storybook/*"]

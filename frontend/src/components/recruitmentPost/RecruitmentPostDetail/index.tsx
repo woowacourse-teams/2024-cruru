@@ -2,7 +2,6 @@ import Button from '@components/common/Button';
 import TextEditor from '@components/common/TextEditor';
 import { applyQueries } from '@hooks/apply';
 import { useParams } from 'react-router-dom';
-import S from './style';
 import C from '../style';
 
 interface RecruitmentPostDetailProps {
@@ -21,7 +20,7 @@ export default function RecruitmentPostDetail({ moveTab }: RecruitmentPostDetail
         value={recruitmentPost?.postingContent || ''}
       />
 
-      <S.ButtonContainer>
+      <C.ButtonContainer>
         <Button
           name="지원하기"
           onClick={moveTab}
@@ -31,7 +30,7 @@ export default function RecruitmentPostDetail({ moveTab }: RecruitmentPostDetail
         >
           지원하기
         </Button>
-      </S.ButtonContainer>
+      </C.ButtonContainer>
     </C.ContentContainer>
   );
 }
