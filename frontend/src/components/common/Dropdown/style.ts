@@ -31,7 +31,7 @@ const Header = styled.div<{ isOpen: boolean; size: 'sm' | 'md' }>`
         content: '';
         position: absolute;
         bottom: 0;
-        left: ${size === 'md' ? '16px' : '8px'}; 
+        left: ${size === 'md' ? '16px' : '8px'};
         right: ${size === 'md' ? '16px' : '8px'};
         height: 1px;
         background-color: ${theme.baseColors.grayscale[400]};
