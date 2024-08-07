@@ -3,7 +3,7 @@ export interface Question {
   question: string;
   choices: {
     choice: string;
-    order_index: number;
+    orderIndex: number;
   }[];
   required: boolean;
 }
@@ -21,5 +21,5 @@ export type StepState = 'recruitmentForm' | 'applyForm' | 'finished';
 
 export interface QuestionOption {
   choice: string;
-  order_index: number;
+  orderIndex: number;
 }

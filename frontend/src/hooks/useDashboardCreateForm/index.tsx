@@ -74,7 +74,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const setQuestionOptions = (index: number) => (options: Option[]) => {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
-      questionsCopy[index].choices = options.map(({ value }, i) => ({ choice: value, order_index: i }));
+      questionsCopy[index].choices = options.map(({ value }, i) => ({ choice: value, orderIndex: i }));
       return questionsCopy;
     });
   };
@@ -89,7 +89,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   const setQuestionPrev = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index > 3) {
+      if (index > initialApplyState.length) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index - 1];
@@ -102,7 +102,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   const setQuestionNext = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index >= 3 && index < prevState.length - 1) {
+      if (index >= initialApplyState.length && index < prevState.length - 1) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index + 1];
@@ -114,7 +114,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   };
 
   const deleteQuestion = (index: number) => {
-    if (index < 3) return;
+    if (index < initialApplyState.length) return;
     setApplyState((prevState) => prevState.filter((_, i) => i !== index));
   };
 
