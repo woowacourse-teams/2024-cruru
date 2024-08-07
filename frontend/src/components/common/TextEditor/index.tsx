@@ -2,6 +2,7 @@ import ReactQuill from 'react-quill-new';
 
 import { ToolbarOptions } from '@customTypes/textEditor';
 import 'react-quill-new/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.bubble.css';
 import './style.css';
 
 interface TextEditorProps {
@@ -9,9 +10,10 @@ interface TextEditorProps {
   height?: string;
   toolbarOptions?: ToolbarOptions;
   value: string;
-  onChange: (content: string) => void;
+  onChange?: (content: string) => void;
   onBlur?: () => void;
   placeholder?: string;
+  theme?: 'snow' | 'bubble';
 }
 
 const defaultToolbarOptions: ToolbarOptions = [
@@ -30,15 +32,29 @@ export default function TextEditor({
   onChange,
   onBlur,
   placeholder,
+  theme = 'snow',
 }: TextEditorProps) {
+  const handleChange = (content: string) => {
+    if (onChange) {
+      onChange(content);
+    }
+  };
+
+  const handleBlur = () => {
+    if (onBlur) {
+      onBlur();
+    }
+  };
+
   return (
     <ReactQuill
       style={{ width, height }}
       modules={{ toolbar: toolbarOptions }}
-      theme="snow"
+      theme={theme}
+      readOnly={theme === 'bubble'}
       value={value}
-      onChange={(content) => onChange(content)}
-      onBlur={() => onBlur}
+      onChange={handleChange}
+      onBlur={handleBlur}
       placeholder={placeholder}
     />
   );

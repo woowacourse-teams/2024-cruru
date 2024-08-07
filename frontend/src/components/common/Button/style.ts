@@ -94,7 +94,15 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
 const Button = styled.button<ButtonStyleProps>`
   ${({ theme }) => commonStyles(theme)}
   ${({ size, theme }) => sizeStyles[size](theme)}
-  ${({ color, theme }) => colorStyles[color](theme)}
+  ${({ color, theme }) => colorStyles[color](theme)} 
+  
+  &:disabled {
+    cursor: not-allowed;
+
+    color: ${({ theme }) => theme.baseColors.grayscale[600]};
+    background-color: ${({ theme }) => theme.baseColors.grayscale[300]};
+    border: 1px solid ${({ theme }) => theme.baseColors.grayscale[300]};
+  }
 `;
 
 const S = {
