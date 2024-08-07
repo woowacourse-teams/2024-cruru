@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
 import Button from '@components/common/Button';
 import InputField from '@components/common/InputField';
+import React, { useState } from 'react';
 
 import { KeyedStrings } from '@customTypes/utilTypes';
+import { validateApplicant } from '@domain/validations/apply';
 import ValidationError from '@utils/errors/ValidationError';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
-import { isValidEmail, isValidPhoneNumber } from '@domain/validations/apply';
 
-import S from './style';
 import C from '../style';
+import S from './style';
 
-interface Applicant {
+export interface Applicant {
   name: string;
   email: string;
   phone: string;
@@ -30,13 +30,7 @@ export default function ApplyForm() {
     setApplicantError({} as KeyedStrings<Applicant>);
 
     try {
-      if (!isValidEmail(applicant.email)) {
-        throw new ValidationError({ inputName: 'email', message: '이메일을 확인해 주세요.' });
-      }
-
-      if (!isValidPhoneNumber(applicant.phone)) {
-        throw new ValidationError({ inputName: 'phone', message: '전화번호를 확인해 주세요.' });
-      }
+      validateApplicant(applicant);
     } catch (err) {
       if (err instanceof ValidationError) {
         setApplicantError((prev) => ({ ...prev, [err.inputName]: err.message }));
