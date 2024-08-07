@@ -4,6 +4,12 @@ import evaluationHandlers from './evaluationHandlers';
 import applyHandlers from './applyHandlers';
 import dashboardHandlers from './dashboardHandlers';
 
-const handlers = [...processHandlers, ...applicantHandlers, ...evaluationHandlers, ...dashboardHandlers, applyHandlers];
+const handlers = [
+  ...processHandlers,
+  ...applicantHandlers,
+  ...evaluationHandlers,
+  ...dashboardHandlers,
+  ...applyHandlers,
+];
 
 export default handlers;
