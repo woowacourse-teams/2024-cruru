@@ -1,6 +1,7 @@
 package com.cruru.evaluation.controller;
 
 import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 
 import com.cruru.applicant.domain.Applicant;
