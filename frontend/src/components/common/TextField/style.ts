@@ -9,7 +9,7 @@ const commonInputStyles = (theme: Theme) => css`
   padding: 1.2rem 1.6rem;
   outline: none;
   background-color: ${theme.baseColors.grayscale[50]};
-  border: 0.1rem solid ${theme.baseColors.grayscale[400]};
+  border: 0.1rem solid ${theme.colors.text.block};
   color: ${theme.colors.text.default};
 `;
 

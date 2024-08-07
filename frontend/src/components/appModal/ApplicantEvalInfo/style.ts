@@ -15,7 +15,7 @@ const FormContainer = styled.div`
 const EvaluationListContainer = styled.ul`
   & > li {
     padding: 1.4rem 0;
-    border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.text.block};
   }
 `;
 

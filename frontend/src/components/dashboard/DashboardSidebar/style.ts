@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 const Container = styled.div`
   width: 300px;
-  border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-right: 1px solid ${({ theme }) => theme.colors.text.block};
   padding: 3.6rem 1.6rem;
   height: 100%;
 

@@ -12,7 +12,7 @@ const Container = styled.div<ContainerProps>`
   inset: ${({ popOverPosition }) => popOverPosition ?? 'inherit'};
 
   border-radius: ${({ isOpen }) => (isOpen ? '8px 8px 0px 0px' : '8px')};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.baseColors.grayscale[400]};
+  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.text.block};
 
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
 
@@ -24,11 +24,11 @@ const List = styled.div<{ size: 'sm' | 'md' }>`
   padding: ${({ size }) => (size === 'md' ? '16px' : '8px')};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
-  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border: 1px solid ${({ theme }) => theme.colors.text.block};
   border-radius: 8px;
 
   box-sizing: border-box;
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.baseColors.grayscale[400]};
+  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.text.block};
 `;
 
 const S = {

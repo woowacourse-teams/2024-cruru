@@ -18,7 +18,7 @@ const Header = styled.header`
 
   padding: 8px 4px;
   margin-bottom: 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.text.block};
 `;
 
 const Title = styled.h2`

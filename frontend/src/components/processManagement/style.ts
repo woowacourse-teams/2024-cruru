@@ -14,7 +14,7 @@ export const connectionLine = (theme: Theme) => css`
     right: calc(-1.8rem); // INFO: -(width + border)
     width: 1.8rem;
     height: 0.2rem;
-    background-color: ${theme.baseColors.grayscale[400]};
+    background-color: ${theme.colors.text.block};
   }
 `;
 

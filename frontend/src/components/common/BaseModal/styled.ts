@@ -10,7 +10,7 @@ const ModalOverlay = styled.dialog`
   z-index: 1000;
   padding: 0;
 
-  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border: 1px solid ${({ theme }) => theme.colors.text.block};
   border-radius: 8px;
 
   width: fit-content;

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 const CardWrapper = styled.article`
   width: 38rem;
   height: 20rem;
-  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border: 1px solid ${({ theme }) => theme.colors.text.block};
   border-radius: 0.9rem;
 
   display: flex;
@@ -12,7 +12,7 @@ const CardWrapper = styled.article`
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.baseColors.grayscale[700]};
-    box-shadow: ${({ theme }) => `0 0.4rem 0.4rem ${theme.baseColors.grayscale[400]}`};
+    box-shadow: ${({ theme }) => `0 0.4rem 0.4rem ${theme.colors.text.block}`};
     cursor: pointer;
   }
 `;
@@ -28,7 +28,7 @@ const RecruitmentInfoContainer = styled.div`
 
 const RecruitmentTitle = styled.div`
   ${({ theme }) => theme.typography.heading[600]};
-  color: ${({ theme }) => theme.baseColors.grayscale[900]};
+  color: ${({ theme }) => theme.colors.text.default};
   height: 4.8rem;
   word-wrap: break-word;
   overflow: hidden;
@@ -52,7 +52,7 @@ const EndDateContainer = styled.div`
 `;
 
 const RecruitmentResultContainer = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-top: 1px solid ${({ theme }) => theme.colors.text.block};
   padding: 1.6rem;
   position: relative;
 
@@ -73,13 +73,13 @@ const PostStatsContainer = styled.div`
   align-items: center;
 
   span.statNumbers {
-    color: ${({ theme }) => theme.baseColors.grayscale[900]};
+    color: ${({ theme }) => theme.colors.text.default};
     margin-left: 0.5rem;
   }
 
   div.totalStats {
     padding-right: 1.6rem;
-    border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+    border-right: 1px solid ${({ theme }) => theme.colors.text.block};
   }
 
   div.stats {

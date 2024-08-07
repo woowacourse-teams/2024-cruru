@@ -48,8 +48,7 @@ const StepNumber = styled.div<{ isSelected: boolean }>`
   justify-content: center;
 
   border-radius: 50%;
-  background-color: ${({ isSelected, theme }) =>
-    isSelected ? theme.colors.brand.primary : theme.baseColors.grayscale[400]};
+  background-color: ${({ isSelected, theme }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.block)};
   color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   margin-right: 0.6rem;
@@ -57,7 +56,7 @@ const StepNumber = styled.div<{ isSelected: boolean }>`
 
 const StepLabel = styled.div<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.smallAccent}
-  color: ${({ isSelected, theme }) => (isSelected ? theme.colors.brand.primary : theme.baseColors.grayscale[400])};
+  color: ${({ isSelected, theme }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.block)};
 `;
 
 const S = {

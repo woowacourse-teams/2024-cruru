@@ -25,8 +25,8 @@ const DetailContainer = styled.div`
   flex-direction: column;
   gap: 8px;
 
-  border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
-  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-top: 1px solid ${({ theme }) => theme.colors.text.block};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.text.block};
 
   padding: 8px 0px;
 `;
