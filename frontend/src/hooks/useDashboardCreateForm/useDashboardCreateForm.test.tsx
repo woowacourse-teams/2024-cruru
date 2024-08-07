@@ -41,8 +41,8 @@ describe('useDashboardCreateForm', () => {
     });
 
     expect(result.current.applyState[0].choices).toEqual([
-      { choice: 'Option 1', order_index: 0 },
-      { choice: 'Option 2', order_index: 1 },
+      { choice: 'Option 1', orderIndex: 0 },
+      { choice: 'Option 2', orderIndex: 1 },
     ]);
   });
 
