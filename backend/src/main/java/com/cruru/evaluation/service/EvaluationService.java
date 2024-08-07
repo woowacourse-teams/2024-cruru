@@ -5,9 +5,11 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
 import com.cruru.evaluation.controller.dto.EvaluationResponse;
+import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.controller.dto.EvaluationsResponse;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
+import com.cruru.evaluation.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
@@ -60,6 +62,22 @@ public class EvaluationService {
                 evaluation.getId(),
                 evaluation.getScore(),
                 evaluation.getContent()
+        );
+    }
+
+    @Transactional
+    public void update(EvaluationUpdateRequest request, long evaluationId) {
+        Evaluation evaluation = evaluationRepository.findById(evaluationId)
+                .orElseThrow(EvaluationNotFoundException::new);
+
+        evaluationRepository.save(
+                new Evaluation(
+                        evaluationId,
+                        request.score(),
+                        request.content(),
+                        evaluation.getProcess(),
+                        evaluation.getApplicant()
+                )
         );
     }
 }
