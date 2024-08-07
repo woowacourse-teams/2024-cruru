@@ -25,19 +25,12 @@ public class QuestionService {
     private final ChoiceService choiceService;
 
     @Transactional
-    public void createAll(List<QuestionCreateRequest> requests, ApplyForm applyForm) {
-        for (QuestionCreateRequest questionCreateRequest : requests) {
-            create(questionCreateRequest, applyForm);
-        }
-    }
-
-    @Transactional
     public Question create(QuestionCreateRequest request, ApplyForm applyForm) {
         QuestionType questionType = QuestionType.valueOf(request.type());
         Question savedQuestion = questionRepository.save(toQuestion(questionType, request, applyForm));
 
         if (savedQuestion.hasChoice()) {
-            choiceService.createAll(request.choices(), savedQuestion.getId());
+            choiceService.createAll(request.choices(), savedQuestion);
         }
 
         return savedQuestion;
@@ -84,7 +77,7 @@ public class QuestionService {
     private List<ChoiceResponse> getChoiceResponses(Question question) {
         List<ChoiceResponse> choiceResponses = new ArrayList<>();
         if (question.hasChoice()) {
-            List<Choice> choices = choiceService.findAllByQuestionId(question.getId());
+            List<Choice> choices = choiceService.findAllByQuestion(question);
             return choiceService.toChoiceResponses(choices);
         }
         return choiceResponses;

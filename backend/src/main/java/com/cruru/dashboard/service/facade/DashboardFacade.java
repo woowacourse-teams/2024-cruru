@@ -15,6 +15,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
+import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.service.QuestionService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class DashboardFacade {
     public long create(long clubId, DashboardCreateRequest request) {
         Dashboard createdDashboard = dashboardService.create(clubId);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
-        questionService.createAll(request.questions(), applyForm);
+        for (QuestionCreateRequest questionCreateRequest : request.questions()) {
+            questionService.create(questionCreateRequest, applyForm);
+        }
         return createdDashboard.getId();
     }
 

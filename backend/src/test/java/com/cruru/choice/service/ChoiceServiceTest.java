@@ -54,7 +54,7 @@ class ChoiceServiceTest extends ServiceTest {
                 .toList();
 
         // when
-        List<Choice> actualChoices = choiceService.createAll(choiceRequests, question.getId());
+        List<Choice> actualChoices = choiceService.createAll(choiceRequests, question);
 
         // then
 
@@ -74,13 +74,11 @@ class ChoiceServiceTest extends ServiceTest {
 
         // when & then
         assertAll(() -> {
-            Long shortAnswerQuestionId = shortAnswerQuestion.getId();
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestionId)).isInstanceOf(
-                    ChoiceIllegalSaveException.class);
+            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion))
+                    .isInstanceOf(ChoiceIllegalSaveException.class);
 
-            Long longAnswerQuestionId = longAnswerQuestion.getId();
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestionId)).isInstanceOf(
-                    ChoiceIllegalSaveException.class);
+            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion))
+                    .isInstanceOf(ChoiceIllegalSaveException.class);
         });
     }
 
@@ -94,24 +92,20 @@ class ChoiceServiceTest extends ServiceTest {
         Question dropdownQuestion = questionRepository.save(QuestionFixture.createDropdownQuestion(applyForm));
         List<ChoiceCreateRequest> choiceRequests = List.of();
 
-        // when & then
-        Long questionId = dropdownQuestion.getId();
-        assertThatThrownBy(() -> choiceService.createAll(
-                choiceRequests,
-                questionId
-        )).isInstanceOf(ChoiceEmptyException.class);
+        // when&then
+        assertThatThrownBy(() -> choiceService.createAll(choiceRequests, dropdownQuestion))
+                .isInstanceOf(ChoiceEmptyException.class);
     }
 
     @DisplayName("객관식 질문의 모든 선택지를 조회한다.")
     @Test
-    void findAllByQuestionId() {
+    void findAllByQuestion() {
         // given
         Question question = questionRepository.save(QuestionFixture.createDropdownQuestion(null));
         List<Choice> choices = choiceRepository.saveAll(ChoiceFixture.createChoices(question));
 
         // when
-        long QuestionId = question.getId();
-        List<Choice> actualChoices = choiceService.findAllByQuestionId(QuestionId);
+        List<Choice> actualChoices = choiceService.findAllByQuestion(question);
 
         // then
         int expectedSize = choices.size();

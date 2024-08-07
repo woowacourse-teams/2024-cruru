@@ -42,31 +42,6 @@ class QuestionServiceTest extends ServiceTest {
     @Autowired
     private QuestionService questionService;
 
-    @DisplayName("질문 일괄 생성에 성공한다.")
-    @Test
-    void createAll() {
-        // given
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(null));
-        List<Question> questions = QuestionFixture.createNonChoiceTypeQuestions(applyForm);
-        List<QuestionCreateRequest> requests = questions.stream()
-                .map(question -> new QuestionCreateRequest(
-                        question.getQuestionType().toString(),
-                        question.getContent(),
-                        question.getDescription(),
-                        List.of(),
-                        question.getSequence(),
-                        question.getRequired()
-                ))
-                .toList();
-
-        // when
-        questionService.createAll(requests, applyForm);
-
-        // then
-        List<Question> savedQuestions = questionRepository.findAllByApplyForm(applyForm);
-        assertThat(savedQuestions).hasSize(requests.size());
-    }
-
     @DisplayName("질문 생성에 성공한다.")
     @Test
     void create() {

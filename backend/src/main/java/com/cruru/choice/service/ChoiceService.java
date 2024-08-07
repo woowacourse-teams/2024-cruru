@@ -7,8 +7,6 @@ import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
 import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
 import com.cruru.question.domain.Question;
-import com.cruru.question.domain.repository.QuestionRepository;
-import com.cruru.question.exception.QuestionNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,20 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChoiceService {
 
     private final ChoiceRepository choiceRepository;
-    private final QuestionRepository questionRepository;
 
     @Transactional
-    public List<Choice> createAll(List<ChoiceCreateRequest> requests, long questionId) {
-        Question targetQuestion = questionRepository.findById(questionId)
-                .orElseThrow(QuestionNotFoundException::new);
-
-        if (!targetQuestion.hasChoice()) {
+    public List<Choice> createAll(List<ChoiceCreateRequest> requests, Question question) {
+        if (!question.hasChoice()) {
             throw new ChoiceIllegalSaveException();
         }
         if (requests.isEmpty()) {
             throw new ChoiceEmptyException();
         }
-        return choiceRepository.saveAll(toChoices(requests, targetQuestion));
+        return choiceRepository.saveAll(toChoices(requests, question));
     }
 
     private List<Choice> toChoices(List<ChoiceCreateRequest> requests, Question question) {
@@ -42,8 +36,11 @@ public class ChoiceService {
                 .toList();
     }
 
-    public List<Choice> findAllByQuestionId(long id) {
-        return choiceRepository.findAllByQuestionId(id);
+    public List<Choice> findAllByQuestion(Question question) {
+        if (question.hasChoice()) {
+            return choiceRepository.findAllByQuestion(question);
+        }
+        return List.of();
     }
 
     public List<ChoiceResponse> toChoiceResponses(List<Choice> choices) {
