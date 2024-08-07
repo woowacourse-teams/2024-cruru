@@ -5,6 +5,7 @@ export interface Question {
     choice: string;
     order_index: number;
   }[];
+  required: boolean;
 }
 
 export interface RecruitmentInfoState {

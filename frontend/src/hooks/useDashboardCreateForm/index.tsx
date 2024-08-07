@@ -17,8 +17,9 @@ interface UseDashboardCreateFormReturn {
 
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
-  setQuestionOptions: (index: number) => (Options: Option[]) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
+  setQuestionOptions: (index: number) => (Options: Option[]) => void;
+  setQuestionRequiredToggle: (index: number) => () => void;
   setQuestionPrev: (index: number) => () => void;
   setQuestionNext: (index: number) => () => void;
   deleteQuestion: (index: number) => void;
@@ -34,9 +35,9 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
 };
 
 const initialApplyState: Question[] = [
-  { type: 'SHORT_ANSWER', question: '이름', choices: [] },
-  { type: 'SHORT_ANSWER', question: '이메일', choices: [] },
-  { type: 'SHORT_ANSWER', question: '전화번호', choices: [] },
+  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true },
+  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true },
+  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true },
 ];
 
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
@@ -50,7 +51,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   };
 
   const addQuestion = () => {
-    setApplyState((prev) => [...prev, { type: 'SHORT_ANSWER', question: '', choices: [] }]);
+    setApplyState((prev) => [...prev, { type: 'SHORT_ANSWER', question: '', choices: [], required: false }]);
   };
 
   const setQuestionTitle = (index: number) => (string: string) => {
@@ -74,6 +75,14 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
       questionsCopy[index].choices = options.map(({ value }, i) => ({ choice: value, order_index: i }));
+      return questionsCopy;
+    });
+  };
+
+  const setQuestionRequiredToggle = (index: number) => () => {
+    setApplyState((prevState) => {
+      const questionsCopy = [...prevState];
+      questionsCopy[index].required = !prevState[index].required;
       return questionsCopy;
     });
   };
@@ -130,8 +139,9 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
     addQuestion,
     setQuestionTitle,
-    setQuestionOptions,
     setQuestionType,
+    setQuestionOptions,
+    setQuestionRequiredToggle,
     setQuestionPrev,
     setQuestionNext,
     deleteQuestion,
