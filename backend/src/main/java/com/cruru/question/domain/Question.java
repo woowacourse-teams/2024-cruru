@@ -37,6 +37,8 @@ public class Question {
 
     private Integer sequence;
 
+    private Boolean required;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_form_id")
     private ApplyForm applyForm;
@@ -46,12 +48,14 @@ public class Question {
             String content,
             String description,
             Integer sequence,
+            Boolean required,
             ApplyForm applyForm
     ) {
         this.questionType = questionType;
         this.content = content;
         this.description = description;
         this.sequence = sequence;
+        this.required = required;
         this.applyForm = applyForm;
     }
 

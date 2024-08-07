@@ -132,7 +132,8 @@ public class ApplyFormService {
                 question.getContent(),
                 question.getDescription(),
                 question.getSequence(),
-                toChoiceResponses(choices)
+                toChoiceResponses(choices),
+                question.getRequired()
         );
     }
 
