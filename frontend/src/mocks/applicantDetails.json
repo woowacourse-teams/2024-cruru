@@ -1,12 +1,12 @@
 {
   "details": [
     {
-      "order_index": 0,
+      "orderIndex": 0,
       "question": "성별",
       "answer": "남"
     },
     {
-      "order_index": 1,
+      "orderIndex": 1,
       "question": "좋아하는 숫자가 무엇인가요?",
       "answer": "1"
     }

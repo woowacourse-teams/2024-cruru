@@ -1,4 +1,3 @@
-import snakeToCamel from '@utils/snakeToCamel';
 import { APPLICANTS } from './endPoint';
 
 const moveApplicant = async ({ processId, applicants }: { processId: number; applicants: number[] }) => {
@@ -8,7 +7,7 @@ const moveApplicant = async ({ processId, applicants }: { processId: number; app
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      applicant_ids: applicants,
+      applicantIds: applicants,
     }),
   });
 
@@ -31,7 +30,7 @@ const getSpecificApplicant = async ({ applicantId }: { applicantId: number }) =>
   }
 
   const data = await response.json();
-  return snakeToCamel(data);
+  return data;
 };
 
 const rejectApplicant = async ({ applicantId }: { applicantId: number }) => {
@@ -56,7 +55,7 @@ const getDetailApplicant = async ({ applicantId }: { applicantId: number }) => {
   }
 
   const data = await response.json();
-  return snakeToCamel(data);
+  return data;
 };
 
 const applicantApis = {

@@ -10,18 +10,18 @@ const applicantHandlers = [
     const { processId } = params;
     const body = await request.json();
 
-    if (typeof body !== 'object' || !body?.applicant_ids || body.applicant_ids.length === 0) {
-      throw new Error('body로 주어진 값이 {applicant_ids: number[]} 형식이 아닙니다.');
+    if (typeof body !== 'object' || !body?.applicantIds || body.applicantIds.length === 0) {
+      throw new Error('body로 주어진 값이 {applicantIds: number[]} 형식이 아닙니다.');
     }
 
-    body.applicant_ids.forEach((id: string) => {
+    body.applicantIds.forEach((id: string) => {
       if (!(typeof id === 'number')) {
-        throw new Error('body로 주어진 값이 {applicant_ids: number[]} 형식이 아닙니다.');
+        throw new Error('body로 주어진 값이 {applicantIds: number[]} 형식이 아닙니다.');
       }
     });
 
-    const { applicant_ids } = body;
-    console.log(`${applicant_ids}지원자(들)을/를 ${processId}에 해당하는 프로세스로 이동합니다.`);
+    const { applicantIds } = body;
+    console.log(`${applicantIds}지원자(들)을/를 ${processId}에 해당하는 프로세스로 이동합니다.`);
 
     return HttpResponse.json({ status: 200 });
   }),
