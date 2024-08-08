@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 const PageLayout = styled.div`
   width: 100vw;
+  min-width: 30rem;
   height: 100vh;
 
   display: flex;
@@ -19,7 +20,7 @@ const Wrapper = styled.div`
   max-width: 70rem;
   height: 100%;
 
-  padding: 4.8rem 0;
+  padding: 4.8rem 1.6rem 0;
 `;
 
 const Header = styled.header`

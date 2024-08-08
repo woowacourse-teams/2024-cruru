@@ -37,6 +37,6 @@ export const ISOtoLocaleString = ({
 }) => {
   if (!date) return '';
 
-  if (time) return new Date(date).toLocaleString('ko-Kr', options);
-  return new Date(date).toLocaleDateString('ko-Kr', options);
+  if (time) return new Date(date).toLocaleString('ko-Kr', { ...options, timeZone: 'Asia/Seoul' });
+  return new Date(date).toLocaleDateString('ko-Kr', { ...options, timeZone: 'Asia/Seoul' });
 };

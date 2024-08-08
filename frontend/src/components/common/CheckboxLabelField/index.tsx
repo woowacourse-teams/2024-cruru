@@ -5,6 +5,7 @@ interface Option {
   optionLabel: string;
   isChecked: boolean;
   onToggle: () => void;
+  name?: string;
 }
 
 interface CheckboxLabelField {
@@ -39,13 +40,14 @@ export default function CheckboxLabelField({
       </S.HeadWrapper>
 
       <S.OptionsWrapper>
-        {options.map(({ optionLabel, isChecked, onToggle }, index) => (
+        {options.map(({ name, optionLabel, isChecked, onToggle }, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <S.Option key={index}>
             <CheckBox
               isChecked={isChecked}
               onToggle={onToggle}
               isDisabled={disabled}
+              name={name}
             />
             <S.OptionLabel>{optionLabel}</S.OptionLabel>
           </S.Option>

@@ -1,4 +1,4 @@
-import { ApplyForm, QuestionType, RecruitmentPost } from '@customTypes/apply';
+import { ApplyForm, QuestionType, RecruitmentPost, Question as CustomQuestion } from '@customTypes/apply';
 import { ISO8601 } from '@customTypes/common';
 
 interface Choice {
@@ -8,7 +8,7 @@ interface Choice {
 }
 
 interface Question {
-  id: number;
+  id: string;
   type: QuestionType;
   label: string;
   description: string;
@@ -37,6 +37,13 @@ export function dtoToRecruitmentPost({ title, startDate, endDate, postingContent
 
 export function dtoToApplyForm(dto: ApplyDto): ApplyForm {
   return {
-    questions: [...dto.questions],
+    questions: dto.questions.map(({ id, type, label, description, orderIndex, choices }) => ({
+      questionId: id,
+      type,
+      label,
+      description,
+      orderIndex,
+      choices,
+    })) as CustomQuestion[],
   };
 }
