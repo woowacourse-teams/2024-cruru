@@ -1,7 +1,8 @@
-import { http } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { DASHBOARDS } from '@api/endPoint';
 import { DashboardFormInfo } from '@customTypes/dashboard';
+import DASHBOARD_LIST from '../dashboardList.json';
 
 const dashboardHandlers = [
   http.post(DASHBOARDS, async ({ request }) => {
@@ -20,6 +21,20 @@ const dashboardHandlers = [
       status: 201,
       statusText: 'Created',
     });
+  }),
+
+  http.get(DASHBOARDS, ({ request }) => {
+    const url = new URL(request.url);
+    const clubId = url.searchParams.get('clubId');
+
+    if (!clubId) {
+      return new Response(null, {
+        status: 400,
+        statusText: 'The request Param is missing required information.',
+      });
+    }
+
+    return HttpResponse.json(DASHBOARD_LIST);
   }),
 ];
 

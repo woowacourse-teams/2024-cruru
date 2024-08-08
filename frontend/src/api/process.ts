@@ -3,8 +3,8 @@ import { createParams } from './utils';
 import ApiError from './ApiError';
 
 const processApis = {
-  get: async ({ id }: { id: number }) => {
-    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: String(id) })}`, {
+  get: async ({ id }: { id: string }) => {
+    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: id })}`, {
       headers: {
         Accept: 'application/json',
       },

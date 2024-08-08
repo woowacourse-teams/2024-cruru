@@ -4,6 +4,30 @@ import { convertParamsToQueryString } from './utils';
 import ApiError from './ApiError';
 
 const dashboardApis = {
+  get: async ({ dashboardId }: { dashboardId: string }) => {
+    const queryParams = {
+      clubId: dashboardId,
+    };
+
+    const response = await fetch(`${DASHBOARDS}?${convertParamsToQueryString(queryParams)}`, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new ApiError({
+        method: 'GET',
+        statusCode: response.status,
+        message: '공고 리스트의 정보를 불러오지 못했습니다.',
+      });
+    }
+
+    const data = await response.json();
+
+    return data;
+  },
+
   create: async ({ clubId, dashboardFormInfo }: { clubId: number; dashboardFormInfo: DashboardFormInfo }) => {
     const queryParams = {
       clubId: String(clubId),
