@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import handlers from '@mocks/handlers';
 import { ModalProvider } from '@contexts/ModalContext';
+import { withRouter } from 'storybook-addon-remix-react-router';
 
 initialize();
 
@@ -36,6 +37,7 @@ const preview: Preview = {
         </ModalProvider>
       );
     },
+    withRouter,
   ],
 };
 
