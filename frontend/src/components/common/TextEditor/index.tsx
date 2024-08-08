@@ -1,6 +1,7 @@
 import ReactQuill from 'react-quill-new';
 
 import { ToolbarOptions } from '@customTypes/textEditor';
+import { LegacyRef } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import 'react-quill-new/dist/quill.bubble.css';
 import './style.css';
@@ -14,6 +15,7 @@ interface TextEditorProps {
   onBlur?: () => void;
   placeholder?: string;
   theme?: 'snow' | 'bubble';
+  quillRef?: LegacyRef<ReactQuill>;
 }
 
 const defaultToolbarOptions: ToolbarOptions = [
@@ -33,6 +35,7 @@ export default function TextEditor({
   onBlur,
   placeholder,
   theme = 'snow',
+  quillRef,
 }: TextEditorProps) {
   const handleChange = (content: string) => {
     if (onChange) {
@@ -48,6 +51,7 @@ export default function TextEditor({
 
   return (
     <ReactQuill
+      ref={quillRef}
       style={{ width, height }}
       modules={{ toolbar: toolbarOptions }}
       theme={theme}
