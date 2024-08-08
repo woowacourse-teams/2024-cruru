@@ -1,6 +1,7 @@
 package com.cruru.applicant.service;
 
 import com.cruru.applicant.controller.dto.ApplicantCardResponse;
+import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
@@ -22,6 +23,11 @@ public class ApplicantService {
 
     private final ApplicantRepository applicantRepository;
 
+    @Transactional
+    public Applicant create(ApplicantCreateRequest request, Process firstProcess) {
+        return applicantRepository.save(new Applicant(request.name(), request.email(), request.phone(), firstProcess));
+    }
+
     public List<Applicant> findAllByProcess(Process process) {
         return applicantRepository.findAllByProcess(process);
     }
@@ -41,8 +47,7 @@ public class ApplicantService {
     }
 
     private boolean notChangedInformation(ApplicantUpdateRequest request, Applicant applicant) {
-        return applicant.getName().equals(request.name())
-                && applicant.getEmail().equals(request.email())
+        return applicant.getName().equals(request.name()) && applicant.getEmail().equals(request.email())
                 && applicant.getPhone().equals(request.phone());
     }
 

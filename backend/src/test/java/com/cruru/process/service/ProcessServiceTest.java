@@ -85,6 +85,22 @@ class ProcessServiceTest extends ServiceTest {
                 .isInstanceOf(ProcessCountException.class);
     }
 
+    @DisplayName("대시보드에 존재하는 첫 번째 프로세스를 조회한다.")
+    @Test
+    void findFirstProcessOnDashboard() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
+        processRepository.save(createInterviewProcess(dashboard));
+        processRepository.save(createFinalProcess(dashboard));
+
+        // when
+        Process actualFirstProcess = processService.findFirstProcessOnDashboard(dashboard);
+
+        // then
+        assertThat(actualFirstProcess).isEqualTo(firstProcess);
+    }
+
     @DisplayName("기존 정보에서 변경점이 있는 변경 요청시, 프로세스 정보를 변경한다.")
     @Test
     void update() {
@@ -121,7 +137,6 @@ class ProcessServiceTest extends ServiceTest {
         assertThatThrownBy(() -> processService.update(processUpdateRequest, processId))
                 .isInstanceOf(ProcessNoChangeException.class);
     }
-
 
     @DisplayName("프로세스를 삭제한다.")
     @Test

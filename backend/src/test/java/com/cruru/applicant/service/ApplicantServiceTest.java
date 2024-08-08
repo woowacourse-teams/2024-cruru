@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
@@ -44,6 +45,29 @@ class ApplicantServiceTest extends ServiceTest {
     @Autowired
     private EntityManager entityManager;
 
+    @DisplayName("지원자를 정상적으로 저장한다.")
+    @Test
+    void create() {
+        // given
+        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess());
+        String name = "도비";
+        String email = "kimdobby@email.com";
+        String phone = "01052525252";
+        ApplicantCreateRequest createRequest = new ApplicantCreateRequest(name, email, phone);
+
+        // when
+        Applicant createdApplicant = applicantService.create(createRequest, firstProcess);
+
+        // then
+        Applicant actualApplicant = applicantRepository.findById(createdApplicant.getId()).get();
+        assertAll(() -> {
+            assertThat(actualApplicant.getName()).isEqualTo(name);
+            assertThat(actualApplicant.getEmail()).isEqualTo(email);
+            assertThat(actualApplicant.getPhone()).isEqualTo(phone);
+        });
+    }
+
+
     @DisplayName("프로세스 내의 모든 지원자를 조회한다.")
     @Test
     void findAllByProcess() {
@@ -68,7 +92,8 @@ class ApplicantServiceTest extends ServiceTest {
         long invalidId = -1L;
 
         // when&then
-        assertThatThrownBy(() -> applicantService.findById(invalidId)).isInstanceOf(ApplicantNotFoundException.class);
+        assertThatThrownBy(() -> applicantService.findById(invalidId))
+                .isInstanceOf(ApplicantNotFoundException.class);
     }
 
     @DisplayName("지원자의 이름, 이메일, 전화번호 변경 요청시, 정보를 업데이트한다")
@@ -106,9 +131,8 @@ class ApplicantServiceTest extends ServiceTest {
         Long applicantId = applicant.getId();
 
         // when & then
-        assertThatThrownBy(
-                () -> applicantService.updateApplicantInformation(applicantId, noChangeRequest)
-        ).isInstanceOf(ApplicantNoChangeException.class);
+        assertThatThrownBy(() -> applicantService.updateApplicantInformation(applicantId, noChangeRequest))
+                .isInstanceOf(ApplicantNoChangeException.class);
     }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")
@@ -167,6 +191,7 @@ class ApplicantServiceTest extends ServiceTest {
 
         // when&then
         Long applicantId = rejectedApplicant.getId();
-        assertThatThrownBy(() -> applicantService.reject(applicantId)).isInstanceOf(ApplicantRejectException.class);
+        assertThatThrownBy(() -> applicantService.reject(applicantId))
+                .isInstanceOf(ApplicantRejectException.class);
     }
 }
