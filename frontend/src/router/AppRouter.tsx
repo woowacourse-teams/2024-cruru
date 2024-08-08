@@ -1,6 +1,11 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import Dashboard from '@pages/Dashboard';
 import RecruitmentPost from '@pages/RecruitmentPost';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import DashboardLayout from '@pages/DashboardLayout';
+import DashboardList from '@pages/DashBoardList';
+import DashboardCreate from '@pages/DashboardCreate';
+
 import App from '../App';
 
 const router = createBrowserRouter(
@@ -10,18 +15,32 @@ const router = createBrowserRouter(
       element: <App />,
       children: [
         {
-          index: true,
-          element: <Dashboard />,
-        },
-        {
           path: 'post/:postId',
           element: <RecruitmentPost />,
+        },
+        {
+          path: 'dashboardId/:dashboardId/',
+          element: <DashboardLayout />,
+          children: [
+            {
+              path: ':postId',
+              element: <Dashboard />,
+            },
+            {
+              path: ':posts',
+              element: <DashboardList />,
+            },
+          ],
+        },
+        {
+          path: 'dashboardId/:dashboardId/create',
+          element: <DashboardCreate />,
         },
       ],
     },
   ],
   {
-    basename: '/', // TODO: 배포할때 해당 루트로 적기
+    basename: '/',
   },
 );
 
