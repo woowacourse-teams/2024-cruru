@@ -50,6 +50,19 @@ const CheckBoxContainer = styled.div<ContainerProps>`
     border-color 0.2s;
 `;
 
+const HiddenCheckbox = styled.input`
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
 const IconWrapper = styled.div<IconProps>`
   display: flex;
   align-items: center;
@@ -63,6 +76,7 @@ const IconWrapper = styled.div<IconProps>`
 
 const S = {
   CheckBoxContainer,
+  HiddenCheckbox,
   IconWrapper,
 };
 
