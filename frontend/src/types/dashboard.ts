@@ -23,3 +23,24 @@ export interface QuestionOption {
   choice: string;
   orderIndex: number;
 }
+
+interface Stats {
+  accept: number;
+  fail: number;
+  inProgress: number;
+  total: number;
+}
+
+interface Dashboard {
+  dashboardId: string;
+  title: string;
+  stats: Stats;
+  postUrl: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface Club {
+  clubName: string;
+  dashboards: Dashboard[];
+}
