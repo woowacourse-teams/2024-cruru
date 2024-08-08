@@ -4,7 +4,6 @@ import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
-import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applicant.service.facade.ApplicantFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ApplicantController {
 
-    private final ApplicantService applicantService;
     private final ApplicantFacade applicantFacade;
 
     @PutMapping("/move-process/{processId}")

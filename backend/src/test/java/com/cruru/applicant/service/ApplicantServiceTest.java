@@ -1,12 +1,9 @@
 package com.cruru.applicant.service;
 
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
@@ -21,6 +18,8 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -49,10 +48,10 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findAllByProcess() {
         // given
-        Process process = processRepository.save(createFirstProcess());
-        Applicant applicant1 = applicantRepository.save(createPendingApplicantDobby(process));
-        Applicant applicant2 = applicantRepository.save(createPendingApplicantDobby(process));
-        Applicant applicant3 = applicantRepository.save(createPendingApplicantDobby(process));
+        Process process = processRepository.save(ProcessFixture.createFirstProcess());
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
         List<Applicant> applicants = List.of(applicant1, applicant2, applicant3);
 
         // when
@@ -74,7 +73,7 @@ class ApplicantServiceTest extends ServiceTest {
 
     @DisplayName("지원자의 정보 변경 요청의 이름, 이메일, 전화번호 변경점이 없다면 예외를 던진다")
     @Test
-    void updateApplicantInformation() {
+    void updateApplicantInformation_ThrowsException() {
         // given
         Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
         String originalName = applicant.getName();
@@ -86,21 +85,21 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant savedApplicant = applicantRepository.save(applicant);
 
         // then
-        assertThatThrownBy(() -> applicantService.updateApplicantInformation(noChangeRequest,
-                savedApplicant
-        )).isInstanceOf(ApplicantNoChangeException.class);
+        assertThatThrownBy(() -> applicantService.updateApplicantInformation(noChangeRequest, savedApplicant))
+                .isInstanceOf(ApplicantNoChangeException.class);
     }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")
     @Test
     void moveApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process beforeProcess = processRepository.save(createFirstProcess(dashboard));
-        Process afterProcess = processRepository.save(createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
+        Process beforeProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
 
-        List<Applicant> applicants = applicantRepository.saveAll(List.of(createPendingApplicantDobby(beforeProcess),
-                createPendingApplicantDobby(beforeProcess)
+        List<Applicant> applicants = applicantRepository.saveAll(List.of(
+                ApplicantFixture.createPendingApplicantDobby(beforeProcess),
+                ApplicantFixture.createPendingApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -111,10 +110,14 @@ class ApplicantServiceTest extends ServiceTest {
         applicantService.moveApplicantProcess(afterProcess, moveRequest);
 
         // then
-        List<Applicant> actualApplicants = entityManager.createQuery("SELECT a FROM Applicant a JOIN FETCH a.process",
+        List<Applicant> actualApplicants = entityManager.createQuery(
+                "SELECT a FROM Applicant a JOIN FETCH a.process",
                 Applicant.class
         ).getResultList();
-        assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
+        assertAll(() -> {
+            assertThat(actualApplicants).isNotEmpty();
+            assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
+        });
     }
 
     @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")
@@ -135,7 +138,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject_alreadyRejected() {
         // given
-        Applicant targetApplicant = createPendingApplicantDobby();
+        Applicant targetApplicant = ApplicantFixture.createPendingApplicantDobby();
         targetApplicant.reject();
         Applicant rejectedApplicant = applicantRepository.save(targetApplicant);
 

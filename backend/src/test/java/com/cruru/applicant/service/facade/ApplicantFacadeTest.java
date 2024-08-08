@@ -1,11 +1,6 @@
 package com.cruru.applicant.service.facade;
 
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -28,6 +23,9 @@ import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -62,8 +60,8 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void readBasicById() {
         // given
-        Process process = processRepository.save(createFirstProcess());
-        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        Process process = processRepository.save(ProcessFixture.createFirstProcess());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
 
         // when
         ApplicantBasicResponse basicResponse = applicantFacade.readBasicById(applicant.getId());
@@ -71,12 +69,13 @@ class ApplicantFacadeTest extends ServiceTest {
         ApplicantResponse applicantResponse = basicResponse.applicantResponse();
 
         // then
-        assertAll(() -> assertThat(process.getId()).isEqualTo(processResponse.id()),
-                () -> assertThat(process.getName()).isEqualTo(processResponse.name()),
-                () -> assertThat(applicant.getId()).isEqualTo(applicantResponse.id()),
-                () -> assertThat(applicant.getName()).isEqualTo(applicantResponse.name()),
-                () -> assertThat(applicant.getEmail()).isEqualTo(applicantResponse.email()),
-                () -> assertThat(applicant.getPhone()).isEqualTo(applicantResponse.phone())
+        assertAll(
+                () -> assertThat(processResponse.id()).isEqualTo(process.getId()),
+                () -> assertThat(processResponse.name()).isEqualTo(process.getName()),
+                () -> assertThat(applicantResponse.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantResponse.name()).isEqualTo(applicant.getName()),
+                () -> assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail()),
+                () -> assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone())
         );
     }
 
@@ -84,14 +83,14 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void readDetailById() {
         // given
-        Dashboard dashboard = createBackendDashboard();
+        Dashboard dashboard = DashboardFixture.createBackendDashboard();
         dashboardRepository.save(dashboard);
-        Process process = createFirstProcess(dashboard);
+        Process process = ProcessFixture.createFirstProcess(dashboard);
         processRepository.save(process);
-        Applicant applicant = createPendingApplicantDobby(process);
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = questionRepository.save(createShortAnswerQuestion(null));
+        Question question = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
         questionRepository.save(question);
         Answer answer = new Answer("토끼", question, applicant);
         answerRepository.save(answer);
@@ -101,7 +100,8 @@ class ApplicantFacadeTest extends ServiceTest {
 
         //then
         List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses();
-        assertAll(() -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
+        assertAll(
+                () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
                 () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
         );
     }
@@ -134,13 +134,15 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process beforeProcess = processRepository.save(createFirstProcess(dashboard));
-        Process afterProcess = processRepository.save(createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
+        Process beforeProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
 
-        List<Applicant> applicants = applicantRepository.saveAll(List.of(createPendingApplicantDobby(beforeProcess),
-                createPendingApplicantDobby(beforeProcess)
-        ));
+        List<Applicant> applicants = applicantRepository.saveAll(
+                List.of(
+                        ApplicantFixture.createPendingApplicantDobby(beforeProcess),
+                        ApplicantFixture.createPendingApplicantDobby(beforeProcess)
+                ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
                 .toList();
@@ -150,10 +152,14 @@ class ApplicantFacadeTest extends ServiceTest {
         applicantFacade.updateApplicantProcess(afterProcess.getId(), moveRequest);
 
         // then
-        List<Applicant> actualApplicants = entityManager.createQuery("SELECT a FROM Applicant a JOIN FETCH a.process",
+        List<Applicant> actualApplicants = entityManager.createQuery(
+                "SELECT a FROM Applicant a JOIN FETCH a.process",
                 Applicant.class
         ).getResultList();
-        assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
+        assertAll(() -> {
+            assertThat(actualApplicants).isNotEmpty();
+            assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
+        });
     }
 
     @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")
