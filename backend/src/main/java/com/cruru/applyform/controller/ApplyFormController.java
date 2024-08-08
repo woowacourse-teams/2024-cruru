@@ -26,15 +26,15 @@ public class ApplyFormController {
     @PostMapping("/{applyformId}/submit")
     public ResponseEntity<Void> submit(
             @RequestBody @Valid ApplyFormSubmitRequest request,
-            @PathVariable long applyformId
+            @PathVariable(name = "applyformId") long applyFormId
     ) {
-        applyFormService.submit(request, applyformId);
-        return ResponseEntity.created(URI.create("/v1/applyform/" + applyformId)).build();
+        applyFormService.submit(request, applyFormId);
+        return ResponseEntity.created(URI.create("/v1/applyform/" + applyFormId)).build();
     }
 
     @GetMapping("/{applyformId}")
-    public ResponseEntity<ApplyFormResponse> read(@PathVariable long applyformId) {
-        ApplyFormResponse response = applyFormFacade.findApplyFormById(applyformId);
+    public ResponseEntity<ApplyFormResponse> read(@PathVariable(name = "applyformId") long applyFormId) {
+        ApplyFormResponse response = applyFormFacade.findApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
     }
 }
