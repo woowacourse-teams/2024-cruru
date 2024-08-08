@@ -6,7 +6,7 @@ import { FormEventHandler, useState } from 'react';
 import { validateEmail, validateName, validatePhoneNumber } from '@domain/validations/apply';
 
 import { ApplicantData, ApplyRequestBody, Question } from '@customTypes/apply';
-import { applyMutations } from '@hooks/apply';
+import { applyMutations, applyQueries } from '@hooks/apply';
 import useForm from '@hooks/utils/useForm';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 import { useParams } from 'react-router-dom';
@@ -22,7 +22,9 @@ interface ApplyFormProps {
 
 export default function ApplyForm({ questions }: ApplyFormProps) {
   const { postId } = useParams<{ postId: string }>() as { postId: string };
-  const { mutate: apply } = applyMutations.useApply(postId);
+
+  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
+  const { mutate: apply } = applyMutations.useApply(postId, recruitmentPost?.title ?? '');
 
   const { formData: applicant, register } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
