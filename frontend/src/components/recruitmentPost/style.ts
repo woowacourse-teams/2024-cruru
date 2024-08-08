@@ -14,6 +14,8 @@ const ButtonContainer = styled.div`
   width: 100%;
   max-width: 30rem;
   height: 5.2rem;
+
+  margin-bottom: 4.8rem;
 `;
 
 const C = {

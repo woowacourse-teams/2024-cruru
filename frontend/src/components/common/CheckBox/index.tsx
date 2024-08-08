@@ -12,7 +12,7 @@ export default function CheckBox({ width = '1.6rem', isChecked, onToggle, isDisa
     <S.CheckBoxContainer
       width={width}
       isChecked={isChecked}
-      onClick={() => onToggle(!!isChecked)}
+      onClick={() => onToggle(!isChecked)}
       isDisabled={isDisabled}
     >
       <S.HiddenCheckbox

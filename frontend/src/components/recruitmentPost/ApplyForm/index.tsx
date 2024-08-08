@@ -1,74 +1,119 @@
 import Button from '@components/common/Button';
 import InputField from '@components/common/InputField';
-import React, { useState } from 'react';
+import CustomQuestion from '@components/recruitmentPost/CustomQuestion';
+import { FormEventHandler, useState } from 'react';
 
-import { KeyedStrings } from '@customTypes/utilTypes';
-import { validateApplicant } from '@domain/validations/apply';
-import ValidationError from '@utils/errors/ValidationError';
+import { validateEmail, validateName, validatePhoneNumber } from '@domain/validations/apply';
+
+import { ApplicantData, ApplyRequestBody, Question } from '@customTypes/apply';
+import { applyMutations } from '@hooks/apply';
+import useForm from '@hooks/utils/useForm';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
+import { useParams } from 'react-router-dom';
 
+import CheckBox from '@components/common/CheckBox';
 import C from '../style';
 import S from './style';
+import { useAnswers } from './useAnswers';
 
-export interface Applicant {
-  name: string;
-  email: string;
-  phone: string;
+interface ApplyFormProps {
+  questions: Question[];
 }
 
-export default function ApplyForm() {
-  const [applicant, setApplicant] = useState<Applicant>({ name: '', email: '', phone: '' });
-  const [applicantError, setApplicantError] = useState<KeyedStrings<Applicant>>({} as KeyedStrings<Applicant>);
+export default function ApplyForm({ questions }: ApplyFormProps) {
+  const { postId } = useParams<{ postId: string }>() as { postId: string };
+  const { mutate: apply } = applyMutations.useApply(postId);
 
-  const handleApplicantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setApplicant((prev) => ({ ...prev, [name]: value }));
-  };
+  const { formData: applicant, register } = useForm<ApplicantData>({
+    initialValues: { name: '', email: '', phone: '' },
+  });
+  const { answers, changeHandler } = useAnswers(questions);
+  const [personalDataCollection, setPersonalDataCollection] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setApplicantError({} as KeyedStrings<Applicant>);
 
-    try {
-      validateApplicant(applicant);
-    } catch (err) {
-      if (err instanceof ValidationError) {
-        setApplicantError((prev) => ({ ...prev, [err.inputName]: err.message }));
+    const applyData: ApplyRequestBody = {
+      applicant: {
+        ...applicant,
+      },
+      answers: Object.entries(answers).map(([questionId, answer]) => ({
+        questionId,
+        replies: [...answer],
+      })),
+      personalDataCollection: false,
+    };
+
+    if (Object.values(answers).some((answer) => answer.length === 0)) {
+      if (!window.confirm('작성하지 않은 질문이 있습니다. 제출하시겠습니까?')) {
+        return;
       }
     }
+    if (!personalDataCollection) {
+      window.alert('개인정보 수집 및 이용 동의에 체크해주세요.');
+      return;
+    }
+
+    apply({ body: applyData });
+  };
+
+  const handlePersonalDataCollection = (checked: boolean) => {
+    setPersonalDataCollection(checked);
   };
 
   return (
     <C.ContentContainer>
       <S.Form onSubmit={handleSubmit}>
         <InputField
-          value={applicant?.name}
-          error={applicantError?.name}
-          onChange={handleApplicantChange}
+          {...register('name', { validate: { onBlur: validateName.onBlur } })}
           name="name"
           label="이름"
           placeholder="이름을 입력해 주세요."
           required
         />
         <InputField
-          value={applicant?.email}
-          error={applicantError?.email}
-          onChange={handleApplicantChange}
-          name="email"
+          {...register('email', { validate: { onBlur: validateEmail.onBlur } })}
           label="이메일"
-          placeholder="안내받을 이메일 주소를 입력해 주세요."
+          placeholder="지원 결과를 안내받을 이메일 주소를 입력해 주세요."
           required
         />
         <InputField
-          value={formatPhoneNumber(applicant?.phone)}
-          error={applicantError?.phone}
-          onChange={handleApplicantChange}
-          name="phone"
+          {...register('phone', {
+            validate: {
+              onBlur: validatePhoneNumber.onBlur,
+            },
+            formatter: formatPhoneNumber,
+          })}
+          inputMode="numeric"
           label="전화 번호"
           placeholder="번호만 입력해 주세요."
           maxLength={13}
           required
         />
+
+        {questions.map((question) => (
+          <CustomQuestion
+            key={question.questionId}
+            question={question}
+            value={answers[question.questionId]}
+            onChange={changeHandler[question.type]}
+          />
+        ))}
+
+        <S.Divider />
+        <S.CheckBoxContainer>
+          <S.CheckBoxOption>
+            <CheckBox
+              isChecked={personalDataCollection}
+              onToggle={handlePersonalDataCollection}
+            />
+            <S.CheckBoxLabel>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
+          </S.CheckBoxOption>
+
+          <S.PersonalDataCollectionDescription>
+            입력하신 정보는 지원자 식별, 본인 확인, 모집 전형 진행을 위해 사용됩니다.
+          </S.PersonalDataCollectionDescription>
+        </S.CheckBoxContainer>
 
         <C.ButtonContainer>
           <Button

@@ -1,4 +1,4 @@
-import { ApplyForm, RecruitmentPost } from '@customTypes/apply';
+import { ApplyForm, ApplyRequestBody, RecruitmentPost } from '@customTypes/apply';
 import ApiError from './ApiError';
 import { dtoToApplyForm, dtoToRecruitmentPost } from './applyDto';
 import { APPLY } from './endPoint';
@@ -26,14 +26,13 @@ const applyApis = {
     return { recruitmentPost, applyForm };
   },
 
-  // TODO: FormData 타입을 정의해야 함
-  apply: async ({ postId, body }: { postId: string; body: FormData }) => {
-    const response = await fetch(`${APPLY}/${postId}`, {
+  apply: async ({ postId, body }: { postId: string; body: ApplyRequestBody }) => {
+    const response = await fetch(`${APPLY}/${postId}/submit`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
       },
-      body,
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {
