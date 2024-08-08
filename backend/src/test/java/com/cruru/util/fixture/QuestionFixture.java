@@ -24,7 +24,7 @@ public class QuestionFixture {
     }
 
     public static Question createMultipleChoiceQuestion(ApplyForm applyForm) {
-        return new Question(MULTIPLE_CHOICE, "객관식 다중 선택", "모두 선택해주세요..", 4, false, applyForm);
+        return new Question(MULTIPLE_CHOICE, "객관식 다중 선택", "모두 선택해주세요.", 4, false, applyForm);
     }
 
     public static Question createSingleChoiceQuestion(ApplyForm applyForm) {
