@@ -10,6 +10,12 @@ export default function formatDate(dateString: ISO8601 | string) {
   return `${year}. ${month}. ${day}`;
 }
 
+export function getCleanDateString(dateString?: ISO8601 | string) {
+  const date = dateString ? new Date(dateString) : new Date();
+  date.setHours(date.getHours() + 9);
+  return new Date(date.toDateString());
+}
+
 /**
  * ISO 8601 형식의 날짜 문자열을 로케일에 맞게 변환합니다.
  *
