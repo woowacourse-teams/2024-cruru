@@ -3,11 +3,11 @@ package com.cruru;
 import static com.cruru.applicant.domain.ApplicantState.APPROVED;
 import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
-import static com.cruru.question.domain.QuestionType.CHECK_BOX;
 import static com.cruru.question.domain.QuestionType.DROPDOWN;
 import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
 import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
+import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
@@ -162,7 +162,7 @@ public class DataLoader implements ApplicationRunner {
 
         String description6 = "모든 문항에 답했는지 확인해주세요.";
         Question question6 = questionRepository.save(
-                new Question(CHECK_BOX, "제출 후에 수정이 불가능합니다.", description6, 6, false, applyForm)
+                new Question(SINGLE_CHOICE, "제출 후에 수정이 불가능합니다.", description6, 6, false, applyForm)
         );
 
         Choice yes = choiceRepository.save(new Choice("네, 확인했습니다.", 1, question6));
