@@ -23,11 +23,11 @@ public class AnswerService {
 
     public List<AnswerResponse> toAnswerResponses(List<Answer> answers) {
         return answers.stream()
-                .map(this::toQnaResponse)
+                .map(this::toAnswerResponse)
                 .toList();
     }
 
-    private AnswerResponse toQnaResponse(Answer answer) {
+    private AnswerResponse toAnswerResponse(Answer answer) {
         Question question = answer.getQuestion();
         return new AnswerResponse(question.getSequence(), question.getContent(), answer.getContent());
     }

@@ -13,4 +13,8 @@ public class AnswerFixture {
     public static Answer secondAnswer(Question question, Applicant applicant) {
         return new Answer("응답2", question, applicant);
     }
+
+    public static Answer shortAnswer(Question question, Applicant applicant) {
+        return new Answer("단답", question, applicant);
+    }
 }

@@ -54,6 +54,7 @@ class AnswerServiceTest extends ServiceTest {
         assertThat(actualAnswers).hasSameElementsAs(expectedAnswers);
     }
 
+    @DisplayName("도메인 엔티티를 DTO로 변환한다.")
     @Test
     void toAnswerResponses() {
         // given
@@ -63,7 +64,7 @@ class AnswerServiceTest extends ServiceTest {
 
         Answer expectedAnswer1 = AnswerFixture.fristAnswer(question1, applicant);
         Answer expectedAnswer2 = AnswerFixture.secondAnswer(question2, applicant);
-        List<Answer> expectedAnswers = answerRepository.saveAll(List.of(expectedAnswer1, expectedAnswer2));
+        List<Answer> expectedAnswers = List.of(expectedAnswer1, expectedAnswer2);
 
         // when
         List<AnswerResponse> actualAnswerResponses = answerService.toAnswerResponses(expectedAnswers);

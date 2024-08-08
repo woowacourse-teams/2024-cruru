@@ -33,7 +33,7 @@ class ApplicantControllerTest extends ControllerTest {
 
     @DisplayName("지원자들의 프로세스를 일괄적으로 옮기는 데 성공하면 200을 응답한다.")
     @Test
-    void updateInformationApplicantProcess() {
+    void updateProcess() {
         // given
         Process now = processRepository.save(ProcessFixture.createFirstProcess());
         Process next = processRepository.save(ProcessFixture.createFinalProcess());

@@ -40,7 +40,8 @@ public class ApplicantService {
     }
 
     private boolean notChangedInformation(ApplicantUpdateRequest request, Applicant applicant) {
-        return applicant.getName().equals(request.name()) && applicant.getEmail().equals(request.email())
+        return applicant.getName().equals(request.name())
+                && applicant.getEmail().equals(request.email())
                 && applicant.getPhone().equals(request.phone());
     }
 

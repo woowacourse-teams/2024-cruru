@@ -106,9 +106,9 @@ class ApplicantServiceTest extends ServiceTest {
         Long applicantId = applicant.getId();
 
         // when & then
-        assertThatThrownBy(() -> {
-            applicantService.updateApplicantInformation(applicantId, noChangeRequest);
-        }).isInstanceOf(ApplicantNoChangeException.class);
+        assertThatThrownBy(
+                () -> applicantService.updateApplicantInformation(applicantId, noChangeRequest)
+        ).isInstanceOf(ApplicantNoChangeException.class);
     }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")

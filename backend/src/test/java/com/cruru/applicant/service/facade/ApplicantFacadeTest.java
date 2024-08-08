@@ -22,6 +22,7 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.AnswerFixture;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.ProcessFixture;
@@ -92,7 +93,7 @@ class ApplicantFacadeTest extends ServiceTest {
 
         Question question = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
         questionRepository.save(question);
-        Answer answer = new Answer("토끼", question, applicant);
+        Answer answer = AnswerFixture.shortAnswer(question, applicant);
         answerRepository.save(answer);
 
         // when
