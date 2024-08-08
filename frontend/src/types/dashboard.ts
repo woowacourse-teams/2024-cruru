@@ -23,3 +23,5 @@ export interface QuestionOption {
   choice: string;
   orderIndex: number;
 }
+
+export type QuestionControlActionType = 'moveUp' | 'moveDown' | 'delete';
