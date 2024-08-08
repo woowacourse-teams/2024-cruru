@@ -3,6 +3,9 @@ package com.cruru.process.service;
 import com.cruru.applicant.controller.dto.DashboardApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
+import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
@@ -34,6 +37,7 @@ public class ProcessService {
     private final ProcessRepository processRepository;
     private final DashboardRepository dashboardRepository;
     private final EvaluationRepository evaluationRepository;
+    private final ApplyFormRepository applyFormRepository;
 
     public ProcessesResponse findByDashboardId(long dashboardId) {
         boolean dashboardExists = dashboardRepository.existsById(dashboardId);
@@ -41,7 +45,13 @@ public class ProcessService {
             throw new DashboardNotFoundException();
         }
 
-        return new ProcessesResponse(processRepository.findAllByDashboardId(dashboardId)
+        ApplyForm applyForm = applyFormRepository.findByDashboardId(dashboardId)
+                .orElseThrow(ApplyFormNotFoundException::new);
+
+        return new ProcessesResponse(
+                applyForm.getTitle(),
+                applyForm.getUrl(),
+                processRepository.findAllByDashboardId(dashboardId)
                 .stream()
                 .map(this::toProcessResponse)
                 .toList());

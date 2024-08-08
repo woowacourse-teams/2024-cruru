@@ -1,7 +1,9 @@
 package com.cruru.process.service;
 
 import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
+import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
+import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
 import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
@@ -11,10 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
+import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
-import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
@@ -50,6 +53,9 @@ class ProcessServiceTest extends ServiceTest {
     @Autowired
     private EvaluationRepository evaluationRepository;
 
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
+
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
     void findByDashboardId() {
@@ -57,7 +63,8 @@ class ProcessServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createFirstProcess(dashboard));
         Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
-        evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
+        evaluationRepository.save(createEvaluationExcellent(process, applicant));
+        applyFormRepository.save(createBackendApplyForm(dashboard));
 
         // when
         ProcessesResponse byDashboardId = processService.findByDashboardId(dashboard.getId());
@@ -72,6 +79,20 @@ class ProcessServiceTest extends ServiceTest {
                 () -> assertThat(firstProcessResponse.dashboardApplicantResponses().get(0).evaluationCount()).isEqualTo(
                         1)
         );
+    }
+
+    @DisplayName("지원서 폼이 존재하지 않는 경우, 예외가 발생한다.")
+    @Test
+    void findByDashboardId_notFoundApplyForm() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createFirstProcess(dashboard));
+        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        evaluationRepository.save(createEvaluationExcellent(process, applicant));
+
+        // when&then
+        assertThatThrownBy(() -> processService.findByDashboardId(dashboard.getId()))
+                .isInstanceOf(ApplyFormNotFoundException.class);
     }
 
     @DisplayName("대시보드가 존재하지 않는 경우, 예외가 발생한다.")
