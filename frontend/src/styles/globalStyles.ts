@@ -176,6 +176,22 @@ const globalStyles = () => css`
     overflow: visible;
     cursor: pointer;
   }
+
+  a,
+  a:visited {
+    text-decoration: none;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+  }
 `;
 
 export default globalStyles;
