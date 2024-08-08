@@ -8,14 +8,14 @@ const processHandlers = [
 
   http.post(`${PROCESSES}`, async ({ request }) => {
     const url = new URL(request.url);
-    const dashboardId = url.searchParams.get('dashboard_id');
+    const dashboardId = url.searchParams.get('dashboardId');
     const body = (await request.json()) as {
-      order_index: number;
-      process_name: string;
+      orderIndex: number;
+      processName: string;
       description?: string;
     };
 
-    if (!body.order_index || !body.process_name || !dashboardId) {
+    if (!body.orderIndex || !body.processName || !dashboardId) {
       return new Response(null, {
         status: 404,
         statusText: 'Process Not Found',
@@ -28,8 +28,8 @@ const processHandlers = [
     });
   }),
 
-  http.delete(`${PROCESSES}/:process_id`, async ({ params }) => {
-    if (!params.process_id) {
+  http.delete(`${PROCESSES}/:processId`, async ({ params }) => {
+    if (!params.processId) {
       return new Response(null, {
         status: 400,
         statusText: 'Process Not Found',
@@ -42,13 +42,13 @@ const processHandlers = [
     });
   }),
 
-  http.patch(`${PROCESSES}/:process_id`, async ({ request, params }) => {
+  http.patch(`${PROCESSES}/:processId`, async ({ request, params }) => {
     const body = (await request.json()) as {
-      process_name: string;
+      processName: string;
       description?: string;
     };
 
-    if (!body.process_name || !params.process_id) {
+    if (!body.processName || !params.processId) {
       return new Response(null, {
         status: 400,
         statusText: 'Process Not Found',

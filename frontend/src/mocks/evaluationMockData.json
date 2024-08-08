@@ -1,17 +1,17 @@
 {
   "evaluations": [
     {
-      "evaluation_id": 1,
+      "evaluationId": 1,
       "score": 2,
       "content": "인재상과 맞지 않습니다."
     },
     {
-      "evaluation_id": 2,
+      "evaluationId": 2,
       "score": 3,
       "content": "맞춤법 틀림"
     },
     {
-      "evaluation_id": 3,
+      "evaluationId": 3,
       "score": 5,
       "content": "전 마음에 들어요"
     }
