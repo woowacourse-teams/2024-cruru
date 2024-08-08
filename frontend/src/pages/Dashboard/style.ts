@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
 
 const AppContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
   padding: 20px;
 `;
 
