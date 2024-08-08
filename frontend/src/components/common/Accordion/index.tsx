@@ -5,7 +5,7 @@ import S from './style';
 import ChevronButton from '../ChevronButton';
 
 interface AccordionProps {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
 }
 
