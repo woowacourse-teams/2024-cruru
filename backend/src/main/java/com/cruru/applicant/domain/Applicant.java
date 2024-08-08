@@ -65,16 +65,16 @@ public class Applicant extends BaseEntity {
         this.process = process;
     }
 
-    public void reject() {
-        this.state = REJECTED;
+    public void approve() {
+        this.state = APPROVED;
     }
 
     public void pending() {
         this.state = PENDING;
     }
 
-    public void approve() {
-        this.state = APPROVED;
+    public void reject() {
+        this.state = REJECTED;
     }
 
     public boolean isApproved() {

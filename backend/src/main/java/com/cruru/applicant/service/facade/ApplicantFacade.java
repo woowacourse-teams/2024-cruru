@@ -1,13 +1,13 @@
 package com.cruru.applicant.service.facade;
 
 import com.cruru.answer.domain.Answer;
+import com.cruru.answer.dto.AnswerResponse;
 import com.cruru.answer.service.AnswerService;
+import com.cruru.applicant.controller.dto.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
-import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
-import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.process.controller.dto.ProcessSimpleResponse;
@@ -33,29 +33,21 @@ public class ApplicantFacade {
     }
 
     private ApplicantBasicResponse toApplicantBasicResponse(Applicant applicant) {
-        ApplicantResponse applicantResponse = new ApplicantResponse(applicant.getId(),
-                applicant.getName(),
-                applicant.getEmail(),
-                applicant.getPhone(),
-                applicant.getCreatedDate()
-        );
-        ProcessSimpleResponse processResponse = new ProcessSimpleResponse(applicant.getProcess().getId(),
-                applicant.getProcess().getName()
-        );
+        ApplicantResponse applicantResponse = applicantService.toApplicantResponse(applicant);
+        ProcessSimpleResponse processResponse = processService.toProcessSimpleResponse(applicant.getProcess());
         return new ApplicantBasicResponse(applicantResponse, processResponse);
     }
 
-    public ApplicantDetailResponse readDetailById(long id) {
+    public ApplicantAnswerResponses readDetailById(long id) {
         Applicant applicant = applicantService.findById(id);
         List<Answer> answers = answerService.findAllByApplicant(applicant);
-        List<QnaResponse> qnaResponses = answerService.toQnaResponses(answers);
-        return new ApplicantDetailResponse(qnaResponses);
+        List<AnswerResponse> answerResponses = answerService.toAnswerResponses(answers);
+        return new ApplicantAnswerResponses(answerResponses);
     }
 
     @Transactional
-    public void updateApplicantInformation(ApplicantUpdateRequest request, long applicantId) {
-        Applicant applicant = applicantService.findById(applicantId);
-        applicantService.updateApplicantInformation(request, applicant);
+    public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
+        applicantService.updateApplicantInformation(applicantId, request);
     }
 
     @Transactional

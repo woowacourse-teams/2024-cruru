@@ -2,7 +2,7 @@ package com.cruru.answer.service;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
-import com.cruru.applicant.controller.dto.QnaResponse;
+import com.cruru.answer.dto.AnswerResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.question.domain.Question;
 import java.util.List;
@@ -21,14 +21,14 @@ public class AnswerService {
         return answerRepository.findAllByApplicant(applicant);
     }
 
-    public List<QnaResponse> toQnaResponses(List<Answer> answers) {
+    public List<AnswerResponse> toAnswerResponses(List<Answer> answers) {
         return answers.stream()
                 .map(this::toQnaResponse)
                 .toList();
     }
 
-    private QnaResponse toQnaResponse(Answer answer) {
+    private AnswerResponse toQnaResponse(Answer answer) {
         Question question = answer.getQuestion();
-        return new QnaResponse(question.getSequence(), question.getContent(), answer.getContent());
+        return new AnswerResponse(question.getSequence(), question.getContent(), answer.getContent());
     }
 }

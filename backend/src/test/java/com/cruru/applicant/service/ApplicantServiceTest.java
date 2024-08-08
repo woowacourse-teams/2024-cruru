@@ -71,22 +71,44 @@ class ApplicantServiceTest extends ServiceTest {
         assertThatThrownBy(() -> applicantService.findById(invalidId)).isInstanceOf(ApplicantNotFoundException.class);
     }
 
+    @DisplayName("지원자의 이름, 이메일, 전화번호 변경 요청시, 정보를 업데이트한다")
+    @Test
+    void updateApplicantInformation() {
+        // given
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        String changedName = "수정된 이름";
+        String changedEmail = "modified@email.com";
+        String changedPhone = "010xxxxxxxx";
+        ApplicantUpdateRequest updateRequest = new ApplicantUpdateRequest(changedName, changedEmail, changedPhone);
+        Applicant savedApplicant = applicantRepository.save(applicant);
+
+        // when
+        applicantService.updateApplicantInformation(savedApplicant.getId(), updateRequest);
+
+        // then
+        Applicant updatedApplicant = applicantRepository.findById(savedApplicant.getId()).get();
+        assertAll(() -> {
+            assertThat(changedName).isEqualTo(updatedApplicant.getName());
+            assertThat(changedEmail).isEqualTo(updatedApplicant.getEmail());
+            assertThat(changedPhone).isEqualTo(updatedApplicant.getPhone());
+        });
+    }
+
     @DisplayName("지원자의 정보 변경 요청의 이름, 이메일, 전화번호 변경점이 없다면 예외를 던진다")
     @Test
     void updateApplicantInformation_ThrowsException() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
         String originalName = applicant.getName();
         String originalEmail = applicant.getEmail();
         String originalPhone = applicant.getPhone();
         ApplicantUpdateRequest noChangeRequest = new ApplicantUpdateRequest(originalName, originalEmail, originalPhone);
+        Long applicantId = applicant.getId();
 
-        // when
-        Applicant savedApplicant = applicantRepository.save(applicant);
-
-        // then
-        assertThatThrownBy(() -> applicantService.updateApplicantInformation(noChangeRequest, savedApplicant))
-                .isInstanceOf(ApplicantNoChangeException.class);
+        // when & then
+        assertThatThrownBy(() -> {
+            applicantService.updateApplicantInformation(applicantId, noChangeRequest);
+        }).isInstanceOf(ApplicantNoChangeException.class);
     }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")
@@ -98,7 +120,8 @@ class ApplicantServiceTest extends ServiceTest {
         Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                ApplicantFixture.createPendingApplicantDobby(beforeProcess),
+                ApplicantFixture.createPendingApplicantDobby(
+                        beforeProcess),
                 ApplicantFixture.createPendingApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()

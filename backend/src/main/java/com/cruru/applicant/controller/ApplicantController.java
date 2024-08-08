@@ -1,7 +1,7 @@
 package com.cruru.applicant.controller;
 
+import com.cruru.applicant.controller.dto.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
-import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.service.facade.ApplicantFacade;
@@ -23,15 +23,6 @@ public class ApplicantController {
 
     private final ApplicantFacade applicantFacade;
 
-    @PutMapping("/move-process/{processId}")
-    public ResponseEntity<Void> updateApplicantProcess(
-            @PathVariable Long processId,
-            @RequestBody @Valid ApplicantMoveRequest moveRequest
-    ) {
-        applicantFacade.updateApplicantProcess(processId, moveRequest);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/{applicantId}")
     public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicantId") Long applicantId) {
         ApplicantBasicResponse applicantResponse = applicantFacade.readBasicById(applicantId);
@@ -39,23 +30,32 @@ public class ApplicantController {
     }
 
     @GetMapping("/{applicantId}/detail")
-    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicantId") Long applicantId) {
-        ApplicantDetailResponse applicantDetailResponse = applicantFacade.readDetailById(applicantId);
-        return ResponseEntity.ok().body(applicantDetailResponse);
-    }
-
-    @PatchMapping("/{applicantId}/reject")
-    public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable("applicantId") Long applicantId) {
-        applicantFacade.updateApplicantToReject(applicantId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApplicantAnswerResponses> readDetail(@PathVariable("applicantId") Long applicantId) {
+        ApplicantAnswerResponses applicantAnswerResponses = applicantFacade.readDetailById(applicantId);
+        return ResponseEntity.ok().body(applicantAnswerResponses);
     }
 
     @PatchMapping("/{applicantId}")
-    public ResponseEntity<Void> update(
+    public ResponseEntity<Void> updateInformation(
             @PathVariable("applicantId") Long applicantId,
             @RequestBody @Valid ApplicantUpdateRequest request
     ) {
-        applicantFacade.updateApplicantInformation(request, applicantId);
+        applicantFacade.updateApplicantInformation(applicantId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/move-process/{processId}")
+    public ResponseEntity<Void> updateProcess(
+            @PathVariable Long processId,
+            @RequestBody @Valid ApplicantMoveRequest moveRequest
+    ) {
+        applicantFacade.updateApplicantProcess(processId, moveRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{applicantId}/reject")
+    public ResponseEntity<ApplicantAnswerResponses> updateReject(@PathVariable("applicantId") Long applicantId) {
+        applicantFacade.updateApplicantToReject(applicantId);
         return ResponseEntity.ok().build();
     }
 }

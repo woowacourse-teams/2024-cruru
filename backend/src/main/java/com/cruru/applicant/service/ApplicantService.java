@@ -1,6 +1,7 @@
 package com.cruru.applicant.service;
 
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
+import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
@@ -24,19 +25,23 @@ public class ApplicantService {
         return applicantRepository.findAllByProcess(process);
     }
 
+    @Transactional
+    public void updateApplicantInformation(long applicantid, ApplicantUpdateRequest request) {
+        Applicant applicant = findById(applicantid);
+        if (notChangedInformation(request, applicant)) {
+            throw new ApplicantNoChangeException();
+        }
+        applicant.updateInfo(request.name(), request.email(), request.phone());
+    }
+
     public Applicant findById(long applicantId) {
         return applicantRepository.findById(applicantId)
                 .orElseThrow(ApplicantNotFoundException::new);
     }
 
-    @Transactional
-    public void updateApplicantInformation(ApplicantUpdateRequest request, Applicant applicant) {
-        if (applicant.getName().equals(request.name())
-                && applicant.getEmail().equals(request.email())
-                && applicant.getPhone().equals(request.phone())) {
-            throw new ApplicantNoChangeException();
-        }
-        applicant.updateInfo(request.name(), request.email(), request.phone());
+    private boolean notChangedInformation(ApplicantUpdateRequest request, Applicant applicant) {
+        return applicant.getName().equals(request.name()) && applicant.getEmail().equals(request.email())
+                && applicant.getPhone().equals(request.phone());
     }
 
     @Transactional
@@ -56,5 +61,15 @@ public class ApplicantService {
         if (applicant.isRejected()) {
             throw new ApplicantRejectException();
         }
+    }
+
+    public ApplicantResponse toApplicantResponse(Applicant applicant) {
+        return new ApplicantResponse(
+                applicant.getId(),
+                applicant.getName(),
+                applicant.getEmail(),
+                applicant.getPhone(),
+                applicant.getCreatedDate()
+        );
     }
 }

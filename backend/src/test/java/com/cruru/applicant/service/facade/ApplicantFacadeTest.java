@@ -6,12 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
+import com.cruru.answer.dto.AnswerResponse;
+import com.cruru.applicant.controller.dto.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
-import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
-import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
@@ -69,14 +69,14 @@ class ApplicantFacadeTest extends ServiceTest {
         ApplicantResponse applicantResponse = basicResponse.applicantResponse();
 
         // then
-        assertAll(
-                () -> assertThat(processResponse.id()).isEqualTo(process.getId()),
-                () -> assertThat(processResponse.name()).isEqualTo(process.getName()),
-                () -> assertThat(applicantResponse.id()).isEqualTo(applicant.getId()),
-                () -> assertThat(applicantResponse.name()).isEqualTo(applicant.getName()),
-                () -> assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail()),
-                () -> assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone())
-        );
+        assertAll(() -> {
+            assertThat(processResponse.id()).isEqualTo(process.getId());
+            assertThat(processResponse.name()).isEqualTo(process.getName());
+            assertThat(applicantResponse.id()).isEqualTo(applicant.getId());
+            assertThat(applicantResponse.name()).isEqualTo(applicant.getName());
+            assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail());
+            assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone());
+        });
     }
 
     @DisplayName("id로 지원자의 상세 정보를 찾는다.")
@@ -96,14 +96,14 @@ class ApplicantFacadeTest extends ServiceTest {
         answerRepository.save(answer);
 
         // when
-        ApplicantDetailResponse applicantDetailResponse = applicantFacade.readDetailById(applicant.getId());
+        ApplicantAnswerResponses applicantAnswerResponses = applicantFacade.readDetailById(applicant.getId());
 
         //then
-        List<QnaResponse> qnaResponses = applicantDetailResponse.qnaResponses();
-        assertAll(
-                () -> assertThat(qnaResponses.get(0).question()).isEqualTo(question.getContent()),
-                () -> assertThat(qnaResponses.get(0).answer()).isEqualTo(answer.getContent())
-        );
+        List<AnswerResponse> answerResponses = applicantAnswerResponses.answerResponses();
+        assertAll(() -> {
+            assertThat(answerResponses.get(0).question()).isEqualTo(question.getContent());
+            assertThat(answerResponses.get(0).answer()).isEqualTo(answer.getContent());
+        });
     }
 
     @DisplayName("지원자의 이름, 이메일, 전화번호를 변경한다.")
@@ -119,7 +119,7 @@ class ApplicantFacadeTest extends ServiceTest {
         Long applicantId = savedApplicant.getId();
 
         // when
-        applicantFacade.updateApplicantInformation(changeRequest, applicantId);
+        applicantFacade.updateApplicantInformation(applicantId, changeRequest);
 
         // then
         Applicant actualApplicant = applicantRepository.findById(applicantId).get();

@@ -33,7 +33,7 @@ class ApplicantControllerTest extends ControllerTest {
 
     @DisplayName("지원자들의 프로세스를 일괄적으로 옮기는 데 성공하면 200을 응답한다.")
     @Test
-    void updateApplicantProcess() {
+    void updateInformationApplicantProcess() {
         // given
         Process now = processRepository.save(ProcessFixture.createFirstProcess());
         Process next = processRepository.save(ProcessFixture.createFinalProcess());
@@ -77,7 +77,7 @@ class ApplicantControllerTest extends ControllerTest {
 
     @DisplayName("지원자를 불합격시키는 데 성공하면 200을 응답한다.")
     @Test
-    void reject() {
+    void updateReject() {
         // given
         Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
 
@@ -89,7 +89,7 @@ class ApplicantControllerTest extends ControllerTest {
 
     @DisplayName("지원자 정보 변경에 성공하면 200을 응답한다.")
     @Test
-    void update() {
+    void updateInformation() {
         // given
         String toChangeName = "도비";
         String toChangeEmail = "dev.dobby@gmail.com";

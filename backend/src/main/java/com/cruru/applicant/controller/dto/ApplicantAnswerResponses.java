@@ -1,11 +1,12 @@
 package com.cruru.applicant.controller.dto;
 
+import com.cruru.answer.dto.AnswerResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-public record ApplicantDetailResponse(
+public record ApplicantAnswerResponses(
         @JsonProperty("details")
-        List<QnaResponse> qnaResponses
+        List<AnswerResponse> answerResponses
 ) {
 
 }
