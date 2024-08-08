@@ -58,9 +58,9 @@ class AnswerServiceTest extends ServiceTest {
     @Test
     void toAnswerResponses() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
-        Question question1 = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
-        Question question2 = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Question question1 = QuestionFixture.createShortAnswerQuestion(null);
+        Question question2 = QuestionFixture.createShortAnswerQuestion(null);
 
         Answer expectedAnswer1 = AnswerFixture.fristAnswer(question1, applicant);
         Answer expectedAnswer2 = AnswerFixture.secondAnswer(question2, applicant);

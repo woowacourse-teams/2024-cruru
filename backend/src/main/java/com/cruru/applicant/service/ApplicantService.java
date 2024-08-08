@@ -26,8 +26,8 @@ public class ApplicantService {
     }
 
     @Transactional
-    public void updateApplicantInformation(long applicantid, ApplicantUpdateRequest request) {
-        Applicant applicant = findById(applicantid);
+    public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
+        Applicant applicant = findById(applicantId);
         if (notChangedInformation(request, applicant)) {
             throw new ApplicantNoChangeException();
         }
