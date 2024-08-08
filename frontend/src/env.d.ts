@@ -4,5 +4,6 @@ declare namespace NodeJS {
     API_VERSION: string;
     SENTRY_DSN: string;
     SENTRY_AUTH_TOKEN: string;
+    GA_MEASUREMENT_ID: string;
   }
 }
