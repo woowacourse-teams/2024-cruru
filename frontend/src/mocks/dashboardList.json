@@ -1,0 +1,44 @@
+{
+  "clubName": "크루루",
+  "dashboards": [
+    {
+      "dashboardId": "대시보드 id1",
+      "title": "프론트엔드 7기 모집",
+      "stats": {
+        "accept": 3,
+        "fail": 3,
+        "inProgress": 9,
+        "total": 15
+      },
+      "postUrl": "https://www.cruru.kr/123543920/recruit",
+      "startDate": "1900-01-21T00:00:00",
+      "endDate": "2024-07-24T18:00:00"
+    },
+    {
+      "dashboardId": "대시보드 id2",
+      "title": "백엔드 7기 모집",
+      "stats": {
+        "accept": 3,
+        "fail": 3,
+        "inProgress": 9,
+        "total": 15
+      },
+      "postUrl": "https://www.cruru.kr/98765101/recruit",
+      "startDate": "1900-01-21T00:00:00",
+      "endDate": "2024-07-24T20:30:00"
+    },
+    {
+      "dashboardId": "대시보드 id",
+      "title": "안드로이드 7기 모집",
+      "stats": {
+        "accept": 3,
+        "fail": 3,
+        "inProgress": 9,
+        "total": 15
+      },
+      "postUrl": "https://www.cruru.kr/7777890/recruit",
+      "startDate": "1900-01-21T00:00:00",
+      "endDate": "2024-07-24T21:00:00"
+    }
+  ]
+}

@@ -1,7 +1,8 @@
-import { http } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { DASHBOARDS } from '@api/endPoint';
 import { DashboardFormInfo } from '@customTypes/dashboard';
+import DASHBOARD_LIST from '../dashboardList.json';
 
 const dashboardHandlers = [
   http.post(DASHBOARDS, async ({ request }) => {
@@ -21,6 +22,8 @@ const dashboardHandlers = [
       statusText: 'Created',
     });
   }),
+
+  http.get(DASHBOARDS, () => HttpResponse.json(DASHBOARD_LIST)),
 ];
 
 export default dashboardHandlers;
