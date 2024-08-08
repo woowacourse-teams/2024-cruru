@@ -3,32 +3,22 @@ package com.cruru.applyform.service;
 import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
 import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
 import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.advice.InternalServerException;
-import com.cruru.answer.domain.repository.AnswerRepository;
-import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
-import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
-import com.cruru.applyform.exception.badrequest.PersonalDataProcessingException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
-import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
-import java.util.List;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,12 +40,6 @@ class ApplyFormServiceTest extends ServiceTest {
     private QuestionRepository questionRepository;
 
     @Autowired
-    private AnswerRepository answerRepository;
-
-    @Autowired
-    private ApplicantRepository applicantRepository;
-
-    @Autowired
     private ApplyFormService applyFormService;
 
     private Dashboard dashboard;
@@ -65,99 +49,37 @@ class ApplyFormServiceTest extends ServiceTest {
         dashboard = dashboardRepository.save(createBackendDashboard());
     }
 
-    @DisplayName("지원서 폼 제출에 성공한다.")
-    @Test
-    void submit() {
-        // given
-        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
-        Process finalProcess = processRepository.save(createFinalProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
 
-        List<AnswerCreateRequest> answerCreateRequests = List.of(
-                new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
-                new AnswerCreateRequest(question2.getId(), List.of("온라인"))
-        );
-        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
-                answerCreateRequests,
-                true
-        );
+    @DisplayName("지원공고를 성공적으로 생성한다.")
+    @Test
+    void create() {
+        // given
+        String title = "우아한테크코스 백엔드 7기 모집";
+        String postingContent = "# 모집합니다! ## 사실 안모집합니다";
+        LocalDateTime startDate = LocalDateTime.of(2099, 1, 1, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 23, 59);
+        ApplyFormCreateRequest request = new ApplyFormCreateRequest(title, postingContent, startDate, endDate);
 
         // when
-        applyFormService.submit(request, applyForm.getId());
+        ApplyForm savedApplyForm = applyFormService.create(request, dashboard);
+        long applyFormId = savedApplyForm.getId();
+        String applyPostUrl = String.format("www.cruru.kr/post/%d", applyFormId);
 
         // then
-        assertAll(
-                () -> assertThat(answerRepository.findAll()).hasSize(answerCreateRequests.size()),
-                () -> assertThat(applicantRepository.countByProcess(firstProcess)).isEqualTo(1),
-                () -> assertThat(applicantRepository.countByProcess(finalProcess)).isEqualTo(0)
-        );
-    }
-
-    @DisplayName("지원서 폼 제출 시, 대시보드에 프로세스가 존재하지 않으면 예외가 발생한다.")
-    @Test
-    void submit_dashboardWithNoProcess() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
-
-        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
-                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                true
-        );
-
-        // when&then
-        assertThatThrownBy(() -> applyFormService.submit(request, applyForm.getId()))
-                .isInstanceOf(InternalServerException.class);
-    }
-
-    @DisplayName("지원서 폼 제출 시, 개인정보 활용 거부할 경우 예외가 발생한다.")
-    @Test
-    void submit_rejectPersonalDataCollection() {
-        // given
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
-
-        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
-                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                false
-        );
-
-        // when&then
-        assertThatThrownBy(() -> applyFormService.submit(request, applyForm.getId()))
-                .isInstanceOf(PersonalDataProcessingException.class);
-    }
-
-    @DisplayName("지원서 폼 제출 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")
-    @Test
-    void submit_invalidApplyForm() {
-        // given
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
-
-        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
-                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
-                true
-        );
-
-        // when&then
-        assertThatThrownBy(() -> applyFormService.submit(request, -1))
-                .isInstanceOf(ApplyFormNotFoundException.class);
+        ApplyForm actualApplyForm = applyFormRepository.findById(applyFormId).get();
+        assertAll(() -> {
+            assertThat(actualApplyForm.getTitle()).isEqualTo(title);
+            assertThat(actualApplyForm.getDescription()).isEqualTo(postingContent);
+            assertThat(actualApplyForm.getUrl()).isEqualTo(applyPostUrl);
+            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
+            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
+        });
     }
 
     @DisplayName("지원서 폼 질문 조회에 성공한다.")
     @Test
     void read() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         questionRepository.save(createShortAnswerQuestion(applyForm));
 
@@ -176,13 +98,11 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void read_invalidApplyForm() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
         questionRepository.save(createShortAnswerQuestion(applyForm));
 
         // when&then
-        assertThatThrownBy(() -> applyFormService.findById(-1))
-                .isInstanceOf(ApplyFormNotFoundException.class);
+        assertThatThrownBy(() -> applyFormService.findById(-1)).isInstanceOf(ApplyFormNotFoundException.class);
     }
 }

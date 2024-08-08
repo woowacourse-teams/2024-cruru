@@ -9,6 +9,7 @@ import com.cruru.question.controller.dto.QuestionResponse;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.QuestionType;
 import com.cruru.question.domain.repository.QuestionRepository;
+import com.cruru.question.exception.QuestionNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,9 @@ public class QuestionService {
 
     @Transactional
     public void createAll(List<QuestionCreateRequest> requests, ApplyForm applyForm) {
-        requests.forEach(questionCreateRequest -> create(questionCreateRequest, applyForm));
+        for (QuestionCreateRequest questionCreateRequest : requests) {
+            create(questionCreateRequest, applyForm);
+        }
     }
 
     @Transactional
@@ -51,8 +54,13 @@ public class QuestionService {
         );
     }
 
-    public List<Question> findByApplyFormId(Long applyFormId) {
-        return questionRepository.findAllByApplyFormId(applyFormId);
+    public Question findById(long id) {
+        return questionRepository.findById(id)
+                .orElseThrow(QuestionNotFoundException::new);
+    }
+
+    public List<Question> findByApplyForm(ApplyForm applyForm) {
+        return questionRepository.findAllByApplyForm(applyForm);
     }
 
     public List<QuestionResponse> toQuestionResponses(List<Question> questions) {
