@@ -14,13 +14,13 @@ const Logo = styled.div`
   margin-bottom: 3.2rem;
 `;
 
-const Contents = styled.div`
+const Contents = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
 `;
 
-const NavButton = styled.button<{ isSelected: boolean }>`
+const LinkContainer = styled.button<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.block}
   color: ${({ theme, isSelected }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.default)};
   margin-bottom: 0;
@@ -33,16 +33,11 @@ const NavButton = styled.button<{ isSelected: boolean }>`
   }
 `;
 
-const Link = styled.nav`
-  cursor: pointer;
-`;
-
 const S = {
   Container,
   Logo,
   Contents,
-  NavButton,
-  Link,
+  LinkContainer,
 };
 
 export default S;

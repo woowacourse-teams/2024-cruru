@@ -19,7 +19,7 @@ const router = createBrowserRouter(
           element: <RecruitmentPost />,
         },
         {
-          path: 'dashboardId/:dashboardId/',
+          path: 'dashboard/:dashboardId/',
           element: <DashboardLayout />,
           children: [
             {
@@ -33,7 +33,7 @@ const router = createBrowserRouter(
           ],
         },
         {
-          path: 'dashboardId/:dashboardId/create',
+          path: 'dashboard/:dashboardId/create',
           element: <DashboardCreate />,
         },
       ],
