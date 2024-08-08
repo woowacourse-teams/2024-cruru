@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   height: 100%;
   background-color: white;
   display: flex;
-  gap: 16px;
+  gap: 2.4rem;
 `;
 
 const S = {

@@ -2,11 +2,11 @@ import styled from '@emotion/styled';
 import { hideScrollBar } from '@styles/utils';
 
 const ProcessWrapper = styled.section`
-  width: 30rem;
-  min-width: 30rem;
+  width: 24rem;
   padding: 20px 12px 12px 12px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.baseColors.grayscale[100]};
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   overflow-y: scroll;
   ${hideScrollBar};
@@ -30,9 +30,9 @@ const ApplicantList = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  padding: 0.4rem;
 
-  gap: 12px;
+  gap: 1.2rem;
 `;
 
 const S = {
