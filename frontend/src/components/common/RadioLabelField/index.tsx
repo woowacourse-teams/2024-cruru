@@ -7,7 +7,7 @@ interface Option {
   onToggle: () => void;
 }
 
-interface CheckboxLabelField {
+interface RadioLabelFieldProps {
   label?: string;
   description?: string;
   disabled?: boolean;
@@ -16,14 +16,14 @@ interface CheckboxLabelField {
   options: Option[];
 }
 
-export default function CheckboxLabelField({
+export default function RadioLabelField({
   label,
   description,
   disabled = false,
   error,
   required = false,
   options,
-}: CheckboxLabelField) {
+}: RadioLabelFieldProps) {
   return (
     <S.Wrapper>
       <S.HeadWrapper>
