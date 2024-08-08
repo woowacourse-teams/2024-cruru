@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Question, QuestionControlActionType, QuestionOptionValue } from '@customTypes/dashboard';
+import { Question, QuestionChoice, QuestionControlActionType, QuestionOptionValue } from '@customTypes/dashboard';
 
 import InputField from '@components/common/InputField';
 import Dropdown from '@components/common/Dropdown';
@@ -13,6 +13,7 @@ import QuestionChoicesBuilder from '../QuestionChoicesBuilder';
 
 interface QuestionBuilderProps {
   index: number;
+  question: Question;
   setQuestionTitle: (index: number) => (title: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
   setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
@@ -22,8 +23,13 @@ interface QuestionBuilderProps {
   deleteQuestion: (index: number) => void;
 }
 
+function getSortedChoices(choices: QuestionChoice[]): QuestionOptionValue[] {
+  return choices.sort((a, b) => a.orderIndex - b.orderIndex).map((item) => ({ value: item.choice }));
+}
+
 export default function QuestionBuilder({
   index,
+  question,
   setQuestionTitle,
   setQuestionType,
   setQuestionOptions,
@@ -32,11 +38,13 @@ export default function QuestionBuilder({
   setQuestionNext,
   deleteQuestion,
 }: QuestionBuilderProps) {
-  const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>('SHORT_ANSWER');
-  const [choices, setChoices] = useState<QuestionOptionValue[]>([]);
-  const [isRequired, setIsRequired] = useState<boolean>(true);
+  const [title, setTitle] = useState<string>(question.question || '');
+  const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>(question.type || 'SHORT_ANSWER');
+  const [choices, setChoices] = useState<QuestionOptionValue[]>(getSortedChoices(question.choices) || []);
+  const [isRequired, setIsRequired] = useState<boolean>(question.required || true);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
     setQuestionTitle(index)(event.target.value);
   };
 
@@ -79,13 +87,14 @@ export default function QuestionBuilder({
             type="text"
             placeholder="질문을 입력하세요."
             onChange={handleChangeTitle}
+            value={title}
             required
           />
           <Dropdown
             initValue={QUESTION_TYPE_NAME[currentQuestionType]}
             size="sm"
             items={QUESTION_TYPES}
-            width={160}
+            width={200}
             isShadow={false}
           />
         </S.InputBox>
