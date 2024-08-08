@@ -159,8 +159,8 @@ public class ApplyFormService {
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 
-    public ApplyForm findByDashboardId(long dashboardId) {
-        return applyFormRepository.findByDashboardId(dashboardId)
+    public ApplyForm findByDashboard(Dashboard dashboard) {
+        return applyFormRepository.findByDashboard(dashboard)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 }

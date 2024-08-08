@@ -9,23 +9,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.dashboard.exception.DashboardNotFoundException;
-import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
-import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessUpdateRequest;
-import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteEndsException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
+import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ProcessFixture;
 import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -50,41 +47,6 @@ class ProcessServiceTest extends ServiceTest {
     @Autowired
     private EvaluationRepository evaluationRepository;
 
-    @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
-    @Test
-    void findByDashboardId() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
-        Applicant applicant = applicantRepository.save(createPendingApplicantDobby(process));
-        evaluationRepository.save(new Evaluation(5, "하드 스킬과 소프트 스킬이 출중함.", process, applicant));
-
-        // when
-        ProcessesResponse byDashboardId = processService.findByDashboardId(dashboard.getId());
-
-        // then
-        ProcessResponse firstProcessResponse = byDashboardId.processResponses().get(0);
-        assertAll(
-                () -> assertThat(byDashboardId.processResponses()).hasSize(1),
-                () -> assertThat(firstProcessResponse.processId()).isEqualTo(process.getId()),
-                () -> assertThat(firstProcessResponse.dashboardApplicantResponses().get(0).applicantId()).isEqualTo(
-                        applicant.getId()),
-                () -> assertThat(firstProcessResponse.dashboardApplicantResponses().get(0).evaluationCount()).isEqualTo(
-                        1)
-        );
-    }
-
-    @DisplayName("대시보드가 존재하지 않는 경우, 예외가 발생한다.")
-    @Test
-    void invalidDashboardId() {
-        // given
-        long invalidId = 0;
-
-        // when&then
-        assertThatThrownBy(() -> processService.findByDashboardId(invalidId))
-                .isInstanceOf(DashboardNotFoundException.class);
-    }
-
     @DisplayName("새로운 프로세스를 생성한다.")
     @Test
     void create() {
@@ -92,10 +54,10 @@ class ProcessServiceTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         processRepository.save(createFirstProcess(dashboard));
         processRepository.save(createFinalProcess(dashboard));
-        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("1차 면접", "화상 면접", 1);
+        ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "원래 있던 2개의 프로세스 사이에 생겼다.", 1);
 
         // when
-        processService.create(processCreateRequest, dashboard.getId());
+        processService.create(processCreateRequest, dashboard);
 
         // then
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboard.getId())
@@ -103,8 +65,11 @@ class ProcessServiceTest extends ServiceTest {
                 .sorted(Comparator.comparingInt(Process::getSequence))
                 .toList();
 
-        assertThat(allByDashboardId).hasSize(3);
-        assertThat(allByDashboardId.get(1).getName()).isEqualTo("1차 면접");
+        String actualName = allByDashboardId.get(1).getName();
+        assertAll(() -> {
+            assertThat(allByDashboardId).hasSize(3);
+            assertThat(actualName).isEqualTo("새로운 프로세스");
+        });
     }
 
     @DisplayName("프로세스 최대 개수를 초과하면, 예외가 발생한다.")
@@ -112,23 +77,15 @@ class ProcessServiceTest extends ServiceTest {
     void createOverProcessMaxCount() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.saveAll(
-                List.of(
-                        new Process(0, "서류", "서류", dashboard),
-                        new Process(1, "코딩 테스트", "온라인", dashboard),
-                        new Process(2, "CS 테스트", "온라인", dashboard),
-                        new Process(3, "1차 면접", "화상 면접", dashboard),
-                        new Process(4, "최종 면접", "대면 면접", dashboard)
-                )
-        );
+        processRepository.saveAll(ProcessFixture.maxSizeOf(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
 
         // when&then
-        assertThatThrownBy(() -> processService.create(processCreateRequest, dashboard.getId()))
+        assertThatThrownBy(() -> processService.create(processCreateRequest, dashboard))
                 .isInstanceOf(ProcessCountException.class);
     }
 
-    @DisplayName("프로세스 정보를 변경한다.")
+    @DisplayName("기존 정보에서 변경점이 있는 변경 요청시, 프로세스 정보를 변경한다.")
     @Test
     void update() {
         // given
@@ -138,14 +95,33 @@ class ProcessServiceTest extends ServiceTest {
 
         // when
         Long processId = process.getId();
-        ProcessResponse actualProcessResponse = processService.update(processUpdateRequest, processId);
+        processService.update(processUpdateRequest, processId);
 
         // then
+        Process actualProcess = processRepository.findById(processId).get();
         assertAll(() -> {
-            assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name());
-            assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description());
+            assertThat(actualProcess.getName()).isEqualTo(processUpdateRequest.name());
+            assertThat(actualProcess.getDescription()).isEqualTo(processUpdateRequest.description());
         });
     }
+
+    @DisplayName("기존 정보에서 변경점이 없는 요청시, 예외가 발생한다.")
+    @Test
+    void update_ThrowException() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Process process = processRepository.save(createFirstProcess(dashboard));
+        String notChangedName = process.getName();
+        String notChangedDescription = process.getDescription();
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest(notChangedName, notChangedDescription);
+
+        Long processId = process.getId();
+
+        // when & then
+        assertThatThrownBy(() -> processService.update(processUpdateRequest, processId))
+                .isInstanceOf(ProcessNoChangeException.class);
+    }
+
 
     @DisplayName("프로세스를 삭제한다.")
     @Test
@@ -163,48 +139,31 @@ class ProcessServiceTest extends ServiceTest {
 
     @DisplayName("첫번째 프로세스 혹은 마지막 프로세스를 삭제하면 예외가 발생한다.")
     @Test
-    void deleteFirstOrLastProcess() {
+    void delete_FirstOrLastProcess_ThrowsException() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process firstProcess = processRepository.save(createFirstProcess(dashboard));
         Process finalProcess = processRepository.save(createFinalProcess(dashboard));
 
-        // when&then
-        assertAll(
-                () -> assertThatThrownBy(() -> processService.delete(firstProcess.getId()))
-                        .isInstanceOf(ProcessDeleteEndsException.class),
-                () -> assertThatThrownBy(() -> processService.delete(finalProcess.getId()))
-                        .isInstanceOf(ProcessDeleteEndsException.class)
-        );
+        // when & then
+        Long firstProcessId = firstProcess.getId();
+        Long finalProcessId = finalProcess.getId();
+        assertAll(() -> {
+            assertThatThrownBy(() -> processService.delete(firstProcessId)).isInstanceOf(ProcessDeleteEndsException.class);
+            assertThatThrownBy(() -> processService.delete(finalProcessId)).isInstanceOf(ProcessDeleteEndsException.class);
+        });
     }
 
     @DisplayName("삭제하려는 프로세스에 해당되는 지원자가 있을 경우 예외가 발생한다.")
     @Test
-    void deleteExistsApplicantProcess() {
+    void delete_ApplicantRemainedProcess_ThrowsException() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
         Process process = processRepository.save(createInterviewProcess(dashboard));
         applicantRepository.save(createPendingApplicantDobby(process));
 
         // when&then
-        assertThatThrownBy(() -> processService.delete(process.getId()))
-                .isInstanceOf(ProcessDeleteRemainingApplicantException.class);
-    }
-
-    @DisplayName("대시보드 ID로 존재하는 모든 프로세스를 조회한다.")
-    @Test
-    void findAllByDashboardId() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        List<Process> expectedProcesses = processRepository.saveAll(List.of(
-                createFirstProcess(dashboard),
-                createFinalProcess(dashboard)
-        ));
-
-        // when
-        List<Process> actualProcesses = processService.findAllByDashboardId(dashboard.getId());
-
-        // then
-        assertThat(actualProcesses).containsExactlyInAnyOrderElementsOf(expectedProcesses);
+        Long processId = process.getId();
+        assertThatThrownBy(() -> processService.delete(processId)).isInstanceOf(ProcessDeleteRemainingApplicantException.class);
     }
 }
