@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+
 import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
 import { Process } from '@customTypes/process';
 import useProcess from '@hooks/useProcess';
@@ -12,7 +14,8 @@ interface ProcessColumnProps {
 }
 
 export default function ProcessColumn({ process }: ProcessColumnProps) {
-  const { processList } = useProcess();
+  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { processList } = useProcess({ dashboardId, postId });
   const { moveApplicantProcess } = useApplicant({});
   const { setApplicantId } = useSpecificApplicantId();
   const { open } = useModal();

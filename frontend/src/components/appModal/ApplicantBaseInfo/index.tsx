@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+
 import Dropdown from '@components/common/Dropdown';
 import Button from '@components/common/Button';
 import useProcess from '@hooks/useProcess';
@@ -14,7 +16,8 @@ interface ApplicantBaseInfoProps {
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
   const { data: applicantBaseDetail } = specificApplicant.useGetBaseInfo({ applicantId });
   const { mutate: rejectMutate } = specificApplicant.useRejectApplicant();
-  const { processList } = useProcess();
+  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { processList } = useProcess({ dashboardId, postId });
   const { moveApplicantProcess } = useApplicant({ applicantId });
   const { close } = useModal();
 
