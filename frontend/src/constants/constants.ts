@@ -33,3 +33,10 @@ export const CLUB_ID = 1; // TODO: 수정해야 합니다.
 
 export const getDashboardPostUrl = ({ dashboardId, postId }: { dashboardId: string; postId: string }) =>
   `${BASE_URL}/dashboard/${dashboardId}/${postId}`;
+
+export const QUESTION_TYPE_NAME = {
+  SHORT_ANSWER: '단답형',
+  LONG_ANSWER: '장문형',
+  SINGLE_CHOICE: '객관식(단일 선택)',
+  MULTIPLE_CHOICE: '객관식(복수 선택)',
+} as const;

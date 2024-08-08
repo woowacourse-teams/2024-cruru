@@ -1,10 +1,14 @@
+import { QuestionType } from './apply';
+
+export interface QuestionChoice {
+  choice: string;
+  orderIndex: number;
+}
+
 export interface Question {
-  type: 'SHORT_ANSWER' | 'LONG_ANSWER' | 'MULTIPLE_CHOICE' | 'DROPDOWN';
+  type: QuestionType;
   question: string;
-  choices: {
-    choice: string;
-    orderIndex: number;
-  }[];
+  choices: QuestionChoice[];
   required: boolean;
 }
 
@@ -25,3 +29,7 @@ export interface QuestionOption {
 }
 
 export type QuestionControlActionType = 'moveUp' | 'moveDown' | 'delete';
+
+export interface QuestionOptionValue {
+  value: string;
+}

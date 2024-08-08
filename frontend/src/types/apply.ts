@@ -1,3 +1,4 @@
+import { QUESTION_TYPE_NAME } from '@constants/constants';
 import { ISO8601 } from './common';
 
 export interface RecruitmentPost {
@@ -7,7 +8,7 @@ export interface RecruitmentPost {
   postingContent: string;
 }
 
-export type QuestionType = 'SHORT_ANSWER' | 'LONG_ANSWER' | 'MULTIPLE_CHOICE' | 'DROPDOWN' | 'CHECK_BOX';
+export type QuestionType = keyof typeof QUESTION_TYPE_NAME;
 
 export interface Choice {
   id: number;
