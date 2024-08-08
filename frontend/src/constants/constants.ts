@@ -31,5 +31,5 @@ export const PROCESS = {
 
 export const CLUB_ID = 1; // TODO: 수정해야 합니다.
 
-export const DASHBOARD_POST_URL = ({ dashboardId, postId }: { dashboardId: string; postId: string }) =>
+export const getDashboardPostUrl = ({ dashboardId, postId }: { dashboardId: string; postId: string }) =>
   `${BASE_URL}/dashboard/${dashboardId}/${postId}`;
