@@ -38,7 +38,7 @@ export const applyQueries = {
 };
 
 export const applyMutations = {
-  useApply: (postId: string) => {
+  useApply: (postId: string, title: string) => {
     const navigate = useNavigate();
 
     return useMutation({
@@ -47,7 +47,7 @@ export const applyMutations = {
         window.alert(error.message);
       },
       onSuccess: () => {
-        navigate(`/post/${postId}/confirm`);
+        navigate(`/post/${postId}/confirm`, { state: { title } });
       },
     });
   },
