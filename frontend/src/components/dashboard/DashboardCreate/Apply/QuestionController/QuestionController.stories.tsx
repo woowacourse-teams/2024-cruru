@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuestionController from './index';
 
 const meta: Meta<typeof QuestionController> = {
-  title: 'Components/Dashboard/DashboardCreate/Apply/QuestionController',
+  title: 'Components/Dashboard/Create/Apply/QuestionController',
   component: QuestionController,
   parameters: {
     layout: 'centered',
