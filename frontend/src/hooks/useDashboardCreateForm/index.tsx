@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 interface UseDashboardCreateFormReturn {
   stepState: StepState;
+  prevStep: () => void;
   nextStep: () => void;
 
   recruitmentInfoState: RecruitmentInfoState;
@@ -41,6 +42,10 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const [stepState, setStepState] = useState<StepState>('recruitmentForm');
   const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
   const [applyState, setApplyState] = useState<Question[]>(initialApplyState);
+
+  const prevStep = () => {
+    if (stepState === 'applyForm') setStepState('recruitmentForm');
+  };
 
   const nextStep = () => {
     if (stepState === 'recruitmentForm') setStepState('applyForm');
@@ -128,6 +133,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   return {
     stepState,
+    prevStep,
     nextStep,
 
     recruitmentInfoState,
