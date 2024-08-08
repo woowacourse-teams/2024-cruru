@@ -12,7 +12,9 @@ export default function DateInput({ label, innerText, ...props }: DateInputProps
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleIconClick = () => {
-    inputRef.current?.showPicker();
+    if (!inputRef.current?.disabled) {
+      inputRef.current?.showPicker();
+    }
   };
 
   return (
