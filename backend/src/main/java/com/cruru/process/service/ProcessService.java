@@ -9,6 +9,7 @@ import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.controller.dto.ProcessesResponse;
 import com.cruru.process.domain.Process;
@@ -80,6 +81,10 @@ public class ProcessService {
                 applicant.isRejected(),
                 evaluationCount
         );
+    }
+
+    public ProcessSimpleResponse toProcessSimpleResponse(Process process) {
+        return new ProcessSimpleResponse(process.getId(), process.getName());
     }
 
     public List<Process> findAllByDashboardId(long dashboardId) {
