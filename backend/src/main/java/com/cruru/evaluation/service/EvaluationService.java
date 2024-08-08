@@ -29,6 +29,10 @@ public class EvaluationService {
         return evaluationRepository.findAllByProcessAndApplicant(process, applicant);
     }
 
+    public int count(Process process, Applicant applicant) {
+        return evaluationRepository.countByApplicantAndProcess(applicant, process);
+    }
+
     @Transactional
     public void update(EvaluationUpdateRequest request, long evaluationId) {
         Evaluation evaluation = evaluationRepository.findById(evaluationId)
