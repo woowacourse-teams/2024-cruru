@@ -19,6 +19,7 @@ jobs:
     env:
       API_URL: ${{ secrets.API_URL }}
       API_VERSION: ${{ secrets.API_VERSION }}
+      GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
