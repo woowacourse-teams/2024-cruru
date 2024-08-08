@@ -1,5 +1,4 @@
 import dashboardApis from '@api/dashboard';
-import { CLUB_ID } from '@constants/constants';
 import type { Question, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -7,9 +6,15 @@ import { useState } from 'react';
 interface Option {
   value: string;
 }
+
+interface FinishResJson {
+  postUrl: string;
+  postId: string;
+}
 interface UseDashboardCreateFormReturn {
   stepState: StepState;
-  nextStep: () => void;
+  prevStep: () => void;
+  nextStep: (dashboardId?: string) => void;
 
   recruitmentInfoState: RecruitmentInfoState;
   setRecruitmentInfoState: React.Dispatch<React.SetStateAction<RecruitmentInfoState>>;
@@ -24,7 +29,15 @@ interface UseDashboardCreateFormReturn {
   setQuestionNext: (index: number) => () => void;
   deleteQuestion: (index: number) => void;
 
-  submitMutator: UseMutationResult<unknown, Error, void, unknown>;
+  submitMutator: UseMutationResult<
+    Response,
+    Error,
+    {
+      clubId: string;
+    },
+    unknown
+  >;
+  finishResJson: FinishResJson | null;
 }
 
 const initialRecruitmentInfoState: RecruitmentInfoState = {
@@ -44,10 +57,35 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const [stepState, setStepState] = useState<StepState>('recruitmentForm');
   const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
   const [applyState, setApplyState] = useState<Question[]>(initialApplyState);
+  const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
 
-  const nextStep = () => {
+  const submitMutator = useMutation({
+    mutationFn: ({ clubId }: { clubId: string }) =>
+      dashboardApis.create({
+        clubId,
+        dashboardFormInfo: {
+          ...recruitmentInfoState,
+          questions: applyState,
+        },
+      }),
+    onSuccess: async (data) => {
+      setStepState('finished');
+      const json = await data?.json();
+      setFinishResJson(json);
+    },
+  });
+
+  const prevStep = () => {
+    if (stepState === 'applyForm') setStepState('recruitmentForm');
+  };
+
+  const nextStep = (dashboardId?: string) => {
     if (stepState === 'recruitmentForm') setStepState('applyForm');
-    if (stepState === 'applyForm') setStepState('finished');
+    if (stepState === 'applyForm') {
+      if (dashboardId) {
+        submitMutator.mutate({ clubId: dashboardId });
+      }
+    }
   };
 
   const addQuestion = () => {
@@ -118,19 +156,9 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     setApplyState((prevState) => prevState.filter((_, i) => i !== index));
   };
 
-  const submitMutator = useMutation({
-    mutationFn: () =>
-      dashboardApis.create({
-        clubId: CLUB_ID,
-        dashboardFormInfo: {
-          ...recruitmentInfoState,
-          questions: applyState,
-        },
-      }),
-  });
-
   return {
     stepState,
+    prevStep,
     nextStep,
 
     recruitmentInfoState,
@@ -147,5 +175,6 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     deleteQuestion,
 
     submitMutator,
+    finishResJson,
   };
 }

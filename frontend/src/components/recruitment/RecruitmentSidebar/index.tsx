@@ -5,6 +5,7 @@ interface StepProps {
   label: string;
   isSelected: boolean;
 }
+
 function Step({ stepNumber, label, isSelected }: StepProps) {
   return (
     <S.StepContainer isSelected={isSelected}>
@@ -14,14 +15,12 @@ function Step({ stepNumber, label, isSelected }: StepProps) {
   );
 }
 
-export default function RecruitmentSidebar() {
-  // TODO: isSelected에 해당하는 값을 넣어야 합니다.
-  const options = [
-    { text: '공고 작성', isSelected: true },
-    { text: '지원서 작성', isSelected: false },
-    { text: '공고 게시', isSelected: false },
-  ];
+interface Option {
+  text: string;
+  isSelected: boolean;
+}
 
+export default function RecruitmentSidebar({ options }: { options: Option[] }) {
   return (
     <S.Container>
       <S.SidebarHeader>
