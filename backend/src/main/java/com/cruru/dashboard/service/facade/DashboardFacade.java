@@ -109,7 +109,8 @@ public class DashboardFacade {
     }
 
     private List<Applicant> getAllApplicantsByDashboardId(Long dashboardId) {
-        List<Process> processes = processService.findAllByDashboardId(dashboardId);
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+        List<Process> processes = processService.findAllByDashboard(dashboard);
         return processes.stream()
                 .flatMap(process -> applicantService.findAllByProcess(process)
                         .stream())
