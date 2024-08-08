@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
@@ -43,6 +44,29 @@ class ApplicantServiceTest extends ServiceTest {
 
     @Autowired
     private EntityManager entityManager;
+
+    @DisplayName("지원자를 정상적으로 저장한다.")
+    @Test
+    void create() {
+        // given
+        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess());
+        String name = "도비";
+        String email = "kimdobby@email.com";
+        String phone = "01052525252";
+        ApplicantCreateRequest createRequest = new ApplicantCreateRequest(name, email, phone);
+
+        // when
+        Applicant createdApplicant = applicantService.create(createRequest, firstProcess);
+
+        // then
+        Applicant actualApplicant = applicantRepository.findById(createdApplicant.getId()).get();
+        assertAll(() -> {
+            assertThat(actualApplicant.getName()).isEqualTo(name);
+            assertThat(actualApplicant.getEmail()).isEqualTo(email);
+            assertThat(actualApplicant.getPhone()).isEqualTo(phone);
+        });
+    }
+
 
     @DisplayName("프로세스 내의 모든 지원자를 조회한다.")
     @Test
