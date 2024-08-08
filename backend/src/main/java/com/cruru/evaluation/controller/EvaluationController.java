@@ -47,7 +47,7 @@ public class EvaluationController {
     @PatchMapping("/{evaluationId}")
     public ResponseEntity<Void> update(
             @RequestBody EvaluationUpdateRequest request,
-            @PathVariable("evaluationId") long evaluationId
+            @PathVariable long evaluationId
     ) {
         evaluationService.update(request, evaluationId);
         return ResponseEntity.ok().build();

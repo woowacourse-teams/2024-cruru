@@ -33,26 +33,26 @@ public class ApplicantController {
     }
 
     @GetMapping("/{applicantId}")
-    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicantId") Long applicantId) {
+    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable Long applicantId) {
         ApplicantBasicResponse applicantResponse = applicantService.findById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
     @GetMapping("/{applicantId}/detail")
-    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable("applicantId") Long applicantId) {
+    public ResponseEntity<ApplicantDetailResponse> readDetail(@PathVariable Long applicantId) {
         ApplicantDetailResponse applicantDetailResponse = applicantService.findDetailById(applicantId);
         return ResponseEntity.ok().body(applicantDetailResponse);
     }
 
     @PatchMapping("/{applicantId}/reject")
-    public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable("applicantId") Long applicantId) {
+    public ResponseEntity<ApplicantDetailResponse> reject(@PathVariable Long applicantId) {
         applicantService.reject(applicantId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{applicantId}")
     private ResponseEntity<Void> update(
-            @PathVariable("applicantId") Long applicantId,
+            @PathVariable Long applicantId,
             @RequestBody @Valid ApplicantUpdateRequest request) {
         applicantService.update(request, applicantId);
         return ResponseEntity.ok().build();

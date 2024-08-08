@@ -43,7 +43,7 @@ public class ProcessController {
 
     @PatchMapping("/{processId}")
     public ResponseEntity<ProcessResponse> update(
-            @PathVariable(name = "processId") Long processId,
+            @PathVariable Long processId,
             @RequestBody @Valid ProcessUpdateRequest request
     ) {
         ProcessResponse response = processService.update(request, processId);
@@ -51,7 +51,7 @@ public class ProcessController {
     }
 
     @DeleteMapping("/{processId}")
-    public ResponseEntity<Void> delete(@PathVariable(name = "processId") Long processId) {
+    public ResponseEntity<Void> delete(@PathVariable Long processId) {
         processService.delete(processId);
         return ResponseEntity.noContent().build();
     }

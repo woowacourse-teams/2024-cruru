@@ -31,7 +31,7 @@ public class DashboardController {
     }
 
     @GetMapping
-    public ResponseEntity<DashboardsOfClubResponse> readDashboards(@RequestParam(name = "club_id") Long clubId) {
+    public ResponseEntity<DashboardsOfClubResponse> readDashboards(@RequestParam(name = "clubId") Long clubId) {
         DashboardsOfClubResponse dashboards = dashboardFacade.findAllDashboardsByClubId(clubId);
         return ResponseEntity.ok().body(dashboards);
     }
