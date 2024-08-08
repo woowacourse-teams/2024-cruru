@@ -33,11 +33,16 @@ const NavButton = styled.button<{ isSelected: boolean }>`
   }
 `;
 
+const Link = styled.nav`
+  cursor: pointer;
+`;
+
 const S = {
   Container,
   Logo,
   Contents,
   NavButton,
+  Link,
 };
 
 export default S;

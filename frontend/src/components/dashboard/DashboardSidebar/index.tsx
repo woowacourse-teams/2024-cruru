@@ -1,24 +1,34 @@
+import { useNavigate } from 'react-router-dom';
 import Accordion from '@components/common/Accordion';
 import S from './style';
 
-export default function DashboardSidebar() {
-  // TODO: URL Param과 같은 방법으로 현재 공고가 Selected 인지 확인할 수 있도록 합니다.
+interface Option {
+  text: string;
+  isSelected: boolean;
+  postId: number;
+}
 
-  const options = [
-    { text: '프론트엔드 7기 모집', isSelected: true },
-    { text: '백엔드 7기 모집', isSelected: false },
-    { text: '안드로이드 7기 모집', isSelected: false },
-  ];
+interface DashboardSidebarProps {
+  options: Option[];
+}
+
+export default function DashboardSidebar({ options }: DashboardSidebarProps) {
+  const navigate = useNavigate();
 
   return (
     <S.Container>
       <S.Logo>ㅋㄹㄹ</S.Logo>
       <S.Contents>
-        <Accordion title="공고">
-          {options.map(({ text, isSelected }, index) => (
+        <Accordion title={<S.Link onClick={() => navigate('/dashboardId/1/posts')}>공고</S.Link>}>
+          {options.map(({ text, isSelected, postId }, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <Accordion.ListItem key={index}>
-              <S.NavButton isSelected={isSelected}>{text}</S.NavButton>
+              <S.NavButton
+                onClick={() => navigate(`/dashboardId/1/${postId}`)}
+                isSelected={isSelected}
+              >
+                {text}
+              </S.NavButton>
             </Accordion.ListItem>
           ))}
         </Accordion>

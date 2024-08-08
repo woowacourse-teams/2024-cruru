@@ -10,6 +10,7 @@ export default function DashboardCreate() {
       <RecruitmentSidebar />
 
       <S.MainContainer>
+        Create!!!!
         {/*
         TODO: 단계별 컴포넌트를 렌더링합니다.
         1. Recrutement
