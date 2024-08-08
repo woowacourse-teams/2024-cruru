@@ -1,9 +1,11 @@
 package com.cruru.process.controller;
 
+import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
@@ -27,6 +29,9 @@ class ProcessControllerTest extends ControllerTest {
     @Autowired
     private ProcessRepository processRepository;
 
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
+
     private Dashboard dashboard;
 
     @BeforeEach
@@ -38,6 +43,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
+        applyFormRepository.save(createBackendApplyForm(dashboard));
         String url = String.format("/v1/processes?dashboardId=%d", dashboard.getId());
 
         // when&then
