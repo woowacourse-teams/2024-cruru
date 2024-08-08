@@ -1,8 +1,10 @@
 import { ComponentProps, ReactNode } from 'react';
 import S from './style';
+import CopyToClipboard from '../CopyToClipboard';
 
 interface TabProps {
   children: ReactNode;
+  postUrl?: string;
 }
 
 interface TabItemProps extends ComponentProps<'button'> {
@@ -16,10 +18,15 @@ interface TabPanelProps {
   isVisible: boolean;
 }
 
-function Tab({ children }: TabProps) {
+function Tab({ children, postUrl }: TabProps) {
   return (
     <S.Nav>
       <S.Tabs>{children}</S.Tabs>
+      {postUrl && (
+        <S.CopyWrapper>
+          <CopyToClipboard url={postUrl} />
+        </S.CopyWrapper>
+      )}
     </S.Nav>
   );
 }

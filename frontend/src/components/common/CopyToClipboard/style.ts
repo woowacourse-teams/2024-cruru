@@ -22,12 +22,16 @@ const LinkContainer = styled.div`
   display: flex;
   align-items: center;
 
-  width: 100%;
+  width: 90%;
 `;
 
 const Link = styled.a`
   ${({ theme }) => theme.typography.common.large};
   color: ${({ theme }) => theme.colors.link};
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const S = {
