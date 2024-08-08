@@ -71,7 +71,7 @@ class DashboardControllerTest extends ControllerTest {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
         applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        String url = String.format("/v1/dashboards?club_id=%d", club.getId());
+        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
 
         // when&then
         RestAssured.given().log().all()

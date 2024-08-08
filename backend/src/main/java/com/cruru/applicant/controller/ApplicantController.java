@@ -24,20 +24,20 @@ public class ApplicantController {
     private final ApplicantFacade applicantFacade;
 
     @GetMapping("/{applicantId}")
-    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable("applicantId") Long applicantId) {
+    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable Long applicantId) {
         ApplicantBasicResponse applicantResponse = applicantFacade.readBasicById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
     @GetMapping("/{applicantId}/detail")
-    public ResponseEntity<ApplicantAnswerResponses> readDetail(@PathVariable("applicantId") Long applicantId) {
+    public ResponseEntity<ApplicantAnswerResponses> readDetail(@PathVariable Long applicantId) {
         ApplicantAnswerResponses applicantAnswerResponses = applicantFacade.readDetailById(applicantId);
         return ResponseEntity.ok().body(applicantAnswerResponses);
     }
 
     @PatchMapping("/{applicantId}")
     public ResponseEntity<Void> updateInformation(
-            @PathVariable("applicantId") Long applicantId,
+            @PathVariable Long applicantId,
             @RequestBody @Valid ApplicantUpdateRequest request
     ) {
         applicantFacade.updateApplicantInformation(applicantId, request);
@@ -54,7 +54,7 @@ public class ApplicantController {
     }
 
     @PatchMapping("/{applicantId}/reject")
-    public ResponseEntity<ApplicantAnswerResponses> updateReject(@PathVariable("applicantId") Long applicantId) {
+    public ResponseEntity<ApplicantAnswerResponses> updateReject(@PathVariable Long applicantId) {
         applicantFacade.updateApplicantToReject(applicantId);
         return ResponseEntity.ok().build();
     }

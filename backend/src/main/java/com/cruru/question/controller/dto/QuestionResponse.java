@@ -13,7 +13,6 @@ public record QuestionResponse(
 
         String description,
 
-        @JsonProperty("order_index")
         int orderIndex,
 
         @JsonProperty("choices")

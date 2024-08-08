@@ -75,18 +75,17 @@ public class DataLoader implements ApplicationRunner {
         LocalDateTime startDate = LocalDateTime.of(2024, 10, 6, 15, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(2024, 10, 16, 10, 0, 0);
         dashboardRepository.save(dashboard);
-        String description =
-                """
-                ## 2025 신입생 (7기) 선발 일정
-                - 서류접수: 2024년 10월 6일(금) 오후 3시 ~ 10월 16일(월) 오전 10시
-                - 프리코스: 2024년 10월 19일(목) ~ 11월 15일(수)
-                - 1차 합격자 발표: 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보
-                - 최종 코딩 테스트: 2024년 12월 16일(토)
-                - 최종 합격자 발표: 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보
-                
-                ## 2025 신입생 (7기) 교육 기간
-                - 2025년 2월 ~ 11월 (약 10개월)
-                """;
+        String description = """
+                             ## 2025 신입생 (7기) 선발 일정
+                             - 서류접수: 2024년 10월 6일(금) 오후 3시 ~ 10월 16일(월) 오전 10시
+                             - 프리코스: 2024년 10월 19일(목) ~ 11월 15일(수)
+                             - 1차 합격자 발표: 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보
+                             - 최종 코딩 테스트: 2024년 12월 16일(토)
+                             - 최종 합격자 발표: 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보
+                                                          
+                             ## 2025 신입생 (7기) 교육 기간
+                             - 2025년 2월 ~ 11월 (약 10개월)
+                             """;
         ApplyForm applyForm = new ApplyForm(
                 "우아한테크코스 2025 백엔드 신입생 모집 ",
                 description,
@@ -317,7 +316,6 @@ public class DataLoader implements ApplicationRunner {
                         chocochip
                 ),
                 new Answer(
-
                         "프로그래밍 경진대회에 참여하여 오랜 시간 몰입했습니다. 이 과정에서 여러 가지 문제를 해결해야 했지만, 이를 통해 개발 능력과 문제 해결 능력을 키울 수 있었습니다.",
                         question3,
                         myungoh

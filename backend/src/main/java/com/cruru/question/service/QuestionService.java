@@ -30,7 +30,7 @@ public class QuestionService {
 
     @Transactional
     public Question create(QuestionCreateRequest request, ApplyForm applyForm) {
-        QuestionType questionType = QuestionType.fromString(request.type());
+        QuestionType questionType = QuestionType.valueOf(request.type());
         Question savedQuestion = questionRepository.save(toQuestion(questionType, request, applyForm));
 
         if (savedQuestion.hasChoice()) {
