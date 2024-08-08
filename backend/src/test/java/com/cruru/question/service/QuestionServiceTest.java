@@ -5,6 +5,7 @@ import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
 import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -62,7 +63,7 @@ class QuestionServiceTest extends ServiceTest {
         questionService.createAll(requests, applyForm);
 
         // then
-        List<Question> savedQuestions = questionRepository.findAllByApplyFormId(applyForm.getId());
+        List<Question> savedQuestions = questionRepository.findAllByApplyForm(applyForm);
         assertThat(savedQuestions).hasSize(requests.size());
     }
 
@@ -85,16 +86,28 @@ class QuestionServiceTest extends ServiceTest {
         Question question = questionService.create(request, applyForm);
 
         // then
-        List<Question> questions = questionRepository.findAllByApplyFormId(applyForm.getId());
+        List<Question> questions = questionRepository.findAllByApplyForm(applyForm);
         assertThat(questions).hasSize(1);
         assertThat(questions.get(0)).isEqualTo(question);
+    }
+
+    @DisplayName("질문 ID를 통해 특정 질문을 조회한다.")
+    @Test
+    void findById() {
+        // given
+        Question savedQuestion = questionRepository.save(createLongAnswerQuestion(null));
+
+        // when&then
+        assertDoesNotThrow(() -> questionService.findById(savedQuestion.getId()));
+        Question actualFoundQuestion = questionService.findById(savedQuestion.getId());
+        assertThat(actualFoundQuestion).isEqualTo(savedQuestion);
     }
 
     @DisplayName("Question 엔티티의 정보를 이용하여 Response DTO로 변경한다.")
     @ParameterizedTest()
     @MethodSource("provideQuestionsAndResponses")
     void toQuestionResponse(Question expectedQuestion, QuestionResponse actualResponse) {
-        // given & when & then
+        // given&when&then
         assertAll(() -> {
             assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId());
             assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence());

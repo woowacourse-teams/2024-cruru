@@ -1,5 +1,6 @@
 package com.cruru.process.service;
 
+import com.cruru.advice.InternalServerException;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
@@ -62,6 +63,14 @@ public class ProcessService {
 
     private Process toProcess(ProcessCreateRequest request, Dashboard dashboard) {
         return new Process(request.sequence(), request.name(), request.description(), dashboard);
+    }
+
+    public Process findFirstProcessOnDashboard(Dashboard dashboard) {
+        List<Process> processes = findAllByDashboard(dashboard);
+        return processes.stream()
+                .filter(process -> process.getSequence() == PROCESS_FIRST_SEQUENCE)
+                .findFirst()
+                .orElseThrow(InternalServerException::new);
     }
 
     @Transactional
