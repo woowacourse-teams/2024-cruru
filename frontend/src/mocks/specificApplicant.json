@@ -1,8 +1,8 @@
 {
-  "applicant_id": 1,
-  "created_at": "2024-07-19T11:32:16.156406",
+  "applicantId": 1,
+  "createdAt": "2024-07-19T11:32:16.156406",
   "name": "러기",
   "email": "lurg@mail.com",
   "phone": "01011111111",
-  "process_name": "최종 합격"
+  "processName": "최종 합격"
 }

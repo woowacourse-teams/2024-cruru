@@ -1,12 +1,11 @@
-import snakeToCamel from '@utils/snakeToCamel';
 import { convertParamsToQueryString } from './utils';
 import { EVALUATIONS } from './endPoint';
 
 const evaluationApis = {
   get: async ({ processId, applicantId }: { processId: number; applicantId: number }) => {
     const queryParams = {
-      process_id: processId.toString(),
-      applicant_id: applicantId.toString(),
+      processId: processId.toString(),
+      applicantId: applicantId.toString(),
     };
 
     const response = await fetch(`${EVALUATIONS}?${convertParamsToQueryString(queryParams)}`, {
@@ -20,7 +19,7 @@ const evaluationApis = {
     }
 
     const data = await response.json();
-    return snakeToCamel(data);
+    return data;
   },
 
   create: async ({
@@ -35,8 +34,8 @@ const evaluationApis = {
     content: string;
   }) => {
     const queryParams = {
-      process_id: processId.toString(),
-      applicant_id: applicantId.toString(),
+      processId: processId.toString(),
+      applicantId: applicantId.toString(),
     };
 
     const response = await fetch(`${EVALUATIONS}?${convertParamsToQueryString(queryParams)}`, {
