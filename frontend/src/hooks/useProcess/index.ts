@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process } from '@customTypes/process';
+import type { Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/process';
 import { DASHBOARD_ID } from '@constants/constants';
@@ -12,14 +12,16 @@ interface SimpleProcess {
 }
 
 interface UseProcessReturn {
+  title: string;
   processes: Process[];
   processList: SimpleProcess[];
   error: Error | null;
   isLoading: boolean;
+  postUrl: string;
 }
 
 export default function useProcess(): UseProcessReturn {
-  const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
+  const { data, error, isLoading } = useQuery<ProcessResponse>({
     queryKey: [QUERY_KEYS.DASHBOARD, DASHBOARD_ID],
     queryFn: () => processApis.get({ id: DASHBOARD_ID }),
   });
@@ -28,6 +30,8 @@ export default function useProcess(): UseProcessReturn {
 
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
   return {
+    title: data?.title ?? '',
+    postUrl: data?.postUrl ?? '',
     processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
     processList,
     error,

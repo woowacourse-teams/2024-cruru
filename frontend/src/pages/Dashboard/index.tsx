@@ -13,13 +13,20 @@ import S from './style';
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
 
 export default function Dashboard() {
-  const { processes } = useProcess();
+  const { title, postUrl, processes, isLoading } = useProcess();
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
+  if (isLoading) {
+    // TODO: Suspense로 Refactoring
+    return <div>Loading ...</div>;
+  }
+
   return (
     <S.AppContainer>
-      <Tab>
+      <S.Title>{title}</S.Title>
+
+      <Tab postUrl={postUrl}>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
           <Tab.TabItem
             label={label}
