@@ -2,7 +2,7 @@ import Button from '@components/common/Button';
 import TextEditor from '@components/common/TextEditor';
 import { applyQueries } from '@hooks/apply';
 import { useParams } from 'react-router-dom';
-import S from './style';
+import C from '../style';
 
 interface RecruitmentPostDetailProps {
   moveTab: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -14,13 +14,13 @@ export default function RecruitmentPostDetail({ moveTab }: RecruitmentPostDetail
   const { data: recruitmentPost, isClosed } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
 
   return (
-    <S.Container>
+    <C.ContentContainer>
       <TextEditor
         theme="bubble"
         value={recruitmentPost?.postingContent || ''}
       />
 
-      <S.ButtonContainer>
+      <C.ButtonContainer>
         <Button
           name="지원하기"
           onClick={moveTab}
@@ -30,7 +30,7 @@ export default function RecruitmentPostDetail({ moveTab }: RecruitmentPostDetail
         >
           지원하기
         </Button>
-      </S.ButtonContainer>
-    </S.Container>
+      </C.ButtonContainer>
+    </C.ContentContainer>
   );
 }
