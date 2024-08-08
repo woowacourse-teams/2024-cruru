@@ -16,7 +16,7 @@ export interface Choice {
 }
 
 export interface Question {
-  id: number;
+  questionId: string;
   type: QuestionType;
   label: string;
   description: string;
@@ -25,4 +25,22 @@ export interface Question {
 
 export interface ApplyForm {
   questions: Question[];
+}
+
+// RequestBody
+export interface ApplicantData {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export interface AnswerData {
+  questionId: string;
+  replies: string[];
+}
+
+export interface ApplyRequestBody {
+  applicant: ApplicantData;
+  answers: AnswerData[];
+  personalDataCollection: boolean;
 }

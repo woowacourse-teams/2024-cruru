@@ -1,5 +1,7 @@
 import applyApis from '@api/apply';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { ApplyRequestBody } from '@customTypes/apply';
+import { useNavigate } from 'react-router-dom';
 import QUERY_KEYS from './queryKeys';
 
 const useGetRecruitmentInfo = ({ postId }: { postId: string }) => {
@@ -29,8 +31,24 @@ export const applyQueries = {
     const { data, ...restQueryObj } = useGetRecruitmentInfo({ postId });
 
     return {
-      data: data?.applyForm,
+      data: data?.applyForm.questions,
       ...restQueryObj,
     };
+  },
+};
+
+export const applyMutations = {
+  useApply: (postId: string) => {
+    const navigate = useNavigate();
+
+    return useMutation({
+      mutationFn: (params: { body: ApplyRequestBody }) => applyApis.apply({ ...params, postId }),
+      onError: (error) => {
+        window.alert(error.message);
+      },
+      onSuccess: () => {
+        navigate(`/post/${postId}/confirm`);
+      },
+    });
   },
 };

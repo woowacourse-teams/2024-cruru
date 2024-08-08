@@ -33,3 +33,24 @@ export type QuestionControlActionType = 'moveUp' | 'moveDown' | 'delete';
 export interface QuestionOptionValue {
   value: string;
 }
+
+interface Stats {
+  accept: number;
+  fail: number;
+  inProgress: number;
+  total: number;
+}
+
+interface Dashboard {
+  dashboardId: string;
+  title: string;
+  stats: Stats;
+  postUrl: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface Club {
+  clubName: string;
+  dashboards: Dashboard[];
+}
