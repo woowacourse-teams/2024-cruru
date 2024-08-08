@@ -26,35 +26,31 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
   const isNextButtonValid = !!(endDate && contentText && startDate && title);
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRecruitmentInfoState((prev) => {
-      const temp = { ...prev };
-      temp.startDate = new Date(e.target.value).toISOString();
-      return temp;
-    });
+    setRecruitmentInfoState((prev) => ({
+      ...prev,
+      startDate: new Date(e.target.value).toISOString(),
+    }));
   };
 
   const handleEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRecruitmentInfoState((prev) => {
-      const temp = { ...prev };
-      temp.endDate = new Date(e.target.value).toISOString();
-      return temp;
-    });
+    setRecruitmentInfoState((prev) => ({
+      ...prev,
+      endDate: new Date(e.target.value).toISOString(),
+    }));
   };
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRecruitmentInfoState((prev) => {
-      const temp = { ...prev };
-      temp.title = e.target.value;
-      return temp;
-    });
+    setRecruitmentInfoState((prev) => ({
+      ...prev,
+      title: e.target.value,
+    }));
   };
 
   const handlePostingContentChange = (string: string) => {
-    setRecruitmentInfoState((prev) => {
-      const temp = { ...prev };
-      temp.postingContent = string;
-      return temp;
-    });
+    setRecruitmentInfoState((prev) => ({
+      ...prev,
+      postingContent: string,
+    }));
   };
 
   const handlePostingContentBlur = () => {
