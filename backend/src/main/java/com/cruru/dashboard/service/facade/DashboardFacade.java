@@ -52,6 +52,12 @@ public class DashboardFacade {
         );
     }
 
+    public ApplyFormUrlResponse findFormUrlByDashboardId(long dashboardId) {
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
+        return new ApplyFormUrlResponse(applyForm.getId(), applyForm.getUrl());
+    }
+
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
         List<Long> dashboardIds = getDashboardIdsByClubId(clubId);
         String clubName = clubService.findById(clubId).getName();
@@ -73,7 +79,8 @@ public class DashboardFacade {
     }
 
     private DashboardPreviewResponse createDashboardPreviewResponse(Long dashboardId) {
-        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboardId);
         StatsResponse stats = calculateStats(allApplicants);
         return new DashboardPreviewResponse(
@@ -109,7 +116,8 @@ public class DashboardFacade {
     }
 
     private List<Applicant> getAllApplicantsByDashboardId(Long dashboardId) {
-        List<Process> processes = processService.findAllByDashboardId(dashboardId);
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+        List<Process> processes = processService.findAllByDashboard(dashboard);
         return processes.stream()
                 .flatMap(process -> applicantService.findAllByProcess(process)
                         .stream())

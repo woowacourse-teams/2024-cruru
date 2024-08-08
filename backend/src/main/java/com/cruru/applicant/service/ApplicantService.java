@@ -1,5 +1,6 @@
 package com.cruru.applicant.service;
 
+import com.cruru.applicant.controller.dto.ApplicantCardResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
@@ -71,6 +72,16 @@ public class ApplicantService {
                 applicant.getEmail(),
                 applicant.getPhone(),
                 applicant.getCreatedDate()
+        );
+    }
+
+    public ApplicantCardResponse toApplicantCardResponse(Applicant applicant, int evaluationCount) {
+        return new ApplicantCardResponse(
+                applicant.getId(),
+                applicant.getName(),
+                applicant.getCreatedDate(),
+                applicant.isRejected(),
+                evaluationCount
         );
     }
 }
