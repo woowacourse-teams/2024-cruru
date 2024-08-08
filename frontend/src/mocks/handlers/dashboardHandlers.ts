@@ -23,7 +23,19 @@ const dashboardHandlers = [
     });
   }),
 
-  http.get(DASHBOARDS, () => HttpResponse.json(DASHBOARD_LIST)),
+  http.get(DASHBOARDS, ({ request }) => {
+    const url = new URL(request.url);
+    const clubId = url.searchParams.get('clubId');
+
+    if (!clubId) {
+      return new Response(null, {
+        status: 400,
+        statusText: 'The request Param is missing required information.',
+      });
+    }
+
+    return HttpResponse.json(DASHBOARD_LIST);
+  }),
 ];
 
 export default dashboardHandlers;

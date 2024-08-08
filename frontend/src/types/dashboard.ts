@@ -32,8 +32,7 @@ interface Stats {
 }
 
 interface Dashboard {
-  dashboard_id?: string;
-  dashboardId?: string;
+  dashboardId: string;
   title: string;
   stats: Stats;
   postUrl: string;

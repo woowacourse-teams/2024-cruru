@@ -6,7 +6,7 @@ import ApiError from './ApiError';
 const dashboardApis = {
   get: async ({ dashboardId }: { dashboardId: string }) => {
     const queryParams = {
-      dashboardId,
+      clubId: dashboardId,
     };
 
     const response = await fetch(`${DASHBOARDS}?${convertParamsToQueryString(queryParams)}`, {
