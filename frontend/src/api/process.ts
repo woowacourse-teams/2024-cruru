@@ -4,7 +4,7 @@ import ApiError from './ApiError';
 
 const processApis = {
   get: async ({ id }: { id: string }) => {
-    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: id })}`, {
+    const response = await fetch(`${PROCESSES}?${createParams({ dashboardId: id })}`, {
       headers: {
         Accept: 'application/json',
       },
@@ -23,7 +23,7 @@ const processApis = {
   },
 
   create: async (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) => {
-    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: String(params.dashboardId) })}`, {
+    const response = await fetch(`${PROCESSES}?${createParams({ dashboardId: String(params.dashboardId) })}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
