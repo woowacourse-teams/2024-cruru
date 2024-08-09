@@ -1,6 +1,8 @@
+import { useParams } from 'react-router-dom';
+
+import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import Tab from '@components/common/Tab';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
-import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 
 import useTab from '@components/common/Tab/useTab';
 import useProcess from '@hooks/useProcess';
@@ -13,7 +15,8 @@ import S from './style';
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
 
 export default function Dashboard() {
-  const { title, postUrl, processes, isLoading } = useProcess();
+  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { processes } = useProcess({ dashboardId, postId });
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 

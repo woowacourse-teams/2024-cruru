@@ -1,11 +1,10 @@
-import snakeToCamel from '@utils/snakeToCamel';
 import { PROCESSES } from './endPoint';
 import { createParams } from './utils';
 import ApiError from './ApiError';
 
 const processApis = {
-  get: async ({ id }: { id: number }) => {
-    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: String(id) })}`, {
+  get: async ({ id }: { id: string }) => {
+    const response = await fetch(`${PROCESSES}?${createParams({ dashboard_id: id })}`, {
       headers: {
         Accept: 'application/json',
       },
@@ -20,7 +19,7 @@ const processApis = {
     }
 
     const data = await response.json();
-    return snakeToCamel(data);
+    return data;
   },
 
   create: async (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) => {
@@ -30,8 +29,8 @@ const processApis = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        order_index: params.orderIndex,
-        process_name: params.name,
+        orderIndex: params.orderIndex,
+        processName: params.name,
         description: params?.description,
       }),
     });
@@ -50,7 +49,7 @@ const processApis = {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        process_name: params.name,
+        processName: params.name,
         description: params?.description,
       }),
     });

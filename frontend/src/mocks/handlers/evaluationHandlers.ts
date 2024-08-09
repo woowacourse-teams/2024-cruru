@@ -9,8 +9,8 @@ const evaluationHandlers = [
 
   http.post(EVALUATIONS, async ({ request }) => {
     const url = new URL(request.url);
-    const processId = url.searchParams.get('process_id');
-    const applicantId = url.searchParams.get('applicant_id');
+    const processId = url.searchParams.get('processId');
+    const applicantId = url.searchParams.get('applicantId');
     const body = (await request.json()) as {
       score: string;
       content: string;
