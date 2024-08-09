@@ -52,9 +52,9 @@ public class ProcessService {
                 applyForm.getTitle(),
                 applyForm.getUrl(),
                 processRepository.findAllByDashboardId(dashboardId)
-                .stream()
-                .map(this::toProcessResponse)
-                .toList());
+                        .stream()
+                        .map(this::toProcessResponse)
+                        .toList());
     }
 
     private ProcessResponse toProcessResponse(Process process) {
