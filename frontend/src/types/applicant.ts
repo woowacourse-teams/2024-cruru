@@ -1,10 +1,19 @@
-export interface SpecificApplicant {
-  applicantId: number;
-  createdAt: string;
+interface ApplicantBaseInfo {
+  id: number;
   name: string;
   email: string;
   phone: string;
-  processName: string;
+  createdAt: string;
+}
+
+interface ApplicantProcessInfo {
+  id: number;
+  name: string;
+}
+
+export interface SpecificApplicant {
+  applicant: ApplicantBaseInfo;
+  process: ApplicantProcessInfo;
 }
 
 interface DetailInfo {

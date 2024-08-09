@@ -21,6 +21,10 @@ const InnerContainer = styled.div`
   border-radius: 1.6rem;
   padding: 2.4rem 3.6rem;
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
 `;
 
 const S = {
