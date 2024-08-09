@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplyFormService {
 
-    private static final String APPLY_FORM_BASE_URL = "www.cruru.kr/applyform/";
+    private static final String APPLY_POST_BASE_URL = "www.cruru.kr/post/%d";
 
     private final ApplicantRepository applicantRepository;
     private final AnswerRepository answerRepository;
@@ -48,8 +48,8 @@ public class ApplyFormService {
         ApplyForm applyForm = toApplyForm(request, createdDashboard);
 
         ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
-        Long savedId = savedApplyForm.getId();
-        String generatedUrl = APPLY_FORM_BASE_URL + savedId;
+        Long savedPostingId = savedApplyForm.getId();
+        String generatedUrl = String.format(APPLY_POST_BASE_URL, savedPostingId);
         savedApplyForm.setUrl(generatedUrl);
 
         return savedApplyForm;
