@@ -1,10 +1,10 @@
 package com.cruru.util.fixture;
 
-import static com.cruru.question.domain.QuestionType.CHECK_BOX;
 import static com.cruru.question.domain.QuestionType.DROPDOWN;
 import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
 import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
+import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.question.domain.Question;
@@ -35,12 +35,12 @@ public class QuestionFixture {
         return new Question(DROPDOWN, "객관식 단일 선택", "단 하나만 골라주세요.", 3, false, applyForm);
     }
 
-    public static Question createCheckboxQuestion(ApplyForm applyForm) {
-        return new Question(CHECK_BOX, "체크 선택", "체크해주세요.", 4, false, applyForm);
+    public static Question createMultipleChoiceQuestion(ApplyForm applyForm) {
+        return new Question(MULTIPLE_CHOICE, "객관식 다중 선택", "모두 선택해주세요.", 4, false, applyForm);
     }
 
-    public static Question createMultipleChoiceQuestion(ApplyForm applyForm) {
-        return new Question(MULTIPLE_CHOICE, "객관식 다중 선택", "모두 선택해주세요.", 5, false, applyForm);
+    public static Question createSingleChoiceQuestion(ApplyForm applyForm) {
+        return new Question(SINGLE_CHOICE, "객관식 단일 선택", "선택해주세요.", 5, false, applyForm);
     }
 
     public static List<Question> createNonChoiceTypeQuestions(ApplyForm applyForm) {
