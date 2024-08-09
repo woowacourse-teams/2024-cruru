@@ -12,7 +12,7 @@ import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContex
 
 import S from './style';
 
-export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
+export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '지원서 관리';
 
 export default function Dashboard() {
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
