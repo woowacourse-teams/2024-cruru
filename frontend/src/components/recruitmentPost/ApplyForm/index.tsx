@@ -43,7 +43,7 @@ export default function ApplyForm({ questions }: ApplyFormProps) {
         questionId,
         replies: [...answer],
       })),
-      personalDataCollection: false,
+      personalDataCollection,
     };
 
     if (Object.values(answers).some((answer) => answer.length === 0)) {
