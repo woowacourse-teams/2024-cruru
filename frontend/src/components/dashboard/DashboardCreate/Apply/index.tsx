@@ -5,7 +5,6 @@ import ChevronButton from '@components/common/ChevronButton';
 import QuestionBuilder from './QuestionBuilder';
 
 import S from './style';
-// import { useEffect } from 'react';
 
 interface ApplyProps {
   applyState: Question[];
@@ -24,12 +23,6 @@ interface ApplyProps {
 // 이름, 이메일, 전화번호의 3개 항목은 applyState에 언제나 기본으로 포함되어야 합니다.
 const DEFAULT_QUESTION_LENGTH = 3;
 const MAX_QUESTION_LENGTH = 20 + DEFAULT_QUESTION_LENGTH;
-const DEFAULT_QUESTION: Question = {
-  type: 'SHORT_ANSWER',
-  question: '',
-  choices: [],
-  required: true,
-};
 
 export default function Apply({
   applyState,
@@ -44,10 +37,6 @@ export default function Apply({
   prevStep,
   nextStep,
 }: ApplyProps) {
-  console.log(applyState);
-  const choicesToRenderQuestion =
-    applyState.length <= DEFAULT_QUESTION_LENGTH ? [DEFAULT_QUESTION] : applyState.slice(DEFAULT_QUESTION_LENGTH - 1);
-
   return (
     <S.Wrapper>
       <S.Section>
@@ -68,22 +57,26 @@ export default function Apply({
           <span>지원자에게 질문하고 싶은 것이 있다면 입력해 주세요. (최대 20개)</span>
         </S.SectionTitleContainer>
 
-        {choicesToRenderQuestion.map((question, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <S.QuestionsContainer key={index}>
-            <QuestionBuilder
-              index={index}
-              question={question}
-              setQuestionTitle={setQuestionTitle}
-              setQuestionType={setQuestionType}
-              setQuestionOptions={setQuestionOptions}
-              setQuestionPrev={setQuestionPrev}
-              setQuestionNext={setQuestionNext}
-              deleteQuestion={deleteQuestion}
-              setQuestionRequiredToggle={setQuestionRequiredToggle}
-            />
-          </S.QuestionsContainer>
-        ))}
+        {applyState.map((question, index) => {
+          if (index >= 3) {
+            return (
+              <S.QuestionsContainer key={question.id}>
+                <QuestionBuilder
+                  index={index}
+                  question={question}
+                  setQuestionTitle={setQuestionTitle}
+                  setQuestionType={setQuestionType}
+                  setQuestionOptions={setQuestionOptions}
+                  setQuestionPrev={setQuestionPrev}
+                  setQuestionNext={setQuestionNext}
+                  deleteQuestion={deleteQuestion}
+                  setQuestionRequiredToggle={setQuestionRequiredToggle}
+                />
+              </S.QuestionsContainer>
+            );
+          }
+          return null;
+        })}
 
         {applyState.length < MAX_QUESTION_LENGTH && (
           <S.AddQuestionButton

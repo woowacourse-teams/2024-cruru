@@ -23,12 +23,14 @@ const meta: Meta<typeof Apply> = {
         question: '1. 프로그래밍 교육 경험',
         choices: [],
         required: true,
+        id: 1,
       },
       {
         type: 'LONG_ANSWER',
         question: '2. 효과적인 학습 방식과 경험',
         choices: [],
         required: true,
+        id: 2,
       },
       {
         type: 'MULTIPLE_CHOICE',
@@ -47,6 +49,7 @@ const meta: Meta<typeof Apply> = {
             orderIndex: 1,
           },
         ],
+        id: 3,
         required: false,
       },
       {
@@ -62,6 +65,7 @@ const meta: Meta<typeof Apply> = {
             orderIndex: 1,
           },
         ],
+        id: 4,
         required: true,
       },
     ],
