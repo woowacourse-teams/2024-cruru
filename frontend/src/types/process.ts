@@ -11,3 +11,9 @@ export interface Process {
   description: string;
   applicants: ApplicantCardInfo[];
 }
+
+export interface ProcessResponse {
+  postUrl: string;
+  title: string;
+  processes: Process[];
+}

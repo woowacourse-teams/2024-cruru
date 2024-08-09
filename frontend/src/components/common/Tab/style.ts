@@ -4,6 +4,7 @@ import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
 const Nav = styled.nav`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
   width: 100%;
   padding: 1.6rem 0;
@@ -17,6 +18,10 @@ const Tabs = styled.ul`
   display: flex;
   flex-direction: row;
   gap: 2.8rem;
+`;
+
+const CopyWrapper = styled.div`
+  width: 30rem;
 `;
 
 const Tab = styled.li`
@@ -48,7 +53,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
 const TabPanel = styled.div<{ isVisible: boolean }>`
   width: 100%;
   height: 80%;
-  padding: 20px;
+  padding: 2rem 0rem;
 
   overflow-x: scroll;
   ${hideScrollBar};
@@ -62,6 +67,7 @@ const TabPanel = styled.div<{ isVisible: boolean }>`
 const S = {
   Nav,
   Tabs,
+  CopyWrapper,
   Tab,
   TabButton,
   TabPanel,
