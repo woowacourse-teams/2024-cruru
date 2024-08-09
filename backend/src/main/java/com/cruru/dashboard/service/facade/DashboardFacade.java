@@ -6,6 +6,7 @@ import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.club.service.ClubService;
+import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
@@ -50,6 +51,11 @@ public class DashboardFacade {
                 request.startDate(),
                 request.endDate()
         );
+    }
+
+    public ApplyFormUrlResponse findFormUrlByDashboardId(long dashboardId) {
+        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
+        return new ApplyFormUrlResponse(applyForm.getId(), applyForm.getUrl());
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
