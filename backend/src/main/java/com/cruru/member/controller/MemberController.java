@@ -1,7 +1,7 @@
 package com.cruru.member.controller;
 
 import com.cruru.member.controller.dto.MemberCreateRequest;
-import com.cruru.member.service.MemberService;
+import com.cruru.member.service.facade.MemberFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberFacade memberFacade;
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody @Valid MemberCreateRequest request) {
-        long memberId = memberService.create(request);
+        long memberId = memberFacade.create(request);
         return ResponseEntity.created(URI.create("/v1/members/" + memberId)).build();
     }
 }
