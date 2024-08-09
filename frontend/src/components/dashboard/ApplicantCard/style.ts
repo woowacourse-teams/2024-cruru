@@ -20,6 +20,7 @@ const CardContainer = styled.div`
     box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.1);
     border: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
     cursor: pointer;
+    z-index: 9;
   }
 `;
 
