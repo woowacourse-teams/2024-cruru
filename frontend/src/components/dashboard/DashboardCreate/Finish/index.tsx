@@ -1,7 +1,6 @@
 import Button from '@components/common/Button';
 import CopyToClipboard from '@components/common/CopyToClipboard';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDashboardPostUrl } from '@constants/constants';
 import ChevronButton from '@components/common/ChevronButton';
 import S from './style';
 
@@ -15,8 +14,7 @@ export default function Finish({ postUrl, postId }: FinishProps) {
   const { dashboardId } = useParams() as { dashboardId: string };
 
   const handleClickButton = () => {
-    const url = getDashboardPostUrl({ dashboardId, postId });
-    navigate(url);
+    navigate(`/dashboard/${dashboardId}/${postId}`);
   };
 
   return (

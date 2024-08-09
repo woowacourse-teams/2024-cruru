@@ -10,6 +10,7 @@ export interface Question {
   question: string;
   choices: QuestionChoice[];
   required: boolean;
+  id?: number;
 }
 
 export interface RecruitmentInfoState {
