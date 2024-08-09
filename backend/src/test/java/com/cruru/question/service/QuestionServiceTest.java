@@ -105,7 +105,6 @@ class QuestionServiceTest extends ServiceTest {
         assertThat(actualFoundQuestion).isEqualTo(savedQuestion);
     }
 
-
     @DisplayName("Question 엔티티의 정보를 이용하여 Response DTO로 변경한다.")
     @ParameterizedTest()
     @MethodSource("provideQuestionsAndResponses")
