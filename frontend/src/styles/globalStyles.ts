@@ -80,6 +80,7 @@ const globalStyles = () => css`
   fieldset,
   form,
   label,
+  input,
   legend,
   table,
   caption,

@@ -1,14 +1,12 @@
 import dashboardApis from '@api/dashboard';
 import { CLUB_ID } from '@constants/constants';
-import type { Question, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
+import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
 
-interface Option {
-  value: string;
-}
 interface UseDashboardCreateFormReturn {
   stepState: StepState;
+  prevStep: () => void;
   nextStep: () => void;
 
   recruitmentInfoState: RecruitmentInfoState;
@@ -18,7 +16,7 @@ interface UseDashboardCreateFormReturn {
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
-  setQuestionOptions: (index: number) => (Options: Option[]) => void;
+  setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
   setQuestionRequiredToggle: (index: number) => () => void;
   setQuestionPrev: (index: number) => () => void;
   setQuestionNext: (index: number) => () => void;
@@ -44,6 +42,10 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const [stepState, setStepState] = useState<StepState>('recruitmentForm');
   const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
   const [applyState, setApplyState] = useState<Question[]>(initialApplyState);
+
+  const prevStep = () => {
+    if (stepState === 'applyForm') setStepState('recruitmentForm');
+  };
 
   const nextStep = () => {
     if (stepState === 'recruitmentForm') setStepState('applyForm');
@@ -71,7 +73,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     });
   };
 
-  const setQuestionOptions = (index: number) => (options: Option[]) => {
+  const setQuestionOptions = (index: number) => (options: QuestionOptionValue[]) => {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
       questionsCopy[index].choices = options.map(({ value }, i) => ({ choice: value, orderIndex: i }));
@@ -131,6 +133,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   return {
     stepState,
+    prevStep,
     nextStep,
 
     recruitmentInfoState,
