@@ -2,6 +2,7 @@ import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { Question, QuestionOptionValue } from '@customTypes/dashboard';
 import Button from '@components/common/Button';
 import ChevronButton from '@components/common/ChevronButton';
+import createSimpleKey from '@utils/createSimpleKey';
 import QuestionBuilder from './QuestionBuilder';
 
 import S from './style';
@@ -18,6 +19,7 @@ interface ApplyProps {
   deleteQuestion: (index: number) => void;
   prevStep: () => void;
   nextStep: () => void;
+  isModify?: boolean;
 }
 
 // 이름, 이메일, 전화번호의 3개 항목은 applyState에 언제나 기본으로 포함되어야 합니다.
@@ -36,6 +38,7 @@ export default function Apply({
   deleteQuestion,
   prevStep,
   nextStep,
+  isModify,
 }: ApplyProps) {
   return (
     <S.Wrapper>
@@ -60,7 +63,8 @@ export default function Apply({
         {applyState.map((question, index) => {
           if (index >= 3) {
             return (
-              <S.QuestionsContainer key={question.id}>
+              // eslint-disable-next-line react/no-array-index-key
+              <S.QuestionsContainer key={createSimpleKey(`${index}-${question.question}`)}>
                 <QuestionBuilder
                   index={index}
                   question={question}
@@ -90,36 +94,48 @@ export default function Apply({
       </S.Section>
 
       <S.Section>
-        <S.StepButtonsContainer>
-          <Button
-            disabled={false}
-            onClick={prevStep}
-            size="sm"
-            color="white"
-          >
-            <S.ButtonContent>
-              <ChevronButton
-                direction="left"
-                size="sm"
-              />
-              이전
-            </S.ButtonContent>
-          </Button>
-          <Button
-            disabled={false}
-            onClick={nextStep}
-            size="sm"
-            color="white"
-          >
-            <S.ButtonContent>
-              다음
-              <ChevronButton
-                direction="right"
-                size="sm"
-              />
-            </S.ButtonContent>
-          </Button>
-        </S.StepButtonsContainer>
+        {isModify && (
+          <S.ModifyButtonContainer>
+            <S.ModifyButton
+              disabled={false}
+              onClick={nextStep}
+            >
+              <S.ButtonContent>수정하기</S.ButtonContent>
+            </S.ModifyButton>
+          </S.ModifyButtonContainer>
+        )}
+        {!isModify && (
+          <S.StepButtonsContainer>
+            <Button
+              disabled={false}
+              onClick={prevStep}
+              size="sm"
+              color="white"
+            >
+              <S.ButtonContent>
+                <ChevronButton
+                  direction="left"
+                  size="sm"
+                />
+                이전
+              </S.ButtonContent>
+            </Button>
+            <Button
+              disabled={false}
+              onClick={nextStep}
+              size="sm"
+              color="white"
+            >
+              <S.ButtonContent>
+                다음
+                <ChevronButton
+                  direction="right"
+                  size="sm"
+                />
+              </S.ButtonContent>
+            </Button>
+          </S.StepButtonsContainer>
+        )}
       </S.Section>
     </S.Wrapper>
   );

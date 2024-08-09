@@ -14,6 +14,7 @@ interface Question {
   description: string;
   orderIndex: number;
   choices: Choice[];
+  required: boolean;
 }
 
 export interface ApplyDto {
@@ -37,13 +38,14 @@ export function dtoToRecruitmentPost({ title, startDate, endDate, postingContent
 
 export function dtoToApplyForm(dto: ApplyDto): ApplyForm {
   return {
-    questions: dto.questions.map(({ id, type, label, description, orderIndex, choices }) => ({
+    questions: dto.questions.map(({ id, type, label, description, orderIndex, choices, required }) => ({
       questionId: id,
       type,
       label,
       description,
       orderIndex,
       choices,
+      required,
     })) as CustomQuestion[],
   };
 }

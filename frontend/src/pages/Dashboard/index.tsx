@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import Tab from '@components/common/Tab';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
+import ApplyManagement from '@components/applyManagement';
 
 import useTab from '@components/common/Tab/useTab';
 import useProcess from '@hooks/useProcess';
@@ -49,6 +50,10 @@ export default function Dashboard() {
 
       <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
         <ProcessManageBoard processes={processes} />
+      </Tab.TabPanel>
+
+      <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
+        {currentMenu === '지원서 관리' && <ApplyManagement />}
       </Tab.TabPanel>
     </S.AppContainer>
   );
