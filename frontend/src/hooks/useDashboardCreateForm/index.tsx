@@ -62,7 +62,11 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
         clubId,
         dashboardFormInfo: {
           ...recruitmentInfoState,
-          questions: applyState,
+          questions: applyState.map(({ id, ...value }) => {
+            const temp = { ...value };
+            temp.choices = value.choices.map((choice, index) => ({ ...choice, orderIndex: index }));
+            return { ...temp, orderIndex: id };
+          }),
         },
       }),
     onSuccess: async (data) => {
