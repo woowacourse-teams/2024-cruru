@@ -28,9 +28,9 @@ const dashboardApis = {
     return data;
   },
 
-  create: async ({ clubId, dashboardFormInfo }: { clubId: number; dashboardFormInfo: DashboardFormInfo }) => {
+  create: async ({ clubId, dashboardFormInfo }: { clubId: string; dashboardFormInfo: DashboardFormInfo }) => {
     const queryParams = {
-      clubId: String(clubId),
+      clubId,
     };
 
     const response = await fetch(`${DASHBOARDS}?${convertParamsToQueryString(queryParams)}`, {
