@@ -1,4 +1,4 @@
-package com.cruru.member.service;
+package com.cruru.member.service.facade;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -12,11 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DisplayName("사용자 서비스 테스트")
-class MemberServiceTest extends ServiceTest {
+@DisplayName("회원 파사드 서비스 테스트")
+class MemberFacadeTest extends ServiceTest {
 
     @Autowired
-    private MemberService memberService;
+    private MemberFacade memberFacade;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -31,15 +31,15 @@ class MemberServiceTest extends ServiceTest {
         MemberCreateRequest request = new MemberCreateRequest(email, password, phone);
 
         // when
-        Member member = memberService.create(request);
+        long memberId = memberFacade.create(request);
 
         // then
-        Optional<Member> actualMember = memberRepository.findById(member.getId());
+        Optional<Member> member = memberRepository.findById(memberId);
         assertAll(() -> {
-            assertThat(actualMember).isPresent();
-            Member presentMember = actualMember.get();
-            assertThat(presentMember.getEmail()).isEqualTo(email);
-            assertThat(presentMember.getPhone()).isEqualTo(phone);
+            assertThat(member).isPresent();
+            Member presentMemeber = member.get();
+            assertThat(presentMemeber.getEmail()).isEqualTo(email);
+            assertThat(presentMemeber.getPhone()).isEqualTo(phone);
         });
     }
 }
