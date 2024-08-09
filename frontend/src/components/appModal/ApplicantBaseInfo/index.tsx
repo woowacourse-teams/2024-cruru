@@ -14,19 +14,21 @@ interface ApplicantBaseInfoProps {
 }
 
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
-  const { data: applicantBaseDetail } = specificApplicant.useGetBaseInfo({ applicantId });
+  const { data: applicantBaseInfo } = specificApplicant.useGetBaseInfo({ applicantId });
   const { mutate: rejectMutate } = specificApplicant.useRejectApplicant();
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
   const { processList } = useProcess({ dashboardId, postId });
   const { moveApplicantProcess } = useApplicant({ applicantId });
   const { close } = useModal();
 
-  if (!applicantBaseDetail) {
+  if (!applicantBaseInfo) {
     return <div>no data</div>; // TODO: 핸들링
   }
 
+  const { applicant, process } = applicantBaseInfo;
+
   const items = processList
-    .filter(({ processName }) => processName !== applicantBaseDetail.processName)
+    .filter(({ processName }) => processName !== process.name)
     .map(({ processId, processName }) => ({
       id: processId,
       name: processName,
@@ -42,10 +44,10 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
 
   return (
     <S.Container>
-      <S.Title>{applicantBaseDetail.name}</S.Title>
+      <S.Title>{applicant.name}</S.Title>
       <S.ActionRow>
         <Dropdown
-          initValue={applicantBaseDetail.processName}
+          initValue={process.name}
           size="sm"
           items={items}
           width={112}
@@ -62,15 +64,15 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
       <S.DetailContainer>
         <S.DetailRow>
           <S.Label>이메일</S.Label>
-          <S.Value>{applicantBaseDetail.email}</S.Value>
+          <S.Value>{applicant.email}</S.Value>
         </S.DetailRow>
         <S.DetailRow>
           <S.Label>연락처</S.Label>
-          <S.Value>{applicantBaseDetail.phone}</S.Value>
+          <S.Value>{applicant.phone}</S.Value>
         </S.DetailRow>
         <S.DetailRow>
           <S.Label>접수일</S.Label>
-          <S.Value>{formatDate(applicantBaseDetail.createdAt)}</S.Value>
+          <S.Value>{formatDate(applicant.createdAt)}</S.Value>
         </S.DetailRow>
       </S.DetailContainer>
     </S.Container>

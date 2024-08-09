@@ -6,7 +6,7 @@ const Container = styled.div`
 
   display: grid;
   grid-template-columns: 4fr 9fr 5fr;
-  grid-template-rows: 1fr 2fr 14fr;
+  grid-template-rows: 1fr 1.5fr 14fr;
   grid-template-areas:
     'header header header'
     'sidebar nav evalHeader'
