@@ -14,6 +14,7 @@ public class MemberFacade {
 
     private final MemberService memberService;
 
+    @Transactional
     public long create(MemberCreateRequest request) {
         Member savedMember = memberService.create(request);
         return savedMember.getId();
