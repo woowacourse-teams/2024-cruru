@@ -26,13 +26,15 @@ const LinkContainer = styled.div`
   width: 90%;
 `;
 
-const Link = styled.a`
-  ${({ theme }) => theme.typography.common.small};
-  color: ${({ theme }) => theme.colors.link};
+const Link = styled.span`
+  a {
+    ${({ theme }) => theme.typography.common.small};
+    color: ${({ theme }) => theme.colors.link};
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const S = {
