@@ -2,12 +2,13 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export interface StyleProps {
+  width?: string;
   isChecked: boolean;
   isDisabled: boolean;
 }
 
 const Switch = styled.div<StyleProps>`
-  --parent-width: 5rem;
+  --parent-width: ${({ width }) => width ?? '5rem'};
   --parent-padding: 0.3rem;
 
   width: var(--parent-width);
