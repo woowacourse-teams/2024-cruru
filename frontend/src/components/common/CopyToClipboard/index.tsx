@@ -1,5 +1,6 @@
 import useCopyToClipboard from '@hooks/utils/useCopyToClipboard';
 import { HiClipboard, HiClipboardCheck } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 import IconButton from '../IconButton';
 import S from './style';
 
@@ -13,12 +14,14 @@ export default function CopyToClipboard({ url }: CopyLinkClipboardProps) {
   return (
     <S.Wrapper>
       <S.LinkContainer>
-        <S.Link
-          href={url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {url}
+        <S.Link>
+          <Link
+            to={url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {url}
+          </Link>
         </S.Link>
       </S.LinkContainer>
 

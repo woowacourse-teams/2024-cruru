@@ -29,7 +29,7 @@ export default function Dashboard() {
     <S.AppContainer>
       <S.Title>{title}</S.Title>
 
-      <Tab postUrl={postUrl}>
+      <Tab postUrl={`https://${postUrl}`}>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
           <Tab.TabItem
             key={label}
