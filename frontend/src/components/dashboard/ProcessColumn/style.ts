@@ -8,7 +8,6 @@ const ProcessWrapper = styled.section`
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
-  overflow-y: scroll;
   ${hideScrollBar};
 `;
 
