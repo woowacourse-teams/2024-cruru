@@ -136,14 +136,11 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   const setQuestionNext = (index: number) => () => {
     setApplyState((prevState) => {
-      console.log(`setQuestionNext called with ${index}`);
-      console.log(index >= initialApplyState.length, index < prevState.length - 1);
       if (index >= initialApplyState.length && index < prevState.length - 1) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index + 1];
         questionsCopy[index + 1] = temp;
-        console.log(questionsCopy);
         return questionsCopy;
       }
       return prevState;
@@ -151,11 +148,9 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   };
 
   const deleteQuestion = (index: number) => {
-    console.log(`deleteQuestion called with ${index}`);
     if (index < initialApplyState.length) return;
     setApplyState((prevState) => {
       const newState = prevState.filter((_, i) => i !== index);
-      console.log(newState);
       return newState;
     });
   };
