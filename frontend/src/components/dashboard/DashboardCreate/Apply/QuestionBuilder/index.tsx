@@ -24,7 +24,7 @@ interface QuestionBuilderProps {
 }
 
 function getSortedChoices(choices: QuestionChoice[]): QuestionOptionValue[] {
-  return choices.sort((a, b) => a.orderIndex - b.orderIndex).map((item) => ({ value: item.choice }));
+  return choices?.sort((a, b) => a.orderIndex - b.orderIndex).map((item) => ({ value: item.choice }));
 }
 
 export default function QuestionBuilder({
@@ -38,10 +38,10 @@ export default function QuestionBuilder({
   setQuestionNext,
   deleteQuestion,
 }: QuestionBuilderProps) {
-  const [title, setTitle] = useState<string>(question.question || '');
-  const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>(question.type || 'SHORT_ANSWER');
-  const [choices, setChoices] = useState<QuestionOptionValue[]>(getSortedChoices(question.choices) || []);
-  const [isRequired, setIsRequired] = useState<boolean>(question.required || true);
+  const [title, setTitle] = useState<string>(question?.question || '');
+  const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>(question?.type || 'SHORT_ANSWER');
+  const [choices, setChoices] = useState<QuestionOptionValue[]>(getSortedChoices(question?.choices) || []);
+  const [isRequired, setIsRequired] = useState<boolean>(question?.required || true);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -63,13 +63,13 @@ export default function QuestionBuilder({
 
   const toggleIsRequired = () => {
     setIsRequired(!isRequired);
-    setQuestionRequiredToggle(index);
+    setQuestionRequiredToggle(index)();
   };
 
   const handleClickControlButton = (actionType: QuestionControlActionType) => {
-    if (actionType === 'moveUp') setQuestionPrev(index);
-    if (actionType === 'moveDown') setQuestionNext(index);
-    if (actionType === 'delete') deleteQuestion(index);
+    if (actionType === 'moveUp') setQuestionPrev(index + 3)();
+    if (actionType === 'moveDown') setQuestionNext(index + 3)();
+    if (actionType === 'delete') deleteQuestion(index + 3);
   };
 
   const QUESTION_TYPES = [
