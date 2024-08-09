@@ -36,26 +36,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DisplayName("지원서폼 파사드 서비스 테스트")
 class ApplyFormFacadeTest extends ServiceTest {
 
-    ApplicantCreateRequest applicantCreateRequest;
     @Autowired
     private DashboardRepository dashboardRepository;
+
     @Autowired
     private ProcessRepository processRepository;
+
     @Autowired
     private ApplyFormRepository applyFormRepository;
+
     @Autowired
     private QuestionRepository questionRepository;
+
     @Autowired
     private AnswerRepository answerRepository;
+
     @Autowired
     private ApplicantRepository applicantRepository;
+
     @Autowired
     private ApplyFormFacade applyFormFacade;
+
     private Process firstProcess;
     private Process finalProcess;
     private ApplyForm applyForm;
     private List<AnswerCreateRequest> answerCreateRequests;
     private ApplyFormSubmitRequest applyFormSubmitrequest;
+    private ApplicantCreateRequest applicantCreateRequest;
 
     @BeforeEach
     void setUp() {
@@ -83,7 +90,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @DisplayName("지원서 폼 제출에 성공한다.")
     @Test
     void submit() {
-        // given & when
+        // given&when
         applyFormFacade.submit(applyForm.getId(), applyFormSubmitrequest);
 
         // then
@@ -101,7 +108,7 @@ class ApplyFormFacadeTest extends ServiceTest {
         Dashboard emptyProcessDashboard = dashboardRepository.save(createBackendDashboard(null));
         ApplyForm emptyProcessApplyForm = applyFormRepository.save(createBackendApplyForm(emptyProcessDashboard));
 
-        // when & then
+        // when&then
         Long emptyProcessApplyFormId = emptyProcessApplyForm.getId();
         assertThatThrownBy(() -> applyFormFacade.submit(emptyProcessApplyFormId, applyFormSubmitrequest))
                 .isInstanceOf(InternalServerException.class);
@@ -117,7 +124,7 @@ class ApplyFormFacadeTest extends ServiceTest {
                 false
         );
 
-        // when & then
+        // when&then
         Long applyFormId = applyForm.getId();
         assertThatThrownBy(() -> applyFormFacade.submit(applyFormId, notAgreedRequest))
                 .isInstanceOf(PersonalDataCollectDisagreeException.class);
@@ -126,7 +133,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @DisplayName("지원서 폼 제출 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")
     @Test
     void submit_invalidApplyForm() {
-        // given & when & then
+        // given&when&then
         assertThatThrownBy(() -> applyFormFacade.submit(-1, applyFormSubmitrequest))
                 .isInstanceOf(ApplyFormNotFoundException.class);
     }

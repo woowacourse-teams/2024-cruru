@@ -33,7 +33,7 @@ public class ApplyFormFacade {
 
     public ApplyFormResponse readApplyFormById(long applyFormId) {
         ApplyForm applyForm = applyFormService.findById(applyFormId);
-        List<Question> questions = questionService.findByApplyFormId(applyFormId);
+        List<Question> questions = questionService.findByApplyForm(applyForm);
 
         return new ApplyFormResponse(
                 applyForm.getTitle(),

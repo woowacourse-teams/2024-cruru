@@ -92,7 +92,8 @@ class ApplicantServiceTest extends ServiceTest {
         long invalidId = -1L;
 
         // when&then
-        assertThatThrownBy(() -> applicantService.findById(invalidId)).isInstanceOf(ApplicantNotFoundException.class);
+        assertThatThrownBy(() -> applicantService.findById(invalidId))
+                .isInstanceOf(ApplicantNotFoundException.class);
     }
 
     @DisplayName("지원자의 이름, 이메일, 전화번호 변경 요청시, 정보를 업데이트한다")
@@ -130,9 +131,8 @@ class ApplicantServiceTest extends ServiceTest {
         Long applicantId = applicant.getId();
 
         // when & then
-        assertThatThrownBy(
-                () -> applicantService.updateApplicantInformation(applicantId, noChangeRequest)
-        ).isInstanceOf(ApplicantNoChangeException.class);
+        assertThatThrownBy(() -> applicantService.updateApplicantInformation(applicantId, noChangeRequest))
+                .isInstanceOf(ApplicantNoChangeException.class);
     }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")
@@ -191,6 +191,7 @@ class ApplicantServiceTest extends ServiceTest {
 
         // when&then
         Long applicantId = rejectedApplicant.getId();
-        assertThatThrownBy(() -> applicantService.reject(applicantId)).isInstanceOf(ApplicantRejectException.class);
+        assertThatThrownBy(() -> applicantService.reject(applicantId))
+                .isInstanceOf(ApplicantRejectException.class);
     }
 }

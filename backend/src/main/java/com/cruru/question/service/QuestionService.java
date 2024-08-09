@@ -59,8 +59,8 @@ public class QuestionService {
                 .orElseThrow(QuestionNotFoundException::new);
     }
 
-    public List<Question> findByApplyFormId(Long applyFormId) {
-        return questionRepository.findAllByApplyFormId(applyFormId);
+    public List<Question> findByApplyForm(ApplyForm applyForm) {
+        return questionRepository.findAllByApplyForm(applyForm);
     }
 
     public List<QuestionResponse> toQuestionResponses(List<Question> questions) {

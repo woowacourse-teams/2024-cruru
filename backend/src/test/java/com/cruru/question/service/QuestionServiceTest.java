@@ -63,7 +63,7 @@ class QuestionServiceTest extends ServiceTest {
         questionService.createAll(requests, applyForm);
 
         // then
-        List<Question> savedQuestions = questionRepository.findAllByApplyFormId(applyForm.getId());
+        List<Question> savedQuestions = questionRepository.findAllByApplyForm(applyForm);
         assertThat(savedQuestions).hasSize(requests.size());
     }
 
@@ -86,7 +86,7 @@ class QuestionServiceTest extends ServiceTest {
         Question question = questionService.create(request, applyForm);
 
         // then
-        List<Question> questions = questionRepository.findAllByApplyFormId(applyForm.getId());
+        List<Question> questions = questionRepository.findAllByApplyForm(applyForm);
         assertThat(questions).hasSize(1);
         assertThat(questions.get(0)).isEqualTo(question);
     }
@@ -97,11 +97,9 @@ class QuestionServiceTest extends ServiceTest {
         // given
         Question savedQuestion = questionRepository.save(createLongAnswerQuestion(null));
 
-        // when
+        // when&then
+        assertDoesNotThrow(() -> questionService.findById(savedQuestion.getId()));
         Question actualFoundQuestion = questionService.findById(savedQuestion.getId());
-
-        // then
-        assertDoesNotThrow(() -> actualFoundQuestion);
         assertThat(actualFoundQuestion).isEqualTo(savedQuestion);
     }
 
@@ -109,7 +107,7 @@ class QuestionServiceTest extends ServiceTest {
     @ParameterizedTest()
     @MethodSource("provideQuestionsAndResponses")
     void toQuestionResponse(Question expectedQuestion, QuestionResponse actualResponse) {
-        // given & when & then
+        // given&when&then
         assertAll(() -> {
             assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId());
             assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence());
