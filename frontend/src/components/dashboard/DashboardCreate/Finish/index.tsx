@@ -21,7 +21,7 @@ export default function Finish({ postUrl, postId }: FinishProps) {
     <S.Container>
       <S.Icon>🎉</S.Icon>
       <S.Message>공고가 게시됐어요!</S.Message>
-      <CopyToClipboard url={postUrl} />
+      <CopyToClipboard url={`https://${postUrl}`} />
       <Button
         size="sm"
         color="white"

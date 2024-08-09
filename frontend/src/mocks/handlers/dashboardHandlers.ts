@@ -19,7 +19,7 @@ const dashboardHandlers = [
 
     const responseBody = JSON.stringify({
       postId: 1,
-      postUrl: 'https://www.hihi.hjihihiaeraewraeraewraew.com',
+      postUrl: 'www.hihi.hjihihiaeraewraeraewraew.com',
     });
 
     return new Response(responseBody, {
