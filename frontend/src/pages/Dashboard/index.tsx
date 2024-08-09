@@ -32,6 +32,7 @@ export default function Dashboard() {
       <Tab postUrl={postUrl}>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
           <Tab.TabItem
+            key={label}
             label={label}
             name={label}
             isActive={currentMenu === label}
