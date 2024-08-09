@@ -13,14 +13,17 @@ export type QuestionType = keyof typeof QUESTION_TYPE_NAME;
 export interface Choice {
   id: number;
   label: string;
+  orderIndex: number;
 }
 
 export interface Question {
+  orderIndex: number;
   questionId: string;
   type: QuestionType;
   label: string;
   description: string;
   choices: Choice[];
+  required: boolean;
 }
 
 export interface ApplyForm {

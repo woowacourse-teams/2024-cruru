@@ -6,6 +6,7 @@ export const BASE_URL = `${process.env.API_URL}/${process.env.API_VERSION}`;
 export const DASHBOARD_TAB_MENUS: Record<string, DashboardTabItems> = {
   applicant: '지원자 관리',
   process: '모집 과정 관리',
+  apply: '지원서 관리',
 } as const;
 
 export const RECRUITMENT_POST_MENUS: Record<string, RecruitmentPostTabItems> = {

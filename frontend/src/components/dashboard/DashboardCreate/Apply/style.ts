@@ -115,6 +115,28 @@ const ButtonContent = styled.div`
   gap: 0.4rem;
 `;
 
+const ModifyButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2.4rem;
+`;
+
+const ModifyButton = styled.button`
+  width: 30rem;
+  background: ${({ theme }) => theme.baseColors.purplescale[500]};
+  border-radius: 0.8rem;
+  padding: 1.6rem;
+  transition: all 0.2 ease-in-out;
+
+  ${({ theme }) => theme.typography.common.default};
+  color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+  :hover {
+    background: ${({ theme }) => theme.baseColors.purplescale[600]};
+  }
+`;
+
 const S = {
   Wrapper,
   Section,
@@ -129,6 +151,9 @@ const S = {
   StepButtonsContainer,
   StepButton,
   ButtonContent,
+
+  ModifyButtonContainer,
+  ModifyButton,
 };
 
 export default S;
