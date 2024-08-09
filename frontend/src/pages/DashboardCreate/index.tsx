@@ -1,6 +1,7 @@
 import RecruitmentSidebar from '@components/recruitment/RecruitmentSidebar';
 import useDashboardCreateForm from '@hooks/useDashboardCreateForm';
 import Recruitment from '@components/dashboard/DashboardCreate/Recruitment';
+import Apply from '@components/dashboard/DashboardCreate/Apply';
 import Finish from '@components/dashboard/DashboardCreate/Finish';
 
 import { useParams } from 'react-router-dom';
@@ -34,17 +35,6 @@ export default function DashboardCreate() {
   const isRecruitmentStep = stepState === 'recruitmentForm';
   const isApplyStep = stepState === 'applyForm';
   const isFinish = stepState === 'finished';
-
-  // // const [resJson, setResJson] = useState<{ postUrl: string; postId: string } | null>();
-
-  // useEffect(() => {
-  //   // const resJsonFn = async () => {
-  //   //   const json = await data?.json();
-  //   //   setResJson(json);
-  //   // };
-  //   // resJsonFn();
-  //   console.log(data);
-  // }, [data]);
 
   return (
     <S.Layout>
@@ -80,8 +70,6 @@ export default function DashboardCreate() {
             nextStep={() => nextStep(dashboardId)}
           />
         )}
-
-        {!finishResJson && <div>Loading...</div>}
 
         {finishResJson && (
           <Finish

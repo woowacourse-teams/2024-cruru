@@ -5,6 +5,7 @@ import ChevronButton from '@components/common/ChevronButton';
 import QuestionBuilder from './QuestionBuilder';
 
 import S from './style';
+// import { useEffect } from 'react';
 
 interface ApplyProps {
   applyState: Question[];
@@ -43,7 +44,9 @@ export default function Apply({
   prevStep,
   nextStep,
 }: ApplyProps) {
-  const choicesToRenderQuestion = applyState.length <= DEFAULT_QUESTION_LENGTH ? [DEFAULT_QUESTION] : applyState;
+  console.log(applyState);
+  const choicesToRenderQuestion =
+    applyState.length <= DEFAULT_QUESTION_LENGTH ? [DEFAULT_QUESTION] : applyState.slice(DEFAULT_QUESTION_LENGTH - 1);
 
   return (
     <S.Wrapper>

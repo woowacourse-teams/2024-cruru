@@ -7,7 +7,7 @@ import DASHBOARD_LIST from '../dashboardList.json';
 const dashboardHandlers = [
   http.post(DASHBOARDS, async ({ request }) => {
     const url = new URL(request.url);
-    const clubId = url.searchParams.get('clubId');
+    const clubId = url.searchParams.get('dashboardId');
     const body = (await request.json()) as DashboardFormInfo;
 
     if (!body.startDate || !body.endDate || !body.postingContent || !body.title || clubId) {
@@ -17,9 +17,16 @@ const dashboardHandlers = [
       });
     }
 
-    return new Response(null, {
+    const responseBody = JSON.stringify({
+      postUrl: 'https://www.hihi.hjihihiaeraewraeraewraew.com',
+    });
+
+    return new Response(responseBody, {
       status: 201,
       statusText: 'Created',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
   }),
 
