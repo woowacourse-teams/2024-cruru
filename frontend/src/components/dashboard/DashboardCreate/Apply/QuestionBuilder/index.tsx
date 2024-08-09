@@ -67,9 +67,9 @@ export default function QuestionBuilder({
   };
 
   const handleClickControlButton = (actionType: QuestionControlActionType) => {
-    if (actionType === 'moveUp') setQuestionPrev(index + 3)();
-    if (actionType === 'moveDown') setQuestionNext(index + 3)();
-    if (actionType === 'delete') deleteQuestion(index + 3);
+    if (actionType === 'moveUp') setQuestionPrev(index)();
+    if (actionType === 'moveDown') setQuestionNext(index)();
+    if (actionType === 'delete') deleteQuestion(index);
   };
 
   const QUESTION_TYPES = [

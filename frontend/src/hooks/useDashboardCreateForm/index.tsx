@@ -44,9 +44,9 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
 };
 
 const initialApplyState: Question[] = [
-  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true },
-  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true },
-  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true },
+  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true, id: 0 },
+  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true, id: 1 },
+  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true, id: 2 },
 ];
 
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
@@ -54,6 +54,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
   const [applyState, setApplyState] = useState<Question[]>(initialApplyState);
   const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
+  const [uniqueId, setUniqueId] = useState(3);
 
   const submitMutator = useMutation({
     mutationFn: ({ clubId }: { clubId: string }) =>
@@ -85,7 +86,12 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   };
 
   const addQuestion = () => {
-    setApplyState((prev) => [...prev, { type: 'SHORT_ANSWER', question: '', choices: [], required: false }]);
+    setApplyState((prev) => [
+      ...prev,
+      { type: 'SHORT_ANSWER', question: '', choices: [], required: false, id: uniqueId },
+    ]);
+
+    setUniqueId(uniqueId + 1);
   };
 
   const setQuestionTitle = (index: number) => (string: string) => {
