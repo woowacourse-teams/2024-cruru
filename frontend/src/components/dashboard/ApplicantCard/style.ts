@@ -5,15 +5,20 @@ const CardContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  min-width: 22rem;
+  min-width: 15rem;
   padding: 1rem 1.6rem;
   border-radius: 0.8rem;
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
-  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
-  //TODO: theme으로 hover 적용하기
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+
+  transition: all 0.2s;
 
   &:hover {
+    scale: 1.01;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.1);
+    border: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
     cursor: pointer;
   }
 `;

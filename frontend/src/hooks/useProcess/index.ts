@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process } from '@customTypes/process';
+import type { Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/process';
 import QUERY_KEYS from '@hooks/queryKeys';
@@ -16,14 +16,16 @@ interface UseProcessProps {
 }
 
 interface UseProcessReturn {
+  title: string;
   processes: Process[];
   processList: SimpleProcess[];
   error: Error | null;
   isLoading: boolean;
+  postUrl: string;
 }
 
 export default function useProcess({ dashboardId, postId }: UseProcessProps): UseProcessReturn {
-  const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
+  const { data, error, isLoading } = useQuery<ProcessResponse>({
     queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId],
     queryFn: () => processApis.get({ id: postId }),
   });
@@ -32,6 +34,8 @@ export default function useProcess({ dashboardId, postId }: UseProcessProps): Us
 
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
   return {
+    title: data?.title ?? '',
+    postUrl: data?.postUrl ?? '',
     processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
     processList,
     error,

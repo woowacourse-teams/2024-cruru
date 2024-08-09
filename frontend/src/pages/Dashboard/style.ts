@@ -2,13 +2,22 @@ import styled from '@emotion/styled';
 import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
 
 const AppContainer = styled.div`
-  padding: 20px;
+  padding: 3.6rem 2rem;
+`;
+
+const Title = styled.div`
+  ${({ theme }) => theme.typography.heading[700]}
+`;
+
+const TabWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const DashboardPanel = styled.div<{ isVisible: boolean }>`
   width: 100%;
   height: 80%;
-  padding: 20px;
+  padding: 2rem;
 
   overflow-x: scroll;
   ${hideScrollBar};
@@ -21,6 +30,8 @@ const DashboardPanel = styled.div<{ isVisible: boolean }>`
 
 const S = {
   AppContainer,
+  TabWrapper,
+  Title,
   DashboardPanel,
 };
 
