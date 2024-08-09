@@ -4,9 +4,10 @@ interface ToggleSwitchProps extends StyleProps {
   onChange: () => void;
 }
 
-export default function ToggleSwitch({ isChecked, isDisabled, onChange }: ToggleSwitchProps) {
+export default function ToggleSwitch({ width, isChecked, isDisabled, onChange }: ToggleSwitchProps) {
   return (
     <S.Switch
+      width={width}
       isChecked={isChecked}
       isDisabled={isDisabled}
       onClick={onChange}
