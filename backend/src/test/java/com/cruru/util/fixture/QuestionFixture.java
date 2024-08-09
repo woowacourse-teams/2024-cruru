@@ -17,7 +17,6 @@ public class QuestionFixture {
                 createShortAnswerQuestion(applyForm),
                 createLongAnswerQuestion(applyForm),
                 createDropdownQuestion(applyForm),
-                createCheckboxQuestion(applyForm),
                 createMultipleChoiceQuestion(applyForm),
                 createMultipleChoiceQuestion(applyForm)
         );

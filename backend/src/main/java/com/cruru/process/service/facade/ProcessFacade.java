@@ -50,6 +50,18 @@ public class ProcessFacade {
                 .toList();
     }
 
+    private ProcessResponse toProcessResponse(Process process) {
+        List<Applicant> applicantsOfProcess = applicantService.findAllByProcess(process);
+        List<ApplicantCardResponse> applicantCardResponses = toApplicantCardResponses(process, applicantsOfProcess);
+        return new ProcessResponse(
+                process.getId(),
+                process.getSequence(),
+                process.getName(),
+                process.getDescription(),
+                applicantCardResponses
+        );
+    }
+
     private List<ApplicantCardResponse> toApplicantCardResponses(
             Process process, List<Applicant> applicantsOfProcess
     ) {
@@ -73,16 +85,5 @@ public class ProcessFacade {
     @Transactional
     public void delete(long processId) {
         processService.delete(processId);
-    }
-
-    private ProcessResponse toProcessResponse(Process process) {
-        List<Applicant> applicantsOfProcess = applicantService.findAllByProcess(process);
-        List<ApplicantCardResponse> applicantCardResponses = toApplicantCardResponses(process, applicantsOfProcess);
-        return new ProcessResponse(process.getId(),
-                process.getSequence(),
-                process.getName(),
-                process.getDescription(),
-                applicantCardResponses
-        );
     }
 }

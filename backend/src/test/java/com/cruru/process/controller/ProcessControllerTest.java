@@ -1,6 +1,5 @@
 package com.cruru.process.controller;
 
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 

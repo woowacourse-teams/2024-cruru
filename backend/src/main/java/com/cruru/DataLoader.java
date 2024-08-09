@@ -3,11 +3,10 @@ package com.cruru;
 import static com.cruru.applicant.domain.ApplicantState.APPROVED;
 import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
-import static com.cruru.question.domain.QuestionType.CHECK_BOX;
-import static com.cruru.question.domain.QuestionType.DROPDOWN;
 import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
 import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
+import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
 import com.cruru.answer.domain.Answer;
 import com.cruru.answer.domain.repository.AnswerRepository;
