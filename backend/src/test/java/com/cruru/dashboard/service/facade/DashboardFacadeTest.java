@@ -10,6 +10,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
+import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
@@ -84,6 +85,23 @@ class DashboardFacadeTest extends ServiceTest {
 
         // then
         assertThat(dashboardRepository.findById(savedDashboardId)).isPresent();
+    }
+
+    @DisplayName("대시보드로 공고 URL을 찾는다.")
+    @Test
+    void findFormUrlByDashboardId() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
+
+        // when
+        ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboard.getId());
+
+        // then
+        assertAll(() -> {
+            assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId());
+            assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl());
+        });
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")
