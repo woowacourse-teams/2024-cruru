@@ -3,7 +3,6 @@ package com.cruru;
 import static com.cruru.applicant.domain.ApplicantState.APPROVED;
 import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
-import static com.cruru.question.domain.QuestionType.DROPDOWN;
 import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
 import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
@@ -112,7 +111,6 @@ public class DataLoader implements ApplicationRunner {
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
 
-        Question choiceQuestion = questionRepository.save(new Question(1L, DROPDOWN, "성별", "", 0, false, applyForm));
         Question essayQuestion = questionRepository.save(
                 new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", "정수로 입력해주세요.", 1, false, applyForm));
 
