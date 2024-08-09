@@ -3,6 +3,7 @@ package com.cruru.member.service;
 import com.cruru.member.controller.dto.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public long create(MemberCreateRequest request) {
-        Member member = memberRepository.save(new Member(request.email(), request.password(), request.phone()));
-        return member.getId();
+    public Member create(MemberCreateRequest request) {
+        return memberRepository.save(new Member(request.email(), request.password(), request.phone()));
+    }
+
+    public Member findById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

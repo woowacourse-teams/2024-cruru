@@ -2,11 +2,13 @@ package com.cruru.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.member.controller.dto.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.MemberFixture;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,14 +33,31 @@ class MemberServiceTest extends ServiceTest {
         MemberCreateRequest request = new MemberCreateRequest(email, password, phone);
 
         // when
-        long memberId = memberService.create(request);
+        Member member = memberService.create(request);
 
         // then
-        Optional<Member> member = memberRepository.findById(memberId);
-        assertAll(
-                () -> assertThat(member).isPresent(),
-                () -> assertThat(member.get().getEmail()).isEqualTo(email),
-                () -> assertThat(member.get().getPhone()).isEqualTo(phone)
-        );
+        Optional<Member> actualMember = memberRepository.findById(member.getId());
+        assertAll(() -> {
+            assertThat(actualMember).isPresent();
+            Member presentMember = actualMember.get();
+            assertThat(presentMember.getEmail()).isEqualTo(email);
+            assertThat(presentMember.getPhone()).isEqualTo(phone);
+        });
+    }
+
+    @DisplayName("회원을 ID로 조회한다.")
+    @Test
+    void findById() {
+        // given
+        Member savedMember = memberRepository.save(MemberFixture.createMember());
+
+        // when&then
+        assertAll(() -> {
+            assertDoesNotThrow(() -> memberService.findById(savedMember.getId()));
+            Member actualMember = memberService.findById(savedMember.getId());
+            assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail());
+            assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone());
+            assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword());
+        });
     }
 }

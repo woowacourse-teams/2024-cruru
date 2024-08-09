@@ -13,4 +13,6 @@ public interface ProcessRepository extends JpaRepository<Process, Long> {
     long countByDashboard(Dashboard dashboard);
 
     Optional<Process> findFirstByDashboardIdOrderBySequenceAsc(long dashboardId);
+
+    List<Process> findAllByDashboard(Dashboard dashboard);
 }

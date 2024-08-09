@@ -17,4 +17,8 @@ public class EvaluationFixture {
     public static Evaluation createEvaluationGood() {
         return new Evaluation(4, "포트폴리오가 인상 깊었습니다.", null, null);
     }
+
+    public static Evaluation createEvaluationGood(Process process, Applicant applicant) {
+        return new Evaluation(4, "포트폴리오가 인상 깊었습니다.", process, applicant);
+    }
 }

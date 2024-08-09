@@ -1,11 +1,12 @@
 package com.cruru.process.controller.dto;
 
-import com.cruru.applicant.controller.dto.DashboardApplicantResponse;
+import com.cruru.applicant.controller.dto.ApplicantCardResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record ProcessResponse(
-        long processId,
+        @JsonProperty("processId")
+        long id,
 
         @JsonProperty("orderIndex")
         int sequence,
@@ -15,7 +16,7 @@ public record ProcessResponse(
         String description,
 
         @JsonProperty("applicants")
-        List<DashboardApplicantResponse> dashboardApplicantResponses
+        List<ApplicantCardResponse> applicantCardResponses
 ) {
 
 }

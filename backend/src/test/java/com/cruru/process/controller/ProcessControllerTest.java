@@ -1,7 +1,5 @@
 package com.cruru.process.controller;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 
@@ -13,6 +11,8 @@ import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,23 +27,23 @@ class ProcessControllerTest extends ControllerTest {
     private DashboardRepository dashboardRepository;
 
     @Autowired
-    private ProcessRepository processRepository;
+    private ApplyFormRepository applyFormRepository;
 
     @Autowired
-    private ApplyFormRepository applyFormRepository;
+    private ProcessRepository processRepository;
 
     private Dashboard dashboard;
 
     @BeforeEach
     void setUp() {
-        dashboard = dashboardRepository.save(createBackendDashboard());
+        dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
+        applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
     }
 
     @DisplayName("프로세스 조회 성공 시, 200을 응답한다.")
     @Test
     void read() {
         // given
-        applyFormRepository.save(createBackendApplyForm(dashboard));
         String url = String.format("/v1/processes?dashboardId=%d", dashboard.getId());
 
         // when&then

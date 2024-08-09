@@ -5,6 +5,7 @@ import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.ProcessFactory;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -34,6 +35,11 @@ public class DashboardService {
         processRepository.saveAll(List.of(firstProcess, lastProcess));
 
         return savedDashboard;
+    }
+
+    public Dashboard findById(long id) {
+        return dashboardRepository.findById(id)
+                .orElseThrow(DashboardNotFoundException::new);
     }
 
     public List<Dashboard> findAllByClubId(long clubId) {

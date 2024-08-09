@@ -2,9 +2,9 @@ package com.cruru.process.controller;
 
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
+import com.cruru.process.controller.dto.ProcessResponses;
 import com.cruru.process.controller.dto.ProcessUpdateRequest;
-import com.cruru.process.controller.dto.ProcessesResponse;
-import com.cruru.process.service.ProcessService;
+import com.cruru.process.service.facade.ProcessFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProcessController {
 
-    private final ProcessService processService;
+    private final ProcessFacade processFacade;
 
     @GetMapping
-    public ResponseEntity<ProcessesResponse> read(@RequestParam(name = "dashboardId") Long dashboardId) {
-        ProcessesResponse processes = processService.findByDashboardId(dashboardId);
+    public ResponseEntity<ProcessResponses> read(@RequestParam(name = "dashboardId") Long dashboardId) {
+        ProcessResponses processes = processFacade.readAllByDashboardId(dashboardId);
         return ResponseEntity.ok().body(processes);
     }
 
@@ -37,7 +37,7 @@ public class ProcessController {
             @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestBody @Valid ProcessCreateRequest request
     ) {
-        processService.create(request, dashboardId);
+        processFacade.create(request, dashboardId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -46,13 +46,13 @@ public class ProcessController {
             @PathVariable Long processId,
             @RequestBody @Valid ProcessUpdateRequest request
     ) {
-        ProcessResponse response = processService.update(request, processId);
+        ProcessResponse response = processFacade.update(request, processId);
         return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping("/{processId}")
     public ResponseEntity<Void> delete(@PathVariable Long processId) {
-        processService.delete(processId);
+        processFacade.delete(processId);
         return ResponseEntity.noContent().build();
     }
 }

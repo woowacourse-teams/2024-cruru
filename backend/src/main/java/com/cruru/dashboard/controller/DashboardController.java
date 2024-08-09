@@ -25,7 +25,8 @@ public class DashboardController {
     @PostMapping
     public ResponseEntity<ApplyFormUrlResponse> create(
             @RequestParam(name = "clubId") Long clubId,
-            @RequestBody @Valid DashboardCreateRequest request) {
+            @RequestBody @Valid DashboardCreateRequest request
+    ) {
 
         long dashboardId = dashboardFacade.create(clubId, request);
         ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboardId);

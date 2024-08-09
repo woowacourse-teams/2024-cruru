@@ -1,5 +1,8 @@
 package com.cruru.applicant.domain;
 
+import static com.cruru.applicant.domain.ApplicantState.APPROVED;
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
+import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -30,5 +33,54 @@ class ApplicantTest {
                 () -> assertThat(applicant.getPhone()).isEqualTo(toChangePhone),
                 () -> assertThat(applicant.getProcess()).isNull()
         );
+    }
+
+    @DisplayName("지원자의 상태를 REJECTED로 업데이트한다.")
+    @Test
+    void reject() {
+        // given
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+
+        // when
+        applicant.reject();
+
+        // then
+        assertAll(() -> {
+            assertThat(applicant.getState()).isEqualTo(REJECTED);
+            assertThat(applicant.isRejected()).isTrue();
+        });
+    }
+
+    @DisplayName("지원자의 상태를 PENDING로 업데이트한다.")
+    @Test
+    void pending() {
+        // given
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        applicant.reject();
+
+        // when
+        applicant.pending();
+
+        // then
+        assertAll(() -> {
+            assertThat(applicant.getState()).isEqualTo(PENDING);
+            assertThat(applicant.isPending()).isTrue();
+        });
+    }
+
+    @DisplayName("지원자의 상태를 APPROVE로 업데이트한다.")
+    @Test
+    void approve() {
+        // given
+        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+
+        // when
+        applicant.approve();
+
+        // then
+        assertAll(() -> {
+            assertThat(applicant.getState()).isEqualTo(APPROVED);
+            assertThat(applicant.isApproved()).isTrue();
+        });
     }
 }

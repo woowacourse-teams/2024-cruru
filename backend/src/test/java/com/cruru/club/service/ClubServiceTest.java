@@ -1,14 +1,17 @@
 package com.cruru.club.service;
 
-import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.club.domain.Club;
+import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ClubFixture;
+import com.cruru.util.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +23,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ClubServiceTest extends ServiceTest {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private ClubService clubService;
 
     @Autowired
-    private ClubService clubService;
+    private ClubRepository clubRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -32,20 +38,34 @@ class ClubServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(createMember());
+        Member member = memberRepository.save(MemberFixture.createMember());
         ClubCreateRequest request = new ClubCreateRequest("연합동아리");
 
         // when
-        long clubId = clubService.create(request, member.getId());
+        Club saved = clubService.create(request, member);
 
         // then
-        Club club = entityManager.createQuery(
+        Club actual = entityManager.createQuery(
                         "SELECT c FROM Club c JOIN FETCH c.member WHERE c.id = :id", Club.class)
-                .setParameter("id", clubId)
+                .setParameter("id", saved.getId())
                 .getSingleResult();
-        assertAll(
-                () -> assertThat(club.getMember()).isEqualTo(member),
-                () -> assertThat(club.getName()).isEqualTo(request.name())
-        );
+        assertAll(() -> {
+            assertThat(actual.getMember()).isEqualTo(member);
+            assertThat(actual.getName()).isEqualTo(request.name());
+        });
+    }
+
+    @DisplayName("동아리를 ID로 조회한다.")
+    @Test
+    void findById() {
+        // given
+        Club savedClub = clubRepository.save(ClubFixture.createClub());
+
+        // when&then
+        assertAll(() -> {
+            assertDoesNotThrow(() -> clubService.findById(savedClub.getId()));
+            Club actual = clubService.findById(savedClub.getId());
+            assertThat(actual.getName()).isEqualTo(savedClub.getName());
+        });
     }
 }

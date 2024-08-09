@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
-import com.cruru.choice.controller.dto.ChoiceResponse;
 import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
@@ -112,10 +111,10 @@ class ChoiceServiceTest extends ServiceTest {
 
         // when
         long QuestionId = question.getId();
-        List<ChoiceResponse> choiceResponses = choiceService.findAllByQuestionId(QuestionId);
+        List<Choice> actualChoices = choiceService.findAllByQuestionId(QuestionId);
 
         // then
         int expectedSize = choices.size();
-        assertThat(choiceResponses).hasSize(expectedSize);
+        assertThat(actualChoices).hasSize(expectedSize);
     }
 }
