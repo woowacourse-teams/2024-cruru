@@ -1,5 +1,6 @@
 package com.cruru.dashboard.controller;
 
+import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.service.facade.DashboardFacade;
@@ -22,12 +23,14 @@ public class DashboardController {
     private final DashboardFacade dashboardFacade;
 
     @PostMapping
-    public ResponseEntity<Void> create(
+    public ResponseEntity<ApplyFormUrlResponse> create(
             @RequestParam(name = "clubId") Long clubId,
             @RequestBody @Valid DashboardCreateRequest request) {
 
         long dashboardId = dashboardFacade.create(clubId, request);
-        return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardId)).build();
+        ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboardId);
+        return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardId))
+                .body(applyFormUrlResponse);
     }
 
     @GetMapping
