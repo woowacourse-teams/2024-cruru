@@ -25,7 +25,7 @@ interface UseProcessReturn {
 }
 
 export default function useProcess({ dashboardId, postId }: UseProcessProps): UseProcessReturn {
-  const { data, error, isLoading } = useQuery<{ processes: Process[] }>({
+  const { data, error, isLoading } = useQuery<ProcessResponse>({
     queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId],
     queryFn: () => processApis.get({ id: postId }),
   });
