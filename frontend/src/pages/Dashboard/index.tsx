@@ -20,9 +20,16 @@ export default function Dashboard() {
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
+  if (isLoading) {
+    // TODO: Suspense로 Refactoring
+    return <div>Loading ...</div>;
+  }
+
   return (
     <S.AppContainer>
-      <Tab>
+      <S.Title>{title}</S.Title>
+
+      <Tab postUrl={postUrl}>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
           <Tab.TabItem
             label={label}

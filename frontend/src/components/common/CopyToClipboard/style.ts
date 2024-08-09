@@ -7,7 +7,8 @@ const Wrapper = styled.div`
 
   width: 100%;
   min-width: 20rem;
-  height: 4.2rem;
+  height: fit-content;
+  max-height: 4rem;
   padding: 0.8rem 1.2rem;
 
   border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
@@ -22,12 +23,16 @@ const LinkContainer = styled.div`
   display: flex;
   align-items: center;
 
-  width: 100%;
+  width: 90%;
 `;
 
 const Link = styled.a`
-  ${({ theme }) => theme.typography.common.large};
+  ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.colors.link};
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const S = {
