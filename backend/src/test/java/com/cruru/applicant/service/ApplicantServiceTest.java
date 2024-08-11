@@ -144,8 +144,7 @@ class ApplicantServiceTest extends ServiceTest {
         Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                ApplicantFixture.createPendingApplicantDobby(
-                        beforeProcess),
+                ApplicantFixture.createPendingApplicantDobby(beforeProcess),
                 ApplicantFixture.createPendingApplicantDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
