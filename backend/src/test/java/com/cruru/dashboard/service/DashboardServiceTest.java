@@ -3,6 +3,7 @@ package com.cruru.dashboard.service;
 import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
@@ -59,6 +60,18 @@ class DashboardServiceTest extends ServiceTest {
                 .isInstanceOf(ClubNotFoundException.class);
     }
 
+
+    @DisplayName("대시보드를 ID를 통해 조회한다.")
+    @Test
+    void findById() {
+        // given
+        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
+
+        // when&then
+        long id = backendDashboard.getId();
+        assertDoesNotThrow(() -> dashboardService.findById(id));
+        assertThat(dashboardService.findById(backendDashboard.getId())).isEqualTo(backendDashboard);
+    }
 
     @DisplayName("동아리 ID로 동아리가 가지고 있는 모든 대시보드 ID를 조회한다.")
     @Test

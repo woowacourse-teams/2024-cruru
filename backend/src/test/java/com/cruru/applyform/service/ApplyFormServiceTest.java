@@ -8,6 +8,7 @@ import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
@@ -78,7 +79,7 @@ class ApplyFormServiceTest extends ServiceTest {
 
     @DisplayName("지원서 폼 질문 조회에 성공한다.")
     @Test
-    void read() {
+    void findById() {
         // given
         ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
         questionRepository.save(createShortAnswerQuestion(applyForm));
@@ -96,7 +97,7 @@ class ApplyFormServiceTest extends ServiceTest {
 
     @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")
     @Test
-    void read_invalidApplyForm() {
+    void findById_invalidApplyForm() {
         // given
         processRepository.save(createFirstProcess(dashboard));
         ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
@@ -104,5 +105,16 @@ class ApplyFormServiceTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> applyFormService.findById(-1)).isInstanceOf(ApplyFormNotFoundException.class);
+    }
+
+    @DisplayName("대시보드 ID로 지원폼을 조회한다.")
+    @Test
+    void findByDashboard() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
+
+        // when&then
+        assertDoesNotThrow(() -> applyFormService.findByDashboard(dashboard));
+        assertThat(applyFormService.findByDashboard(dashboard)).isEqualTo(applyForm);
     }
 }

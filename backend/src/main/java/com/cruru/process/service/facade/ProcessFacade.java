@@ -63,7 +63,8 @@ public class ProcessFacade {
     }
 
     private List<ApplicantCardResponse> toApplicantCardResponses(
-            Process process, List<Applicant> applicantsOfProcess
+            Process process,
+            List<Applicant> applicantsOfProcess
     ) {
         return applicantsOfProcess.stream()
                 .map(applicant -> toApplicantCardResponse(process, applicant))

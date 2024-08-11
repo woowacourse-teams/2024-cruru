@@ -38,8 +38,8 @@ public class ApplicantFacade {
         return new ApplicantBasicResponse(applicantResponse, processResponse);
     }
 
-    public ApplicantAnswerResponses readDetailById(long id) {
-        Applicant applicant = applicantService.findById(id);
+    public ApplicantAnswerResponses readDetailById(long applicantId) {
+        Applicant applicant = applicantService.findById(applicantId);
         List<Answer> answers = answerService.findAllByApplicant(applicant);
         List<AnswerResponse> answerResponses = answerService.toAnswerResponses(answers);
         return new ApplicantAnswerResponses(answerResponses);

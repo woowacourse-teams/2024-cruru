@@ -45,10 +45,15 @@ public class ProcessService {
     }
 
     private void validateProcessCount(Dashboard dashboard) {
-        long size = processRepository.countByDashboard(dashboard);
+        int size = processRepository.countByDashboard(dashboard);
         if (size >= MAX_PROCESS_COUNT) {
             throw new ProcessCountException(MAX_PROCESS_COUNT);
         }
+    }
+
+    public Process findById(long processId) {
+        return processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
     }
 
     public List<Process> findAllByDashboard(Dashboard dashboard) {
@@ -86,11 +91,6 @@ public class ProcessService {
         return process;
     }
 
-    public Process findById(long processId) {
-        return processRepository.findById(processId)
-                .orElseThrow(ProcessNotFoundException::new);
-    }
-
     private boolean nothingToChange(ProcessUpdateRequest request, Process process) {
         return request.name().equals(process.getName()) && request.description().equals(process.getDescription());
     }
@@ -104,7 +104,7 @@ public class ProcessService {
     }
 
     private void validateFirstOrLastProcess(Process process) {
-        int processCount = (int) processRepository.countByDashboard(process.getDashboard());
+        int processCount = processRepository.countByDashboard(process.getDashboard());
         if (process.isSameSequence(PROCESS_FIRST_SEQUENCE) || process.isSameSequence(processCount - 1)) {
             throw new ProcessDeleteEndsException();
         }

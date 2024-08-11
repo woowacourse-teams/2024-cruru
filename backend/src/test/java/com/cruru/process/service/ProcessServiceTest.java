@@ -8,11 +8,11 @@ import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
@@ -43,9 +43,6 @@ class ProcessServiceTest extends ServiceTest {
 
     @Autowired
     private ProcessService processService;
-
-    @Autowired
-    private EvaluationRepository evaluationRepository;
 
     @DisplayName("새로운 프로세스를 생성한다.")
     @Test
@@ -83,6 +80,18 @@ class ProcessServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> processService.create(processCreateRequest, dashboard))
                 .isInstanceOf(ProcessCountException.class);
+    }
+    
+    @DisplayName("프로세스를 ID를 통해 조회한다")
+    @Test
+    void findById() {
+        // given
+        Process savedProcess = processRepository.save(ProcessFixture.createFirstProcess());
+
+        // when&then
+        Long processId = savedProcess.getId();
+        assertDoesNotThrow(() -> processService.findById(processId));
+        assertThat(processService.findById(processId)).isEqualTo(savedProcess);
     }
 
     @DisplayName("대시보드에 존재하는 첫 번째 프로세스를 조회한다.")

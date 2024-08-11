@@ -60,7 +60,7 @@ public class DashboardFacade {
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
-        List<Long> dashboardIds = getDashboardIdsByClubId(clubId);
+        List<Dashboard> dashboardIds = getDashboardIdsByClubId(clubId);
         String clubName = clubService.findById(clubId).getName();
         LocalDateTime now = LocalDateTime.now();
         List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
@@ -72,20 +72,16 @@ public class DashboardFacade {
         return new DashboardsOfClubResponse(clubName, sortedDashboardPreviews);
     }
 
-    private List<Long> getDashboardIdsByClubId(long clubId) {
-        return dashboardService.findAllByClubId(clubId)
-                .stream()
-                .map(Dashboard::getId)
-                .toList();
+    private List<Dashboard> getDashboardIdsByClubId(long clubId) {
+        return dashboardService.findAllByClubId(clubId);
     }
 
-    private DashboardPreviewResponse createDashboardPreviewResponse(Long dashboardId) {
-        Dashboard dashboard = dashboardService.findById(dashboardId);
+    private DashboardPreviewResponse createDashboardPreviewResponse(Dashboard dashboard) {
         ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
-        List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboardId);
+        List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboard);
         StatsResponse stats = calculateStats(allApplicants);
         return new DashboardPreviewResponse(
-                dashboardId,
+                dashboard.getId(),
                 applyForm.getTitle(),
                 stats,
                 applyForm.getUrl(),
@@ -116,8 +112,7 @@ public class DashboardFacade {
         return sortedDashboards;
     }
 
-    private List<Applicant> getAllApplicantsByDashboardId(Long dashboardId) {
-        Dashboard dashboard = dashboardService.findById(dashboardId);
+    private List<Applicant> getAllApplicantsByDashboardId(Dashboard dashboard) {
         List<Process> processes = processService.findAllByDashboard(dashboard);
         return processes.stream()
                 .flatMap(process -> applicantService.findAllByProcess(process)
