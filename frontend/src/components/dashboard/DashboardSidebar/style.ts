@@ -9,9 +9,8 @@ const Container = styled.div`
   border-radius: 1.6rem 0 0 1.6rem;
 `;
 
-const Logo = styled.div`
-  ${({ theme }) => theme.typography.heading[700]}
-  margin-bottom: 3.2rem;
+const Logo = styled.img`
+  height: 2.4rem;
 `;
 
 const Contents = styled.nav`
