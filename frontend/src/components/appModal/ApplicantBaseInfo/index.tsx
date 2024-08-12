@@ -42,8 +42,12 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
     }));
 
   const rejectAppHandler = () => {
-    rejectMutate({ applicantId });
-    close();
+    const isConfirmed = window.confirm('정말 해당 지원자를 불합격 하시겠습니까? 불합격은 번복할 수 없습니다.');
+
+    if (isConfirmed) {
+      rejectMutate({ applicantId });
+      close();
+    }
   };
 
   return (
