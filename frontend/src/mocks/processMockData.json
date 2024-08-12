@@ -6,11 +6,41 @@
       "processId": 1,
       "orderIndex": 0,
       "applicants": [
-        { "applicantId": 1, "applicantName": "러기", "createdAt": "2024-07-16T05:46:08.328593" },
-        { "applicantId": 2, "applicantName": "도비", "createdAt": "2024-07-16T05:46:08.341936" },
-        { "applicantId": 6, "applicantName": "러시", "createdAt": "2024-07-16T05:46:08.356121" },
-        { "applicantId": 7, "applicantName": "냥인", "createdAt": "2024-07-16T05:46:08.359131" },
-        { "applicantId": 8, "applicantName": "렛서", "createdAt": "2024-07-16T05:46:08.361759" }
+        {
+          "applicantId": 1,
+          "applicantName": "러기",
+          "createdAt": "2024-07-16T05:46:08.328593",
+          "isRejected": false,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 2,
+          "applicantName": "도비",
+          "createdAt": "2024-07-16T05:46:08.341936",
+          "isRejected": false,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 6,
+          "applicantName": "러시",
+          "createdAt": "2024-07-16T05:46:08.356121",
+          "isRejected": true,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 7,
+          "applicantName": "냥인",
+          "createdAt": "2024-07-16T05:46:08.359131",
+          "isRejected": true,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 8,
+          "applicantName": "렛서",
+          "createdAt": "2024-07-16T05:46:08.361759",
+          "isRejected": false,
+          "evaluationCount": 1
+        }
       ],
       "name": "지원서",
       "description": "지원서를 확인한다."
@@ -19,9 +49,27 @@
       "processId": 2,
       "orderIndex": 1,
       "applicants": [
-        { "applicantId": 3, "applicantName": "아르", "createdAt": "2024-07-16T05:46:08.345472" },
-        { "applicantId": 4, "applicantName": "초코칩", "createdAt": "2024-07-16T05:46:08.350114" },
-        { "applicantId": 5, "applicantName": "명오", "createdAt": "2024-07-16T05:46:08.352613" }
+        {
+          "applicantId": 3,
+          "applicantName": "아르",
+          "createdAt": "2024-07-16T05:46:08.345472",
+          "isRejected": false,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 4,
+          "applicantName": "초코칩",
+          "createdAt": "2024-07-16T05:46:08.350114",
+          "isRejected": false,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 5,
+          "applicantName": "명오",
+          "createdAt": "2024-07-16T05:46:08.352613",
+          "isRejected": false,
+          "evaluationCount": 1
+        }
       ],
       "name": "최종 합격",
       "description": "최종 합격자"
