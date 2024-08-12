@@ -48,6 +48,11 @@ const TabButton = styled.button<{ isActive: boolean }>`
   &:hover {
     color: ${({ theme }) => theme.baseColors.grayscale[950]};
   }
+
+  &:disabled {
+    color: ${({ theme }) => theme.baseColors.grayscale[500]};
+    cursor: not-allowed;
+  }
 `;
 
 const TabPanel = styled.div<{ isVisible: boolean }>`
