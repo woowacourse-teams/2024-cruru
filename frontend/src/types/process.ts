@@ -2,6 +2,8 @@ export interface ApplicantCardInfo {
   applicantId: number;
   applicantName: string;
   createdAt: string;
+  isRejected: boolean;
+  evaluationCount: 1;
 }
 
 export interface Process {
