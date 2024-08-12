@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
-import com.cruru.evaluation.controller.dto.EvaluationResponse;
 import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.evaluation.exception.EvaluationNotFoundException;
+import com.cruru.evaluation.exception.badrequest.EvaluationNoChangeException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -60,35 +60,36 @@ class EvaluationServiceTest extends ServiceTest {
 
         // when
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
-        evaluationService.create(request, process.getId(), applicant.getId());
+        evaluationService.create(request, process, applicant);
 
         // then
         List<Evaluation> evaluations = evaluationRepository.findAllByProcessAndApplicant(process, applicant);
+        Evaluation evaluation = evaluations.get(0);
         assertAll(
                 () -> assertThat(evaluations).hasSize(1),
-                () -> assertThat(evaluations.get(0).getScore()).isEqualTo(score),
-                () -> assertThat(evaluations.get(0).getContent()).isEqualTo(content)
+                () -> assertThat(evaluation.getScore()).isEqualTo(score),
+                () -> assertThat(evaluation.getContent()).isEqualTo(content)
         );
     }
 
-    @DisplayName("평가를 조회한다.")
+    @DisplayName("지원자와 프로세스를 통해 평가를 조회한다.")
     @Test
-    void read() {
+    void findAllByProcessAndApplicant() {
         // given
         int score = 1;
         String content = "인재상과 맞지 않습니다.";
         Evaluation evaluation = evaluationRepository.save(new Evaluation(score, content, process, applicant));
 
         // when
-        List<EvaluationResponse> responses = evaluationService.read(process.getId(), applicant.getId())
-                .evaluationsResponse();
+        List<Evaluation> savedEvaluations = evaluationService.findAllByProcessAndApplicant(process, applicant);
 
         // then
+        Evaluation actualEvaluation = savedEvaluations.get(0);
         assertAll(
-                () -> assertThat(responses).hasSize(1),
-                () -> assertThat(responses.get(0).evaluationId()).isEqualTo(evaluation.getId()),
-                () -> assertThat(responses.get(0).score()).isEqualTo(score),
-                () -> assertThat(responses.get(0).content()).isEqualTo(content)
+                () -> assertThat(savedEvaluations).hasSize(1),
+                () -> assertThat(actualEvaluation.getId()).isEqualTo(evaluation.getId()),
+                () -> assertThat(actualEvaluation.getScore()).isEqualTo(score),
+                () -> assertThat(actualEvaluation.getContent()).isEqualTo(content)
         );
     }
 
@@ -97,8 +98,8 @@ class EvaluationServiceTest extends ServiceTest {
     void update() {
         // given
         Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
-        int score = 2;
-        String content = "맞춤법이 틀렸습니다.";
+        int score = 1;
+        String content = "수정된 평가입니다.";
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
 
         // when
@@ -126,5 +127,20 @@ class EvaluationServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> evaluationService.update(request, invalidId))
                 .isInstanceOf(EvaluationNotFoundException.class);
+    }
+
+    @DisplayName("평가 수정 시, 수정된 내용이 없을 경우 예외가 발생한다.")
+    @Test
+    void update_evaluationNotChanged() {
+        // given
+        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        long validId = evaluation.getId();
+        int notChangedScore = 5;
+        String notChangedContent = "서류가 인상 깊었습니다.";
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(notChangedScore, notChangedContent);
+
+        // when & then
+        assertThatThrownBy(() -> evaluationService.update(request, validId))
+                .isInstanceOf(EvaluationNoChangeException.class);
     }
 }
