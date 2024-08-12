@@ -2,27 +2,31 @@ import { Branded } from '@customTypes/utilTypes';
 import ValidationError from '@utils/errors/ValidationError';
 import { isEmptyString, isNumber } from './common';
 
-type EmailAddress = Branded<string, 'EmailAddress'>;
-const isValidEmail = (email: string): email is EmailAddress => {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email);
+const regex = {
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  phone: /^\d{3}-\d{3,4}-\d{4}$/,
+  name: /[^ㄱ-ㅎ가-힣a-zA-Z\s-]/,
 };
 
+type EmailAddress = Branded<string, 'EmailAddress'>;
+const isValidEmail = (email: string): email is EmailAddress => regex.email.test(email);
+
 type PhoneNumber = Branded<string, 'PhoneNumber'>;
-const isValidPhoneNumber = (phone: string): phone is PhoneNumber => {
-  const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
-  return phoneRegex.test(phone);
-};
+const isValidPhoneNumber = (phone: string): phone is PhoneNumber => regex.phone.test(phone);
 
 export const validateName = {
   onBlur: (name: string) => {
+    if (regex.name.test(name)) {
+      throw new ValidationError({ inputName: 'name', message: '한글, 영문, 공백, - 만 입력해 주세요.' });
+    }
+
     if (isEmptyString(name)) {
       throw new ValidationError({ inputName: 'name', message: '이름을 입력해 주세요.' });
     }
   },
 
   onChange: (name: string) => {
-    if (/[^ㄱ-ㅎ가-힣a-zA-Z\s-]/.test(name)) {
+    if (regex.name.test(name)) {
       throw new ValidationError({ inputName: 'name', message: '한글, 영문, 공백, - 만 입력해 주세요.' });
     }
   },
