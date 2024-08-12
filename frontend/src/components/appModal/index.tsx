@@ -3,7 +3,6 @@ import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
 import ApplicantBaseInfo from './ApplicantBaseInfo';
 
 import ModalHeader from '../common/ModalHeader';
-import AppDetailHeader from './ApplicantDetailInfo/AppDetailHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
 import S from './style';
 import ApplicantEvalInfo from './ApplicantEvalInfo';
@@ -12,19 +11,6 @@ import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
 export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
   if (!applicantId) return null;
-
-  const headerTabs = [
-    {
-      id: 0,
-      name: '지원서',
-      onClick: () => console.log('지원서가 클릭되었습니다.'),
-    },
-    {
-      id: 1,
-      name: '이력서',
-      onClick: () => console.log('이력서가 클릭되었습니다.'),
-    },
-  ];
 
   return (
     <BaseModal>
@@ -38,11 +24,10 @@ export default function ApplicantModal() {
         </S.ModalSidebar>
 
         <S.ModalNav>
-          <AppDetailHeader
-            headerTabs={headerTabs}
-            activeTabId={0}
-            content="지원 시 접수된 지원서 내용입니다."
-          />
+          <S.ModalNavHeaderContainer>
+            <S.ModalNavHeader>지원서</S.ModalNavHeader>
+            <S.ModalNavContent>지원 시 접수된 지원서 내용입니다.</S.ModalNavContent>
+          </S.ModalNavHeaderContainer>
         </S.ModalNav>
 
         <S.ModalMain>
