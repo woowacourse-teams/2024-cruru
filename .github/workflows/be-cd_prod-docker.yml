@@ -69,9 +69,6 @@ jobs:
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
         
         # DB Configuration secrets info from Github Secrets
-        MYSQL_DB_NAME=${{ secrets.MYSQL_DB_NAME }}
-        MYSQL_ROOT_HOST=${{ secrets.MYSQL_ROOT_HOST }}
-        MYSQL_TIME_ZONE=${{ secrets.MYSQL_TIME_ZONE }}
         DB_PORT=${{ secrets.DB_PORT }}
         DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }}
         DB_URL=${{ secrets.DB_URL }}
