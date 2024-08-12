@@ -48,7 +48,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
     }
 
     if (Object.values(errors).some((error) => error)) {
-      window.alert('입력한 정보를 확인해주세요.');
+      window.alert('지원자 정보를 확인해주세요.');
       return;
     }
 
