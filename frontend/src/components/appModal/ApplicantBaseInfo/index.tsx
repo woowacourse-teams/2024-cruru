@@ -14,15 +14,19 @@ interface ApplicantBaseInfoProps {
 }
 
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
-  const { data: applicantBaseInfo } = specificApplicant.useGetBaseInfo({ applicantId });
+  const { data: applicantBaseInfo, isLoading: isBaseInfoLoading } = specificApplicant.useGetBaseInfo({ applicantId });
   const { mutate: rejectMutate } = specificApplicant.useRejectApplicant();
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
-  const { processList } = useProcess({ dashboardId, postId });
+  const { processList, isLoading: isProcessLoading } = useProcess({ dashboardId, postId });
   const { moveApplicantProcess } = useApplicant({ applicantId });
   const { close } = useModal();
 
   if (!applicantBaseInfo) {
     return <div>no data</div>; // TODO: 핸들링
+  }
+
+  if (isBaseInfoLoading || isProcessLoading) {
+    return <div>Loading...</div>; // TODO: Loading 핸들링
   }
 
   const { applicant, process } = applicantBaseInfo;
