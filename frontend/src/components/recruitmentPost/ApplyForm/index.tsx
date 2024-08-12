@@ -18,45 +18,58 @@ import { useAnswers } from './useAnswers';
 
 interface ApplyFormProps {
   questions: Question[];
+  isClosed: boolean;
 }
 
-export default function ApplyForm({ questions }: ApplyFormProps) {
+export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { postId } = useParams<{ postId: string }>() as { postId: string };
 
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
   const { mutate: apply } = applyMutations.useApply(postId, recruitmentPost?.title ?? '');
 
-  const { formData: applicant, register } = useForm<ApplicantData>({
+  const {
+    formData: applicant,
+    register,
+    errors,
+  } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
   });
+
   const { answers, changeHandler } = useAnswers(questions);
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const applyData: ApplyRequestBody = {
-      applicant: {
-        ...applicant,
-      },
-      answers: Object.entries(answers).map(([questionId, answer]) => ({
-        questionId,
-        replies: [...answer],
-      })),
-      personalDataCollection,
-    };
-
     if (Object.values(answers).some((answer) => answer.length === 0)) {
       if (!window.confirm('작성하지 않은 질문이 있습니다. 제출하시겠습니까?')) {
         return;
       }
     }
+
+    if (Object.values(errors).some((error) => error)) {
+      window.alert('지원자 정보를 확인해주세요.');
+      return;
+    }
+
     if (!personalDataCollection) {
       window.alert('개인정보 수집 및 이용 동의에 체크해주세요.');
       return;
     }
 
-    apply({ body: applyData });
+    apply({
+      body: {
+        applicant: {
+          ...applicant,
+          phone: applicant.phone.replace(/-/g, ''),
+        },
+        answers: Object.entries(answers).map(([questionId, answer]) => ({
+          questionId,
+          replies: [...answer],
+        })),
+        personalDataCollection,
+      } as ApplyRequestBody,
+    });
   };
 
   const handlePersonalDataCollection = (checked: boolean) => {
@@ -67,10 +80,11 @@ export default function ApplyForm({ questions }: ApplyFormProps) {
     <C.ContentContainer>
       <S.Form onSubmit={handleSubmit}>
         <InputField
-          {...register('name', { validate: { onBlur: validateName.onBlur } })}
+          {...register('name', { validate: { onBlur: validateName.onBlur, onChange: validateName.onChange } })}
           name="name"
           label="이름"
           placeholder="이름을 입력해 주세요."
+          maxLength={32}
           required
         />
         <InputField
@@ -83,6 +97,7 @@ export default function ApplyForm({ questions }: ApplyFormProps) {
           {...register('phone', {
             validate: {
               onBlur: validatePhoneNumber.onBlur,
+              onChange: validatePhoneNumber.onChange,
             },
             formatter: formatPhoneNumber,
           })}
@@ -103,13 +118,14 @@ export default function ApplyForm({ questions }: ApplyFormProps) {
         ))}
 
         <S.Divider />
+        {/* TODO: CheckBoxField를 만들어 보기 */}
         <S.CheckBoxContainer>
           <S.CheckBoxOption>
             <CheckBox
               isChecked={personalDataCollection}
               onToggle={handlePersonalDataCollection}
             />
-            <S.CheckBoxLabel>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
+            <S.CheckBoxLabel required>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
           </S.CheckBoxOption>
 
           <S.PersonalDataCollectionDescription>
@@ -122,8 +138,9 @@ export default function ApplyForm({ questions }: ApplyFormProps) {
             type="submit"
             color="primary"
             size="fillContainer"
+            disabled={isClosed}
           >
-            지원하기
+            제출하기
           </Button>
         </C.ButtonContainer>
       </S.Form>
