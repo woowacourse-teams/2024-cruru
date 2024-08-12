@@ -1,6 +1,6 @@
 import applyApis from '@api/apply';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { ApplyRequestBody } from '@customTypes/apply';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import QUERY_KEYS from './queryKeys';
 
@@ -18,7 +18,12 @@ export const applyQueries = {
   useGetRecruitmentPost: ({ postId }: { postId: string }) => {
     const { data, ...restQueryObj } = useGetRecruitmentInfo({ postId });
 
-    const isClosed = data ? data.recruitmentPost.endDate < new Date().toISOString() : true;
+    const { startDate, endDate } = data?.recruitmentPost ?? { startDate: '', endDate: '' };
+    const start = new Date(startDate as string).getTime();
+    const end = new Date(endDate as string).getTime();
+    const now = new Date().getTime();
+
+    const isClosed = !data || end < now || start > now;
 
     return {
       isClosed,
