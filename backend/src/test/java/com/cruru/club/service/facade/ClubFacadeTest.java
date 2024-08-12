@@ -1,6 +1,6 @@
 package com.cruru.club.service.facade;
 
-import static com.cruru.util.fixture.MemberFixture.createMember;
+import static com.cruru.util.fixture.MemberFixture.createMember1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -30,7 +30,7 @@ class ClubFacadeTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(createMember());
+        Member member = memberRepository.save(createMember1());
         ClubCreateRequest request = new ClubCreateRequest("연합동아리");
 
         // when

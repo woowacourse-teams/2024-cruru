@@ -1,6 +1,5 @@
 package com.cruru.club.domain;
 
-import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,6 +7,7 @@ import com.cruru.club.exception.badrequest.ClubNameBlankException;
 import com.cruru.club.exception.badrequest.ClubNameCharacterException;
 import com.cruru.club.exception.badrequest.ClubNameLengthException;
 import com.cruru.member.domain.Member;
+import com.cruru.util.fixture.MemberFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +21,7 @@ class ClubTest {
     @ParameterizedTest
     void validClubName(String name) {
         // given
-        Member member = createMember();
+        Member member = MemberFixture.createMember1();
 
         // when&then
         assertThatCode(() -> new Club(name, member)).doesNotThrowAnyException();
@@ -32,7 +32,7 @@ class ClubTest {
     @ParameterizedTest
     void clubNameBlank(String name) {
         // given
-        Member member = createMember();
+        Member member = MemberFixture.createMember1();
 
         // when&then
         assertThatThrownBy(() -> new Club(name, member))
@@ -44,7 +44,7 @@ class ClubTest {
     @Test
     void invalidClubNameLength() {
         // given
-        Member member = new Member("password", "phoneNumber", "phone");
+        Member member = MemberFixture.createMember1();
 
         // when&then
         assertThatThrownBy(() -> new Club("ThisStringLengthIs33!!!!!!!!!!!!!", member))
@@ -56,7 +56,7 @@ class ClubTest {
     @ParameterizedTest
     void invalidClubNameCharacter(String name) {
         // given
-        Member member = new Member("password", "phoneNumber", "phone");
+        Member member = MemberFixture.createMember1();
 
         // when&then
         assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubNameCharacterException.class);

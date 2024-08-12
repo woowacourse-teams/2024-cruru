@@ -14,7 +14,7 @@ class MemberControllerTest extends ControllerTest {
     @Test
     void create() {
         // given
-        MemberCreateRequest request = new MemberCreateRequest("mail@mail.com", "qwer1234", "01012341234");
+        MemberCreateRequest request = new MemberCreateRequest("크루루", "mail@mail.com", "newPassword214!", "01012341234");
 
         // when&then
         RestAssured.given().log().all()

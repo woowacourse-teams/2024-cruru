@@ -27,10 +27,11 @@ class MemberServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
+        String clubName = "크루루";
         String email = "mail@mail.com";
-        String password = "qwer1234";
+        String password = "newPassword214!";
         String phone = "01012341234";
-        MemberCreateRequest request = new MemberCreateRequest(email, password, phone);
+        MemberCreateRequest request = new MemberCreateRequest(clubName, email, password, phone);
 
         // when
         Member member = memberService.create(request);
@@ -49,7 +50,7 @@ class MemberServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Member savedMember = memberRepository.save(MemberFixture.createMember());
+        Member savedMember = memberRepository.save(MemberFixture.createMember1());
 
         // when&then
         assertAll(() -> {
