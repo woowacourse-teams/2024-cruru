@@ -6,7 +6,7 @@ export const processQueries = {
   useGetProcess: () => {},
 };
 
-export const processMutaions = {
+export const processMutations = {
   useCreateProcess: ({ handleSuccess, postId }: { handleSuccess: () => void; postId: number }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {

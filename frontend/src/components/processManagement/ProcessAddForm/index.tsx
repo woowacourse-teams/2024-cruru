@@ -4,7 +4,7 @@ import Button from '@components/common/Button';
 import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
 
-import { processMutaions } from '@hooks/process';
+import { processMutations } from '@hooks/process';
 import { useClickOutside } from '@hooks/utils/useClickOutside';
 
 import { Process } from '@customTypes/process';
@@ -20,7 +20,7 @@ interface ProcessAddFormProps {
 export default function ProcessAddForm({ postId, priorOrderIndex, toggleForm }: ProcessAddFormProps) {
   const formRef = useClickOutside<HTMLFormElement>(toggleForm);
 
-  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm, postId });
+  const { mutate } = processMutations.useCreateProcess({ handleSuccess: toggleForm, postId });
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: '',
