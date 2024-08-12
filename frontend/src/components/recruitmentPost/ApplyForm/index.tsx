@@ -125,7 +125,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
               isChecked={personalDataCollection}
               onToggle={handlePersonalDataCollection}
             />
-            <S.CheckBoxLabel>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
+            <S.CheckBoxLabel required>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
           </S.CheckBoxOption>
 
           <S.PersonalDataCollectionDescription>
