@@ -49,7 +49,8 @@ export default function Dashboard() {
 
       <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
         <ProcessManageBoard
-          postId={Number(postId)}
+          dashboardId={dashboardId}
+          postId={postId}
           processes={processes}
         />
       </Tab.TabPanel>

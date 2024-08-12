@@ -1,16 +1,24 @@
 import processApis from '@api/process';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import QUERY_KEYS from './queryKeys';
 
-// 제안: 이런식으로 리팩토링 하는 건 어떨지?
 export const processQueries = {
   useGetProcess: () => {},
 };
 
 export const processMutations = {
-  useCreateProcess: ({ handleSuccess, postId }: { handleSuccess: () => void; postId: number }) => {
+  useCreateProcess: ({
+    handleSuccess,
+    dashboardId,
+    postId,
+  }: {
+    handleSuccess: () => void;
+    dashboardId: string;
+    postId: string;
+  }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard', postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
     };
 
     return useMutation({
@@ -26,10 +34,10 @@ export const processMutations = {
     });
   },
 
-  useModifyProcess: (postId: number) => {
+  useModifyProcess: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard', postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
     };
 
     return useMutation({
@@ -44,10 +52,10 @@ export const processMutations = {
     });
   },
 
-  useDeleteProcess: (postId: number) => {
+  useDeleteProcess: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboard', postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
     };
 
     return useMutation({

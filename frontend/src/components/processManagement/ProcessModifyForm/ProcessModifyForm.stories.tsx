@@ -27,7 +27,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    postId: 1,
+    dashboardId: '1',
+    postId: '1',
     process: {
       processId: 1,
       name: '서류 접수',
