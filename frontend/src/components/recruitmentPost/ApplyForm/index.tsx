@@ -30,22 +30,12 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { formData: applicant, register } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
   });
+
   const { answers, changeHandler } = useAnswers(questions);
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-
-    const applyData: ApplyRequestBody = {
-      applicant: {
-        ...applicant,
-      },
-      answers: Object.entries(answers).map(([questionId, answer]) => ({
-        questionId,
-        replies: [...answer],
-      })),
-      personalDataCollection,
-    };
 
     if (Object.values(answers).some((answer) => answer.length === 0)) {
       if (!window.confirm('작성하지 않은 질문이 있습니다. 제출하시겠습니까?')) {
@@ -57,7 +47,19 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
       return;
     }
 
-    apply({ body: applyData });
+    apply({
+      body: {
+        applicant: {
+          ...applicant,
+          phone: applicant.phone.replace(/-/g, ''),
+        },
+        answers: Object.entries(answers).map(([questionId, answer]) => ({
+          questionId,
+          replies: [...answer],
+        })),
+        personalDataCollection,
+      } as ApplyRequestBody,
+    });
   };
 
   const handlePersonalDataCollection = (checked: boolean) => {
@@ -68,10 +70,11 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
     <C.ContentContainer>
       <S.Form onSubmit={handleSubmit}>
         <InputField
-          {...register('name', { validate: { onBlur: validateName.onBlur } })}
+          {...register('name', { validate: { onBlur: validateName.onBlur, onChange: validateName.onChange } })}
           name="name"
           label="이름"
           placeholder="이름을 입력해 주세요."
+          maxLength={32}
           required
         />
         <InputField
@@ -84,6 +87,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
           {...register('phone', {
             validate: {
               onBlur: validatePhoneNumber.onBlur,
+              onChange: validatePhoneNumber.onChange,
             },
             formatter: formatPhoneNumber,
           })}
@@ -104,6 +108,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
         ))}
 
         <S.Divider />
+        {/* TODO: CheckBoxField를 만들어 보기 */}
         <S.CheckBoxContainer>
           <S.CheckBoxOption>
             <CheckBox

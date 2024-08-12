@@ -17,7 +17,13 @@ const isValidPhoneNumber = (phone: string): phone is PhoneNumber => {
 export const validateName = {
   onBlur: (name: string) => {
     if (isEmptyString(name)) {
-      throw new ValidationError({ inputName: 'name', message: '이름을 입력해주세요.' });
+      throw new ValidationError({ inputName: 'name', message: '이름을 입력해 주세요.' });
+    }
+  },
+
+  onChange: (name: string) => {
+    if (/[^ㄱ-ㅎ가-힣a-zA-Z\s-]/.test(name)) {
+      throw new ValidationError({ inputName: 'name', message: '한글, 영문, 공백, - 만 입력해 주세요.' });
     }
   },
 };
@@ -25,7 +31,7 @@ export const validateName = {
 export const validateEmail = {
   onBlur: (email: string) => {
     if (isEmptyString(email)) {
-      throw new ValidationError({ inputName: 'email', message: '이메일을 입력해주세요.' });
+      throw new ValidationError({ inputName: 'email', message: '이메일을 입력해 주세요.' });
     }
 
     if (!isValidEmail(email)) {
@@ -37,16 +43,21 @@ export const validateEmail = {
 export const validatePhoneNumber = {
   onBlur: (phone: string) => {
     if (isEmptyString(phone)) {
-      throw new ValidationError({ inputName: 'phone', message: '번호를 입력해주세요.' });
+      throw new ValidationError({ inputName: 'phone', message: '전화번호를 입력해 주세요.' });
+    }
+
+    if (!isNumber(phone.replace(/-/g, ''))) {
+      throw new ValidationError({ inputName: 'phone', message: '숫자만 입력해 주세요.' });
     }
 
     if (!isValidPhoneNumber(phone)) {
       throw new ValidationError({ inputName: 'phone', message: '전화번호를 확인해 주세요.' });
     }
   },
+
   onChange: (phone: string) => {
     if (!isNumber(phone.replace(/-/g, ''))) {
-      throw new ValidationError({ inputName: 'phone', message: '숫자만 입력해주세요.' });
+      throw new ValidationError({ inputName: 'phone', message: '숫자만 입력해 주세요.' });
     }
   },
 };
