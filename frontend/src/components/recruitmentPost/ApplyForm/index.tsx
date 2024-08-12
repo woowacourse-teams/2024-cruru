@@ -18,9 +18,10 @@ import { useAnswers } from './useAnswers';
 
 interface ApplyFormProps {
   questions: Question[];
+  isClosed: boolean;
 }
 
-export default function ApplyForm({ questions }: ApplyFormProps) {
+export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { postId } = useParams<{ postId: string }>() as { postId: string };
 
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
@@ -122,8 +123,9 @@ export default function ApplyForm({ questions }: ApplyFormProps) {
             type="submit"
             color="primary"
             size="fillContainer"
+            disabled={isClosed}
           >
-            지원하기
+            제출하기
           </Button>
         </C.ButtonContainer>
       </S.Form>
