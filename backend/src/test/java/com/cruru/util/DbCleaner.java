@@ -28,7 +28,8 @@ public class DbCleaner {
 
     @PostConstruct
     public void findTableNames() {
-        tableNames = entityManager.getMetamodel().getEntities().stream()
+        tableNames = entityManager.getMetamodel().getEntities()
+                .stream()
                 .filter(e -> e.getJavaType().getAnnotation(Entity.class) != null)
                 .map(this::convertCamelToSnake)
                 .toList();

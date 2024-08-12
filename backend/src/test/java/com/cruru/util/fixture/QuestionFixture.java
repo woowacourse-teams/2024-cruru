@@ -8,8 +8,19 @@ import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.question.domain.Question;
+import java.util.List;
 
 public class QuestionFixture {
+
+    public static List<Question> createAllTypesOfQuestions(ApplyForm applyForm) {
+        return List.of(
+                createShortAnswerQuestion(applyForm),
+                createLongAnswerQuestion(applyForm),
+                createDropdownQuestion(applyForm),
+                createMultipleChoiceQuestion(applyForm),
+                createMultipleChoiceQuestion(applyForm)
+        );
+    }
 
     public static Question createShortAnswerQuestion(ApplyForm applyForm) {
         return new Question(SHORT_ANSWER, "주관식 단답형", "50자 이하로 입력해주세요.", 1, false, applyForm);
@@ -29,5 +40,12 @@ public class QuestionFixture {
 
     public static Question createSingleChoiceQuestion(ApplyForm applyForm) {
         return new Question(SINGLE_CHOICE, "객관식 단일 선택", "선택해주세요.", 5, false, applyForm);
+    }
+
+    public static List<Question> createNonChoiceTypeQuestions(ApplyForm applyForm) {
+        return List.of(
+                createShortAnswerQuestion(applyForm),
+                createLongAnswerQuestion(applyForm)
+        );
     }
 }

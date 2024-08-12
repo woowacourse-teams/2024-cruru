@@ -1,8 +1,8 @@
-package com.cruru.applicant.controller.dto;
+package com.cruru.answer.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record QnaResponse(
+public record AnswerResponse(
         @JsonProperty("orderIndex")
         int sequence,
 

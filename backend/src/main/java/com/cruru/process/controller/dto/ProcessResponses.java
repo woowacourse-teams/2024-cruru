@@ -3,14 +3,14 @@ package com.cruru.process.controller.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-public record ProcessesResponse(
-        String title,
+public record ProcessResponses(
 
-        @JsonProperty("postUrl")
-        String url,
+        String postUrl,
 
         @JsonProperty("processes")
-        List<ProcessResponse> processResponses
+        List<ProcessResponse> processResponses,
+
+        String title
 ) {
 
 }

@@ -3,8 +3,9 @@ package com.cruru.applicant.controller.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
-public record DashboardApplicantResponse(
-        long applicantId,
+public record ApplicantCardResponse(
+        @JsonProperty("processId")
+        long id,
 
         @JsonProperty("applicantName")
         String name,

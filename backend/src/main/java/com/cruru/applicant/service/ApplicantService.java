@@ -1,22 +1,16 @@
 package com.cruru.applicant.service;
 
-import com.cruru.answer.domain.Answer;
-import com.cruru.answer.domain.repository.AnswerRepository;
-import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
-import com.cruru.applicant.controller.dto.ApplicantDetailResponse;
+import com.cruru.applicant.controller.dto.ApplicantCardResponse;
+import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantResponse;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
-import com.cruru.applicant.controller.dto.QnaResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
+import com.cruru.applicant.exception.badrequest.ApplicantNoChangeException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
-import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
-import com.cruru.process.domain.repository.ProcessRepository;
-import com.cruru.process.exception.ProcessNotFoundException;
-import com.cruru.question.domain.Question;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,67 +22,44 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApplicantService {
 
     private final ApplicantRepository applicantRepository;
-    private final ProcessRepository processRepository;
-    private final AnswerRepository answerRepository;
 
     @Transactional
-    public void updateApplicantProcess(long processId, ApplicantMoveRequest moveRequest) {
-        Process process = processRepository.findById(processId)
-                .orElseThrow(ProcessNotFoundException::new);
-
-        List<Applicant> applicants = applicantRepository.findAllById(moveRequest.applicantIds());
-        applicants.forEach(applicant -> applicant.updateProcess(process));
+    public Applicant create(ApplicantCreateRequest request, Process firstProcess) {
+        return applicantRepository.save(new Applicant(request.name(), request.email(), request.phone(), firstProcess));
     }
 
     public List<Applicant> findAllByProcess(Process process) {
         return applicantRepository.findAllByProcess(process);
     }
 
-    public ApplicantBasicResponse findById(long id) {
-        Applicant applicant = applicantRepository.findById(id)
+    @Transactional
+    public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
+        Applicant applicant = findById(applicantId);
+        if (notChangedInformation(request, applicant)) {
+            throw new ApplicantNoChangeException();
+        }
+        applicant.updateInfo(request.name(), request.email(), request.phone());
+    }
+
+    public Applicant findById(long applicantId) {
+        return applicantRepository.findById(applicantId)
                 .orElseThrow(ApplicantNotFoundException::new);
-        return toApplicantBasicResponse(applicant);
     }
 
-    private ApplicantBasicResponse toApplicantBasicResponse(Applicant applicant) {
-        return new ApplicantBasicResponse(
-                new ApplicantResponse(
-                        applicant.getId(),
-                        applicant.getName(),
-                        applicant.getEmail(),
-                        applicant.getPhone(),
-                        applicant.getCreatedDate()
-                ),
-                new ProcessSimpleResponse(
-                        applicant.getProcess().getId(),
-                        applicant.getProcess().getName()
-                )
-        );
-    }
-
-    public ApplicantDetailResponse findDetailById(long id) {
-        Applicant applicant = applicantRepository.findById(id)
-                .orElseThrow(ApplicantNotFoundException::new);
-        List<Answer> answers = answerRepository.findAllByApplicant(applicant);
-        List<QnaResponse> qnaResponses = toQnaResponses(answers);
-        return new ApplicantDetailResponse(qnaResponses);
-    }
-
-    private List<QnaResponse> toQnaResponses(List<Answer> answers) {
-        return answers.stream()
-                .map(this::toQnaResponse)
-                .toList();
-    }
-
-    private QnaResponse toQnaResponse(Answer answer) {
-        Question question = answer.getQuestion();
-        return new QnaResponse(question.getSequence(), question.getContent(), answer.getContent());
+    private boolean notChangedInformation(ApplicantUpdateRequest request, Applicant applicant) {
+        return applicant.getName().equals(request.name()) && applicant.getEmail().equals(request.email())
+                && applicant.getPhone().equals(request.phone());
     }
 
     @Transactional
-    public void reject(long id) {
-        Applicant applicant = applicantRepository.findById(id)
-                .orElseThrow(ApplicantNotFoundException::new);
+    public void moveApplicantProcess(Process process, ApplicantMoveRequest moveRequest) {
+        List<Applicant> applicants = applicantRepository.findAllById(moveRequest.applicantIds());
+        applicants.forEach(applicant -> applicant.updateProcess(process));
+    }
+
+    @Transactional
+    public void reject(long applicantId) {
+        Applicant applicant = findById(applicantId);
         validateRejectable(applicant);
         applicant.reject();
     }
@@ -99,11 +70,23 @@ public class ApplicantService {
         }
     }
 
-    @Transactional
-    public void update(ApplicantUpdateRequest request, long applicantId) {
-        Applicant applicant = applicantRepository.findById(applicantId)
-                .orElseThrow(ApplicantNotFoundException::new);
+    public ApplicantResponse toApplicantResponse(Applicant applicant) {
+        return new ApplicantResponse(
+                applicant.getId(),
+                applicant.getName(),
+                applicant.getEmail(),
+                applicant.getPhone(),
+                applicant.getCreatedDate()
+        );
+    }
 
-        applicant.updateInfo(request.name(), request.email(), request.phone());
+    public ApplicantCardResponse toApplicantCardResponse(Applicant applicant, int evaluationCount) {
+        return new ApplicantCardResponse(
+                applicant.getId(),
+                applicant.getName(),
+                applicant.getCreatedDate(),
+                applicant.isRejected(),
+                evaluationCount
+        );
     }
 }

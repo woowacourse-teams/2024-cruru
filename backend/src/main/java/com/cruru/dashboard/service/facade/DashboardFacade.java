@@ -15,6 +15,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
+import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.service.QuestionService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class DashboardFacade {
     public long create(long clubId, DashboardCreateRequest request) {
         Dashboard createdDashboard = dashboardService.create(clubId);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
-        questionService.createAll(request.questions(), applyForm);
+        for (QuestionCreateRequest questionCreateRequest : request.questions()) {
+            questionService.create(questionCreateRequest, applyForm);
+        }
         return createdDashboard.getId();
     }
 
@@ -54,12 +57,13 @@ public class DashboardFacade {
     }
 
     public ApplyFormUrlResponse findFormUrlByDashboardId(long dashboardId) {
-        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         return new ApplyFormUrlResponse(applyForm.getId(), applyForm.getUrl());
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
-        List<Long> dashboardIds = getDashboardIdsByClubId(clubId);
+        List<Dashboard> dashboardIds = getDashboardIdsByClubId(clubId);
         String clubName = clubService.findById(clubId).getName();
         LocalDateTime now = LocalDateTime.now();
         List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
@@ -71,19 +75,16 @@ public class DashboardFacade {
         return new DashboardsOfClubResponse(clubName, sortedDashboardPreviews);
     }
 
-    private List<Long> getDashboardIdsByClubId(long clubId) {
-        return dashboardService.findAllByClubId(clubId)
-                .stream()
-                .map(Dashboard::getId)
-                .toList();
+    private List<Dashboard> getDashboardIdsByClubId(long clubId) {
+        return dashboardService.findAllByClubId(clubId);
     }
 
-    private DashboardPreviewResponse createDashboardPreviewResponse(Long dashboardId) {
-        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
-        List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboardId);
+    private DashboardPreviewResponse createDashboardPreviewResponse(Dashboard dashboard) {
+        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
+        List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboard);
         StatsResponse stats = calculateStats(allApplicants);
         return new DashboardPreviewResponse(
-                dashboardId,
+                dashboard.getId(),
                 applyForm.getTitle(),
                 stats,
                 applyForm.getUrl(),
@@ -114,8 +115,8 @@ public class DashboardFacade {
         return sortedDashboards;
     }
 
-    private List<Applicant> getAllApplicantsByDashboardId(Long dashboardId) {
-        List<Process> processes = processService.findAllByDashboardId(dashboardId);
+    private List<Applicant> getAllApplicantsByDashboardId(Dashboard dashboard) {
+        List<Process> processes = processService.findAllByDashboard(dashboard);
         return processes.stream()
                 .flatMap(process -> applicantService.findAllByProcess(process)
                         .stream())
