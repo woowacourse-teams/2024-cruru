@@ -33,6 +33,29 @@ const ModalNav = styled.div`
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 
+const ModalNavHeaderContainer = styled.div`
+  height: 100%;
+  padding: 1.8rem 1.6rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const ModalNavHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  ${({ theme }) => theme.typography.heading[600]};
+  color: ${({ theme }) => theme.colors.text.default};
+`;
+
+const ModalNavContent = styled.div`
+  ${({ theme }) => theme.typography.common.paragraph};
+`;
+
 const ModalMain = styled.div`
   grid-area: main;
   border-right: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[600]};
@@ -56,6 +79,9 @@ const S = {
   ModalHeader,
   ModalSidebar,
   ModalNav,
+  ModalNavHeaderContainer,
+  ModalNavHeader,
+  ModalNavContent,
   ModalMain,
   ModalAside,
   ModalEvalHeader,
