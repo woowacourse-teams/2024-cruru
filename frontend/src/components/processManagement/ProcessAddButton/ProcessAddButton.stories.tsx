@@ -21,6 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    postId: 1,
     priorOrderIndex: 0,
   },
 };

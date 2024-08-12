@@ -9,13 +9,14 @@ import { processMutaions } from '@hooks/process';
 import C from '../style';
 
 interface ProcessModifyFormProps {
+  postId: number;
   process: Process;
   isDeletable?: boolean;
 }
 
-export default function ProcessModifyForm({ process, isDeletable = false }: ProcessModifyFormProps) {
-  const { mutate: modifyMutate } = processMutaions.useModifyProcess();
-  const { mutate: deleteMutate } = processMutaions.useDeleteProcess();
+export default function ProcessModifyForm({ postId, process, isDeletable = false }: ProcessModifyFormProps) {
+  const { mutate: modifyMutate } = processMutaions.useModifyProcess(postId);
+  const { mutate: deleteMutate } = processMutaions.useDeleteProcess(postId);
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: process.name ?? '',

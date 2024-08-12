@@ -7,7 +7,12 @@ import ProcessAddForm from '@components/processManagement/ProcessAddForm';
 
 import S from './style';
 
-export default function ProcessAddButton({ priorOrderIndex }: { priorOrderIndex: number }) {
+interface ProcessAddButtonProps {
+  postId: number;
+  priorOrderIndex: number;
+}
+
+export default function ProcessAddButton({ postId, priorOrderIndex }: ProcessAddButtonProps) {
   const [isToggled, setIsToggled] = useState(false);
 
   const toggleProcessAddForm = () => {
@@ -18,6 +23,7 @@ export default function ProcessAddButton({ priorOrderIndex }: { priorOrderIndex:
     <S.Container>
       {isToggled ? (
         <ProcessAddForm
+          postId={postId}
           priorOrderIndex={priorOrderIndex}
           toggleForm={toggleProcessAddForm}
         />

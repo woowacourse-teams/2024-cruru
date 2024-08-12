@@ -9,19 +9,18 @@ import { useClickOutside } from '@hooks/utils/useClickOutside';
 
 import { Process } from '@customTypes/process';
 import { PROCESS } from '@constants/constants';
-import { useParams } from 'react-router-dom';
 import C from '../style';
 
 interface ProcessAddFormProps {
+  postId: number;
   priorOrderIndex: number;
   toggleForm: () => void;
 }
 
-export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessAddFormProps) {
+export default function ProcessAddForm({ postId, priorOrderIndex, toggleForm }: ProcessAddFormProps) {
   const formRef = useClickOutside<HTMLFormElement>(toggleForm);
-  const { dashboardId } = useParams() as { dashboardId: string };
 
-  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm });
+  const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm, postId });
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: '',
@@ -39,7 +38,7 @@ export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessA
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate({
-      dashboardId: Number(dashboardId),
+      dashboardId: postId,
       orderIndex: priorOrderIndex + 1,
       ...formState,
     });
