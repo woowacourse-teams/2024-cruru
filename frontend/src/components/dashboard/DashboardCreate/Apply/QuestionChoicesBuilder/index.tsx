@@ -25,9 +25,9 @@ export default function QuestionChoicesBuilder({ choices, onUpdate }: QuestionCh
     const newChoices = [...choices];
 
     if (index < newChoices.length) {
-      newChoices[index].value = newValue;
+      newChoices[index].choice = newValue;
     } else {
-      newChoices.push({ value: newValue });
+      newChoices.push({ choice: newValue });
     }
 
     onUpdate(newChoices);
@@ -37,7 +37,7 @@ export default function QuestionChoicesBuilder({ choices, onUpdate }: QuestionCh
     if (event.key === 'Enter') {
       event.preventDefault();
       if (index === choices.length - 1) {
-        onUpdate([...choices, { value: '' }]);
+        onUpdate([...choices, { choice: '' }]);
         setTimeout(() => inputRefs.current[index + 1]?.focus(), 0);
       } else {
         inputRefs.current[index + 1]?.focus();
@@ -50,7 +50,7 @@ export default function QuestionChoicesBuilder({ choices, onUpdate }: QuestionCh
     onUpdate(newChoices);
   };
 
-  const choicesToRender = choices.length === 0 ? [{ value: '' }] : choices;
+  const choicesToRender = choices.length === 0 ? [{ choice: '' }] : choices;
 
   return (
     <S.Wrapper>
@@ -63,7 +63,7 @@ export default function QuestionChoicesBuilder({ choices, onUpdate }: QuestionCh
               ref={(el) => setInputRef(el, index)}
               type="text"
               placeholder="옵션을 입력하세요."
-              value={choice.value}
+              value={choice.choice}
               onChange={(event) => handleInputChange(event, index)}
               onKeyDown={(event) => handleKeyDown(event, index)}
             />
