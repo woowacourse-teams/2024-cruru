@@ -8,7 +8,8 @@ import { processMutaions } from '@hooks/process';
 import { useClickOutside } from '@hooks/utils/useClickOutside';
 
 import { Process } from '@customTypes/process';
-import { DASHBOARD_ID, PROCESS } from '@constants/constants';
+import { PROCESS } from '@constants/constants';
+import { useParams } from 'react-router-dom';
 import C from '../style';
 
 interface ProcessAddFormProps {
@@ -18,6 +19,7 @@ interface ProcessAddFormProps {
 
 export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessAddFormProps) {
   const formRef = useClickOutside<HTMLFormElement>(toggleForm);
+  const { dashboardId } = useParams() as { dashboardId: string };
 
   const { mutate } = processMutaions.useCreateProcess({ handleSuccess: toggleForm });
 
@@ -37,8 +39,7 @@ export default function ProcessAddForm({ priorOrderIndex, toggleForm }: ProcessA
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate({
-      // TODO: 상수를 전역상태로 관리하는 것으로 변경
-      dashboardId: DASHBOARD_ID,
+      dashboardId: Number(dashboardId),
       orderIndex: priorOrderIndex + 1,
       ...formState,
     });
