@@ -27,7 +27,11 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
   const { mutate: apply } = applyMutations.useApply(postId, recruitmentPost?.title ?? '');
 
-  const { formData: applicant, register } = useForm<ApplicantData>({
+  const {
+    formData: applicant,
+    register,
+    errors,
+  } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
   });
 
@@ -42,6 +46,12 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
         return;
       }
     }
+
+    if (Object.values(errors).some((error) => error)) {
+      window.alert('입력한 정보를 확인해주세요.');
+      return;
+    }
+
     if (!personalDataCollection) {
       window.alert('개인정보 수집 및 이용 동의에 체크해주세요.');
       return;
