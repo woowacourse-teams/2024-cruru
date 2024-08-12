@@ -15,6 +15,7 @@ export default function RecruitmentPostTab() {
 
   const { postId } = useParams<{ postId: string }>() as { postId: string };
   const { data: questions } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
+  const { data: recruitmentPost, isClosed } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
 
   return (
     <>
@@ -26,15 +27,23 @@ export default function RecruitmentPostTab() {
             name={label}
             isActive={currentMenu === label}
             handleClickTabItem={moveTab}
+            disabled={label === '지원하기' && isClosed}
           />
         ))}
       </Tab>
 
       <Tab.TabPanel isVisible={currentMenu === '모집 공고'}>
-        <RecruitmentPostDetail moveTab={moveTab} />
+        <RecruitmentPostDetail
+          recruitmentPost={recruitmentPost}
+          isClosed={isClosed}
+          moveTab={moveTab}
+        />
       </Tab.TabPanel>
       <Tab.TabPanel isVisible={currentMenu === '지원하기'}>
-        <ApplyForm questions={questions ?? ([] as Question[])} />
+        <ApplyForm
+          isClosed={isClosed}
+          questions={questions ?? ([] as Question[])}
+        />
       </Tab.TabPanel>
     </>
   );

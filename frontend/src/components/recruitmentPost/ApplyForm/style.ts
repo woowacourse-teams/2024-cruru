@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Form = styled.form`
@@ -22,11 +23,22 @@ const CheckBoxOption = styled.div`
   gap: 1.2rem;
 `;
 
-const CheckBoxLabel = styled.label`
+const CheckBoxLabel = styled.label<{ required: boolean }>`
   ${({ theme }) => theme.typography.common.large}
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  ${({ required, theme }) =>
+    required &&
+    css`
+      &::after {
+        content: '*';
+        color: ${theme.colors.feedback.error};
+        font-size: ${theme.typography.heading[500]};
+        margin-left: 0.4rem;
+      }
+    `}
 `;
 
 const PersonalDataCollectionDescription = styled.p`
