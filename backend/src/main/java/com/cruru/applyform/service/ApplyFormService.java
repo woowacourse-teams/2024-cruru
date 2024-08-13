@@ -15,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplyFormService {
 
+    private final ApplyFormRepository applyFormRepository;
+    
     @Value("${base-url.applyform}")
     private String applyPostBaseUrl;
-
-    private final ApplyFormRepository applyFormRepository;
 
     @Transactional
     public ApplyForm create(ApplyFormCreateRequest request, Dashboard createdDashboard) {
