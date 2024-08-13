@@ -49,9 +49,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ProblemDetail> handleConflictException(ConflictException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+        return ResponseEntity.of(problemDetail).build();
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleInternalServerException(InternalServerException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                e.getMessage()
+        );
         return ResponseEntity.of(problemDetail).build();
     }
 }

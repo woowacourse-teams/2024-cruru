@@ -38,7 +38,7 @@ class ClubServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(MemberFixture.createMember());
+        Member member = memberRepository.save(MemberFixture.createMember1());
         ClubCreateRequest request = new ClubCreateRequest("연합동아리");
 
         // when
