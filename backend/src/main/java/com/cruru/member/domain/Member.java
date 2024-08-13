@@ -29,7 +29,6 @@ public class Member extends BaseEntity {
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile(
             "^(01[0|1|6|7|8|9])\\d{3,4}\\d{4}$|^(02|0[3-6][1-5])\\d{3,4}\\d{4}$");
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
