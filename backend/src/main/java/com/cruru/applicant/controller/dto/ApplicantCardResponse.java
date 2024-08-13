@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 public record ApplicantCardResponse(
-        @JsonProperty("processId")
+        @JsonProperty("applicantId")
         long id,
 
         @JsonProperty("applicantName")
