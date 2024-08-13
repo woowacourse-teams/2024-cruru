@@ -62,3 +62,45 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    defer-datasource-initialization: true
+dataloader:
+  enable: false
+server:
+  port: ${SERVER_PORT}
+
+management:
+  server:
+    port: ${MONITORING_PORT}
+  endpoints:
+    web:
+      base-path: ${MONITORING_BASE_PATH}
+      exposure:
+        include: prometheus
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+
+apply:
+  post:
+    base-url: ${APPLY_POST_BASE_URL}

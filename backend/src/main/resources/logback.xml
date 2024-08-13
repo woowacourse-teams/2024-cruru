@@ -82,4 +82,14 @@
             <appender-ref ref="ERROR"/>
         </root>
     </springProfile>
+
+    <!-- Prod Profile -->
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="INFO"/>
+            <appender-ref ref="WARN"/>
+            <appender-ref ref="ERROR"/>
+        </root>
+    </springProfile>
 </configuration>
