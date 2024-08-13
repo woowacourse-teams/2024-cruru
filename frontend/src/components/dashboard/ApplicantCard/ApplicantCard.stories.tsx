@@ -6,11 +6,24 @@ const meta = {
   component: ApplicantCard,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'ApplicantCard 컴포넌트는 지원자의 간단한 정보를 담고있는 버튼 컴포넌트입니다.',
+      },
+    },
   },
   argTypes: {
-    name: { control: 'text' },
+    name: { control: 'text', description: '지원자 카드의 이름 부분을 나타냅니다.' },
     createdAt: { control: 'date' },
   },
+  tags: ['autodocs'],
+  decorators: [
+    (Child) => (
+      <div style={{ width: '350px' }}>
+        <Child />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof ApplicantCard>;
 
 export default meta;
