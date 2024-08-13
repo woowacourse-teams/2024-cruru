@@ -40,15 +40,18 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
         <S.Title>{process.name}</S.Title>
       </S.Header>
       <S.ApplicantList>
-        {process.applicants.map(({ applicantId, applicantName, createdAt }) => (
-          <ApplicantCard
-            key={applicantId}
-            name={applicantName}
-            createdAt={createdAt}
-            popOverMenuItems={menuItemsList({ applicantId })}
-            onCardClick={() => cardClickHandler(applicantId)}
-          />
-        ))}
+        {process.applicants.map(
+          ({ applicantId, applicantName, createdAt, isRejected }) =>
+            !isRejected && (
+              <ApplicantCard
+                key={applicantId}
+                name={applicantName}
+                createdAt={createdAt}
+                popOverMenuItems={menuItemsList({ applicantId })}
+                onCardClick={() => cardClickHandler(applicantId)}
+              />
+            ),
+        )}
       </S.ApplicantList>
     </S.ProcessWrapper>
   );
