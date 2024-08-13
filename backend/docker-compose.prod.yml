@@ -4,8 +4,6 @@ services:
   application:
     container_name: app_container
     platform: linux/arm64
-    depends_on:
-      - database-mysql
     restart: always
     image: ${DOCKER_REPO_NAME}/cruru:prod-latest
     ports:
