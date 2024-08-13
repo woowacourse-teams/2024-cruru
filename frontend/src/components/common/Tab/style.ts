@@ -57,7 +57,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
 
 const TabPanel = styled.div<{ isVisible: boolean }>`
   width: 100%;
-  height: 80%;
+  height: 85%;
   padding: 2rem 0rem;
 
   ${hideScrollBar};
