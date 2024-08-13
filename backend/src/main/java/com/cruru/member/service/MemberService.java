@@ -26,7 +26,6 @@ public class MemberService {
         return memberRepository.save(new Member(request.email(), request.password(), request.phone()));
     }
 
-
     public Member findById(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);

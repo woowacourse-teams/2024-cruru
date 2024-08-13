@@ -9,6 +9,7 @@ import com.cruru.member.exception.badrequest.MemberPasswordLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("회원 도메인 테스트")
 class MemberTest {
@@ -21,13 +22,13 @@ class MemberTest {
             "test3@example.com, MyPassword1!, 0311234567"
     })
     void createMember(String email, String password, String phone) {
-        // given & when & then
+        // given&when&then
         assertDoesNotThrow(() -> new Member(email, password, phone));
     }
 
     @DisplayName("허용되지 않는 비밀번호 형식으로 Member 생성 시 예외를 발생시킨다.")
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "NoNumber!",    // 숫자가 없음
             "NoSpecial123" // 특수문자가 없음
     })
@@ -42,7 +43,7 @@ class MemberTest {
 
     @DisplayName("허용되지 않는 비밀번호 길이로 Member 생성 시 예외를 발생시킨다.")
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "short1!",     // 길이가 8자 미만
             "VeryLongPassword12345678901234567890!" // 길이가 32자 초과
     })
@@ -51,13 +52,13 @@ class MemberTest {
         String email = "test@example.com";
         String phone = "01012345678";
 
-        // when & then
+        // when&then
         assertThrows(MemberPasswordLengthException.class, () -> new Member(email, password, phone));
     }
 
     @DisplayName("허용되지 않는 전화번호로 Member 생성 시 예외를 발생시킨다.")
     @ParameterizedTest
-    @CsvSource({
+    @ValueSource(strings = {
             "0123456789",      // 잘못된 시작번호
             "010-1234-567",    // 형식에 맞지 않음
             "031-1234-56789",  // 형식에 맞지 않음
@@ -72,7 +73,7 @@ class MemberTest {
         String email = "test@example.com";
         String password = "ValidPassword123!";
 
-        // when & then
+        // when&then
         assertThrows(MemberIllegalPhoneNumberException.class, () -> new Member(email, password, phone));
     }
 }

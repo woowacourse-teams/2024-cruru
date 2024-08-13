@@ -1,6 +1,5 @@
 package com.cruru.member.domain.repository;
 
-import static com.cruru.util.fixture.MemberFixture.createMember1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -29,7 +28,7 @@ class MemberRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Member member = createMember1();
+        Member member = MemberFixture.createMember1();
         Member saved = memberRepository.save(member);
 
         //when
@@ -59,7 +58,7 @@ class MemberRepositoryTest {
 
     @DisplayName("같은 email을 가진 member를 저장 시, 예외가 발생한다.")
     @Test
-    void save_DuplicateEmail() {
+    void save_duplicateEmail() {
         //given
         Member member1 = MemberFixture.createMember1();
         Member member2 = MemberFixture.createMember1();
