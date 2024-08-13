@@ -31,7 +31,7 @@ export default function ApplicantCard({ name, createdAt, popOverMenuItems, onCar
     }
   };
 
-  const handleMouseOver = () => {
+  const handleMouseLeave = () => {
     setIsPopOverOpen(false);
   };
 
@@ -52,7 +52,7 @@ export default function ApplicantCard({ name, createdAt, popOverMenuItems, onCar
 
   return (
     <S.CardContainer
-      onMouseLeave={handleMouseOver}
+      onMouseLeave={handleMouseLeave}
       onClick={cardClickHandler}
     >
       <S.CardDetail>
