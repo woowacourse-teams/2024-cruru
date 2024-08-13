@@ -4,9 +4,9 @@ import com.cruru.advice.badrequest.TextLengthException;
 
 public class MemberPasswordLengthException extends TextLengthException {
 
-    private static final String MESSAGE = "비밀번호";
+    private static final String TEXT = "비밀번호";
 
     public MemberPasswordLengthException(int max, int currentLength) {
-        super(MESSAGE, max, currentLength);
+        super(TEXT, max, currentLength);
     }
 }
