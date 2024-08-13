@@ -102,3 +102,7 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+apply:
+  post:
+    base-url: ${APPLY_POST_BASE_URL}

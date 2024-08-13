@@ -18,6 +18,7 @@ services:
       DOCKER_REPO_NAME: ${DOCKER_REPO_NAME}
       MONITORING_PORT: ${MONITORING_PORT}
       MONITORING_BASE_PATH: ${MONITORING_BASE_PATH}
+      APPLY_POST_BASE_URL: ${APPLY_POST_BASE_URL}
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
