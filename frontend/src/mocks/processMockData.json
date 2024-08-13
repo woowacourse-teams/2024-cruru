@@ -46,8 +46,51 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 2,
-      "orderIndex": 1,
+      "processId": 4,
+      "orderIndex": 3,
+      "applicants": [
+        {
+          "applicantId": 1,
+          "applicantName": "러기",
+          "createdAt": "2024-07-16T05:46:08.328593",
+          "isRejected": false,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 2,
+          "applicantName": "도비",
+          "createdAt": "2024-07-16T05:46:08.341936",
+          "isRejected": false,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 6,
+          "applicantName": "러시",
+          "createdAt": "2024-07-16T05:46:08.356121",
+          "isRejected": true,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 7,
+          "applicantName": "냥인",
+          "createdAt": "2024-07-16T05:46:08.359131",
+          "isRejected": true,
+          "evaluationCount": 1
+        },
+        {
+          "applicantId": 8,
+          "applicantName": "렛서",
+          "createdAt": "2024-07-16T05:46:08.361759",
+          "isRejected": false,
+          "evaluationCount": 1
+        }
+      ],
+      "name": "프로세스 3",
+      "description": "지원서를 확인한다."
+    },
+    {
+      "processId": 5,
+      "orderIndex": 4,
       "applicants": [
         {
           "applicantId": 1,
