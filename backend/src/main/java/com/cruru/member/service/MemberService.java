@@ -46,7 +46,7 @@ public class MemberService {
 
     private void validatePassword(String rawPassword) {
         if (rawPassword.length() < PASSWORD_MIN_LENGTH || rawPassword.length() > PASSWORD_MAX_LENGTH) {
-            throw new MemberPasswordLengthException(PASSWORD_MAX_LENGTH, rawPassword.length());
+            throw new MemberPasswordLengthException(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, rawPassword.length());
         }
         if (!VALID_PASSWORD_PATTERN.matcher(rawPassword).matches()) {
             throw new MemberIllegalPasswordException();
