@@ -2,12 +2,16 @@ import styled from '@emotion/styled';
 import { hideScrollBar } from '@styles/utils';
 
 const ProcessWrapper = styled.section`
-  width: 24rem;
+  width: 100%;
+  min-width: 25rem;
+  height: 100%;
   padding: 20px 12px 12px 12px;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
+  overflow-y: scroll;
+  overflow-x: visible;
   ${hideScrollBar};
 `;
 
