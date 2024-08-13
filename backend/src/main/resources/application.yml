@@ -23,9 +23,8 @@ spring:
 dataloader:
   enable: true
 
-apply:
-  post:
-    base-url: www.cruru.kr/post/%d
+base-url:
+  applyform: www.cruru.kr/post/%d
 ---
 spring:
   config:
