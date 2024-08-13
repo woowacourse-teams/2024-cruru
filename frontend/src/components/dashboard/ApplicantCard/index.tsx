@@ -31,6 +31,10 @@ export default function ApplicantCard({ name, createdAt, popOverMenuItems, onCar
     }
   };
 
+  const handleMouseLeave = () => {
+    setIsPopOverOpen(false);
+  };
+
   useEffect(() => {
     if (isPopOverOpen) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -47,7 +51,10 @@ export default function ApplicantCard({ name, createdAt, popOverMenuItems, onCar
   };
 
   return (
-    <S.CardContainer onClick={cardClickHandler}>
+    <S.CardContainer
+      onMouseLeave={handleMouseLeave}
+      onClick={cardClickHandler}
+    >
       <S.CardDetail>
         <S.CardHeader>{name}</S.CardHeader>
         <S.CardDate>{`지원 일자: ${formatDate(createdAt)}`}</S.CardDate>
