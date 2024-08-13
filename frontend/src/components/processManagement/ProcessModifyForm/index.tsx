@@ -5,17 +5,24 @@ import InputField from '@components/common/InputField';
 import TextField from '@components/common/TextField';
 
 import { Process } from '@customTypes/process';
-import { processMutaions } from '@hooks/process';
+import { processMutations } from '@hooks/process';
 import C from '../style';
 
 interface ProcessModifyFormProps {
+  dashboardId: string;
+  postId: string;
   process: Process;
   isDeletable?: boolean;
 }
 
-export default function ProcessModifyForm({ process, isDeletable = false }: ProcessModifyFormProps) {
-  const { mutate: modifyMutate } = processMutaions.useModifyProcess();
-  const { mutate: deleteMutate } = processMutaions.useDeleteProcess();
+export default function ProcessModifyForm({
+  dashboardId,
+  postId,
+  process,
+  isDeletable = false,
+}: ProcessModifyFormProps) {
+  const { mutate: modifyMutate } = processMutations.useModifyProcess({ dashboardId, postId });
+  const { mutate: deleteMutate } = processMutations.useDeleteProcess({ dashboardId, postId });
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: process.name ?? '',
