@@ -25,7 +25,7 @@ dataloader:
 
 apply:
   post:
-    base-url: https://local.cruru.kr/post/%d
+    base-url: https://www.cruru.kr/post/%d
 ---
 spring:
   config:
