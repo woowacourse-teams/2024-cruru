@@ -6,6 +6,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplyFormService {
 
-    private static final String APPLY_POST_BASE_URL = "www.cruru.kr/post/%d";
-
     private final ApplyFormRepository applyFormRepository;
+    
+    @Value("${base-url.applyform}")
+    private String applyPostBaseUrl;
 
     @Transactional
     public ApplyForm create(ApplyFormCreateRequest request, Dashboard createdDashboard) {
@@ -24,7 +26,7 @@ public class ApplyFormService {
 
         ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
         Long savedPostingId = savedApplyForm.getId();
-        String generatedUrl = String.format(APPLY_POST_BASE_URL, savedPostingId);
+        String generatedUrl = String.format(applyPostBaseUrl, savedPostingId);
         savedApplyForm.setUrl(generatedUrl);
 
         return savedApplyForm;
