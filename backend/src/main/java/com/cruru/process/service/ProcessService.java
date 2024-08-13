@@ -51,11 +51,6 @@ public class ProcessService {
         }
     }
 
-    public Process findById(long processId) {
-        return processRepository.findById(processId)
-                .orElseThrow(ProcessNotFoundException::new);
-    }
-
     public List<Process> findAllByDashboard(Dashboard dashboard) {
         return processRepository.findAllByDashboard(dashboard);
     }
@@ -89,6 +84,11 @@ public class ProcessService {
         process.updateDescription(request.description());
 
         return process;
+    }
+
+    public Process findById(long processId) {
+        return processRepository.findById(processId)
+                .orElseThrow(ProcessNotFoundException::new);
     }
 
     private boolean nothingToChange(ProcessUpdateRequest request, Process process) {
