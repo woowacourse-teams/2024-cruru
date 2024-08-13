@@ -48,6 +48,8 @@ export default function CheckBoxField({ choices, setChoices }: Props) {
   }, [choices.length]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.nativeEvent.isComposing) return;
+
     if ((e.key === 'Tab' || e.key === 'Enter') && !e.shiftKey) {
       e.preventDefault();
       if (index === choices.length - 1) {
