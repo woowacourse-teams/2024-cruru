@@ -99,7 +99,7 @@ class MemberServiceTest extends ServiceTest {
         String phone = "01012345678";
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest("크루루", email, password, phone);
 
-        // when & then
+        // when&then
         assertThatThrownBy(() -> memberService.create(memberCreateRequest)).isInstanceOf(MemberIllegalPasswordException.class);
     }
 }
