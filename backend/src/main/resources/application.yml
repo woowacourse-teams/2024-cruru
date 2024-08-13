@@ -23,6 +23,9 @@ spring:
 dataloader:
   enable: true
 
+apply:
+  post:
+    base-url: https://local.cruru.kr/post/%d
 ---
 spring:
   config:
@@ -62,3 +65,7 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+apply:
+  post:
+    base-url: ${APPLY_POST_BASE_URL}
