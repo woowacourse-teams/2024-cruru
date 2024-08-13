@@ -37,6 +37,12 @@ export default function Apply({
   prevStep,
   nextStep,
 }: ApplyProps) {
+  const isNextBtnValid =
+    applyState.length === DEFAULT_QUESTION_LENGTH ||
+    applyState
+      .slice(DEFAULT_QUESTION_LENGTH)
+      .every((question) => question.question.trim() && question.choices.length !== 1);
+
   return (
     <S.Wrapper>
       <S.Section>
@@ -106,7 +112,7 @@ export default function Apply({
             </S.ButtonContent>
           </Button>
           <Button
-            disabled={false}
+            disabled={!isNextBtnValid}
             onClick={nextStep}
             size="sm"
             color="white"

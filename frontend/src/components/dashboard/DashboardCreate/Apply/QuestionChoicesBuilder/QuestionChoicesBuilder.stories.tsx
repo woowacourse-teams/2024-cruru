@@ -25,9 +25,9 @@ type Story = StoryObj<typeof QuestionChoicesBuilder>;
 export const Default: Story = {
   render: (args) => {
     const [choices, setChoices] = useState<QuestionOptionValue[]>([
-      { value: '첫 번째 옵션입니다.' },
-      { value: '두 번째 옵션입니다.' },
-      { value: '세 번째 옵션입니다.' },
+      { choice: '첫 번째 옵션입니다.' },
+      { choice: '두 번째 옵션입니다.' },
+      { choice: '세 번째 옵션입니다.' },
     ]);
 
     const onUpdate = (newChoices: QuestionOptionValue[]) => {
