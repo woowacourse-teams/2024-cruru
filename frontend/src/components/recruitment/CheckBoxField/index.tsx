@@ -1,39 +1,40 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-
-import S from './style';
+import { QuestionOptionValue } from '@customTypes/dashboard';
 import CheckBoxOption from '../CheckBoxOption';
 
-interface Option {
-  value: string;
+import S from './style';
+
+interface ChoiceOption {
+  choice: string;
 }
 
 interface Props {
-  options: Option[];
-  setOptions: React.Dispatch<React.SetStateAction<Option[]>>;
+  choices: ChoiceOption[];
+  setChoices: (newChoices: QuestionOptionValue[]) => void;
 }
 
-export default function CheckBoxField({ options, setOptions }: Props) {
+export default function CheckBoxField({ choices, setChoices }: Props) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleOptionChange = (index: number, value: string) => {
-    const newOptions = [...options];
-    newOptions[index].value = value;
-    setOptions(newOptions);
+    const newOptions = [...choices];
+    newOptions[index].choice = value;
+    setChoices(newOptions);
   };
 
   const addOption = () => {
-    setOptions([...options, { value: '' }]);
+    setChoices([...choices, { choice: '' }]);
   };
 
   const deleteOption = (index: number) => {
-    const newOptions = options.slice();
+    const newOptions = choices.slice();
     newOptions.splice(index, 1);
-    setOptions(newOptions);
+    setChoices(newOptions);
   };
 
   const handleOptionBlur = (index: number) => {
-    const isLastOption = index === options.length - 1;
-    const isEmptyValue = options[index].value.trim() === '';
+    const isLastOption = index === choices.length - 1;
+    const isEmptyValue = choices[index].choice.trim() === '';
     if (!isLastOption && isEmptyValue) {
       deleteOption(index);
     }
@@ -43,13 +44,13 @@ export default function CheckBoxField({ options, setOptions }: Props) {
   };
 
   const focusLastOption = useCallback(() => {
-    inputRefs.current[options.length - 1]?.focus();
-  }, [options.length]);
+    inputRefs.current[choices.length - 1]?.focus();
+  }, [choices.length]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
     if ((e.key === 'Tab' || e.key === 'Enter') && !e.shiftKey) {
       e.preventDefault();
-      if (index === options.length - 1) {
+      if (index === choices.length - 1) {
         addOption();
       }
       focusLastOption();
@@ -58,7 +59,7 @@ export default function CheckBoxField({ options, setOptions }: Props) {
 
   useEffect(() => {
     focusLastOption();
-  }, [options.length, focusLastOption]);
+  }, [choices.length, focusLastOption]);
 
   const setInputRefCallback = (index: number) => (node: HTMLInputElement) => {
     inputRefs.current[index] = node;
@@ -66,15 +67,15 @@ export default function CheckBoxField({ options, setOptions }: Props) {
 
   return (
     <S.Container>
-      {options.map((option, index) => (
+      {choices.map((choice, index) => (
         <CheckBoxOption
           // eslint-disable-next-line react/no-array-index-key
           key={index}
           isDisabled={false}
-          isDeleteBtn={options.length - 1 !== index}
+          isDeleteBtn={choices.length - 1 !== index}
           onDeleteBtnClick={() => deleteOption(index)}
           inputAttrs={{
-            value: option.value,
+            value: choice.choice,
             ref: setInputRefCallback(index),
             onChange: (e) => handleOptionChange(index, e.target.value),
             onKeyDown: (e) => handleKeyDown(e, index),
