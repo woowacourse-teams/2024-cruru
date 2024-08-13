@@ -25,13 +25,21 @@ const Contents = styled.nav`
   gap: 1.4rem;
 `;
 
-const LinkContainer = styled.button<{ isSelected: boolean }>`
+const LinkContainer = styled.div<{ isSelected: boolean }>`
   ${({ theme }) => theme.typography.common.block}
   color: ${({ theme, isSelected }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.default)};
   margin-bottom: 0;
 
+  display: flex;
+  align-items: flex-start;
+
+  & > button > a {
+    text-align: start;
+  }
+
   &::before {
     content: '•';
+    display: block;
     width: 1rem;
     aspect-ratio: 1/1;
     margin: 0 0.8rem;
