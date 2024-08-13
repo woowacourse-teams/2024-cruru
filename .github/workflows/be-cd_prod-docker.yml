@@ -88,7 +88,7 @@ jobs:
         MONITORING_BASE_PATH=${{ secrets.MONITORING_BASE_PATH }}
         
         # Apply configuration server info from Github secrets
-        APPLY_POST_BASE_URL: ${{secrets.APPLY_POST_BASE_URL}}
+        APPLY_POST_BASE_URL=${{ secrets.APPLY_POST_BASE_URL }}
         EOF
 
     - name: Stop and remove existing containers
