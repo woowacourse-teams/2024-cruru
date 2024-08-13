@@ -9,6 +9,7 @@ import com.cruru.auth.security.PasswordValidator;
 import com.cruru.member.controller.dto.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.member.exception.badrequest.MemberIllegalPasswordException;
 import com.cruru.member.exception.badrequest.MemberPasswordLengthException;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.MemberFixture;
@@ -84,5 +85,21 @@ class MemberServiceTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> memberService.create(memberCreateRequest)).isInstanceOf(MemberPasswordLengthException.class);
+    }
+
+    @DisplayName("허용되지 않는 비밀번호 형식으로 Member 생성 시 예외를 발생시킨다.")
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "NoNumber!",    // 숫자가 없음
+            "NoSpecial123" // 특수문자가 없음
+    })
+    void createMemberWithInvalidPassword(String password) {
+        // given
+        String email = "test@example.com";
+        String phone = "01012345678";
+        MemberCreateRequest memberCreateRequest = new MemberCreateRequest("크루루", email, password, phone);
+
+        // when & then
+        assertThatThrownBy(() -> memberService.create(memberCreateRequest)).isInstanceOf(MemberIllegalPasswordException.class);
     }
 }

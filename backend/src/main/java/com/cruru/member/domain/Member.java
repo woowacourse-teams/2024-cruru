@@ -1,7 +1,6 @@
 package com.cruru.member.domain;
 
 import com.cruru.BaseEntity;
-import com.cruru.member.exception.badrequest.MemberIllegalPasswordException;
 import com.cruru.member.exception.badrequest.MemberIllegalPhoneNumberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,8 +20,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Member extends BaseEntity {
 
-    private static final Pattern VALID_PASSWORD_PATTERN = Pattern.compile(
-            "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).*$");
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile(
             "^(010)\\d{3,4}\\d{4}$|^(02|0[3-6][1-5])\\d{3,4}\\d{4}$");
 
@@ -39,17 +36,10 @@ public class Member extends BaseEntity {
     private String phone;
 
     public Member(String email, String password, String phone) {
-        validatePassword(password);
         validatePhoneNumber(phone);
         this.email = email;
         this.password = password;
         this.phone = phone;
-    }
-
-    private void validatePassword(String password) {
-        if (!VALID_PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new MemberIllegalPasswordException();
-        }
     }
 
     private void validatePhoneNumber(String phoneNumber) {

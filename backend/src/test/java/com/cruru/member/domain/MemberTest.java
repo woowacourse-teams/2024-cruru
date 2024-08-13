@@ -3,7 +3,6 @@ package com.cruru.member.domain;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.cruru.member.exception.badrequest.MemberIllegalPasswordException;
 import com.cruru.member.exception.badrequest.MemberIllegalPhoneNumberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,21 +22,6 @@ class MemberTest {
     void createMember(String email, String password, String phone) {
         // given&when&then
         assertDoesNotThrow(() -> new Member(email, password, phone));
-    }
-
-    @DisplayName("허용되지 않는 비밀번호 형식으로 Member 생성 시 예외를 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "NoNumber!",    // 숫자가 없음
-            "NoSpecial123" // 특수문자가 없음
-    })
-    void createMemberWithInvalidPassword(String password) {
-        // given
-        String email = "test@example.com";
-        String phone = "01012345678";
-
-        // when & then
-        assertThrows(MemberIllegalPasswordException.class, () -> new Member(email, password, phone));
     }
 
     @DisplayName("허용되지 않는 전화번호로 Member 생성 시 예외를 발생시킨다.")
