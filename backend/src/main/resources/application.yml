@@ -81,7 +81,7 @@ spring:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: true
 dataloader:
-  enable: true
+  enable: false
 server:
   port: ${SERVER_PORT}
 
