@@ -4,10 +4,12 @@ interface ContainerProps {
   size: 'sm' | 'md';
   isOpen: boolean;
   popOverPosition?: string;
+  right?: number;
 }
 
 const Container = styled.div<ContainerProps>`
-  min-width: ${({ size }) => (size === 'sm' ? '90px' : '240px')};
+  width: ${({ size }) => (size === 'sm' ? '120px' : '240px')};
+
   position: absolute;
   inset: ${({ popOverPosition }) => popOverPosition ?? 'inherit'};
 
@@ -17,6 +19,10 @@ const Container = styled.div<ContainerProps>`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
 
   z-index: 1;
+`;
+
+const ListWrapper = styled.div`
+  padding: 0 0.8rem 0.8rem;
 `;
 
 const List = styled.div<{ size: 'sm' | 'md' }>`
@@ -33,6 +39,7 @@ const List = styled.div<{ size: 'sm' | 'md' }>`
 
 const S = {
   Container,
+  ListWrapper,
   List,
 };
 

@@ -14,17 +14,6 @@ import theme from './styles/theme';
 
 import AppRouter from './router/AppRouter';
 
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
-  // Performance Monitoring
-  tracesSampleRate: 1.0, //  Capture 100% of the transactions
-  tracePropagationTargets: ['localhost', BASE_URL],
-  // Session Replay
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
-});
-
 async function setPrev() {
   if (process.env.NODE_ENV === 'development') {
     Sentry.getCurrentScope().setLevel('info');
@@ -34,6 +23,17 @@ async function setPrev() {
   if (process.env.NODE_ENV === 'production') {
     ReactGA.initialize(process.env.GA_MEASUREMENT_ID);
   }
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+    // Performance Monitoring
+    tracesSampleRate: 1.0, //  Capture 100% of the transactions
+    tracePropagationTargets: ['localhost', BASE_URL],
+    // Session Replay
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
+  });
 }
 
 const queryClient = new QueryClient({
