@@ -20,7 +20,8 @@ const Layout = styled.div`
 `;
 
 const MainContainer = styled.div`
-  flex: 1;
+  width: 80vw;
+  height: 100vh;
 `;
 
 const S = {

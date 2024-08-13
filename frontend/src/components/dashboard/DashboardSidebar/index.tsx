@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import Logo from '@assets/images/logo.svg';
 import Accordion from '@components/common/Accordion';
+import { Link, useParams } from 'react-router-dom';
 import S from './style';
 
 interface Option {
@@ -13,9 +14,16 @@ interface DashboardSidebarProps {
 }
 
 export default function DashboardSidebar({ options }: DashboardSidebarProps) {
+  const { dashboardId } = useParams<{ dashboardId: string }>();
+
   return (
     <S.Container>
-      <S.Logo>ㅋㄹㄹ</S.Logo>
+      <Link to={`/dashboard/${dashboardId}/posts`}>
+        <S.Logo
+          src={Logo}
+          alt="크루루 로고"
+        />
+      </Link>
 
       <S.Contents>
         <Accordion title={<Link to="/dashboard/1/posts">공고</Link>}>
@@ -23,7 +31,7 @@ export default function DashboardSidebar({ options }: DashboardSidebarProps) {
             // eslint-disable-next-line react/no-array-index-key
             <Accordion.ListItem key={index}>
               <S.LinkContainer isSelected={isSelected}>
-                <Link to={`/dashboard/1/${postId}`}>{text}</Link>
+                <Link to={`/dashboard/${dashboardId}/${postId}`}>{text}</Link>
               </S.LinkContainer>
             </Accordion.ListItem>
           ))}

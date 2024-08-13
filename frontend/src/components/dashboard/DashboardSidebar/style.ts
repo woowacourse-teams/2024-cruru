@@ -1,17 +1,22 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  width: 300px;
+  width: 20vw;
+  min-width: 25rem;
+  max-width: 30rem;
   border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   padding: 3.6rem 1.6rem;
 
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   border-radius: 1.6rem 0 0 1.6rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
 `;
 
-const Logo = styled.div`
-  ${({ theme }) => theme.typography.heading[700]}
-  margin-bottom: 3.2rem;
+const Logo = styled.img`
+  height: 2.4rem;
 `;
 
 const Contents = styled.nav`

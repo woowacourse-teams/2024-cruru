@@ -3,6 +3,7 @@ import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
 
 const AppContainer = styled.div`
   padding: 3.6rem 2rem;
+  height: 100vh;
 `;
 
 const Title = styled.div`
