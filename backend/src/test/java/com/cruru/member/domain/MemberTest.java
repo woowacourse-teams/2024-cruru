@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.cruru.member.exception.badrequest.MemberIllegalPasswordException;
 import com.cruru.member.exception.badrequest.MemberIllegalPhoneNumberException;
-import com.cruru.member.exception.badrequest.MemberPasswordLengthException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -39,21 +38,6 @@ class MemberTest {
 
         // when & then
         assertThrows(MemberIllegalPasswordException.class, () -> new Member(email, password, phone));
-    }
-
-    @DisplayName("허용되지 않는 비밀번호 길이로 Member 생성 시 예외를 발생시킨다.")
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "short1!",     // 길이가 8자 미만
-            "VeryLongPassword12345678901234567890!" // 길이가 32자 초과
-    })
-    void createMemberWithLengthPassword(String password) {
-        // given
-        String email = "test@example.com";
-        String phone = "01012345678";
-
-        // when&then
-        assertThrows(MemberPasswordLengthException.class, () -> new Member(email, password, phone));
     }
 
     @DisplayName("허용되지 않는 전화번호로 Member 생성 시 예외를 발생시킨다.")

@@ -6,7 +6,7 @@ public class MemberPasswordLengthException extends TextLengthException {
 
     private static final String MESSAGE = "비밀번호";
 
-    public MemberPasswordLengthException(int min, int max) {
-        super(MESSAGE, min, max);
+    public MemberPasswordLengthException(int max, int currentLength) {
+        super(MESSAGE, max, currentLength);
     }
 }
