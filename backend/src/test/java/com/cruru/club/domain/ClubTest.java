@@ -39,7 +39,6 @@ class ClubTest {
                 .isInstanceOf(ClubNameBlankException.class);
     }
 
-
     @DisplayName("동아리 이름이 32자 초과시 예외가 발생한다.")
     @Test
     void invalidClubNameLength() {
