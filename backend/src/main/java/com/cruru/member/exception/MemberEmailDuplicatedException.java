@@ -1,4 +1,4 @@
-package com.cruru.member.exception.badrequest;
+package com.cruru.member.exception;
 
 import com.cruru.advice.ConflictException;
 
