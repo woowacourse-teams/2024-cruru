@@ -32,7 +32,7 @@ export interface QuestionOption {
 export type QuestionControlActionType = 'moveUp' | 'moveDown' | 'delete';
 
 export interface QuestionOptionValue {
-  value: string;
+  choice: string;
 }
 
 interface Stats {

@@ -64,7 +64,6 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
           ...recruitmentInfoState,
           questions: applyState.slice(3).map(({ id, ...value }) => {
             const temp = { ...value };
-            temp.choices = value.choices.map((choice, index) => ({ ...choice, orderIndex: index }));
             return { ...temp, orderIndex: id };
           }),
         },
@@ -110,7 +109,12 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
       questionsCopy[index].type = type;
-      questionsCopy[index].choices = [];
+      if (type === 'SINGLE_CHOICE' || type === 'MULTIPLE_CHOICE') {
+        questionsCopy[index].choices = [{ choice: '', orderIndex: 0 }];
+      } else {
+        questionsCopy[index].choices = [];
+      }
+      console.log(questionsCopy);
       return questionsCopy;
     });
   };
@@ -118,7 +122,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const setQuestionOptions = (index: number) => (options: QuestionOptionValue[]) => {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
-      questionsCopy[index].choices = options.map(({ value }, i) => ({ choice: value, orderIndex: i }));
+      questionsCopy[index].choices = options.map(({ choice }, i) => ({ choice, orderIndex: i }));
       return questionsCopy;
     });
   };

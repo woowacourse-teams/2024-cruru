@@ -15,14 +15,14 @@ const meta: Meta<typeof CheckBoxField> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    options: {
+    choices: {
       description: 'CheckBoxOption으로 구성된 옵션 객체 배열입니다.',
       control: { type: 'object' },
       table: {
         type: { summary: 'Option[]' },
       },
     },
-    setOptions: {
+    setChoices: {
       description: '옵션 객체 배열을 설정하는 함수입니다.',
       action: 'optionsChanged',
       table: {
@@ -35,11 +35,11 @@ const meta: Meta<typeof CheckBoxField> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const defaultOptions = [{ value: '' }];
+const defaultOptions = [{ choice: '' }];
 
 export const Default: Story = {
   args: {
-    options: defaultOptions,
+    choices: defaultOptions,
   },
   decorators: [
     (Child) => {
@@ -49,8 +49,8 @@ export const Default: Story = {
         <Child
           args={{
             ...args,
-            setOptions: (options) => {
-              updateArgs({ options });
+            setChoices: (choices) => {
+              updateArgs({ choices });
             },
           }}
         />

@@ -1,15 +1,17 @@
 import { useState } from 'react';
 
-import { Question, QuestionChoice, QuestionControlActionType, QuestionOptionValue } from '@customTypes/dashboard';
+import { Question, QuestionControlActionType, QuestionOptionValue } from '@customTypes/dashboard';
 
 import InputField from '@components/common/InputField';
 import Dropdown from '@components/common/Dropdown';
 import ToggleSwitch from '@components/common/ToggleSwitch';
 import { QUESTION_TYPE_NAME } from '@constants/constants';
+
+import CheckBoxField from '@components/recruitment/CheckBoxField';
+import RadioInputField from '@components/recruitment/RadioInputField';
 import QuestionController from '../QuestionController';
 
 import S from './style';
-import QuestionChoicesBuilder from '../QuestionChoicesBuilder';
 
 interface QuestionBuilderProps {
   index: number;
@@ -21,10 +23,6 @@ interface QuestionBuilderProps {
   setQuestionPrev: (index: number) => () => void;
   setQuestionNext: (index: number) => () => void;
   deleteQuestion: (index: number) => void;
-}
-
-function getSortedChoices(choices: QuestionChoice[]): QuestionOptionValue[] {
-  return choices?.sort((a, b) => a.orderIndex - b.orderIndex).map((item) => ({ value: item.choice }));
 }
 
 export default function QuestionBuilder({
@@ -40,7 +38,6 @@ export default function QuestionBuilder({
 }: QuestionBuilderProps) {
   const [title, setTitle] = useState<string>(question?.question || '');
   const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>(question?.type || 'SHORT_ANSWER');
-  const [choices, setChoices] = useState<QuestionOptionValue[]>(getSortedChoices(question?.choices) || []);
   const [isRequired, setIsRequired] = useState<boolean>(question?.required || true);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,14 +47,12 @@ export default function QuestionBuilder({
 
   const handleChangeQuestionType = (type: Question['type']) => {
     if (type === currentQuestionType) return;
-    if (type === 'SHORT_ANSWER' || type === 'LONG_ANSWER') setChoices([]);
 
     setCurrentQuestionType(type);
     setQuestionType(index)(type);
   };
 
   const handleUpdateQuestionChoices = (newChoices: QuestionOptionValue[]) => {
-    setChoices(newChoices);
     setQuestionOptions(index)(newChoices);
   };
 
@@ -99,10 +94,17 @@ export default function QuestionBuilder({
           />
         </S.InputBox>
 
-        {(currentQuestionType === 'SINGLE_CHOICE' || currentQuestionType === 'MULTIPLE_CHOICE') && (
-          <QuestionChoicesBuilder
-            choices={choices}
-            onUpdate={handleUpdateQuestionChoices}
+        {currentQuestionType === 'SINGLE_CHOICE' && (
+          <RadioInputField
+            choices={question.choices}
+            setChoices={handleUpdateQuestionChoices}
+          />
+        )}
+
+        {currentQuestionType === 'MULTIPLE_CHOICE' && (
+          <CheckBoxField
+            choices={question.choices}
+            setChoices={handleUpdateQuestionChoices}
           />
         )}
 
