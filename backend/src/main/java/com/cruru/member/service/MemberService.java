@@ -37,7 +37,7 @@ public class MemberService {
     private String generateEncodedPassword(MemberCreateRequest request) {
         String rawPassword = request.password();
         if (rawPassword.length() < PASSWORD_MIN_LENGTH || rawPassword.length() > PASSWORD_MAX_LENGTH) {
-            throw new MemberPasswordLengthException(PASSWORD_MIN_LENGTH, rawPassword.length());
+            throw new MemberPasswordLengthException(PASSWORD_MAX_LENGTH, rawPassword.length());
         }
         return passwordValidator.encode(rawPassword);
     }
