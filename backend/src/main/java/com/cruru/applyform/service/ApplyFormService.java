@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplyFormService {
 
-    @Value("${apply.post.base-url}")
+    @Value("${base-url.applyform}")
     private String applyPostBaseUrl;
 
     private final ApplyFormRepository applyFormRepository;

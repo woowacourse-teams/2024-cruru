@@ -66,9 +66,8 @@ management:
     prometheus:
       enabled: true
 
-apply:
-  post:
-    base-url: ${APPLY_POST_BASE_URL}
+base-url:
+    applyform: ${APPLY_POST_BASE_URL}
 
 ---
 spring:
