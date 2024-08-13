@@ -1,8 +1,6 @@
 package com.cruru.dashboard.service;
 
 import com.cruru.club.domain.Club;
-import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.club.exception.ClubNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
@@ -20,17 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class DashboardService {
 
     private final DashboardRepository dashboardRepository;
-    private final ClubRepository clubRepository;
     private final ProcessRepository processRepository;
 
     @Transactional
-    public Dashboard create(long clubId) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(ClubNotFoundException::new);
+    public Dashboard create(Club club) {
         Dashboard savedDashboard = dashboardRepository.save(new Dashboard(club));
 
         List<Process> initProcesses = ProcessFactory.createInitProcesses(savedDashboard);
-
         processRepository.saveAll(initProcesses);
 
         return savedDashboard;
@@ -41,9 +35,7 @@ public class DashboardService {
                 .orElseThrow(DashboardNotFoundException::new);
     }
 
-    public List<Dashboard> findAllByClubId(long clubId) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(ClubNotFoundException::new);
-        return dashboardRepository.findAllByClubId(club.getId());
+    public List<Dashboard> findAllByClub(Club club) {
+        return dashboardRepository.findAllByClub(club);
     }
 }
