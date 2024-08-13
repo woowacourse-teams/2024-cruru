@@ -29,10 +29,9 @@ public class DashboardService {
                 .orElseThrow(ClubNotFoundException::new);
         Dashboard savedDashboard = dashboardRepository.save(new Dashboard(club));
 
-        Process firstProcess = ProcessFactory.createFirstOf(savedDashboard);
-        Process lastProcess = ProcessFactory.createLastOf(savedDashboard);
+        List<Process> initProcesses = ProcessFactory.createInitProcesses(savedDashboard);
 
-        processRepository.saveAll(List.of(firstProcess, lastProcess));
+        processRepository.saveAll(initProcesses);
 
         return savedDashboard;
     }
