@@ -1,14 +1,16 @@
 package com.cruru.member.domain.repository;
 
-import static com.cruru.util.fixture.MemberFixture.createMember;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.member.domain.Member;
+import com.cruru.util.fixture.MemberFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 @DisplayName("회원 레포지토리 테스트")
 @DataJpaTest
@@ -26,25 +28,25 @@ class MemberRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Member member = createMember();
+        Member member = MemberFixture.createMember1();
         Member saved = memberRepository.save(member);
 
         //when
-        Member updateMember = new Member(saved.getId(), "email", "newPassword", "newPhoneNumber");
+        Member updateMember = new Member(saved.getId(), "email", "newPassword214!", "01012341234");
         memberRepository.save(updateMember);
 
         //then
         Member findMember = memberRepository.findById(saved.getId()).get();
-        assertThat(findMember.getPassword()).isEqualTo("newPassword");
-        assertThat(findMember.getPhone()).isEqualTo("newPhoneNumber");
+        assertThat(findMember.getPassword()).isEqualTo("newPassword214!");
+        assertThat(findMember.getPhone()).isEqualTo("01012341234");
     }
 
     @DisplayName("ID가 없는 사용자를 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {
         //given
-        Member member1 = createMember();
-        Member member2 = createMember();
+        Member member1 = MemberFixture.createMember1();
+        Member member2 = MemberFixture.createMember2();
 
         //when
         Member savedMember1 = memberRepository.save(member1);
@@ -52,5 +54,19 @@ class MemberRepositoryTest {
 
         //then
         assertThat(savedMember1.getId() + 1).isEqualTo(savedMember2.getId());
+    }
+
+    @DisplayName("같은 email을 가진 member를 저장 시, 예외가 발생한다.")
+    @Test
+    void save_duplicateEmail() {
+        //given
+        Member member1 = MemberFixture.createMember1();
+        Member member2 = MemberFixture.createMember1();
+
+        //when
+        memberRepository.save(member1);
+
+        //then
+        assertThatThrownBy(() -> memberRepository.save(member2)).isInstanceOf(DataIntegrityViolationException.class);
     }
 }

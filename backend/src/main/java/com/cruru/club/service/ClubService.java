@@ -21,6 +21,11 @@ public class ClubService {
         return clubRepository.save(new Club(request.name(), member));
     }
 
+    @Transactional
+    public Club create(String name, Member member) {
+        return clubRepository.save(new Club(name, member));
+    }
+
     public Club findById(long id) {
         return clubRepository.findById(id)
                 .orElseThrow(ClubNotFoundException::new);
