@@ -3,6 +3,7 @@ import type { Question, QuestionOptionValue } from '@customTypes/dashboard';
 import { Question as QuestionData } from '@customTypes/apply';
 
 import { applyQueries } from '@hooks/apply';
+import { DEFAULT_QUESTIONS } from '@constants/constants';
 
 interface UseApplyManagementReturn {
   applyState: Question[];
@@ -15,12 +16,6 @@ interface UseApplyManagementReturn {
   setQuestionNext: (index: number) => () => void;
   deleteQuestion: (index: number) => void;
 }
-
-const initialApplyState: Question[] = [
-  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true },
-  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true },
-  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true },
-];
 
 interface UseApplyManagementProps {
   postId: string;
@@ -45,18 +40,26 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
 export default function useApplyManagement({ postId }: UseApplyManagementProps): UseApplyManagementReturn {
   const { data } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
+  const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
 
   useEffect(() => {
     if (data && data.length > 0) {
       setApplyState(() => {
         const newData = getQuestions(data);
-        return [...initialApplyState, ...newData];
+        return [...DEFAULT_QUESTIONS, ...newData];
       });
     }
   }, [data]);
 
+  // TODO: dashboard patch API가 필요합니다.
+
   const addQuestion = () => {
-    setApplyState((prev) => [...prev, { type: 'SHORT_ANSWER', question: '', choices: [], required: false }]);
+    setApplyState((prev) => [
+      ...prev,
+      { type: 'SHORT_ANSWER', question: '', choices: [], required: false, id: uniqueId },
+    ]);
+
+    setUniqueId(uniqueId + 1);
   };
 
   const setQuestionTitle = (index: number) => (string: string) => {
@@ -71,7 +74,11 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
       questionsCopy[index].type = type;
-      questionsCopy[index].choices = [];
+      if (type === 'SINGLE_CHOICE' || type === 'MULTIPLE_CHOICE') {
+        questionsCopy[index].choices = [{ choice: '', orderIndex: 0 }];
+      } else {
+        questionsCopy[index].choices = [];
+      }
       return questionsCopy;
     });
   };
@@ -79,7 +86,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   const setQuestionOptions = (index: number) => (options: QuestionOptionValue[]) => {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
-      questionsCopy[index].choices = options.map(({ value }, i) => ({ choice: value, orderIndex: i }));
+      questionsCopy[index].choices = options.map(({ choice }, i) => ({ choice, orderIndex: i }));
       return questionsCopy;
     });
   };
@@ -94,7 +101,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
 
   const setQuestionPrev = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index > initialApplyState.length) {
+      if (index > DEFAULT_QUESTIONS.length) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index - 1];
@@ -107,7 +114,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
 
   const setQuestionNext = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index >= initialApplyState.length && index < prevState.length - 1) {
+      if (index >= DEFAULT_QUESTIONS.length && index < prevState.length - 1) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index + 1];
@@ -119,7 +126,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   };
 
   const deleteQuestion = (index: number) => {
-    if (index < initialApplyState.length) return;
+    if (index < DEFAULT_QUESTIONS.length) return;
     setApplyState((prevState) => {
       const newState = prevState.filter((_, i) => i !== index);
       return newState;

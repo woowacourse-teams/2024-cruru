@@ -1,4 +1,5 @@
 import dashboardApis from '@api/dashboard';
+import { DEFAULT_QUESTIONS } from '@constants/constants';
 import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -7,6 +8,7 @@ interface FinishResJson {
   postUrl: string;
   postId: string;
 }
+
 interface UseDashboardCreateFormReturn {
   stepState: StepState;
   prevStep: () => void;
@@ -43,18 +45,12 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
   postingContent: '',
 };
 
-const initialApplyState: Question[] = [
-  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true, id: 0 },
-  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true, id: 1 },
-  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true, id: 2 },
-];
-
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const [stepState, setStepState] = useState<StepState>('recruitmentForm');
   const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
-  const [applyState, setApplyState] = useState<Question[]>(initialApplyState);
+  const [applyState, setApplyState] = useState<Question[]>(DEFAULT_QUESTIONS);
   const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
-  const [uniqueId, setUniqueId] = useState(3);
+  const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
 
   const submitMutator = useMutation({
     mutationFn: ({ clubId }: { clubId: string }) =>
@@ -62,7 +58,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
         clubId,
         dashboardFormInfo: {
           ...recruitmentInfoState,
-          questions: applyState.slice(3).map(({ id, ...value }) => {
+          questions: applyState.slice(DEFAULT_QUESTIONS.length).map(({ id, ...value }) => {
             const temp = { ...value };
             return { ...temp, orderIndex: id };
           }),
@@ -114,7 +110,6 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
       } else {
         questionsCopy[index].choices = [];
       }
-      console.log(questionsCopy);
       return questionsCopy;
     });
   };
@@ -137,7 +132,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   const setQuestionPrev = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index > initialApplyState.length) {
+      if (index > DEFAULT_QUESTIONS.length) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index - 1];
@@ -150,7 +145,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   const setQuestionNext = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index >= initialApplyState.length && index < prevState.length - 1) {
+      if (index >= DEFAULT_QUESTIONS.length && index < prevState.length - 1) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index + 1];
@@ -162,7 +157,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   };
 
   const deleteQuestion = (index: number) => {
-    if (index < initialApplyState.length) return;
+    if (index < DEFAULT_QUESTIONS.length) return;
     setApplyState((prevState) => {
       const newState = prevState.filter((_, i) => i !== index);
       return newState;

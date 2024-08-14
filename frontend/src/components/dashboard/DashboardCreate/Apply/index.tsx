@@ -1,5 +1,7 @@
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { Question, QuestionOptionValue } from '@customTypes/dashboard';
+import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
+
 import Button from '@components/common/Button';
 import ChevronButton from '@components/common/ChevronButton';
 import createSimpleKey from '@utils/createSimpleKey';
@@ -19,12 +21,7 @@ interface ApplyProps {
   deleteQuestion: (index: number) => void;
   prevStep: () => void;
   nextStep: () => void;
-  isModify?: boolean;
 }
-
-// 이름, 이메일, 전화번호의 3개 항목은 applyState에 언제나 기본으로 포함되어야 합니다.
-const DEFAULT_QUESTION_LENGTH = 3;
-const MAX_QUESTION_LENGTH = 20 + DEFAULT_QUESTION_LENGTH;
 
 export default function Apply({
   applyState,
@@ -38,20 +35,19 @@ export default function Apply({
   deleteQuestion,
   prevStep,
   nextStep,
-  isModify,
 }: ApplyProps) {
   const isNextBtnValid =
-    applyState.length === DEFAULT_QUESTION_LENGTH ||
+    applyState.length === DEFAULT_QUESTIONS.length ||
     applyState
-      .slice(DEFAULT_QUESTION_LENGTH)
+      .slice(DEFAULT_QUESTIONS.length)
       .every((question) => question.question.trim() && question.choices.length !== 1);
 
   return (
     <S.Wrapper>
       <S.Section>
         <S.SectionTitleContainer>
-          <h2>지원자 정보</h2>
-          <span>아래 항목은 모든 지원자들에게 기본적으로 제출받는 항목입니다.</span>
+          <h2>{APPLY_QUESTION_HEADER.defaultQuestions.title}</h2>
+          <span>{APPLY_QUESTION_HEADER.defaultQuestions.description}</span>
         </S.SectionTitleContainer>
         <S.DefaultInputItemsContainer>
           <S.DefaultInputItem>이름</S.DefaultInputItem>
@@ -62,8 +58,8 @@ export default function Apply({
 
       <S.Section>
         <S.SectionTitleContainer>
-          <h2>사전질문</h2>
-          <span>지원자에게 질문하고 싶은 것이 있다면 입력해 주세요. (최대 20개)</span>
+          <h2>{APPLY_QUESTION_HEADER.addQuestion.title}</h2>
+          <span>{APPLY_QUESTION_HEADER.addQuestion.description}</span>
         </S.SectionTitleContainer>
 
         {applyState.map((question, index) => {
