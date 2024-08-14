@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleNonAuthorizedException(UnAuthorizedException e) {
+    public ResponseEntity<ProblemDetail> handleNonAuthorizedException(UnauthorizedException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
         return ResponseEntity.of(problemDetail).build();
     }

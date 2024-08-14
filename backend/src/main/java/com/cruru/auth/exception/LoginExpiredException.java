@@ -1,8 +1,8 @@
 package com.cruru.auth.exception;
 
-import com.cruru.advice.UnAuthorizedException;
+import com.cruru.advice.UnauthorizedException;
 
-public class LoginExpiredException extends UnAuthorizedException {
+public class LoginExpiredException extends UnauthorizedException {
 
     private static final String MESSAGE = "로그인이 만료되었습니다.";
 
