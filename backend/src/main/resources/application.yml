@@ -20,6 +20,14 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
+
+security:
+  jwt:
+    token:
+      secret-key: test
+      expire-length: 3600000
+      algorithm: HS256
+
 dataloader:
   enable: true
 
@@ -44,6 +52,14 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: true
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
 dataloader:
   enable: true
 server:
@@ -85,6 +101,14 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: true
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
 dataloader:
   enable: false
 server:
