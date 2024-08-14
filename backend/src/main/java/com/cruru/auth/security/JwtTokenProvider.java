@@ -1,8 +1,10 @@
 package com.cruru.auth.security;
 
+import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.member.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
@@ -50,7 +52,9 @@ public class JwtTokenProvider {
     public boolean isExpired(String token) {
         Claims claims = extractClaims(token);
         Date expiration = claims.getExpiration();
-        return expiration.before(new Date());
+        Date now = new Date();
+
+        return expiration.before(now);
     }
 
     private Claims extractClaims(String token) {
@@ -61,6 +65,8 @@ public class JwtTokenProvider {
                     .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
+        } catch (JwtException e) {
+            throw new IllegalTokenException();
         }
     }
 }
