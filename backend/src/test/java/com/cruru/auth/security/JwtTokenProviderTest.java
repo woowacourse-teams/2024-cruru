@@ -1,5 +1,6 @@
 package com.cruru.auth.security;
 
+import static com.cruru.member.domain.MemberRole.CLUB_OWNER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -22,6 +23,10 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class JwtTokenProviderTest {
 
+    private static final String TEST_SECRET_KEY = "test";
+    private static final String PAYLOAD_KEY_ROLE = "role";
+    private static final String PAYLOAD_KEY_EMAIL = "email";
+
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
@@ -38,14 +43,17 @@ class JwtTokenProviderTest {
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
     void createToken() {
         // given&when
-        Claims claims = Jwts.parser().setSigningKey("test".getBytes()).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser()
+                .setSigningKey(TEST_SECRET_KEY.getBytes())
+                .parseClaimsJws(token)
+                .getBody();
 
         // then
         String expectedRole = member.getRole().name();
         String expectedEmail = member.getEmail();
         assertAll(() -> {
-            assertThat(claims).containsEntry("role", expectedRole);
-            assertThat(claims).containsEntry("email", expectedEmail);
+            assertThat(claims).containsEntry(PAYLOAD_KEY_ROLE, expectedRole);
+            assertThat(claims).containsEntry(PAYLOAD_KEY_EMAIL, expectedEmail);
             assertThat(claims.getExpiration()).isNotNull();
         });
     }
@@ -76,14 +84,14 @@ class JwtTokenProviderTest {
 
     private String generateExpiredToken() {
         Date now = new Date();
-        Date validity = new Date(now.getTime() - 3600000);
+        Date validity = new Date(now.getTime() - 3600000); // 1시간 전 만료
 
         return Jwts.builder()
-                .claim("role", "CLUB_OWNER")
-                .claim("email", "test@example.com")
+                .claim(PAYLOAD_KEY_ROLE, CLUB_OWNER.name())
+                .claim(PAYLOAD_KEY_EMAIL, "test@example.com")
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, "test".getBytes())
+                .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY.getBytes())
                 .compact();
     }
 }
