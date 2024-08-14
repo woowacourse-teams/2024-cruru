@@ -130,6 +130,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
           onClick={nextStep}
           size="sm"
           color="white"
+          type="button"
         >
           <S.ButtonContent>
             다음
