@@ -81,7 +81,7 @@ class ProcessServiceTest extends ServiceTest {
         assertThatThrownBy(() -> processService.create(processCreateRequest, dashboard))
                 .isInstanceOf(ProcessCountException.class);
     }
-    
+
     @DisplayName("프로세스를 ID를 통해 조회한다")
     @Test
     void findById() {
@@ -173,8 +173,10 @@ class ProcessServiceTest extends ServiceTest {
         Long firstProcessId = firstProcess.getId();
         Long finalProcessId = finalProcess.getId();
         assertAll(() -> {
-            assertThatThrownBy(() -> processService.delete(firstProcessId)).isInstanceOf(ProcessDeleteEndsException.class);
-            assertThatThrownBy(() -> processService.delete(finalProcessId)).isInstanceOf(ProcessDeleteEndsException.class);
+            assertThatThrownBy(() -> processService.delete(firstProcessId))
+                    .isInstanceOf(ProcessDeleteEndsException.class);
+            assertThatThrownBy(() -> processService.delete(finalProcessId))
+                    .isInstanceOf(ProcessDeleteEndsException.class);
         });
     }
 
@@ -188,6 +190,7 @@ class ProcessServiceTest extends ServiceTest {
 
         // when&then
         Long processId = process.getId();
-        assertThatThrownBy(() -> processService.delete(processId)).isInstanceOf(ProcessDeleteRemainingApplicantException.class);
+        assertThatThrownBy(() -> processService.delete(processId))
+                .isInstanceOf(ProcessDeleteRemainingApplicantException.class);
     }
 }
