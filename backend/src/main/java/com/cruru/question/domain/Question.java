@@ -1,6 +1,7 @@
 package com.cruru.question.domain;
 
 import com.cruru.applyform.domain.ApplyForm;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -28,6 +29,7 @@ public class Question {
     @Column(name = "question_id")
     private Long id;
 
+    @Column(columnDefinition = "varchar")
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
