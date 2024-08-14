@@ -41,12 +41,12 @@ public class JwtTokenProvider {
 
     public String extractMemberEmail(String token) {
         Claims claims = extractClaims(token);
-        return (String) claims.get(EMAIL);
+        return claims.get(EMAIL, String.class);
     }
 
     public String extractMemberRole(String token) {
         Claims claims = extractClaims(token);
-        return (String) claims.get(ROLE);
+        return claims.get(ROLE, String.class);
     }
 
     public boolean isExpired(String token) {
