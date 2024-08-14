@@ -40,10 +40,8 @@ class JwtTokenProviderTest {
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
     @Test
     void create() {
-        // given
-        String token = jwtTokenProvider.create(member);
-
         // when
+        String token = jwtTokenProvider.create(member);
         Claims claims = Jwts.parser()
                 .setSigningKey(TEST_SECRET_KEY.getBytes())
                 .parseClaimsJws(token)
