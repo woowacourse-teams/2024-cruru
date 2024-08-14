@@ -2,13 +2,11 @@ package com.cruru.dashboard.service;
 
 import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.club.exception.ClubNotFoundException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -44,7 +42,7 @@ class DashboardServiceTest extends ServiceTest {
         clubRepository.save(club);
 
         // when
-        Dashboard createdDashboard = dashboardService.create(club.getId());
+        Dashboard createdDashboard = dashboardService.create(club);
 
         // then
         List<Process> processes = processRepository.findAllByDashboardId(createdDashboard.getId())
@@ -57,18 +55,6 @@ class DashboardServiceTest extends ServiceTest {
             assertThat(processes.get(1).getSequence()).isEqualTo(1);
         });
     }
-
-    @DisplayName("새로운 대시보드 생성 시, 존재하지 않는 동아리에 생성하려 하면 예외가 발생한다.")
-    @Test
-    void create_invalidClub() {
-        // given
-        long invalidClubId = -1L;
-
-        // when&then
-        assertThatThrownBy(() -> dashboardService.create(invalidClubId))
-                .isInstanceOf(ClubNotFoundException.class);
-    }
-
 
     @DisplayName("대시보드를 ID를 통해 조회한다.")
     @Test
@@ -84,15 +70,14 @@ class DashboardServiceTest extends ServiceTest {
 
     @DisplayName("동아리 ID로 동아리가 가지고 있는 모든 대시보드 ID를 조회한다.")
     @Test
-    void findAllByClubId() {
+    void findAllByClub() {
         // given
         Club club = clubRepository.save(createClub());
         Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
         Dashboard frontendDashboard = dashboardRepository.save(DashboardFixture.createFrontendDashboard(club));
 
         // when & then
-        long clubId = club.getId();
-        assertThat(dashboardService.findAllByClubId(clubId)).containsExactlyInAnyOrder(
+        assertThat(dashboardService.findAllByClub(club)).containsExactlyInAnyOrder(
                 backendDashboard,
                 frontendDashboard
         );
