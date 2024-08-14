@@ -5,6 +5,7 @@ import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
+import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
@@ -39,7 +40,8 @@ public class DashboardFacade {
 
     @Transactional
     public long create(long clubId, DashboardCreateRequest request) {
-        Dashboard createdDashboard = dashboardService.create(clubId);
+        Club club = clubService.findById(clubId);
+        Dashboard createdDashboard = dashboardService.create(club);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
@@ -76,7 +78,8 @@ public class DashboardFacade {
     }
 
     private List<Dashboard> getDashboardIdsByClubId(long clubId) {
-        return dashboardService.findAllByClubId(clubId);
+        Club club = clubService.findById(clubId);
+        return dashboardService.findAllByClub(club);
     }
 
     private DashboardPreviewResponse createDashboardPreviewResponse(Dashboard dashboard) {

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.cruru.auth.security.PasswordValidator;
 import com.cruru.member.controller.dto.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -28,9 +27,6 @@ class MemberServiceTest extends ServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private PasswordValidator passwordValidator;
 
     @DisplayName("사용자를 생성하면 ID를 반환한다.")
     @Test
@@ -84,7 +80,8 @@ class MemberServiceTest extends ServiceTest {
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest("크루루", email, password, phone);
 
         // when&then
-        assertThatThrownBy(() -> memberService.create(memberCreateRequest)).isInstanceOf(MemberPasswordLengthException.class);
+        assertThatThrownBy(() -> memberService.create(memberCreateRequest))
+                .isInstanceOf(MemberPasswordLengthException.class);
     }
 
     @DisplayName("허용되지 않는 비밀번호 형식으로 Member 생성 시 예외를 발생시킨다.")
@@ -100,6 +97,7 @@ class MemberServiceTest extends ServiceTest {
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest("크루루", email, password, phone);
 
         // when&then
-        assertThatThrownBy(() -> memberService.create(memberCreateRequest)).isInstanceOf(MemberIllegalPasswordException.class);
+        assertThatThrownBy(() -> memberService.create(memberCreateRequest))
+                .isInstanceOf(MemberIllegalPasswordException.class);
     }
 }
