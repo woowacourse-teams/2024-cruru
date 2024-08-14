@@ -89,6 +89,12 @@ jobs:
         
         # Apply configuration server info from Github secrets
         APPLY_POST_BASE_URL=${{ secrets.APPLY_POST_BASE_URL }}
+        
+        # Security settings
+        JWT_TOKEN_SECRET_KEY=${{ secrets.JWT_TOKEN_SECRET_KEY }}
+        JWT_TOKEN_EXPIRE_CYCLE=${{ secrets.JWT_TOKEN_EXPIRE_CYCLE }}
+        JWT_SIGN_ALGORITHM=${{ secrets.JWT_SIGN_ALGORITHM }}
+        
         EOF
 
     - name: Stop and remove existing containers
