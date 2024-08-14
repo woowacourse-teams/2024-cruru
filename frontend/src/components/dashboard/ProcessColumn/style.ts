@@ -3,8 +3,8 @@ import { hideScrollBar } from '@styles/utils';
 
 const ProcessWrapper = styled.section`
   width: 100%;
-  min-width: 25rem;
-  max-width: 25rem;
+  min-width: 28rem;
+  max-width: 28rem;
 
   height: 100%;
   padding: 1.2rem;
