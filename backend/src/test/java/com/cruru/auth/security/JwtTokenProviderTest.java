@@ -41,7 +41,7 @@ class JwtTokenProviderTest {
 
     @Test
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
-    void createToken() {
+    void create() {
         // given&when
         Claims claims = Jwts.parser()
                 .setSigningKey(TEST_SECRET_KEY.getBytes())
@@ -60,7 +60,7 @@ class JwtTokenProviderTest {
 
     @DisplayName("유효한 토큰에서 이메일과 역할을 추출할 수 있는지 확인한다")
     @Test
-    void testExtractEmailAndRole() {
+    void extractEmailAndRole() {
         // given&when
         String email = jwtTokenProvider.extractMemberEmail(token);
         String role = jwtTokenProvider.extractMemberRole(token);
@@ -74,7 +74,7 @@ class JwtTokenProviderTest {
 
     @DisplayName("만료된 토큰인지 검증한다.")
     @Test
-    void expiredTokenThrowsException() {
+    void isExpired() {
         // given
         String expiredToken = generateExpiredToken();
 

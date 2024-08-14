@@ -65,7 +65,7 @@ public class JwtTokenProvider {
                     .getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
-        } catch (JwtException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new IllegalTokenException();
         }
     }
