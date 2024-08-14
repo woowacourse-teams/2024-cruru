@@ -1,5 +1,6 @@
 import { RecruitmentPostTabItems } from '@components/recruitmentPost/RecruitmentPostTab';
 import { DashboardTabItems } from '@pages/Dashboard';
+import type { Question } from '@customTypes/dashboard';
 
 export const BASE_URL = `${process.env.API_URL}/${process.env.API_VERSION}`;
 
@@ -38,3 +39,24 @@ export const QUESTION_TYPE_NAME = {
   SINGLE_CHOICE: '객관식(단일 선택)',
   MULTIPLE_CHOICE: '객관식(복수 선택)',
 } as const;
+
+export const DEFAULT_QUESTIONS: Question[] = [
+  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true, id: 0 },
+  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true, id: 1 },
+  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true, id: 2 },
+] as const;
+
+export const EDITIONAL_QUESTION_LENGTH = 20;
+
+export const MAX_QUESTION_LENGTH = EDITIONAL_QUESTION_LENGTH + DEFAULT_QUESTIONS.length;
+
+export const APPLY_QUESTION_HEADER = {
+  defaultQuestions: {
+    title: '지원자 정보',
+    description: '아래 항목은 모든 지원자들에게 기본적으로 제출받는 항목입니다.',
+  },
+  addQuestion: {
+    title: '사전질문',
+    description: `지원자에게 질문하고 싶은 것이 있다면 입력해 주세요. (최대 ${EDITIONAL_QUESTION_LENGTH}개)`,
+  },
+};
