@@ -97,7 +97,7 @@ class MemberServiceTest extends ServiceTest {
         MemberCreateRequest memberCreateRequest = new MemberCreateRequest("크루루", email, password, phone);
 
         // when&then
-        assertThatThrownBy(() -> memberService.create(memberCreateRequest)).isInstanceOf(
-                MemberIllegalPasswordException.class);
+        assertThatThrownBy(() -> memberService.create(memberCreateRequest))
+                .isInstanceOf(MemberIllegalPasswordException.class);
     }
 }

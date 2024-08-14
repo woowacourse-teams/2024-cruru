@@ -173,10 +173,10 @@ class ProcessServiceTest extends ServiceTest {
         Long firstProcessId = firstProcess.getId();
         Long finalProcessId = finalProcess.getId();
         assertAll(() -> {
-            assertThatThrownBy(() -> processService.delete(firstProcessId)).isInstanceOf(
-                    ProcessDeleteEndsException.class);
-            assertThatThrownBy(() -> processService.delete(finalProcessId)).isInstanceOf(
-                    ProcessDeleteEndsException.class);
+            assertThatThrownBy(() -> processService.delete(firstProcessId))
+                    .isInstanceOf(ProcessDeleteEndsException.class);
+            assertThatThrownBy(() -> processService.delete(finalProcessId))
+                    .isInstanceOf(ProcessDeleteEndsException.class);
         });
     }
 
