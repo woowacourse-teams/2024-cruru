@@ -53,13 +53,12 @@ class ApplicantTest {
 
     @DisplayName("지원자의 상태를 PENDING로 업데이트한다.")
     @Test
-    void pending() {
+    void unreject() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
-        applicant.reject();
+        Applicant applicant = ApplicantFixture.createRejectedApplicantRush();
 
         // when
-        applicant.pending();
+        applicant.unreject();
 
         // then
         assertAll(() -> {

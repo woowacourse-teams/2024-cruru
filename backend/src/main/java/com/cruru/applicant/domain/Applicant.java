@@ -69,7 +69,7 @@ public class Applicant extends BaseEntity {
         this.state = APPROVED;
     }
 
-    public void pending() {
+    public void unreject() {
         this.state = PENDING;
     }
 

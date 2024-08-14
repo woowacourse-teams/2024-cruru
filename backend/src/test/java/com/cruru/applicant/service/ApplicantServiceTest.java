@@ -1,5 +1,6 @@
 package com.cruru.applicant.service;
 
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -13,6 +14,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantNoChangeException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
+import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
@@ -184,13 +186,37 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject_alreadyRejected() {
         // given
-        Applicant targetApplicant = ApplicantFixture.createPendingApplicantDobby();
-        targetApplicant.reject();
-        Applicant rejectedApplicant = applicantRepository.save(targetApplicant);
+        Applicant rejectedApplicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
 
         // when&then
         Long applicantId = rejectedApplicant.getId();
         assertThatThrownBy(() -> applicantService.reject(applicantId))
                 .isInstanceOf(ApplicantRejectException.class);
+    }
+
+    @DisplayName("특정 지원자의 불합격을 해제한다.")
+    @Test
+    void unreject() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
+
+        // when
+        applicantService.unreject(applicant.getId());
+
+        // then
+        Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
+        assertThat(rejectedApplicant.getState()).isEqualTo(PENDING);
+    }
+
+    @DisplayName("불합격이 아닌 지원자의 불합격을 해제하면 예외가 발생한다.")
+    @Test
+    void unreject_notRejected() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantRush());
+
+        // when&then
+        Long applicantId = applicant.getId();
+        assertThatThrownBy(() -> applicantService.unreject(applicantId))
+                .isInstanceOf(ApplicantUnrejectException.class);
     }
 }

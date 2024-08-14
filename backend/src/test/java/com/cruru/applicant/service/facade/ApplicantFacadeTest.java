@@ -1,5 +1,6 @@
 package com.cruru.applicant.service.facade;
 
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -165,15 +166,29 @@ class ApplicantFacadeTest extends ServiceTest {
 
     @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")
     @Test
-    void updateApplicantToReject() {
+    void reject() {
         // given
         Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
 
         // when
-        applicantFacade.updateApplicantToReject(applicant.getId());
+        applicantFacade.reject(applicant.getId());
 
         // then
         Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
         assertThat(rejectedApplicant.getState()).isEqualTo(REJECTED);
+    }
+
+    @DisplayName("특정 지원자의 상태를 불합격에서 해제한다.")
+    @Test
+    void unreject() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
+
+        // when
+        applicantFacade.unreject(applicant.getId());
+
+        // then
+        Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
+        assertThat(rejectedApplicant.getState()).isEqualTo(PENDING);
     }
 }

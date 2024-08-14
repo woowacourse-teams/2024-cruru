@@ -57,7 +57,12 @@ public class ApplicantFacade {
     }
 
     @Transactional
-    public void updateApplicantToReject(long applicantId) {
+    public void reject(long applicantId) {
         applicantService.reject(applicantId);
+    }
+
+    @Transactional
+    public void unreject(long applicantId) {
+        applicantService.unreject(applicantId);
     }
 }
