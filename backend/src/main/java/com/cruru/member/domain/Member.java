@@ -1,5 +1,7 @@
 package com.cruru.member.domain;
 
+import static com.cruru.member.domain.MemberRole.CLUB_OWNER;
+
 import com.cruru.BaseEntity;
 import com.cruru.member.exception.badrequest.MemberIllegalPhoneNumberException;
 import jakarta.persistence.Column;
@@ -35,11 +37,19 @@ public class Member extends BaseEntity {
 
     private String phone;
 
+    private MemberRole role;
+
+    public Member(Long id, String email, String password, String phone) {
+        this(email, password, phone);
+        this.id = id;
+    }
+
     public Member(String email, String password, String phone) {
         validatePhoneNumber(phone);
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.role = CLUB_OWNER;
     }
 
     private void validatePhoneNumber(String phoneNumber) {

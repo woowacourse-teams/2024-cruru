@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.member.domain.Member;
 import com.cruru.util.RepositoryTest;
+import com.cruru.member.domain.MemberRole;
 import com.cruru.util.fixture.MemberFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +33,7 @@ class MemberRepositoryTest extends RepositoryTest {
         Member saved = memberRepository.save(member);
 
         //when
-        Member updateMember = new Member(saved.getId(), "email", "newPassword214!", "01012341234");
+        Member updateMember = new Member(saved.getId(), "email", "newPassword214!", "01012341234", MemberRole.ADMIN);
         memberRepository.save(updateMember);
 
         //then
