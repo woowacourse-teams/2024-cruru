@@ -12,9 +12,9 @@ CREATE TABLE answer
 CREATE TABLE applicant
 (
     applicant_id BIGINT NOT NULL AUTO_INCREMENT,
-    created_date TIMESTAMP(6),
+    created_date DATETIME(6),
     process_id   BIGINT,
-    updated_date TIMESTAMP(6),
+    updated_date DATETIME(6),
     email        VARCHAR(255),
     name         VARCHAR(255),
     phone        VARCHAR(255),
@@ -27,11 +27,11 @@ CREATE TABLE applicant
 CREATE TABLE apply_form
 (
     apply_form_id BIGINT NOT NULL AUTO_INCREMENT,
-    created_date  TIMESTAMP(6),
+    created_date  DATETIME(6),
     dashboard_id  BIGINT UNIQUE,
-    end_date      TIMESTAMP(6),
-    start_date    TIMESTAMP(6),
-    updated_date  TIMESTAMP(6),
+    end_date      DATETIME(6),
+    start_date    DATETIME(6),
+    updated_date  DATETIME(6),
     description   TEXT,
     title         VARCHAR(255),
     url           VARCHAR(255),
@@ -75,9 +75,9 @@ CREATE TABLE evaluation
     evaluation_id BIGINT NOT NULL AUTO_INCREMENT,
     score         INTEGER,
     applicant_id  BIGINT,
-    created_date  TIMESTAMP(6),
+    created_date  DATETIME(6),
     process_id    BIGINT,
-    updated_date  TIMESTAMP(6),
+    updated_date  DATETIME(6),
     content       VARCHAR(255),
     PRIMARY KEY (evaluation_id)
 ) ENGINE = InnoDB
@@ -87,8 +87,8 @@ CREATE TABLE evaluation
 CREATE TABLE member
 (
     member_id    BIGINT NOT NULL AUTO_INCREMENT,
-    created_date TIMESTAMP(6),
-    updated_date TIMESTAMP(6),
+    created_date DATETIME(6),
+    updated_date DATETIME(6),
     email        VARCHAR(255) UNIQUE,
     password     VARCHAR(255),
     phone        VARCHAR(255),
