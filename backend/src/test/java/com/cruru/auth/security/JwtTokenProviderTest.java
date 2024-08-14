@@ -76,14 +76,24 @@ class JwtTokenProviderTest {
         assertThat(role).isEqualTo(expectedRole);
     }
 
-    @DisplayName("만료된 토큰인지 검증한다.")
+    @DisplayName("만료된 토큰을 검증한다.")
     @Test
-    void isExpired() {
+    void isExpired_expired() {
         // given
         String expiredToken = generateExpiredToken();
 
         // when&then
         assertThat(jwtTokenProvider.isExpired(expiredToken)).isTrue();
+    }
+
+    @DisplayName("만료되지 않은 토큰을 검증한다.")
+    @Test
+    void isExpired_notExpired() {
+        // given
+        String notExpiredToken = jwtTokenProvider.create(member);
+
+        // when&then
+        assertThat(jwtTokenProvider.isExpired(notExpiredToken)).isFalse();
     }
 
     private String generateExpiredToken() {
