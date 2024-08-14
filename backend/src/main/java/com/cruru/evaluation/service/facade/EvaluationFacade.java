@@ -51,7 +51,8 @@ public class EvaluationFacade {
         return new EvaluationResponse(
                 evaluation.getId(),
                 evaluation.getScore(),
-                evaluation.getContent()
+                evaluation.getContent(),
+                evaluation.getCreatedDate()
         );
     }
 

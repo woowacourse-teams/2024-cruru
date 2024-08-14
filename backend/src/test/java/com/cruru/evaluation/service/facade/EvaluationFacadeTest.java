@@ -93,10 +93,12 @@ class EvaluationFacadeTest extends ServiceTest {
             assertThat(actualEvaluation1.evaluationId()).isEqualTo(savedEvaluation1.getId());
             assertThat(actualEvaluation1.content()).isEqualTo(savedEvaluation1.getContent());
             assertThat(actualEvaluation1.score()).isEqualTo(savedEvaluation1.getScore());
+            assertThat(actualEvaluation1.createdDate()).isEqualTo(savedEvaluation1.getCreatedDate());
 
             assertThat(actualEvaluation2.evaluationId()).isEqualTo(savedEvaluation2.getId());
             assertThat(actualEvaluation2.content()).isEqualTo(savedEvaluation2.getContent());
             assertThat(actualEvaluation2.score()).isEqualTo(savedEvaluation2.getScore());
+            assertThat(actualEvaluation2.createdDate()).isEqualTo(savedEvaluation2.getCreatedDate());
         });
     }
 }
