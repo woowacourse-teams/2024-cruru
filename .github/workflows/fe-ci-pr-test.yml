@@ -52,3 +52,6 @@ jobs:
 
       - name: Storybook 빌드 테스트
         run: npm run build-storybook
+
+      - name: 애플리케이션 빌드 테스트
+        run: npm run build

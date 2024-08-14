@@ -25,6 +25,7 @@ export default function CustomQuestion({ question, value = [], onChange = () => 
         onChange={handleChange}
         label={label}
         name={questionId}
+        maxLength={50}
       />
     );
   }
@@ -42,6 +43,7 @@ export default function CustomQuestion({ question, value = [], onChange = () => 
         onChange={handleChange}
         resize={false}
         style={{ height: 'calc(2.4rem * 10 + 1.2rem)' }}
+        maxLength={5000}
       />
     );
   }

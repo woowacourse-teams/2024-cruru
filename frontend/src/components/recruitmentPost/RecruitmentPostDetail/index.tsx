@@ -1,18 +1,15 @@
 import Button from '@components/common/Button';
 import TextEditor from '@components/common/TextEditor';
-import { applyQueries } from '@hooks/apply';
-import { useParams } from 'react-router-dom';
+import { RecruitmentPost } from '@customTypes/apply';
 import C from '../style';
 
 interface RecruitmentPostDetailProps {
+  recruitmentPost?: RecruitmentPost;
+  isClosed: boolean;
   moveTab: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function RecruitmentPostDetail({ moveTab }: RecruitmentPostDetailProps) {
-  // TODO: smell
-  const { postId } = useParams<{ postId: string }>();
-  const { data: recruitmentPost, isClosed } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
-
+export default function RecruitmentPostDetail({ recruitmentPost, isClosed, moveTab }: RecruitmentPostDetailProps) {
   return (
     <C.ContentContainer>
       <TextEditor

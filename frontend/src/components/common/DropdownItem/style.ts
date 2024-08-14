@@ -13,6 +13,10 @@ const Item = styled.button<{ isHighlight: boolean; size: 'sm' | 'md' }>`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   &:hover {
     background-color: ${({ isHighlight, theme }) =>
       isHighlight ? theme.baseColors.redscale[300] : theme.baseColors.grayscale[300]};

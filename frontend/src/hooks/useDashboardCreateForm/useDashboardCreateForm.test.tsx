@@ -35,9 +35,9 @@ describe('useDashboardCreateForm', () => {
   it('setQuestionOptions로 질문 옵션을 설정할 수 있다.', () => {
     const { result } = renderHook(() => useDashboardCreateForm(), { wrapper: createWrapper() });
 
-    const options = [{ value: 'Option 1' }, { value: 'Option 2' }];
+    const choices = [{ choice: 'Option 1' }, { choice: 'Option 2' }];
     act(() => {
-      result.current.setQuestionOptions(0)(options);
+      result.current.setQuestionOptions(0)(choices);
     });
 
     expect(result.current.applyState[0].choices).toEqual([

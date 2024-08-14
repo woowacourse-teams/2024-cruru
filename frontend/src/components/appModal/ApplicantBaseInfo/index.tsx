@@ -14,15 +14,20 @@ interface ApplicantBaseInfoProps {
 }
 
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
-  const { data: applicantBaseInfo } = specificApplicant.useGetBaseInfo({ applicantId });
-  const { mutate: rejectMutate } = specificApplicant.useRejectApplicant();
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
-  const { processList } = useProcess({ dashboardId, postId });
+  const { mutate: rejectMutate } = specificApplicant.useRejectApplicant({ dashboardId, postId });
+  const { processList, isLoading: isProcessLoading } = useProcess({ dashboardId, postId });
+
+  const { data: applicantBaseInfo, isLoading: isBaseInfoLoading } = specificApplicant.useGetBaseInfo({ applicantId });
   const { moveApplicantProcess } = useApplicant({ applicantId });
   const { close } = useModal();
 
   if (!applicantBaseInfo) {
     return <div>no data</div>; // TODO: 핸들링
+  }
+
+  if (isBaseInfoLoading || isProcessLoading) {
+    return <div>Loading...</div>; // TODO: Loading 핸들링
   }
 
   const { applicant, process } = applicantBaseInfo;
@@ -38,8 +43,12 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
     }));
 
   const rejectAppHandler = () => {
-    rejectMutate({ applicantId });
-    close();
+    const isConfirmed = window.confirm('정말 해당 지원자를 불합격 하시겠습니까? 불합격은 번복할 수 없습니다.');
+
+    if (isConfirmed) {
+      rejectMutate({ applicantId });
+      close();
+    }
   };
 
   return (

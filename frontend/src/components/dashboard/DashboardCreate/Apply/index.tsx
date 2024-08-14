@@ -40,6 +40,12 @@ export default function Apply({
   nextStep,
   isModify,
 }: ApplyProps) {
+  const isNextBtnValid =
+    applyState.length === DEFAULT_QUESTION_LENGTH ||
+    applyState
+      .slice(DEFAULT_QUESTION_LENGTH)
+      .every((question) => question.question.trim() && question.choices.length !== 1);
+
   return (
     <S.Wrapper>
       <S.Section>
@@ -94,48 +100,36 @@ export default function Apply({
       </S.Section>
 
       <S.Section>
-        {isModify && (
-          <S.ModifyButtonContainer>
-            <S.ModifyButton
-              disabled={false}
-              onClick={nextStep}
-            >
-              <S.ButtonContent>수정하기</S.ButtonContent>
-            </S.ModifyButton>
-          </S.ModifyButtonContainer>
-        )}
-        {!isModify && (
-          <S.StepButtonsContainer>
-            <Button
-              disabled={false}
-              onClick={prevStep}
-              size="sm"
-              color="white"
-            >
-              <S.ButtonContent>
-                <ChevronButton
-                  direction="left"
-                  size="sm"
-                />
-                이전
-              </S.ButtonContent>
-            </Button>
-            <Button
-              disabled={false}
-              onClick={nextStep}
-              size="sm"
-              color="white"
-            >
-              <S.ButtonContent>
-                다음
-                <ChevronButton
-                  direction="right"
-                  size="sm"
-                />
-              </S.ButtonContent>
-            </Button>
-          </S.StepButtonsContainer>
-        )}
+        <S.StepButtonsContainer>
+          <Button
+            disabled={false}
+            onClick={prevStep}
+            size="sm"
+            color="white"
+          >
+            <S.ButtonContent>
+              <ChevronButton
+                direction="left"
+                size="sm"
+              />
+              이전
+            </S.ButtonContent>
+          </Button>
+          <Button
+            disabled={!isNextBtnValid}
+            onClick={nextStep}
+            size="sm"
+            color="white"
+          >
+            <S.ButtonContent>
+              다음
+              <ChevronButton
+                direction="right"
+                size="sm"
+              />
+            </S.ButtonContent>
+          </Button>
+        </S.StepButtonsContainer>
       </S.Section>
     </S.Wrapper>
   );

@@ -1,16 +1,20 @@
 name: FE/PM - PR Review 슬랙 알림
 
 on:
+  workflow_dispatch:
   pull_request:
-    types: [review_requested]
+    types: [ review_requested, ready_for_review ]
     branches:
       - main
       - 'fe/**'
+      - 'fe-**'
+
   pull_request_review:
-    types: [submitted]
+    types: [ submitted ]
     branches:
       - main
       - 'fe/**'
+      - 'fe-**'
 
 env:
   lurgi: "FE팀 러기"
@@ -343,7 +347,7 @@ jobs:
           channel-id: ${{ secrets.REVIEW_MENTION_CHANNEL_ID }}
           payload: |
             {
-              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.SLACK_THREAD_ID }}",
+              "thread_ts": "${{ needs.set-slack-thread-if-not-exist-create.outputs.SLACK_THREAD_ID }}",
               "blocks": [
                 {
                   "type": "divider"

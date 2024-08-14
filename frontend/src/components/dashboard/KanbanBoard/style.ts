@@ -6,6 +6,9 @@ const Wrapper = styled.div`
   background-color: white;
   display: flex;
   gap: 2.4rem;
+
+  overflow-x: scroll;
+  overflow-y: visible;
 `;
 
 const S = {

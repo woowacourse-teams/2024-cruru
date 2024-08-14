@@ -18,20 +18,22 @@ export default function PopOverMenu({ isOpen, setClose, size = 'sm', popOverPosi
       popOverPosition={popOverPosition}
     >
       {isOpen && (
-        <S.List size={size}>
-          {items.map(({ name, isHighlight, id, onClick }) => (
-            <DropdownItem
-              size={size}
-              onClick={() => {
-                setClose();
-                onClick({ targetProcessId: id });
-              }}
-              key={id}
-              item={name}
-              isHighlight={isHighlight}
-            />
-          ))}
-        </S.List>
+        <S.ListWrapper>
+          <S.List size={size}>
+            {items.map(({ name, isHighlight, id, onClick }) => (
+              <DropdownItem
+                size={size}
+                onClick={() => {
+                  setClose();
+                  onClick({ targetProcessId: id });
+                }}
+                key={id}
+                item={name}
+                isHighlight={isHighlight}
+              />
+            ))}
+          </S.List>
+        </S.ListWrapper>
       )}
     </S.Container>
   );

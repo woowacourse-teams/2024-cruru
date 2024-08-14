@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '@components/common/Button';
 import ChevronButton from '@components/common/ChevronButton';
 import DateInput from '@components/common/DateInput';
@@ -23,7 +23,12 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
   const today = new Date().toISOString().split('T')[0];
   const startDateText = startDate ? formatDate(startDate) : '';
   const endDateText = endDate ? formatDate(endDate) : '';
-  const isNextButtonValid = !!(endDate && contentText && startDate && title);
+
+  useEffect(() => {
+    setContentText(quillRef.current?.unprivilegedEditor?.getText());
+  }, [quillRef]);
+
+  const isNextButtonValid = !!(endDate && contentText?.trim() && startDate && title.trim());
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => ({
@@ -51,9 +56,6 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
       ...prev,
       postingContent: string,
     }));
-  };
-
-  const handlePostingContentBlur = () => {
     setContentText(quillRef.current?.unprivilegedEditor?.getText());
   };
 
@@ -99,7 +101,6 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
           quillRef={quillRef}
           value={recruitmentInfoState.postingContent}
           onChange={handlePostingContentChange}
-          onBlur={handlePostingContentBlur}
         />
       </S.RecruitDetailContainer>
 

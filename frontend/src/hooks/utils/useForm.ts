@@ -80,5 +80,5 @@ export default function useForm<TFieldData>({ initialValues }: UseFormProps<TFie
     };
   };
 
-  return { register, formData, handleSubmit, validateAndSetErrors };
+  return { register, formData, handleSubmit, validateAndSetErrors, errors };
 }

@@ -48,11 +48,16 @@ const TabButton = styled.button<{ isActive: boolean }>`
   &:hover {
     color: ${({ theme }) => theme.baseColors.grayscale[950]};
   }
+
+  &:disabled {
+    color: ${({ theme }) => theme.baseColors.grayscale[500]};
+    cursor: not-allowed;
+  }
 `;
 
 const TabPanel = styled.div<{ isVisible: boolean }>`
   width: 100%;
-  height: 80%;
+  height: 85%;
   padding: 2rem 0rem;
 
   ${hideScrollBar};
