@@ -3,6 +3,7 @@ package com.cruru.answer.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.answer.domain.Answer;
+import com.cruru.util.RepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayName("주관식 답변 레포지토리 테스트")
-@DataJpaTest
-class AnswerRepositoryTest {
+class AnswerRepositoryTest extends RepositoryTest {
 
     @Autowired
     private AnswerRepository answerRepository;

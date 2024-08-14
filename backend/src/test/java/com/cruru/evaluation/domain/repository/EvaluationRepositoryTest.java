@@ -5,6 +5,7 @@ import static com.cruru.util.fixture.EvaluationFixture.createEvaluationGood;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.evaluation.domain.Evaluation;
+import com.cruru.util.RepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayName("평가 레포지토리 테스트")
-@DataJpaTest
-class EvaluationRepositoryTest {
+class EvaluationRepositoryTest extends RepositoryTest {
 
     @Autowired
     private EvaluationRepository evaluationRepository;
