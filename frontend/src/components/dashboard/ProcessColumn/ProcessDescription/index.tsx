@@ -26,7 +26,7 @@ export default function ProcessDescription({ description }: ProcessDescriptionPr
       >
         {description}
       </S.Description>
-      {isOverflow && <S.MoreButton onClick={toggleShowMore}>{showMore ? '접기' : '..더보기'}</S.MoreButton>}
+      {isOverflow && <S.MoreButton onClick={toggleShowMore}>{showMore ? '접기' : '더보기'}</S.MoreButton>}
     </S.Container>
   );
 }
