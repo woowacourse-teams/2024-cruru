@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApplyFormService {
 
     private final ApplyFormRepository applyFormRepository;
-    
-    @Value("${base-url.applyform}")
-    private String applyPostBaseUrl;
 
     @Value("${base-url.applyform}")
     private String applyPostBaseUrl;
