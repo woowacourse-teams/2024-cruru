@@ -9,16 +9,19 @@ interface Option {
 interface RadioFieldProps {
   options: Option[];
   selectedValue?: string;
+  labelSize?: string;
+  optionsGap?: string;
   onChange: (value: string) => void;
 }
 
-export default function RadioField({ options, selectedValue, onChange }: RadioFieldProps) {
+export default function RadioField({ options, selectedValue, labelSize, optionsGap, onChange }: RadioFieldProps) {
   return (
-    <S.Container>
+    <S.Container optionsGap={optionsGap}>
       {options.map((option) => (
         <RadioOption
           key={option.value}
           label={option.label}
+          labelSize={labelSize}
           checked={selectedValue === option.value}
           onChange={() => onChange(option.value)}
         />

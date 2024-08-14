@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
+const Container = styled.div<{ optionsGap: string | undefined }>`
   display: flex;
   flex-direction: column;
 
-  gap: 1.6rem;
+  gap: ${({ optionsGap }) => optionsGap ?? '1.6rem'};
 `;
 
 const S = {
