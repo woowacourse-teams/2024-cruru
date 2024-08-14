@@ -31,18 +31,19 @@ class JwtTokenProviderTest {
     private JwtTokenProvider jwtTokenProvider;
 
     private Member member;
-    private String token;
 
     @BeforeEach
     void setUp() {
         member = MemberFixture.createMember1();
-        token = jwtTokenProvider.create(member);
     }
 
-    @Test
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
+    @Test
     void create() {
-        // given&when
+        // given
+        String token = jwtTokenProvider.create(member);
+
+        // when
         Claims claims = Jwts.parser()
                 .setSigningKey(TEST_SECRET_KEY.getBytes())
                 .parseClaimsJws(token)
@@ -61,7 +62,10 @@ class JwtTokenProviderTest {
     @DisplayName("유효한 토큰에서 이메일과 역할을 추출할 수 있는지 확인한다")
     @Test
     void extractEmailAndRole() {
-        // given&when
+        // given
+        String token = jwtTokenProvider.create(member);
+
+        // when
         String email = jwtTokenProvider.extractMemberEmail(token);
         String role = jwtTokenProvider.extractMemberRole(token);
 
