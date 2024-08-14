@@ -84,16 +84,6 @@ class JwtTokenProviderTest {
         assertThat(jwtTokenProvider.isExpired(expiredToken)).isTrue();
     }
 
-    @DisplayName("만료되지 않은 토큰을 검증한다.")
-    @Test
-    void isExpired_notExpired() {
-        // given
-        String notExpiredToken = jwtTokenProvider.create(member);
-
-        // when&then
-        assertThat(jwtTokenProvider.isExpired(notExpiredToken)).isFalse();
-    }
-
     private String generateExpiredToken() {
         Date now = new Date();
         Date validity = new Date(now.getTime() - 3600000); // 1시간 전 만료
@@ -105,5 +95,15 @@ class JwtTokenProviderTest {
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY.getBytes())
                 .compact();
+    }
+
+    @DisplayName("만료되지 않은 토큰을 검증한다.")
+    @Test
+    void isExpired_notExpired() {
+        // given
+        String notExpiredToken = jwtTokenProvider.create(member);
+
+        // when&then
+        assertThat(jwtTokenProvider.isExpired(notExpiredToken)).isFalse();
     }
 }

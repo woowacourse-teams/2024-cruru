@@ -81,7 +81,7 @@ class ProcessServiceTest extends ServiceTest {
         assertThatThrownBy(() -> processService.create(processCreateRequest, dashboard))
                 .isInstanceOf(ProcessCountException.class);
     }
-    
+
     @DisplayName("프로세스를 ID를 통해 조회한다")
     @Test
     void findById() {
