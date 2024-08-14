@@ -36,7 +36,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
     }));
   };
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (Object.keys(EVALUATION_SCORE).includes(formState.score)) {
       submitNewEvaluation({ processId, applicantId, ...formState });
@@ -50,7 +50,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   }));
 
   return (
-    <S.EvaluationForm>
+    <S.EvaluationForm onSubmit={handleSubmit}>
       <RadioField
         options={evaluationOptions}
         selectedValue={formState.score}
@@ -74,11 +74,10 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           취소
         </Button>
         <Button
-          type="button"
+          type="submit"
           color="primary"
           size="md"
           disabled={formState.score === ''}
-          onClick={handleSubmit}
         >
           평가 저장
         </Button>
