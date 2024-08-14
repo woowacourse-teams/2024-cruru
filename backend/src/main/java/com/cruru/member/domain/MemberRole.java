@@ -4,4 +4,5 @@ public enum MemberRole {
 
     ADMIN,
     CLUB_OWNER,
+    ;
 }
