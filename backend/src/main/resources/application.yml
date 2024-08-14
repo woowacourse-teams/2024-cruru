@@ -27,9 +27,9 @@ spring:
 security:
   jwt:
     token:
-      secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
-      algorithm: ${JWT_SIGN_ALGORITHM}
+      secret-key: test
+      expire-length: 3600000
+      algorithm: HS256
 
 dataloader:
   enable: true
