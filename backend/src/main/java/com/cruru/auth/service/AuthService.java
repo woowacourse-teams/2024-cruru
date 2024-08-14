@@ -48,6 +48,4 @@ public class AuthService {
             throw new IllegalCookieException();
         }
     }
-
-
 }
