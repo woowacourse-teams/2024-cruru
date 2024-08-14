@@ -1,2 +1,9 @@
 base-url:
   applyform: www.cruru.kr/post/%d
+
+security:
+  jwt:
+    token:
+      secret-key: test
+      expire-length: 1209600000
+      algorithm: HS256
