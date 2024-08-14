@@ -3,7 +3,7 @@ CREATE TABLE answer
     answer_id    BIGINT NOT NULL AUTO_INCREMENT,
     applicant_id BIGINT,
     question_id  BIGINT,
-    content      VARCHAR(255),
+    content      TEXT,
     PRIMARY KEY (answer_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -28,13 +28,13 @@ CREATE TABLE apply_form
 (
     apply_form_id BIGINT NOT NULL AUTO_INCREMENT,
     created_date  DATETIME(6),
-    dashboard_id  BIGINT UNIQUE,
+    dashboard_id  BIGINT,
     end_date      DATETIME(6),
     start_date    DATETIME(6),
     updated_date  DATETIME(6),
     description   TEXT,
-    title         VARCHAR(255),
-    url           VARCHAR(255),
+    title         VARCHAR(1023),
+    url           VARCHAR(1023),
     PRIMARY KEY (apply_form_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -45,7 +45,7 @@ CREATE TABLE choice
     choice_id   BIGINT NOT NULL AUTO_INCREMENT,
     sequence    INTEGER,
     question_id BIGINT,
-    content     VARCHAR(255),
+    content     VARCHAR(1023),
     PRIMARY KEY (choice_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -55,7 +55,7 @@ CREATE TABLE club
 (
     club_id   BIGINT NOT NULL AUTO_INCREMENT,
     member_id BIGINT,
-    name      VARCHAR(255),
+    name      VARCHAR(1023),
     PRIMARY KEY (club_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -78,7 +78,7 @@ CREATE TABLE evaluation
     created_date  DATETIME(6),
     process_id    BIGINT,
     updated_date  DATETIME(6),
-    content       VARCHAR(255),
+    content       TEXT,
     PRIMARY KEY (evaluation_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -90,8 +90,8 @@ CREATE TABLE member
     created_date DATETIME(6),
     updated_date DATETIME(6),
     email        VARCHAR(255) UNIQUE,
-    password     VARCHAR(255),
-    phone        VARCHAR(255),
+    password     VARCHAR(2047),
+    phone        VARCHAR(511),
     role         VARCHAR(255),
     PRIMARY KEY (member_id)
 ) ENGINE = InnoDB
@@ -103,7 +103,7 @@ CREATE TABLE process
     process_id   BIGINT NOT NULL AUTO_INCREMENT,
     sequence     INTEGER,
     dashboard_id BIGINT,
-    description  VARCHAR(255),
+    description  TEXT,
     name         VARCHAR(255),
     PRIMARY KEY (process_id)
 ) ENGINE = InnoDB
@@ -116,8 +116,8 @@ CREATE TABLE question
     required      BOOLEAN,
     sequence      INTEGER,
     apply_form_id BIGINT,
-    content       VARCHAR(255),
-    description   VARCHAR(255),
+    content       TEXT,
+    description   TEXT,
     question_type VARCHAR(255),
     PRIMARY KEY (question_id)
 ) ENGINE = InnoDB
