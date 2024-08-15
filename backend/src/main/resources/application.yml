@@ -11,15 +11,18 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:database
+    url: jdbc:h2:mem:database;MODE=MySQL;
+  flyway:
+    enabled: false
   jpa:
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: create-drop
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
 
 security:
   jwt:
@@ -43,6 +46,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
   jpa:
     show-sql: true
     properties:
@@ -94,6 +100,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
   jpa:
     properties:
       hibernate:
