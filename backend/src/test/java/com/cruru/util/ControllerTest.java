@@ -1,18 +1,22 @@
 package com.cruru.util;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+
+import com.cruru.config.WebMvcConfig;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class ControllerTest {
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
 
     @LocalServerPort
     private int port;
@@ -22,17 +26,10 @@ public class ControllerTest {
         RestAssured.port = port;
     }
 
-    @TestConfiguration
-    static class TestConfig {
-
-        @Bean
-        public WebMvcConfigurer testWebMvcConfigurer() {
-            return new WebMvcConfigurer() {
-                @Override
-                public void addInterceptors(InterceptorRegistry registry) {
-                    // 테스트에서는 Interceptor를 등록하지 않음
-                }
-            };
-        }
+    @BeforeEach
+    void setUp() {
+        doNothing().when(webMvcConfig).addCorsMappings(any());
+        doNothing().when(webMvcConfig).addInterceptors(any());
+        doNothing().when(webMvcConfig).addArgumentResolvers(any());
     }
 }
