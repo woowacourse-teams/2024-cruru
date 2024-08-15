@@ -1,6 +1,8 @@
-package com.cruru.auth.security;
+package com.cruru.auth.security.jwt;
 
 import com.cruru.auth.exception.IllegalTokenException;
+import com.cruru.auth.security.TokenProperties;
+import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
