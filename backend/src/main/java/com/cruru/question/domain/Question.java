@@ -28,6 +28,7 @@ public class Question {
     @Column(name = "question_id")
     private Long id;
 
+    @Column(columnDefinition = "varchar")
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 

@@ -44,6 +44,7 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
+    @Column(columnDefinition = "varchar")
     @Enumerated(EnumType.STRING)
     private ApplicantState state;
 

@@ -4,16 +4,15 @@ import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayName("지원자 레포지토리 테스트")
-@DataJpaTest
-class ApplicantRepositoryTest {
+class ApplicantRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
