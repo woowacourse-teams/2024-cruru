@@ -7,7 +7,7 @@ export default function IconButton({
   size = 'sm',
   outline = true,
   shape = 'round',
-  type,
+  type = 'button',
   onClick,
   children,
 }: PropsWithChildren<IconButtonProps>) {
