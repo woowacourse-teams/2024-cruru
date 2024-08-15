@@ -4,7 +4,7 @@ const Container = styled.div<{ optionsGap: string | undefined }>`
   display: flex;
   flex-direction: column;
 
-  gap: ${({ optionsGap }) => optionsGap ?? '1.6rem'};
+  gap: ${({ optionsGap }) => optionsGap};
 `;
 
 const S = {

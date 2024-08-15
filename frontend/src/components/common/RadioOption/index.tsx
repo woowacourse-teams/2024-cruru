@@ -8,7 +8,7 @@ interface RadioOptionProps {
   onChange: () => void;
 }
 
-export default function RadioOption({ label, checked, labelSize, onChange }: RadioOptionProps) {
+export default function RadioOption({ label, checked, labelSize = '1.6rem', onChange }: RadioOptionProps) {
   return (
     <S.Option>
       <Radio

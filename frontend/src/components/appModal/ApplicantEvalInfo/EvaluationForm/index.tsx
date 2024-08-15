@@ -54,8 +54,8 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
       <RadioField
         options={evaluationOptions}
         selectedValue={formState.score}
-        optionsGap="1rem"
-        labelSize="1.4rem"
+        optionsGap="0.8rem"
+        labelSize="1.3rem"
         onChange={(value: string) => handleChangeScore(value)}
       />
 

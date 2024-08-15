@@ -9,7 +9,7 @@ const Option = styled.div`
 
 const Label = styled.span<{ labelSize: string | undefined }>`
   ${({ theme }) => theme.typography.common.large};
-  font-size: ${({ labelSize }) => labelSize ?? '1.6rem'};
+  font-size: ${({ labelSize }) => labelSize};
 `;
 
 const S = {

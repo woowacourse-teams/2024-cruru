@@ -14,7 +14,13 @@ interface RadioFieldProps {
   onChange: (value: string) => void;
 }
 
-export default function RadioField({ options, selectedValue, labelSize, optionsGap, onChange }: RadioFieldProps) {
+export default function RadioField({
+  options,
+  selectedValue,
+  labelSize,
+  optionsGap = '1.6rem',
+  onChange,
+}: RadioFieldProps) {
   return (
     <S.Container optionsGap={optionsGap}>
       {options.map((option) => (
