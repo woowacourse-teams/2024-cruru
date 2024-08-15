@@ -71,14 +71,14 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           type="reset"
           color="white"
           onClick={onClose}
-          size="md"
+          size="sm"
         >
           취소
         </Button>
         <Button
           type="submit"
           color="primary"
-          size="md"
+          size="sm"
           disabled={formState.score === ''}
         >
           평가 저장
