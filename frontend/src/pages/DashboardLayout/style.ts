@@ -20,8 +20,10 @@ const Layout = styled.div`
 `;
 
 const MainContainer = styled.div`
-  width: 80vw;
-  height: 100vh;
+  width: 80%;
+  height: 100%;
+  // INFO: 4.8rem = 바깥 컨테이너의 padding-top + padding-bottom
+  max-height: calc(100vh - 4.8rem);
 `;
 
 const S = {

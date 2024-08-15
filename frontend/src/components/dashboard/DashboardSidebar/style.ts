@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  width: 20vw;
+  width: 20%;
   min-width: 25rem;
   max-width: 30rem;
   border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
