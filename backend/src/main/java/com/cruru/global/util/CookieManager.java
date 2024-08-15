@@ -1,21 +1,20 @@
 package com.cruru.global.util;
 
 import com.cruru.auth.exception.IllegalCookieException;
-import com.cruru.auth.security.JwtTokenProvider;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Objects;
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CookieManager {
 
-    private final JwtTokenProvider tokenProvider;
-
-    public static String extractToken(Cookie[] cookies) {
+    public static String extractToken(HttpServletRequest request) {
+        Cookie[] cookies = extractCookie(request);
         return Arrays.stream(cookies)
                 .filter(cookie -> "token".equals(cookie.getName()))
                 .findFirst()
@@ -23,7 +22,7 @@ public class CookieManager {
                 .orElseThrow(IllegalCookieException::new);
     }
 
-    public static Cookie[] extractCookie(HttpServletRequest request) {
+    private static Cookie[] extractCookie(HttpServletRequest request) {
         Cookie[] cookies = Objects.requireNonNull(request)
                 .getCookies();
 

@@ -3,7 +3,6 @@ package com.cruru.auth.service;
 import com.cruru.auth.exception.IllegalCookieException;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.security.JwtTokenProvider;
-import com.cruru.global.util.CookieManager;
 import com.cruru.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CookieManager cookieManager;
 
     public String createToken(Member member) {
         return jwtTokenProvider.create(member);

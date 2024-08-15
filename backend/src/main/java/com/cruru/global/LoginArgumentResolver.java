@@ -5,7 +5,6 @@ import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
 import com.cruru.member.domain.MemberRole;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -34,8 +33,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     ) throws UnauthorizedException {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
-        Cookie[] cookies = CookieManager.extractCookie(request);
-        String token = CookieManager.extractToken(cookies);
+        String token = CookieManager.extractToken(request);
         String emailPayload = authService.extractEmailPayload(token);
         MemberRole memberRolePayload = MemberRole.valueOf(authService.extractMemberRolePayload(token));
 

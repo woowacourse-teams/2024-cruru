@@ -2,7 +2,6 @@ package com.cruru.global;
 
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +13,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private final AuthService authService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
-        Cookie[] cookies = CookieManager.extractCookie(request);
-        String token = CookieManager.extractToken(cookies);
+    public boolean preHandle(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object handler
+    ) throws Exception {
+        String token = CookieManager.extractToken(request);
 
         if (authService.isLoginMember(token)) {
             return true;
