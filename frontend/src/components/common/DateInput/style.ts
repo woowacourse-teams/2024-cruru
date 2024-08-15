@@ -11,6 +11,7 @@ const Container = styled.div`
   width: 100%;
 
   position: relative;
+  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
@@ -31,8 +32,8 @@ const Text = styled.span`
 const Input = styled.input`
   ${hiddenStyles}
   position: absolute;
-  top: 3rem;
-  right: 3rem;
+  top: 3.5rem;
+  right: 22rem;
 `;
 
 const Icon = styled.div`
