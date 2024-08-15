@@ -13,14 +13,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtTokenProvider implements TokenProvider {
 
     private static final String ROLE = "role";
     private static final String EMAIL = "email";
 
     private final TokenProperties tokenProperties;
 
-    public String create(Member member) {
+    @Override
+    public String createToken(Member member) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenProperties.expireLength());
 
@@ -34,9 +35,22 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String extractMemberEmail(String token) {
+    @Override
+    public boolean isExpired(String token) throws IllegalTokenException {
+        try {
+            Claims claims = extractClaims(token);
+            Date expiration = claims.getExpiration();
+            Date now = new Date();
+            return expiration.before(now);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new IllegalTokenException();
+        }
+    }
+
+    @Override
+    public String extractPayload(String token, String key) throws IllegalTokenException {
         Claims claims = extractClaims(token);
-        return claims.get(EMAIL, String.class);
+        return claims.get(key, String.class);
     }
 
     private Claims extractClaims(String token) {
@@ -50,18 +64,5 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new IllegalTokenException();
         }
-    }
-
-    public String extractMemberRole(String token) {
-        Claims claims = extractClaims(token);
-        return claims.get(ROLE, String.class);
-    }
-
-    public boolean isExpired(String token) {
-        Claims claims = extractClaims(token);
-        Date expiration = claims.getExpiration();
-        Date now = new Date();
-
-        return expiration.before(now);
     }
 }
