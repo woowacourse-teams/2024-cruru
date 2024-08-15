@@ -1,7 +1,7 @@
 import { Theme, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-// TODO: InputFieldd와 중복되는 부분이 다수 있어 공통으로 분리
+// TODO: InputField와 중복되는 부분이 다수 있어 공통으로 분리
 const commonInputStyles = (theme: Theme) => css`
   ${theme.typography.common.default};
 
@@ -43,7 +43,9 @@ const Asterisk = styled.span`
 `;
 
 const TextArea = styled.textarea<{ isError: boolean; resize: boolean }>`
-  ${({ theme }) => commonInputStyles(theme)}
+  ${({ theme }) => commonInputStyles(theme)};
+  font-family: ${({ theme }) => theme.typography.family.primary};
+
   ${({ theme, isError }) => css`
     &::placeholder {
       ${theme.typography.common.block};
@@ -63,8 +65,8 @@ const TextArea = styled.textarea<{ isError: boolean; resize: boolean }>`
     }
 
     ${isError && `border-color: ${theme.colors.feedback.error};`}
-  `}
-  ${({ resize }) => !resize && 'resize: none;'}
+  `};
+  ${({ resize }) => !resize && 'resize: none;'};
 `;
 
 const ErrorText = styled.p`
