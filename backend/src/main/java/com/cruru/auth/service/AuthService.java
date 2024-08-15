@@ -34,10 +34,6 @@ public class AuthService {
         return extractPayload(token, EMAIL);
     }
 
-    public String extractMemberRole(String token) {
-        return extractPayload(token, ROLE);
-    }
-
     private String extractPayload(String token, String key) {
         try {
             String payload = tokenProvider.extractPayload(token, key);
@@ -48,5 +44,9 @@ public class AuthService {
         } catch (IllegalTokenException e) {
             throw new IllegalCookieException();
         }
+    }
+
+    public String extractMemberRole(String token) {
+        return extractPayload(token, ROLE);
     }
 }

@@ -47,12 +47,6 @@ public class JwtTokenProvider implements TokenProvider {
         }
     }
 
-    @Override
-    public String extractPayload(String token, String key) throws IllegalTokenException {
-        Claims claims = extractClaims(token);
-        return claims.get(key, String.class);
-    }
-
     private Claims extractClaims(String token) {
         try {
             return Jwts.parser()
@@ -64,5 +58,11 @@ public class JwtTokenProvider implements TokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new IllegalTokenException();
         }
+    }
+
+    @Override
+    public String extractPayload(String token, String key) throws IllegalTokenException {
+        Claims claims = extractClaims(token);
+        return claims.get(key, String.class);
     }
 }
