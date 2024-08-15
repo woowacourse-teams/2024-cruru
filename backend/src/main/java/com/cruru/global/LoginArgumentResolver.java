@@ -34,8 +34,8 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
         String token = CookieManager.extractToken(request);
-        String emailPayload = authService.extractEmailPayload(token);
-        MemberRole memberRolePayload = MemberRole.valueOf(authService.extractMemberRolePayload(token));
+        String emailPayload = authService.extractEmail(token);
+        MemberRole memberRolePayload = MemberRole.valueOf(authService.extractMemberRole(token));
 
         return new LoginProfile(emailPayload, memberRolePayload);
     }

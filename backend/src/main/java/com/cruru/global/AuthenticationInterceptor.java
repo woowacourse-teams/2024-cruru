@@ -20,7 +20,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     ) throws Exception {
         String token = CookieManager.extractToken(request);
 
-        if (authService.isLoginMember(token)) {
+        if (authService.isTokenValid(token)) {
             return true;
         }
 

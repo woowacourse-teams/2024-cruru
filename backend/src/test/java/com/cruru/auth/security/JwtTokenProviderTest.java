@@ -41,7 +41,7 @@ class JwtTokenProviderTest {
     @Test
     void create() {
         // when
-        String token = jwtTokenProvider.create(member);
+        String token = jwtTokenProvider.createToken(member);
         Claims claims = Jwts.parser()
                 .setSigningKey(TEST_SECRET_KEY.getBytes())
                 .parseClaimsJws(token)
@@ -61,11 +61,11 @@ class JwtTokenProviderTest {
     @Test
     void extractEmailAndRole() {
         // given
-        String token = jwtTokenProvider.create(member);
+        String token = jwtTokenProvider.createToken(member);
 
         // when
-        String email = jwtTokenProvider.extractMemberEmail(token);
-        String role = jwtTokenProvider.extractMemberRole(token);
+        String email = jwtTokenProvider.extractPayload(token, "email");
+        String role = jwtTokenProvider.extractPayload(token, "role");
 
         // then
         String expectedRole = member.getRole().name();
@@ -88,7 +88,7 @@ class JwtTokenProviderTest {
     @Test
     void isExpired_notExpired() {
         // given
-        String notExpiredToken = jwtTokenProvider.create(member);
+        String notExpiredToken = jwtTokenProvider.createToken(member);
 
         // when&then
         assertThat(jwtTokenProvider.isExpired(notExpiredToken)).isFalse();

@@ -2,7 +2,7 @@ package com.cruru.auth.service;
 
 import com.cruru.auth.exception.IllegalCookieException;
 import com.cruru.auth.exception.IllegalTokenException;
-import com.cruru.auth.security.JwtTokenProvider;
+import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,35 +13,38 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private static final String EMAIL = "email";
+    private static final String ROLE = "role";
+
+    private final TokenProvider tokenProvider;
 
     public String createToken(Member member) {
-        return jwtTokenProvider.create(member);
+        return tokenProvider.createToken(member);
     }
 
-    public boolean isLoginMember(String token) {
-        return !jwtTokenProvider.isExpired(token) || jwtTokenProvider.extractMemberEmail(token) != null;
-    }
-
-    public String extractEmailPayload(String token) {
+    public boolean isTokenValid(String token) {
         try {
-            String extractedEmail = jwtTokenProvider.extractMemberEmail(token);
-            if (extractedEmail == null) {
-                throw new IllegalCookieException();
-            }
-            return extractedEmail;
+            return tokenProvider.isExpired(token);
         } catch (IllegalTokenException e) {
-            throw new IllegalCookieException();
+            return false;
         }
     }
 
-    public String extractMemberRolePayload(String token) {
+    public String extractEmail(String token) {
+        return extractPayload(token, EMAIL);
+    }
+
+    public String extractMemberRole(String token) {
+        return extractPayload(token, ROLE);
+    }
+
+    private String extractPayload(String token, String key) {
         try {
-            String extractedMemberRole = jwtTokenProvider.extractMemberRole(token);
-            if (extractedMemberRole == null) {
+            String payload = tokenProvider.extractPayload(token, key);
+            if (payload == null) {
                 throw new IllegalCookieException();
             }
-            return extractedMemberRole;
+            return payload;
         } catch (IllegalTokenException e) {
             throw new IllegalCookieException();
         }
