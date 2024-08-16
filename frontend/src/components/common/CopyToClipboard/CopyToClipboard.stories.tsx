@@ -20,6 +20,10 @@ const meta = {
       description: '버튼 안에 들어갈 링크입니다.',
       control: { type: 'text' },
     },
+    title: {
+      description: 'URL 대신 표시될 타이틀입니다. 전달하지 않으면 URL이 표시됩니다.',
+      control: { type: 'text' },
+    },
   },
 } satisfies Meta<typeof CopyToClipboard>;
 
@@ -29,5 +33,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     url: 'https://www.cruru.kr',
+    title: 'CRURU',
   },
 };

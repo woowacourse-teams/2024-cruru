@@ -24,7 +24,10 @@ function Tab({ children, postUrl }: TabProps) {
       <S.Tabs>{children}</S.Tabs>
       {postUrl && (
         <S.CopyWrapper>
-          <CopyToClipboard url={postUrl} />
+          <CopyToClipboard
+            url={postUrl}
+            title="게시된 공고로 이동하기"
+          />
         </S.CopyWrapper>
       )}
     </S.Nav>

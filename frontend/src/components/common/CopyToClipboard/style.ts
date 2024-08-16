@@ -28,12 +28,22 @@ const LinkContainer = styled.div`
 
 const Link = styled.span`
   a {
-    ${({ theme }) => theme.typography.common.small};
-    color: ${({ theme }) => theme.colors.link};
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    ${({ theme }) => theme.typography.common.default};
+    color: ${({ theme }) => theme.baseColors.grayscale[800]};
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    svg {
+      display: block;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
   }
 `;
 
