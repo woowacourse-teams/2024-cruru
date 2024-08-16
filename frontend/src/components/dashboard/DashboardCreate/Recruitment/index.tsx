@@ -85,6 +85,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
               width="22rem"
               label="시작일"
               min={today}
+              max={recruitmentInfoState.endDate.split('T')[0]}
               innerText={startDateText}
               onChange={handleStartDate}
             />
