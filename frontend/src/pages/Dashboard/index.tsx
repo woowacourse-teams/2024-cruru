@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
 
-import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import Tab from '@components/common/Tab';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
+import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
+import OpenInNewTab from '@components/common/OpenInNewTab';
+import CopyToClipboard from '@components/common/CopyToClipboard';
 
 import useTab from '@components/common/Tab/useTab';
 import useProcess from '@hooks/useProcess';
@@ -10,7 +12,6 @@ import useProcess from '@hooks/useProcess';
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 
-import CopyToClipboard from '@components/common/CopyToClipboard';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
@@ -32,10 +33,11 @@ export default function Dashboard() {
         <S.Title>{title}</S.Title>
 
         <S.CopyWrapper>
-          <CopyToClipboard
-            url={postUrl}
-            title={`${title} 공고`}
+          <OpenInNewTab
+            url={`https://${postUrl}`}
+            title="공고로 이동"
           />
+          <CopyToClipboard url={`https://${postUrl}`} />
         </S.CopyWrapper>
       </S.Header>
 

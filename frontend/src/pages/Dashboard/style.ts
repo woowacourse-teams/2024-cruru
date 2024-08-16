@@ -16,7 +16,10 @@ const Title = styled.div`
 `;
 
 const CopyWrapper = styled.div`
-  min-width: 20rem;
+  display: flex;
+  gap: 0.8rem;
+
+  min-width: 30rem;
 `;
 
 const DashboardPanel = styled.div<{ isVisible: boolean }>`
