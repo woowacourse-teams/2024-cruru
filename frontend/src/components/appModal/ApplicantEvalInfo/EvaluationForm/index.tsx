@@ -5,9 +5,16 @@ import Button from '@components/common/Button';
 import TextField from '@components/common/TextField';
 
 import useEvaluationMutation from '@hooks/useEvaluationMutation';
+import ValidationError from '@utils/errors/ValidationError';
+import { validateEvalContent } from '@domain/validations/evaluation';
 
-import { EVALUATION_SCORE } from '../constants';
+import { EVALUATION_CONTENT_MAX_LENGTH, EVALUATION_SCORE } from '../constants';
 import S from './style';
+
+interface EvaluationData {
+  score: string;
+  content: string;
+}
 
 interface EvaluationFormProps {
   processId: number;
@@ -16,7 +23,8 @@ interface EvaluationFormProps {
 }
 
 export default function EvaluationForm({ processId, applicantId, onClose }: EvaluationFormProps) {
-  const [formState, setFormState] = useState({ score: '', content: '' });
+  const [formState, setFormState] = useState<EvaluationData>({ score: '', content: '' });
+  const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
   const { mutate: submitNewEvaluation } = useEvaluationMutation({ processId, applicantId });
 
   const handleChangeScore = (value: string) => {
@@ -29,14 +37,22 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   };
 
   const handleChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setFormState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    try {
+      const { name, value } = event.target;
+      validateEvalContent(value);
+      setFormState((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+      setContentErrorMessage(undefined);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        setContentErrorMessage(error.message);
+      }
+    }
   };
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (Object.keys(EVALUATION_SCORE).includes(formState.score)) {
       submitNewEvaluation({ processId, applicantId, ...formState });
@@ -50,18 +66,22 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   }));
 
   return (
-    <S.EvaluationForm>
+    <S.EvaluationForm onSubmit={handleSubmit}>
       <RadioField
         options={evaluationOptions}
         selectedValue={formState.score}
+        optionsGap="0.8rem"
+        labelSize="1.3rem"
         onChange={(value: string) => handleChangeScore(value)}
       />
 
       <TextField
+        name="content"
         placeholder="지원자에 대한 평가 내용을 입력해주세요."
         value={formState.content}
+        maxLength={EVALUATION_CONTENT_MAX_LENGTH}
         onChange={handleChangeContent}
-        name="content"
+        error={contentErrorMessage}
       />
 
       <S.FormButtonWrapper>
@@ -69,16 +89,15 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           type="reset"
           color="white"
           onClick={onClose}
-          size="md"
+          size="sm"
         >
           취소
         </Button>
         <Button
-          type="button"
+          type="submit"
           color="primary"
-          size="md"
-          disabled={formState.score === ''}
-          onClick={handleSubmit}
+          size="sm"
+          disabled={formState.score === '' || !!contentErrorMessage}
         >
           평가 저장
         </Button>

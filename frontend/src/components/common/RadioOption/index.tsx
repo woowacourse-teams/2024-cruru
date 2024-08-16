@@ -4,17 +4,18 @@ import Radio from '../Radio';
 interface RadioOptionProps {
   label: string;
   checked: boolean;
+  labelSize?: string;
   onChange: () => void;
 }
 
-export default function RadioOption({ label, checked, onChange }: RadioOptionProps) {
+export default function RadioOption({ label, checked, labelSize = '1.6rem', onChange }: RadioOptionProps) {
   return (
     <S.Option>
       <Radio
         isChecked={checked}
         onToggle={onChange}
       />
-      <S.Label>{label}</S.Label>
+      <S.Label labelSize={labelSize}>{label}</S.Label>
     </S.Option>
   );
 }
