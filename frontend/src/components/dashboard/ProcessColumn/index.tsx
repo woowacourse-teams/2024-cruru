@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
+import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 import { Process } from '@customTypes/process';
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
@@ -18,6 +19,7 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
   const { processList } = useProcess({ dashboardId, postId });
   const { moveApplicantProcess } = useApplicant({});
   const { setApplicantId } = useSpecificApplicantId();
+  const { setProcessId } = useSpecificProcessId();
   const { open } = useModal();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) =>
@@ -31,6 +33,7 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
 
   const cardClickHandler = (id: number) => {
     setApplicantId(id);
+    setProcessId(process.processId);
     open();
   };
 
