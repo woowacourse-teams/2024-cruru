@@ -7,6 +7,7 @@ import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
+import com.cruru.process.domain.ProcessType;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
@@ -41,7 +42,7 @@ public class ProcessService {
 
         rearrangeProcesses(request.sequence(), processes);
 
-        processRepository.save(toProcess(request, dashboard));
+        processRepository.save(toEvaluateProcess(request, dashboard));
     }
 
     private void validateProcessCount(Dashboard dashboard) {
@@ -61,8 +62,8 @@ public class ProcessService {
                 .forEach(Process::increaseSequenceNumber);
     }
 
-    private Process toProcess(ProcessCreateRequest request, Dashboard dashboard) {
-        return new Process(request.sequence(), request.name(), request.description(), dashboard);
+    private Process toEvaluateProcess(ProcessCreateRequest request, Dashboard dashboard) {
+        return new Process(request.sequence(), request.name(), request.description(), ProcessType.EVALUATE, dashboard);
     }
 
     public Process findFirstProcessOnDashboard(Dashboard dashboard) {

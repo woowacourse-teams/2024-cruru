@@ -5,6 +5,7 @@ import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.process.domain.Process;
+import com.cruru.process.domain.ProcessType;
 import com.cruru.util.RepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +31,7 @@ class ProcessRepositoryTest extends RepositoryTest {
         Process saved = processRepository.save(process);
 
         //when
-        Process updatedProcess = new Process(saved.getId(), 1, "새로운 면접", "대면 면접", null);
+        Process updatedProcess = new Process(saved.getId(), 1, "새로운 면접", "대면 면접", ProcessType.EVALUATE, null);
         processRepository.save(updatedProcess);
 
         //then

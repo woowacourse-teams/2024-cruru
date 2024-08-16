@@ -6,6 +6,8 @@ import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,15 +43,20 @@ public class Process {
 
     private String description;
 
+    @Column(columnDefinition = "varchar")
+    @Enumerated(EnumType.STRING)
+    private ProcessType type;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dashboard_id")
     private Dashboard dashboard;
 
-    public Process(int sequence, String name, String description, Dashboard dashboard) {
+    public Process(int sequence, String name, String description, ProcessType type, Dashboard dashboard) {
         validateName(name);
         this.sequence = sequence;
         this.name = name;
         this.description = description;
+        this.type = type;
         this.dashboard = dashboard;
     }
 
@@ -117,6 +124,7 @@ public class Process {
                 ", sequence=" + sequence +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", type=" + type +
                 ", dashboard=" + dashboard +
                 '}';
     }
