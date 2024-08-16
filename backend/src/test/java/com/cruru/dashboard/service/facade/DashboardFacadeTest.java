@@ -111,11 +111,17 @@ class DashboardFacadeTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
         Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Applicant failApplicant = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        failApplicant.reject();
-        Applicant pendingApplicant1 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        Applicant pendingApplicant2 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        List<Applicant> applicants = List.of(failApplicant, pendingApplicant1, pendingApplicant2);
+        Process lastProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
+
+        List<Applicant> applicants = List.of(
+                // 마지막 프로세스에 있으면서 불합격 상태인 경우, 불합격
+                ApplicantFixture.createRejectedApplicantRush(lastProcess),
+                ApplicantFixture.createRejectedApplicantRush(firstProcess),
+                ApplicantFixture.createPendingApplicantDobby(lastProcess),
+                ApplicantFixture.createPendingApplicantDobby(firstProcess),
+                ApplicantFixture.createPendingApplicantDobby(firstProcess),
+                ApplicantFixture.createPendingApplicantDobby(firstProcess)
+        );
         applicantRepository.saveAll(applicants);
 
         // when
@@ -130,9 +136,9 @@ class DashboardFacadeTest extends ServiceTest {
             assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle());
             assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl());
             assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate());
-            assertThat(stats.accept()).isEqualTo(0);
-            assertThat(stats.fail()).isEqualTo(1);
-            assertThat(stats.inProgress()).isEqualTo(2);
+            assertThat(stats.accept()).isEqualTo(1);
+            assertThat(stats.fail()).isEqualTo(2);
+            assertThat(stats.inProgress()).isEqualTo(3);
         });
     }
 }

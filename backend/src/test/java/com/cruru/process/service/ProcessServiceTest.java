@@ -2,8 +2,6 @@ package com.cruru.process.service;
 
 import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,8 +47,8 @@ class ProcessServiceTest extends ServiceTest {
     void create() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        processRepository.save(createFinalProcess(dashboard));
+        processRepository.save(ProcessFixture.createFirstProcess(dashboard));
+        processRepository.save(ProcessFixture.createFinalProcess(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "원래 있던 2개의 프로세스 사이에 생겼다.", 1);
 
         // when
@@ -96,15 +94,15 @@ class ProcessServiceTest extends ServiceTest {
 
     @DisplayName("대시보드에 존재하는 첫 번째 프로세스를 조회한다.")
     @Test
-    void findFirstProcessOnDashboard() {
+    void findApplyProcessOnDashboard() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
         processRepository.save(createInterviewProcess(dashboard));
-        processRepository.save(createFinalProcess(dashboard));
+        processRepository.save(ProcessFixture.createFinalProcess(dashboard));
 
         // when
-        Process actualFirstProcess = processService.findFirstProcessOnDashboard(dashboard);
+        Process actualFirstProcess = processService.findApplyProcessOnDashboard(dashboard);
 
         // then
         assertThat(actualFirstProcess).isEqualTo(firstProcess);
@@ -115,7 +113,7 @@ class ProcessServiceTest extends ServiceTest {
     void update() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
+        Process process = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when
@@ -135,7 +133,7 @@ class ProcessServiceTest extends ServiceTest {
     void update_ThrowException() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
+        Process process = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
         String notChangedName = process.getName();
         String notChangedDescription = process.getDescription();
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest(notChangedName, notChangedDescription);
@@ -166,8 +164,8 @@ class ProcessServiceTest extends ServiceTest {
     void delete_FirstOrLastProcess_ThrowsException() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
-        Process finalProcess = processRepository.save(createFinalProcess(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
+        Process finalProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
 
         // when & then
         Long firstProcessId = firstProcess.getId();

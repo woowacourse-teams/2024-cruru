@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProcessService {
 
     private static final int MAX_PROCESS_COUNT = 5;
-    private static final int PROCESS_FIRST_SEQUENCE = 0;
     private static final int ZERO = 0;
 
     private final ApplicantRepository applicantRepository;
@@ -66,10 +65,10 @@ public class ProcessService {
         return new Process(request.sequence(), request.name(), request.description(), ProcessType.EVALUATE, dashboard);
     }
 
-    public Process findFirstProcessOnDashboard(Dashboard dashboard) {
+    public Process findApplyProcessOnDashboard(Dashboard dashboard) {
         List<Process> processes = findAllByDashboard(dashboard);
         return processes.stream()
-                .filter(process -> process.getSequence() == PROCESS_FIRST_SEQUENCE)
+                .filter(Process::isApplyType)
                 .findFirst()
                 .orElseThrow(InternalServerException::new);
     }
@@ -105,8 +104,7 @@ public class ProcessService {
     }
 
     private void validateFirstOrLastProcess(Process process) {
-        int processCount = processRepository.countByDashboard(process.getDashboard());
-        if (process.isSameSequence(PROCESS_FIRST_SEQUENCE) || process.isSameSequence(processCount - 1)) {
+        if (process.isNotDeletable()) {
             throw new ProcessDeleteEndsException();
         }
     }

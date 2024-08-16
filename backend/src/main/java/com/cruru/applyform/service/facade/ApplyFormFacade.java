@@ -49,7 +49,7 @@ public class ApplyFormFacade {
         validatePersonalDataCollection(request);
         ApplyForm applyForm = applyFormService.findById(applyFormId);
         Dashboard dashboard = applyForm.getDashboard();
-        Process firstProcess = processService.findFirstProcessOnDashboard(dashboard);
+        Process firstProcess = processService.findApplyProcessOnDashboard(dashboard);
 
         ApplicantCreateRequest applicantCreateRequest = request.applicantCreateRequest();
         Applicant applicant = applicantService.create(applicantCreateRequest, firstProcess);

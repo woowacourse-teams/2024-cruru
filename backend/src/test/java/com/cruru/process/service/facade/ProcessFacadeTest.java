@@ -1,7 +1,6 @@
 package com.cruru.process.service.facade;
 
 import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -107,7 +106,7 @@ class ProcessFacadeTest extends ServiceTest {
     void update() {
         // given
         Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
+        Process process = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when

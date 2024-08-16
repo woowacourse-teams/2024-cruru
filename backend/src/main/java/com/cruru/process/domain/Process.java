@@ -83,6 +83,18 @@ public class Process {
         return !NAME_PATTERN.matcher(name).matches();
     }
 
+    public boolean isApplyType() {
+        return type == ProcessType.APPLY;
+    }
+
+    public boolean isApproveType() {
+        return type == ProcessType.APPROVE;
+    }
+
+    public boolean isNotDeletable() {
+        return type.isFixed();
+    }
+
     public void updateName(String name) {
         validateName(name);
         this.name = name;
