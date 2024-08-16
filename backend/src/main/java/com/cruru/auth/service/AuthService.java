@@ -4,6 +4,8 @@ import com.cruru.auth.exception.IllegalCookieException;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private static final String EMAIL = "email";
-    private static final String ROLE = "role";
+    private static final String EMAIL_CLAIM = "email";
+    private static final String ROLE_CLAIM = "role";
 
     private final TokenProvider tokenProvider;
 
     public String createToken(Member member) {
-        return tokenProvider.createToken(member);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(EMAIL_CLAIM, member.getEmail());
+        claims.put(ROLE_CLAIM, member.getRole().name());
+
+        return tokenProvider.createToken(claims);
     }
 
     public boolean isTokenValid(String token) {
@@ -31,7 +37,7 @@ public class AuthService {
     }
 
     public String extractEmail(String token) {
-        return extractPayload(token, EMAIL);
+        return extractPayload(token, EMAIL_CLAIM);
     }
 
     private String extractPayload(String token, String key) {
@@ -47,6 +53,6 @@ public class AuthService {
     }
 
     public String extractMemberRole(String token) {
-        return extractPayload(token, ROLE);
+        return extractPayload(token, ROLE_CLAIM);
     }
 }

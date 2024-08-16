@@ -3,13 +3,13 @@ package com.cruru.auth.security.jwt;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
-import com.cruru.member.domain.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,19 +17,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JwtTokenProvider implements TokenProvider {
 
-    private static final String ROLE = "role";
-    private static final String EMAIL = "email";
-
     private final TokenProperties tokenProperties;
 
     @Override
-    public String createToken(Member member) {
+    public String createToken(Map<String, Object> claims) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenProperties.expireLength());
 
         return Jwts.builder()
-                .claim(ROLE, member.getRole().name())
-                .claim(EMAIL, member.getEmail())
+                .addClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.valueOf(tokenProperties.algorithm()),
