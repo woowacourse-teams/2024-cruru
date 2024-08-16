@@ -4,7 +4,6 @@ import com.cruru.auth.exception.IllegalCookieException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,8 +24,7 @@ public class CookieManager {
     }
 
     private static Cookie[] extractCookie(HttpServletRequest request) {
-        Cookie[] cookies = Objects.requireNonNull(request)
-                .getCookies();
+        Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
             throw new IllegalCookieException();
