@@ -50,8 +50,8 @@ class JwtTokenProviderTest {
                 .getBody();
 
         // then
-        String expectedRole = (String) this.claims.get(ROLE_CLAIM);
-        String expectedEmail = (String) this.claims.get(EMAIL_CLAIM);
+        String expectedRole = (String) claims.get(ROLE_CLAIM);
+        String expectedEmail = (String) claims.get(EMAIL_CLAIM);
 
         assertAll(
                 () -> assertThat(extractedClaims).containsEntry(ROLE_CLAIM, expectedRole),
@@ -71,8 +71,8 @@ class JwtTokenProviderTest {
         String role = jwtTokenProvider.extractClaim(token, ROLE_CLAIM);
 
         // then
-        String expectedRole = (String) this.claims.get(ROLE_CLAIM);
-        String expectedEmail = (String) this.claims.get(EMAIL_CLAIM);
+        String expectedRole = (String) claims.get(ROLE_CLAIM);
+        String expectedEmail = (String) claims.get(EMAIL_CLAIM);
 
         assertAll(
                 () -> assertThat(email).isEqualTo(expectedEmail),
