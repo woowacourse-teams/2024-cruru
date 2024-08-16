@@ -10,6 +10,7 @@ import useProcess from '@hooks/useProcess';
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 
+import CopyToClipboard from '@components/common/CopyToClipboard';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
@@ -27,9 +28,18 @@ export default function Dashboard() {
 
   return (
     <S.AppContainer>
-      <S.Title>{title}</S.Title>
+      <S.Header>
+        <S.Title>{title}</S.Title>
 
-      <Tab postUrl={`https://${postUrl}`}>
+        <S.CopyWrapper>
+          <CopyToClipboard
+            url={postUrl}
+            title={`${title} 공고`}
+          />
+        </S.CopyWrapper>
+      </S.Header>
+
+      <Tab>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
           <Tab.TabItem
             key={label}

@@ -1,10 +1,8 @@
 import { ComponentProps, ReactNode } from 'react';
 import S from './style';
-import CopyToClipboard from '../CopyToClipboard';
 
 interface TabProps {
   children: ReactNode;
-  postUrl?: string;
 }
 
 interface TabItemProps extends ComponentProps<'button'> {
@@ -18,18 +16,10 @@ interface TabPanelProps {
   isVisible: boolean;
 }
 
-function Tab({ children, postUrl }: TabProps) {
+function Tab({ children }: TabProps) {
   return (
     <S.Nav>
       <S.Tabs>{children}</S.Tabs>
-      {postUrl && (
-        <S.CopyWrapper>
-          <CopyToClipboard
-            url={postUrl}
-            title="게시된 공고로 이동하기"
-          />
-        </S.CopyWrapper>
-      )}
     </S.Nav>
   );
 }
