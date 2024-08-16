@@ -35,14 +35,10 @@ public class JwtTokenProvider implements TokenProvider {
 
     @Override
     public boolean isExpired(String token) throws IllegalTokenException {
-        try {
-            Claims claims = extractClaims(token);
-            Date expiration = claims.getExpiration();
-            Date now = new Date();
-            return expiration.before(now);
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new IllegalTokenException();
-        }
+        Claims claims = extractClaims(token);
+        Date expiration = claims.getExpiration();
+        Date now = new Date();
+        return expiration.before(now);
     }
 
     private Claims extractClaims(String token) {
