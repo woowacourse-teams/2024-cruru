@@ -1,5 +1,6 @@
 import BaseModal from '@components/common/BaseModal';
 import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
+import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 import ApplicantBaseInfo from './ApplicantBaseInfo';
 
 import ModalHeader from '../common/ModalHeader';
@@ -10,7 +11,8 @@ import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
 
 export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
-  if (!applicantId) return null;
+  const { processId } = useSpecificProcessId();
+  if (!applicantId || !processId) return null;
 
   return (
     <BaseModal>
@@ -44,7 +46,7 @@ export default function ApplicantModal() {
         <S.ModalAside>
           <ApplicantEvalInfo
             applicantId={applicantId}
-            processId={1}
+            processId={processId}
           />
         </S.ModalAside>
       </S.Container>
