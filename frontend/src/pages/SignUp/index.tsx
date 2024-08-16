@@ -13,7 +13,7 @@ export default function SignUp() {
   // TODO: 비밀번호는 영어만 가능하기 때문에, validate에 한글검증이 들어가야 합니다.
 
   return (
-    <S.LoginContainer>
+    <S.SignInContainer>
       <S.Title>
         회원가입
         <S.Description>기본 정보를 입력하세요.</S.Description>
@@ -57,6 +57,6 @@ export default function SignUp() {
       <S.LinkContainer>
         <Link to="/sign-in">로그인</Link>
       </S.LinkContainer>
-    </S.LoginContainer>
+    </S.SignInContainer>
   );
 }
