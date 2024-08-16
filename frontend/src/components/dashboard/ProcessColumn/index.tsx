@@ -9,6 +9,7 @@ import { useModal } from '@contexts/ModalContext';
 
 import S from './style';
 import ApplicantCard from '../ApplicantCard';
+import ProcessDescription from './ProcessDescription/index';
 
 interface ProcessColumnProps {
   process: Process;
@@ -41,6 +42,7 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
     <S.ProcessWrapper>
       <S.Header>
         <S.Title>{process.name}</S.Title>
+        <ProcessDescription description={process.description} />
       </S.Header>
       <S.ApplicantList>
         {process.applicants.map(

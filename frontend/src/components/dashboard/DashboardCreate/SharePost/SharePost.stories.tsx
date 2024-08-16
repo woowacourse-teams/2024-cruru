@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CopyToClipboard from '.';
+import SharePost from '.';
 
 const meta = {
-  title: 'Common/Button/CopyToClipboard',
-  component: CopyToClipboard,
+  title: 'Components/Dashboard/Create/Finish/SharePost',
+  component: SharePost,
   parameters: {
     docs: {
       description: {
-        component: '버튼을 클릭하면 URL이 클립보드에 복사됩니다.',
+        component: '게시된 공고로 이동 혹은 공고의 링크를 복사할 수 있는 컴포넌트입니다.',
       },
     },
   },
@@ -16,11 +16,11 @@ const meta = {
 
   argTypes: {
     url: {
-      description: '버튼을 클릭하면 복사될 URL입니다.',
+      description: '게시된 공고의 링크입니다.',
       control: { type: 'text' },
     },
   },
-} satisfies Meta<typeof CopyToClipboard>;
+} satisfies Meta<typeof SharePost>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

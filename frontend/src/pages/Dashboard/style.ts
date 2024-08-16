@@ -6,13 +6,20 @@ const AppContainer = styled.div`
   height: 100vh;
 `;
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Title = styled.div`
   ${({ theme }) => theme.typography.heading[700]}
 `;
 
-const TabWrapper = styled.div`
+const CopyWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 0.8rem;
+
+  min-width: 30rem;
 `;
 
 const DashboardPanel = styled.div<{ isVisible: boolean }>`
@@ -31,9 +38,10 @@ const DashboardPanel = styled.div<{ isVisible: boolean }>`
 
 const S = {
   AppContainer,
-  TabWrapper,
+  Header,
   Title,
   DashboardPanel,
+  CopyWrapper,
 };
 
 export default S;
