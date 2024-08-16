@@ -17,7 +17,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             HttpServletRequest request,
             HttpServletResponse response,
             Object handler
-    ) throws Exception {
+    ) {
         String token = CookieManager.extractToken(request);
 
         if (authService.isTokenValid(token)) {
