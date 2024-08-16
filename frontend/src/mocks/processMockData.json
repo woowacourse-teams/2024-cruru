@@ -21,21 +21,21 @@
           "evaluationCount": 1
         },
         {
-          "applicantId": 6,
+          "applicantId": 3,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": true,
           "evaluationCount": 1
         },
         {
-          "applicantId": 7,
+          "applicantId": 4,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": true,
           "evaluationCount": 1
         },
         {
-          "applicantId": 8,
+          "applicantId": 5,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
@@ -46,39 +46,39 @@
       "description": "지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다."
     },
     {
-      "processId": 4,
+      "processId": 2,
       "orderIndex": 3,
       "applicants": [
         {
-          "applicantId": 1,
+          "applicantId": 6,
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 2,
+          "applicantId": 7,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 6,
+          "applicantId": 8,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": true,
           "evaluationCount": 1
         },
         {
-          "applicantId": 7,
+          "applicantId": 9,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": true,
           "evaluationCount": 1
         },
         {
-          "applicantId": 8,
+          "applicantId": 10,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
@@ -89,39 +89,39 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 5,
+      "processId": 3,
       "orderIndex": 4,
       "applicants": [
         {
-          "applicantId": 1,
+          "applicantId": 11,
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 2,
+          "applicantId": 12,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 6,
+          "applicantId": 13,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 7,
+          "applicantId": 14,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 8,
+          "applicantId": 15,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
@@ -132,81 +132,81 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 3,
+      "processId": 4,
       "orderIndex": 2,
       "applicants": [
         {
-          "applicantId": 1,
+          "applicantId": 16,
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 2,
+          "applicantId": 17,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 6,
+          "applicantId": 18,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 7,
+          "applicantId": 19,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 8,
+          "applicantId": 20,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 9,
+          "applicantId": 21,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 10,
+          "applicantId": 22,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 11,
+          "applicantId": 23,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 12,
+          "applicantId": 24,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 13,
+          "applicantId": 25,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 14,
+          "applicantId": 26,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
@@ -217,39 +217,39 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 4,
+      "processId": 5,
       "orderIndex": 3,
       "applicants": [
         {
-          "applicantId": 1,
+          "applicantId": 27,
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 2,
+          "applicantId": 28,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 6,
+          "applicantId": 29,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 7,
+          "applicantId": 30,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 8,
+          "applicantId": 31,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
@@ -260,25 +260,25 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 5,
+      "processId": 6,
       "orderIndex": 4,
       "applicants": [
         {
-          "applicantId": 3,
+          "applicantId": 32,
           "applicantName": "아르",
           "createdAt": "2024-07-16T05:46:08.345472",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 4,
+          "applicantId": 33,
           "applicantName": "초코칩",
           "createdAt": "2024-07-16T05:46:08.350114",
           "isRejected": false,
           "evaluationCount": 1
         },
         {
-          "applicantId": 5,
+          "applicantId": 34,
           "applicantName": "명오",
           "createdAt": "2024-07-16T05:46:08.352613",
           "isRejected": false,
