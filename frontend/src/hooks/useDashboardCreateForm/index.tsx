@@ -1,4 +1,4 @@
-import dashboardApis from '@api/dashboard';
+import dashboardApis from '@api/domain/dashboard';
 import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ interface UseDashboardCreateFormReturn {
   deleteQuestion: (index: number) => void;
 
   submitMutator: UseMutationResult<
-    Response,
+    FinishResJson,
     Error,
     {
       clubId: string;
@@ -70,8 +70,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
       }),
     onSuccess: async (data) => {
       setStepState('finished');
-      const json = await data?.json();
-      setFinishResJson(json);
+      setFinishResJson(data);
     },
   });
 
@@ -114,7 +113,6 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
       } else {
         questionsCopy[index].choices = [];
       }
-      console.log(questionsCopy);
       return questionsCopy;
     });
   };
