@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import ApiError from './ApiError';
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -12,15 +11,15 @@ interface BaseAPIClientParams {
   hasCookies?: boolean;
 }
 
+interface APIClientParamsWithBody extends BaseAPIClientParams {
+  body?: BodyHashMap;
+}
+
 interface APIClientType {
-  get<T>(
-    params: BaseAPIClientParams & {
-      queryParams?: BodyHashMap;
-    },
-  ): Promise<T>;
-  post<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T>;
-  patch<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T>;
-  put<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T>;
+  get<T>(params: BaseAPIClientParams): Promise<T>;
+  post<T>(params: APIClientParamsWithBody): Promise<T>;
+  patch<T>(params: APIClientParamsWithBody): Promise<T>;
+  put<T>(params: APIClientParamsWithBody): Promise<T>;
   delete(params: BaseAPIClientParams): Promise<void>;
 }
 
@@ -31,23 +30,19 @@ export default class APIClient implements APIClientType {
     this.baseURL = new URL(baseURL);
   }
 
-  async get<T>(
-    params: BaseAPIClientParams & {
-      queryParams?: BodyHashMap;
-    },
-  ): Promise<T> {
+  async get<T>(params: BaseAPIClientParams): Promise<T> {
     return this.request<T>({ method: 'GET', ...params });
   }
 
-  async post<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
+  async post<T>(params: APIClientParamsWithBody): Promise<T> {
     return this.request<T>({ method: 'POST', ...params });
   }
 
-  async patch<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
+  async patch<T>(params: APIClientParamsWithBody): Promise<T> {
     return this.request<T>({ method: 'PATCH', ...params });
   }
 
-  async put<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
+  async put<T>(params: APIClientParamsWithBody): Promise<T> {
     return this.request<T>({ method: 'PUT', ...params });
   }
 
@@ -119,7 +114,6 @@ export default class APIClient implements APIClientType {
     }
 
     // JSON이 아닌 응답을 다루기 위해 다른 처리 추가
-    const textData = await response.text();
-    return textData as unknown as T;
+    return response.text() as T;
   }
 }
