@@ -44,6 +44,7 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
+    @Column(columnDefinition = "varchar")
     @Enumerated(EnumType.STRING)
     private ApplicantState state;
 
@@ -69,7 +70,7 @@ public class Applicant extends BaseEntity {
         this.state = APPROVED;
     }
 
-    public void pending() {
+    public void unreject() {
         this.state = PENDING;
     }
 
@@ -87,6 +88,10 @@ public class Applicant extends BaseEntity {
 
     public boolean isRejected() {
         return this.state == REJECTED;
+    }
+
+    public boolean isNotRejected() {
+        return this.state != REJECTED;
     }
 
     public Dashboard getDashboard() {

@@ -36,11 +36,10 @@ class MemberFacadeTest extends ServiceTest {
 
         // then
         Optional<Member> member = memberRepository.findById(memberId);
-        assertAll(() -> {
-            assertThat(member).isPresent();
-            Member presentMemeber = member.get();
-            assertThat(presentMemeber.getEmail()).isEqualTo(email);
-            assertThat(presentMemeber.getPhone()).isEqualTo(phone);
-        });
+        assertAll(
+                () -> assertThat(member).isPresent(),
+                () -> assertThat(member.get().getEmail()).isEqualTo(email),
+                () -> assertThat(member.get().getPhone()).isEqualTo(phone)
+        );
     }
 }

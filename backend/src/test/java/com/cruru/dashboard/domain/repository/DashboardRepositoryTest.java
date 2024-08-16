@@ -5,15 +5,14 @@ import static com.cruru.util.fixture.DashboardFixture.createFrontendDashboard;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.util.RepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayName("대시보드 레포지토리 테스트")
-@DataJpaTest
-class DashboardRepositoryTest {
+class DashboardRepositoryTest extends RepositoryTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;

@@ -6,17 +6,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayName("지원서 레포지토리 테스트")
-@DataJpaTest
-class ApplyFormRepositoryTest {
+class ApplyFormRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ApplyFormRepository applyFormRepository;
@@ -52,15 +51,14 @@ class ApplyFormRepositoryTest {
 
         // then
         ApplyForm actualApplyForm = applyFormRepository.findById(expectedApplyForm.getId()).get();
-        assertAll(() -> {
-            assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard());
-
-            assertThat(actualApplyForm.getTitle()).isEqualTo(title);
-            assertThat(actualApplyForm.getDescription()).isEqualTo(description);
-            assertThat(actualApplyForm.getUrl()).isEqualTo(url);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
-            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
-        });
+        assertAll(
+                () -> assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard()),
+                () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
+                () -> assertThat(actualApplyForm.getDescription()).isEqualTo(description),
+                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(url),
+                () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
+                () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
+        );
     }
 
     @DisplayName("ID가 없는 지원서 양식을 저장하면, ID를 순차적으로 부여하여 저장한다.")

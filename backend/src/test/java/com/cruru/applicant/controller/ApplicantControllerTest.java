@@ -77,13 +77,25 @@ class ApplicantControllerTest extends ControllerTest {
 
     @DisplayName("지원자를 불합격시키는 데 성공하면 200을 응답한다.")
     @Test
-    void updateReject() {
+    void reject() {
         // given
         Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
 
         // when&then
         RestAssured.given().log().all()
                 .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원자를 불합격 해제시키는 데 성공하면 200을 응답한다.")
+    @Test
+    void unreject() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
+
+        // when&then
+        RestAssured.given().log().all()
+                .when().patch("/v1/applicants/{applicantId}/unreject", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 

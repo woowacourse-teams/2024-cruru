@@ -80,7 +80,6 @@ class JwtTokenProviderTest {
         );
     }
 
-
     @DisplayName("만료된 토큰을 검증한다.")
     @Test
     void isExpired_expired() {

@@ -83,13 +83,13 @@ class QuestionServiceTest extends ServiceTest {
     @MethodSource("provideQuestionsAndResponses")
     void toQuestionResponse(Question expectedQuestion, QuestionResponse actualResponse) {
         // given&when&then
-        assertAll(() -> {
-            assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId());
-            assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence());
-            assertThat(actualResponse.type()).isEqualTo(expectedQuestion.getQuestionType().toString());
-            assertThat(actualResponse.content()).isEqualTo(expectedQuestion.getContent());
-            assertThat(actualResponse.description()).isEqualTo(expectedQuestion.getDescription());
-        });
+        assertAll(
+                () -> assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId()),
+                () -> assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence()),
+                () -> assertThat(actualResponse.type()).isEqualTo(expectedQuestion.getQuestionType().toString()),
+                () -> assertThat(actualResponse.content()).isEqualTo(expectedQuestion.getContent()),
+                () -> assertThat(actualResponse.description()).isEqualTo(expectedQuestion.getDescription())
+        );
     }
 
     private Stream<Arguments> provideQuestionsAndResponses() {
@@ -120,9 +120,9 @@ class QuestionServiceTest extends ServiceTest {
         // then
         List<ChoiceResponse> choiceResponses1 = questionResponses.get(0).choiceResponses();
         List<ChoiceResponse> choiceResponses2 = questionResponses.get(1).choiceResponses();
-        assertAll(() -> {
-            assertThat(choiceResponses1).isEmpty();
-            assertThat(choiceResponses2).isEmpty();
-        });
+        assertAll(
+                () -> assertThat(choiceResponses1).isEmpty(),
+                () -> assertThat(choiceResponses2).isEmpty()
+        );
     }
 }

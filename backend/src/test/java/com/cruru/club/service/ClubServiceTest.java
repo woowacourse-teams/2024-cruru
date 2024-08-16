@@ -49,10 +49,10 @@ class ClubServiceTest extends ServiceTest {
                         "SELECT c FROM Club c JOIN FETCH c.member WHERE c.id = :id", Club.class)
                 .setParameter("id", saved.getId())
                 .getSingleResult();
-        assertAll(() -> {
-            assertThat(actual.getMember()).isEqualTo(member);
-            assertThat(actual.getName()).isEqualTo(request.name());
-        });
+        assertAll(
+                () -> assertThat(actual.getMember()).isEqualTo(member),
+                () -> assertThat(actual.getName()).isEqualTo(request.name())
+        );
     }
 
     @DisplayName("동아리를 ID로 조회한다.")
@@ -60,12 +60,12 @@ class ClubServiceTest extends ServiceTest {
     void findById() {
         // given
         Club savedClub = clubRepository.save(ClubFixture.createClub());
+        Club actual = clubService.findById(savedClub.getId());
 
         // when&then
-        assertAll(() -> {
-            assertDoesNotThrow(() -> clubService.findById(savedClub.getId()));
-            Club actual = clubService.findById(savedClub.getId());
-            assertThat(actual.getName()).isEqualTo(savedClub.getName());
-        });
+        assertAll(
+                () -> assertDoesNotThrow(() -> clubService.findById(savedClub.getId())),
+                () -> assertThat(actual.getName()).isEqualTo(savedClub.getName())
+        );
     }
 }
