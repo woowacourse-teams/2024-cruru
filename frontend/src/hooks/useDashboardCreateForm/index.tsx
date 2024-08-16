@@ -63,7 +63,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
         dashboardFormInfo: {
           ...recruitmentInfoState,
           questions: applyState.slice(3).map(({ id, ...value }) => {
-            const temp = { ...value };
+            const temp = { ...value, choices: value.choices.filter(({ choice }) => !!choice) };
             return { ...temp, orderIndex: id };
           }),
         },
@@ -114,7 +114,6 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
       } else {
         questionsCopy[index].choices = [];
       }
-      console.log(questionsCopy);
       return questionsCopy;
     });
   };
