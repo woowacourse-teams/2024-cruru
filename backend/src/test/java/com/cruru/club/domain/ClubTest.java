@@ -21,7 +21,7 @@ class ClubTest {
     @ParameterizedTest
     void validClubName(String name) {
         // given
-        Member member = MemberFixture.createMember1();
+        Member member = MemberFixture.DOBBY;
 
         // when&then
         assertThatCode(() -> new Club(name, member)).doesNotThrowAnyException();
@@ -32,7 +32,7 @@ class ClubTest {
     @ParameterizedTest
     void clubNameBlank(String name) {
         // given
-        Member member = MemberFixture.createMember1();
+        Member member = MemberFixture.DOBBY;
 
         // when&then
         assertThatThrownBy(() -> new Club(name, member))
@@ -43,7 +43,7 @@ class ClubTest {
     @Test
     void invalidClubNameLength() {
         // given
-        Member member = MemberFixture.createMember1();
+        Member member = MemberFixture.DOBBY;
 
         // when&then
         assertThatThrownBy(() -> new Club("ThisStringLengthIs33!!!!!!!!!!!!!", member))
@@ -55,7 +55,7 @@ class ClubTest {
     @ParameterizedTest
     void invalidClubNameCharacter(String name) {
         // given
-        Member member = MemberFixture.createMember1();
+        Member member = MemberFixture.DOBBY;
 
         // when&then
         assertThatThrownBy(() -> new Club(name, member)).isInstanceOf(ClubNameCharacterException.class);

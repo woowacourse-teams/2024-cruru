@@ -1,11 +1,10 @@
 package com.cruru.club.controller;
 
-import static com.cruru.util.fixture.MemberFixture.createMember1;
-
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.MemberFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +21,7 @@ class ClubControllerTest extends ControllerTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(createMember1());
+        Member member = memberRepository.save(MemberFixture.DOBBY);
         String name = "연합 동아리";
         ClubCreateRequest request = new ClubCreateRequest(name);
         String url = String.format("/v1/clubs?memberId=%d", member.getId());

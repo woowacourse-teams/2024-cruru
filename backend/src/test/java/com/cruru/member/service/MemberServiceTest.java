@@ -55,7 +55,7 @@ class MemberServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Member savedMember = memberRepository.save(MemberFixture.createMember1());
+        Member savedMember = memberRepository.save(MemberFixture.DOBBY);
         Member actualMember = memberService.findById(savedMember.getId());
         // when&then
         assertAll(

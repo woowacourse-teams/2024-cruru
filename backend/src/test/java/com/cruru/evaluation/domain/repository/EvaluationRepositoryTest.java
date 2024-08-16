@@ -1,11 +1,10 @@
 package com.cruru.evaluation.domain.repository;
 
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationGood;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.util.RepositoryTest;
+import com.cruru.util.fixture.EvaluationFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ class EvaluationRepositoryTest extends RepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Evaluation evaluation = createEvaluationExcellent();
+        Evaluation evaluation = EvaluationFixture.fivePoints();
         Evaluation saved = evaluationRepository.save(evaluation);
 
         //when
@@ -43,8 +42,8 @@ class EvaluationRepositoryTest extends RepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Evaluation evaluation1 = createEvaluationExcellent();
-        Evaluation evaluation2 = createEvaluationGood();
+        Evaluation evaluation1 = EvaluationFixture.fivePoints();
+        Evaluation evaluation2 = EvaluationFixture.fourPoints();
 
         //when
         Evaluation savedEvaluation1 = evaluationRepository.save(evaluation1);

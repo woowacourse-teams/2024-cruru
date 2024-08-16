@@ -5,11 +5,11 @@ import com.cruru.member.domain.Member;
 
 public class ClubFixture {
 
-    public static Club createClub() {
+    public static Club create() {
         return new Club("크루루", null);
     }
 
-    public static Club createClub(Member member) {
+    public static Club create(Member member) {
         return new Club("크루루", member);
     }
 }

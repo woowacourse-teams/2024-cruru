@@ -62,8 +62,8 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void readBasicById() {
         // given
-        Process process = processRepository.save(ProcessFixture.createFirstProcess());
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Process process = processRepository.save(ProcessFixture.first());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when
         ApplicantBasicResponse basicResponse = applicantFacade.readBasicById(applicant.getId());
@@ -85,16 +85,16 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void readDetailById() {
         // given
-        Dashboard dashboard = DashboardFixture.createBackendDashboard();
+        Dashboard dashboard = DashboardFixture.backend();
         dashboardRepository.save(dashboard);
-        Process process = ProcessFixture.createFirstProcess(dashboard);
+        Process process = ProcessFixture.first(dashboard);
         processRepository.save(process);
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby(process);
+        Applicant applicant = ApplicantFixture.pendingDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(null));
         questionRepository.save(question);
-        Answer answer = AnswerFixture.shortAnswer(question, applicant);
+        Answer answer = AnswerFixture.simple(question, applicant);
         answerRepository.save(answer);
 
         // when
@@ -112,7 +112,7 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void updateApplicantInformation() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
         String changedName = "수정된 이름";
         String changedEmail = "modified@email.com";
         String changedPhone = "01099999999";
@@ -136,14 +136,14 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void updateApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        Process beforeProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process beforeProcess = processRepository.save(ProcessFixture.first(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.last(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(
                 List.of(
-                        ApplicantFixture.createPendingApplicantDobby(beforeProcess),
-                        ApplicantFixture.createPendingApplicantDobby(beforeProcess)
+                        ApplicantFixture.pendingDobby(beforeProcess),
+                        ApplicantFixture.pendingDobby(beforeProcess)
                 ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -168,7 +168,7 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
 
         // when
         applicantFacade.reject(applicant.getId());
@@ -182,7 +182,7 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void unreject() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.rejectedRush());
 
         // when
         applicantFacade.unreject(applicant.getId());

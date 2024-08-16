@@ -34,7 +34,7 @@ class JwtTokenProviderTest {
 
     @BeforeEach
     void setUp() {
-        member = MemberFixture.createMember1();
+        member = MemberFixture.DOBBY;
     }
 
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")

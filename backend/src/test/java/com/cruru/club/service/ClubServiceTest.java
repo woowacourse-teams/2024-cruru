@@ -38,7 +38,7 @@ class ClubServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(MemberFixture.createMember1());
+        Member member = memberRepository.save(MemberFixture.DOBBY);
         ClubCreateRequest request = new ClubCreateRequest("연합동아리");
 
         // when
@@ -59,7 +59,7 @@ class ClubServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Club savedClub = clubRepository.save(ClubFixture.createClub());
+        Club savedClub = clubRepository.save(ClubFixture.create());
         Club actual = clubService.findById(savedClub.getId());
 
         // when&then

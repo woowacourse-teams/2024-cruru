@@ -1,7 +1,5 @@
 package com.cruru.applyform.service.facade;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -66,12 +64,12 @@ class ApplyFormFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(null));
-        firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        finalProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
-        applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Question question1 = questionRepository.save(QuestionFixture.createLongAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(QuestionFixture.createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(null));
+        firstProcess = processRepository.save(ProcessFixture.first(dashboard));
+        finalProcess = processRepository.save(ProcessFixture.last(dashboard));
+        applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 첫 번째 답변입니다")),
@@ -105,8 +103,8 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void submit_dashboardWithNoProcess() {
         // given
-        Dashboard emptyProcessDashboard = dashboardRepository.save(createBackendDashboard(null));
-        ApplyForm emptyProcessApplyForm = applyFormRepository.save(createBackendApplyForm(emptyProcessDashboard));
+        Dashboard emptyProcessDashboard = dashboardRepository.save(DashboardFixture.backend(null));
+        ApplyForm emptyProcessApplyForm = applyFormRepository.save(ApplyFormFixture.backend(emptyProcessDashboard));
 
         // when&then
         Long emptyProcessApplyFormId = emptyProcessApplyForm.getId();

@@ -58,7 +58,7 @@ class DashboardFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(ClubFixture.createClub());
+        club = clubRepository.save(ClubFixture.create());
     }
 
     @DisplayName("대시보드(공고)를 생성한다.")
@@ -92,7 +92,7 @@ class DashboardFacadeTest extends ServiceTest {
     void findFormUrlByDashboardId() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
 
         // when
         ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboard.getId());
@@ -108,13 +108,13 @@ class DashboardFacadeTest extends ServiceTest {
     @Test
     void findAllDashboardsByClubId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Applicant failApplicant = ApplicantFixture.createPendingApplicantDobby(firstProcess);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.first(dashboard));
+        Applicant failApplicant = ApplicantFixture.pendingDobby(firstProcess);
         failApplicant.reject();
-        Applicant pendingApplicant1 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        Applicant pendingApplicant2 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
+        Applicant pendingApplicant1 = ApplicantFixture.pendingDobby(firstProcess);
+        Applicant pendingApplicant2 = ApplicantFixture.pendingDobby(firstProcess);
         List<Applicant> applicants = List.of(failApplicant, pendingApplicant1, pendingApplicant2);
         applicantRepository.saveAll(applicants);
 

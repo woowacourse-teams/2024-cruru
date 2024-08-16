@@ -51,7 +51,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess());
+        Process firstProcess = processRepository.save(ProcessFixture.first());
         String name = "도비";
         String email = "kimdobby@email.com";
         String phone = "01052525252";
@@ -69,15 +69,14 @@ class ApplicantServiceTest extends ServiceTest {
         );
     }
 
-
     @DisplayName("프로세스 내의 모든 지원자를 조회한다.")
     @Test
     void findAllByProcess() {
         // given
-        Process process = processRepository.save(ProcessFixture.createFirstProcess());
-        Applicant applicant1 = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
-        Applicant applicant2 = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
-        Applicant applicant3 = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Process process = processRepository.save(ProcessFixture.first());
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         List<Applicant> applicants = List.of(applicant1, applicant2, applicant3);
 
         // when
@@ -102,7 +101,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void updateApplicantInformation() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
         String changedName = "수정된 이름";
         String changedEmail = "modified@email.com";
         String changedPhone = "010xxxxxxxx";
@@ -125,7 +124,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void updateApplicantInformation_ThrowsException() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         String originalName = applicant.getName();
         String originalEmail = applicant.getEmail();
         String originalPhone = applicant.getPhone();
@@ -141,13 +140,13 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void moveApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        Process beforeProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process beforeProcess = processRepository.save(ProcessFixture.first(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.last(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
-                ApplicantFixture.createPendingApplicantDobby(beforeProcess),
-                ApplicantFixture.createPendingApplicantDobby(beforeProcess)
+                ApplicantFixture.pendingDobby(beforeProcess),
+                ApplicantFixture.pendingDobby(beforeProcess)
         ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -172,7 +171,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
 
         // when
         applicantService.reject(applicant.getId());
@@ -186,7 +185,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void reject_alreadyRejected() {
         // given
-        Applicant rejectedApplicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
+        Applicant rejectedApplicant = applicantRepository.save(ApplicantFixture.rejectedRush());
 
         // when&then
         Long applicantId = rejectedApplicant.getId();
@@ -198,7 +197,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void unreject() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createRejectedApplicantRush());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.rejectedRush());
 
         // when
         applicantService.unreject(applicant.getId());
@@ -212,7 +211,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void unreject_notRejected() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantRush());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingRush());
 
         // when&then
         Long applicantId = applicant.getId();
