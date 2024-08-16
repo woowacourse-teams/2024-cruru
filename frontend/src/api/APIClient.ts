@@ -31,30 +31,28 @@ export default class APIClient implements APIClientType {
     this.baseURL = new URL(baseURL);
   }
 
-  async get<T>({
-    path,
-    queryParams,
-    hasCookies,
-  }: BaseAPIClientParams & {
-    queryParams?: BodyHashMap;
-  }): Promise<T> {
-    return this.request<T>({ path, method: 'GET', queryParams, hasCookies });
+  async get<T>(
+    params: BaseAPIClientParams & {
+      queryParams?: BodyHashMap;
+    },
+  ): Promise<T> {
+    return this.request<T>({ method: 'GET', ...params });
   }
 
-  async post<T>({ path, body, hasCookies }: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
-    return this.request<T>({ path, method: 'POST', body, hasCookies });
+  async post<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
+    return this.request<T>({ method: 'POST', ...params });
   }
 
-  async patch<T>({ path, body, hasCookies }: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
-    return this.request<T>({ path, method: 'PATCH', body, hasCookies });
+  async patch<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
+    return this.request<T>({ method: 'PATCH', ...params });
   }
 
-  async put<T>({ path, body, hasCookies }: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
-    return this.request<T>({ path, method: 'PUT', body, hasCookies });
+  async put<T>(params: BaseAPIClientParams & { body?: BodyHashMap }): Promise<T> {
+    return this.request<T>({ method: 'PUT', ...params });
   }
 
-  async delete({ path, hasCookies }: BaseAPIClientParams): Promise<void> {
-    return this.request<void>({ path, method: 'DELETE', hasCookies });
+  async delete(params: BaseAPIClientParams): Promise<void> {
+    return this.request<void>({ method: 'DELETE', ...params });
   }
 
   private getRequestInit({
