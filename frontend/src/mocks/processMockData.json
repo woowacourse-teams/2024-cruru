@@ -46,7 +46,7 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 4,
+      "processId": 2,
       "orderIndex": 3,
       "applicants": [
         {
@@ -89,7 +89,7 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 5,
+      "processId": 3,
       "orderIndex": 4,
       "applicants": [
         {
@@ -132,7 +132,7 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 3,
+      "processId": 4,
       "orderIndex": 2,
       "applicants": [
         {
@@ -217,7 +217,7 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 4,
+      "processId": 5,
       "orderIndex": 3,
       "applicants": [
         {
@@ -260,7 +260,7 @@
       "description": "지원서를 확인한다."
     },
     {
-      "processId": 5,
+      "processId": 6,
       "orderIndex": 4,
       "applicants": [
         {
