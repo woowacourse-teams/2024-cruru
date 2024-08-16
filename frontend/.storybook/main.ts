@@ -32,6 +32,7 @@ const config: StorybookConfig = {
         '@customTypes': path.resolve(__dirname, '../src/types/'),
         '@utils': path.resolve(__dirname, '../src/utils/'),
         '@mocks': path.resolve(__dirname, '../src/mocks/'),
+        '@domain': path.resolve(__dirname, '../src/domain/'),
       };
     }
     return config;
