@@ -57,7 +57,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: ${DDL_AUTO}
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
 
 security:
   jwt:
@@ -109,7 +109,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: ${DDL_AUTO}
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
 
 security:
   jwt:
