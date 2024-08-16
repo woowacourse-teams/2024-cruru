@@ -10,7 +10,7 @@
         "inProgress": 9,
         "total": 15
       },
-      "postUrl": "https://www.cruru.kr/123543920/recruit",
+      "postUrl": "www.cruru.kr/123543920/recruit",
       "startDate": "1900-01-21T00:00:00",
       "endDate": "2024-07-24T18:00:00"
     },
@@ -23,7 +23,7 @@
         "inProgress": 9,
         "total": 15
       },
-      "postUrl": "https://www.cruru.kr/98765101/recruit",
+      "postUrl": "www.cruru.kr/98765101/recruit",
       "startDate": "1900-01-21T00:00:00",
       "endDate": "2024-07-24T20:30:00"
     },
@@ -36,7 +36,7 @@
         "inProgress": 9,
         "total": 15
       },
-      "postUrl": "https://www.cruru.kr/7777890/recruit",
+      "postUrl": "www.cruru.kr/7777890/recruit",
       "startDate": "1900-01-21T00:00:00",
       "endDate": "2024-07-24T21:00:00"
     }
