@@ -11,6 +11,7 @@ import useProcess from '@hooks/useProcess';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
+import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import S from './style';
 
@@ -55,7 +56,9 @@ export default function Dashboard() {
 
       <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
         <SpecificApplicantIdProvider>
-          <KanbanBoard processes={processes} />
+          <SpecificProcessIdProvider>
+            <KanbanBoard processes={processes} />
+          </SpecificProcessIdProvider>
         </SpecificApplicantIdProvider>
       </Tab.TabPanel>
 
