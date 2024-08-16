@@ -9,5 +9,5 @@ public interface TokenProvider {
 
     boolean isExpired(String token) throws IllegalTokenException;
 
-    String extractPayload(String token, String key) throws IllegalTokenException;
+    String extractClaim(String token, String key) throws IllegalTokenException;
 }

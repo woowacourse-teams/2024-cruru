@@ -42,7 +42,7 @@ public class AuthService {
 
     private String extractPayload(String token, String key) {
         try {
-            String payload = tokenProvider.extractPayload(token, key);
+            String payload = tokenProvider.extractClaim(token, key);
             if (payload == null) {
                 throw new IllegalCookieException();
             }

@@ -59,7 +59,7 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String extractPayload(String token, String key) throws IllegalTokenException {
+    public String extractClaim(String token, String key) throws IllegalTokenException {
         Claims claims = extractClaims(token);
         return claims.get(key, String.class);
     }

@@ -67,8 +67,8 @@ class JwtTokenProviderTest {
         String token = jwtTokenProvider.createToken(claims);
 
         // when
-        String email = jwtTokenProvider.extractPayload(token, EMAIL_CLAIM);
-        String role = jwtTokenProvider.extractPayload(token, ROLE_CLAIM);
+        String email = jwtTokenProvider.extractClaim(token, EMAIL_CLAIM);
+        String role = jwtTokenProvider.extractClaim(token, ROLE_CLAIM);
 
         // then
         String expectedRole = (String) this.claims.get(ROLE_CLAIM);
