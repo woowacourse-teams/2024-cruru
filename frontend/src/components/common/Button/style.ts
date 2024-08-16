@@ -12,6 +12,7 @@ export interface ButtonStyleProps {
 const commonStyles = (theme: Theme) => css`
   display: flex;
   align-items: center;
+  justify-content: center;
 
   border-radius: 0.8rem;
   ${theme.typography.common.default};
