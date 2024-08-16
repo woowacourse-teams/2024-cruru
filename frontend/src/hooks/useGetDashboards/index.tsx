@@ -1,4 +1,4 @@
-import dashboardApis from '@api/dashboard';
+import dashboardApis from '@api/domain/dashboard';
 import type { Club } from '@customTypes/dashboard';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useQuery } from '@tanstack/react-query';

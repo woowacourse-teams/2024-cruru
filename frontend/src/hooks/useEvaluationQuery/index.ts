@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { EvaluationResult } from '@customTypes/applicant';
 
 import QUERY_KEYS from '@hooks/queryKeys';
-import evaluationApis from '@api/evaluation';
+import evaluationApis from '@api/domain/evaluation';
 
 interface UseEvaluationQueryParams {
   processId: number;

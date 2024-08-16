@@ -1,4 +1,4 @@
-import applicantApis from '@api/applicant';
+import applicantApis from '@api/domain/applicant';
 import { ApplicantDetail, SpecificApplicant } from '@customTypes/applicant';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
