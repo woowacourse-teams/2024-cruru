@@ -68,13 +68,13 @@ class ApplyFormServiceTest extends ServiceTest {
 
         // then
         ApplyForm actualApplyForm = applyFormRepository.findById(applyFormId).get();
-        assertAll(() -> {
-            assertThat(actualApplyForm.getTitle()).isEqualTo(title);
-            assertThat(actualApplyForm.getDescription()).isEqualTo(postingContent);
-            assertThat(actualApplyForm.getUrl()).isEqualTo(applyPostUrl);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
-            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
-        });
+        assertAll(
+                () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
+                () -> assertThat(actualApplyForm.getDescription()).isEqualTo(postingContent),
+                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(applyPostUrl),
+                () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
+                () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
+        );
     }
 
     @DisplayName("지원서 폼 질문 조회에 성공한다.")

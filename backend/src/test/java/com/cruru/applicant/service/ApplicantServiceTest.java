@@ -60,11 +60,11 @@ class ApplicantServiceTest extends ServiceTest {
 
         // then
         Applicant actualApplicant = applicantRepository.findById(createdApplicant.getId()).get();
-        assertAll(() -> {
-            assertThat(actualApplicant.getName()).isEqualTo(name);
-            assertThat(actualApplicant.getEmail()).isEqualTo(email);
-            assertThat(actualApplicant.getPhone()).isEqualTo(phone);
-        });
+        assertAll(
+                () -> assertThat(actualApplicant.getName()).isEqualTo(name),
+                () -> assertThat(actualApplicant.getEmail()).isEqualTo(email),
+                () -> assertThat(actualApplicant.getPhone()).isEqualTo(phone)
+        );
     }
 
 
@@ -112,11 +112,11 @@ class ApplicantServiceTest extends ServiceTest {
 
         // then
         Applicant updatedApplicant = applicantRepository.findById(savedApplicant.getId()).get();
-        assertAll(() -> {
-            assertThat(changedName).isEqualTo(updatedApplicant.getName());
-            assertThat(changedEmail).isEqualTo(updatedApplicant.getEmail());
-            assertThat(changedPhone).isEqualTo(updatedApplicant.getPhone());
-        });
+        assertAll(
+                () -> assertThat(changedName).isEqualTo(updatedApplicant.getName()),
+                () -> assertThat(changedEmail).isEqualTo(updatedApplicant.getEmail()),
+                () -> assertThat(changedPhone).isEqualTo(updatedApplicant.getPhone())
+        );
     }
 
     @DisplayName("지원자의 정보 변경 요청의 이름, 이메일, 전화번호 변경점이 없다면 예외를 던진다")
@@ -160,10 +160,10 @@ class ApplicantServiceTest extends ServiceTest {
                 "SELECT a FROM Applicant a JOIN FETCH a.process",
                 Applicant.class
         ).getResultList();
-        assertAll(() -> {
-            assertThat(actualApplicants).isNotEmpty();
-            assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
-        });
+        assertAll(
+                () -> assertThat(actualApplicants).isNotEmpty(),
+                () -> assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess))
+        );
     }
 
     @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")

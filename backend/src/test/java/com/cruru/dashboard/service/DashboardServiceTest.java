@@ -49,11 +49,11 @@ class DashboardServiceTest extends ServiceTest {
                 .stream()
                 .sorted(Comparator.comparingInt(Process::getSequence))
                 .toList();
-        assertAll(() -> {
-            assertThat(processes).hasSize(2);
-            assertThat(processes.get(0).getSequence()).isEqualTo(0);
-            assertThat(processes.get(1).getSequence()).isEqualTo(1);
-        });
+        assertAll(
+                () -> assertThat(processes).hasSize(2),
+                () -> assertThat(processes.get(0).getSequence()).isEqualTo(0),
+                () -> assertThat(processes.get(1).getSequence()).isEqualTo(1)
+        );
     }
 
     @DisplayName("대시보드를 ID를 통해 조회한다.")

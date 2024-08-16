@@ -59,10 +59,10 @@ class AnswerServiceTest extends ServiceTest {
         // then
         List<Answer> actualAnswer = answerRepository.findAllByApplicant(applicant);
         String content = actualAnswer.get(0).getContent();
-        assertAll(() -> {
-            assertThat(actualAnswer).hasSize(1);
-            assertThat(content).isEqualTo(reply);
-        });
+        assertAll(
+                () -> assertThat(actualAnswer).hasSize(1),
+                () -> assertThat(content).isEqualTo(reply)
+        );
     }
 
     @DisplayName("지원자의 응답을 조회한다.")
@@ -95,14 +95,14 @@ class AnswerServiceTest extends ServiceTest {
         // then
         AnswerResponse actualAnswerResponse1 = actualAnswerResponses.get(0);
         AnswerResponse actualAnswerResponse2 = actualAnswerResponses.get(1);
-        assertAll(() -> {
-            assertThat(actualAnswerResponses).hasSize(2);
+        assertAll(
+                () -> assertThat(actualAnswerResponses).hasSize(2),
 
-            assertThat(actualAnswerResponse1.answer()).isEqualTo(expectedAnswer1.getContent());
-            assertThat(actualAnswerResponse2.answer()).isEqualTo(expectedAnswer2.getContent());
+                () -> assertThat(actualAnswerResponse1.answer()).isEqualTo(expectedAnswer1.getContent()),
+                () -> assertThat(actualAnswerResponse2.answer()).isEqualTo(expectedAnswer2.getContent()),
 
-            assertThat(actualAnswerResponse1.question()).isEqualTo(question1.getContent());
-            assertThat(actualAnswerResponse2.question()).isEqualTo(question2.getContent());
-        });
+                () -> assertThat(actualAnswerResponse1.question()).isEqualTo(question1.getContent()),
+                () -> assertThat(actualAnswerResponse2.question()).isEqualTo(question2.getContent())
+        );
     }
 }
