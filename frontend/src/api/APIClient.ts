@@ -94,7 +94,6 @@ export default class APIClient implements APIClientType {
     path: string;
     method: Method;
     body?: BodyHashMap;
-    queryParams?: BodyHashMap;
     hasCookies?: boolean;
   }): Promise<T> {
     const url = this.baseURL + path;
