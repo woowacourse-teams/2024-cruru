@@ -18,7 +18,7 @@ export default function DateInput({ label, innerText, ...props }: DateInputProps
   };
 
   return (
-    <S.Container>
+    <S.Container onClick={handleIconClick}>
       <S.Wrapper>
         <S.Label>{label}</S.Label>
         <S.Text>{innerText}</S.Text>
@@ -33,7 +33,6 @@ export default function DateInput({ label, innerText, ...props }: DateInputProps
         outline={false}
         size="sm"
         color="white"
-        onClick={handleIconClick}
       >
         <S.Icon>
           <MdCalendarMonth size="2rem" />
