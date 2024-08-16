@@ -63,10 +63,10 @@ class ProcessServiceTest extends ServiceTest {
                 .toList();
 
         String actualName = allByDashboardId.get(1).getName();
-        assertAll(() -> {
-            assertThat(allByDashboardId).hasSize(3);
-            assertThat(actualName).isEqualTo("새로운 프로세스");
-        });
+        assertAll(
+                () -> assertThat(allByDashboardId).hasSize(3),
+                () -> assertThat(actualName).isEqualTo("새로운 프로세스")
+        );
     }
 
     @DisplayName("프로세스 최대 개수를 초과하면, 예외가 발생한다.")
@@ -124,10 +124,10 @@ class ProcessServiceTest extends ServiceTest {
 
         // then
         Process actualProcess = processRepository.findById(processId).get();
-        assertAll(() -> {
-            assertThat(actualProcess.getName()).isEqualTo(processUpdateRequest.name());
-            assertThat(actualProcess.getDescription()).isEqualTo(processUpdateRequest.description());
-        });
+        assertAll(
+                () -> assertThat(actualProcess.getName()).isEqualTo(processUpdateRequest.name()),
+                () -> assertThat(actualProcess.getDescription()).isEqualTo(processUpdateRequest.description())
+        );
     }
 
     @DisplayName("기존 정보에서 변경점이 없는 요청시, 예외가 발생한다.")
@@ -172,12 +172,12 @@ class ProcessServiceTest extends ServiceTest {
         // when & then
         Long firstProcessId = firstProcess.getId();
         Long finalProcessId = finalProcess.getId();
-        assertAll(() -> {
-            assertThatThrownBy(() -> processService.delete(firstProcessId))
-                    .isInstanceOf(ProcessDeleteEndsException.class);
-            assertThatThrownBy(() -> processService.delete(finalProcessId))
-                    .isInstanceOf(ProcessDeleteEndsException.class);
-        });
+        assertAll(
+                () -> assertThatThrownBy(() -> processService.delete(firstProcessId))
+                        .isInstanceOf(ProcessDeleteEndsException.class),
+                () -> assertThatThrownBy(() -> processService.delete(finalProcessId))
+                        .isInstanceOf(ProcessDeleteEndsException.class)
+        );
     }
 
     @DisplayName("삭제하려는 프로세스에 해당되는 지원자가 있을 경우 예외가 발생한다.")

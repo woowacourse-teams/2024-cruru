@@ -41,9 +41,9 @@ class ClubFacadeTest extends ServiceTest {
                         "SELECT c FROM Club c JOIN FETCH c.member WHERE c.id = :id", Club.class)
                 .setParameter("id", clubId)
                 .getSingleResult();
-        assertAll(() -> {
-            assertThat(actual.getMember()).isEqualTo(member);
-            assertThat(actual.getName()).isEqualTo(request.name());
-        });
+        assertAll(
+                () -> assertThat(actual.getMember()).isEqualTo(member),
+                () -> assertThat(actual.getName()).isEqualTo(request.name())
+        );
     }
 }

@@ -73,13 +73,13 @@ class ChoiceServiceTest extends ServiceTest {
                 .toList();
 
         // when & then
-        assertAll(() -> {
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion))
-                    .isInstanceOf(ChoiceIllegalSaveException.class);
+        assertAll(
+                () -> assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion))
+                        .isInstanceOf(ChoiceIllegalSaveException.class),
 
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion))
-                    .isInstanceOf(ChoiceIllegalSaveException.class);
-        });
+                () -> assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion))
+                        .isInstanceOf(ChoiceIllegalSaveException.class)
+        );
     }
 
 

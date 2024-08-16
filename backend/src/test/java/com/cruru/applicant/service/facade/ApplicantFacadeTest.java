@@ -71,14 +71,14 @@ class ApplicantFacadeTest extends ServiceTest {
         ApplicantResponse applicantResponse = basicResponse.applicantResponse();
 
         // then
-        assertAll(() -> {
-            assertThat(processResponse.id()).isEqualTo(process.getId());
-            assertThat(processResponse.name()).isEqualTo(process.getName());
-            assertThat(applicantResponse.id()).isEqualTo(applicant.getId());
-            assertThat(applicantResponse.name()).isEqualTo(applicant.getName());
-            assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail());
-            assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone());
-        });
+        assertAll(
+                () -> assertThat(processResponse.id()).isEqualTo(process.getId()),
+                () -> assertThat(processResponse.name()).isEqualTo(process.getName()),
+                () -> assertThat(applicantResponse.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantResponse.name()).isEqualTo(applicant.getName()),
+                () -> assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail()),
+                () -> assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone())
+        );
     }
 
     @DisplayName("id로 지원자의 상세 정보를 찾는다.")
@@ -102,10 +102,10 @@ class ApplicantFacadeTest extends ServiceTest {
 
         //then
         List<AnswerResponse> answerResponses = applicantAnswerResponses.answerResponses();
-        assertAll(() -> {
-            assertThat(answerResponses.get(0).question()).isEqualTo(question.getContent());
-            assertThat(answerResponses.get(0).answer()).isEqualTo(answer.getContent());
-        });
+        assertAll(
+                () -> assertThat(answerResponses.get(0).question()).isEqualTo(question.getContent()),
+                () -> assertThat(answerResponses.get(0).answer()).isEqualTo(answer.getContent())
+        );
     }
 
     @DisplayName("지원자의 이름, 이메일, 전화번호를 변경한다.")
@@ -125,11 +125,11 @@ class ApplicantFacadeTest extends ServiceTest {
 
         // then
         Applicant actualApplicant = applicantRepository.findById(applicantId).get();
-        assertAll(() -> {
-            assertThat(actualApplicant.getName()).isEqualTo(changedName);
-            assertThat(actualApplicant.getEmail()).isEqualTo(changedEmail);
-            assertThat(actualApplicant.getPhone()).isEqualTo(changedPhone);
-        });
+        assertAll(
+                () -> assertThat(actualApplicant.getName()).isEqualTo(changedName),
+                () -> assertThat(actualApplicant.getEmail()).isEqualTo(changedEmail),
+                () -> assertThat(actualApplicant.getPhone()).isEqualTo(changedPhone)
+        );
     }
 
     @DisplayName("복수의 지원서들을 요청된 프로세스로 일괄 업데이트한다.")
@@ -158,10 +158,10 @@ class ApplicantFacadeTest extends ServiceTest {
                 "SELECT a FROM Applicant a JOIN FETCH a.process",
                 Applicant.class
         ).getResultList();
-        assertAll(() -> {
-            assertThat(actualApplicants).isNotEmpty();
-            assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
-        });
+        assertAll(
+                () -> assertThat(actualApplicants).isNotEmpty(),
+                () -> assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess))
+        );
     }
 
     @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")

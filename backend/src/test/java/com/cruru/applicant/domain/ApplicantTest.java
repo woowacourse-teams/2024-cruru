@@ -45,10 +45,10 @@ class ApplicantTest {
         applicant.reject();
 
         // then
-        assertAll(() -> {
-            assertThat(applicant.getState()).isEqualTo(REJECTED);
-            assertThat(applicant.isRejected()).isTrue();
-        });
+        assertAll(
+                () -> assertThat(applicant.getState()).isEqualTo(REJECTED),
+                () -> assertThat(applicant.isRejected()).isTrue()
+        );
     }
 
     @DisplayName("지원자의 상태를 PENDING로 업데이트한다.")
@@ -61,10 +61,10 @@ class ApplicantTest {
         applicant.unreject();
 
         // then
-        assertAll(() -> {
-            assertThat(applicant.getState()).isEqualTo(PENDING);
-            assertThat(applicant.isPending()).isTrue();
-        });
+        assertAll(
+                () -> assertThat(applicant.getState()).isEqualTo(PENDING),
+                () -> assertThat(applicant.isPending()).isTrue()
+        );
     }
 
     @DisplayName("지원자의 상태를 APPROVE로 업데이트한다.")
@@ -77,9 +77,9 @@ class ApplicantTest {
         applicant.approve();
 
         // then
-        assertAll(() -> {
-            assertThat(applicant.getState()).isEqualTo(APPROVED);
-            assertThat(applicant.isApproved()).isTrue();
-        });
+        assertAll(
+                () -> assertThat(applicant.getState()).isEqualTo(APPROVED),
+                () -> assertThat(applicant.isApproved()).isTrue()
+        );
     }
 }

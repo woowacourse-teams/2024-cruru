@@ -51,15 +51,14 @@ class ApplyFormRepositoryTest extends RepositoryTest {
 
         // then
         ApplyForm actualApplyForm = applyFormRepository.findById(expectedApplyForm.getId()).get();
-        assertAll(() -> {
-            assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard());
-
-            assertThat(actualApplyForm.getTitle()).isEqualTo(title);
-            assertThat(actualApplyForm.getDescription()).isEqualTo(description);
-            assertThat(actualApplyForm.getUrl()).isEqualTo(url);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
-            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
-        });
+        assertAll(
+                () -> assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard()),
+                () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
+                () -> assertThat(actualApplyForm.getDescription()).isEqualTo(description),
+                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(url),
+                () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
+                () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
+        );
     }
 
     @DisplayName("ID가 없는 지원서 양식을 저장하면, ID를 순차적으로 부여하여 저장한다.")
