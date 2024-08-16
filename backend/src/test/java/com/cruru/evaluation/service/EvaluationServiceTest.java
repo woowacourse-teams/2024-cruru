@@ -108,11 +108,11 @@ class EvaluationServiceTest extends ServiceTest {
         // then
         Optional<Evaluation> updatedEvaluation = evaluationRepository.findById(evaluation.getId());
 
-        assertAll(() -> {
-            assertThat(updatedEvaluation).isPresent();
-            assertThat(updatedEvaluation.get().getScore()).isEqualTo(score);
-            assertThat(updatedEvaluation.get().getContent()).isEqualTo(content);
-        });
+        assertAll(
+                () -> assertThat(updatedEvaluation).isPresent(),
+                () -> assertThat(updatedEvaluation.get().getScore()).isEqualTo(score),
+                () -> assertThat(updatedEvaluation.get().getContent()).isEqualTo(content)
+        );
     }
 
     @DisplayName("평가 수정 시, 존재하지 않을 경우 예외가 발생한다.")

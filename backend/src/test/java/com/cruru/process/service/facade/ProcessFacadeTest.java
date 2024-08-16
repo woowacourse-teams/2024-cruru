@@ -70,10 +70,10 @@ class ProcessFacadeTest extends ServiceTest {
                 .toList();
 
         String newProcessName = allByDashboardId.get(1).getName();
-        assertAll(() -> {
-            assertThat(allByDashboardId).hasSize(3);
-            assertThat(newProcessName).isEqualTo("새로운 프로세스");
-        });
+        assertAll(
+                () -> assertThat(allByDashboardId).hasSize(3),
+                () -> assertThat(newProcessName).isEqualTo("새로운 프로세스")
+        );
     }
 
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
@@ -94,12 +94,12 @@ class ProcessFacadeTest extends ServiceTest {
         long processId = firstProcessResponse.id();
         long applicantCardId = firstProcessResponse.applicantCardResponses().get(0).id();
         int applicantEvaluationCount = firstProcessResponse.applicantCardResponses().get(0).evaluationCount();
-        assertAll(() -> {
-            assertThat(processResponses.processResponses()).hasSize(1);
-            assertThat(processId).isEqualTo(process.getId());
-            assertThat(applicantCardId).isEqualTo(applicant.getId());
-            assertThat(applicantEvaluationCount).isEqualTo(1);
-        });
+        assertAll(
+                () -> assertThat(processResponses.processResponses()).hasSize(1),
+                () -> assertThat(processId).isEqualTo(process.getId()),
+                () -> assertThat(applicantCardId).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantEvaluationCount).isEqualTo(1)
+        );
     }
 
     @DisplayName("프로세스 정보를 변경한다.")
@@ -115,10 +115,10 @@ class ProcessFacadeTest extends ServiceTest {
         ProcessResponse actualProcessResponse = processFacade.update(processUpdateRequest, processId);
 
         // then
-        assertAll(() -> {
-            assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name());
-            assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description());
-        });
+        assertAll(
+                () -> assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name()),
+                () -> assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description())
+        );
     }
 
     @DisplayName("프로세스를 삭제한다.")

@@ -94,11 +94,11 @@ class ApplyFormFacadeTest extends ServiceTest {
         applyFormFacade.submit(applyForm.getId(), applyFormSubmitrequest);
 
         // then
-        assertAll(() -> {
-            assertThat(answerRepository.findAll()).hasSize(answerCreateRequests.size());
-            assertThat(applicantRepository.countByProcess(firstProcess)).isEqualTo(1);
-            assertThat(applicantRepository.countByProcess(finalProcess)).isZero();
-        });
+        assertAll(
+                () -> assertThat(answerRepository.findAll()).hasSize(answerCreateRequests.size()),
+                () -> assertThat(applicantRepository.countByProcess(firstProcess)).isEqualTo(1),
+                () -> assertThat(applicantRepository.countByProcess(finalProcess)).isZero()
+        );
     }
 
     @DisplayName("지원서 폼 제출 시, 대시보드에 프로세스가 존재하지 않으면 예외가 발생한다.")
