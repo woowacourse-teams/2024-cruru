@@ -97,7 +97,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           type="submit"
           color="primary"
           size="sm"
-          disabled={formState.score === ''}
+          disabled={formState.score === '' || !!contentErrorMessage}
         >
           평가 저장
         </Button>
