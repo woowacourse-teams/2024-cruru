@@ -37,22 +37,22 @@ public class AuthService {
     }
 
     public String extractEmail(String token) {
-        return extractPayload(token, EMAIL_CLAIM);
+        return extractClaim(token, EMAIL_CLAIM);
     }
 
-    private String extractPayload(String token, String key) {
+    private String extractClaim(String token, String key) {
         try {
-            String payload = tokenProvider.extractClaim(token, key);
-            if (payload == null) {
+            String claim = tokenProvider.extractClaim(token, key);
+            if (claim == null) {
                 throw new IllegalCookieException();
             }
-            return payload;
+            return claim;
         } catch (IllegalTokenException e) {
             throw new IllegalCookieException();
         }
     }
 
     public String extractMemberRole(String token) {
-        return extractPayload(token, ROLE_CLAIM);
+        return extractClaim(token, ROLE_CLAIM);
     }
 }
