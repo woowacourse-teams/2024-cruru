@@ -20,10 +20,6 @@ const Tabs = styled.ul`
   gap: 2.8rem;
 `;
 
-const CopyWrapper = styled.div`
-  width: 30rem;
-`;
-
 const Tab = styled.li`
   position: relative;
 
@@ -71,7 +67,6 @@ const TabPanel = styled.div<{ isVisible: boolean }>`
 const S = {
   Nav,
   Tabs,
-  CopyWrapper,
   Tab,
   TabButton,
   TabPanel,
