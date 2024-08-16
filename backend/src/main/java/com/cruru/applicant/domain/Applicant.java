@@ -89,6 +89,10 @@ public class Applicant extends BaseEntity {
         return this.state == REJECTED;
     }
 
+    public boolean isNotRejected() {
+        return this.state != REJECTED;
+    }
+
     public Dashboard getDashboard() {
         return process.getDashboard();
     }

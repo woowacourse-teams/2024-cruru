@@ -79,7 +79,7 @@ public class ApplicantService {
     }
 
     private void validateUnrejectable(Applicant applicant) {
-        if (!applicant.isRejected()) {
+        if (applicant.isNotRejected()) {
             throw new ApplicantUnrejectException();
         }
     }
