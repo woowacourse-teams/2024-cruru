@@ -1,6 +1,6 @@
 {
   "title": "우아한테크코스 프론트엔드 크루 모집",
-  "postUrl": "https://www.cruru.kr/post/1",
+  "postUrl": "www.cruru.kr/post/1",
   "processes": [
     {
       "processId": 1,
@@ -43,7 +43,7 @@
         }
       ],
       "name": "지원서",
-      "description": "지원서를 확인한다."
+      "description": "지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다.지원서를 확인한다."
     },
     {
       "processId": 4,

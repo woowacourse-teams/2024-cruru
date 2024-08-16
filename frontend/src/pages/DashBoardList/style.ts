@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
+import { hideScrollBar } from '@styles/utils';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 3.8rem 2.4rem;
   gap: 2.4rem;
+
+  height: 100%;
 `;
 
 const Title = styled.h1`
@@ -17,6 +20,9 @@ const CardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 37.8rem);
   gap: 2.4rem;
+
+  overflow-y: scroll;
+  ${hideScrollBar}
 `;
 
 const AddCard = styled.div`
