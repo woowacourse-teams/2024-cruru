@@ -19,8 +19,8 @@ public class CookieManager {
         Cookie[] cookies = extractCookie(request);
         return Arrays.stream(cookies)
                 .filter(cookie -> TOKEN.equals(cookie.getName()))
-                .map(Cookie::getValue)
                 .findFirst()
+                .map(Cookie::getValue)
                 .orElseThrow(IllegalCookieException::new);
     }
 
