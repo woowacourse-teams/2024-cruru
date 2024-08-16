@@ -1,5 +1,7 @@
 package com.cruru.evaluation.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.time.LocalDateTime;
 
 public record EvaluationResponse(
@@ -9,6 +11,7 @@ public record EvaluationResponse(
 
         String content,
 
+        @JsonFormat(shape = Shape.STRING)
         LocalDateTime createdDate
 ) {
 
