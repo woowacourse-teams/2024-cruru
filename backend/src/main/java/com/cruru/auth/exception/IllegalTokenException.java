@@ -1,6 +1,8 @@
 package com.cruru.auth.exception;
 
-public class IllegalTokenException extends RuntimeException {
+import com.cruru.advice.UnauthorizedException;
+
+public class IllegalTokenException extends UnauthorizedException {
 
     private static final String MESSAGE = "유효하지 않는 토큰입니다.";
 

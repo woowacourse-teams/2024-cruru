@@ -1,6 +1,5 @@
 package com.cruru.auth.service;
 
-import com.cruru.auth.exception.IllegalCookieException;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
@@ -41,15 +40,11 @@ public class AuthService {
     }
 
     private String extractClaim(String token, String key) {
-        try {
-            String claim = tokenProvider.extractClaim(token, key);
-            if (claim == null) {
-                throw new IllegalCookieException();
-            }
-            return claim;
-        } catch (IllegalTokenException e) {
-            throw new IllegalCookieException();
+        String claim = tokenProvider.extractClaim(token, key);
+        if (claim == null) {
+            throw new IllegalTokenException();
         }
+        return claim;
     }
 
     public String extractMemberRole(String token) {
