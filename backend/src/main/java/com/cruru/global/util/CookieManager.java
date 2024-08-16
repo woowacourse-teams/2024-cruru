@@ -13,12 +13,14 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CookieManager {
 
+    private static final String TOKEN = "token";
+
     public static String extractToken(HttpServletRequest request) {
         Cookie[] cookies = extractCookie(request);
         return Arrays.stream(cookies)
-                .filter(cookie -> "token".equals(cookie.getName()))
-                .findFirst()
+                .filter(cookie -> TOKEN.equals(cookie.getName()))
                 .map(Cookie::getValue)
+                .findFirst()
                 .orElseThrow(IllegalCookieException::new);
     }
 
