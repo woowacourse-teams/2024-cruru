@@ -1,7 +1,7 @@
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 class ApiError extends Error {
-  public statusCode: number | null;
+  public statusCode: number;
 
   public data: unknown;
 
@@ -14,7 +14,7 @@ class ApiError extends Error {
     method,
   }: {
     message: string;
-    statusCode: number | null;
+    statusCode: number;
     data?: unknown;
     method: Method;
   }) {
