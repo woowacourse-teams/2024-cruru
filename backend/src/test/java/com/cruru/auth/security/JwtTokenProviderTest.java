@@ -1,9 +1,11 @@
 package com.cruru.auth.security;
 
+import static com.cruru.member.domain.MemberRole.CLUB_OWNER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.auth.security.jwt.JwtTokenProvider;
+import com.cruru.member.domain.Member;
+import com.cruru.util.fixture.MemberFixture;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

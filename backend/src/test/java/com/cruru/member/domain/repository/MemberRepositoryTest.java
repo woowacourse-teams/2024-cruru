@@ -28,7 +28,7 @@ class MemberRepositoryTest extends RepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Member member = MemberFixture.createMember1();
+        Member member = MemberFixture.DOBBY;
         Member saved = memberRepository.save(member);
 
         //when
@@ -45,8 +45,8 @@ class MemberRepositoryTest extends RepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Member member1 = MemberFixture.createMember1();
-        Member member2 = MemberFixture.createMember2();
+        Member member1 = MemberFixture.DOBBY;
+        Member member2 = MemberFixture.RUSH;
 
         //when
         Member savedMember1 = memberRepository.save(member1);
@@ -60,8 +60,8 @@ class MemberRepositoryTest extends RepositoryTest {
     @Test
     void save_duplicateEmail() {
         //given
-        Member member1 = MemberFixture.createMember1();
-        Member member2 = MemberFixture.createMember1();
+        Member member1 = MemberFixture.DOBBY;
+        Member member2 = MemberFixture.DOBBY;
 
         //when
         memberRepository.save(member1);

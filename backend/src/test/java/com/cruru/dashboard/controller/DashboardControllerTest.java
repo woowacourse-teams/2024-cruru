@@ -1,7 +1,5 @@
 package com.cruru.dashboard.controller;
 
-import static com.cruru.util.fixture.ClubFixture.createClub;
-
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
@@ -12,6 +10,7 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -38,7 +37,7 @@ class DashboardControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(createClub());
+        club = clubRepository.save(ClubFixture.create());
     }
 
     @DisplayName("대시보드 생성 성공 시, 201을 응답한다.")
@@ -69,8 +68,8 @@ class DashboardControllerTest extends ControllerTest {
     @Test
     void readDashboards_success() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
-        applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         String url = String.format("/v1/dashboards?clubId=%d", club.getId());
 
         // when&then

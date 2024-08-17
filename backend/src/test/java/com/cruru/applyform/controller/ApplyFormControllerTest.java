@@ -1,12 +1,5 @@
 package com.cruru.applyform.controller;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
-import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
-
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
@@ -18,6 +11,10 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
@@ -44,11 +41,11 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void submit() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
 
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
@@ -72,11 +69,11 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void submit_rejectPersonalDataCollection() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
 
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
@@ -100,9 +97,9 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void submit_dashboardWithNoProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
@@ -122,10 +119,10 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        questionRepository.save(createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         RestAssured.given().log().all()
@@ -138,10 +135,10 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void read_notFound() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        questionRepository.save(createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         RestAssured.given().log().all()

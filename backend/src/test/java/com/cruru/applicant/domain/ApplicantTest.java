@@ -21,7 +21,7 @@ class ApplicantTest {
         String toChangeEmail = "dev.chocochip@gmail.com";
         String toChangePhone = "01000000000";
 
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
 
         // when
         applicant.updateInfo(toChangeName, toChangeEmail, toChangePhone);
@@ -39,7 +39,7 @@ class ApplicantTest {
     @Test
     void reject() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
 
         // when
         applicant.reject();
@@ -55,7 +55,7 @@ class ApplicantTest {
     @Test
     void unreject() {
         // given
-        Applicant applicant = ApplicantFixture.createRejectedApplicantRush();
+        Applicant applicant = ApplicantFixture.rejectedRush();
 
         // when
         applicant.unreject();
@@ -71,7 +71,7 @@ class ApplicantTest {
     @Test
     void approve() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
 
         // when
         applicant.approve();

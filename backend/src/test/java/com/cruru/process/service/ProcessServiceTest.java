@@ -1,10 +1,5 @@
 package com.cruru.process.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -22,6 +17,8 @@ import com.cruru.process.exception.badrequest.ProcessDeleteEndsException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
 import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.util.Comparator;
 import java.util.List;
@@ -48,9 +45,9 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        processRepository.save(createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.last(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "원래 있던 2개의 프로세스 사이에 생겼다.", 1);
 
         // when
@@ -73,7 +70,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void createOverProcessMaxCount() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         processRepository.saveAll(ProcessFixture.maxSizeOf(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("2차 면접", "화상 면접", 1);
 
@@ -86,7 +83,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Process savedProcess = processRepository.save(ProcessFixture.createFirstProcess());
+        Process savedProcess = processRepository.save(ProcessFixture.first());
 
         // when&then
         Long processId = savedProcess.getId();
@@ -98,10 +95,10 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void findFirstProcessOnDashboard() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
-        processRepository.save(createInterviewProcess(dashboard));
-        processRepository.save(createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process firstProcess = processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.interview(dashboard));
+        processRepository.save(ProcessFixture.last(dashboard));
 
         // when
         Process actualFirstProcess = processService.findFirstProcessOnDashboard(dashboard);
@@ -114,8 +111,8 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void update() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.first(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when
@@ -134,8 +131,8 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void update_ThrowException() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.first(dashboard));
         String notChangedName = process.getName();
         String notChangedDescription = process.getDescription();
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest(notChangedName, notChangedDescription);
@@ -151,8 +148,8 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void delete() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createInterviewProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.interview(dashboard));
 
         // when
         processService.delete(process.getId());
@@ -165,9 +162,9 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void delete_FirstOrLastProcess_ThrowsException() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process firstProcess = processRepository.save(createFirstProcess(dashboard));
-        Process finalProcess = processRepository.save(createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process firstProcess = processRepository.save(ProcessFixture.first(dashboard));
+        Process finalProcess = processRepository.save(ProcessFixture.last(dashboard));
 
         // when & then
         Long firstProcessId = firstProcess.getId();
@@ -184,9 +181,9 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void delete_ApplicantRemainedProcess_ThrowsException() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createInterviewProcess(dashboard));
-        applicantRepository.save(createPendingApplicantDobby(process));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.interview(dashboard));
+        applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then
         Long processId = process.getId();

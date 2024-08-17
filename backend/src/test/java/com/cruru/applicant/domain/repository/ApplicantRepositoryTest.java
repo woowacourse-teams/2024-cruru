@@ -26,7 +26,7 @@ class ApplicantRepositoryTest extends RepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
         Applicant saved = applicantRepository.save(applicant);
 
         //when
@@ -44,8 +44,8 @@ class ApplicantRepositoryTest extends RepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Applicant applicant1 = ApplicantFixture.createPendingApplicantDobby();
-        Applicant applicant2 = ApplicantFixture.createPendingApplicantRush();
+        Applicant applicant1 = ApplicantFixture.pendingDobby();
+        Applicant applicant2 = ApplicantFixture.pendingRush();
 
         //when
         Applicant savedApplicant1 = applicantRepository.save(applicant1);

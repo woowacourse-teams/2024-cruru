@@ -1,10 +1,10 @@
 package com.cruru.club.domain.repository;
 
-import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.club.domain.Club;
 import com.cruru.util.RepositoryTest;
+import com.cruru.util.fixture.ClubFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class ClubRepositoryTest extends RepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Club club = createClub();
+        Club club = ClubFixture.create();
         Club saved = clubRepository.save(club);
 
         //when
@@ -41,8 +41,8 @@ class ClubRepositoryTest extends RepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Club club1 = createClub();
-        Club club2 = createClub();
+        Club club1 = ClubFixture.create();
+        Club club2 = ClubFixture.create();
 
         //when
         Club savedClub1 = clubRepository.save(club1);

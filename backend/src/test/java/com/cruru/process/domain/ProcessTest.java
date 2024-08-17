@@ -1,6 +1,5 @@
 package com.cruru.process.domain;
 
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,6 +7,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
 import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
+import com.cruru.util.fixture.DashboardFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +21,7 @@ class ProcessTest {
     @ParameterizedTest
     void validProcessName(String name) {
         // given
-        Dashboard dashboard = createBackendDashboard();
+        Dashboard dashboard = DashboardFixture.backend();
 
         // when&then
         assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
