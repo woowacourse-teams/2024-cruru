@@ -1,7 +1,5 @@
 package com.cruru.applyform.controller;
 
-import static com.cruru.util.fixture.QuestionFixture.shortAnswerType;
-
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
@@ -101,7 +99,7 @@ class ApplyFormControllerTest extends ControllerTest {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
-        Question question = questionRepository.save(shortAnswerType(applyForm));
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
@@ -124,7 +122,7 @@ class ApplyFormControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         processRepository.save(ProcessFixture.first(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        questionRepository.save(shortAnswerType(applyForm));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         RestAssured.given().log().all()
@@ -140,7 +138,7 @@ class ApplyFormControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         processRepository.save(ProcessFixture.first(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        questionRepository.save(shortAnswerType(applyForm));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         RestAssured.given().log().all()

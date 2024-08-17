@@ -1,6 +1,5 @@
 package com.cruru.applyform.service;
 
-import static com.cruru.util.fixture.QuestionFixture.shortAnswerType;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -18,6 +17,7 @@ import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -80,7 +80,7 @@ class ApplyFormServiceTest extends ServiceTest {
     void findById() {
         // given
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        questionRepository.save(shortAnswerType(applyForm));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when
         ApplyForm actualApplyForm = applyFormService.findById(applyForm.getId());
@@ -99,7 +99,7 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         processRepository.save(ProcessFixture.first(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
-        questionRepository.save(shortAnswerType(applyForm));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         assertThatThrownBy(() -> applyFormService.findById(-1)).isInstanceOf(ApplyFormNotFoundException.class);

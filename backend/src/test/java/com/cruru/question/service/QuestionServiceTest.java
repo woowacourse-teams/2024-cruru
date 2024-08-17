@@ -108,10 +108,8 @@ class QuestionServiceTest extends ServiceTest {
                 .sorted(Comparator.comparing(QuestionResponse::orderIndex))
                 .toList();
 
-        return IntStream.range(0, savedQuestions.size()).mapToObj(i -> Arguments.of(
-                savedQuestions.get(i),
-                questionResponses.get(i)
-        ));
+        return IntStream.range(0, savedQuestions.size())
+                .mapToObj(i -> Arguments.of(savedQuestions.get(i), questionResponses.get(i)));
     }
 
     @DisplayName("선택지를 가지고 있지 않는 질문은 ChoiceResponse 목록이 비어있어야 한다.")
