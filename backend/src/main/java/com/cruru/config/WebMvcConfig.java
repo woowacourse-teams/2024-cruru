@@ -3,6 +3,7 @@ package com.cruru.config;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.AuthenticationInterceptor;
 import com.cruru.global.LoginArgumentResolver;
+import com.cruru.global.util.CookieManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthService authService;
+    private final CookieManager cookieManager;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -35,7 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthenticationInterceptor(authService))
+        registry.addInterceptor(new AuthenticationInterceptor(authService, cookieManager))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/**/signup")
                 .excludePathPatterns("/**/login")
@@ -46,6 +48,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginArgumentResolver(authService));
+        resolvers.add(new LoginArgumentResolver(authService, cookieManager));
     }
 }

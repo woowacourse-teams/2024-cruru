@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private final AuthService authService;
+    private final CookieManager cookieManager;
 
     @Override
     public boolean preHandle(
@@ -18,7 +19,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) {
-        String token = CookieManager.extractToken(request);
+        String token = cookieManager.extractToken(request);
 
         if (authService.isTokenValid(token)) {
             return true;

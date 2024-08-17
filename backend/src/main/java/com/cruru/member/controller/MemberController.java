@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberFacade memberFacade;
+    private final CookieManager cookieManager;
 
     @PostMapping("/signup")
     public ResponseEntity<Void> create(@RequestBody @Valid MemberCreateRequest request) {
@@ -31,7 +32,7 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody @Valid LoginRequest request) {
         String token = memberFacade.login(request);
-        ResponseCookie cookie = CookieManager.createTokenCookie(token);
+        ResponseCookie cookie = cookieManager.createTokenCookie(token);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .build();
