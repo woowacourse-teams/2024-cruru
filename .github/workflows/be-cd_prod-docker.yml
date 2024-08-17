@@ -26,7 +26,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        cache-write-only: true
+          cache-write-only: true
 
     - name: Build with Gradle
       run: ./gradlew bootJar
@@ -50,7 +50,7 @@ jobs:
 
   deploy:
     environment: prod
-    runs-on: [ self-hosted, be-prod ]
+    runs-on: [self-hosted, be-prod]
     needs: build
     defaults:
       run:
@@ -67,7 +67,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
-          
+
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
         DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }}
@@ -75,7 +75,7 @@ jobs:
         DB_USER=${{ secrets.DB_USER }}
         DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         DDL_AUTO=${{ secrets.DDL_AUTO }}
-          
+
         # DB server configuration secrets info from Github Secrets
         APP_IP_ADDRESS=${{ secrets.APP_IP_ADDRESS }}
         SERVER_BINDING_PORT=${{ secrets.SERVER_BINDING_PORT }}
