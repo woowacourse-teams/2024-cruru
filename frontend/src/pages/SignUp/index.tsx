@@ -24,26 +24,16 @@ export default function SignUp() {
         type="email"
       />
       <InputField
-        label="이메일"
-        placeholder="이메일"
-        type="email"
-      />
-      <InputField
-        label="이메일"
-        placeholder="이메일"
-        type="email"
-      />
-      <InputField
-        label="동아리 이름"
-        placeholder="동아리 이름"
-        type="text"
-      />
-      <InputField
         label="전화번호"
         placeholder="전화번호"
         type="text"
       />
       <PasswordInput />
+      <InputField
+        label="동아리 이름"
+        placeholder="동아리 이름"
+        type="text"
+      />
       <S.ButtonContainer>
         <Button
           onClick={handleSignUp}
