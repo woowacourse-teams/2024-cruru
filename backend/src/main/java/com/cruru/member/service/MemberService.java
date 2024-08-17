@@ -60,7 +60,7 @@ public class MemberService {
 
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email)
-               .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(MemberNotFoundException::new);
     }
 
     public boolean isNotVerifiedPassword(String rawPassword, String encodedPassword) {
