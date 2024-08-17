@@ -17,10 +17,14 @@ public class CookieManager {
     public String extractToken(HttpServletRequest request) {
         Cookie[] cookies = extractCookie(request);
         return Arrays.stream(cookies)
-                .filter(cookie -> cookieProperties.accessTokenKey().equals(cookie.getName()))
+                .filter(this::isAccessTokenCookie)
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElseThrow(IllegalCookieException::new);
+    }
+
+    private boolean isAccessTokenCookie(Cookie cookie) {
+        return cookieProperties.accessTokenKey().equals(cookie.getName());
     }
 
     private Cookie[] extractCookie(HttpServletRequest request) {
