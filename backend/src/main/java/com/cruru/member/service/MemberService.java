@@ -62,8 +62,4 @@ public class MemberService {
         return memberRepository.findByEmail(email)
                 .orElseThrow(MemberNotFoundException::new);
     }
-
-    public boolean isNotVerifiedPassword(String rawPassword, String encodedPassword) {
-        return !passwordValidator.matches(rawPassword, encodedPassword);
-    }
 }
