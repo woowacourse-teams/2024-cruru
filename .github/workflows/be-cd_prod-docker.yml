@@ -67,7 +67,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
-
+        
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
         DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }}
