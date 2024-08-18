@@ -105,6 +105,7 @@ CREATE TABLE process
     dashboard_id BIGINT NOT NULL,
     description  TEXT,
     name         VARCHAR(255),
+    type         VARCHAR(255),
     PRIMARY KEY (process_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
