@@ -42,9 +42,9 @@ class AnswerServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
-        question1 = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
-        question2 = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
+        applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        question1 = questionRepository.save(QuestionFixture.shortAnswerType(null));
+        question2 = questionRepository.save(QuestionFixture.shortAnswerType(null));
     }
 
     @DisplayName("질문에 대한 지원자의 답변을 성공적으로 저장한다.")
@@ -59,10 +59,10 @@ class AnswerServiceTest extends ServiceTest {
         // then
         List<Answer> actualAnswer = answerRepository.findAllByApplicant(applicant);
         String content = actualAnswer.get(0).getContent();
-        assertAll(() -> {
-            assertThat(actualAnswer).hasSize(1);
-            assertThat(content).isEqualTo(reply);
-        });
+        assertAll(
+                () -> assertThat(actualAnswer).hasSize(1),
+                () -> assertThat(content).isEqualTo(reply)
+        );
     }
 
     @DisplayName("지원자의 응답을 조회한다.")
@@ -70,8 +70,8 @@ class AnswerServiceTest extends ServiceTest {
     void findAllByApplicant() {
         // given
         List<Answer> expectedAnswers = answerRepository.saveAll(List.of(
-                AnswerFixture.fristAnswer(question1, applicant),
-                AnswerFixture.secondAnswer(question2, applicant)
+                AnswerFixture.first(question1, applicant),
+                AnswerFixture.second(question2, applicant)
         ));
 
         // when
@@ -85,8 +85,8 @@ class AnswerServiceTest extends ServiceTest {
     @Test
     void toAnswerResponses() {
         // given
-        Answer expectedAnswer1 = AnswerFixture.fristAnswer(question1, applicant);
-        Answer expectedAnswer2 = AnswerFixture.secondAnswer(question2, applicant);
+        Answer expectedAnswer1 = AnswerFixture.first(question1, applicant);
+        Answer expectedAnswer2 = AnswerFixture.second(question2, applicant);
         List<Answer> expectedAnswers = List.of(expectedAnswer1, expectedAnswer2);
 
         // when
@@ -95,14 +95,14 @@ class AnswerServiceTest extends ServiceTest {
         // then
         AnswerResponse actualAnswerResponse1 = actualAnswerResponses.get(0);
         AnswerResponse actualAnswerResponse2 = actualAnswerResponses.get(1);
-        assertAll(() -> {
-            assertThat(actualAnswerResponses).hasSize(2);
+        assertAll(
+                () -> assertThat(actualAnswerResponses).hasSize(2),
 
-            assertThat(actualAnswerResponse1.answer()).isEqualTo(expectedAnswer1.getContent());
-            assertThat(actualAnswerResponse2.answer()).isEqualTo(expectedAnswer2.getContent());
+                () -> assertThat(actualAnswerResponse1.answer()).isEqualTo(expectedAnswer1.getContent()),
+                () -> assertThat(actualAnswerResponse2.answer()).isEqualTo(expectedAnswer2.getContent()),
 
-            assertThat(actualAnswerResponse1.question()).isEqualTo(question1.getContent());
-            assertThat(actualAnswerResponse2.question()).isEqualTo(question2.getContent());
-        });
+                () -> assertThat(actualAnswerResponse1.question()).isEqualTo(question1.getContent()),
+                () -> assertThat(actualAnswerResponse2.question()).isEqualTo(question2.getContent())
+        );
     }
 }

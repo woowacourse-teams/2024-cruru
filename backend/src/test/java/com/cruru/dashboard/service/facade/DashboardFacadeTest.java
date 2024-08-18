@@ -58,7 +58,7 @@ class DashboardFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(ClubFixture.createClub());
+        club = clubRepository.save(ClubFixture.create());
     }
 
     @DisplayName("대시보드(공고)를 생성한다.")
@@ -92,35 +92,35 @@ class DashboardFacadeTest extends ServiceTest {
     void findFormUrlByDashboardId() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
 
         // when
         ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboard.getId());
 
         // then
-        assertAll(() -> {
-            assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId());
-            assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl());
-        });
+        assertAll(
+                () -> assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId()),
+                () -> assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl())
+        );
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")
     @Test
     void findAllDashboardsByClubId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Process lastProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process lastProcess = processRepository.save(ProcessFixture.approveType(dashboard));
 
         List<Applicant> applicants = List.of(
                 // 마지막 프로세스에 있으면서 불합격 상태인 경우, 불합격
-                ApplicantFixture.createRejectedApplicantRush(lastProcess),
-                ApplicantFixture.createRejectedApplicantRush(firstProcess),
-                ApplicantFixture.createPendingApplicantDobby(lastProcess),
-                ApplicantFixture.createPendingApplicantDobby(firstProcess),
-                ApplicantFixture.createPendingApplicantDobby(firstProcess),
-                ApplicantFixture.createPendingApplicantDobby(firstProcess)
+                ApplicantFixture.rejectedRush(lastProcess),
+                ApplicantFixture.rejectedRush(firstProcess),
+                ApplicantFixture.pendingDobby(lastProcess),
+                ApplicantFixture.pendingDobby(firstProcess),
+                ApplicantFixture.pendingDobby(firstProcess),
+                ApplicantFixture.pendingDobby(firstProcess)
         );
         applicantRepository.saveAll(applicants);
 
@@ -130,15 +130,15 @@ class DashboardFacadeTest extends ServiceTest {
         // then
         DashboardPreviewResponse dashboardPreview = dashboardsOfClubResponse.dashboardPreviewResponses().get(0);
         StatsResponse stats = dashboardPreview.stats();
-        assertAll(() -> {
-            assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName());
-            assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId());
-            assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle());
-            assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl());
-            assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate());
-            assertThat(stats.accept()).isEqualTo(1);
-            assertThat(stats.fail()).isEqualTo(2);
-            assertThat(stats.inProgress()).isEqualTo(3);
-        });
+        assertAll(
+                () -> assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName()),
+                () -> assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId()),
+                () -> assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle()),
+                () -> assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl()),
+                () -> assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate()),
+                () -> assertThat(stats.accept()).isEqualTo(0),
+                () -> assertThat(stats.fail()).isEqualTo(1),
+                () -> assertThat(stats.inProgress()).isEqualTo(2)
+        );
     }
 }

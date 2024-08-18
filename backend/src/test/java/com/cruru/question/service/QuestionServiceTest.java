@@ -1,8 +1,5 @@
 package com.cruru.question.service;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
-import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -10,11 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceResponse;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.controller.dto.QuestionResponse;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.util.Comparator;
 import java.util.List;
@@ -40,19 +41,23 @@ class QuestionServiceTest extends ServiceTest {
     private ApplyFormRepository applyFormRepository;
 
     @Autowired
+    private DashboardRepository dashboardRepository;
+
+    @Autowired
     private QuestionService questionService;
 
     @DisplayName("질문 생성에 성공한다.")
     @Test
     void create() {
         // given
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(null));
-        Question question1 = createShortAnswerQuestion(applyForm);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question1 = QuestionFixture.shortAnswerType(applyForm);
         QuestionCreateRequest request = new QuestionCreateRequest(
                 question1.getQuestionType().toString(),
                 question1.getContent(),
                 question1.getDescription(),
-                null,
+                List.of(),
                 0,
                 question1.getRequired()
         );
@@ -70,7 +75,7 @@ class QuestionServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Question savedQuestion = questionRepository.save(createLongAnswerQuestion(null));
+        Question savedQuestion = questionRepository.save(QuestionFixture.longAnswerType(null));
 
         // when&then
         assertDoesNotThrow(() -> questionService.findById(savedQuestion.getId()));
@@ -83,17 +88,17 @@ class QuestionServiceTest extends ServiceTest {
     @MethodSource("provideQuestionsAndResponses")
     void toQuestionResponse(Question expectedQuestion, QuestionResponse actualResponse) {
         // given&when&then
-        assertAll(() -> {
-            assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId());
-            assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence());
-            assertThat(actualResponse.type()).isEqualTo(expectedQuestion.getQuestionType().toString());
-            assertThat(actualResponse.content()).isEqualTo(expectedQuestion.getContent());
-            assertThat(actualResponse.description()).isEqualTo(expectedQuestion.getDescription());
-        });
+        assertAll(
+                () -> assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId()),
+                () -> assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence()),
+                () -> assertThat(actualResponse.type()).isEqualTo(expectedQuestion.getQuestionType().toString()),
+                () -> assertThat(actualResponse.content()).isEqualTo(expectedQuestion.getContent()),
+                () -> assertThat(actualResponse.description()).isEqualTo(expectedQuestion.getDescription())
+        );
     }
 
     private Stream<Arguments> provideQuestionsAndResponses() {
-        List<Question> savedQuestions = questionRepository.saveAll(QuestionFixture.createAllTypesOfQuestions(null))
+        List<Question> savedQuestions = questionRepository.saveAll(QuestionFixture.allTypes(null))
                 .stream()
                 .sorted(Comparator.comparing(Question::getSequence))
                 .toList();
@@ -111,8 +116,7 @@ class QuestionServiceTest extends ServiceTest {
     @Test
     void toQuestionResponse_NotHavingChoicesQuestion() {
         // given
-        List<Question> nonChoiceTypeQuestions = questionRepository.saveAll(QuestionFixture.createNonChoiceTypeQuestions(
-                null));
+        List<Question> nonChoiceTypeQuestions = questionRepository.saveAll(QuestionFixture.nonChoiceType(null));
 
         // when
         List<QuestionResponse> questionResponses = questionService.toQuestionResponses(nonChoiceTypeQuestions);
@@ -120,9 +124,9 @@ class QuestionServiceTest extends ServiceTest {
         // then
         List<ChoiceResponse> choiceResponses1 = questionResponses.get(0).choiceResponses();
         List<ChoiceResponse> choiceResponses2 = questionResponses.get(1).choiceResponses();
-        assertAll(() -> {
-            assertThat(choiceResponses1).isEmpty();
-            assertThat(choiceResponses2).isEmpty();
-        });
+        assertAll(
+                () -> assertThat(choiceResponses1).isEmpty(),
+                () -> assertThat(choiceResponses2).isEmpty()
+        );
     }
 }

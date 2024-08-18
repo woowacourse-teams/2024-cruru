@@ -47,8 +47,8 @@ class ChoiceServiceTest extends ServiceTest {
     @Test
     void createAll() {
         // given
-        Question question = questionRepository.save(QuestionFixture.createDropdownQuestion(null));
-        List<Choice> choices = ChoiceFixture.createChoices(question);
+        Question question = questionRepository.save(QuestionFixture.dropdownType(null));
+        List<Choice> choices = ChoiceFixture.fiveChoices(question);
         List<ChoiceCreateRequest> choiceRequests = choices.stream()
                 .map(choice -> new ChoiceCreateRequest(choice.getContent(), choice.getSequence()))
                 .toList();
@@ -65,31 +65,30 @@ class ChoiceServiceTest extends ServiceTest {
     @Test
     void createAllThrowsWithIllegalSaveException() {
         // given
-        Question shortAnswerQuestion = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
-        Question longAnswerQuestion = questionRepository.save(QuestionFixture.createLongAnswerQuestion(null));
-        List<Choice> choices = ChoiceFixture.createChoices(shortAnswerQuestion);
+        Question shortAnswerQuestion = questionRepository.save(QuestionFixture.shortAnswerType(null));
+        Question longAnswerQuestion = questionRepository.save(QuestionFixture.longAnswerType(null));
+        List<Choice> choices = ChoiceFixture.fiveChoices(shortAnswerQuestion);
         List<ChoiceCreateRequest> choiceRequests = choices.stream()
                 .map(choice -> new ChoiceCreateRequest(choice.getContent(), choice.getSequence()))
                 .toList();
 
         // when & then
-        assertAll(() -> {
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion))
-                    .isInstanceOf(ChoiceIllegalSaveException.class);
+        assertAll(
+                () -> assertThatThrownBy(() -> choiceService.createAll(choiceRequests, shortAnswerQuestion))
+                        .isInstanceOf(ChoiceIllegalSaveException.class),
 
-            assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion))
-                    .isInstanceOf(ChoiceIllegalSaveException.class);
-        });
+                () -> assertThatThrownBy(() -> choiceService.createAll(choiceRequests, longAnswerQuestion))
+                        .isInstanceOf(ChoiceIllegalSaveException.class)
+        );
     }
-
 
     @DisplayName("객관식 Question에 선택지가 존재하지 않으면 예외를 던진다.")
     @Test
     void createAllThrowsWithChoiceEmptyBadRequestException() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Question dropdownQuestion = questionRepository.save(QuestionFixture.createDropdownQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question dropdownQuestion = questionRepository.save(QuestionFixture.dropdownType(applyForm));
         List<ChoiceCreateRequest> choiceRequests = List.of();
 
         // when&then
@@ -101,8 +100,8 @@ class ChoiceServiceTest extends ServiceTest {
     @Test
     void findAllByQuestion() {
         // given
-        Question question = questionRepository.save(QuestionFixture.createDropdownQuestion(null));
-        List<Choice> choices = choiceRepository.saveAll(ChoiceFixture.createChoices(question));
+        Question question = questionRepository.save(QuestionFixture.dropdownType(null));
+        List<Choice> choices = choiceRepository.saveAll(ChoiceFixture.fiveChoices(question));
 
         // when
         List<Choice> actualChoices = choiceService.findAllByQuestion(question);

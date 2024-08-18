@@ -18,7 +18,7 @@ public class MemberController {
 
     private final MemberFacade memberFacade;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Void> create(@RequestBody @Valid MemberCreateRequest request) {
         long memberId = memberFacade.create(request);
         return ResponseEntity.created(URI.create("/v1/members/" + memberId)).build();

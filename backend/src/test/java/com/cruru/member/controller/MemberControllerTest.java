@@ -20,7 +20,7 @@ class MemberControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().post("/v1/members")
+                .when().post("/v1/members/signup")
                 .then().log().all().statusCode(201);
     }
 }

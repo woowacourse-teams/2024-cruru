@@ -1,12 +1,11 @@
 package com.cruru.process.domain.repository;
 
-import static com.cruru.util.fixture.ProcessFixture.createFinalProcess;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.ProcessType;
 import com.cruru.util.RepositoryTest;
+import com.cruru.util.fixture.ProcessFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ class ProcessRepositoryTest extends RepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Process process = createFirstProcess();
+        Process process = ProcessFixture.applyType();
         Process saved = processRepository.save(process);
 
         //when
@@ -45,8 +44,8 @@ class ProcessRepositoryTest extends RepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Process firstProcess = createFirstProcess();
-        Process finalProcess = createFinalProcess();
+        Process firstProcess = ProcessFixture.applyType();
+        Process finalProcess = ProcessFixture.approveType();
 
         //when
         Process savedProcess1 = processRepository.save(firstProcess);

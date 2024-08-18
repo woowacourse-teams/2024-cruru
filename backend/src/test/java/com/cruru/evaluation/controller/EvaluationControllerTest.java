@@ -1,9 +1,5 @@
 package com.cruru.evaluation.controller;
 
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
@@ -13,6 +9,9 @@ import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,9 +43,9 @@ class EvaluationControllerTest extends ControllerTest {
     void setUp() {
         RestAssured.port = port;
 
-        process = processRepository.save(createFirstProcess());
+        process = processRepository.save(ProcessFixture.applyType());
 
-        applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 
     @DisplayName("평가 생성 성공 시, 201을 응답한다.")
@@ -127,7 +126,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void update() {
         // given
-        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
         int score = 2;
         String content = "맞춤법이 틀렸습니다.";
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
