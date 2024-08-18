@@ -1,3 +1,5 @@
+import { HiOutlineClock, HiOutlineChat } from 'react-icons/hi';
+
 import { useState, useRef, useEffect } from 'react';
 
 import EllipsisIcon from '@assets/icons/ellipsis.svg';
@@ -79,7 +81,17 @@ export default function ApplicantCard({
         >
           {evaluationString}
         </S.CardEvaluationFlag>
-        <S.CardDate>{`지원 일자: ${formatDate(createdAt)}`}</S.CardDate>
+        <S.CardInfoContainer>
+          <S.CardInfo>
+            <HiOutlineClock size="1.2rem" />
+            {formatDate(createdAt)}
+          </S.CardInfo>
+
+          <S.CardInfo>
+            <HiOutlineChat size="1.2rem" />
+            {evaluationCount}
+          </S.CardInfo>
+        </S.CardInfoContainer>
       </S.CardDetail>
 
       <S.OptionButtonWrapper>

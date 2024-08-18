@@ -28,7 +28,7 @@ const CardContainer = styled.div`
 const CardDetail = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.8rem;
 `;
 
 const CardHeader = styled.h3`
@@ -95,9 +95,21 @@ const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: n
   }}
 `;
 
-const CardDate = styled.span`
+const CardInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+
   ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
+`;
+
+const CardInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
 `;
 
 const OptionButtonWrapper = styled.div`
@@ -109,7 +121,8 @@ const S = {
   CardDetail,
   CardHeader,
   CardEvaluationFlag,
-  CardDate,
+  CardInfoContainer,
+  CardInfo,
   OptionButtonWrapper,
 };
 
