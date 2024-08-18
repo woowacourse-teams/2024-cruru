@@ -37,3 +37,8 @@ export const QUESTION_TYPE_NAME = {
   SINGLE_CHOICE: '객관식(단일 선택)',
   MULTIPLE_CHOICE: '객관식(복수 선택)',
 } as const;
+
+export const QUESTION_INPUT_LENGTH = {
+  SHORT_ANSWER: 50,
+  LONG_ANSWER: 1000,
+} as const;
