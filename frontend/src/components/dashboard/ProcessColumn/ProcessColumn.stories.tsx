@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { reactRouterParameters } from 'storybook-addon-remix-react-router';
+import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import ProcessColumn from './index';
@@ -32,6 +32,7 @@ const meta: Meta<typeof ProcessColumn> = {
     },
   },
   decorators: [
+    withRouter,
     (Child) => (
       <SpecificApplicantIdProvider>
         <SpecificProcessIdProvider>
