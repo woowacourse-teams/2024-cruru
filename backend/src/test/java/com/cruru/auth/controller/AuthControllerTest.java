@@ -20,7 +20,8 @@ class AuthControllerTest extends ControllerTest {
     private Member member;
 
     @BeforeEach
-    void tearDown() {
+    void setup() {
+        memberRepository.deleteAllInBatch();
         member = memberRepository.save(MemberFixture.ADMIN);
     }
 
@@ -51,5 +52,4 @@ class AuthControllerTest extends ControllerTest {
                 .when().post("/v1/auth/login")
                 .then().log().all().statusCode(401);
     }
-
 }
