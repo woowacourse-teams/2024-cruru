@@ -102,7 +102,7 @@ export default function ApplicantCard({
             onClick={handleClickPopOverButton}
           >
             <img
-              alt="테스트"
+              alt="심사단계 이동 버튼 아이콘"
               src={EllipsisIcon}
             />
           </IconButton>
