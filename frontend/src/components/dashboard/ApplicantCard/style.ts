@@ -9,6 +9,7 @@ const CardContainer = styled.div`
   min-width: 15rem;
   padding: 1rem 1.6rem;
   border-radius: 0.8rem;
+  user-select: none;
 
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
