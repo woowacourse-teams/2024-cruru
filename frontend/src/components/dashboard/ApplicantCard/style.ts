@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 const CardContainer = styled.div`
   display: flex;
@@ -27,12 +28,71 @@ const CardContainer = styled.div`
 const CardDetail = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.7rem;
 `;
 
 const CardHeader = styled.h3`
   ${({ theme }) => theme.typography.common.block};
   color: ${({ theme }) => theme.colors.text.default};
-  margin-bottom: 0.4rem;
+  margin-bottom: 0;
+`;
+
+const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: number }>`
+  width: fit-content;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.4rem;
+  margin-left: -0.1rem;
+
+  ${({ theme }) => theme.colors.text.block};
+
+  ${({ theme, averageScore }) => {
+    if (averageScore >= 1 && averageScore < 2) {
+      return css`
+        color: ${theme.baseColors.redscale[500]};
+        background: ${theme.baseColors.redscale[50]};
+      `;
+    }
+
+    if (averageScore >= 2 && averageScore < 3) {
+      return css`
+        color: ${theme.baseColors.redscale[400]};
+        background: ${theme.baseColors.redscale[50]};
+      `;
+    }
+
+    if (averageScore >= 3 && averageScore < 4) {
+      return css`
+        color: ${theme.baseColors.bluescale[400]};
+        background: ${theme.baseColors.bluescale[50]};
+      `;
+    }
+
+    if (averageScore >= 4 && averageScore <= 5) {
+      return css`
+        color: ${theme.baseColors.bluescale[500]};
+        background: ${theme.baseColors.bluescale[50]};
+      `;
+    }
+
+    return css`
+      background: ${theme.baseColors.grayscale[300]};
+      color: ${theme.colors.text.default};
+    `;
+  }}
+
+  /**
+   * averageScore가 API 스펙에 추가될 때까지 임시로 적용할 스타일입니다.
+   * - 2024-08-18 by 아르
+   */
+  ${({ theme, evaluationCount }) => {
+    if (evaluationCount) {
+      return css`
+        background: ${theme.baseColors.purplescale[50]};
+        color: ${theme.colors.brand.primary};
+      `;
+    }
+    return '';
+  }}
 `;
 
 const CardDate = styled.span`
@@ -48,6 +108,7 @@ const S = {
   CardContainer,
   CardDetail,
   CardHeader,
+  CardEvaluationFlag,
   CardDate,
   OptionButtonWrapper,
 };
