@@ -1,7 +1,8 @@
-package com.cruru.auth.service;
+package com.cruru.auth.service.facade;
 
 import com.cruru.auth.controller.dto.LoginRequest;
 import com.cruru.auth.exception.LoginFailedException;
+import com.cruru.auth.service.AuthService;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
