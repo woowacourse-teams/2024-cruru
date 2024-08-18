@@ -11,8 +11,8 @@ import com.cruru.process.domain.ProcessType;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
-import com.cruru.process.exception.badrequest.ProcessDeleteEndsException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
+import com.cruru.process.exception.badrequest.ProcessDeleteUnmodifiableException;
 import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -104,8 +104,8 @@ public class ProcessService {
     }
 
     private void validateFirstOrLastProcess(Process process) {
-        if (process.isNotDeletable()) {
-            throw new ProcessDeleteEndsException();
+        if (process.isUnModifiable()) {
+            throw new ProcessDeleteUnmodifiableException();
         }
     }
 
