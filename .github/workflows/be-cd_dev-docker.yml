@@ -98,6 +98,15 @@ jobs:
         JWT_TOKEN_EXPIRE_CYCLE=${{ secrets.JWT_TOKEN_EXPIRE_CYCLE }}
         JWT_SIGN_ALGORITHM=${{ secrets.JWT_SIGN_ALGORITHM }}
         
+        # Cookie settings
+        COOKIE_ACCESS_TOKEN_KEY=${{ secrets.COOKIE_ACCESS_TOKEN_KEY }}
+        COOKIE_HTTP_ONLY=${{ secrets.COOKIE_HTTP_ONLY }}
+        COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
+        COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}
+        COOKIE_PATH=${{ secrets.COOKIE_PATH }}
+        COOKIE_SAME_SITE=${{ secrets.COOKIE_SAME_SITE }}
+        COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}   
+        
         EOF
 
     - name: Stop and remove existing containers
