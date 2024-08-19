@@ -1,10 +1,5 @@
 package com.cruru.applyform.service;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -19,6 +14,10 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,9 +46,8 @@ class ApplyFormServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        dashboard = dashboardRepository.save(createBackendDashboard());
+        dashboard = dashboardRepository.save(DashboardFixture.backend());
     }
-
 
     @DisplayName("지원공고를 성공적으로 생성한다.")
     @Test
@@ -68,21 +66,21 @@ class ApplyFormServiceTest extends ServiceTest {
 
         // then
         ApplyForm actualApplyForm = applyFormRepository.findById(applyFormId).get();
-        assertAll(() -> {
-            assertThat(actualApplyForm.getTitle()).isEqualTo(title);
-            assertThat(actualApplyForm.getDescription()).isEqualTo(postingContent);
-            assertThat(actualApplyForm.getUrl()).isEqualTo(applyPostUrl);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
-            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
-        });
+        assertAll(
+                () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
+                () -> assertThat(actualApplyForm.getDescription()).isEqualTo(postingContent),
+                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(applyPostUrl),
+                () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
+                () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
+        );
     }
 
     @DisplayName("지원서 폼 질문 조회에 성공한다.")
     @Test
     void findById() {
         // given
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        questionRepository.save(createShortAnswerQuestion(applyForm));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when
         ApplyForm actualApplyForm = applyFormService.findById(applyForm.getId());
@@ -99,9 +97,9 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void findById_invalidApplyForm() {
         // given
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        questionRepository.save(createShortAnswerQuestion(applyForm));
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         assertThatThrownBy(() -> applyFormService.findById(-1)).isInstanceOf(ApplyFormNotFoundException.class);
@@ -111,7 +109,7 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void findByDashboard() {
         // given
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
 
         // when&then
         assertDoesNotThrow(() -> applyFormService.findByDashboard(dashboard));

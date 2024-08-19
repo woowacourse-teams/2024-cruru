@@ -10,6 +10,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantNoChangeException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
+import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,19 @@ public class ApplicantService {
     private void validateRejectable(Applicant applicant) {
         if (applicant.isRejected()) {
             throw new ApplicantRejectException();
+        }
+    }
+
+    @Transactional
+    public void unreject(long applicantId) {
+        Applicant applicant = findById(applicantId);
+        validateUnrejectable(applicant);
+        applicant.unreject();
+    }
+
+    private void validateUnrejectable(Applicant applicant) {
+        if (applicant.isNotRejected()) {
+            throw new ApplicantUnrejectException();
         }
     }
 

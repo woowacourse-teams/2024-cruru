@@ -1,5 +1,6 @@
 package com.cruru.applicant.service.facade;
 
+import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -61,8 +62,8 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void readBasicById() {
         // given
-        Process process = processRepository.save(ProcessFixture.createFirstProcess());
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Process process = processRepository.save(ProcessFixture.first());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when
         ApplicantBasicResponse basicResponse = applicantFacade.readBasicById(applicant.getId());
@@ -70,30 +71,30 @@ class ApplicantFacadeTest extends ServiceTest {
         ApplicantResponse applicantResponse = basicResponse.applicantResponse();
 
         // then
-        assertAll(() -> {
-            assertThat(processResponse.id()).isEqualTo(process.getId());
-            assertThat(processResponse.name()).isEqualTo(process.getName());
-            assertThat(applicantResponse.id()).isEqualTo(applicant.getId());
-            assertThat(applicantResponse.name()).isEqualTo(applicant.getName());
-            assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail());
-            assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone());
-        });
+        assertAll(
+                () -> assertThat(processResponse.id()).isEqualTo(process.getId()),
+                () -> assertThat(processResponse.name()).isEqualTo(process.getName()),
+                () -> assertThat(applicantResponse.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantResponse.name()).isEqualTo(applicant.getName()),
+                () -> assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail()),
+                () -> assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone())
+        );
     }
 
     @DisplayName("id로 지원자의 상세 정보를 찾는다.")
     @Test
     void readDetailById() {
         // given
-        Dashboard dashboard = DashboardFixture.createBackendDashboard();
+        Dashboard dashboard = DashboardFixture.backend();
         dashboardRepository.save(dashboard);
-        Process process = ProcessFixture.createFirstProcess(dashboard);
+        Process process = ProcessFixture.first(dashboard);
         processRepository.save(process);
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby(process);
+        Applicant applicant = ApplicantFixture.pendingDobby(process);
         applicantRepository.save(applicant);
 
-        Question question = questionRepository.save(QuestionFixture.createShortAnswerQuestion(null));
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(null));
         questionRepository.save(question);
-        Answer answer = AnswerFixture.shortAnswer(question, applicant);
+        Answer answer = AnswerFixture.simple(question, applicant);
         answerRepository.save(answer);
 
         // when
@@ -101,17 +102,17 @@ class ApplicantFacadeTest extends ServiceTest {
 
         //then
         List<AnswerResponse> answerResponses = applicantAnswerResponses.answerResponses();
-        assertAll(() -> {
-            assertThat(answerResponses.get(0).question()).isEqualTo(question.getContent());
-            assertThat(answerResponses.get(0).answer()).isEqualTo(answer.getContent());
-        });
+        assertAll(
+                () -> assertThat(answerResponses.get(0).question()).isEqualTo(question.getContent()),
+                () -> assertThat(answerResponses.get(0).answer()).isEqualTo(answer.getContent())
+        );
     }
 
     @DisplayName("지원자의 이름, 이메일, 전화번호를 변경한다.")
     @Test
     void updateApplicantInformation() {
         // given
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby();
+        Applicant applicant = ApplicantFixture.pendingDobby();
         String changedName = "수정된 이름";
         String changedEmail = "modified@email.com";
         String changedPhone = "01099999999";
@@ -124,25 +125,25 @@ class ApplicantFacadeTest extends ServiceTest {
 
         // then
         Applicant actualApplicant = applicantRepository.findById(applicantId).get();
-        assertAll(() -> {
-            assertThat(actualApplicant.getName()).isEqualTo(changedName);
-            assertThat(actualApplicant.getEmail()).isEqualTo(changedEmail);
-            assertThat(actualApplicant.getPhone()).isEqualTo(changedPhone);
-        });
+        assertAll(
+                () -> assertThat(actualApplicant.getName()).isEqualTo(changedName),
+                () -> assertThat(actualApplicant.getEmail()).isEqualTo(changedEmail),
+                () -> assertThat(actualApplicant.getPhone()).isEqualTo(changedPhone)
+        );
     }
 
     @DisplayName("복수의 지원서들을 요청된 프로세스로 일괄 업데이트한다.")
     @Test
     void updateApplicantProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        Process beforeProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Process afterProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process beforeProcess = processRepository.save(ProcessFixture.first(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.last(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(
                 List.of(
-                        ApplicantFixture.createPendingApplicantDobby(beforeProcess),
-                        ApplicantFixture.createPendingApplicantDobby(beforeProcess)
+                        ApplicantFixture.pendingDobby(beforeProcess),
+                        ApplicantFixture.pendingDobby(beforeProcess)
                 ));
         List<Long> applicantIds = applicants.stream()
                 .map(Applicant::getId)
@@ -157,23 +158,37 @@ class ApplicantFacadeTest extends ServiceTest {
                 "SELECT a FROM Applicant a JOIN FETCH a.process",
                 Applicant.class
         ).getResultList();
-        assertAll(() -> {
-            assertThat(actualApplicants).isNotEmpty();
-            assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess));
-        });
+        assertAll(
+                () -> assertThat(actualApplicants).isNotEmpty(),
+                () -> assertThat(actualApplicants).allMatch(applicant -> applicant.getProcess().equals(afterProcess))
+        );
     }
 
     @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")
     @Test
-    void updateApplicantToReject() {
+    void reject() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
 
         // when
-        applicantFacade.updateApplicantToReject(applicant.getId());
+        applicantFacade.reject(applicant.getId());
 
         // then
         Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
         assertThat(rejectedApplicant.getState()).isEqualTo(REJECTED);
+    }
+
+    @DisplayName("특정 지원자의 상태를 불합격에서 해제한다.")
+    @Test
+    void unreject() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.rejectedRush());
+
+        // when
+        applicantFacade.unreject(applicant.getId());
+
+        // then
+        Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
+        assertThat(rejectedApplicant.getState()).isEqualTo(PENDING);
     }
 }

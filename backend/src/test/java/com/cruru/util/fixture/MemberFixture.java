@@ -4,11 +4,6 @@ import com.cruru.member.domain.Member;
 
 public class MemberFixture {
 
-    public static Member createMember1() {
-        return new Member("mem@email.com", "newPassword214!", "01012341234");
-    }
-
-    public static Member createMember2() {
-        return new Member("mem2@email.com", "newPassword214!", "01012341234");
-    }
+    public static final Member DOBBY = new Member("dobby@email.com", "newPassword214!", "01011111111");
+    public static final Member RUSH = new Member("rush@email.com", "newPassword214!", "01022222222");
 }

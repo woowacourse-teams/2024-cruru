@@ -11,15 +11,26 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:database
+    url: jdbc:h2:mem:database;MODE=MySQL;
+  flyway:
+    enabled: false
   jpa:
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: create-drop
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
+
+security:
+  jwt:
+    token:
+      secret-key: test
+      expire-length: 3600000
+      algorithm: HS256
+
 dataloader:
   enable: true
 
@@ -35,6 +46,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
   jpa:
     show-sql: true
     properties:
@@ -43,7 +57,15 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: ${DDL_AUTO}
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
 dataloader:
   enable: true
 server:
@@ -78,13 +100,24 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: ${DDL_AUTO}
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
 dataloader:
   enable: false
 server:

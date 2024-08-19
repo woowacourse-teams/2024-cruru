@@ -5,19 +5,19 @@ import com.cruru.dashboard.domain.Dashboard;
 
 public class DashboardFixture {
 
-    public static Dashboard createBackendDashboard() {
+    public static Dashboard backend() {
         return new Dashboard(null);
     }
 
-    public static Dashboard createBackendDashboard(Club club) {
+    public static Dashboard backend(Club club) {
         return new Dashboard(club);
     }
 
-    public static Dashboard createFrontendDashboard() {
+    public static Dashboard frontend() {
         return new Dashboard(null);
     }
 
-    public static Dashboard createFrontendDashboard(Club club) {
+    public static Dashboard frontend(Club club) {
         return new Dashboard(club);
     }
 }

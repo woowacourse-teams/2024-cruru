@@ -1,25 +1,28 @@
 package com.cruru.applyform.domain.repository;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DisplayName("지원서 레포지토리 테스트")
-@DataJpaTest
-class ApplyFormRepositoryTest {
+class ApplyFormRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ApplyFormRepository applyFormRepository;
+
+    @Autowired
+    private DashboardRepository dashboardRepository;
 
     @BeforeEach
     void setUp() {
@@ -30,7 +33,8 @@ class ApplyFormRepositoryTest {
     @Test
     void save_ApplyFormIdUpdate() {
         // given
-        ApplyForm applyForm = ApplyFormFixture.createBackendApplyForm(null);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = ApplyFormFixture.backend(dashboard);
         ApplyForm initialApplyForm = applyFormRepository.save(applyForm);
 
         // when
@@ -52,23 +56,24 @@ class ApplyFormRepositoryTest {
 
         // then
         ApplyForm actualApplyForm = applyFormRepository.findById(expectedApplyForm.getId()).get();
-        assertAll(() -> {
-            assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard());
-
-            assertThat(actualApplyForm.getTitle()).isEqualTo(title);
-            assertThat(actualApplyForm.getDescription()).isEqualTo(description);
-            assertThat(actualApplyForm.getUrl()).isEqualTo(url);
-            assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate);
-            assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate);
-        });
+        assertAll(
+                () -> assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard()),
+                () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
+                () -> assertThat(actualApplyForm.getDescription()).isEqualTo(description),
+                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(url),
+                () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
+                () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
+        );
     }
 
     @DisplayName("ID가 없는 지원서 양식을 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void save_NotSavedId() {
         //given
-        ApplyForm applyForm1 = createBackendApplyForm(null);
-        ApplyForm applyForm2 = createFrontendApplyForm(null);
+        Dashboard dashboard1 = dashboardRepository.save(DashboardFixture.backend());
+        Dashboard dashboard2 = dashboardRepository.save(DashboardFixture.frontend());
+        ApplyForm applyForm1 = ApplyFormFixture.backend(dashboard1);
+        ApplyForm applyForm2 = ApplyFormFixture.frontend(dashboard2);
 
         //when
         ApplyForm savedApplyForm1 = applyFormRepository.save(applyForm1);

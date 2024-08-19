@@ -1,8 +1,5 @@
 package com.cruru.evaluation.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -18,6 +15,9 @@ import com.cruru.evaluation.exception.badrequest.EvaluationNoChangeException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,9 +46,9 @@ class EvaluationServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        process = processRepository.save(createFirstProcess());
+        process = processRepository.save(ProcessFixture.first());
 
-        applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 
     @DisplayName("새로운 평가를 생성한다.")
@@ -97,7 +97,7 @@ class EvaluationServiceTest extends ServiceTest {
     @Test
     void update() {
         // given
-        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
         int score = 1;
         String content = "수정된 평가입니다.";
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
@@ -108,11 +108,11 @@ class EvaluationServiceTest extends ServiceTest {
         // then
         Optional<Evaluation> updatedEvaluation = evaluationRepository.findById(evaluation.getId());
 
-        assertAll(() -> {
-            assertThat(updatedEvaluation).isPresent();
-            assertThat(updatedEvaluation.get().getScore()).isEqualTo(score);
-            assertThat(updatedEvaluation.get().getContent()).isEqualTo(content);
-        });
+        assertAll(
+                () -> assertThat(updatedEvaluation).isPresent(),
+                () -> assertThat(updatedEvaluation.get().getScore()).isEqualTo(score),
+                () -> assertThat(updatedEvaluation.get().getContent()).isEqualTo(content)
+        );
     }
 
     @DisplayName("평가 수정 시, 존재하지 않을 경우 예외가 발생한다.")
@@ -133,7 +133,7 @@ class EvaluationServiceTest extends ServiceTest {
     @Test
     void update_evaluationNotChanged() {
         // given
-        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
         long validId = evaluation.getId();
         int notChangedScore = 5;
         String notChangedContent = "서류가 인상 깊었습니다.";

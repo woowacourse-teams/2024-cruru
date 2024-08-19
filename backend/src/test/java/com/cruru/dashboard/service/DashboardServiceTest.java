@@ -1,6 +1,5 @@
 package com.cruru.dashboard.service;
 
-import static com.cruru.util.fixture.ClubFixture.createClub;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -12,6 +11,7 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import java.util.Comparator;
 import java.util.List;
@@ -38,7 +38,7 @@ class DashboardServiceTest extends ServiceTest {
     @Test
     void create_createDefaultProcess() {
         // given
-        Club club = createClub();
+        Club club = ClubFixture.create();
         clubRepository.save(club);
 
         // when
@@ -49,18 +49,18 @@ class DashboardServiceTest extends ServiceTest {
                 .stream()
                 .sorted(Comparator.comparingInt(Process::getSequence))
                 .toList();
-        assertAll(() -> {
-            assertThat(processes).hasSize(2);
-            assertThat(processes.get(0).getSequence()).isEqualTo(0);
-            assertThat(processes.get(1).getSequence()).isEqualTo(1);
-        });
+        assertAll(
+                () -> assertThat(processes).hasSize(2),
+                () -> assertThat(processes.get(0).getSequence()).isEqualTo(0),
+                () -> assertThat(processes.get(1).getSequence()).isEqualTo(1)
+        );
     }
 
     @DisplayName("대시보드를 ID를 통해 조회한다.")
     @Test
     void findById() {
         // given
-        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
+        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.backend());
 
         // when&then
         long id = backendDashboard.getId();
@@ -72,9 +72,9 @@ class DashboardServiceTest extends ServiceTest {
     @Test
     void findAllByClub() {
         // given
-        Club club = clubRepository.save(createClub());
-        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
-        Dashboard frontendDashboard = dashboardRepository.save(DashboardFixture.createFrontendDashboard(club));
+        Club club = clubRepository.save(ClubFixture.create());
+        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        Dashboard frontendDashboard = dashboardRepository.save(DashboardFixture.frontend(club));
 
         // when & then
         assertThat(dashboardService.findAllByClub(club)).containsExactlyInAnyOrder(

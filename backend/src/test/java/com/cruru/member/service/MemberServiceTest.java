@@ -43,28 +43,28 @@ class MemberServiceTest extends ServiceTest {
 
         // then
         Optional<Member> actualMember = memberRepository.findById(member.getId());
-        assertAll(() -> {
-            assertThat(actualMember).isPresent();
-            Member presentMember = actualMember.get();
-            assertThat(presentMember.getEmail()).isEqualTo(email);
-            assertThat(presentMember.getPhone()).isEqualTo(phone);
-        });
+        assertAll(
+                () -> assertThat(actualMember).isPresent(),
+
+                () -> assertThat(actualMember.get().getEmail()).isEqualTo(email),
+                () -> assertThat(actualMember.get().getPhone()).isEqualTo(phone)
+        );
     }
 
     @DisplayName("회원을 ID로 조회한다.")
     @Test
     void findById() {
         // given
-        Member savedMember = memberRepository.save(MemberFixture.createMember1());
-
+        Member savedMember = memberRepository.save(MemberFixture.DOBBY);
+        Member actualMember = memberService.findById(savedMember.getId());
         // when&then
-        assertAll(() -> {
-            assertDoesNotThrow(() -> memberService.findById(savedMember.getId()));
-            Member actualMember = memberService.findById(savedMember.getId());
-            assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail());
-            assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone());
-            assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword());
-        });
+        assertAll(
+                () -> assertDoesNotThrow(() -> memberService.findById(savedMember.getId())),
+
+                () -> assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail()),
+                () -> assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone()),
+                () -> assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword())
+        );
     }
 
     @DisplayName("허용되지 않는 비밀번호 길이로 Member 생성 시 예외를 발생시킨다.")

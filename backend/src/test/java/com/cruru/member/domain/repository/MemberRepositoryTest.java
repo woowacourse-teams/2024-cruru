@@ -4,17 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.member.domain.Member;
+import com.cruru.member.domain.MemberRole;
+import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.MemberFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @DisplayName("회원 레포지토리 테스트")
-@DataJpaTest
-class MemberRepositoryTest {
+class MemberRepositoryTest extends RepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -28,11 +28,11 @@ class MemberRepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Member member = MemberFixture.createMember1();
+        Member member = MemberFixture.DOBBY;
         Member saved = memberRepository.save(member);
 
         //when
-        Member updateMember = new Member(saved.getId(), "email", "newPassword214!", "01012341234");
+        Member updateMember = new Member(saved.getId(), "email", "newPassword214!", "01012341234", MemberRole.ADMIN);
         memberRepository.save(updateMember);
 
         //then
@@ -45,8 +45,8 @@ class MemberRepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Member member1 = MemberFixture.createMember1();
-        Member member2 = MemberFixture.createMember2();
+        Member member1 = MemberFixture.DOBBY;
+        Member member2 = MemberFixture.RUSH;
 
         //when
         Member savedMember1 = memberRepository.save(member1);
@@ -60,8 +60,8 @@ class MemberRepositoryTest {
     @Test
     void save_duplicateEmail() {
         //given
-        Member member1 = MemberFixture.createMember1();
-        Member member2 = MemberFixture.createMember1();
+        Member member1 = MemberFixture.DOBBY;
+        Member member2 = MemberFixture.DOBBY;
 
         //when
         memberRepository.save(member1);

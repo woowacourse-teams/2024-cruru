@@ -1,8 +1,5 @@
 package com.cruru.process.service.facade;
 
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.ProcessFixture.createInterviewProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -55,9 +52,9 @@ class ProcessFacadeTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        processRepository.save(ProcessFixture.createFinalProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.last(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "기존 2개의 프로세스 사이에 생성.", 1);
 
         // when
@@ -70,21 +67,21 @@ class ProcessFacadeTest extends ServiceTest {
                 .toList();
 
         String newProcessName = allByDashboardId.get(1).getName();
-        assertAll(() -> {
-            assertThat(allByDashboardId).hasSize(3);
-            assertThat(newProcessName).isEqualTo("새로운 프로세스");
-        });
+        assertAll(
+                () -> assertThat(allByDashboardId).hasSize(3),
+                () -> assertThat(newProcessName).isEqualTo("새로운 프로세스")
+        );
     }
 
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
     void readAllByDashboardId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Process process = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
-        evaluationRepository.save(EvaluationFixture.createEvaluationExcellent(process, applicant));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(dashboard.getId());
@@ -94,20 +91,20 @@ class ProcessFacadeTest extends ServiceTest {
         long processId = firstProcessResponse.id();
         long applicantCardId = firstProcessResponse.applicantCardResponses().get(0).id();
         int applicantEvaluationCount = firstProcessResponse.applicantCardResponses().get(0).evaluationCount();
-        assertAll(() -> {
-            assertThat(processResponses.processResponses()).hasSize(1);
-            assertThat(processId).isEqualTo(process.getId());
-            assertThat(applicantCardId).isEqualTo(applicant.getId());
-            assertThat(applicantEvaluationCount).isEqualTo(1);
-        });
+        assertAll(
+                () -> assertThat(processResponses.processResponses()).hasSize(1),
+                () -> assertThat(processId).isEqualTo(process.getId()),
+                () -> assertThat(applicantCardId).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantEvaluationCount).isEqualTo(1)
+        );
     }
 
     @DisplayName("프로세스 정보를 변경한다.")
     @Test
     void update() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createFirstProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.first(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when
@@ -115,18 +112,18 @@ class ProcessFacadeTest extends ServiceTest {
         ProcessResponse actualProcessResponse = processFacade.update(processUpdateRequest, processId);
 
         // then
-        assertAll(() -> {
-            assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name());
-            assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description());
-        });
+        assertAll(
+                () -> assertThat(actualProcessResponse.name()).isEqualTo(processUpdateRequest.name()),
+                () -> assertThat(actualProcessResponse.description()).isEqualTo(processUpdateRequest.description())
+        );
     }
 
     @DisplayName("프로세스를 삭제한다.")
     @Test
     void delete() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        Process process = processRepository.save(createInterviewProcess(dashboard));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.interview(dashboard));
 
         // when
         processFacade.delete(process.getId());

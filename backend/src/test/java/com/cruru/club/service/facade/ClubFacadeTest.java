@@ -1,6 +1,5 @@
 package com.cruru.club.service.facade;
 
-import static com.cruru.util.fixture.MemberFixture.createMember1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -9,6 +8,7 @@ import com.cruru.club.domain.Club;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class ClubFacadeTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Member member = memberRepository.save(createMember1());
+        Member member = memberRepository.save(MemberFixture.DOBBY);
         ClubCreateRequest request = new ClubCreateRequest("연합동아리");
 
         // when
@@ -41,9 +41,9 @@ class ClubFacadeTest extends ServiceTest {
                         "SELECT c FROM Club c JOIN FETCH c.member WHERE c.id = :id", Club.class)
                 .setParameter("id", clubId)
                 .getSingleResult();
-        assertAll(() -> {
-            assertThat(actual.getMember()).isEqualTo(member);
-            assertThat(actual.getName()).isEqualTo(request.name());
-        });
+        assertAll(
+                () -> assertThat(actual.getMember()).isEqualTo(member),
+                () -> assertThat(actual.getName()).isEqualTo(request.name())
+        );
     }
 }
