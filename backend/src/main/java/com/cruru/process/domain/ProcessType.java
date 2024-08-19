@@ -4,14 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum ProcessType {
-    APPLY(false),
-    EVALUATE(true),
-    APPROVE(false),
+    APPLY(true),
+    EVALUATE(false),
+    APPROVE(true),
     ;
 
-    private final boolean modifiable;
+    private final boolean fixed;
 
-    ProcessType(boolean modifiable) {
-        this.modifiable = modifiable;
+    ProcessType(boolean fixed) {
+        this.fixed = fixed;
     }
 }

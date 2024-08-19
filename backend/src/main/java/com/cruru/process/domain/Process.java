@@ -91,8 +91,8 @@ public class Process {
         return type == ProcessType.APPROVE;
     }
 
-    public boolean isUnModifiable() {
-        return !type.isModifiable();
+    public boolean isFixed() {
+        return type.isFixed();
     }
 
     public void updateName(String name) {
@@ -107,7 +107,7 @@ public class Process {
     public void increaseSequenceNumber() {
         this.sequence++;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

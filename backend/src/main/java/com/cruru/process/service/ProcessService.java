@@ -11,9 +11,9 @@ import com.cruru.process.domain.ProcessType;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
+import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
 import com.cruru.process.exception.badrequest.ProcessNoChangeException;
-import com.cruru.process.exception.badrequest.ProcessUnmodifiableException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -98,14 +98,14 @@ public class ProcessService {
     @Transactional
     public void delete(long processId) {
         Process process = findById(processId);
-        validateFirstOrLastProcess(process);
+        validateFixedProcess(process);
         validateApplicantRemains(process);
         processRepository.deleteById(processId);
     }
 
-    private void validateFirstOrLastProcess(Process process) {
-        if (process.isUnModifiable()) {
-            throw new ProcessUnmodifiableException();
+    private void validateFixedProcess(Process process) {
+        if (process.isFixed()) {
+            throw new ProcessDeleteFixedException();
         }
     }
 
