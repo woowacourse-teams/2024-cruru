@@ -18,7 +18,7 @@ CREATE TABLE applicant
     email        VARCHAR(255),
     name         VARCHAR(255),
     phone        VARCHAR(255),
-    state        VARCHAR(255),
+    is_rejected  BOOLEAN,
     PRIMARY KEY (applicant_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
