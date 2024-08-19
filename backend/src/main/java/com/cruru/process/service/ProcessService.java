@@ -13,7 +13,6 @@ import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
-import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,7 +77,7 @@ public class ProcessService {
         Process process = findById(processId);
 
         if (nothingToChange(request, process)) {
-            throw new ProcessNoChangeException();
+            return process;
         }
         process.updateName(request.name());
         process.updateDescription(request.description());

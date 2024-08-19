@@ -8,7 +8,6 @@ import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.applicant.exception.badrequest.ApplicantNoChangeException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.process.domain.Process;
@@ -37,7 +36,7 @@ public class ApplicantService {
     public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
         Applicant applicant = findById(applicantId);
         if (notChangedInformation(request, applicant)) {
-            throw new ApplicantNoChangeException();
+            return;
         }
         applicant.updateInfo(request.name(), request.email(), request.phone());
     }

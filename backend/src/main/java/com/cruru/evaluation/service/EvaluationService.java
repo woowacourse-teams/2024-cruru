@@ -6,7 +6,6 @@ import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.evaluation.exception.EvaluationNotFoundException;
-import com.cruru.evaluation.exception.badrequest.EvaluationNoChangeException;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class EvaluationService {
                 .orElseThrow(EvaluationNotFoundException::new);
 
         if (evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score())) {
-            throw new EvaluationNoChangeException();
+            return;
         }
 
         evaluationRepository.save(
