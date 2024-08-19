@@ -5,7 +5,7 @@ services:
     container_name: app_container
     platform: linux/arm64
     restart: always
-    image: ${DOCKER_REPO_NAME}/cruru:prod-latest
+    image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_TAG}
     ports:
       - ${SERVER_BINDING_PORT}
       - ${MONITORING_BINDING_PORT}
