@@ -29,7 +29,7 @@ public class AuthService {
 
     public boolean isTokenValid(String token) {
         try {
-            return tokenProvider.isExpired(token);
+            return tokenProvider.isAlive(token);
         } catch (IllegalTokenException e) {
             return false;
         }
