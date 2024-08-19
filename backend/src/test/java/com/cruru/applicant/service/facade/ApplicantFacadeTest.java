@@ -162,7 +162,7 @@ class ApplicantFacadeTest extends ServiceTest {
         );
     }
 
-    @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")
+    @DisplayName("특정 지원자를 불합격시킨다.")
     @Test
     void reject() {
         // given
@@ -176,7 +176,7 @@ class ApplicantFacadeTest extends ServiceTest {
         assertThat(rejectedApplicant.isRejected()).isTrue();
     }
 
-    @DisplayName("특정 지원자의 상태를 불합격에서 해제한다.")
+    @DisplayName("특정 지원자의 불합격을 취소한다.")
     @Test
     void unreject() {
         // given

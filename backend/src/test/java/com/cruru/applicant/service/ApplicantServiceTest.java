@@ -191,7 +191,7 @@ class ApplicantServiceTest extends ServiceTest {
                 .isInstanceOf(ApplicantRejectException.class);
     }
 
-    @DisplayName("특정 지원자의 불합격을 해제한다.")
+    @DisplayName("특정 지원자의 불합격을 취소한다.")
     @Test
     void unreject() {
         // given
@@ -205,7 +205,7 @@ class ApplicantServiceTest extends ServiceTest {
         assertThat(unrejectedApplicant.isNotRejected()).isTrue();
     }
 
-    @DisplayName("불합격이 아닌 지원자의 불합격을 해제하면 예외가 발생한다.")
+    @DisplayName("불합격이 아닌 지원자의 불합격을 취소하면 예외가 발생한다.")
     @Test
     void unreject_notRejected() {
         // given
