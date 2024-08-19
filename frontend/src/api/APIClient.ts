@@ -24,10 +24,10 @@ interface APIClientType {
 }
 
 export default class APIClient implements APIClientType {
-  private baseURL: URL;
+  private baseURL: string;
 
   constructor(baseURL: string) {
-    this.baseURL = new URL(baseURL);
+    this.baseURL = baseURL;
   }
 
   async get<T>(params: BaseAPIClientParams): Promise<T> {
@@ -91,7 +91,7 @@ export default class APIClient implements APIClientType {
     body?: BodyHashMap;
     hasCookies?: boolean;
   }): Promise<T> {
-    const url = new URL(path, this.baseURL);
+    const url = this.baseURL + path;
     const response = await fetch(url.toString(), this.getRequestInit({ method, body, hasCookies }));
 
     if (!response.ok) {
