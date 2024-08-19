@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.applicant.exception.badrequest.ApplicantIllegalPhoneNumberException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameBlankException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameCharacterException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameLengthException;
@@ -29,9 +30,16 @@ class ApplicantTest {
     @ValueSource(strings = {"", " "})
     @ParameterizedTest
     void ApplicantNameBlank(String name) {
-        // given&when&then
-        assertThatThrownBy(() -> new Applicant(name, "mail@mail.com", "01012341234", null))
-                .isInstanceOf(ApplicantNameBlankException.class);
+        // given
+        Applicant applicant = ApplicantFixture.pendingDobby();
+
+        // when&then
+        assertAll(
+                () -> assertThatThrownBy(() -> new Applicant(name, "mail@mail.com", "01012341234", null))
+                        .isInstanceOf(ApplicantNameBlankException.class),
+                () -> assertThatThrownBy(() -> applicant.updateInfo(name, "new@mail.com", "01012341234"))
+                        .isInstanceOf(ApplicantNameBlankException.class)
+        );
     }
 
     @DisplayName("지원자 이름이 32자 초과시 예외가 발생한다.")
@@ -39,19 +47,47 @@ class ApplicantTest {
     void invalidApplicantNameLength() {
         // given
         String name = "ThisStringLengthIsThirtyThreeAbcd";
+        Applicant applicant = ApplicantFixture.pendingDobby();
 
         // when&then
-        assertThatThrownBy(() -> new Applicant(name, "mail@mail.com", "01012341234", null))
-                .isInstanceOf(ApplicantNameLengthException.class);
+        assertAll(
+                () -> assertThatThrownBy(() -> new Applicant(name, "mail@mail.com", "01012341234", null))
+                        .isInstanceOf(ApplicantNameLengthException.class),
+                () -> assertThatThrownBy(() -> applicant.updateInfo(name, "new@mail.com", "01012341234"))
+                        .isInstanceOf(ApplicantNameLengthException.class)
+        );
     }
 
     @DisplayName("지원자 이름에 허용되지 않은 글자가 들어가면 예외가 발생한다.")
     @ValueSource(strings = {"invalidCharacter!", "invalidCharacter~"})
     @ParameterizedTest
     void invalidApplicantNameCharacter(String name) {
-        // given&when&then
-        assertThatThrownBy(() -> new Applicant(name, "mail@mail.com", "01012341234", null))
-                .isInstanceOf(ApplicantNameCharacterException.class);
+        // given
+        Applicant applicant = ApplicantFixture.pendingDobby();
+
+        // when&then
+        assertAll(
+                () -> assertThatThrownBy(() -> new Applicant(name, "mail@mail.com", "01012341234", null))
+                        .isInstanceOf(ApplicantNameCharacterException.class),
+                () -> assertThatThrownBy(() -> applicant.updateInfo(name, "new@mail.com", "01012341234"))
+                        .isInstanceOf(ApplicantNameCharacterException.class)
+        );
+    }
+
+    @DisplayName("지원자 전화번호의 형식이 일치하지 않으면 예외가 발생한다.")
+    @ValueSource(strings = {"010111122222", "40391385", "phone?"})
+    @ParameterizedTest
+    void invalidApplicantPhoneNumber(String phone) {
+        // given
+        Applicant applicant = ApplicantFixture.pendingDobby();
+
+        // when&then
+        assertAll(
+                () -> assertThatThrownBy(() -> new Applicant("dobby", "mail@mail.com", phone, null))
+                        .isInstanceOf(ApplicantIllegalPhoneNumberException.class),
+                () -> assertThatThrownBy(() -> applicant.updateInfo("dobby", "new@mail.com", phone))
+                        .isInstanceOf(ApplicantIllegalPhoneNumberException.class)
+        );
     }
 
     @DisplayName("지원자 이름, 이메일, 전화번호 변경에 성공한다.")

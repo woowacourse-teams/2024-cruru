@@ -102,7 +102,7 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant = ApplicantFixture.pendingDobby();
         String changedName = "수정된 이름";
         String changedEmail = "modified@email.com";
-        String changedPhone = "010xxxxxxxx";
+        String changedPhone = "01012341234";
         ApplicantUpdateRequest updateRequest = new ApplicantUpdateRequest(changedName, changedEmail, changedPhone);
         Applicant savedApplicant = applicantRepository.save(applicant);
 

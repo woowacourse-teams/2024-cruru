@@ -1,6 +1,7 @@
 package com.cruru.applicant.domain;
 
 import com.cruru.BaseEntity;
+import com.cruru.applicant.exception.badrequest.ApplicantIllegalPhoneNumberException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameBlankException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameCharacterException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameLengthException;
@@ -31,6 +32,8 @@ public class Applicant extends BaseEntity {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z\\s-]+$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile(
+            "^(010)\\d{3,4}\\d{4}$|^(02|0[3-6][1-5])\\d{3,4}\\d{4}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +55,7 @@ public class Applicant extends BaseEntity {
 
     public Applicant(String name, String email, String phone, Process process) {
         validateName(name);
+        validatePhone(phone);
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -74,6 +78,12 @@ public class Applicant extends BaseEntity {
         }
     }
 
+    private void validatePhone(String phoneNumber) {
+        if (!PHONE_PATTERN.matcher(phoneNumber).matches()) {
+            throw new ApplicantIllegalPhoneNumberException();
+        }
+    }
+
     private boolean isLengthOutOfRange(String name) {
         return name.length() > MAX_NAME_LENGTH;
     }
@@ -84,6 +94,7 @@ public class Applicant extends BaseEntity {
 
     public void updateInfo(String name, String email, String phone) {
         validateName(name);
+        validatePhone(phone);
         this.name = name;
         this.email = email;
         this.phone = phone;
