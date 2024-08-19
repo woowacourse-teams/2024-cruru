@@ -28,7 +28,7 @@ class JwtTokenProviderTest {
     private static final String ROLE_CLAIM = "role";
 
     @Autowired
-    private TokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     private Map<String, Object> claims;
 
@@ -87,7 +87,7 @@ class JwtTokenProviderTest {
         String expiredToken = generateExpiredToken();
 
         // when&then
-        assertThat(jwtTokenProvider.isAlive(expiredToken)).isTrue();
+        assertThat(jwtTokenProvider.isAlive(expiredToken)).isFalse();
     }
 
     private String generateExpiredToken() {
@@ -109,6 +109,6 @@ class JwtTokenProviderTest {
         String notExpiredToken = jwtTokenProvider.createToken(claims);
 
         // when&then
-        assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isFalse();
+        assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isTrue();
     }
 }
