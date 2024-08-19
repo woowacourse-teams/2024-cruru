@@ -1,4 +1,4 @@
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 class ApiError extends Error {
   public statusCode: number | null;
