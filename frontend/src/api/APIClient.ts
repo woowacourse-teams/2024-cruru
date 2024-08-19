@@ -96,14 +96,11 @@ export default class APIClient implements APIClientType {
 
     if (!response.ok) {
       const { status, statusText } = response;
-      let errorMessage = `API통신에 실패했습니다: ${statusText}`;
-      // response가 JSON형식으로 응답을 주지 않을 경우를 대비하여 try - catch를 사용합니다.
-      try {
-        const errorData = await response.json();
-        errorMessage += ` - ${errorData.message}`;
-      } catch {
-        // JSON 파싱이 실패하면 기본 메시지만 사용합니다.
-      }
+      const defaultErrorMessage = `API통신에 실패했습니다: ${statusText}`;
+  
+      const errorData = await response.json().catch(() => null);
+      const errorMessage = `${defaultErrorMessage}${errorData?.message ? ` - ${errorData.message}` : ''}`;
+      
       throw new ApiError({ message: errorMessage, statusCode: status, method });
     }
 
