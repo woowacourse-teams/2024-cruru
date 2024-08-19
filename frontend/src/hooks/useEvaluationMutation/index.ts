@@ -1,4 +1,4 @@
-import evaluationApis from '@api/evaluation';
+import evaluationApis from '@api/domain/evaluation';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
