@@ -92,7 +92,7 @@ export default class APIClient implements APIClientType {
     hasCookies?: boolean;
   }): Promise<T> {
     const url = this.baseURL + path;
-    const response = await fetch(url.toString(), this.getRequestInit({ method, body, hasCookies }));
+    const response = await fetch(url, this.getRequestInit({ method, body, hasCookies }));
 
     if (!response.ok) {
       const { status, statusText } = response;
