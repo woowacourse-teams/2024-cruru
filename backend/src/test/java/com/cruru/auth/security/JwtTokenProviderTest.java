@@ -30,7 +30,7 @@ class JwtTokenProviderTest {
     private static final String ROLE_CLAIM = "role";
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private TokenProvider jwtTokenProvider;
 
     private Map<String, Object> claims;
 
