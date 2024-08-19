@@ -17,6 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final AuthService authService;
+    private final CookieManager cookieManager;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -33,7 +34,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     ) throws UnauthorizedException {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
-        String token = CookieManager.extractToken(request);
+        String token = cookieManager.extractToken(request);
         String emailPayload = authService.extractEmail(token);
         MemberRole memberRolePayload = MemberRole.valueOf(authService.extractMemberRole(token));
 

@@ -1,6 +1,7 @@
 package com.cruru.auth.service;
 
 import com.cruru.auth.exception.IllegalTokenException;
+import com.cruru.auth.security.PasswordValidator;
 import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class AuthService {
     private static final String ROLE_CLAIM = "role";
 
     private final TokenProvider tokenProvider;
+    private final PasswordValidator passwordValidator;
 
     public String createToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
@@ -29,7 +31,7 @@ public class AuthService {
 
     public boolean isTokenValid(String token) {
         try {
-            return tokenProvider.isExpired(token);
+            return tokenProvider.isAlive(token);
         } catch (IllegalTokenException e) {
             return false;
         }
@@ -49,5 +51,9 @@ public class AuthService {
 
     public String extractMemberRole(String token) {
         return extractClaim(token, ROLE_CLAIM);
+    }
+
+    public boolean isNotVerifiedPassword(String rawPassword, String encodedPassword) {
+        return !passwordValidator.matches(rawPassword, encodedPassword);
     }
 }

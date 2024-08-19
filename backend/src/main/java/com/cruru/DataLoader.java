@@ -66,7 +66,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void runDataLoader() {
-        Member member = new Member("member@mail.com", "qwer1234", "01012345678");
+        Member member = new Member("member@mail.com", "$2a$10$rG0JsflKdGcORjGFTURYb.npEgtvClK4.3P.EMr/o3SdekrVFxOvG",
+                "01012345678"); // password 원문: qwer1234
         memberRepository.save(member);
         Club club = new Club("우아한테크코스", member);
         clubRepository.save(club);

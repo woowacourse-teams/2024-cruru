@@ -100,4 +100,21 @@ class MemberServiceTest extends ServiceTest {
         assertThatThrownBy(() -> memberService.create(memberCreateRequest))
                 .isInstanceOf(MemberIllegalPasswordException.class);
     }
+
+    @DisplayName("회원을 email로 조회한다.")
+    @Test
+    void findByEmail() {
+        // given
+        Member savedMember = memberRepository.save(MemberFixture.DOBBY);
+        Member actualMember = memberService.findByEmail(savedMember.getEmail());
+        // when&then
+        assertAll(
+                () -> assertDoesNotThrow(() -> memberService.findByEmail(savedMember.getEmail())),
+
+                () -> assertThat(actualMember.getId()).isEqualTo(savedMember.getId()),
+                () -> assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail()),
+                () -> assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone()),
+                () -> assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword())
+        );
+    }
 }
