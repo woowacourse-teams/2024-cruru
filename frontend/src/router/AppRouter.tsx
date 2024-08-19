@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import ErrorPage from '@pages/ErrorPage';
 import Dashboard from '@pages/Dashboard';
 import RecruitmentPost from '@pages/RecruitmentPost';
 import ConfirmApply from '@pages/ConfirmApply';
@@ -14,6 +15,7 @@ const router = createBrowserRouter(
     {
       path: '/',
       element: <App />,
+      errorElement: <ErrorPage />,
       children: [
         {
           path: 'post/:postId',
