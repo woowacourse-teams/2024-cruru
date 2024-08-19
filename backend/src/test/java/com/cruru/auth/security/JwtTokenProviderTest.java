@@ -82,12 +82,12 @@ class JwtTokenProviderTest {
 
     @DisplayName("만료된 토큰을 검증한다.")
     @Test
-    void isExpired_valid() {
+    void isActive() {
         // given
         String expiredToken = generateExpiredToken();
 
         // when&then
-        assertThat(jwtTokenProvider.isValid(expiredToken)).isTrue();
+        assertThat(jwtTokenProvider.isActive(expiredToken)).isTrue();
     }
 
     private String generateExpiredToken() {
@@ -104,11 +104,11 @@ class JwtTokenProviderTest {
 
     @DisplayName("만료되지 않은 토큰을 검증한다.")
     @Test
-    void isExpired_notValid() {
+    void iisActive_notValid() {
         // given
         String notExpiredToken = jwtTokenProvider.createToken(claims);
 
         // when&then
-        assertThat(jwtTokenProvider.isValid(notExpiredToken)).isFalse();
+        assertThat(jwtTokenProvider.isActive(notExpiredToken)).isFalse();
     }
 }
