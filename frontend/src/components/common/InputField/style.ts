@@ -65,9 +65,23 @@ const Input = styled.input<{ isError: boolean }>`
   `}
 `;
 
+const Footer = styled.div<{ isError: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: ${({ isError }) => (isError ? 'space-between' : 'flex-end')};
+  gap: 1rem;
+`;
+
 const ErrorText = styled.p`
   color: ${({ theme }) => theme.colors.feedback.error};
-  ${({ theme }) => theme.typography.common.default};
+  ${({ theme }) => theme.typography.common.small};
+`;
+
+const LengthText = styled.p`
+  min-width: fit-content;
+  ${({ theme }) => theme.typography.common.small};
+  color: ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 
 const S = {
@@ -76,7 +90,9 @@ const S = {
   Asterisk,
   Wrapper,
   Input,
+  Footer,
   ErrorText,
+  LengthText,
 };
 
 export default S;
