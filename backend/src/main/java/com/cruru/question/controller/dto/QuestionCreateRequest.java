@@ -14,8 +14,6 @@ public record QuestionCreateRequest(
         @NotBlank(message = "질문 내용은 필수 값입니다.")
         String question,
 
-        String description,
-
         @Valid
         List<ChoiceCreateRequest> choices,
 
