@@ -46,7 +46,7 @@ class DashboardControllerTest extends ControllerTest {
         // given
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
-                new QuestionCreateRequest("DROPDOWN", "객관식질문1", "하나를 선택한다.", choiceCreateRequests, 1, false));
+                new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
         DashboardCreateRequest request = new DashboardCreateRequest(
                 "크루루대시보드",
                 "# 공고 내용",

@@ -56,7 +56,6 @@ class QuestionServiceTest extends ServiceTest {
         QuestionCreateRequest request = new QuestionCreateRequest(
                 question1.getQuestionType().toString(),
                 question1.getContent(),
-                question1.getDescription(),
                 List.of(),
                 0,
                 question1.getRequired()
@@ -92,8 +91,7 @@ class QuestionServiceTest extends ServiceTest {
                 () -> assertThat(actualResponse.id()).isEqualTo(expectedQuestion.getId()),
                 () -> assertThat(actualResponse.orderIndex()).isEqualTo(expectedQuestion.getSequence()),
                 () -> assertThat(actualResponse.type()).isEqualTo(expectedQuestion.getQuestionType().toString()),
-                () -> assertThat(actualResponse.content()).isEqualTo(expectedQuestion.getContent()),
-                () -> assertThat(actualResponse.description()).isEqualTo(expectedQuestion.getDescription())
+                () -> assertThat(actualResponse.content()).isEqualTo(expectedQuestion.getContent())
         );
     }
 

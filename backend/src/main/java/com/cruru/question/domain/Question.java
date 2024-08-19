@@ -34,8 +34,6 @@ public class Question {
 
     private String content;
 
-    private String description;
-
     private Integer sequence;
 
     private Boolean required;
@@ -47,14 +45,12 @@ public class Question {
     public Question(
             QuestionType questionType,
             String content,
-            String description,
             Integer sequence,
             Boolean required,
             ApplyForm applyForm
     ) {
         this.questionType = questionType;
         this.content = content;
-        this.description = description;
         this.sequence = sequence;
         this.required = required;
         this.applyForm = applyForm;
@@ -87,7 +83,6 @@ public class Question {
                 "id=" + id +
                 ", questionType=" + questionType +
                 ", content='" + content + '\'' +
-                ", description='" + description + '\'' +
                 ", sequence=" + sequence +
                 ", applyForm=" + applyForm +
                 '}';
