@@ -13,6 +13,7 @@ import S from './style';
 
 interface ApplicantCardProps {
   name: string;
+  isRejected: boolean;
   createdAt: string;
   evaluationCount: number;
   popOverMenuItems: PopOverMenuItem[];
@@ -21,6 +22,7 @@ interface ApplicantCardProps {
 
 export default function ApplicantCard({
   name,
+  isRejected,
   createdAt,
   evaluationCount,
   popOverMenuItems,
@@ -100,6 +102,7 @@ export default function ApplicantCard({
             type="button"
             outline={false}
             onClick={handleClickPopOverButton}
+            disabled={isRejected}
           >
             <img
               alt="심사단계 이동 버튼 아이콘"
