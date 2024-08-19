@@ -10,11 +10,10 @@ interface EvaluationCardProps {
 
 export default function EvaluationCard({ evaluationResult }: EvaluationCardProps) {
   /**
-   * 평가 조회 API에 누락되어 있는 데이터들입니다.
-   * 추후 데이터 항목 추가시 수정 예정입니다. (24/7/25)
+   * 평가자 이름 삽입 기능 추가시 수정 예정입니다. (24/8/16)
    */
   const evaluatorName = evaluationResult.evaluatorName || '평가자 이름';
-  const createdAt = evaluationResult.createdAt ? formatDate(evaluationResult.createdAt) : '24. 07. 25';
+  const createdDate = evaluationResult.createdDate ? formatDate(evaluationResult.createdDate) : '날짜 정보 없음';
 
   return (
     <S.CardContainer>
@@ -22,7 +21,7 @@ export default function EvaluationCard({ evaluationResult }: EvaluationCardProps
         <S.EvaluatorImagePlaceholder />
         <S.EvaluatorDetail>
           <S.EvaluatorName>{evaluatorName}</S.EvaluatorName>
-          <S.EvaluatedDate>{createdAt}</S.EvaluatedDate>
+          <S.EvaluatedDate>{createdDate}</S.EvaluatedDate>
         </S.EvaluatorDetail>
       </S.EvaluatorDetailContainer>
       <S.ResultFlag $score={evaluationResult.score}>{EVALUATION_SCORE[evaluationResult.score]}</S.ResultFlag>

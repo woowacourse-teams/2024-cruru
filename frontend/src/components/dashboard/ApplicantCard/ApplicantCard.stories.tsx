@@ -33,6 +33,7 @@ export const ApplicantCardDefault: Story = {
   args: {
     name: '홍길동',
     createdAt: '2023-07-15T09:00:00Z',
+    evaluationCount: 2,
     popOverMenuItems: [
       {
         id: 1,

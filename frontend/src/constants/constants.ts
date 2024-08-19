@@ -40,6 +40,11 @@ export const QUESTION_TYPE_NAME = {
   MULTIPLE_CHOICE: '객관식(복수 선택)',
 } as const;
 
+export const QUESTION_INPUT_LENGTH = {
+  SHORT_ANSWER: 50,
+  LONG_ANSWER: 1000,
+} as const;
+
 export const DEFAULT_QUESTIONS: Question[] = [
   { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true, id: 0 },
   { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true, id: 1 },

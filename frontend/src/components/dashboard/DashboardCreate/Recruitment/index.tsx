@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill-new';
+
+import { RecruitmentInfoState } from '@customTypes/dashboard';
+import formatDate from '@utils/formatDate';
+import useForm from '@hooks/utils/useForm';
+
 import Button from '@components/common/Button';
 import ChevronButton from '@components/common/ChevronButton';
 import DateInput from '@components/common/DateInput';
 import InputField from '@components/common/InputField';
 import TextEditor from '@components/common/TextEditor';
-import { RecruitmentInfoState } from '@customTypes/dashboard';
-import formatDate from '@utils/formatDate';
-import ReactQuill from 'react-quill-new';
+
+import { validateTitle } from '@domain/validations/recruitment';
 import S from './style';
 
 interface RecruitmentProps {
@@ -24,11 +29,21 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
   const startDateText = startDate ? formatDate(startDate) : '';
   const endDateText = endDate ? formatDate(endDate) : '';
 
+  const { register, errors } = useForm<RecruitmentInfoState>({
+    initialValues: { title: '', startDate: '', endDate: '', postingContent: '' },
+  });
+
   useEffect(() => {
     setContentText(quillRef.current?.unprivilegedEditor?.getText());
   }, [quillRef]);
 
-  const isNextButtonValid = !!(endDate && contentText?.trim() && startDate && title.trim());
+  const isNextButtonValid = !!(
+    endDate &&
+    contentText?.trim() &&
+    startDate &&
+    title.trim() &&
+    !Object.values(errors).some((error) => error)
+  );
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => ({
@@ -70,6 +85,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
               width="22rem"
               label="시작일"
               min={today}
+              max={recruitmentInfoState.endDate.split('T')[0]}
               innerText={startDateText}
               onChange={handleStartDate}
             />
@@ -90,8 +106,13 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
       <S.RecruitTitleContainer>
         <S.Title>공고 제목</S.Title>
         <InputField
-          value={recruitmentInfoState.title}
-          onChange={handleTitle}
+          {...register('title', {
+            validate: { onBlur: validateTitle, onChange: validateTitle },
+            value: recruitmentInfoState.title,
+            placeholder: '공고 제목을 입력해 주세요',
+            maxLength: 32,
+            onChange: handleTitle,
+          })}
         />
       </S.RecruitTitleContainer>
 
@@ -110,6 +131,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
           onClick={nextStep}
           size="sm"
           color="white"
+          type="button"
         >
           <S.ButtonContent>
             다음

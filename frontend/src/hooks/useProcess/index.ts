@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { Process, ProcessResponse } from '@customTypes/process';
 
-import processApis from '@api/process';
+import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
 
 interface SimpleProcess {

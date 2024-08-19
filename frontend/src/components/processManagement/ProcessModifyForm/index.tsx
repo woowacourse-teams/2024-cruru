@@ -39,7 +39,9 @@ export default function ProcessModifyForm({
 
   const modifyProcess = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    modifyMutate({ ...formState, processId: process.processId });
+    if (process.description !== formState.description || process.name !== formState.name) {
+      modifyMutate({ ...formState, processId: process.processId });
+    }
   };
 
   const deleteProcess = () => {
@@ -66,10 +68,12 @@ export default function ProcessModifyForm({
         value={formState.description}
         onChange={handleChange}
         name="description"
+        required
       />
 
       <C.ButtonWrapper>
         <Button
+          disabled={process.description === formState.description}
           type="submit"
           color="white"
           size="fillContainer"

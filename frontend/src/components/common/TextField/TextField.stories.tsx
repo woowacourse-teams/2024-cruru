@@ -40,6 +40,15 @@ const meta = {
       type: { name: 'string' },
       control: { type: 'text' },
     },
+    isLengthVisible: {
+      description: 'Input 하단에 입력값의 길이 표시 여부를 설정합니다.',
+      control: { type: 'boolean' },
+    },
+    maxLength: {
+      description: 'Input에 입력 허용할 값의 최대 길이를 설정합니다.',
+      type: { name: 'number' },
+      control: { type: 'number' },
+    },
     disabled: {
       description: 'Input이 비활성화된 경우 true로 설정합니다.',
       control: { type: 'boolean' },
@@ -59,7 +68,7 @@ const meta = {
   decorators: [
     (Story) => {
       const [value, setValue] = useState('');
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
+      const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setValue(e.target.value);
 
       return (
         <div style={{ width: '30rem' }}>
@@ -82,5 +91,7 @@ export const Default: Story = {
     placeholder: '여기에 직접 입력해보세요.',
     required: true,
     disabled: false,
+    isLengthVisible: false,
+    maxLength: 1000,
   },
 };

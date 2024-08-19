@@ -1,7 +1,7 @@
 import Button from '@components/common/Button';
-import CopyToClipboard from '@components/common/CopyToClipboard';
-import { useNavigate, useParams } from 'react-router-dom';
 import ChevronButton from '@components/common/ChevronButton';
+import { useNavigate, useParams } from 'react-router-dom';
+import SharePost from '../SharePost';
 import S from './style';
 
 interface FinishProps {
@@ -21,7 +21,7 @@ export default function Finish({ postUrl, postId }: FinishProps) {
     <S.Container>
       <S.Icon>🎉</S.Icon>
       <S.Message>공고가 게시됐어요!</S.Message>
-      <CopyToClipboard url={`https://${postUrl}`} />
+      <SharePost url={`https://${postUrl}`} />
       <Button
         size="sm"
         color="white"

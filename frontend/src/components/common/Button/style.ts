@@ -10,6 +10,10 @@ export interface ButtonStyleProps {
 }
 
 const commonStyles = (theme: Theme) => css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-radius: 0.8rem;
   ${theme.typography.common.default};
   white-space: nowrap;
@@ -25,10 +29,12 @@ const sizeStyles = {
   sm: (theme: Theme) => css`
     ${theme.typography.common.small}
     padding: 0.8rem 0.4rem;
+    width: fit-content;
   `,
   md: (theme: Theme) => css`
     ${theme.typography.common.default}
     padding: 1.2rem;
+    width: fit-content;
   `,
   fillContainer: (theme: Theme) => css`
     ${theme.typography.common.default}

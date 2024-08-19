@@ -4,11 +4,12 @@ const Option = styled.div`
   display: flex;
   align-items: center;
 
-  gap: 1.2rem;
+  gap: 1rem;
 `;
 
-const Label = styled.span`
-  ${({ theme }) => theme.typography.common.large}
+const Label = styled.span<{ labelSize: string | undefined }>`
+  ${({ theme }) => theme.typography.common.large};
+  font-size: ${({ labelSize }) => labelSize};
 `;
 
 const S = {

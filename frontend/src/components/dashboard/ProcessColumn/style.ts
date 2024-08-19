@@ -3,11 +3,13 @@ import { hideScrollBar } from '@styles/utils';
 
 const ProcessWrapper = styled.section`
   width: 100%;
-  min-width: 25rem;
+  min-width: 28rem;
+  max-width: 28rem;
+
   height: 100%;
-  padding: 20px 12px 12px 12px;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   overflow-y: scroll;
@@ -17,16 +19,19 @@ const ProcessWrapper = styled.section`
 
 const Header = styled.header`
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 0.8rem;
 
-  padding: 8px 4px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  padding: 0.8rem 0.4rem;
+  margin-bottom: 2rem;
+  border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const Title = styled.h2`
   ${({ theme }) => theme.typography.heading[500]};
-  padding: 4px;
+  padding: 0.4rem;
 `;
 
 const ApplicantList = styled.ul`

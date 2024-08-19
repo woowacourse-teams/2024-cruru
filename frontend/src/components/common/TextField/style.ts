@@ -1,7 +1,7 @@
 import { Theme, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-// TODO: InputFieldd와 중복되는 부분이 다수 있어 공통으로 분리
+// TODO: InputField와 중복되는 부분이 다수 있어 공통으로 분리
 const commonInputStyles = (theme: Theme) => css`
   ${theme.typography.common.default};
 
@@ -43,7 +43,9 @@ const Asterisk = styled.span`
 `;
 
 const TextArea = styled.textarea<{ isError: boolean; resize: boolean }>`
-  ${({ theme }) => commonInputStyles(theme)}
+  ${({ theme }) => commonInputStyles(theme)};
+  font-family: ${({ theme }) => theme.typography.family.primary};
+
   ${({ theme, isError }) => css`
     &::placeholder {
       ${theme.typography.common.block};
@@ -63,13 +65,27 @@ const TextArea = styled.textarea<{ isError: boolean; resize: boolean }>`
     }
 
     ${isError && `border-color: ${theme.colors.feedback.error};`}
-  `}
-  ${({ resize }) => !resize && 'resize: none;'}
+  `};
+  ${({ resize }) => !resize && 'resize: none;'};
+`;
+
+const Footer = styled.div<{ isError: boolean }>`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: ${({ isError }) => (isError ? 'space-between' : 'flex-end')};
+  gap: 1rem;
 `;
 
 const ErrorText = styled.p`
   color: ${({ theme }) => theme.colors.feedback.error};
-  ${({ theme }) => theme.typography.common.default};
+  ${({ theme }) => theme.typography.common.small};
+`;
+
+const LengthText = styled.p`
+  min-width: fit-content;
+  ${({ theme }) => theme.typography.common.small};
+  color: ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 
 const S = {
@@ -78,7 +94,9 @@ const S = {
   Asterisk,
   Wrapper,
   TextArea,
+  Footer,
   ErrorText,
+  LengthText,
 };
 
 export default S;

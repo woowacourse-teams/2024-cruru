@@ -1,4 +1,4 @@
-import applicantApis from '@api/applicant';
+import applicantApis from '@api/domain/applicant';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';

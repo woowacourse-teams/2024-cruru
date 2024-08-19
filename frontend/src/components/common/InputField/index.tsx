@@ -5,9 +5,19 @@ interface InputFieldProps extends ComponentProps<'input'> {
   label?: string;
   error?: string;
   focus?: boolean;
+  isLengthVisible?: boolean;
 }
 
-export default function InputField({ label, value, onChange, disabled, error, required, ...props }: InputFieldProps) {
+export default function InputField({
+  label,
+  value,
+  onChange,
+  disabled,
+  error,
+  required,
+  isLengthVisible,
+  ...props
+}: InputFieldProps) {
   return (
     <S.Wrapper>
       {label && (
@@ -26,7 +36,14 @@ export default function InputField({ label, value, onChange, disabled, error, re
         {...props}
       />
 
-      {error && <S.ErrorText>{error}</S.ErrorText>}
+      {(isLengthVisible || error) && (
+        <S.Footer isError={!!error}>
+          {error && <S.ErrorText>{error}</S.ErrorText>}
+          {isLengthVisible && (
+            <S.LengthText>{`${value ? value.toString().length : 0} / ${props.maxLength}`}</S.LengthText>
+          )}
+        </S.Footer>
+      )}
     </S.Wrapper>
   );
 }

@@ -113,6 +113,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             key={question.questionId}
             question={question}
             value={answers[question.questionId]}
+            isLengthVisible
             onChange={changeHandler[question.type]}
           />
         ))}
