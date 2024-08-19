@@ -1,16 +1,10 @@
 package com.cruru.applicant.domain;
 
-import static com.cruru.applicant.domain.ApplicantState.APPROVED;
-import static com.cruru.applicant.domain.ApplicantState.PENDING;
-import static com.cruru.applicant.domain.ApplicantState.REJECTED;
-
 import com.cruru.BaseEntity;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,16 +38,15 @@ public class Applicant extends BaseEntity {
     @JoinColumn(name = "process_id")
     private Process process;
 
-    @Column(columnDefinition = "varchar")
-    @Enumerated(EnumType.STRING)
-    private ApplicantState state;
+    @Column(name = "is_rejected")
+    private boolean isRejected;
 
     public Applicant(String name, String email, String phone, Process process) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.process = process;
-        this.state = PENDING;
+        this.isRejected = false;
     }
 
     public void updateInfo(String name, String email, String phone) {
@@ -66,32 +59,24 @@ public class Applicant extends BaseEntity {
         this.process = process;
     }
 
-    public void approve() {
-        this.state = APPROVED;
-    }
-
     public void unreject() {
-        this.state = PENDING;
+        isRejected = false;
     }
 
     public void reject() {
-        this.state = REJECTED;
+        isRejected = true;
     }
 
     public boolean isApproved() {
-        return this.process.isApproveType();
-    }
-
-    public boolean isPending() {
-        return this.state == PENDING;
+        return process.isApproveType();
     }
 
     public boolean isRejected() {
-        return this.state == REJECTED;
+        return isRejected;
     }
 
     public boolean isNotRejected() {
-        return this.state != REJECTED;
+        return !isRejected;
     }
 
     public Dashboard getDashboard() {
@@ -123,7 +108,7 @@ public class Applicant extends BaseEntity {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", process=" + process +
-                ", state=" + state +
+                ", isRejected=" + isRejected +
                 '}';
     }
 }

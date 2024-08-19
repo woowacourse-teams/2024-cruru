@@ -1,7 +1,5 @@
 package com.cruru.applicant.domain;
 
-import static com.cruru.applicant.domain.ApplicantState.PENDING;
-import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -34,7 +32,7 @@ class ApplicantTest {
         );
     }
 
-    @DisplayName("지원자의 상태를 REJECTED로 업데이트한다.")
+    @DisplayName("지원자를 불합격시킨다.")
     @Test
     void reject() {
         // given
@@ -44,13 +42,10 @@ class ApplicantTest {
         applicant.reject();
 
         // then
-        assertAll(
-                () -> assertThat(applicant.getState()).isEqualTo(REJECTED),
-                () -> assertThat(applicant.isRejected()).isTrue()
-        );
+        assertThat(applicant.isRejected()).isTrue();
     }
 
-    @DisplayName("지원자의 상태를 PENDING로 업데이트한다.")
+    @DisplayName("지원자의 불합격을 취소한다.")
     @Test
     void unreject() {
         // given
@@ -60,9 +55,6 @@ class ApplicantTest {
         applicant.unreject();
 
         // then
-        assertAll(
-                () -> assertThat(applicant.getState()).isEqualTo(PENDING),
-                () -> assertThat(applicant.isPending()).isTrue()
-        );
+        assertThat(applicant.isNotRejected()).isTrue();
     }
 }

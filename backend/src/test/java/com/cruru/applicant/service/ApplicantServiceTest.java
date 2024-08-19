@@ -1,7 +1,5 @@
 package com.cruru.applicant.service;
 
-import static com.cruru.applicant.domain.ApplicantState.PENDING;
-import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -178,7 +176,7 @@ class ApplicantServiceTest extends ServiceTest {
 
         // then
         Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
-        assertThat(rejectedApplicant.getState()).isEqualTo(REJECTED);
+        assertThat(rejectedApplicant.isRejected()).isTrue();
     }
 
     @DisplayName("이미 불합격한 지원자를 불합격시키려 하면 예외가 발생한다.")
@@ -203,8 +201,8 @@ class ApplicantServiceTest extends ServiceTest {
         applicantService.unreject(applicant.getId());
 
         // then
-        Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
-        assertThat(rejectedApplicant.getState()).isEqualTo(PENDING);
+        Applicant unrejectedApplicant = applicantRepository.findById(applicant.getId()).get();
+        assertThat(unrejectedApplicant.isNotRejected()).isTrue();
     }
 
     @DisplayName("불합격이 아닌 지원자의 불합격을 해제하면 예외가 발생한다.")

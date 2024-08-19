@@ -1,6 +1,5 @@
 package com.cruru.applicant.domain.repository;
 
-import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
@@ -30,7 +29,7 @@ class ApplicantRepositoryTest extends RepositoryTest {
         Applicant saved = applicantRepository.save(applicant);
 
         //when
-        Applicant updatedApplicant = new Applicant(saved.getId(), "다른이름", "다른이메일", "다른번호", null, PENDING);
+        Applicant updatedApplicant = new Applicant(saved.getId(), "다른이름", "다른이메일", "다른번호", null, false);
         applicantRepository.save(updatedApplicant);
 
         //then
