@@ -31,6 +31,15 @@ security:
       expire-length: 3600000
       algorithm: HS256
 
+cookie:
+  access-token-key: token
+  http-only: false
+  secure: false
+  domain: localhost
+  path: /
+  same-site: none
+  max-age: 7200 #2시간
+
 dataloader:
   enable: true
 
@@ -65,6 +74,15 @@ security:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
       expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
+
+cookie:
+  access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  http-only: ${COOKIE_HTTP_ONLY}
+  secure: ${COOKIE_SECURE}
+  domain: ${COOKIE_DOMAIN}
+  path: ${COOKIE_PATH}
+  same-site: ${COOKIE_SAME_SITE}
+  max-age: ${COOKIE_MAX_AGE}
 
 dataloader:
   enable: true
@@ -117,6 +135,15 @@ security:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
       expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
+
+cookie:
+  access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  http-only: ${COOKIE_HTTP_ONLY}
+  secure: ${COOKIE_SECURE}
+  domain: ${COOKIE_DOMAIN}
+  path: ${COOKIE_PATH}
+  same-site: ${COOKIE_SAME_SITE}
+  max-age: ${COOKIE_MAX_AGE}
 
 dataloader:
   enable: false

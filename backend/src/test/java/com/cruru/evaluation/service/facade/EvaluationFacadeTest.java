@@ -74,9 +74,10 @@ class EvaluationFacadeTest extends ServiceTest {
         // given
         Evaluation evaluationExcellent = EvaluationFixture.fivePoints(process, applicant);
         Evaluation evaluationGood = EvaluationFixture.fourPoints(process, applicant);
-
-        Evaluation savedEvaluation1 = evaluationRepository.save(evaluationExcellent);
-        Evaluation savedEvaluation2 = evaluationRepository.save(evaluationGood);
+        Evaluation evaluation1 = evaluationRepository.save(evaluationExcellent);
+        Evaluation evaluation2 = evaluationRepository.save(evaluationGood);
+        Evaluation savedEvaluation1 = evaluationRepository.findById(evaluation1.getId()).get();
+        Evaluation savedEvaluation2 = evaluationRepository.findById(evaluation2.getId()).get();
 
         // when
         List<EvaluationResponse> evaluationResponses = evaluationFacade.readEvaluationsOfApplicantInProcess(
@@ -93,10 +94,13 @@ class EvaluationFacadeTest extends ServiceTest {
                 () -> assertThat(actualEvaluation1.evaluationId()).isEqualTo(savedEvaluation1.getId()),
                 () -> assertThat(actualEvaluation1.content()).isEqualTo(savedEvaluation1.getContent()),
                 () -> assertThat(actualEvaluation1.score()).isEqualTo(savedEvaluation1.getScore()),
+                () -> assertThat(actualEvaluation1.createdDate()).isEqualTo(savedEvaluation1.getCreatedDate()),
 
                 () -> assertThat(actualEvaluation2.evaluationId()).isEqualTo(savedEvaluation2.getId()),
                 () -> assertThat(actualEvaluation2.content()).isEqualTo(savedEvaluation2.getContent()),
-                () -> assertThat(actualEvaluation2.score()).isEqualTo(savedEvaluation2.getScore())
+                () -> assertThat(actualEvaluation2.score()).isEqualTo(savedEvaluation2.getScore()),
+                () -> assertThat(actualEvaluation2.createdDate()).isEqualTo(savedEvaluation2.getCreatedDate())
         );
+
     }
 }

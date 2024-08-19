@@ -7,7 +7,7 @@ public interface TokenProvider {
 
     String createToken(Map<String, Object> claims);
 
-    boolean isExpired(String token) throws IllegalTokenException;
+    boolean isAlive(String token) throws IllegalTokenException;
 
     String extractClaim(String token, String key) throws IllegalTokenException;
 }
