@@ -31,5 +31,5 @@ export interface EvaluationResult {
   evaluatorName: string;
   score: string;
   content: string;
-  createdAt: string;
+  createdDate: string;
 }

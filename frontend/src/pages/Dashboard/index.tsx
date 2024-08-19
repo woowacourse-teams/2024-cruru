@@ -1,14 +1,17 @@
 import { useParams } from 'react-router-dom';
 
-import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import Tab from '@components/common/Tab';
 import KanbanBoard from '@components/dashboard/KanbanBoard';
+import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
+import OpenInNewTab from '@components/common/OpenInNewTab';
+import CopyToClipboard from '@components/common/CopyToClipboard';
 
 import useTab from '@components/common/Tab/useTab';
 import useProcess from '@hooks/useProcess';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
+import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import S from './style';
 
@@ -27,9 +30,19 @@ export default function Dashboard() {
 
   return (
     <S.AppContainer>
-      <S.Title>{title}</S.Title>
+      <S.Header>
+        <S.Title>{title}</S.Title>
 
-      <Tab postUrl={`https://${postUrl}`}>
+        <S.CopyWrapper>
+          <OpenInNewTab
+            url={`https://${postUrl}`}
+            title="공고로 이동"
+          />
+          <CopyToClipboard url={`https://${postUrl}`} />
+        </S.CopyWrapper>
+      </S.Header>
+
+      <Tab>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
           <Tab.TabItem
             key={label}
@@ -43,7 +56,9 @@ export default function Dashboard() {
 
       <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
         <SpecificApplicantIdProvider>
-          <KanbanBoard processes={processes} />
+          <SpecificProcessIdProvider>
+            <KanbanBoard processes={processes} />
+          </SpecificProcessIdProvider>
         </SpecificApplicantIdProvider>
       </Tab.TabPanel>
 

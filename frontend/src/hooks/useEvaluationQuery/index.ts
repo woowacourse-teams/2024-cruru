@@ -23,7 +23,7 @@ export default function useEvaluationQuery({ processId, applicantId }: UseEvalua
     evaluatorName: e.evaluatorName ?? undefined,
     score: e.score,
     content: e.content,
-    createdAt: e.createdAt ?? undefined,
+    createdDate: e.createdDate ?? undefined,
   }));
 
   return {
