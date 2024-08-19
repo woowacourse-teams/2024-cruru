@@ -37,10 +37,17 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Get current date and time
+      id: datetime
+      run: echo "datetime=$(date +'%Y-%m-%d_%H:%M:%S')" >> "$GITHUB_OUTPUT"
+#          - run: echo ${{ steps.datetime.outputs.datetime }}
+
     - name: Image build and push
       run: |
-        docker build --build-arg PROFILE=prod --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-latest --platform linux/arm64 .
-        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-latest
+#        docker build --build-arg PROFILE=prod --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-latest --platform linux/arm64 .
+        docker build --build-arg PROFILE=prod --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:${{ steps.datetime.outputs.datetime }} --platform linux/arm64 .
+#        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-latest
+        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:${{ steps.datetime.outputs.datetime }}
 
     - name: Upload docker-compose yaml script to artifact
       uses: actions/upload-artifact@v4
