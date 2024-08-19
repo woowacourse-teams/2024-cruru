@@ -74,9 +74,10 @@ class EvaluationFacadeTest extends ServiceTest {
         // given
         Evaluation evaluationExcellent = EvaluationFixture.createEvaluationExcellent(process, applicant);
         Evaluation evaluationGood = EvaluationFixture.createEvaluationGood(process, applicant);
-
-        Evaluation savedEvaluation1 = evaluationRepository.save(evaluationExcellent);
-        Evaluation savedEvaluation2 = evaluationRepository.save(evaluationGood);
+        Evaluation evaluation1 = evaluationRepository.save(evaluationExcellent);
+        Evaluation evaluation2 = evaluationRepository.save(evaluationGood);
+        Evaluation savedEvaluation1 = evaluationRepository.findById(evaluation1.getId()).get();
+        Evaluation savedEvaluation2 = evaluationRepository.findById(evaluation2.getId()).get();
 
         // when
         List<EvaluationResponse> evaluationResponses = evaluationFacade.readEvaluationsOfApplicantInProcess(
