@@ -60,7 +60,7 @@ const ErrorMessages: Record<number | string, ErrorMessageConfig> = {
   500: {
     title: '서버에 문제가 발생했습니다.',
     description:
-      '요청하신 작업을 처리하는 도중 문제가 발생했습니다. 불편을 드려 죄송합니다.\n잠시 후 다시 시도해 주세요. 문제가 계속된다면 crurur@gmail.com으로 문의해 주세요.',
+      '요청하신 작업을 처리하는 도중 문제가 발생했습니다. 불편을 드려 죄송합니다.\n잠시 후 다시 시도해 주세요. 문제가 계속된다면 cruru@gmail.com으로 문의해 주세요.',
     buttons: [
       {
         label: '이전 페이지로 돌아가기',
@@ -72,7 +72,7 @@ const ErrorMessages: Record<number | string, ErrorMessageConfig> = {
   default: {
     title: '알 수 없는 오류가 발생했습니다.',
     description:
-      '요청하신 작업을 처리하는 도중 문제가 발생했습니다. 불편을 드려 죄송합니다.\n잠시 후 다시 시도해 주세요. 문제가 계속된다면 crurur@gmail.com으로 문의해 주세요.',
+      '요청하신 작업을 처리하는 도중 문제가 발생했습니다. 불편을 드려 죄송합니다.\n잠시 후 다시 시도해 주세요. 문제가 계속된다면 cruru@gmail.com으로 문의해 주세요.',
     buttons: [
       {
         label: '이전 페이지로 돌아가기',
