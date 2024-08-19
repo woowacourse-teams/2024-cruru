@@ -61,6 +61,14 @@ const IconButton = styled.button<IconButtonStyleProps>`
     width: 100%;
     height: 100%;
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      &:hover {
+        cursor: not-allowed;
+      }
+    `}
 `;
 
 const S = {
