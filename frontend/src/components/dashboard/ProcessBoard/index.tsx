@@ -7,7 +7,7 @@ interface KanbanBoardProps {
   processes: Process[];
 }
 
-export default function KanbanBoard({ processes }: KanbanBoardProps) {
+export default function ProcessBoard({ processes }: KanbanBoardProps) {
   return (
     <S.Wrapper>
       {processes.map((process) => (

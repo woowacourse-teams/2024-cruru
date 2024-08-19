@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import Tab from '@components/common/Tab';
-import KanbanBoard from '@components/dashboard/KanbanBoard';
+import ProcessBoard from '@components/dashboard/ProcessBoard';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import OpenInNewTab from '@components/common/OpenInNewTab';
 import CopyToClipboard from '@components/common/CopyToClipboard';
@@ -57,7 +57,7 @@ export default function Dashboard() {
       <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
         <SpecificApplicantIdProvider>
           <SpecificProcessIdProvider>
-            <KanbanBoard processes={processes} />
+            <ProcessBoard processes={processes} />
           </SpecificProcessIdProvider>
         </SpecificApplicantIdProvider>
       </Tab.TabPanel>
