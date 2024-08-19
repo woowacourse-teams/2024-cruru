@@ -18,13 +18,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 @DisplayName("평가 컨트롤러 테스트")
 class EvaluationControllerTest extends ControllerTest {
-
-    @LocalServerPort
-    private int port;
 
     @Autowired
     private ProcessRepository processRepository;
@@ -41,8 +37,6 @@ class EvaluationControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        RestAssured.port = port;
-
         process = processRepository.save(ProcessFixture.first());
 
         applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
