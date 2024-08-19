@@ -13,12 +13,14 @@ import ProcessDescription from './ProcessDescription/index';
 
 interface ProcessColumnProps {
   process: Process;
+  showRejectedApplicant: boolean;
 }
 
-export default function ProcessColumn({ process }: ProcessColumnProps) {
+export default function ProcessColumn({ process, showRejectedApplicant }: ProcessColumnProps) {
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
   const { processList } = useProcess({ dashboardId, postId });
-  const { moveApplicantProcess } = useApplicant({});
+  const { mutate: moveApplicantProcess } = useApplicant({});
+
   const { setApplicantId } = useSpecificApplicantId();
   const { setProcessId } = useSpecificProcessId();
   const { open } = useModal();
@@ -28,7 +30,7 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
       id: processId,
       name: processName,
       onClick: ({ targetProcessId }: { targetProcessId: number }) => {
-        moveApplicantProcess.mutate({ processId: targetProcessId, applicants: [applicantId] });
+        moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
       },
     }));
 
@@ -45,19 +47,19 @@ export default function ProcessColumn({ process }: ProcessColumnProps) {
         <ProcessDescription description={process.description} />
       </S.Header>
       <S.ApplicantList>
-        {process.applicants.map(
-          ({ applicantId, applicantName, createdAt, isRejected, evaluationCount }) =>
-            !isRejected && (
-              <ApplicantCard
-                key={applicantId}
-                name={applicantName}
-                createdAt={createdAt}
-                evaluationCount={evaluationCount}
-                popOverMenuItems={menuItemsList({ applicantId })}
-                onCardClick={() => cardClickHandler(applicantId)}
-              />
-            ),
-        )}
+        {process.applicants
+          .filter(({ isRejected }) => (showRejectedApplicant ? isRejected : !isRejected))
+          .map(({ applicantId, applicantName, createdAt, evaluationCount, isRejected }) => (
+            <ApplicantCard
+              key={applicantId}
+              name={applicantName}
+              isRejected={isRejected}
+              createdAt={createdAt}
+              evaluationCount={evaluationCount}
+              popOverMenuItems={menuItemsList({ applicantId })}
+              onCardClick={() => cardClickHandler(applicantId)}
+            />
+          ))}
       </S.ApplicantList>
     </S.ProcessWrapper>
   );

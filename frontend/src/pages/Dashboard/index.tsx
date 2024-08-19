@@ -15,7 +15,7 @@ import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import S from './style';
 
-export type DashboardTabItems = '지원자 관리' | '모집 과정 관리';
+export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리';
 
 export default function Dashboard() {
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
@@ -58,6 +58,17 @@ export default function Dashboard() {
         <SpecificApplicantIdProvider>
           <SpecificProcessIdProvider>
             <ProcessBoard processes={processes} />
+          </SpecificProcessIdProvider>
+        </SpecificApplicantIdProvider>
+      </Tab.TabPanel>
+
+      <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
+        <SpecificApplicantIdProvider>
+          <SpecificProcessIdProvider>
+            <ProcessBoard
+              processes={processes}
+              showRejectedApplicant
+            />
           </SpecificProcessIdProvider>
         </SpecificApplicantIdProvider>
       </Tab.TabPanel>
