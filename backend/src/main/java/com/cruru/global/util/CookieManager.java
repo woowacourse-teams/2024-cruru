@@ -23,10 +23,6 @@ public class CookieManager {
                 .orElseThrow(IllegalCookieException::new);
     }
 
-    private boolean isAccessTokenCookie(Cookie cookie) {
-        return cookieProperties.accessTokenKey().equals(cookie.getName());
-    }
-
     private Cookie[] extractCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
 
@@ -34,6 +30,10 @@ public class CookieManager {
             throw new IllegalCookieException();
         }
         return cookies;
+    }
+
+    private boolean isAccessTokenCookie(Cookie cookie) {
+        return cookieProperties.accessTokenKey().equals(cookie.getName());
     }
 
     public ResponseCookie createTokenCookie(String token) {
