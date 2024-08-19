@@ -13,7 +13,7 @@ import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.badrequest.ProcessCountException;
-import com.cruru.process.exception.badrequest.ProcessDeleteEndsException;
+import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
 import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import com.cruru.util.ServiceTest;
@@ -46,8 +46,8 @@ class ProcessServiceTest extends ServiceTest {
     void create() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.first(dashboard));
-        processRepository.save(ProcessFixture.last(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        processRepository.save(ProcessFixture.approveType(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "원래 있던 2개의 프로세스 사이에 생겼다.", 1);
 
         // when
@@ -83,7 +83,7 @@ class ProcessServiceTest extends ServiceTest {
     @Test
     void findById() {
         // given
-        Process savedProcess = processRepository.save(ProcessFixture.first());
+        Process savedProcess = processRepository.save(ProcessFixture.applyType());
 
         // when&then
         Long processId = savedProcess.getId();
@@ -93,15 +93,15 @@ class ProcessServiceTest extends ServiceTest {
 
     @DisplayName("대시보드에 존재하는 첫 번째 프로세스를 조회한다.")
     @Test
-    void findFirstProcessOnDashboard() {
+    void findApplyProcessOnDashboard() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process firstProcess = processRepository.save(ProcessFixture.first(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
         processRepository.save(ProcessFixture.interview(dashboard));
-        processRepository.save(ProcessFixture.last(dashboard));
+        processRepository.save(ProcessFixture.approveType(dashboard));
 
         // when
-        Process actualFirstProcess = processService.findFirstProcessOnDashboard(dashboard);
+        Process actualFirstProcess = processService.findApplyProcessOnDashboard(dashboard);
 
         // then
         assertThat(actualFirstProcess).isEqualTo(firstProcess);
@@ -112,7 +112,7 @@ class ProcessServiceTest extends ServiceTest {
     void update() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when
@@ -132,7 +132,7 @@ class ProcessServiceTest extends ServiceTest {
     void update_ThrowException() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         String notChangedName = process.getName();
         String notChangedDescription = process.getDescription();
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest(notChangedName, notChangedDescription);
@@ -163,17 +163,17 @@ class ProcessServiceTest extends ServiceTest {
     void delete_FirstOrLastProcess_ThrowsException() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process firstProcess = processRepository.save(ProcessFixture.first(dashboard));
-        Process finalProcess = processRepository.save(ProcessFixture.last(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process finalProcess = processRepository.save(ProcessFixture.approveType(dashboard));
 
         // when & then
         Long firstProcessId = firstProcess.getId();
         Long finalProcessId = finalProcess.getId();
         assertAll(
                 () -> assertThatThrownBy(() -> processService.delete(firstProcessId))
-                        .isInstanceOf(ProcessDeleteEndsException.class),
+                        .isInstanceOf(ProcessDeleteFixedException.class),
                 () -> assertThatThrownBy(() -> processService.delete(finalProcessId))
-                        .isInstanceOf(ProcessDeleteEndsException.class)
+                        .isInstanceOf(ProcessDeleteFixedException.class)
         );
     }
 

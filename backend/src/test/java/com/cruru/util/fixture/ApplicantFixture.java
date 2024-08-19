@@ -22,4 +22,10 @@ public class ApplicantFixture {
         applicant.reject();
         return applicant;
     }
+
+    public static Applicant rejectedRush(Process process) {
+        Applicant applicant = new Applicant("러쉬", "rush@email.com", "01000000001", process);
+        applicant.reject();
+        return applicant;
+    }
 }

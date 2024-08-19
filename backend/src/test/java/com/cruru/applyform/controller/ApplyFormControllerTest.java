@@ -42,7 +42,7 @@ class ApplyFormControllerTest extends ControllerTest {
     void submit() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
         Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
         Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
@@ -70,7 +70,7 @@ class ApplyFormControllerTest extends ControllerTest {
     void submit_rejectPersonalDataCollection() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
         Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
         Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
@@ -120,7 +120,7 @@ class ApplyFormControllerTest extends ControllerTest {
     void read() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
@@ -136,7 +136,7 @@ class ApplyFormControllerTest extends ControllerTest {
     void read_notFound() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 

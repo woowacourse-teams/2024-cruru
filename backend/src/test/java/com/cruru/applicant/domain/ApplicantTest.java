@@ -1,6 +1,5 @@
 package com.cruru.applicant.domain;
 
-import static com.cruru.applicant.domain.ApplicantState.APPROVED;
 import static com.cruru.applicant.domain.ApplicantState.PENDING;
 import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,22 +63,6 @@ class ApplicantTest {
         assertAll(
                 () -> assertThat(applicant.getState()).isEqualTo(PENDING),
                 () -> assertThat(applicant.isPending()).isTrue()
-        );
-    }
-
-    @DisplayName("지원자의 상태를 APPROVE로 업데이트한다.")
-    @Test
-    void approve() {
-        // given
-        Applicant applicant = ApplicantFixture.pendingDobby();
-
-        // when
-        applicant.approve();
-
-        // then
-        assertAll(
-                () -> assertThat(applicant.getState()).isEqualTo(APPROVED),
-                () -> assertThat(applicant.isApproved()).isTrue()
         );
     }
 }

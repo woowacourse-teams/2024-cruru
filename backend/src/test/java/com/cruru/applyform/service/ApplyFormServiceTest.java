@@ -97,7 +97,7 @@ class ApplyFormServiceTest extends ServiceTest {
     @Test
     void findById_invalidApplyForm() {
         // given
-        processRepository.save(ProcessFixture.first(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 

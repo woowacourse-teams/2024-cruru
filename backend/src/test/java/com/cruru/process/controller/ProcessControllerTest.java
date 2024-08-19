@@ -82,7 +82,7 @@ class ProcessControllerTest extends ControllerTest {
     @Test
     void update_success() {
         // given
-        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("임시 과정", "수정된 프로세스");
         String url = String.format("/v1/processes/%d", process.getId());
 

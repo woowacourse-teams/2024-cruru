@@ -53,8 +53,8 @@ class ProcessFacadeTest extends ServiceTest {
     void create() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.first(dashboard));
-        processRepository.save(ProcessFixture.last(dashboard));
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        processRepository.save(ProcessFixture.approveType(dashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "기존 2개의 프로세스 사이에 생성.", 1);
 
         // when
@@ -79,7 +79,7 @@ class ProcessFacadeTest extends ServiceTest {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
 
@@ -104,7 +104,7 @@ class ProcessFacadeTest extends ServiceTest {
     void update() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when

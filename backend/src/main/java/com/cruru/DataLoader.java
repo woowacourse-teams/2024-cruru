@@ -25,6 +25,7 @@ import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.process.domain.Process;
+import com.cruru.process.domain.ProcessType;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
@@ -88,9 +89,9 @@ public class DataLoader implements ApplicationRunner {
         );
         applyFormRepository.save(applyForm);
 
-        Process firstProcess = new Process(0, "프리코스", "지원 서류를 확인한다.", dashboard);
-        Process codingTest = new Process(1, "최종 코딩 테스트", "최종 코딩 테스트 전형", dashboard);
-        Process lastProcess = new Process(2, "최종 합격", "최종 합격자", dashboard);
+        Process firstProcess = new Process(0, "프리코스", "지원 서류를 확인한다.", ProcessType.APPLY, dashboard);
+        Process codingTest = new Process(1, "최종 코딩 테스트", "최종 코딩 테스트 전형", ProcessType.EVALUATE, dashboard);
+        Process lastProcess = new Process(2, "최종 합격", "최종 합격자", ProcessType.APPROVE, dashboard);
         processRepository.saveAll(List.of(firstProcess, codingTest, lastProcess));
 
         Applicant lurgi = new Applicant(1L, "러기", "lurg@mail.com", "01011111111", firstProcess, PENDING);

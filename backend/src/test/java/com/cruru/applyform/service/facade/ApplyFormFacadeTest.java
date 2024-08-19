@@ -65,8 +65,8 @@ class ApplyFormFacadeTest extends ServiceTest {
     @BeforeEach
     void setUp() {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(null));
-        firstProcess = processRepository.save(ProcessFixture.first(dashboard));
-        finalProcess = processRepository.save(ProcessFixture.last(dashboard));
+        firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        finalProcess = processRepository.save(ProcessFixture.approveType(dashboard));
         applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         Question question1 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
         Question question2 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));

@@ -42,7 +42,7 @@ class EvaluationFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        process = processRepository.save(ProcessFixture.first());
+        process = processRepository.save(ProcessFixture.applyType());
         applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 

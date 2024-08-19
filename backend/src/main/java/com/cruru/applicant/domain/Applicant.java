@@ -79,7 +79,7 @@ public class Applicant extends BaseEntity {
     }
 
     public boolean isApproved() {
-        return this.state == APPROVED;
+        return this.process.isApproveType();
     }
 
     public boolean isPending() {

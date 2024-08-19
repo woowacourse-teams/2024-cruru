@@ -62,7 +62,7 @@ class ApplicantFacadeTest extends ServiceTest {
     @Test
     void readBasicById() {
         // given
-        Process process = processRepository.save(ProcessFixture.first());
+        Process process = processRepository.save(ProcessFixture.applyType());
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when
@@ -87,7 +87,7 @@ class ApplicantFacadeTest extends ServiceTest {
         // given
         Dashboard dashboard = DashboardFixture.backend();
         dashboardRepository.save(dashboard);
-        Process process = ProcessFixture.first(dashboard);
+        Process process = ProcessFixture.applyType(dashboard);
         processRepository.save(process);
         Applicant applicant = ApplicantFixture.pendingDobby(process);
         applicantRepository.save(applicant);
@@ -137,8 +137,8 @@ class ApplicantFacadeTest extends ServiceTest {
     void updateApplicantProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process beforeProcess = processRepository.save(ProcessFixture.first(dashboard));
-        Process afterProcess = processRepository.save(ProcessFixture.last(dashboard));
+        Process beforeProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.approveType(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(
                 List.of(

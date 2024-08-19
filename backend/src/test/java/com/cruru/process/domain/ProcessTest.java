@@ -24,7 +24,7 @@ class ProcessTest {
         Dashboard dashboard = DashboardFixture.backend();
 
         // when&then
-        assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
+        assertThatCode(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard)).doesNotThrowAnyException();
     }
 
     @DisplayName("프로세스 이름이 비어있으면 예외가 발생한다.")
@@ -35,7 +35,7 @@ class ProcessTest {
         Dashboard dashboard = new Dashboard(null);
 
         // when&then
-        assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+        assertThatThrownBy(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard))
                 .isInstanceOf(ProcessNameBlankException.class);
     }
 
@@ -44,9 +44,10 @@ class ProcessTest {
     void invalidProcessNameLength() {
         // given
         Dashboard dashboard = new Dashboard(null);
+        String name = "ThisStringLengthIs33!!!!!!!!!!!!!";
 
         // when&then
-        assertThatThrownBy(() -> new Process(0, "ThisStringLengthIs33!!!!!!!!!!!!!", "desc", dashboard))
+        assertThatThrownBy(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard))
                 .isInstanceOf(ProcessNameLengthException.class);
     }
 
@@ -58,7 +59,7 @@ class ProcessTest {
         Dashboard dashboard = new Dashboard(null);
 
         // when&then
-        assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+        assertThatThrownBy(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard))
                 .isInstanceOf(ProcessNameCharacterException.class);
     }
 }

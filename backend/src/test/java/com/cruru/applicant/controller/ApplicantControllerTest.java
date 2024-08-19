@@ -35,8 +35,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateProcess() {
         // given
-        Process now = processRepository.save(ProcessFixture.first());
-        Process next = processRepository.save(ProcessFixture.last());
+        Process now = processRepository.save(ProcessFixture.applyType());
+        Process next = processRepository.save(ProcessFixture.approveType());
         Applicant applicant = ApplicantFixture.pendingDobby(now);
         applicantRepository.save(applicant);
 
@@ -52,7 +52,7 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Process process = processRepository.save(ProcessFixture.first());
+        Process process = processRepository.save(ProcessFixture.applyType());
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then
@@ -66,7 +66,7 @@ class ApplicantControllerTest extends ControllerTest {
     void readDetail() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.first(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then

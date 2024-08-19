@@ -51,7 +51,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Process firstProcess = processRepository.save(ProcessFixture.first());
+        Process firstProcess = processRepository.save(ProcessFixture.applyType());
         String name = "도비";
         String email = "kimdobby@email.com";
         String phone = "01052525252";
@@ -73,7 +73,7 @@ class ApplicantServiceTest extends ServiceTest {
     @Test
     void findAllByProcess() {
         // given
-        Process process = processRepository.save(ProcessFixture.first());
+        Process process = processRepository.save(ProcessFixture.applyType());
         Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
@@ -141,8 +141,8 @@ class ApplicantServiceTest extends ServiceTest {
     void moveApplicantProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process beforeProcess = processRepository.save(ProcessFixture.first(dashboard));
-        Process afterProcess = processRepository.save(ProcessFixture.last(dashboard));
+        Process beforeProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process afterProcess = processRepository.save(ProcessFixture.approveType(dashboard));
 
         List<Applicant> applicants = applicantRepository.saveAll(List.of(
                 ApplicantFixture.pendingDobby(beforeProcess),

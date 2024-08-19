@@ -131,9 +131,10 @@ public class DashboardFacade {
         int totalFails = (int) allApplicants.stream()
                 .filter(Applicant::isRejected).count();
         int totalAccepts = (int) allApplicants.stream()
-                .filter(Applicant::isApproved).count();
-        int totalPending = (int) allApplicants.stream()
-                .filter(Applicant::isPending).count();
+                .filter(Applicant::isNotRejected)
+                .filter(Applicant::isApproved)
+                .count();
+        int totalPending = totalApplicants - (totalFails + totalAccepts);
         return new StatsResponse(totalAccepts, totalFails, totalPending, totalApplicants);
     }
 }
