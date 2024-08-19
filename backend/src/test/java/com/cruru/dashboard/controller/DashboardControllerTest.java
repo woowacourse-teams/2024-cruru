@@ -16,9 +16,12 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("대시보드 컨트롤러 테스트")
@@ -35,6 +38,41 @@ class DashboardControllerTest extends ControllerTest {
 
     private Club club;
 
+    private static Stream<QuestionCreateRequest> InvalidQuestionCreateRequest() {
+        String validChoice = "선택지1";
+        int validOrderIndex = 0;
+        List<ChoiceCreateRequest> validChoiceCreateRequests
+                = List.of(new ChoiceCreateRequest(validChoice, validOrderIndex));
+        String validType = "DROPDOWN";
+        String validQuestion = "객관식질문";
+        String validDescription = "";
+        boolean validRequired = false;
+        return Stream.of(
+                new QuestionCreateRequest(null, validQuestion, validDescription,
+                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                new QuestionCreateRequest("", validQuestion, validDescription,
+                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, null, validDescription,
+                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, "", validDescription,
+                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        List.of(new ChoiceCreateRequest(null, validOrderIndex)), validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        List.of(new ChoiceCreateRequest("", validOrderIndex)), validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        List.of(new ChoiceCreateRequest(validChoice, null)), validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        List.of(new ChoiceCreateRequest(validChoice, -1)), validOrderIndex, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        validChoiceCreateRequests, null, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        validChoiceCreateRequests, -1, validRequired),
+                new QuestionCreateRequest(validType, validQuestion, validDescription,
+                        validChoiceCreateRequests, validOrderIndex, null)
+        );
+    }
+
     @BeforeEach
     void setUp() {
         club = clubRepository.save(ClubFixture.create());
@@ -42,7 +80,7 @@ class DashboardControllerTest extends ControllerTest {
 
     @DisplayName("대시보드 생성 성공 시, 201을 응답한다.")
     @Test
-    void read() {
+    void create() {
         // given
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
@@ -62,6 +100,29 @@ class DashboardControllerTest extends ControllerTest {
                 .body(request)
                 .when().post(url)
                 .then().log().all().statusCode(201);
+    }
+
+    @DisplayName("대시보드 생성 시, 질문 생성 요청이 잘못되면 400을 응답한다.")
+    @ParameterizedTest
+    @MethodSource("InvalidQuestionCreateRequest")
+    void create_invalidQuestionCreateRequest(QuestionCreateRequest invalidQuestionCreateRequest) {
+        // given
+        List<QuestionCreateRequest> questionCreateRequests = List.of(invalidQuestionCreateRequest);
+        DashboardCreateRequest request = new DashboardCreateRequest(
+                "크루루대시보드",
+                "# 공고 내용",
+                questionCreateRequests,
+                LocalDateTime.of(2000, 1, 1, 0, 0),
+                LocalDateTime.of(2999, 12, 31, 23, 59)
+        );
+        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post(url)
+                .then().log().all().statusCode(400);
     }
 
     @DisplayName("다건의 대시보드 요약 정보 요청 성공 시, 200을 응답한다")
