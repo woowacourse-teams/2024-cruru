@@ -18,8 +18,11 @@ import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("지원서 폼 컨트롤러 테스트")
@@ -36,6 +39,21 @@ class ApplyFormControllerTest extends ControllerTest {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    private static Stream<ApplicantCreateRequest> InvalidApplicantCreateRequest() {
+        String validName = "초코칩";
+        String validMail = "dev.chocochip@gmail.com";
+        String validPhone = "01000000000";
+        return Stream.of(
+                new ApplicantCreateRequest(null, validMail, validPhone),
+                new ApplicantCreateRequest("", validMail, validPhone),
+                new ApplicantCreateRequest(validName, null, validPhone),
+                new ApplicantCreateRequest(validName, "", validPhone),
+                new ApplicantCreateRequest(validName, "notMail", validPhone),
+                new ApplicantCreateRequest(validName, validMail, null),
+                new ApplicantCreateRequest(validName, validMail, "")
+        );
+    }
 
     @DisplayName("지원서 폼 제출 시, 201을 반환한다.")
     @Test
@@ -83,6 +101,59 @@ class ApplyFormControllerTest extends ControllerTest {
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
                 answerCreateRequests,
                 false
+        );
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 지원자 정보가 잘못된 경우 400 에러가 발생한다.")
+    @ParameterizedTest
+    @MethodSource("InvalidApplicantCreateRequest")
+    void submit_invalidApplicantCreateRequest(ApplicantCreateRequest applicantCreateRequest) {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        List<AnswerCreateRequest> answerCreateRequests = List.of(
+                new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다."))
+        );
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                applicantCreateRequest,
+                answerCreateRequests,
+                true
+        );
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 지원자 답변이 잘못된 경우 400 에러가 발생한다.")
+    @Test
+    void submit_invalidAnswerCreateRequests() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.first(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        List<AnswerCreateRequest> answerCreateRequests = List.of(
+                new AnswerCreateRequest(question1.getId(), null)
+        );
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                answerCreateRequests,
+                true
         );
 
         // when&then
