@@ -14,8 +14,8 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
-import com.cruru.process.exception.badrequest.ProcessDeleteUnmodifiableException;
 import com.cruru.process.exception.badrequest.ProcessNoChangeException;
+import com.cruru.process.exception.badrequest.ProcessUnmodifiableException;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.DashboardFixture;
@@ -171,9 +171,9 @@ class ProcessServiceTest extends ServiceTest {
         Long finalProcessId = finalProcess.getId();
         assertAll(
                 () -> assertThatThrownBy(() -> processService.delete(firstProcessId))
-                        .isInstanceOf(ProcessDeleteUnmodifiableException.class),
+                        .isInstanceOf(ProcessUnmodifiableException.class),
                 () -> assertThatThrownBy(() -> processService.delete(finalProcessId))
-                        .isInstanceOf(ProcessDeleteUnmodifiableException.class)
+                        .isInstanceOf(ProcessUnmodifiableException.class)
         );
     }
 

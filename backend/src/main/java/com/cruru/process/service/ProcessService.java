@@ -12,8 +12,8 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
-import com.cruru.process.exception.badrequest.ProcessDeleteUnmodifiableException;
 import com.cruru.process.exception.badrequest.ProcessNoChangeException;
+import com.cruru.process.exception.badrequest.ProcessUnmodifiableException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -105,7 +105,7 @@ public class ProcessService {
 
     private void validateFirstOrLastProcess(Process process) {
         if (process.isUnModifiable()) {
-            throw new ProcessDeleteUnmodifiableException();
+            throw new ProcessUnmodifiableException();
         }
     }
 
