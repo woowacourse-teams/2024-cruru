@@ -68,6 +68,7 @@ export default function ProcessModifyForm({
         value={formState.description}
         onChange={handleChange}
         name="description"
+        required
       />
 
       <C.ButtonWrapper>
