@@ -1,7 +1,5 @@
 package com.cruru.applicant.service.facade;
 
-import static com.cruru.applicant.domain.ApplicantState.PENDING;
-import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -164,7 +162,7 @@ class ApplicantFacadeTest extends ServiceTest {
         );
     }
 
-    @DisplayName("특정 지원자의 상태를 불합격으로 변경한다.")
+    @DisplayName("특정 지원자를 불합격시킨다.")
     @Test
     void reject() {
         // given
@@ -175,10 +173,10 @@ class ApplicantFacadeTest extends ServiceTest {
 
         // then
         Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
-        assertThat(rejectedApplicant.getState()).isEqualTo(REJECTED);
+        assertThat(rejectedApplicant.isRejected()).isTrue();
     }
 
-    @DisplayName("특정 지원자의 상태를 불합격에서 해제한다.")
+    @DisplayName("특정 지원자의 불합격을 취소한다.")
     @Test
     void unreject() {
         // given
@@ -188,7 +186,7 @@ class ApplicantFacadeTest extends ServiceTest {
         applicantFacade.unreject(applicant.getId());
 
         // then
-        Applicant rejectedApplicant = applicantRepository.findById(applicant.getId()).get();
-        assertThat(rejectedApplicant.getState()).isEqualTo(PENDING);
+        Applicant unrejectedApplicant = applicantRepository.findById(applicant.getId()).get();
+        assertThat(unrejectedApplicant.isNotRejected()).isTrue();
     }
 }

@@ -1,8 +1,5 @@
 package com.cruru;
 
-import static com.cruru.applicant.domain.ApplicantState.APPROVED;
-import static com.cruru.applicant.domain.ApplicantState.PENDING;
-import static com.cruru.applicant.domain.ApplicantState.REJECTED;
 import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
 import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
@@ -94,14 +91,14 @@ public class DataLoader implements ApplicationRunner {
         Process lastProcess = new Process(2, "최종 합격", "최종 합격자", ProcessType.APPROVE, dashboard);
         processRepository.saveAll(List.of(firstProcess, codingTest, lastProcess));
 
-        Applicant lurgi = new Applicant(1L, "러기", "lurg@mail.com", "01011111111", firstProcess, PENDING);
-        Applicant dobby = new Applicant(2L, "도비", "dobb@mail.com", "01022222222", firstProcess, APPROVED);
-        Applicant arrr = new Applicant(3L, "아르", "arrr@mail.com", "01033333333", lastProcess, REJECTED);
-        Applicant chocochip = new Applicant(4L, "초코칩", "choc@mail.com", "01044444444", lastProcess, PENDING);
-        Applicant myungoh = new Applicant(5L, "명오", "myun@mail.com", "01055555555", lastProcess, PENDING);
-        Applicant rush = new Applicant(6L, "러시", "rush@mail.com", "01066666666", firstProcess, PENDING);
-        Applicant nyangin = new Applicant(7L, "냥인", "nyan@mail.com", "01077777777", firstProcess, PENDING);
-        Applicant redpanda = new Applicant(8L, "렛서", "pand@mail.com", "01088888888", firstProcess, PENDING);
+        Applicant lurgi = new Applicant(1L, "러기", "lurg@mail.com", "01011111111", firstProcess, false);
+        Applicant dobby = new Applicant(2L, "도비", "dobb@mail.com", "01022222222", firstProcess, false);
+        Applicant arrr = new Applicant(3L, "아르", "arrr@mail.com", "01033333333", lastProcess, true);
+        Applicant chocochip = new Applicant(4L, "초코칩", "choc@mail.com", "01044444444", lastProcess, false);
+        Applicant myungoh = new Applicant(5L, "명오", "myun@mail.com", "01055555555", lastProcess, false);
+        Applicant rush = new Applicant(6L, "러시", "rush@mail.com", "01066666666", firstProcess, false);
+        Applicant nyangin = new Applicant(7L, "냥인", "nyan@mail.com", "01077777777", firstProcess, false);
+        Applicant redpanda = new Applicant(8L, "렛서", "pand@mail.com", "01088888888", firstProcess, false);
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
 
