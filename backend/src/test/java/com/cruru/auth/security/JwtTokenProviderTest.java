@@ -104,7 +104,7 @@ class JwtTokenProviderTest {
 
     @DisplayName("만료되지 않은 토큰을 검증한다.")
     @Test
-    void iisActive_notValid() {
+    void isActive_notValid() {
         // given
         String notExpiredToken = jwtTokenProvider.createToken(claims);
 
