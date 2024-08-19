@@ -1,6 +1,5 @@
 package com.cruru.auth.security;
 
-import static com.cruru.member.domain.MemberRole.CLUB_OWNER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -88,7 +87,7 @@ class JwtTokenProviderTest {
         String expiredToken = generateExpiredToken();
 
         // when&then
-        assertThat(jwtTokenProvider.isAlive(expiredToken)).isTrue();
+        assertThat(jwtTokenProvider.isAlive(expiredToken)).isFalse();
     }
 
     private String generateExpiredToken() {
@@ -110,6 +109,6 @@ class JwtTokenProviderTest {
         String notExpiredToken = jwtTokenProvider.createToken(claims);
 
         // when&then
-        assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isFalse();
+        assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isTrue();
     }
 }
