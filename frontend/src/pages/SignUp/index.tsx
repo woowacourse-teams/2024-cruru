@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import InputField from '@components/common/InputField';
 import Button from '@components/common/Button';
@@ -9,17 +10,34 @@ import PasswordInput from './PasswordInput';
 import S from './style';
 
 export default function SignUp() {
-  const { formData, register } = useForm({ initialValues: { email: '', phone: '', password: '', clubName: '' } });
+  const { formData, register, errors } = useForm({
+    initialValues: { email: '', phone: '', password: '', clubName: '' },
+  });
   const { signUpMutate } = useSignUp();
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSignUp: React.FormEventHandler = (event) => {
     event.preventDefault();
+    if (Object.values(errors).some((error) => error)) {
+      window.alert('회원가입 정보를 확인해주세요.');
+      return;
+    }
+
+    if (passwordError) {
+      window.alert('비밀번호를 확인해주세요.');
+      return;
+    }
+
     signUpMutate.mutate(formData);
   };
 
   const deleteHangulFormatter = (value: string) => {
     const koreanRegex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     return value.replace(koreanRegex, '');
+  };
+
+  const setPasswordValid = (bol: boolean) => {
+    setPasswordError(bol);
   };
 
   return (
@@ -45,7 +63,11 @@ export default function SignUp() {
         label="전화번호"
         required
       />
-      <PasswordInput {...register('password', { formatter: deleteHangulFormatter, minLength: 8, maxLength: 32 })} />
+      <PasswordInput
+        {...register('password', { formatter: deleteHangulFormatter, minLength: 8, maxLength: 32 })}
+        error={passwordError}
+        setPasswordValid={setPasswordValid}
+      />
       <InputField
         {...register('clubName', { placeholder: '동아리 이름', type: 'text', maxLength: 20 })}
         label="동아리 이름"

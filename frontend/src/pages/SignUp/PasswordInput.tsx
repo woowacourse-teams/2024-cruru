@@ -5,7 +5,12 @@ import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { HiOutlineCheckCircle, HiOutlineMinusCircle } from 'react-icons/hi2';
 import S from './style';
 
-export default function PasswordInput(props: ComponentProps<'input'>) {
+interface PasswordInput extends ComponentProps<'input'> {
+  setPasswordValid: (bol: boolean) => void;
+  error: boolean;
+}
+
+export default function PasswordInput({ setPasswordValid, ...props }: PasswordInput) {
   const [isShow, setIsShow] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
@@ -18,17 +23,14 @@ export default function PasswordInput(props: ComponentProps<'input'>) {
 
   const validatePassword = (password: string) => {
     setValidObject((prev) => {
-      const newObj = { ...prev };
-      // 비밀번호 길이 체크 (최소 8자, 최대 32자)
-      newObj.length.isValid = password.length >= 8 && password.length <= 32;
-      // 영어 문자가 포함되어 있는지 체크 (적어도 1자 이상)
-      newObj.letter.isValid = /[A-Za-z]/.test(password);
-      // 숫자가 포함되어 있는지 체크 (적어도 1개 이상)
-      newObj.number.isValid = /\d/.test(password);
-      // 특수문자가 포함되어 있는지 체크 (적어도 1개 이상)
       const specialCharRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
-      newObj.specialChar.isValid = specialCharRegex.test(password);
-      return newObj;
+      return {
+        ...prev,
+        length: { ...prev.length, isValid: password.length >= 8 && password.length <= 32 },
+        letter: { ...prev.letter, isValid: /[A-Za-z]/.test(password) },
+        number: { ...prev.number, isValid: /\d/.test(password) },
+        specialChar: { ...prev.specialChar, isValid: specialCharRegex.test(password) },
+      };
     });
   };
 
@@ -60,6 +62,7 @@ export default function PasswordInput(props: ComponentProps<'input'>) {
   const handelBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
     setIsCapsLockOn(false);
     setIsFocus(false);
+    setPasswordValid(Object.values(validObject).some(({ isValid }) => !isValid));
     if (props?.onBlur) props.onBlur(event);
   };
 
@@ -74,7 +77,9 @@ export default function PasswordInput(props: ComponentProps<'input'>) {
         label="비밀번호"
         placeholder="비밀번호"
         type={isShow ? 'text' : 'password'}
-        error={isCapsLockOn ? 'Caps Lock이 켜져 있습니다.' : undefined}
+        error={
+          props?.error && !isFocus ? '패스워드를 확인하세요.' : isCapsLockOn ? 'Caps Lock이 켜져 있습니다.' : undefined
+        }
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
         onBlur={handelBlur}
