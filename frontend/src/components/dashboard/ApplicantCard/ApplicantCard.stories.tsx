@@ -33,6 +33,31 @@ export const ApplicantCardDefault: Story = {
   args: {
     name: '홍길동',
     createdAt: '2023-07-15T09:00:00Z',
+    evaluationCount: 2,
+    isRejected: false,
+    popOverMenuItems: [
+      {
+        id: 1,
+        name: '단계 이동',
+        onClick: () => console.log('지원자에 대한 "단계 이동" 클릭'),
+      },
+      {
+        id: 2,
+        name: '불합격',
+        isHighlight: true,
+        onClick: () => console.log('지원자에 대한 "불합격" 클릭'),
+      },
+    ],
+    onCardClick: () => console.log('지원자 카드가 클릭되었습니다.'),
+  },
+};
+
+export const RejectedApplicantCard: Story = {
+  args: {
+    name: '홍길동',
+    createdAt: '2023-07-15T09:00:00Z',
+    evaluationCount: 2,
+    isRejected: true,
     popOverMenuItems: [
       {
         id: 1,

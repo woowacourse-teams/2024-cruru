@@ -10,36 +10,41 @@
           "applicantId": 1,
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
-          "isRejected": false,
-          "evaluationCount": 1
+          "isRejected": true,
+          "evaluationCount": 1,
+          "averageScore": 4.0
         },
         {
           "applicantId": 2,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 3,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": true,
-          "evaluationCount": 1
+          "evaluationCount": 3,
+          "averageScore": 2.7
         },
         {
           "applicantId": 4,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": true,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 3.0
         },
         {
           "applicantId": 5,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 3,
+          "averageScore": 4.3
         }
       ],
       "name": "지원서",
@@ -54,35 +59,40 @@
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 3,
+          "averageScore": 2.7
         },
         {
           "applicantId": 7,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 4.0
         },
         {
           "applicantId": 8,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": true,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 2.0
         },
         {
           "applicantId": 9,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": true,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 4.0
         },
         {
           "applicantId": 10,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 2,
+          "averageScore": 3.0
         }
       ],
       "name": "프로세스 3",
@@ -97,35 +107,40 @@
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 12,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 5,
+          "averageScore": 3.6
         },
         {
           "applicantId": 13,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 4,
+          "averageScore": 4.3
         },
         {
           "applicantId": 14,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 5,
+          "averageScore": 2.8
         },
         {
           "applicantId": 15,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         }
       ],
       "name": "프로세스 1",
@@ -140,77 +155,88 @@
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 17,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 18,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 2.0
         },
         {
           "applicantId": 19,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 3,
+          "averageScore": 4.3
         },
         {
           "applicantId": 20,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 5,
+          "averageScore": 2.8
         },
         {
           "applicantId": 21,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 2,
+          "averageScore": 5.0
         },
         {
           "applicantId": 22,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 23,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 24,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 2,
+          "averageScore": 2.5
         },
         {
           "applicantId": 25,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 1.0
         },
         {
           "applicantId": 26,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 5.0
         }
       ],
       "name": "프로세스 2",
@@ -225,35 +251,40 @@
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 3,
+          "averageScore": 2.8
         },
         {
           "applicantId": 28,
           "applicantName": "도비",
           "createdAt": "2024-07-16T05:46:08.341936",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 2,
+          "averageScore": 4.5
         },
         {
           "applicantId": 29,
           "applicantName": "러시",
           "createdAt": "2024-07-16T05:46:08.356121",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 30,
           "applicantName": "냥인",
           "createdAt": "2024-07-16T05:46:08.359131",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 31,
           "applicantName": "렛서",
           "createdAt": "2024-07-16T05:46:08.361759",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 4,
+          "averageScore": 3.5
         }
       ],
       "name": "프로세스 3",
@@ -268,21 +299,24 @@
           "applicantName": "아르",
           "createdAt": "2024-07-16T05:46:08.345472",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 0,
+          "averageScore": 0
         },
         {
           "applicantId": 33,
           "applicantName": "초코칩",
           "createdAt": "2024-07-16T05:46:08.350114",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 1,
+          "averageScore": 3.0
         },
         {
           "applicantId": 34,
           "applicantName": "명오",
           "createdAt": "2024-07-16T05:46:08.352613",
           "isRejected": false,
-          "evaluationCount": 1
+          "evaluationCount": 2,
+          "averageScore": 4.0
         }
       ],
       "name": "최종 합격",

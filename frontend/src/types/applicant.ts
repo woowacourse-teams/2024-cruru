@@ -4,6 +4,7 @@ interface ApplicantBaseInfo {
   email: string;
   phone: string;
   createdAt: string;
+  isRejected: boolean;
 }
 
 interface ApplicantProcessInfo {
