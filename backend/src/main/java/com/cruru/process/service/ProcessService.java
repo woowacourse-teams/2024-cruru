@@ -76,11 +76,10 @@ public class ProcessService {
     public Process update(ProcessUpdateRequest request, long processId) {
         Process process = findById(processId);
 
-        if (nothingToChange(request, process)) {
-            return process;
+        if (changeExists(request, process)) {
+            process.updateName(request.name());
+            process.updateDescription(request.description());
         }
-        process.updateName(request.name());
-        process.updateDescription(request.description());
 
         return process;
     }
@@ -90,8 +89,8 @@ public class ProcessService {
                 .orElseThrow(ProcessNotFoundException::new);
     }
 
-    private boolean nothingToChange(ProcessUpdateRequest request, Process process) {
-        return request.name().equals(process.getName()) && request.description().equals(process.getDescription());
+    private boolean changeExists(ProcessUpdateRequest request, Process process) {
+        return !(request.name().equals(process.getName()) && request.description().equals(process.getDescription()));
     }
 
     @Transactional

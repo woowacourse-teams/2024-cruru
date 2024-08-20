@@ -37,22 +37,20 @@ public class EvaluationService {
         Evaluation evaluation = evaluationRepository.findById(evaluationId)
                 .orElseThrow(EvaluationNotFoundException::new);
 
-        if (nothingToChange(request, evaluation)) {
-            return;
+        if (changeExists(request, evaluation)) {
+            evaluationRepository.save(
+                    new Evaluation(
+                            evaluationId,
+                            request.score(),
+                            request.content(),
+                            evaluation.getProcess(),
+                            evaluation.getApplicant()
+                    )
+            );
         }
-
-        evaluationRepository.save(
-                new Evaluation(
-                        evaluationId,
-                        request.score(),
-                        request.content(),
-                        evaluation.getProcess(),
-                        evaluation.getApplicant()
-                )
-        );
     }
 
-    private boolean nothingToChange(EvaluationUpdateRequest request, Evaluation evaluation) {
-        return evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score());
+    private boolean changeExists(EvaluationUpdateRequest request, Evaluation evaluation) {
+        return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
     }
 }
