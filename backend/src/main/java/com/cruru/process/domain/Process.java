@@ -1,5 +1,6 @@
 package com.cruru.process.domain;
 
+import com.cruru.auth.util.VerificationTarget;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.member.domain.Member;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Process {
+public class Process implements VerificationTarget {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
@@ -111,6 +112,11 @@ public class Process {
 
     public boolean isOwner(Member member) {
         return dashboard.isOwner(member);
+    }
+
+    @Override
+    public boolean isAuthenticated(Member member) {
+        return dashboard.isAuthenticated(member);
     }
 
     @Override

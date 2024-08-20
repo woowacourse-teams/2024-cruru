@@ -1,6 +1,8 @@
 package com.cruru.answer.domain;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.auth.util.VerificationTarget;
+import com.cruru.member.domain.Member;
 import com.cruru.question.domain.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Answer {
+public class Answer implements VerificationTarget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +43,11 @@ public class Answer {
         this.content = content;
         this.question = question;
         this.applicant = applicant;
+    }
+
+    @Override
+    public boolean isAuthenticated(Member member) {
+        return applicant.isAuthenticated(member);
     }
 
     @Override

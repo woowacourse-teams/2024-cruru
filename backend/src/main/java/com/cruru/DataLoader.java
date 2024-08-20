@@ -66,9 +66,17 @@ public class DataLoader implements ApplicationRunner {
     private void runDataLoader() {
         Member member = new Member("member@mail.com", "$2a$10$rG0JsflKdGcORjGFTURYb.npEgtvClK4.3P.EMr/o3SdekrVFxOvG",
                 "01012345678"); // password 원문: qwer1234
+        Member member2 = new Member("member2@mail.com", "$2a$10$rG0JsflKdGcORjGFTURYb.npEgtvClK4.3P.EMr/o3SdekrVFxOvG",
+                "01012345678"); // password 원문: qwer1234
+
         memberRepository.save(member);
+        memberRepository.save(member2);
+
         Club club = new Club("우아한테크코스", member);
         clubRepository.save(club);
+        Club club2 = new Club("우아한테크코스", member2);
+        clubRepository.save(club2);
+
         Dashboard dashboard = new Dashboard(club);
         LocalDateTime startDate = LocalDateTime.of(2024, 10, 6, 15, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(2024, 10, 16, 10, 0, 0);

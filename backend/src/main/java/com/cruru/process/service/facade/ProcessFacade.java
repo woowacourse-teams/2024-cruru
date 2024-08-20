@@ -7,6 +7,7 @@ import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.auth.controller.dto.LoginProfile;
+import com.cruru.auth.util.AuthChecker;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
 import com.cruru.evaluation.service.EvaluationService;
@@ -40,21 +41,16 @@ public class ProcessFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Dashboard dashboard = dashboardService.findById(dashboardId);
 
-        validateOwner(dashboard, member);
-        processService.create(request, dashboard);
-    }
+        AuthChecker.validateAuthority(dashboard, member);
 
-    private void validateOwner(Dashboard dashboard, Member member) {
-        if (!dashboard.isOwner(member)) {
-            throw new ForbiddenException();
-        }
+        processService.create(request, dashboard);
     }
 
     public ProcessResponses readAllByDashboardId(LoginProfile loginProfile, long dashboardId) {
         Member member = memberService.findByEmail(loginProfile.email());
         Dashboard dashboard = dashboardService.findById(dashboardId);
 
-        validateOwner(dashboard, member);
+        AuthChecker.validateAuthority(dashboard, member);
 
         ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         List<Process> processes = processService.findAllByDashboard(dashboard);

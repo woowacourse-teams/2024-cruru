@@ -1,5 +1,6 @@
 package com.cruru.dashboard.domain;
 
+import com.cruru.auth.util.VerificationTarget;
 import com.cruru.club.domain.Club;
 import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Dashboard {
+public class Dashboard implements VerificationTarget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +38,11 @@ public class Dashboard {
 
     public boolean isOwner(Member member) {
         return this.club.isOwner(member);
+    }
+
+    @Override
+    public boolean isAuthenticated(Member member) {
+        return club.isAuthenticated(member);
     }
 
     @Override

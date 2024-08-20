@@ -1,5 +1,6 @@
 package com.cruru.club.domain;
 
+import com.cruru.auth.util.VerificationTarget;
 import com.cruru.club.exception.badrequest.ClubNameBlankException;
 import com.cruru.club.exception.badrequest.ClubNameCharacterException;
 import com.cruru.club.exception.badrequest.ClubNameLengthException;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Club {
+public class Club implements VerificationTarget {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
@@ -71,6 +72,11 @@ public class Club {
     }
 
     public boolean isOwner(Member member) {
+        return this.member.equals(member);
+    }
+
+    @Override
+    public boolean isAuthenticated(Member member) {
         return this.member.equals(member);
     }
 
