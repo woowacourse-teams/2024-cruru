@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.club.domain.Club;
+import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +24,9 @@ class ClubFacadeTest extends ServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -45,5 +50,19 @@ class ClubFacadeTest extends ServiceTest {
                 () -> assertThat(actual.getMember()).isEqualTo(member),
                 () -> assertThat(actual.getName()).isEqualTo(request.name())
         );
+    }
+
+    @DisplayName("회원의 email로 동아리를 조회한다.")
+    @Test
+    void findByMemberEmail() {
+        // given
+        Member member = memberRepository.save(MemberFixture.DOBBY);
+        Club savedClub = clubRepository.save(ClubFixture.create(member));
+
+        // when
+        long actualClubId = clubFacade.findByMemberEmail(member.getEmail());
+
+        // then
+        assertThat(savedClub.getId()).isEqualTo(actualClubId);
     }
 }
