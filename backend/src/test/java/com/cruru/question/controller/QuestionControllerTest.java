@@ -32,13 +32,7 @@ class QuestionControllerTest extends ControllerTest {
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend());
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
         QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(List.of(
-                new QuestionCreateRequest(
-                        QuestionType.LONG_ANSWER.name(),
-                        "new",
-                        List.of(),
-                        0,
-                        true
-                )
+                new QuestionCreateRequest(QuestionType.LONG_ANSWER.name(), "new", List.of(), 0, true)
         ));
 
         // when&then
