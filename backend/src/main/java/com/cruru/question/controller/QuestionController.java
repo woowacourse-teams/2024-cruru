@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/question")
+@RequestMapping("/v1/questions")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionFacade questionFacade;
 
-    @PatchMapping()
+    @PatchMapping
     public ResponseEntity<Void> update(
             @RequestParam(name = "applyformId") Long applyFormId,
             @RequestBody @Valid QuestionUpdateRequests request
