@@ -1,6 +1,5 @@
 import { AUTH } from '@api/endPoint';
 import { http } from 'msw';
-import { Success } from './response';
 
 interface LoginFormData {
   email: string;
@@ -18,7 +17,17 @@ const authHandlers = [
       });
     }
 
-    return Success();
+    const responseBody = JSON.stringify({
+      clubId: 1,
+    });
+
+    return new Response(responseBody, {
+      status: 201,
+      statusText: 'Created',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }),
 ];
 

@@ -5,7 +5,7 @@ const apiClient = new APIClient(AUTH);
 
 const authApi = {
   login: async ({ email, password }: { email: string; password: string }) =>
-    apiClient.post({
+    apiClient.post<{ clubId: string }>({
       path: '/login',
       body: { email, password },
     }),
