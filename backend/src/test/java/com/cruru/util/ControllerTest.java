@@ -1,13 +1,16 @@
 package com.cruru.util;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-
-import com.cruru.config.WebMvcConfig;
+import com.cruru.auth.service.AuthService;
+import com.cruru.club.domain.Club;
+import com.cruru.club.domain.repository.ClubRepository;
+import com.cruru.member.domain.Member;
+import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.util.fixture.ClubFixture;
+import com.cruru.util.fixture.MemberFixture;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -15,21 +18,31 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class ControllerTest {
 
-    @MockBean
-    private WebMvcConfig webMvcConfig;
-
+    protected Member defaultMember;
+    protected Club defaultClub;
+    protected String token;
     @LocalServerPort
     private int port;
+    @Autowired
+    private AuthService authService;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private ClubRepository clubRepository;
+    @Autowired
+    private DbCleaner dbCleaner;
+
+    @BeforeEach
+    void createDefaultLoginMember() {
+        dbCleaner.truncateEveryTable();
+        defaultMember = memberRepository.save(MemberFixture.ADMIN);
+        defaultClub = clubRepository.save(ClubFixture.create(defaultMember));
+        token = authService.createToken(defaultMember);
+    }
+
 
     @BeforeEach
     void setPort() {
         RestAssured.port = port;
-    }
-
-    @BeforeEach
-    void setUp() {
-        doNothing().when(webMvcConfig).addCorsMappings(any());
-        doNothing().when(webMvcConfig).addInterceptors(any());
-        doNothing().when(webMvcConfig).addArgumentResolvers(any());
     }
 }
