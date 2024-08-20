@@ -14,7 +14,9 @@ public record ApplicantCardResponse(
 
         Boolean isRejected,
 
-        int evaluationCount
+        int evaluationCount,
+
+        double averageScore
 ) {
 
 }

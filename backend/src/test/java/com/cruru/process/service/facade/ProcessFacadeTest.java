@@ -3,6 +3,7 @@ package com.cruru.process.service.facade;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.applicant.controller.dto.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -82,6 +83,7 @@ class ProcessFacadeTest extends ServiceTest {
         Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
+        evaluationRepository.save(EvaluationFixture.fourPoints(process, applicant));
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(dashboard.getId());
@@ -89,13 +91,13 @@ class ProcessFacadeTest extends ServiceTest {
         // then
         ProcessResponse firstProcessResponse = processResponses.processResponses().get(0);
         long processId = firstProcessResponse.id();
-        long applicantCardId = firstProcessResponse.applicantCardResponses().get(0).id();
-        int applicantEvaluationCount = firstProcessResponse.applicantCardResponses().get(0).evaluationCount();
+        ApplicantCardResponse applicantCardResponse = firstProcessResponse.applicantCardResponses().get(0);
         assertAll(
                 () -> assertThat(processResponses.processResponses()).hasSize(1),
                 () -> assertThat(processId).isEqualTo(process.getId()),
-                () -> assertThat(applicantCardId).isEqualTo(applicant.getId()),
-                () -> assertThat(applicantEvaluationCount).isEqualTo(1)
+                () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(1),
+                () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.5)
         );
     }
 
