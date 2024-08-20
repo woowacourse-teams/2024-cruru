@@ -9,3 +9,7 @@ export const EVALUATIONS = `${BASE_URL}/evaluations`;
 export const APPLY = `${BASE_URL}/applyform`;
 
 export const DASHBOARDS = `${BASE_URL}/dashboards`;
+
+export const AUTH = `${BASE_URL}/auth`;
+
+export const MEMBERS = `${BASE_URL}/members`;

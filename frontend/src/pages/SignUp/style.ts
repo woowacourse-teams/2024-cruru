@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
-const SignInContainer = styled.div`
+const SignInContainer = styled.form`
   width: 40rem;
   padding: 4rem;
   border-radius: 1.6rem;
 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ const PasswordInputContainer = styled.div`
 
 const IconButton = styled.div`
   position: absolute;
-  top: 4.2rem;
+  top: 4.1rem;
   right: 1.8rem;
 
   * {
@@ -61,6 +61,37 @@ const IconButton = styled.div`
     color: ${({ theme }) => theme.baseColors.grayscale[700]};
     cursor: pointer;
   }
+`;
+
+const MsgContainer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
+  gap: 0.2rem;
+
+  margin-top: 0.4rem;
+  width: 100%;
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: 0.8rem;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+`;
+
+const MsgWrapper = styled.div`
+  display: flex;
+  gap: 0.4rem;
+
+  ${({ theme }) => theme.typography.common.smallAccent}
+`;
+
+const CheckIcon = styled.div<{ isValid: boolean }>`
+  font-size: 1.4rem;
+  color: ${({ theme, isValid }) => (isValid ? theme.colors.feedback.success : theme.colors.feedback.error)};
+`;
+
+const Message = styled.div<{ isValid: boolean }>`
+  ${({ theme }) => theme.typography.common.small};
+  color: ${({ theme, isValid }) => (isValid ? theme.colors.feedback.success : theme.baseColors.grayscale[700])};
 `;
 
 const S = {
@@ -71,6 +102,10 @@ const S = {
   LinkContainer,
 
   PasswordInputContainer,
+  MsgContainer,
+  MsgWrapper,
+  CheckIcon,
+  Message,
   IconButton,
 };
 
