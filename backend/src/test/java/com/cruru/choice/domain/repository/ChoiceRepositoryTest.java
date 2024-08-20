@@ -35,19 +35,4 @@ class ChoiceRepositoryTest extends RepositoryTest {
         Choice findChoice = choiceRepository.findById(saved.getId()).get();
         assertThat(findChoice.getContent()).isEqualTo("여자");
     }
-
-    @DisplayName("ID가 없는 선택지를 저장하면, ID를 순차적으로 부여하여 저장한다.")
-    @Test
-    void saveNoId() {
-        //given
-        Choice choice1 = new Choice("남자", 0, null);
-        Choice choice2 = new Choice("여자", 1, null);
-
-        //when
-        Choice savedChoice1 = choiceRepository.save(choice1);
-        Choice savedChoice2 = choiceRepository.save(choice2);
-
-        //then
-        assertThat(savedChoice1.getId() + 1).isEqualTo(savedChoice2.getId());
-    }
 }

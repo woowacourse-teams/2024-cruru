@@ -4,13 +4,12 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
 import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -33,7 +32,7 @@ public class Process {
     private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Tsid
     @Column(name = "process_id")
     private Long id;
 

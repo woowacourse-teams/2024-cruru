@@ -35,6 +35,7 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'org.flywaydb:flyway-core:9.22.3'
     implementation 'org.flywaydb:flyway-mysql'
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.5.1'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

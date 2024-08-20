@@ -65,21 +65,4 @@ class ApplyFormRepositoryTest extends RepositoryTest {
                 () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
         );
     }
-
-    @DisplayName("ID가 없는 지원서 양식을 저장하면, ID를 순차적으로 부여하여 저장한다.")
-    @Test
-    void save_NotSavedId() {
-        //given
-        Dashboard dashboard1 = dashboardRepository.save(DashboardFixture.backend());
-        Dashboard dashboard2 = dashboardRepository.save(DashboardFixture.frontend());
-        ApplyForm applyForm1 = ApplyFormFixture.backend(dashboard1);
-        ApplyForm applyForm2 = ApplyFormFixture.frontend(dashboard2);
-
-        //when
-        ApplyForm savedApplyForm1 = applyFormRepository.save(applyForm1);
-        ApplyForm savedApplyForm2 = applyFormRepository.save(applyForm2);
-
-        //then
-        assertThat(savedApplyForm1.getId() + 1).isEqualTo(savedApplyForm2.getId());
-    }
 }

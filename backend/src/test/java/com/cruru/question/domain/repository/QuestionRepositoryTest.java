@@ -38,19 +38,4 @@ class QuestionRepositoryTest extends RepositoryTest {
         assertThat(findQuestion.getContent()).isEqualTo("전공");
         assertThat(findQuestion.getSequence()).isEqualTo(1);
     }
-
-    @DisplayName("ID가 없는 질문을 저장하면, ID를 순차적으로 부여하여 저장한다.")
-    @Test
-    void saveNoId() {
-        //given
-        Question question1 = new Question(DROPDOWN, "성별", 0, false, null);
-        Question question2 = new Question(SHORT_ANSWER, "전공", 1, false, null);
-
-        //when
-        Question savedQuestion1 = questionRepository.save(question1);
-        Question savedQuestion2 = questionRepository.save(question2);
-
-        //then
-        assertThat(savedQuestion1.getId() + 1).isEqualTo(savedQuestion2.getId());
-    }
 }

@@ -35,19 +35,4 @@ class AnswerRepositoryTest extends RepositoryTest {
         Answer foundAnswer = answerRepository.findById(saved.getId()).get();
         assertThat(foundAnswer.getContent()).isEqualTo("음악 전공입니다.");
     }
-
-    @DisplayName("ID가 없는 답변을 저장하면, ID를 순차적으로 부여하여 저장한다.")
-    @Test
-    void saveNoId() {
-        //given
-        Answer answer1 = new Answer("체육 전공입니다.", null, null);
-        Answer answer2 = new Answer("음악 전공입니다.", null, null);
-
-        //when
-        Answer savedAnswer1 = answerRepository.save(answer1);
-        Answer savedAnswer2 = answerRepository.save(answer2);
-
-        //then
-        assertThat(savedAnswer1.getId() + 1).isEqualTo(savedAnswer2.getId());
-    }
 }

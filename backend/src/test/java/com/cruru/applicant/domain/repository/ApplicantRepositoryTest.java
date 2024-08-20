@@ -38,19 +38,4 @@ class ApplicantRepositoryTest extends RepositoryTest {
         assertThat(foundApplicant.getEmail()).isEqualTo("다른이메일");
         assertThat(foundApplicant.getPhone()).isEqualTo("다른번호");
     }
-
-    @DisplayName("ID가 없는 프로세스를 저장하면, ID를 순차적으로 부여하여 저장한다.")
-    @Test
-    void saveNoId() {
-        //given
-        Applicant applicant1 = ApplicantFixture.pendingDobby();
-        Applicant applicant2 = ApplicantFixture.pendingRush();
-
-        //when
-        Applicant savedApplicant1 = applicantRepository.save(applicant1);
-        Applicant savedApplicant2 = applicantRepository.save(applicant2);
-
-        //then
-        assertThat(savedApplicant1.getId() + 1).isEqualTo(savedApplicant2.getId());
-    }
 }
