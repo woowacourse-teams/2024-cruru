@@ -65,21 +65,6 @@ public class ApplyForm extends BaseEntity {
         this.dashboard = dashboard;
     }
 
-    public ApplyForm(
-            String title,
-            String description,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
-            Dashboard dashboard
-    ) {
-        validateDate(startDate, endDate);
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.dashboard = dashboard;
-    }
-
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
         validateStartDateBeforeEndDate(startDate, endDate);
         validateStartDateNotInPast(startDate);
@@ -95,6 +80,21 @@ public class ApplyForm extends BaseEntity {
         if (startDate.isBefore(LocalDateTime.now())) {
             throw new StartDatePastException(startDate, LocalDateTime.now());
         }
+    }
+
+    public ApplyForm(
+            String title,
+            String description,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Dashboard dashboard
+    ) {
+        validateDate(startDate, endDate);
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.dashboard = dashboard;
     }
 
     @Override
