@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const SignUpContainer = styled.div`
+const SignUpContainer = styled.form`
   width: 40rem;
   padding: 4rem;
   border-radius: 1.6rem;

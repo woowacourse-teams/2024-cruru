@@ -3,6 +3,7 @@ import S from './style';
 
 interface InputFieldProps extends ComponentProps<'input'> {
   label?: string;
+  description?: string;
   error?: string;
   focus?: boolean;
   isLengthVisible?: boolean;
@@ -10,6 +11,7 @@ interface InputFieldProps extends ComponentProps<'input'> {
 
 export default function InputField({
   label,
+  description,
   value,
   onChange,
   disabled,
@@ -27,6 +29,7 @@ export default function InputField({
         </S.LabelWrapper>
       )}
 
+      {description && <S.Description disabled={!!disabled}>{description}</S.Description>}
       <S.Input
         value={value}
         onChange={onChange}
