@@ -10,7 +10,7 @@
           "applicantId": 1,
           "applicantName": "러기",
           "createdAt": "2024-07-16T05:46:08.328593",
-          "isRejected": false,
+          "isRejected": true,
           "evaluationCount": 1,
           "averageScore": 4.0
         },

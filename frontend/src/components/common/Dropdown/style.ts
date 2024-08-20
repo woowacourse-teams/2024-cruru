@@ -1,11 +1,29 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const Container = styled.div<{ size: 'sm' | 'md'; isOpen: boolean; width?: number; isShadow: boolean }>`
+const Container = styled.div<{
+  size: 'sm' | 'md';
+  isOpen: boolean;
+  width?: number;
+  isShadow: boolean;
+  disabled?: boolean;
+}>`
   width: ${({ size, width }) => (width ? `${width}px` : size === 'sm' ? '90px' : '240px')};
   position: relative;
 
   border-radius: ${({ isOpen }) => (isOpen ? '8px 8px 0px 0px' : '8px')};
   box-shadow: ${({ isShadow, theme }) => (isShadow ? `0px 4px 4px ${theme.baseColors.grayscale[400]}` : 'none')};
+
+  ${({ disabled, theme }) =>
+    disabled &&
+    css`
+      background-color: ${theme.baseColors.grayscale[200]};
+      color: ${theme.baseColors.grayscale[400]};
+
+      &:hover {
+        cursor: not-allowed;
+      }
+    `}
 `;
 
 const Header = styled.div<{ isOpen: boolean; size: 'sm' | 'md' }>`

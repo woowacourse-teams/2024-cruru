@@ -22,6 +22,11 @@ const rejectApplicant = async ({ applicantId }: { applicantId: number }) =>
     path: `/${applicantId}/reject`,
   });
 
+const unrejectApplicant = async ({ applicantId }: { applicantId: number }) =>
+  apiClient.patch<{ status: number }>({
+    path: `/${applicantId}/unreject`,
+  });
+
 const getDetailApplicant = async ({ applicantId }: { applicantId: number }) =>
   apiClient.get<ApplicantDetail>({
     path: `/${applicantId}/detail`,
@@ -31,6 +36,7 @@ const applicantApis = {
   move: moveApplicant,
   get: getSpecificApplicant,
   reject: rejectApplicant,
+  unreject: unrejectApplicant,
   getDetail: getDetailApplicant,
 };
 
