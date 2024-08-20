@@ -10,14 +10,23 @@ export interface DropdownProps {
   size?: 'sm' | 'md';
   items: DropdownListItem[];
   isShadow?: boolean;
+  disabled?: boolean;
 }
 
-export default function Dropdown({ initValue, width, size = 'sm', items, isShadow = true }: DropdownProps) {
+export default function Dropdown({
+  initValue,
+  width,
+  size = 'sm',
+  items,
+  isShadow = true,
+  disabled = false,
+}: DropdownProps) {
   const [selected, setSelected] = useState(initValue);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
+    if (disabled) return;
     setIsOpen(!isOpen);
   };
 
@@ -46,6 +55,7 @@ export default function Dropdown({ initValue, width, size = 'sm', items, isShado
       isOpen={isOpen}
       width={width}
       isShadow={isShadow}
+      disabled={disabled}
     >
       <S.Header
         onClick={toggleDropdown}

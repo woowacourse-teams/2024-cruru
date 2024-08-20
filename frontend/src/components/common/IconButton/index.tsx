@@ -8,6 +8,7 @@ export default function IconButton({
   outline = true,
   shape = 'round',
   type = 'button',
+  disabled,
   onClick,
   children,
 }: PropsWithChildren<IconButtonProps>) {
@@ -17,6 +18,7 @@ export default function IconButton({
       outline={outline}
       shape={shape}
       type={type}
+      disabled={disabled}
       onClick={onClick}
     >
       {children}
