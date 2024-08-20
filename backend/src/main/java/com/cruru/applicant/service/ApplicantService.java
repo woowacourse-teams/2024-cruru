@@ -35,7 +35,7 @@ public class ApplicantService {
     @Transactional
     public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
         Applicant applicant = findById(applicantId);
-        if (notChangedInformation(request, applicant)) {
+        if (nothingToChange(request, applicant)) {
             return;
         }
         applicant.updateInfo(request.name(), request.email(), request.phone());
@@ -46,7 +46,7 @@ public class ApplicantService {
                 .orElseThrow(ApplicantNotFoundException::new);
     }
 
-    private boolean notChangedInformation(ApplicantUpdateRequest request, Applicant applicant) {
+    private boolean nothingToChange(ApplicantUpdateRequest request, Applicant applicant) {
         return applicant.getName().equals(request.name()) && applicant.getEmail().equals(request.email())
                 && applicant.getPhone().equals(request.phone());
     }
