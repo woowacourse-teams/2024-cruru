@@ -1,6 +1,7 @@
 package com.cruru.process.domain;
 
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.member.domain.Member;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
 import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
@@ -106,6 +107,10 @@ public class Process {
 
     public void increaseSequenceNumber() {
         this.sequence++;
+    }
+
+    public boolean isOwner(Member member) {
+        return dashboard.isOwner(member);
     }
 
     @Override

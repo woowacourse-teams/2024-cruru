@@ -70,6 +70,10 @@ public class Club {
         return !NAME_PATTERN.matcher(name).matches();
     }
 
+    public boolean isOwner(Member member) {
+        return this.member.equals(member);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

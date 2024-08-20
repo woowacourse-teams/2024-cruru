@@ -1,6 +1,7 @@
 package com.cruru.dashboard.domain;
 
 import com.cruru.club.domain.Club;
+import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,6 +33,10 @@ public class Dashboard {
 
     public Dashboard(Club club) {
         this.club = club;
+    }
+
+    public boolean isOwner(Member member) {
+        return this.club.isOwner(member);
     }
 
     @Override
