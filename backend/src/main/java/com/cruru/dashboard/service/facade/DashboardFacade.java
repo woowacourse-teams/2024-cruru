@@ -1,10 +1,12 @@
 package com.cruru.dashboard.service.facade;
 
+import com.cruru.advice.ForbiddenException;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
+import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
@@ -14,6 +16,8 @@ import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
+import com.cruru.member.domain.Member;
+import com.cruru.member.service.MemberService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
@@ -31,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DashboardFacade {
 
+    private final MemberService memberService;
     private final ClubService clubService;
     private final DashboardService dashboardService;
     private final ApplyFormService applyFormService;
@@ -39,14 +44,24 @@ public class DashboardFacade {
     private final ApplicantService applicantService;
 
     @Transactional
-    public long create(long clubId, DashboardCreateRequest request) {
+    public long create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
+        Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
+
+        validateOwner(club, member);
+
         Dashboard createdDashboard = dashboardService.create(club);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
         }
         return createdDashboard.getId();
+    }
+
+    private void validateOwner(Club club, Member member) {
+        if (!club.isOwner(member)) {
+            throw new ForbiddenException();
+        }
     }
 
     private ApplyFormCreateRequest toApplyFormCreateRequest(DashboardCreateRequest request) {
@@ -64,8 +79,14 @@ public class DashboardFacade {
         return new ApplyFormUrlResponse(applyForm.getId(), applyForm.getUrl());
     }
 
-    public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
-        List<Dashboard> dashboardIds = getDashboardIdsByClubId(clubId);
+    public DashboardsOfClubResponse findAllDashboardsByClubId(LoginProfile loginProfile, long clubId) {
+        Member member = memberService.findByEmail(loginProfile.email());
+        Club club = clubService.findById(clubId);
+
+        validateOwner(club, member);
+
+        List<Dashboard> dashboardIds = dashboardService.findAllByClub(club);
+
         String clubName = clubService.findById(clubId).getName();
         LocalDateTime now = LocalDateTime.now();
         List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
@@ -75,11 +96,6 @@ public class DashboardFacade {
         List<DashboardPreviewResponse> sortedDashboardPreviews = sortDashboardPreviews(dashboardResponses, now);
 
         return new DashboardsOfClubResponse(clubName, sortedDashboardPreviews);
-    }
-
-    private List<Dashboard> getDashboardIdsByClubId(long clubId) {
-        Club club = clubService.findById(clubId);
-        return dashboardService.findAllByClub(club);
     }
 
     private DashboardPreviewResponse createDashboardPreviewResponse(Dashboard dashboard) {

@@ -1,6 +1,8 @@
 package com.cruru.member.service.facade;
 
+import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.club.service.ClubService;
+import com.cruru.dashboard.service.DashboardService;
 import com.cruru.member.controller.dto.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
@@ -15,6 +17,8 @@ public class MemberFacade {
 
     private final MemberService memberService;
     private final ClubService clubService;
+    private final DashboardService dashboardService;
+    private final ApplyFormService applyFormService;
 
     @Transactional
     public long create(MemberCreateRequest request) {

@@ -6,9 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
+import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessResponses;
@@ -18,7 +19,6 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
-import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.util.Comparator;
@@ -30,9 +30,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DisplayName("프로세스 파사드 서비스 테스트")
 class ProcessFacadeTest extends ServiceTest {
 
+
     @Autowired
     private ProcessFacade processFacade;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
     @Autowired
     private DashboardRepository dashboardRepository;
 
@@ -52,16 +58,15 @@ class ProcessFacadeTest extends ServiceTest {
     @Test
     void create() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.applyType(dashboard));
-        processRepository.save(ProcessFixture.approveType(dashboard));
+        processRepository.save(ProcessFixture.applyType(defaultDashboard));
+        processRepository.save(ProcessFixture.approveType(defaultDashboard));
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "기존 2개의 프로세스 사이에 생성.", 1);
 
         // when
-        processFacade.create(processCreateRequest, dashboard.getId());
+        processFacade.create(loginProfile, processCreateRequest, defaultDashboard.getId());
 
         // then
-        List<Process> allByDashboardId = processRepository.findAllByDashboardId(dashboard.getId())
+        List<Process> allByDashboardId = processRepository.findAllByDashboardId(defaultDashboard.getId())
                 .stream()
                 .sorted(Comparator.comparingInt(Process::getSequence))
                 .toList();
@@ -77,14 +82,13 @@ class ProcessFacadeTest extends ServiceTest {
     @Test
     void readAllByDashboardId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
 
         // when
-        ProcessResponses processResponses = processFacade.readAllByDashboardId(dashboard.getId());
+        ProcessResponses processResponses = processFacade.readAllByDashboardId(loginProfile, defaultDashboard.getId());
 
         // then
         ProcessResponse firstProcessResponse = processResponses.processResponses().get(0);
@@ -103,13 +107,12 @@ class ProcessFacadeTest extends ServiceTest {
     @Test
     void update() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
         ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("면접 수정", "수정된 설명");
 
         // when
         Long processId = process.getId();
-        ProcessResponse actualProcessResponse = processFacade.update(processUpdateRequest, processId);
+        ProcessResponse actualProcessResponse = processFacade.update(loginProfile, processUpdateRequest, processId);
 
         // then
         assertAll(
@@ -122,11 +125,10 @@ class ProcessFacadeTest extends ServiceTest {
     @Test
     void delete() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.interview(dashboard));
+        Process process = processRepository.save(ProcessFixture.interview(defaultDashboard));
 
         // when
-        processFacade.delete(process.getId());
+        processFacade.delete(loginProfile, process.getId());
 
         // then
         assertThat(processRepository.findAll()).isEmpty();

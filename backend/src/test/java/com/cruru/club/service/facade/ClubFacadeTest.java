@@ -9,7 +9,6 @@ import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
-import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.MemberFixture;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -56,13 +55,11 @@ class ClubFacadeTest extends ServiceTest {
     @Test
     void findByMemberEmail() {
         // given
-        Member member = memberRepository.save(MemberFixture.DOBBY);
-        Club savedClub = clubRepository.save(ClubFixture.create(member));
 
         // when
-        long actualClubId = clubFacade.findByMemberEmail(member.getEmail());
+        long actualClubId = clubFacade.findByMemberEmail(defaultMember.getEmail());
 
         // then
-        assertThat(savedClub.getId()).isEqualTo(actualClubId);
+        assertThat(defaultClub.getId()).isEqualTo(actualClubId);
     }
 }
