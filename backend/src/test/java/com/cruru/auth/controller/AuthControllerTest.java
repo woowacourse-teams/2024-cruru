@@ -1,9 +1,11 @@
 package com.cruru.auth.controller;
 
 import com.cruru.auth.controller.dto.LoginRequest;
+import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.MemberFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -17,12 +19,17 @@ class AuthControllerTest extends ControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private ClubRepository clubRepository;
+
     private Member member;
 
     @BeforeEach
     void setup() {
+        clubRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
         member = memberRepository.save(MemberFixture.ADMIN);
+        clubRepository.save(ClubFixture.create(member));
     }
 
     @DisplayName("로그인 성공 시 200을 응답한다.")

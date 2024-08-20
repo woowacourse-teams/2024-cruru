@@ -68,4 +68,21 @@ class ClubServiceTest extends ServiceTest {
                 () -> assertThat(actual.getName()).isEqualTo(savedClub.getName())
         );
     }
+
+    @DisplayName("회원으로 동아리를 조회한다.")
+    @Test
+    void findByMember() {
+        // given
+        Member member = memberRepository.save(MemberFixture.DOBBY);
+        Club savedClub = clubRepository.save(ClubFixture.create(member));
+
+        // when
+        Club actual = clubService.findByMember(member);
+
+        // then
+        assertAll(
+                () -> assertDoesNotThrow(() -> clubService.findByMember(member)),
+                () -> assertThat(actual.getName()).isEqualTo(savedClub.getName())
+        );
+    }
 }

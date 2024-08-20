@@ -24,4 +24,10 @@ public class ClubFacade {
 
         return createdClub.getId();
     }
+
+    public long findByMemberEmail(String email) {
+        Member member = memberService.findByEmail(email);
+        Club club = clubService.findByMember(member);
+        return club.getId();
+    }
 }
