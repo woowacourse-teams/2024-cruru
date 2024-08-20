@@ -26,8 +26,7 @@ public class QuestionService {
 
     @Transactional
     public Question create(QuestionCreateRequest request, ApplyForm applyForm) {
-        QuestionType questionType = QuestionType.valueOf(request.type());
-        Question savedQuestion = questionRepository.save(toQuestion(questionType, request, applyForm));
+        Question savedQuestion = questionRepository.save(toQuestion(request, applyForm));
 
         if (savedQuestion.hasChoice()) {
             choiceService.createAll(request.choices(), savedQuestion);
@@ -36,14 +35,24 @@ public class QuestionService {
         return savedQuestion;
     }
 
-    private Question toQuestion(QuestionType type, QuestionCreateRequest request, ApplyForm applyForm) {
+    private Question toQuestion(QuestionCreateRequest request, ApplyForm applyForm) {
         return new Question(
-                type,
+                QuestionType.valueOf(request.type()),
                 request.question(),
                 request.orderIndex(),
                 request.required(),
                 applyForm
         );
+    }
+
+    public void deleteAllByApplyForm(ApplyForm applyForm) {
+        List<Question> questions = questionRepository.findAllByApplyForm(applyForm);
+        for (Question question : questions) {
+            if (question.hasChoice()) {
+                choiceService.deleteAllByQuestion(question);
+            }
+            questionRepository.delete(question);
+        }
     }
 
     public Question findById(long id) {

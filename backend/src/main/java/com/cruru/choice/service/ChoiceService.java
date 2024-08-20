@@ -52,4 +52,9 @@ public class ChoiceService {
     private ChoiceResponse toChoiceResponse(Choice choice) {
         return new ChoiceResponse(choice.getId(), choice.getContent(), choice.getSequence());
     }
+
+    @Transactional
+    public void deleteAllByQuestion(Question question) {
+        choiceRepository.deleteAllByQuestion(question);
+    }
 }
