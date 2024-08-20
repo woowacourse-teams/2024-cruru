@@ -7,7 +7,7 @@ export default function useSignIn() {
   const signInMutate = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => authApi.login({ email, password }),
     onSuccess: ({ clubId }) => {
-      navigate(`dashboard/${clubId}/posts`);
+      navigate(`/dashboard/${clubId}/posts`);
     },
     onError: (error) => {
       window.alert(error.message);
