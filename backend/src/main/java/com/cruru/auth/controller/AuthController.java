@@ -1,7 +1,9 @@
 package com.cruru.auth.controller;
 
 import com.cruru.auth.controller.dto.LoginRequest;
+import com.cruru.auth.controller.dto.LoginResponse;
 import com.cruru.auth.service.facade.AuthFacade;
+import com.cruru.club.service.facade.ClubFacade;
 import com.cruru.global.util.CookieManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthFacade authFacade;
+    private final ClubFacade clubFacade;
     private final CookieManager cookieManager;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         String token = authFacade.login(request);
+        long clubId = clubFacade.findByMemberEmail(request.email());
         ResponseCookie cookie = cookieManager.createTokenCookie(token);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
+                .body(new LoginResponse(clubId));
     }
 }
