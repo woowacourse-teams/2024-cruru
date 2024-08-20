@@ -1,6 +1,6 @@
 package com.cruru.applyform.service;
 
-import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
@@ -21,7 +21,7 @@ public class ApplyFormService {
     private String applyPostBaseUrl;
 
     @Transactional
-    public ApplyForm create(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+    public ApplyForm create(ApplyFormRequest request, Dashboard createdDashboard) {
         ApplyForm applyForm = toApplyForm(request, createdDashboard);
 
         ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
@@ -32,7 +32,7 @@ public class ApplyFormService {
         return savedApplyForm;
     }
 
-    private ApplyForm toApplyForm(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+    private ApplyForm toApplyForm(ApplyFormRequest request, Dashboard createdDashboard) {
         return new ApplyForm(
                 request.title(),
                 request.postingContent(),
@@ -50,5 +50,26 @@ public class ApplyFormService {
     public ApplyForm findByDashboard(Dashboard dashboard) {
         return applyFormRepository.findByDashboard(dashboard)
                 .orElseThrow(ApplyFormNotFoundException::new);
+    }
+
+    @Transactional
+    public void update(ApplyFormRequest request, long applyFormId) {
+        ApplyForm applyForm = findById(applyFormId);
+        if (changeExists(request, applyForm)) {
+            applyForm.updateApplyForm(
+                    request.title(),
+                    request.postingContent(),
+                    request.startDate(),
+                    request.endDate()
+            );
+        }
+    }
+
+    private boolean changeExists(ApplyFormRequest request, ApplyForm applyForm) {
+        return !(applyForm.getTitle().equals(request.title()) &&
+                applyForm.getDescription().equals(request.postingContent()) &&
+                applyForm.getStartDate().equals(request.startDate()) &&
+                applyForm.getEndDate().equals(request.endDate())
+        );
     }
 }

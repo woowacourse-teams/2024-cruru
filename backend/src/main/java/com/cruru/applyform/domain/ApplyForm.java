@@ -85,6 +85,18 @@ public class ApplyForm extends BaseEntity {
         this.dashboard = dashboard;
     }
 
+    public void updateApplyForm(
+            String title,
+            String description,
+            LocalDateTime startDate,
+            LocalDateTime endDate) {
+        validateDate(startDate, endDate);
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -1,18 +1,19 @@
 package com.cruru.applyform.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-public record ApplyFormCreateRequest(
+public record ApplyFormRequest(
         @NotBlank(message = "제목은 필수 값입니다.")
         String title,
 
         String postingContent,
 
-        @NotBlank(message = "시작 날짜는 필수 값입니다.")
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
         LocalDateTime startDate,
 
-        @NotBlank(message = "종료 날짜는 필수 값입니다.")
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
         LocalDateTime endDate
 ) {
 

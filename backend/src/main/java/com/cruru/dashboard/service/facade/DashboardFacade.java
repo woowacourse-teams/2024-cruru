@@ -2,7 +2,7 @@ package com.cruru.dashboard.service.facade;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.club.domain.Club;
@@ -49,8 +49,8 @@ public class DashboardFacade {
         return createdDashboard.getId();
     }
 
-    private ApplyFormCreateRequest toApplyFormCreateRequest(DashboardCreateRequest request) {
-        return new ApplyFormCreateRequest(
+    private ApplyFormRequest toApplyFormCreateRequest(DashboardCreateRequest request) {
+        return new ApplyFormRequest(
                 request.title(),
                 request.postingContent(),
                 request.startDate(),

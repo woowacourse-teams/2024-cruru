@@ -5,6 +5,7 @@ import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
@@ -65,5 +66,10 @@ public class ApplyFormFacade {
         if (!request.personalDataCollection()) {
             throw new PersonalDataCollectDisagreeException();
         }
+    }
+
+    @Transactional
+    public void update(ApplyFormRequest request, long applyFormId) {
+        applyFormService.update(request, applyFormId);
     }
 }
