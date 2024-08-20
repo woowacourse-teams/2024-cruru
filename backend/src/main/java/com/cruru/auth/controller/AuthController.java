@@ -7,6 +7,7 @@ import com.cruru.club.service.facade.ClubFacade;
 import com.cruru.global.util.CookieManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class AuthController {
         long clubId = clubFacade.findByMemberEmail(request.email());
         ResponseCookie cookie = cookieManager.createTokenCookie(token);
         return ResponseEntity.ok()
-                .header(cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new LoginResponse(clubId));
     }
 }
