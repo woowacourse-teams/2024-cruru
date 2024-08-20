@@ -1,6 +1,7 @@
 package com.cruru.answer.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.answer.domain.Answer;
@@ -9,6 +10,7 @@ import com.cruru.answer.dto.AnswerResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.exception.badrequest.ReplyNotExistsException;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
@@ -63,6 +65,18 @@ class AnswerServiceTest extends ServiceTest {
                 () -> assertThat(actualAnswer).hasSize(1),
                 () -> assertThat(content).isEqualTo(reply)
         );
+    }
+
+    @DisplayName("질문에 대한 지원자의 답변이 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void savedAnswerReplies_replyNotExists() {
+        // given
+        List<String> replies1 = List.of();
+        AnswerCreateRequest request = new AnswerCreateRequest(question1.getId(), replies1);
+
+        // when&then
+        assertThatThrownBy(() -> answerService.saveAnswerReplies(request, question1, applicant))
+                .isInstanceOf(ReplyNotExistsException.class);
     }
 
     @DisplayName("지원자의 응답을 조회한다.")
