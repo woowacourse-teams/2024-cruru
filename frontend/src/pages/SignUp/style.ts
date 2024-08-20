@@ -1,5 +1,14 @@
 import styled from '@emotion/styled';
 
+const Layout = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const SignInContainer = styled.form`
   width: 40rem;
   padding: 4rem;
@@ -95,6 +104,7 @@ const Message = styled.div<{ isValid: boolean }>`
 `;
 
 const S = {
+  Layout,
   SignInContainer,
   Title,
   Description,
