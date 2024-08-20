@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import ErrorPage from '@pages/ErrorPage';
+import SignIn from '@pages/SignIn';
+import SignUp from '@pages/SignUp';
 import Dashboard from '@pages/Dashboard';
 import RecruitmentPost from '@pages/RecruitmentPost';
 import ConfirmApply from '@pages/ConfirmApply';
@@ -17,6 +19,14 @@ const router = createBrowserRouter(
       element: <App />,
       errorElement: <ErrorPage />,
       children: [
+        {
+          path: '/sign-in',
+          element: <SignIn />,
+        },
+        {
+          path: '/sign-up',
+          element: <SignUp />,
+        },
         {
           path: 'post/:postId',
           element: <RecruitmentPost />,
