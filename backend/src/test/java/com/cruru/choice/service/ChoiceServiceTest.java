@@ -110,4 +110,18 @@ class ChoiceServiceTest extends ServiceTest {
         int expectedSize = choices.size();
         assertThat(actualChoices).hasSize(expectedSize);
     }
+
+    @DisplayName("해당 question의 선택지를 모두 삭제한다.")
+    @Test
+    void deleteAllByQuestion() {
+        // given
+        Question question = questionRepository.save(QuestionFixture.multipleChoiceType(null));
+        choiceRepository.save(ChoiceFixture.second(question));
+
+        // when
+        choiceService.deleteAllByQuestion(question);
+
+        // then
+        assertThat(choiceRepository.findAllByQuestion(question)).isEmpty();
+    }
 }

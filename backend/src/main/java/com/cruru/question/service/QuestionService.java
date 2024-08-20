@@ -45,6 +45,7 @@ public class QuestionService {
         );
     }
 
+    @Transactional
     public void deleteAllByApplyForm(ApplyForm applyForm) {
         List<Question> questions = questionRepository.findAllByApplyForm(applyForm);
         for (Question question : questions) {
