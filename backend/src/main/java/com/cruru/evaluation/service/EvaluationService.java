@@ -37,7 +37,7 @@ public class EvaluationService {
         Evaluation evaluation = evaluationRepository.findById(evaluationId)
                 .orElseThrow(EvaluationNotFoundException::new);
 
-        if (evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score())) {
+        if (nothingToChange(request, evaluation)) {
             return;
         }
 
@@ -50,5 +50,9 @@ public class EvaluationService {
                         evaluation.getApplicant()
                 )
         );
+    }
+
+    private boolean nothingToChange(EvaluationUpdateRequest request, Evaluation evaluation) {
+        return evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score());
     }
 }
