@@ -41,6 +41,11 @@ const Asterisk = styled.span`
   font-size: ${({ theme }) => theme.typography.heading[500]};
 `;
 
+const Description = styled.p<{ disabled: boolean }>`
+  ${({ theme }) => theme.typography.common.small};
+  color: ${({ theme, disabled }) => (disabled ? theme.baseColors.grayscale[400] : theme.baseColors.grayscale[600])};
+`;
+
 const Input = styled.input<{ isError: boolean }>`
   ${({ theme }) => commonInputStyles(theme)}
   ${({ theme, isError }) => css`
@@ -87,6 +92,7 @@ const LengthText = styled.p`
 const S = {
   LabelWrapper,
   Label,
+  Description,
   Asterisk,
   Wrapper,
   Input,

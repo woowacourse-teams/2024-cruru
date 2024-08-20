@@ -23,6 +23,10 @@ const meta = {
         'Input 위에 표시되는 레이블입니다. 레이블이 전달되지 않는 경우 표시되지 않으며, Input이 required면 라벨 뒤에 *가 표시됩니다.',
       control: { type: 'text' },
     },
+    description: {
+      description: 'Input 위에 표시되는 설명입니다. 설명이 전달되지 않는 경우 표시되지 않습니다.',
+      control: { type: 'text' },
+    },
     value: {
       description: 'Input의 값입니다.',
       control: false,
@@ -84,6 +88,31 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     label: '필드',
+    placeholder: '여기에 직접 입력해보세요.',
+    required: true,
+    disabled: false,
+    isLengthVisible: false,
+    maxLength: 50,
+  },
+};
+
+export const ShortDescription: Story = {
+  args: {
+    label: '필드',
+    description: '여기에 어떤 설명이 들어갈까요?',
+    placeholder: '여기에 직접 입력해보세요.',
+    required: true,
+    disabled: false,
+    isLengthVisible: false,
+    maxLength: 50,
+  },
+};
+
+export const LongDescription: Story = {
+  args: {
+    label: '필드',
+    description:
+      '여기에 어떤 설명이 들어갈까요? 여기에 어떤 설명이 들어갈까요? 여기에 어떤 설명이 들어갈까요? 여기에 어떤 설명이 들어갈까요? ',
     placeholder: '여기에 직접 입력해보세요.',
     required: true,
     disabled: false,
