@@ -60,6 +60,14 @@ public class Question {
         return questionType.hasChoice();
     }
 
+    public boolean isShortAnswer() {
+        return questionType == QuestionType.SHORT_ANSWER;
+    }
+
+    public boolean isLongAnswer() {
+        return questionType == QuestionType.LONG_ANSWER;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

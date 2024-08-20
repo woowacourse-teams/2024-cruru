@@ -1,5 +1,6 @@
 package com.cruru.answer.domain;
 
+import com.cruru.answer.exception.AnswerContentLengthException;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.question.domain.Question;
 import jakarta.persistence.Column;
@@ -22,11 +23,15 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Answer {
 
+    private static final int SHORT_ANSWER_MAX_LENGTH = 50;
+    private static final int LONG_ANSWER_MAX_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,9 +43,26 @@ public class Answer {
     private Applicant applicant;
 
     public Answer(String content, Question question, Applicant applicant) {
+        validateContentLengthByQuestionType(content, question);
         this.content = content;
         this.question = question;
         this.applicant = applicant;
+    }
+
+    private void validateContentLengthByQuestionType(String content, Question question) {
+        if (question.isShortAnswer()) {
+            validateContentLength(SHORT_ANSWER_MAX_LENGTH, content.length());
+        }
+
+        if (question.isLongAnswer()) {
+            validateContentLength(LONG_ANSWER_MAX_LENGTH, content.length());
+        }
+    }
+
+    private void validateContentLength(int maxLength, int currentLength) {
+        if (currentLength > maxLength) {
+            throw new AnswerContentLengthException(maxLength, currentLength);
+        }
     }
 
     @Override
