@@ -75,7 +75,8 @@ class ApplicantFacadeTest extends ServiceTest {
                 () -> assertThat(applicantResponse.id()).isEqualTo(applicant.getId()),
                 () -> assertThat(applicantResponse.name()).isEqualTo(applicant.getName()),
                 () -> assertThat(applicantResponse.email()).isEqualTo(applicant.getEmail()),
-                () -> assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone())
+                () -> assertThat(applicantResponse.phone()).isEqualTo(applicant.getPhone()),
+                () -> assertThat(applicantResponse.isRejected()).isEqualTo(applicant.isRejected())
         );
     }
 

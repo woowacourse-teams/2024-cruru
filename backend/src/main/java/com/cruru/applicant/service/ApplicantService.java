@@ -90,6 +90,7 @@ public class ApplicantService {
                 applicant.getName(),
                 applicant.getEmail(),
                 applicant.getPhone(),
+                applicant.isRejected(),
                 applicant.getCreatedDate()
         );
     }
