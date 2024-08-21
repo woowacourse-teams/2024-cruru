@@ -14,9 +14,12 @@ const isValidEmail = (email: string): email is EmailAddress => regex.email.test(
 type PhoneNumber = Branded<string, 'PhoneNumber'>;
 const isValidPhoneNumber = (phone: string): phone is PhoneNumber => regex.phone.test(phone);
 
+type Name = Branded<string, 'Name'>;
+const isValidName = (name: string): name is Name => !regex.name.test(name);
+
 export const validateName = {
   onBlur: (name: string) => {
-    if (regex.name.test(name)) {
+    if (!isValidName(name)) {
       throw new ValidationError({ inputName: 'name', message: '한글, 영문, 공백, - 만 입력해 주세요.' });
     }
 
@@ -26,7 +29,7 @@ export const validateName = {
   },
 
   onChange: (name: string) => {
-    if (regex.name.test(name)) {
+    if (!isValidName(name)) {
       throw new ValidationError({ inputName: 'name', message: '한글, 영문, 공백, - 만 입력해 주세요.' });
     }
   },
