@@ -2,8 +2,8 @@ package com.cruru.applyform.controller;
 
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
@@ -226,7 +226,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .when().get("/v1/applyform/{applyFormId}", -1)
                 .then().log().all().statusCode(404);
     }
-    
+
     @DisplayName("지원서 폼을 성공적으로 수정하면, 200을 응답한다.")
     @Test
     void update() {

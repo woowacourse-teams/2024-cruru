@@ -7,8 +7,6 @@ import com.cruru.applicant.controller.dto.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
