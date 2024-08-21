@@ -78,13 +78,13 @@ class ApplyFormServiceTest extends ServiceTest {
 
     @DisplayName("지원 공고 생성 시 시작 날짜가 현재 날짜보다 이전일 경우 예외가 발생한다.")
     @Test
-    void startDateInPast() {
+    void create_startDateInPast() {
         // given
         String title = "title";
         String description = "description";
         LocalDateTime startDate = LocalDateTime.now().minusDays(1);
         LocalDateTime endDate = LocalDateTime.now().plusDays(1);
-        ApplyFormCreateRequest request = new ApplyFormCreateRequest(title, description, startDate, endDate);
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, description, startDate, endDate);
 
         // when&then
         assertThatThrownBy(() -> applyFormService.create(request, dashboard))
@@ -143,7 +143,8 @@ class ApplyFormServiceTest extends ServiceTest {
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "", toChangeStartDate, toChangeEndDate, dashboard);
+        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "",
+                toChangeStartDate, toChangeEndDate, dashboard);
 
         // when
         applyFormService.update(toUpdateApplyForm);
@@ -156,5 +157,23 @@ class ApplyFormServiceTest extends ServiceTest {
                 () -> assertThat(actual.getStartDate()).isEqualTo(toChangeStartDate),
                 () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
         );
+    }
+
+    @DisplayName("지원 공고 수정 시 시작 날짜가 현재 날짜보다 이전일 경우 예외가 발생한다.")
+    @Test
+    void update_startDateInPast() {
+        // given
+        String title = "title";
+        String description = "description";
+        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description, "",
+                startDate, endDate, dashboard);
+
+        // when&then
+        assertThatThrownBy(() -> applyFormService.update(newApplyForm))
+                .isInstanceOf(StartDatePastException.class);
     }
 }

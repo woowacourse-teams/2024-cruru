@@ -52,6 +52,12 @@ public class ApplyFormService {
         }
     }
 
+    @Transactional
+    public void update(ApplyForm applyForm) {
+        validateStartDateNotInPast(applyForm);
+        applyFormRepository.save(applyForm);
+    }
+
     public ApplyForm findById(long applyFormId) {
         return applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
@@ -60,10 +66,5 @@ public class ApplyFormService {
     public ApplyForm findByDashboard(Dashboard dashboard) {
         return applyFormRepository.findByDashboard(dashboard)
                 .orElseThrow(ApplyFormNotFoundException::new);
-    }
-
-    @Transactional
-    public void update(ApplyForm applyForm) {
-        applyFormRepository.save(applyForm);
     }
 }
