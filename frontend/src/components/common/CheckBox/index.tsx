@@ -5,9 +5,17 @@ import S from './styles';
 interface CheckBoxProps extends StyleProps {
   onToggle: (checked: boolean) => void;
   name?: string;
+  required?: boolean;
 }
 
-export default function CheckBox({ width = '1.6rem', isChecked, onToggle, isDisabled = false, name }: CheckBoxProps) {
+export default function CheckBox({
+  width = '1.6rem',
+  isChecked,
+  onToggle,
+  isDisabled = false,
+  name,
+  required = false,
+}: CheckBoxProps) {
   return (
     <S.CheckBoxContainer
       width={width}
@@ -21,6 +29,7 @@ export default function CheckBox({ width = '1.6rem', isChecked, onToggle, isDisa
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onToggle(e.target.checked)}
         disabled={isDisabled}
         name={name}
+        required={required}
       />
       <S.IconWrapper isDisabled={isDisabled}>{isChecked && <HiCheck />}</S.IconWrapper>
     </S.CheckBoxContainer>
