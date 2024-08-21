@@ -13,7 +13,7 @@ const authHandlers = [
   http.post(`${AUTH}/login`, async ({ request }) => {
     const body = (await request.json()) as LoginFormData;
 
-    if (!body.email || !body.password || body.email !== 'admin@gmail.com' || body.password !== 'admin') {
+    if (!body.email || !body.password || body.email !== 'member@mail.com' || body.password !== 'qwer1234') {
       return new Response(null, {
         status: 401,
         statusText: '[Mock Data Error] Login Failed',
