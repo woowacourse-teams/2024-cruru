@@ -43,10 +43,11 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
 
   return (
     <ToastContext.Provider value={providerValue}>
-      {toastList.map(({ type, message }) => (
+      {toastList.map(({ id, type, message }) => (
         <ToastModal
           type={type}
           message={message}
+          key={id}
         />
       ))}
       {children}
