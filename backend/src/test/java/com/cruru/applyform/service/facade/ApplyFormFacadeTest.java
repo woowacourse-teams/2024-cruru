@@ -14,6 +14,7 @@ import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
+import com.cruru.applyform.exception.badrequest.InvalidSubmitDateException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
@@ -128,6 +129,27 @@ class ApplyFormFacadeTest extends ServiceTest {
         Long applyFormId = applyForm.getId();
         assertThatThrownBy(() -> applyFormFacade.submit(applyFormId, notAgreedRequest))
                 .isInstanceOf(PersonalDataCollectDisagreeException.class);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 지원 날짜 범위 밖이면 예외가 발생한다.")
+    @Test
+    void submit_invalidSubmitDate() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        ApplyForm pastApplyForm = applyFormRepository.save(new ApplyForm(
+                "지난 모집 공고", "description", "url",
+                now.minusDays(2), now.minusDays(1), null));
+        ApplyForm futureApplyForm = applyFormRepository.save(new ApplyForm(
+                "미래의 모집 공고", "description", "url",
+                now.plusDays(1), now.plusDays(2), null));
+
+        // when&then
+        assertAll(
+                () -> assertThatThrownBy(() -> applyFormFacade.submit(pastApplyForm.getId(), applyFormSubmitrequest))
+                        .isInstanceOf(InvalidSubmitDateException.class),
+                () -> assertThatThrownBy(() -> applyFormFacade.submit(futureApplyForm.getId(), applyFormSubmitrequest))
+                        .isInstanceOf(InvalidSubmitDateException.class)
+        );
     }
 
     @DisplayName("지원서 폼 제출 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")

@@ -4,7 +4,9 @@ import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
+import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class ApplyFormService {
     @Transactional
     public ApplyForm create(ApplyFormWriteRequest request, Dashboard createdDashboard) {
         ApplyForm applyForm = toApplyForm(request, createdDashboard);
+        validateStartDateNotInPast(applyForm);
 
         ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
         Long savedPostingId = savedApplyForm.getId();
@@ -40,6 +43,13 @@ public class ApplyFormService {
                 request.endDate(),
                 createdDashboard
         );
+    }
+
+    private void validateStartDateNotInPast(ApplyForm applyForm) {
+        LocalDateTime startDate = applyForm.getStartDate();
+        if (startDate.isBefore(LocalDateTime.now())) {
+            throw new StartDatePastException(startDate, LocalDateTime.now());
+        }
     }
 
     public ApplyForm findById(long applyFormId) {

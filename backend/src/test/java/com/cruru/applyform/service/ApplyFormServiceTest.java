@@ -9,6 +9,7 @@ import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
+import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.repository.ProcessRepository;
@@ -73,6 +74,21 @@ class ApplyFormServiceTest extends ServiceTest {
                 () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
                 () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
         );
+    }
+
+    @DisplayName("지원 공고 생성 시 시작 날짜가 현재 날짜보다 이전일 경우 예외가 발생한다.")
+    @Test
+    void startDateInPast() {
+        // given
+        String title = "title";
+        String description = "description";
+        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        ApplyFormCreateRequest request = new ApplyFormCreateRequest(title, description, startDate, endDate);
+
+        // when&then
+        assertThatThrownBy(() -> applyFormService.create(request, dashboard))
+                .isInstanceOf(StartDatePastException.class);
     }
 
     @DisplayName("지원서 폼 질문 조회에 성공한다.")
