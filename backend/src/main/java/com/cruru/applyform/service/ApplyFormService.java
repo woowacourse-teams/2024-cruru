@@ -56,11 +56,16 @@ public class ApplyFormService {
     public void update(ApplyFormRequest request, long applyFormId) {
         ApplyForm applyForm = findById(applyFormId);
         if (changeExists(request, applyForm)) {
-            applyForm.updateApplyForm(
-                    request.title(),
-                    request.postingContent(),
-                    request.startDate(),
-                    request.endDate()
+            applyFormRepository.save(
+                    new ApplyForm(
+                            applyFormId,
+                            request.title(),
+                            request.postingContent(),
+                            applyForm.getUrl(),
+                            request.startDate(),
+                            request.endDate(),
+                            applyForm.getDashboard()
+                    )
             );
         }
     }
