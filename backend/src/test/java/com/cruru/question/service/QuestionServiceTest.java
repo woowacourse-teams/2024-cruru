@@ -145,6 +145,9 @@ class QuestionServiceTest extends ServiceTest {
         questionService.deleteAllByApplyForm(applyForm);
 
         // then
-        assertThat(questionRepository.findAllByApplyForm(applyForm)).isEmpty();
+        assertAll(
+                () -> assertThat(questionRepository.findAllByApplyForm(applyForm)).isEmpty(),
+                () -> assertThat(choiceRepository.findAllByQuestion(question)).isEmpty()
+        );
     }
 }

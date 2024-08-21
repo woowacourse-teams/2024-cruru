@@ -22,10 +22,8 @@ public class QuestionFacade {
     public void update(QuestionUpdateRequests request, long applyFormId) {
         ApplyForm applyForm = applyFormService.findById(applyFormId);
         questionService.deleteAllByApplyForm(applyForm);
-        List<QuestionCreateRequest> updates = request.questions();
+        List<QuestionCreateRequest> newQuestions = request.questions();
 
-        for (QuestionCreateRequest update : updates) {
-            questionService.create(update, applyForm);
-        }
+        newQuestions.forEach(question -> questionService.create(question, applyForm));
     }
 }
