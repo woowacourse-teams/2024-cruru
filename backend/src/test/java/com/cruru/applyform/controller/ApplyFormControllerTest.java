@@ -14,6 +14,7 @@ import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
@@ -233,8 +234,8 @@ class ApplyFormControllerTest extends ControllerTest {
         // given
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
-        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
-        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneHourLater();
+        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(

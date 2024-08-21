@@ -84,7 +84,7 @@ class ApplyFormServiceTest extends ServiceTest {
         String title = "title";
         String description = "description";
         LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
-        LocalDateTime endDate = LocalDateFixture.endDate();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, description, startDate, endDate);
 
         // when&then
@@ -167,7 +167,7 @@ class ApplyFormServiceTest extends ServiceTest {
         String title = "title";
         String description = "description";
         LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
-        LocalDateTime endDate = LocalDateFixture.endDate();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description, "",
