@@ -116,10 +116,6 @@ public class Applicant extends BaseEntity {
         return process.isApproveType();
     }
 
-    public boolean isRejected() {
-        return isRejected;
-    }
-
     public boolean isNotRejected() {
         return !isRejected;
     }
