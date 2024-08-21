@@ -90,7 +90,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const addQuestion = () => {
     setApplyState((prev) => [
       ...prev,
-      { type: 'SHORT_ANSWER', question: '', choices: [], required: false, id: uniqueId },
+      { type: 'SHORT_ANSWER', question: '', choices: [], required: true, id: uniqueId },
     ]);
 
     setUniqueId(uniqueId + 1);
