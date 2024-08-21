@@ -1,6 +1,7 @@
 import Logo from '@assets/images/logo.svg';
 import Accordion from '@components/common/Accordion';
 import { Link, useParams } from 'react-router-dom';
+import LogoutButton from './LogoutButton';
 import S from './style';
 
 interface Option {
@@ -37,6 +38,8 @@ export default function DashboardSidebar({ options }: DashboardSidebarProps) {
           ))}
         </Accordion>
       </S.Contents>
+
+      <LogoutButton />
     </S.Container>
   );
 }
