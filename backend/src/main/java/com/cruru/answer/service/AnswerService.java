@@ -5,6 +5,7 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.answer.dto.AnswerResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.exception.badrequest.ReplyNotExistsException;
 import com.cruru.question.domain.Question;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,11 @@ public class AnswerService {
 
     @Transactional
     public void saveAnswerReplies(AnswerCreateRequest answerCreateRequest, Question question, Applicant applicant) {
-        for (String reply : answerCreateRequest.replies()) {
+        List<String> replies = answerCreateRequest.replies();
+        if (question.getRequired() && replies.isEmpty()) {
+            throw new ReplyNotExistsException();
+        }
+        for (String reply : replies) {
             Answer answer = new Answer(reply, question, applicant);
             answerRepository.save(answer);
         }
