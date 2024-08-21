@@ -36,6 +36,9 @@ export const useAnswers = (questions: Question[]) => {
     setAnswers((prev) => ({ ...prev, [id]: [value] }));
   };
 
+  const isRequiredFieldsIncomplete = () =>
+    questions.some((question) => question.required && answers[question.questionId]?.length === 0);
+
   return {
     answers,
     changeHandler: {
@@ -44,5 +47,6 @@ export const useAnswers = (questions: Question[]) => {
       MULTIPLE_CHOICE: handleCheckBox,
       SINGLE_CHOICE: handleRadio,
     },
+    isRequiredFieldsIncomplete,
   };
 };
