@@ -14,7 +14,7 @@ const membersHandlers = [
     const body = (await request.json()) as LoginFormData;
 
     if (!body.email || !body.password || !body.clubName || !body.phone) {
-      return new Response(null, {
+      return new Response(JSON.stringify({ detail: '회원가입 정보를 확인하세요.' }), {
         status: 401,
         statusText: '[Mock Data Error] Sign Up Failed',
       });

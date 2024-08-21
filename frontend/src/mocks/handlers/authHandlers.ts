@@ -11,9 +11,8 @@ const authHandlers = [
     const body = (await request.json()) as LoginFormData;
 
     if (!body.email || !body.password || body.email !== 'admin@gmail.com' || body.password !== 'admin') {
-      return new Response(null, {
+      return new Response(JSON.stringify({ detail: '로그인 정보가 일치하지 않습니다.' }), {
         status: 401,
-        statusText: '[Mock Data Error] Login Failed',
       });
     }
 
@@ -23,7 +22,6 @@ const authHandlers = [
 
     return new Response(responseBody, {
       status: 201,
-      statusText: 'Created',
       headers: {
         'Content-Type': 'application/json',
       },
