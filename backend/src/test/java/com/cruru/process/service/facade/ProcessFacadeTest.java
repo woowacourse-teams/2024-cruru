@@ -9,6 +9,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
@@ -82,8 +83,11 @@ class ProcessFacadeTest extends ServiceTest {
         applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
-        evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
-        evaluationRepository.save(EvaluationFixture.fourPoints(process, applicant));
+        List<Evaluation> evaluations = List.of(
+                EvaluationFixture.fivePoints(process, applicant),
+                EvaluationFixture.fourPoints(process, applicant)
+        );
+        evaluationRepository.saveAll(evaluations);
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(dashboard.getId());
@@ -96,7 +100,7 @@ class ProcessFacadeTest extends ServiceTest {
                 () -> assertThat(processResponses.processResponses()).hasSize(1),
                 () -> assertThat(processId).isEqualTo(process.getId()),
                 () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant.getId()),
-                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(1),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations.size()),
                 () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.5)
         );
     }
