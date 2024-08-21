@@ -22,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public abstract class ControllerTest {
+public class ControllerTest {
 
     private static final Clock FIXED_TIME = LocalDateFixture.fixedClock();
 
