@@ -53,6 +53,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -75,6 +76,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -97,6 +99,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -111,6 +114,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().get(url)
                 .then().log().all().statusCode(200);
@@ -127,6 +131,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().patch("/v1/evaluations/{evaluationId}", evaluation.getId())
@@ -143,6 +148,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().patch("/v1/evaluations/{evaluationId}", -1)

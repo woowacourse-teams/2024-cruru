@@ -74,7 +74,7 @@ class DashboardControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(ClubFixture.create());
+        club = clubRepository.save(ClubFixture.create(defaultMember));
     }
 
     @DisplayName("대시보드 생성 성공 시, 201을 응답한다.")
@@ -96,6 +96,7 @@ class DashboardControllerTest extends ControllerTest {
         // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .body(request)
                 .when().post(url)
                 .then().log().all().statusCode(201);
@@ -119,6 +120,7 @@ class DashboardControllerTest extends ControllerTest {
         // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .body(request)
                 .when().post(url)
                 .then().log().all().statusCode(400);
@@ -134,6 +136,7 @@ class DashboardControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get(url)
                 .then().log().all().statusCode(200);
     }

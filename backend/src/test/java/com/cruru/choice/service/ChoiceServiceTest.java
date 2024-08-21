@@ -11,14 +11,12 @@ import com.cruru.choice.domain.Choice;
 import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
 import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
-import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ChoiceFixture;
-import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -86,8 +84,7 @@ class ChoiceServiceTest extends ServiceTest {
     @Test
     void createAllThrowsWithChoiceEmptyBadRequestException() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
         Question dropdownQuestion = questionRepository.save(QuestionFixture.dropdownType(applyForm));
         List<ChoiceCreateRequest> choiceRequests = List.of();
 

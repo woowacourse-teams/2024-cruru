@@ -77,6 +77,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -105,6 +106,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -132,6 +134,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -158,6 +161,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -180,6 +184,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -197,6 +202,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().get("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
@@ -213,6 +219,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().get("/v1/applyform/{applyFormId}", -1)
                 .then().log().all().statusCode(404);

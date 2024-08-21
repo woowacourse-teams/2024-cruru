@@ -2,6 +2,8 @@ package com.cruru.answer.domain;
 
 import com.cruru.answer.exception.AnswerContentLengthException;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.auth.util.SecureResource;
+import com.cruru.member.domain.Member;
 import com.cruru.question.domain.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Answer {
+public class Answer implements SecureResource {
 
     private static final int SHORT_ANSWER_MAX_LENGTH = 50;
     private static final int LONG_ANSWER_MAX_LENGTH = 1000;
@@ -63,6 +65,11 @@ public class Answer {
         if (currentLength > maxLength) {
             throw new AnswerContentLengthException(maxLength, currentLength);
         }
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return applicant.isAuthorizedBy(member);
     }
 
     @Override
