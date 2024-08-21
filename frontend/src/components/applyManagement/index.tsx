@@ -4,7 +4,7 @@ import useApplyManagement from '@hooks/useApplyManagement';
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import createSimpleKey from '@utils/createSimpleKey';
 import QuestionBuilder from '@components/dashboard/DashboardCreate/Apply/QuestionBuilder';
-import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS } from '@constants/constants';
+import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 
 import S from './style';
 
@@ -46,7 +46,7 @@ export default function ApplyManagement() {
         </S.SectionTitleContainer>
 
         {applyState.map((question, index) => {
-          if (index >= 3) {
+          if (index >= DEFAULT_QUESTIONS.length) {
             return (
               // eslint-disable-next-line react/no-array-index-key
               <S.QuestionsContainer key={createSimpleKey(`${index}-${question.question}`)}>
@@ -67,7 +67,7 @@ export default function ApplyManagement() {
           return null;
         })}
 
-        {applyState.length < DEFAULT_QUESTIONS.length && (
+        {applyState.length < MAX_QUESTION_LENGTH && (
           <S.AddQuestionButton
             type="button"
             onClick={addQuestion}
