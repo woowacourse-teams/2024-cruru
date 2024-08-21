@@ -118,10 +118,6 @@ public class Applicant extends BaseEntity implements SecureResource {
         return process.isApproveType();
     }
 
-    public boolean isRejected() {
-        return isRejected;
-    }
-
     public boolean isNotRejected() {
         return !isRejected;
     }

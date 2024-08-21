@@ -13,7 +13,6 @@ import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
-import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -77,11 +76,10 @@ public class ProcessService {
     public Process update(ProcessUpdateRequest request, long processId) {
         Process process = findById(processId);
 
-        if (nothingToChange(request, process)) {
-            throw new ProcessNoChangeException();
+        if (changeExists(request, process)) {
+            process.updateName(request.name());
+            process.updateDescription(request.description());
         }
-        process.updateName(request.name());
-        process.updateDescription(request.description());
 
         return process;
     }
@@ -91,8 +89,8 @@ public class ProcessService {
                 .orElseThrow(ProcessNotFoundException::new);
     }
 
-    private boolean nothingToChange(ProcessUpdateRequest request, Process process) {
-        return request.name().equals(process.getName()) && request.description().equals(process.getDescription());
+    private boolean changeExists(ProcessUpdateRequest request, Process process) {
+        return !(request.name().equals(process.getName()) && request.description().equals(process.getDescription()));
     }
 
     @Transactional

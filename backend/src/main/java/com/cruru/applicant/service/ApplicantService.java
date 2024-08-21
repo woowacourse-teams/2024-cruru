@@ -8,7 +8,6 @@ import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.applicant.exception.badrequest.ApplicantNoChangeException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.process.domain.Process;
@@ -36,10 +35,9 @@ public class ApplicantService {
     @Transactional
     public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
         Applicant applicant = findById(applicantId);
-        if (notChangedInformation(request, applicant)) {
-            throw new ApplicantNoChangeException();
+        if (changeExists(request, applicant)) {
+            applicant.updateInfo(request.name(), request.email(), request.phone());
         }
-        applicant.updateInfo(request.name(), request.email(), request.phone());
     }
 
     public Applicant findById(long applicantId) {
@@ -47,9 +45,11 @@ public class ApplicantService {
                 .orElseThrow(ApplicantNotFoundException::new);
     }
 
-    private boolean notChangedInformation(ApplicantUpdateRequest request, Applicant applicant) {
-        return applicant.getName().equals(request.name()) && applicant.getEmail().equals(request.email())
-                && applicant.getPhone().equals(request.phone());
+    private boolean changeExists(ApplicantUpdateRequest request, Applicant applicant) {
+        return !(applicant.getName().equals(request.name())
+                && applicant.getEmail().equals(request.email())
+                && applicant.getPhone().equals(request.phone())
+        );
     }
 
     @Transactional
@@ -90,17 +90,23 @@ public class ApplicantService {
                 applicant.getName(),
                 applicant.getEmail(),
                 applicant.getPhone(),
+                applicant.isRejected(),
                 applicant.getCreatedDate()
         );
     }
 
-    public ApplicantCardResponse toApplicantCardResponse(Applicant applicant, int evaluationCount) {
+    public ApplicantCardResponse toApplicantCardResponse(
+            Applicant applicant,
+            int evaluationCount,
+            double averageScore
+    ) {
         return new ApplicantCardResponse(
                 applicant.getId(),
                 applicant.getName(),
                 applicant.getCreatedDate(),
                 applicant.isRejected(),
-                evaluationCount
+                evaluationCount,
+                averageScore
         );
     }
 }

@@ -86,7 +86,8 @@ public class ProcessFacade {
 
     private ApplicantCardResponse toApplicantCardResponse(Process process, Applicant applicant) {
         int evaluationCount = evaluationService.count(process, applicant);
-        return applicantService.toApplicantCardResponse(applicant, evaluationCount);
+        double averageScore = evaluationService.calculateAverageScore(process, applicant);
+        return applicantService.toApplicantCardResponse(applicant, evaluationCount, averageScore);
     }
 
     @Transactional

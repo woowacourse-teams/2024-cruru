@@ -11,7 +11,6 @@ import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.evaluation.exception.EvaluationNotFoundException;
-import com.cruru.evaluation.exception.badrequest.EvaluationNoChangeException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -127,20 +126,5 @@ class EvaluationServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> evaluationService.update(request, invalidId))
                 .isInstanceOf(EvaluationNotFoundException.class);
-    }
-
-    @DisplayName("평가 수정 시, 수정된 내용이 없을 경우 예외가 발생한다.")
-    @Test
-    void update_evaluationNotChanged() {
-        // given
-        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
-        long validId = evaluation.getId();
-        int notChangedScore = 5;
-        String notChangedContent = "서류가 인상 깊었습니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(notChangedScore, notChangedContent);
-
-        // when & then
-        assertThatThrownBy(() -> evaluationService.update(request, validId))
-                .isInstanceOf(EvaluationNoChangeException.class);
     }
 }

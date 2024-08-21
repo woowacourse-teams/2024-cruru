@@ -3,7 +3,9 @@ package com.cruru.answer.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.answer.domain.Answer;
+import com.cruru.question.domain.Question;
 import com.cruru.util.RepositoryTest;
+import com.cruru.util.fixture.QuestionFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,8 @@ class AnswerRepositoryTest extends RepositoryTest {
     @Test
     void sameIdUpdate() {
         //given
-        Answer answer = new Answer("체육 전공입니다.", null, null);
+        Question question = QuestionFixture.shortAnswerType(null);
+        Answer answer = new Answer("체육 전공입니다.", question, null);
         Answer saved = answerRepository.save(answer);
 
         //when
@@ -40,8 +43,9 @@ class AnswerRepositoryTest extends RepositoryTest {
     @Test
     void saveNoId() {
         //given
-        Answer answer1 = new Answer("체육 전공입니다.", null, null);
-        Answer answer2 = new Answer("음악 전공입니다.", null, null);
+        Question question = QuestionFixture.shortAnswerType(null);
+        Answer answer1 = new Answer("체육 전공입니다.", question, null);
+        Answer answer2 = new Answer("음악 전공입니다.", question, null);
 
         //when
         Answer savedAnswer1 = answerRepository.save(answer1);

@@ -3,9 +3,13 @@ package com.cruru.process.service.facade;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.applicant.controller.dto.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
@@ -73,7 +77,11 @@ class ProcessFacadeTest extends ServiceTest {
         applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
         Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
-        evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
+        List<Evaluation> evaluations = List.of(
+                EvaluationFixture.fivePoints(process, applicant),
+                EvaluationFixture.fourPoints(process, applicant)
+        );
+        evaluationRepository.saveAll(evaluations);
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(loginProfile, defaultDashboard.getId());
@@ -81,13 +89,13 @@ class ProcessFacadeTest extends ServiceTest {
         // then
         ProcessResponse firstProcessResponse = processResponses.processResponses().get(0);
         long processId = firstProcessResponse.id();
-        long applicantCardId = firstProcessResponse.applicantCardResponses().get(0).id();
-        int applicantEvaluationCount = firstProcessResponse.applicantCardResponses().get(0).evaluationCount();
+        ApplicantCardResponse applicantCardResponse = firstProcessResponse.applicantCardResponses().get(0);
         assertAll(
                 () -> assertThat(processResponses.processResponses()).hasSize(1),
                 () -> assertThat(processId).isEqualTo(process.getId()),
-                () -> assertThat(applicantCardId).isEqualTo(applicant.getId()),
-                () -> assertThat(applicantEvaluationCount).isEqualTo(1)
+                () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations.size()),
+                () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.5)
         );
     }
 

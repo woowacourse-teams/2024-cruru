@@ -36,7 +36,7 @@ public class Question {
 
     private Integer sequence;
 
-    private Boolean required;
+    private boolean required;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_form_id")
@@ -58,6 +58,14 @@ public class Question {
 
     public boolean hasChoice() {
         return questionType.hasChoice();
+    }
+
+    public boolean isShortAnswer() {
+        return questionType == QuestionType.SHORT_ANSWER;
+    }
+
+    public boolean isLongAnswer() {
+        return questionType == QuestionType.LONG_ANSWER;
     }
 
     @Override

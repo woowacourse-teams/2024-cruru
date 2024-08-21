@@ -88,7 +88,7 @@ class DashboardControllerTest extends ControllerTest {
                 "크루루대시보드",
                 "# 공고 내용",
                 questionCreateRequests,
-                LocalDateTime.of(2000, 1, 1, 0, 0),
+                LocalDateTime.now().plusDays(1),
                 LocalDateTime.of(2999, 12, 31, 23, 59)
         );
         String url = String.format("/v1/dashboards?clubId=%d", club.getId());
