@@ -5,11 +5,11 @@ import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
-import com.cruru.applyform.exception.badrequest.InvalidSubmitDateException;
+import com.cruru.applyform.exception.badrequest.ApplyFormSubmitOutOfPeriodException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.dashboard.domain.Dashboard;
@@ -74,7 +74,7 @@ public class ApplyFormFacade {
     private void validateSubmitDate(ApplyForm applyForm) {
         LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(applyForm.getStartDate()) || now.isAfter(applyForm.getEndDate())) {
-            throw new InvalidSubmitDateException();
+            throw new ApplyFormSubmitOutOfPeriodException();
         }
     }
 
