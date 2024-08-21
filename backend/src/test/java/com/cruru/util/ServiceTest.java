@@ -22,13 +22,10 @@ public class ServiceTest {
 
     @Autowired
     private DbCleaner dbCleaner;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private ClubRepository clubRepository;
-
     @Autowired
     private DashboardRepository dashboardRepository;
 
@@ -36,7 +33,6 @@ public class ServiceTest {
     protected Club defaultClub;
     protected Dashboard defaultDashboard;
     protected LoginProfile loginProfile;
-
 
     @BeforeEach
     void resetDb() {
