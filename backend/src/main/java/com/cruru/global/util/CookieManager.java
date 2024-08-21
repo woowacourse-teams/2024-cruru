@@ -46,4 +46,15 @@ public class CookieManager {
                 .maxAge(cookieProperties.maxAge())
                 .build();
     }
+
+    public ResponseCookie clearTokenCookie() {
+        return ResponseCookie.from(cookieProperties.accessTokenKey())
+                .httpOnly(cookieProperties.httpOnly())
+                .secure(cookieProperties.secure())
+                .domain(cookieProperties.domain())
+                .path(cookieProperties.path())
+                .sameSite(cookieProperties.sameSite())
+                .maxAge(0)
+                .build();
+    }
 }
