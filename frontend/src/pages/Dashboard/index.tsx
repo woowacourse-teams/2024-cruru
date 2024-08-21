@@ -83,7 +83,7 @@ export default function Dashboard() {
       </Tab.TabPanel>
 
       <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
-        {currentMenu === '지원서 관리' && <ApplyManagement />}
+        <ApplyManagement />
       </Tab.TabPanel>
     </S.AppContainer>
   );
