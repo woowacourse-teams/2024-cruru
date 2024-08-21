@@ -1,5 +1,6 @@
 package com.cruru.global;
 
+import com.cruru.auth.exception.IllegalCookieException;
 import com.cruru.auth.exception.LoginUnauthorizedException;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
@@ -36,7 +37,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         try {
             String token = cookieManager.extractToken(request);
             return authService.isTokenValid(token);
-        } catch (Exception IllegalCookieException) {
+        } catch (IllegalCookieException e) {
             throw new LoginUnauthorizedException();
         }
     }
