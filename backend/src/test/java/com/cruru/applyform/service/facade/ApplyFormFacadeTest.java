@@ -59,7 +59,6 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Autowired
     private ApplyFormFacade applyFormFacade;
 
-    private Dashboard dashboard;
     private Process firstProcess;
     private Process finalProcess;
     private ApplyForm applyForm;
@@ -69,7 +68,7 @@ class ApplyFormFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        dashboard = dashboardRepository.save(DashboardFixture.backend(null));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(null));
         firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
         finalProcess = processRepository.save(ProcessFixture.approveType(dashboard));
         applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
