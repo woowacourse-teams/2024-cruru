@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @DisplayName("동아리 서비스 테스트")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class ClubServiceTest extends ServiceTest {
 
     @Autowired
