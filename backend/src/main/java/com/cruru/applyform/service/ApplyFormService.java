@@ -56,30 +56,4 @@ public class ApplyFormService {
     public void update(ApplyForm applyForm) {
         applyFormRepository.save(applyForm);
     }
-
-//    @Transactional
-//    public void update(ApplyFormRequest request, long applyFormId) {
-//        ApplyForm applyForm = findById(applyFormId);
-//        if (changeExists(request, applyForm)) {
-//            applyFormRepository.save(
-//                    new ApplyForm(
-//                            applyFormId,
-//                            request.title(),
-//                            request.postingContent(),
-//                            applyForm.getUrl(),
-//                            request.startDate(),
-//                            request.endDate(),
-//                            applyForm.getDashboard()
-//                    )
-//            );
-//        }
-//    }
-//
-//    private boolean changeExists(ApplyFormRequest request, ApplyForm applyForm) {
-//        return !(applyForm.getTitle().equals(request.title()) &&
-//                applyForm.getDescription().equals(request.postingContent()) &&
-//                applyForm.getStartDate().equals(request.startDate()) &&
-//                applyForm.getEndDate().equals(request.endDate())
-//        );
-//    }
 }
