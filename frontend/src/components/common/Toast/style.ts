@@ -1,12 +1,40 @@
 /* eslint-disable default-case */
 /* eslint-disable consistent-return */
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface ToastContainerProps {
   type: 'default' | 'success' | 'error' | 'primary';
 }
 
-const ToastContainer = styled.div<ToastContainerProps>`
+const slideIn = keyframes`
+  from {
+    transform: translateY(-20px) translateX(-50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(-50%);
+    opacity: 1;
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+    transform: translateY(0) translateX(-50%);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-20px) translateX(-50%);
+    opacity: 0;
+  }
+`;
+
+const ToastContainer = styled.div<ToastContainerProps & { visible: boolean }>`
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   min-width: 20rem;
   max-width: max(50vw, 32rem);
   display: flex;
@@ -36,6 +64,10 @@ const ToastContainer = styled.div<ToastContainerProps>`
   color: ${({ type, theme }) =>
     type === 'default' ? theme.baseColors.grayscale[800] : theme.baseColors.grayscale[50]};
   ${({ theme }) => theme.typography.common.block}
+
+  animation: ${({ visible }) => (visible ? slideIn : slideOut)} 0.5s ease-out;
+  animation-fill-mode: forwards;
+  z-index: 1000;
 `;
 
 const Message = styled.div`

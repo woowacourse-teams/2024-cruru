@@ -26,6 +26,14 @@ const meta: Meta<typeof Toast> = {
       options: ['default', 'success', 'error', 'primary'],
       defaultValue: 'default',
     },
+    visible: {
+      description: 'Toast의 렌더링 여부입니다.',
+      control: { type: 'boolean' },
+      defaultValue: true,
+    },
+  },
+  args: {
+    visible: true,
   },
 };
 
