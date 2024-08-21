@@ -17,6 +17,7 @@ import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
@@ -82,8 +83,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String title = "title";
         String description = "description";
-        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
+        LocalDateTime endDate = LocalDateFixture.endDate();
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, description, startDate, endDate);
 
         // when&then
@@ -165,8 +166,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String title = "title";
         String description = "description";
-        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
+        LocalDateTime endDate = LocalDateFixture.endDate();
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description, "",
