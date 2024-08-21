@@ -126,8 +126,8 @@ class DashboardFacadeTest extends ServiceTest {
         applicantRepository.saveAll(applicants);
 
         // when
-        DashboardsOfClubResponse dashboardsOfClubResponse = dashboardFacade.findAllDashboardsByClubId(loginProfile,
-                club.getId());
+        DashboardsOfClubResponse dashboardsOfClubResponse =
+                dashboardFacade.findAllDashboardsByClubId(loginProfile, club.getId());
 
         // then
         DashboardPreviewResponse dashboardPreview = dashboardsOfClubResponse.dashboardPreviewResponses().get(0);
