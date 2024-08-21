@@ -2,6 +2,7 @@ package com.cruru.applyform.controller;
 
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -17,6 +18,7 @@ import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
@@ -223,5 +225,26 @@ class ApplyFormControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .when().get("/v1/applyform/{applyFormId}", -1)
                 .then().log().all().statusCode(404);
+    }
+    
+    @DisplayName("지원서 폼을 성공적으로 수정하면, 200을 응답한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
+        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate);
+
+        // when&then
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().patch("/v1/applyform/{applyFormId}", applyForm.getId())
+                .then().log().all().statusCode(200);
     }
 }

@@ -2,7 +2,7 @@ package com.cruru.dashboard.service.facade;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.auth.controller.dto.LoginProfile;
@@ -51,15 +51,15 @@ public class DashboardFacade {
         AuthChecker.checkAuthority(club, member);
 
         Dashboard createdDashboard = dashboardService.create(club);
-        ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
+        ApplyForm applyForm = applyFormService.create(toApplyFormWriteRequest(request), createdDashboard);
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
         }
         return createdDashboard.getId();
     }
 
-    private ApplyFormCreateRequest toApplyFormCreateRequest(DashboardCreateRequest request) {
-        return new ApplyFormCreateRequest(
+    private ApplyFormWriteRequest toApplyFormWriteRequest(DashboardCreateRequest request) {
+        return new ApplyFormWriteRequest(
                 request.title(),
                 request.postingContent(),
                 request.startDate(),
