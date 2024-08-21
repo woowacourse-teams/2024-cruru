@@ -13,8 +13,7 @@ import theme from './styles/theme';
 
 import AppRouter from './router/AppRouter';
 
-const PROD_URL = 'https://www.cruru.kr';
-const DEV_URL = 'https://beta.cruru.kr';
+const { PROD_URL, DEV_URL } = process.env;
 
 async function setPrev() {
   if (process.env.NODE_ENV === 'development') {
