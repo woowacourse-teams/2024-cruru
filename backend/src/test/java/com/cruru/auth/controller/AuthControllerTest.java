@@ -59,4 +59,15 @@ class AuthControllerTest extends ControllerTest {
                 .when().post("/v1/auth/login")
                 .then().log().all().statusCode(401);
     }
+
+    @DisplayName("로그아웃을 성공하면 204를 반환한다.")
+    @Test
+    void logout() {
+        // when&&then
+        RestAssured.given().log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .when().post("/v1/auth/logout")
+                .then().log().all().statusCode(204);
+    }
 }

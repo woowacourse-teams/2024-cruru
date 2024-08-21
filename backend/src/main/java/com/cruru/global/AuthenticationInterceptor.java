@@ -1,5 +1,7 @@
 package com.cruru.global;
 
+import com.cruru.auth.exception.IllegalCookieException;
+import com.cruru.auth.exception.LoginUnauthorizedException;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,17 +21,24 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            return true;
-        }
-
-        String token = cookieManager.extractToken(request);
-
-        if (authService.isTokenValid(token)) {
+        if (isOptionsRequest(request) || isAuthenticated(request)) {
             return true;
         }
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return false;
+    }
+
+    private boolean isOptionsRequest(HttpServletRequest request) {
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
+    }
+
+    private boolean isAuthenticated(HttpServletRequest request) {
+        try {
+            String token = cookieManager.extractToken(request);
+            return authService.isTokenValid(token);
+        } catch (IllegalCookieException e) {
+            throw new LoginUnauthorizedException();
+        }
     }
 }
