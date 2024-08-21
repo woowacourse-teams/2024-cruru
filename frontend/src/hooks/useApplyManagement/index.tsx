@@ -51,10 +51,10 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
 
   useEffect(() => {
     if (data && data.length > 0) {
-      setApplyState(() => {
-        const newData = getQuestions(data);
-        return [...DEFAULT_QUESTIONS, ...newData];
-      });
+      const newData = getQuestions(data);
+      const newApplyState = [...DEFAULT_QUESTIONS, ...newData];
+      setApplyState(newApplyState);
+      setUniqueId(newApplyState.length);
     }
   }, [data]);
 
