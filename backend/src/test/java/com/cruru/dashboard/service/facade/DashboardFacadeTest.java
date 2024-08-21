@@ -70,7 +70,7 @@ class DashboardFacadeTest extends ServiceTest {
                 new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
         String title = "크루루대시보드";
         String postingContent = "# 공고 내용";
-        LocalDateTime startDate = LocalDateTime.of(2000, 1, 1, 0, 0);
+        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
         LocalDateTime endDate = LocalDateTime.of(2999, 12, 31, 23, 59);
         DashboardCreateRequest request = new DashboardCreateRequest(
                 title,
