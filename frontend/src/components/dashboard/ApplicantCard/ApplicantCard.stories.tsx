@@ -34,6 +34,7 @@ export const ApplicantCardDefault: Story = {
     name: '홍길동',
     createdAt: '2023-07-15T09:00:00Z',
     evaluationCount: 2,
+    averageScore: 3.86,
     isRejected: false,
     popOverMenuItems: [
       {
@@ -57,6 +58,7 @@ export const RejectedApplicantCard: Story = {
     name: '홍길동',
     createdAt: '2023-07-15T09:00:00Z',
     evaluationCount: 2,
+    averageScore: 2.23,
     isRejected: true,
     popOverMenuItems: [
       {
