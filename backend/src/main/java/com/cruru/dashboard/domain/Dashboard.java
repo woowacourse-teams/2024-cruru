@@ -36,9 +36,6 @@ public class Dashboard implements VerificationTarget {
         this.club = club;
     }
 
-    public boolean isOwner(Member member) {
-        return this.club.isOwner(member);
-    }
 
     @Override
     public boolean isAuthenticated(Member member) {

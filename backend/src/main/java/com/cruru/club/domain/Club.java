@@ -71,10 +71,6 @@ public class Club implements VerificationTarget {
         return !NAME_PATTERN.matcher(name).matches();
     }
 
-    public boolean isOwner(Member member) {
-        return this.member.equals(member);
-    }
-
     @Override
     public boolean isAuthenticated(Member member) {
         return this.member.equals(member);

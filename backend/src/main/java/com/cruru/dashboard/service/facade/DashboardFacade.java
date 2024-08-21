@@ -1,12 +1,12 @@
 package com.cruru.dashboard.service.facade;
 
-import com.cruru.advice.ForbiddenException;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.auth.controller.dto.LoginProfile;
+import com.cruru.auth.util.AuthChecker;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
@@ -48,7 +48,7 @@ public class DashboardFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
 
-        validateOwner(club, member);
+        AuthChecker.validateAuthority(club, member);
 
         Dashboard createdDashboard = dashboardService.create(club);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
@@ -56,12 +56,6 @@ public class DashboardFacade {
             questionService.create(questionCreateRequest, applyForm);
         }
         return createdDashboard.getId();
-    }
-
-    private void validateOwner(Club club, Member member) {
-        if (!club.isOwner(member)) {
-            throw new ForbiddenException();
-        }
     }
 
     private ApplyFormCreateRequest toApplyFormCreateRequest(DashboardCreateRequest request) {
@@ -83,7 +77,7 @@ public class DashboardFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
 
-        validateOwner(club, member);
+        AuthChecker.validateAuthority(club, member);
 
         List<Dashboard> dashboardIds = dashboardService.findAllByClub(club);
 

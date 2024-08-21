@@ -110,10 +110,6 @@ public class Process implements VerificationTarget {
         this.sequence++;
     }
 
-    public boolean isOwner(Member member) {
-        return dashboard.isOwner(member);
-    }
-
     @Override
     public boolean isAuthenticated(Member member) {
         return dashboard.isAuthenticated(member);

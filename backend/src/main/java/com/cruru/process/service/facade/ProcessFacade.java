@@ -1,6 +1,5 @@
 package com.cruru.process.service.facade;
 
-import com.cruru.advice.ForbiddenException;
 import com.cruru.applicant.controller.dto.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
@@ -94,22 +93,16 @@ public class ProcessFacade {
     public ProcessResponse update(LoginProfile loginProfile, ProcessUpdateRequest request, long processId) {
         Member member = memberService.findByEmail(loginProfile.email());
         Process process = processService.findById(processId);
-        validateOwner(process, member);
+        AuthChecker.validateAuthority(process, member);
         processService.update(request, process.getId());
         return toProcessResponse(process);
-    }
-
-    private void validateOwner(Process process, Member member) {
-        if (!process.isOwner(member)) {
-            throw new ForbiddenException();
-        }
     }
 
     @Transactional
     public void delete(LoginProfile loginProfile, long processId) {
         Member member = memberService.findByEmail(loginProfile.email());
         Process process = processService.findById(processId);
-        validateOwner(process, member);
+        AuthChecker.validateAuthority(process, member);
         processService.delete(processId);
     }
 }
