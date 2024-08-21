@@ -73,7 +73,7 @@ export default function ProcessModifyForm({
 
       <C.ButtonWrapper>
         <Button
-          disabled={process.description === formState.description}
+          disabled={process.name === formState.name && process.description === formState.description}
           type="submit"
           color="white"
           size="fillContainer"
