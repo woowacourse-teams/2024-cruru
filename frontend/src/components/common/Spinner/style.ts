@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 export interface StyleProps {
   width?: number;
+  color?: 'white' | 'primary';
 }
 
 const bounceDelay = keyframes`
@@ -17,6 +18,8 @@ const bounceDelay = keyframes`
 const Spinner = styled.div<StyleProps>`
   --design-width: ${({ width }) => (width ? `${width}px` : '100%')};
   --design-height: ${({ width }) => (width ? `${width * 0.23}px` : '1.8rem')};
+  --design-color: ${({ theme, color }) =>
+    color === 'primary' ? theme.colors.brand.primary : theme.baseColors.grayscale[50]};
 
   display: flex;
   justify-content: center;
@@ -28,7 +31,7 @@ const Bounce = styled.div`
   width: var(--design-height);
   aspect-ratio: 1/1;
 
-  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+  background-color: var(--design-color);
   border-radius: 100%;
   animation: ${bounceDelay} 1.4s infinite ease-in-out both;
 

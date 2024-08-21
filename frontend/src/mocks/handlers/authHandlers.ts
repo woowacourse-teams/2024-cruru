@@ -1,6 +1,7 @@
 /* eslint-disable no-promise-executor-return */
 import { AUTH } from '@api/endPoint';
 import { http } from 'msw';
+import { Success } from './response';
 
 interface LoginFormData {
   email: string;
@@ -31,6 +32,11 @@ const authHandlers = [
         'Content-Type': 'application/json',
       },
     });
+  }),
+
+  http.post(`${AUTH}/logout`, async () => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    return Success();
   }),
 ];
 
