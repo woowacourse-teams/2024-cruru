@@ -2,8 +2,6 @@ version: '3.8'
 
 services:
   database-mysql:
-    profiles:
-      - mysql
     container_name: database-container
     image: mysql/mysql-server:latest
     environment:
@@ -21,8 +19,6 @@ services:
         ipv4_address: ${DB_IP_ADDRESS}
 
   application:
-    profiles:
-      - server
     container_name: app_container
     platform: linux/arm64
     depends_on:
