@@ -166,8 +166,8 @@ class ApplyFormFacadeTest extends ServiceTest {
         // given
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
-        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
-        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
+        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
