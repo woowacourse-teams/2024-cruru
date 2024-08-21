@@ -95,13 +95,18 @@ public class ApplicantService {
         );
     }
 
-    public ApplicantCardResponse toApplicantCardResponse(Applicant applicant, int evaluationCount) {
+    public ApplicantCardResponse toApplicantCardResponse(
+            Applicant applicant,
+            int evaluationCount,
+            double averageScore
+    ) {
         return new ApplicantCardResponse(
                 applicant.getId(),
                 applicant.getName(),
                 applicant.getCreatedDate(),
                 applicant.isRejected(),
-                evaluationCount
+                evaluationCount,
+                averageScore
         );
     }
 }
