@@ -10,7 +10,6 @@ import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.MemberFixture;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,10 +45,5 @@ public class ServiceTest {
         defaultClub = clubRepository.save(ClubFixture.create(defaultMember));
         defaultDashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         loginProfile = new LoginProfile(defaultMember.getEmail(), defaultMember.getRole());
-    }
-
-    @AfterEach()
-    void cleanUp() {
-        dbCleaner.truncateEveryTable();
     }
 }
