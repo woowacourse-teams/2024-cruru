@@ -39,6 +39,12 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
     <div>로딩 중입니다...</div>;
   }
 
+  const isNextBtnValid =
+    applyState.length === DEFAULT_QUESTIONS.length ||
+    applyState
+      .slice(DEFAULT_QUESTIONS.length)
+      .every((question) => question.question.trim() && question.choices.length !== 1);
+
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     modifyApplyQuestionsMutator.mutate();
@@ -102,6 +108,7 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
             type="button"
             color="primary"
             size="fillContainer"
+            disabled={!isNextBtnValid}
             onClick={handleSubmit}
           >
             수정하기
