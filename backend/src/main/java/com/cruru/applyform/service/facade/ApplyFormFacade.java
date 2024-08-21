@@ -70,6 +70,27 @@ public class ApplyFormFacade {
 
     @Transactional
     public void update(ApplyFormRequest request, long applyFormId) {
-        applyFormService.update(request, applyFormId);
+        ApplyForm applyForm = applyFormService.findById(applyFormId);
+
+        if (changeExists(request, applyForm)) {
+            ApplyForm toUpdateApplyForm = new ApplyForm(
+                    applyFormId,
+                    request.title(),
+                    request.postingContent(),
+                    applyForm.getUrl(),
+                    request.startDate(),
+                    request.endDate(),
+                    applyForm.getDashboard()
+            );
+            applyFormService.update(toUpdateApplyForm);
+        }
+    }
+
+    private boolean changeExists(ApplyFormRequest request, ApplyForm applyForm) {
+        return !(applyForm.getTitle().equals(request.title()) &&
+                applyForm.getDescription().equals(request.postingContent()) &&
+                applyForm.getStartDate().equals(request.startDate()) &&
+                applyForm.getEndDate().equals(request.endDate())
+        );
     }
 }

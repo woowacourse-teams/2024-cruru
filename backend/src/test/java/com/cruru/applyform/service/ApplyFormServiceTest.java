@@ -127,12 +127,10 @@ class ApplyFormServiceTest extends ServiceTest {
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyFormRequest request = new ApplyFormRequest(
-                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
-        );
+        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "", toChangeStartDate, toChangeEndDate, dashboard);
 
         // when
-        applyFormService.update(request, applyForm.getId());
+        applyFormService.update(toUpdateApplyForm);
 
         // then
         ApplyForm actual = applyFormRepository.findById(applyForm.getId()).get();
