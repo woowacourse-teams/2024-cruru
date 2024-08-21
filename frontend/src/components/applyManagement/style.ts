@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
 
-const Wrapper = styled.main`
+const Wrapper = styled.div`
   width: 100%;
+  min-width: 50rem;
+
   display: flex;
   flex-direction: column;
   gap: 4rem;
+
+  justify-content: center;
+  padding: 2rem 6rem;
 `;
 
 const Section = styled.section`
