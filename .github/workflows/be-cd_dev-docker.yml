@@ -129,17 +129,17 @@ jobs:
         else
           echo "mysql_running=false" >> $GITHUB_ENV
         fi
-
-    - name: Stop and remove existing application container
-      run: |
-        sudo docker-compose -f docker-compose.dev.yml stop application
-        sudo docker-compose -f docker-compose.dev.yml rm -f application
-
+        
     - name: Start MySQL container if not running
       if: env.mysql_running == 'false'
       run: |
         sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d database-mysql
 
+    - name: Stop and remove existing application container
+      run: |
+        sudo docker-compose -f docker-compose.dev.yml stop application
+        sudo docker-compose -f docker-compose.dev.yml rm -f application
+        
     - name: Run application Server container
       run: |
         sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d application
