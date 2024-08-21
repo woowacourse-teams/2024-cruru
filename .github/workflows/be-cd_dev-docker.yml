@@ -121,25 +121,33 @@ jobs:
         COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}
         EOF
 
-    - name: Check if MySQL container is running
-      id: mysql_running
-      run: |
-        if [ "$(sudo docker ps -q -f name=database-container)" ]; then
-          echo "mysql_running=true" >> $GITHUB_ENV
-        else
-          echo "mysql_running=false" >> $GITHUB_ENV
-        fi
+    # - name: Check if MySQL container is running
+    #   id: mysql_running
+    #   run: |
+    #     if [ "$(sudo docker ps -q -f name=database-container)" ]; then
+    #       echo "mysql_running=true" >> $GITHUB_ENV
+    #     else
+    #       echo "mysql_running=false" >> $GITHUB_ENV
+    #     fi
         
-    - name: Start MySQL container if not running
-      if: env.mysql_running == 'false'
-      run: |
-        sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d database-mysql
+    # - name: Start MySQL container if not running
+    #   if: env.mysql_running == 'false'
+    #   run: |
+    #     sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d database-mysql
+
+    # - name: Stop and remove existing application container
+    #   run: |
+    #     sudo docker-compose -f docker-compose.dev.yml stop application
+    #     sudo docker-compose -f docker-compose.dev.yml rm -f application
+        
+    # - name: Run application Server container
+    #   run: |
+    #     sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d application
 
     - name: Stop and remove existing application container
       run: |
-        sudo docker-compose -f docker-compose.dev.yml stop application
-        sudo docker-compose -f docker-compose.dev.yml rm -f application
+        sudo docker-compose -f docker-compose.dev.yml down --rmi all
         
     - name: Run application Server container
       run: |
-        sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d application
+        sudo docker-compose -f docker-compose.dev.yml up -d
