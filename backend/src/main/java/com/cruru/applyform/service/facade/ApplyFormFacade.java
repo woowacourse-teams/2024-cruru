@@ -17,7 +17,7 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import com.cruru.question.domain.Question;
 import com.cruru.question.service.QuestionService;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,8 +72,11 @@ public class ApplyFormFacade {
     }
 
     private void validateSubmitDate(ApplyForm applyForm) {
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isBefore(applyForm.getStartDate()) || now.isAfter(applyForm.getEndDate())) {
+        LocalDate now = LocalDate.now();
+        // 추후 날짜가 아닌 시간까지 검증하는 경우 수정 필요
+        LocalDate startDate = applyForm.getStartDate().toLocalDate();
+        LocalDate endDate = applyForm.getEndDate().toLocalDate();
+        if (now.isBefore(startDate) || now.isAfter(endDate)) {
             throw new ApplyFormSubmitOutOfPeriodException();
         }
     }
