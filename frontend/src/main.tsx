@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client';
 
 import { ModalProvider } from '@contexts/ModalContext';
 import { Global, ThemeProvider } from '@emotion/react';
+import ToastProvider from '@contexts/ToastContext';
 
 import { BASE_URL } from '@constants/constants';
 import globalStyles from './styles/globalStyles';
@@ -52,7 +53,9 @@ setPrev().then(() => {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <Global styles={globalStyles()} />
-            <AppRouter />
+            <ToastProvider>
+              <AppRouter />
+            </ToastProvider>
           </ThemeProvider>
         </QueryClientProvider>
       </ModalProvider>
