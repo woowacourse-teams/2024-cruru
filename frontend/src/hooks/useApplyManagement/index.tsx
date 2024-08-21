@@ -28,6 +28,7 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
   return data
     .sort((a, b) => a.orderIndex - b.orderIndex)
     .map((question) => ({
+      id: Number(question.questionId),
       type: question.type,
       question: question.label,
       choices: question.choices.map((choice) => ({
