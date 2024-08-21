@@ -56,7 +56,6 @@ const TabPanel = styled.div<{ isVisible: boolean }>`
   height: 85%;
   padding: 2rem 0;
 
-  overflow-y: scroll;
   ${hideScrollBar};
 
   transition: transform 0.2s ease-in-out;

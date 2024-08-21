@@ -1,19 +1,21 @@
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import useApplyManagement from '@hooks/useApplyManagement';
 
 import { HiOutlinePlusCircle } from 'react-icons/hi';
-import createSimpleKey from '@utils/createSimpleKey';
 import QuestionBuilder from '@components/dashboard/DashboardCreate/Apply/QuestionBuilder';
 import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 
 import S from './style';
 
-export default function ApplyManagement() {
+export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const { postId } = useParams<{ postId: string }>() as {
     postId: string;
   };
 
   const {
+    isLoading,
     applyState,
     addQuestion,
     setQuestionTitle,
@@ -25,8 +27,14 @@ export default function ApplyManagement() {
     deleteQuestion,
   } = useApplyManagement({ postId });
 
+  useEffect(() => {
+    if (isVisible && wrapperRef.current && !isLoading) {
+      wrapperRef.current.scrollTop = 0;
+    }
+  }, [isVisible, isLoading]);
+
   return (
-    <S.Wrapper>
+    <S.Wrapper ref={wrapperRef}>
       <S.Section>
         <S.SectionTitleContainer>
           <h2>{APPLY_QUESTION_HEADER.defaultQuestions.title}</h2>
@@ -48,8 +56,7 @@ export default function ApplyManagement() {
         {applyState.map((question, index) => {
           if (index >= DEFAULT_QUESTIONS.length) {
             return (
-              // eslint-disable-next-line react/no-array-index-key
-              <S.QuestionsContainer key={createSimpleKey(`${index}-${question.question}`)}>
+              <S.QuestionsContainer key={question.id}>
                 <QuestionBuilder
                   index={index}
                   question={question}

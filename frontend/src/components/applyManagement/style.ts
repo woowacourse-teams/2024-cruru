@@ -2,17 +2,17 @@ import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
   width: 100%;
-  min-width: 50rem;
+  height: 100%;
+  padding: 2rem 6rem;
 
   display: flex;
   flex-direction: column;
   gap: 4rem;
 
-  justify-content: center;
-  padding: 2rem 6rem;
+  overflow-y: auto;
 `;
 
-const Section = styled.section`
+const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;

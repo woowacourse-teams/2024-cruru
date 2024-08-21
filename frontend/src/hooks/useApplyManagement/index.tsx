@@ -6,6 +6,7 @@ import { applyQueries } from '@hooks/apply';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
 
 interface UseApplyManagementReturn {
+  isLoading: boolean;
   applyState: Question[];
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
@@ -38,7 +39,7 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
 }
 
 export default function useApplyManagement({ postId }: UseApplyManagementProps): UseApplyManagementReturn {
-  const { data } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
+  const { data, isLoading } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
 
@@ -134,6 +135,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   };
 
   return {
+    isLoading,
     applyState,
     addQuestion,
     setQuestionTitle,
