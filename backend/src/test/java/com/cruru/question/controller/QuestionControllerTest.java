@@ -39,7 +39,7 @@ class QuestionControllerTest extends ControllerTest {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(questionUpdateRequests)
-                .when().patch("/v1/question?applyformId={applyformId}", applyForm.getId())
+                .when().patch("/v1/questions?applyformId={applyformId}", applyForm.getId())
                 .then().log().all().statusCode(200);
     }
 }
