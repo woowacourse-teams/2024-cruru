@@ -25,7 +25,9 @@ const applicantHandlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
+
   http.get(`${APPLICANTS}/:applicantId`, () => HttpResponse.json(specificApplicant)),
+
   http.patch(`${APPLICANTS}/:applicantId/reject`, ({ params }) => {
     const { applicantId } = params;
 
@@ -33,6 +35,15 @@ const applicantHandlers = [
 
     return HttpResponse.json({ status: 200 });
   }),
+
+  http.patch(`${APPLICANTS}/:applicantId/unreject`, ({ params }) => {
+    const { applicantId } = params;
+
+    console.log(`${applicantId}지원자(들)을/를 불합격을 취소합니다.`);
+
+    return HttpResponse.json({ status: 200 });
+  }),
+
   http.get(`${APPLICANTS}/:applicantId/detail`, () => HttpResponse.json(applicantDetail)),
 ];
 

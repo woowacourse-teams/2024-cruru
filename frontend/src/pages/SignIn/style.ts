@@ -1,6 +1,15 @@
 import styled from '@emotion/styled';
 
-const SignUpContainer = styled.div`
+const Layout = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SignUpContainer = styled.form`
   width: 40rem;
   padding: 4rem;
   border-radius: 1.6rem;
@@ -40,6 +49,7 @@ const LinkContainer = styled.div`
 `;
 
 const S = {
+  Layout,
   SignUpContainer,
   Title,
   ButtonContainer,

@@ -25,6 +25,17 @@ const specificApplicant = {
     });
   },
 
+  useUnrejectApplicant: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.unreject({ applicantId }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+      },
+    });
+  },
+
   useGetDetailInfo: ({ applicantId }: UseSpecificApplicantProps) =>
     useQuery<ApplicantDetail>({
       queryKey: [QUERY_KEYS.DETAIL_APPLICANT, applicantId],
