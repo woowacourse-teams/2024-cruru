@@ -5,9 +5,9 @@ import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.exception.badrequest.InvalidSubmitDateException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
@@ -17,7 +17,8 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import com.cruru.question.domain.Question;
 import com.cruru.question.service.QuestionService;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,8 +73,11 @@ public class ApplyFormFacade {
     }
 
     private void validateSubmitDate(ApplyForm applyForm) {
-        LocalDateTime now = LocalDateTime.now();
-        if (now.isBefore(applyForm.getStartDate()) || now.isAfter(applyForm.getEndDate())) {
+        LocalDate now = LocalDate.now();
+        // 추후 날짜가 아닌 시간까지 검증하는 경우 수정 필요
+        ChronoLocalDate startDate = ChronoLocalDate.from(applyForm.getStartDate());
+        ChronoLocalDate endDate = ChronoLocalDate.from(applyForm.getEndDate());
+        if (now.isBefore(startDate) || now.isAfter(endDate)) {
             throw new InvalidSubmitDateException();
         }
     }
