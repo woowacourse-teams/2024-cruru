@@ -57,7 +57,7 @@ class QuestionFacadeTest extends ServiceTest {
                                 newChoice.getSequence()
                         )),
                         newQuestion.getSequence(),
-                        newQuestion.getRequired()
+                        newQuestion.isRequired()
                 )));
 
         // when
@@ -73,7 +73,7 @@ class QuestionFacadeTest extends ServiceTest {
                 () -> assertThat(actualQuestion.getQuestionType()).isEqualTo(newQuestion.getQuestionType()),
                 () -> assertThat(actualQuestion.getContent()).isEqualTo(newQuestion.getContent()),
                 () -> assertThat(actualQuestion.getSequence()).isEqualTo(newQuestion.getSequence()),
-                () -> assertThat(actualQuestion.getRequired()).isEqualTo(newQuestion.getRequired()),
+                () -> assertThat(actualQuestion.isRequired()).isEqualTo(newQuestion.isRequired()),
 
                 () -> assertThat(actualChoices).hasSize(1),
                 () -> assertThat(actualChoice.getContent()).isEqualTo(newChoice.getContent()),
