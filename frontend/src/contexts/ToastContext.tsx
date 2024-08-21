@@ -1,5 +1,5 @@
 import { ToastModal } from '@components/common/Toast';
-import { createContext, useState, ReactNode, useContext, useMemo, useCallback } from 'react';
+import { createContext, useState, ReactNode, useContext, useMemo, useCallback, useRef } from 'react';
 
 type ToastContextType = {
   alert: (message: string) => void;
@@ -14,7 +14,7 @@ const ToastContext = createContext<ToastContextType | null>(null);
 
 export default function ToastProvider({ children }: { children: ReactNode }) {
   const [toastList, setToastList] = useState<{ id: number; type: ToastType; message: string }[]>([]);
-  const [nextId, setNextId] = useState(0);
+  const idRef = useRef(0);
 
   const removeToast = (id: number) => {
     setToastList((prev) => prev.filter((toast) => toast.id !== id));
@@ -22,13 +22,13 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
 
   const handleAlert = useCallback(
     (type: ToastType) => (message: string) => {
-      const id = nextId;
+      const id = idRef.current;
       setToastList((prev) => [...prev, { id, type, message }]);
-      setNextId(nextId + 1);
+      idRef.current += 1;
 
       setTimeout(() => removeToast(id), 4000);
     },
-    [nextId],
+    [],
   );
 
   const providerValue = useMemo(
