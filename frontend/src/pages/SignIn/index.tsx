@@ -10,14 +10,14 @@ export default function SignIn() {
   const { formData, register } = useForm({ initialValues: { email: '', password: '' } });
   const { signInMutate } = useSignIn();
 
-  const handleSignUp: React.FormEventHandler = (event) => {
+  const handleSignIn: React.FormEventHandler = (event) => {
     event.preventDefault();
     signInMutate.mutate(formData);
   };
 
   return (
     <S.Layout>
-      <S.SignUpContainer onSubmit={handleSignUp}>
+      <S.SignUpContainer onSubmit={handleSignIn}>
         <S.Title>로그인</S.Title>
         <InputField {...register('email', { placeholder: '이메일', type: 'email' })} />
         <InputField {...register('password', { placeholder: '비밀번호', type: 'password' })} />
