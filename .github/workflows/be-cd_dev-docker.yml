@@ -17,6 +17,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Set timezone to Korea
+      uses: szenius/set-timezone@v2.0
+      with:
+        timezoneLinux: "Asia/Seoul"
+
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
