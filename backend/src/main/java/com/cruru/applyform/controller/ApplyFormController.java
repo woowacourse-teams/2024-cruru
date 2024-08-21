@@ -1,6 +1,6 @@
 package com.cruru.applyform.controller;
 
-import com.cruru.applyform.controller.dto.ApplyFormRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.service.facade.ApplyFormFacade;
@@ -40,7 +40,7 @@ public class ApplyFormController {
 
     @PatchMapping("/{applyformId}")
     public ResponseEntity<Void> update(
-            @RequestBody @Valid ApplyFormRequest request,
+            @RequestBody @Valid ApplyFormWriteRequest request,
             @PathVariable("applyformId") Long applyFormId
     ) {
         applyFormFacade.update(request, applyFormId);

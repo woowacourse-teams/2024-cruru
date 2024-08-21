@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.cruru.applyform.controller.dto.ApplyFormRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
@@ -57,7 +57,7 @@ class ApplyFormServiceTest extends ServiceTest {
         String postingContent = "# 모집합니다! ## 사실 안모집합니다";
         LocalDateTime startDate = LocalDateTime.of(2099, 1, 1, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 23, 59);
-        ApplyFormRequest request = new ApplyFormRequest(title, postingContent, startDate, endDate);
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, postingContent, startDate, endDate);
 
         // when
         ApplyForm savedApplyForm = applyFormService.create(request, dashboard);

@@ -5,7 +5,7 @@ import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
@@ -69,7 +69,7 @@ public class ApplyFormFacade {
     }
 
     @Transactional
-    public void update(ApplyFormRequest request, long applyFormId) {
+    public void update(ApplyFormWriteRequest request, long applyFormId) {
         ApplyForm applyForm = applyFormService.findById(applyFormId);
 
         if (changeExists(request, applyForm)) {
@@ -86,7 +86,7 @@ public class ApplyFormFacade {
         }
     }
 
-    private boolean changeExists(ApplyFormRequest request, ApplyForm applyForm) {
+    private boolean changeExists(ApplyFormWriteRequest request, ApplyForm applyForm) {
         return !(applyForm.getTitle().equals(request.title()) &&
                 applyForm.getDescription().equals(request.postingContent()) &&
                 applyForm.getStartDate().equals(request.startDate()) &&

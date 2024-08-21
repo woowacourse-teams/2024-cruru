@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-public record ApplyFormRequest(
+public record ApplyFormWriteRequest(
         @NotBlank(message = "제목은 필수 값입니다.")
         String title,
 

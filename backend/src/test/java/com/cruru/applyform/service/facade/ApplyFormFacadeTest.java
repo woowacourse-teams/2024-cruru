@@ -9,7 +9,7 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -149,7 +149,7 @@ class ApplyFormFacadeTest extends ServiceTest {
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyFormRequest request = new ApplyFormRequest(
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
                 toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
         );
 
