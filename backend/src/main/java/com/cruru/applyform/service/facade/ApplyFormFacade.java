@@ -18,7 +18,6 @@ import com.cruru.process.service.ProcessService;
 import com.cruru.question.domain.Question;
 import com.cruru.question.service.QuestionService;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -75,8 +74,8 @@ public class ApplyFormFacade {
     private void validateSubmitDate(ApplyForm applyForm) {
         LocalDate now = LocalDate.now();
         // 추후 날짜가 아닌 시간까지 검증하는 경우 수정 필요
-        ChronoLocalDate startDate = ChronoLocalDate.from(applyForm.getStartDate());
-        ChronoLocalDate endDate = ChronoLocalDate.from(applyForm.getEndDate());
+        LocalDate startDate = applyForm.getStartDate().toLocalDate();
+        LocalDate endDate = applyForm.getEndDate().toLocalDate();
         if (now.isBefore(startDate) || now.isAfter(endDate)) {
             throw new InvalidSubmitDateException();
         }
