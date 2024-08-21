@@ -34,6 +34,10 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
     }
   }, [isVisible, isLoading]);
 
+  if (isLoading) {
+    <div>로딩 중입니다...</div>;
+  }
+
   return (
     <S.Wrapper ref={wrapperRef}>
       <S.Section>
