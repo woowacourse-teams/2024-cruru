@@ -40,7 +40,7 @@ public class ProcessFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Dashboard dashboard = dashboardService.findById(dashboardId);
 
-        AuthChecker.validateAuthority(dashboard, member);
+        AuthChecker.checkAuthority(dashboard, member);
 
         processService.create(request, dashboard);
     }
@@ -49,7 +49,7 @@ public class ProcessFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Dashboard dashboard = dashboardService.findById(dashboardId);
 
-        AuthChecker.validateAuthority(dashboard, member);
+        AuthChecker.checkAuthority(dashboard, member);
 
         ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         List<Process> processes = processService.findAllByDashboard(dashboard);
@@ -93,7 +93,7 @@ public class ProcessFacade {
     public ProcessResponse update(LoginProfile loginProfile, ProcessUpdateRequest request, long processId) {
         Member member = memberService.findByEmail(loginProfile.email());
         Process process = processService.findById(processId);
-        AuthChecker.validateAuthority(process, member);
+        AuthChecker.checkAuthority(process, member);
         processService.update(request, process.getId());
         return toProcessResponse(process);
     }
@@ -102,7 +102,7 @@ public class ProcessFacade {
     public void delete(LoginProfile loginProfile, long processId) {
         Member member = memberService.findByEmail(loginProfile.email());
         Process process = processService.findById(processId);
-        AuthChecker.validateAuthority(process, member);
+        AuthChecker.checkAuthority(process, member);
         processService.delete(processId);
     }
 }

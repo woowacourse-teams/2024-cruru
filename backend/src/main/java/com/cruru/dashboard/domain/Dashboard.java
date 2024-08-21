@@ -1,6 +1,6 @@
 package com.cruru.dashboard.domain;
 
-import com.cruru.auth.util.VerificationTarget;
+import com.cruru.auth.util.SecureResource;
 import com.cruru.club.domain.Club;
 import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Dashboard implements VerificationTarget {
+public class Dashboard implements SecureResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +38,8 @@ public class Dashboard implements VerificationTarget {
 
 
     @Override
-    public boolean isAuthenticated(Member member) {
-        return club.isAuthenticated(member);
+    public boolean isAuthorizedBy(Member member) {
+        return club.isAuthorizedBy(member);
     }
 
     @Override

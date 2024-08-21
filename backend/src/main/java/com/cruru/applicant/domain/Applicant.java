@@ -5,7 +5,7 @@ import com.cruru.applicant.exception.badrequest.ApplicantIllegalPhoneNumberExcep
 import com.cruru.applicant.exception.badrequest.ApplicantNameBlankException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameCharacterException;
 import com.cruru.applicant.exception.badrequest.ApplicantNameLengthException;
-import com.cruru.auth.util.VerificationTarget;
+import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.member.domain.Member;
 import com.cruru.process.domain.Process;
@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Applicant extends BaseEntity implements VerificationTarget {
+public class Applicant extends BaseEntity implements SecureResource {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z\\s-]+$");
@@ -131,8 +131,8 @@ public class Applicant extends BaseEntity implements VerificationTarget {
     }
 
     @Override
-    public boolean isAuthenticated(Member member) {
-        return process.isAuthenticated(member);
+    public boolean isAuthorizedBy(Member member) {
+        return process.isAuthorizedBy(member);
     }
 
     @Override

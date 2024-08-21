@@ -48,7 +48,7 @@ public class DashboardFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
 
-        AuthChecker.validateAuthority(club, member);
+        AuthChecker.checkAuthority(club, member);
 
         Dashboard createdDashboard = dashboardService.create(club);
         ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
@@ -77,7 +77,7 @@ public class DashboardFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
 
-        AuthChecker.validateAuthority(club, member);
+        AuthChecker.checkAuthority(club, member);
 
         List<Dashboard> dashboardIds = dashboardService.findAllByClub(club);
 

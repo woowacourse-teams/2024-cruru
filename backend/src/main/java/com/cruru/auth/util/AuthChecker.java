@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthChecker {
 
-    public static void validateAuthority(VerificationTarget authValidation, Member member) {
-        if (!authValidation.isAuthenticated(member)) {
+    public static void checkAuthority(SecureResource resource, Member member) {
+        if (!resource.isAuthorizedBy(member)) {
             throw new ForbiddenException();
         }
     }

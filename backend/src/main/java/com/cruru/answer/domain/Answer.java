@@ -1,7 +1,7 @@
 package com.cruru.answer.domain;
 
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.auth.util.VerificationTarget;
+import com.cruru.auth.util.SecureResource;
 import com.cruru.member.domain.Member;
 import com.cruru.question.domain.Question;
 import jakarta.persistence.Column;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Answer implements VerificationTarget {
+public class Answer implements SecureResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +46,8 @@ public class Answer implements VerificationTarget {
     }
 
     @Override
-    public boolean isAuthenticated(Member member) {
-        return applicant.isAuthenticated(member);
+    public boolean isAuthorizedBy(Member member) {
+        return applicant.isAuthorizedBy(member);
     }
 
     @Override
