@@ -8,11 +8,11 @@ import java.time.ZoneOffset;
 public class LocalDateFixture {
 
     public static Clock fixedClock() {
-        return Clock.fixed(Instant.parse("2024-08-01T00:00:00Z"), ZoneOffset.UTC);
+        return Clock.fixed(Instant.parse("2024-08-01T11:00:00Z"), ZoneOffset.UTC);
     }
 
     public static LocalDateTime startDate() {
-        return LocalDateTime.of(2024, 8, 2, 10, 0, 0);
+        return LocalDateTime.of(2024, 8, 1, 10, 0, 0);
     }
 
     public static LocalDateTime endDate() {
