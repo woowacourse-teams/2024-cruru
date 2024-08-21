@@ -56,8 +56,7 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   flyway:
-    enabled: true
-    baseline-on-migrate: true
+    enabled: false
   jpa:
     show-sql: true
     properties:
