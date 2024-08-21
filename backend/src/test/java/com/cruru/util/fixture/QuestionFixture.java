@@ -48,4 +48,8 @@ public class QuestionFixture {
                 longAnswerType(applyForm)
         );
     }
+
+    public static Question required(ApplyForm applyForm) {
+        return new Question(SHORT_ANSWER, "주관식 단답형", 1, true, applyForm);
+    }
 }

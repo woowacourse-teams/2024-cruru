@@ -71,11 +71,12 @@ class AnswerServiceTest extends ServiceTest {
     @Test
     void savedAnswerReplies_replyNotExists() {
         // given
-        List<String> replies1 = List.of();
-        AnswerCreateRequest request = new AnswerCreateRequest(question1.getId(), replies1);
+        List<String> replies = List.of();
+        Question question = questionRepository.save(QuestionFixture.required(null));
+        AnswerCreateRequest request = new AnswerCreateRequest(question.getId(), replies);
 
         // when&then
-        assertThatThrownBy(() -> answerService.saveAnswerReplies(request, question1, applicant))
+        assertThatThrownBy(() -> answerService.saveAnswerReplies(request, question, applicant))
                 .isInstanceOf(ReplyNotExistsException.class);
     }
 
