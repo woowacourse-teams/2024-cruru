@@ -1,3 +1,4 @@
+/* eslint-disable @tanstack/query/stable-query-client */
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import ErrorPage from '@pages/ErrorPage';
@@ -9,7 +10,8 @@ import ConfirmApply from '@pages/ConfirmApply';
 import DashboardLayout from '@pages/DashboardLayout';
 import DashboardList from '@pages/DashBoardList';
 import DashboardCreate from '@pages/DashboardCreate';
-
+import { useToast } from '@contexts/ToastContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
 
 const router = createBrowserRouter(
@@ -62,5 +64,23 @@ const router = createBrowserRouter(
 );
 
 export default function AppRouter() {
-  return <RouterProvider router={router} />;
+  const { error: alertError } = useToast();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        throwOnError: true,
+        retry: 0,
+      },
+      mutations: {
+        onError: (error) => {
+          alertError(error.message);
+        },
+      },
+    },
+  });
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
