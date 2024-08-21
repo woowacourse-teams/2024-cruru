@@ -9,12 +9,12 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
-import com.cruru.applyform.exception.badrequest.InvalidSubmitDateException;
+import com.cruru.applyform.exception.badrequest.ApplyFormSubmitOutOfPeriodException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
@@ -146,9 +146,9 @@ class ApplyFormFacadeTest extends ServiceTest {
         // when&then
         assertAll(
                 () -> assertThatThrownBy(() -> applyFormFacade.submit(pastApplyForm.getId(), applyFormSubmitrequest))
-                        .isInstanceOf(InvalidSubmitDateException.class),
+                        .isInstanceOf(ApplyFormSubmitOutOfPeriodException.class),
                 () -> assertThatThrownBy(() -> applyFormFacade.submit(futureApplyForm.getId(), applyFormSubmitrequest))
-                        .isInstanceOf(InvalidSubmitDateException.class)
+                        .isInstanceOf(ApplyFormSubmitOutOfPeriodException.class)
         );
     }
 

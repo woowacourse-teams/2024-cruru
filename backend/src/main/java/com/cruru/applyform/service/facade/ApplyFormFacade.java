@@ -9,7 +9,7 @@ import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
-import com.cruru.applyform.exception.badrequest.InvalidSubmitDateException;
+import com.cruru.applyform.exception.badrequest.ApplyFormSubmitOutOfPeriodException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.dashboard.domain.Dashboard;
@@ -77,7 +77,7 @@ public class ApplyFormFacade {
         LocalDate startDate = applyForm.getStartDate().toLocalDate();
         LocalDate endDate = applyForm.getEndDate().toLocalDate();
         if (now.isBefore(startDate) || now.isAfter(endDate)) {
-            throw new InvalidSubmitDateException();
+            throw new ApplyFormSubmitOutOfPeriodException();
         }
     }
 
