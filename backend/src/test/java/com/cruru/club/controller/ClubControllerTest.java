@@ -28,6 +28,7 @@ class ClubControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -45,6 +46,7 @@ class ClubControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)

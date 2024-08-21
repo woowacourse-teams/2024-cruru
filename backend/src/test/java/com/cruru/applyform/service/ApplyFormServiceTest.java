@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
@@ -58,7 +58,7 @@ class ApplyFormServiceTest extends ServiceTest {
         String postingContent = "# 모집합니다! ## 사실 안모집합니다";
         LocalDateTime startDate = LocalDateTime.of(2099, 1, 1, 0, 0);
         LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 23, 59);
-        ApplyFormCreateRequest request = new ApplyFormCreateRequest(title, postingContent, startDate, endDate);
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, postingContent, startDate, endDate);
 
         // when
         ApplyForm savedApplyForm = applyFormService.create(request, dashboard);
@@ -130,5 +130,31 @@ class ApplyFormServiceTest extends ServiceTest {
         // when&then
         assertDoesNotThrow(() -> applyFormService.findByDashboard(dashboard));
         assertThat(applyFormService.findByDashboard(dashboard)).isEqualTo(applyForm);
+    }
+
+    @DisplayName("지원서 폼을 수정한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
+        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "", toChangeStartDate, toChangeEndDate, dashboard);
+
+        // when
+        applyFormService.update(toUpdateApplyForm);
+
+        // then
+        ApplyForm actual = applyFormRepository.findById(applyForm.getId()).get();
+        assertAll(
+                () -> assertThat(actual.getTitle()).isEqualTo(toChangeTitle),
+                () -> assertThat(actual.getDescription()).isEqualTo(toChangeDescription),
+                () -> assertThat(actual.getStartDate()).isEqualTo(toChangeStartDate),
+                () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
+        );
     }
 }

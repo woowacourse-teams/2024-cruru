@@ -9,6 +9,7 @@ import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
@@ -157,5 +158,33 @@ class ApplyFormFacadeTest extends ServiceTest {
         // given&when&then
         assertThatThrownBy(() -> applyFormFacade.submit(-1, applyFormSubmitrequest))
                 .isInstanceOf(ApplyFormNotFoundException.class);
+    }
+
+    @DisplayName("지원서 폼을 수정한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
+        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
+        );
+
+        // when
+        applyFormFacade.update(request, applyForm.getId());
+
+        // then
+        ApplyForm actual = applyFormRepository.findById(applyForm.getId()).get();
+        assertAll(
+                () -> assertThat(actual.getTitle()).isEqualTo(toChangeTitle),
+                () -> assertThat(actual.getDescription()).isEqualTo(toChangeDescription),
+                () -> assertThat(actual.getStartDate()).isEqualTo(toChangeStartDate),
+                () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
+        );
     }
 }

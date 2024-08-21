@@ -1,4 +1,4 @@
-name: BE/CD - Docker image build & deploy
+name: BE/CD - [DEV] Build & Deploy
 
 on:
   workflow_dispatch:
@@ -37,10 +37,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Get current date and time
+      id: datetime
+      run: |
+        echo "datetime=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
+
     - name: Image build and push
       run: |
-        docker build --build-arg PROFILE=dev --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:dev-latest --platform linux/arm64 .
-        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:dev-latest
+        docker build --build-arg PROFILE=dev -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:dev-${{ steps.datetime.outputs.datetime }} --platform linux/arm64 .
+        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:dev-${{ steps.datetime.outputs.datetime }}
 
     - name: Upload docker-compose yaml script to artifact
       uses: actions/upload-artifact@v4
@@ -67,6 +72,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
+        DOCKER_IMAGE_TAG=dev-${{ steps.datetime.outputs.datetime }}
         
         # DB Configuration secrets info from Github Secrets
         MYSQL_DB_NAME=${{ secrets.MYSQL_DB_NAME }}
@@ -105,14 +111,28 @@ jobs:
         COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}
         COOKIE_PATH=${{ secrets.COOKIE_PATH }}
         COOKIE_SAME_SITE=${{ secrets.COOKIE_SAME_SITE }}
-        COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}   
-        
+        COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}
         EOF
 
-    - name: Stop and remove existing containers
+    - name: Check if MySQL container is running
+      id: mysql_running
       run: |
-        sudo docker-compose -f docker-compose.dev.yml down --rmi all
+        if [ "$(sudo docker ps -q -f name=database-container)" ]; then
+          echo "mysql_running=true" >> $GITHUB_ENV
+        else
+          echo "mysql_running=false" >> $GITHUB_ENV
+        fi
 
-    - name: Deploy docker container
+    - name: Stop and remove existing application container
       run: |
-        sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d
+        sudo docker-compose -f docker-compose.dev.yml stop application
+        sudo docker-compose -f docker-compose.dev.yml rm -f application
+
+    - name: Start MySQL container if not running
+      if: env.mysql_running == 'false'
+      run: |
+        sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d database-mysql
+
+    - name: Run application Server container
+      run: |
+        sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d application

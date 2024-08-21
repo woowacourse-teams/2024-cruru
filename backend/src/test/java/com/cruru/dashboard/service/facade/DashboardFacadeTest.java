@@ -58,7 +58,7 @@ class DashboardFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(ClubFixture.create());
+        club = clubRepository.save(ClubFixture.create(defaultMember));
     }
 
     @DisplayName("대시보드(공고)를 생성한다.")
@@ -81,7 +81,7 @@ class DashboardFacadeTest extends ServiceTest {
         );
 
         // when
-        long savedDashboardId = dashboardFacade.create(club.getId(), request);
+        long savedDashboardId = dashboardFacade.create(loginProfile, club.getId(), request);
 
         // then
         assertThat(dashboardRepository.findById(savedDashboardId)).isPresent();
@@ -125,7 +125,8 @@ class DashboardFacadeTest extends ServiceTest {
         applicantRepository.saveAll(applicants);
 
         // when
-        DashboardsOfClubResponse dashboardsOfClubResponse = dashboardFacade.findAllDashboardsByClubId(club.getId());
+        DashboardsOfClubResponse dashboardsOfClubResponse =
+                dashboardFacade.findAllDashboardsByClubId(loginProfile, club.getId());
 
         // then
         DashboardPreviewResponse dashboardPreview = dashboardsOfClubResponse.dashboardPreviewResponses().get(0);

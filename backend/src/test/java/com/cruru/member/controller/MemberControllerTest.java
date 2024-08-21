@@ -18,6 +18,7 @@ class MemberControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/members/signup")

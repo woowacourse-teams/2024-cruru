@@ -1,5 +1,6 @@
 package com.cruru.process.controller;
 
+import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessResponses;
@@ -27,32 +28,35 @@ public class ProcessController {
     private final ProcessFacade processFacade;
 
     @GetMapping
-    public ResponseEntity<ProcessResponses> read(@RequestParam(name = "dashboardId") Long dashboardId) {
-        ProcessResponses processes = processFacade.readAllByDashboardId(dashboardId);
+    public ResponseEntity<ProcessResponses> read(
+            LoginProfile loginProfile, @RequestParam(name = "dashboardId") Long dashboardId) {
+        ProcessResponses processes = processFacade.readAllByDashboardId(loginProfile, dashboardId);
         return ResponseEntity.ok().body(processes);
     }
 
     @PostMapping
     public ResponseEntity<Void> create(
+            LoginProfile loginProfile,
             @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestBody @Valid ProcessCreateRequest request
     ) {
-        processFacade.create(request, dashboardId);
+        processFacade.create(loginProfile, request, dashboardId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/{processId}")
     public ResponseEntity<ProcessResponse> update(
+            LoginProfile loginProfile,
             @PathVariable Long processId,
             @RequestBody @Valid ProcessUpdateRequest request
     ) {
-        ProcessResponse response = processFacade.update(request, processId);
+        ProcessResponse response = processFacade.update(loginProfile, request, processId);
         return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping("/{processId}")
-    public ResponseEntity<Void> delete(@PathVariable Long processId) {
-        processFacade.delete(processId);
+    public ResponseEntity<Void> delete(LoginProfile loginProfile, @PathVariable Long processId) {
+        processFacade.delete(loginProfile, processId);
         return ResponseEntity.noContent().build();
     }
 }

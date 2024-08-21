@@ -1,6 +1,6 @@
 package com.cruru.applyform.service;
 
-import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
@@ -23,7 +23,7 @@ public class ApplyFormService {
     private String applyPostBaseUrl;
 
     @Transactional
-    public ApplyForm create(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+    public ApplyForm create(ApplyFormWriteRequest request, Dashboard createdDashboard) {
         ApplyForm applyForm = toApplyForm(request, createdDashboard);
         validateStartDateNotInPast(applyForm);
 
@@ -35,7 +35,7 @@ public class ApplyFormService {
         return savedApplyForm;
     }
 
-    private ApplyForm toApplyForm(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+    private ApplyForm toApplyForm(ApplyFormWriteRequest request, Dashboard createdDashboard) {
         return new ApplyForm(
                 request.title(),
                 request.postingContent(),
@@ -60,5 +60,10 @@ public class ApplyFormService {
     public ApplyForm findByDashboard(Dashboard dashboard) {
         return applyFormRepository.findByDashboard(dashboard)
                 .orElseThrow(ApplyFormNotFoundException::new);
+    }
+
+    @Transactional
+    public void update(ApplyForm applyForm) {
+        applyFormRepository.save(applyForm);
     }
 }

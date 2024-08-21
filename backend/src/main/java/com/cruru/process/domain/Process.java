@@ -1,6 +1,8 @@
 package com.cruru.process.domain;
 
+import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.member.domain.Member;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
 import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
@@ -27,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Process {
+public class Process implements SecureResource {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
@@ -106,6 +108,11 @@ public class Process {
 
     public void increaseSequenceNumber() {
         this.sequence++;
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return dashboard.isAuthorizedBy(member);
     }
 
     @Override

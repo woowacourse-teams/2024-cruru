@@ -42,6 +42,7 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
                 .when().put("/v1/applicants/move-process/" + next.getId())
@@ -57,6 +58,7 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get("/v1/applicants/" + applicant.getId())
                 .then().log().all().statusCode(200);
     }
@@ -71,6 +73,7 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get("/v1/applicants/" + applicant.getId() + "/detail")
                 .then().log().all().statusCode(200);
     }
@@ -83,6 +86,7 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
                 .then().log().all().statusCode(200);
     }
@@ -95,6 +99,7 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().patch("/v1/applicants/{applicantId}/unreject", applicant.getId())
                 .then().log().all().statusCode(200);
     }
@@ -111,6 +116,7 @@ class ApplicantControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().patch("/v1/applicants/" + applicant.getId())

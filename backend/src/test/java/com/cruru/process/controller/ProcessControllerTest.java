@@ -34,7 +34,7 @@ class ProcessControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        dashboard = dashboardRepository.save(DashboardFixture.backend());
+        dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         applyFormRepository.save(ApplyFormFixture.backend(dashboard));
     }
 
@@ -46,6 +46,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get(url)
                 .then().log().all().statusCode(200);
     }
@@ -59,6 +60,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get(url)
                 .then().log().all().statusCode(404);
     }
@@ -72,6 +74,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
                 .when().post(url)
@@ -88,6 +91,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
                 .when().patch(url)
@@ -103,6 +107,7 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().delete(url)
                 .then().log().all().statusCode(204);
     }

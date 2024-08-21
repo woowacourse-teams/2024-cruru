@@ -5,6 +5,7 @@ import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.dto.ApplyFormResponse;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.domain.ApplyForm;
@@ -75,5 +76,39 @@ public class ApplyFormFacade {
         if (now.isBefore(applyForm.getStartDate()) || now.isAfter(applyForm.getEndDate())) {
             throw new InvalidSubmitDateException();
         }
+    }
+
+    @Transactional
+    public void update(ApplyFormWriteRequest request, long applyFormId) {
+        ApplyForm applyForm = applyFormService.findById(applyFormId);
+
+        if (changeExists(request, applyForm)) {
+            ApplyForm toUpdateApplyForm = toUpdateApplyForm(request, applyForm, applyFormId);
+            applyFormService.update(toUpdateApplyForm);
+        }
+    }
+
+    private boolean changeExists(ApplyFormWriteRequest request, ApplyForm applyForm) {
+        return !(applyForm.getTitle().equals(request.title()) &&
+                applyForm.getDescription().equals(request.postingContent()) &&
+                applyForm.getStartDate().equals(request.startDate()) &&
+                applyForm.getEndDate().equals(request.endDate())
+        );
+    }
+
+    private static ApplyForm toUpdateApplyForm(
+            ApplyFormWriteRequest request,
+            ApplyForm applyForm,
+            long applyFormId
+    ) {
+        return new ApplyForm(
+                applyFormId,
+                request.title(),
+                request.postingContent(),
+                applyForm.getUrl(),
+                request.startDate(),
+                request.endDate(),
+                applyForm.getDashboard()
+        );
     }
 }

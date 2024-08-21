@@ -33,7 +33,7 @@ class MemberServiceTest extends ServiceTest {
     void create() {
         // given
         String clubName = "크루루";
-        String email = "mail@mail.com";
+        String email = "new@mail.com";
         String password = "newPassword214!";
         String phone = "01012341234";
         MemberCreateRequest request = new MemberCreateRequest(clubName, email, password, phone);
