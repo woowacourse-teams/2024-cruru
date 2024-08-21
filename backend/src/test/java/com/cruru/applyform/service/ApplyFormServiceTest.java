@@ -57,8 +57,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String title = "우아한테크코스 백엔드 7기 모집";
         String postingContent = "# 모집합니다! ## 사실 안모집합니다";
-        LocalDateTime startDate = LocalDateTime.of(2099, 1, 1, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 23, 59);
+        LocalDateTime startDate = LocalDateFixture.oneDayLater();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, postingContent, startDate, endDate);
 
         // when

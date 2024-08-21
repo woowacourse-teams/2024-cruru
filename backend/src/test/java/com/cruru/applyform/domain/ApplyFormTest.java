@@ -3,6 +3,7 @@ package com.cruru.applyform.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
+import com.cruru.util.fixture.LocalDateFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,8 @@ class ApplyFormTest {
         // given
         String title = "title";
         String description = "description";
-        LocalDateTime startDate = LocalDateTime.now().plusHours(5);
-        LocalDateTime endDate = LocalDateTime.now().plusHours(2);
+        LocalDateTime startDate =  LocalDateFixture.oneWeekLater();
+        LocalDateTime endDate = LocalDateFixture.oneDayLater();
 
         // when&then
         assertThatThrownBy(() -> new ApplyForm(title, description, startDate, endDate, null))

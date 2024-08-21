@@ -234,7 +234,7 @@ class ApplyFormControllerTest extends ControllerTest {
         // given
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
-        LocalDateTime toChangeStartDate = LocalDateFixture.oneHourLater();
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
         LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));

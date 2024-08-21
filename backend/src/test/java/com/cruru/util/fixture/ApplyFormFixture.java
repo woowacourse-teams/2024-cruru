@@ -10,7 +10,7 @@ public class ApplyFormFixture {
                 "크루루 백엔드 모집 공고",
                 "# 모집공고 설명1 ## 이렇게 지원하세요",
                 "www.cruru.kr/post/" + backendDashboard.getId(),
-                LocalDateFixture.oneHourAgo(),
+                LocalDateFixture.oneDayAgo(),
                 LocalDateFixture.oneWeekLater(),
                 backendDashboard
         );
@@ -21,7 +21,7 @@ public class ApplyFormFixture {
                 "크루루 백엔드 모집 공고",
                 "# 모집공고 설명1 ## 이렇게 지원하세요",
                 "www.cruru.kr/post/" + 1,
-                LocalDateFixture.oneHourAgo(),
+                LocalDateFixture.oneDayAgo(),
                 LocalDateFixture.oneWeekLater(),
                 null
         );
@@ -32,7 +32,7 @@ public class ApplyFormFixture {
                 "크루루 프론트엔드 모집 공고",
                 "# 모집공고 설명2 ## 이렇게 지원하세요",
                 "www.cruru.kr/post/" + frontendDashboard.getId(),
-                LocalDateFixture.oneHourAgo(),
+                LocalDateFixture.oneDayAgo(),
                 LocalDateFixture.oneWeekLater(),
                 frontendDashboard
         );

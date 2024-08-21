@@ -25,6 +25,7 @@ import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
@@ -58,6 +59,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Autowired
     private ApplyFormFacade applyFormFacade;
 
+    private Dashboard dashboard;
     private Process firstProcess;
     private Process finalProcess;
     private ApplyForm applyForm;
@@ -67,7 +69,7 @@ class ApplyFormFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(null));
+        dashboard = dashboardRepository.save(DashboardFixture.backend(null));
         firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
         finalProcess = processRepository.save(ProcessFixture.approveType(dashboard));
         applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
@@ -135,13 +137,12 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void submit_invalidSubmitDate() {
         // given
-        LocalDateTime now = LocalDateTime.now();
         ApplyForm pastApplyForm = applyFormRepository.save(new ApplyForm(
-                "지난 모집 공고", "description", "url",
-                now.minusDays(2), now.minusDays(1), null));
+                applyForm.getId(), "지난 모집 공고", "description", "url",
+                LocalDateFixture.oneWeekAgo(), LocalDateFixture.oneDayAgo(), null));
         ApplyForm futureApplyForm = applyFormRepository.save(new ApplyForm(
                 "미래의 모집 공고", "description", "url",
-                now.plusDays(1), now.plusDays(2), null));
+                LocalDateFixture.oneDayLater(), LocalDateFixture.oneWeekLater(), null));
 
         // when&then
         assertAll(
