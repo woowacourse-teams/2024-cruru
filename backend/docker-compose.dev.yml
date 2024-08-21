@@ -22,7 +22,7 @@ services:
     container_name: app_container
     platform: linux/arm64
     depends_on:
-      - database-mysql
+      - database-container
     restart: always
     image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
