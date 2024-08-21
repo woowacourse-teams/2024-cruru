@@ -22,7 +22,7 @@ public class AnswerService {
     @Transactional
     public void saveAnswerReplies(AnswerCreateRequest answerCreateRequest, Question question, Applicant applicant) {
         List<String> replies = answerCreateRequest.replies();
-        if (question.getRequired() && replies.isEmpty()) {
+        if (question.isRequired() && replies.isEmpty()) {
             throw new ReplyNotExistsException();
         }
         for (String reply : replies) {

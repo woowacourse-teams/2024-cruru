@@ -68,7 +68,7 @@ public class QuestionService {
                 question.getContent(),
                 question.getSequence(),
                 getChoiceResponses(question),
-                question.getRequired()
+                question.isRequired()
         );
     }
 
