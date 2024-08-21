@@ -95,13 +95,8 @@ export default class APIClient implements APIClientType {
     const response = await fetch(url, this.getRequestInit({ method, body, hasCookies }));
 
     if (!response.ok) {
-      const { status, statusText } = response;
-      const defaultErrorMessage = `API통신에 실패했습니다: ${statusText}`;
-
-      const errorData = await response.json().catch(() => null);
-      const errorMessage = `${defaultErrorMessage}${errorData?.message ? ` - ${errorData.message}` : ''}`;
-
-      throw new ApiError({ message: errorMessage, statusCode: status, method });
+      const json = await response.json();
+      throw new ApiError({ message: json.detail ?? '', statusCode: response.status, method });
     }
 
     // Content-Type 확인 후 응답 처리

@@ -1,12 +1,12 @@
 import * as Sentry from '@sentry/react';
 import ReactGA from 'react-ga4';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { ModalProvider } from '@contexts/ModalContext';
 import { Global, ThemeProvider } from '@emotion/react';
+import ToastProvider from '@contexts/ToastContext';
 
 import { BASE_URL } from '@constants/constants';
 import globalStyles from './styles/globalStyles';
@@ -36,25 +36,16 @@ async function setPrev() {
   });
 }
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      throwOnError: true,
-      retry: 0,
-    },
-  },
-});
-
 setPrev().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <ModalProvider>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
-            <Global styles={globalStyles()} />
+        <ThemeProvider theme={theme}>
+          <Global styles={globalStyles()} />
+          <ToastProvider>
             <AppRouter />
-          </ThemeProvider>
-        </QueryClientProvider>
+          </ToastProvider>
+        </ThemeProvider>
       </ModalProvider>
     </React.StrictMode>,
   );
