@@ -4,7 +4,6 @@ import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@
 
 import Button from '@components/common/Button';
 import ChevronButton from '@components/common/ChevronButton';
-import createSimpleKey from '@utils/createSimpleKey';
 import QuestionBuilder from './QuestionBuilder';
 
 import S from './style';
@@ -65,8 +64,7 @@ export default function Apply({
         {applyState.map((question, index) => {
           if (index >= 3) {
             return (
-              // eslint-disable-next-line react/no-array-index-key
-              <S.QuestionsContainer key={createSimpleKey(`${index}-${question.question}`)}>
+              <S.QuestionsContainer key={question.id}>
                 <QuestionBuilder
                   index={index}
                   question={question}
