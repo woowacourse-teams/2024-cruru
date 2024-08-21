@@ -21,6 +21,7 @@ public class ControllerTest {
     protected Member defaultMember;
     protected Club defaultClub;
     protected String token;
+
     @LocalServerPort
     private int port;
     @Autowired
@@ -39,7 +40,6 @@ public class ControllerTest {
         defaultClub = clubRepository.save(ClubFixture.create(defaultMember));
         token = authService.createToken(defaultMember);
     }
-
 
     @BeforeEach
     void setPort() {

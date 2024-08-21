@@ -65,7 +65,6 @@ class DashboardFacadeTest extends ServiceTest {
     @Test
     void create() {
         // given
-
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
                 new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));

@@ -6,10 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
-import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessResponse;
 import com.cruru.process.controller.dto.ProcessResponses;
@@ -30,17 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DisplayName("프로세스 파사드 서비스 테스트")
 class ProcessFacadeTest extends ServiceTest {
 
-
     @Autowired
     private ProcessFacade processFacade;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private ClubRepository clubRepository;
-    @Autowired
-    private DashboardRepository dashboardRepository;
 
     @Autowired
     private ApplyFormRepository applyFormRepository;

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.club.controller.dto.ClubCreateRequest;
 import com.cruru.club.domain.Club;
-import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
@@ -23,9 +22,6 @@ class ClubFacadeTest extends ServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private ClubRepository clubRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -54,8 +50,6 @@ class ClubFacadeTest extends ServiceTest {
     @DisplayName("회원의 email로 동아리를 조회한다.")
     @Test
     void findByMemberEmail() {
-        // given
-
         // when
         long actualClubId = clubFacade.findByMemberEmail(defaultMember.getEmail());
 
