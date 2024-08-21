@@ -19,7 +19,7 @@ export default function CustomQuestion({
   isLengthVisible = false,
   onChange = () => {},
 }: CustomQuestionProps) {
-  const { type, questionId, label } = question;
+  const { type, questionId, label, required } = question;
 
   if (type === 'SHORT_ANSWER') {
     const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -34,6 +34,7 @@ export default function CustomQuestion({
         name={questionId}
         maxLength={QUESTION_INPUT_LENGTH.SHORT_ANSWER}
         isLengthVisible={isLengthVisible}
+        required={required}
       />
     );
   }
@@ -53,6 +54,7 @@ export default function CustomQuestion({
         style={{ height: 'calc(2.4rem * 10 + 1.2rem)' }}
         maxLength={QUESTION_INPUT_LENGTH.LONG_ANSWER}
         isLengthVisible={isLengthVisible}
+        required={required}
       />
     );
   }
@@ -67,6 +69,7 @@ export default function CustomQuestion({
           name: question.questionId,
           onToggle: () => onChange(question.questionId, choice.label),
         }))}
+        required={required}
       />
     );
   }
@@ -80,6 +83,7 @@ export default function CustomQuestion({
           isChecked: value.includes(choice.label),
           onToggle: () => onChange(question.questionId, choice.label),
         }))}
+        required={required}
       />
     );
   }

@@ -49,7 +49,8 @@
     "implicit-arrow-linebreak": 0,
     "operator-linebreak": 0,
     "no-confusing-arrow": 0,
-    "indent": 0
+    "indent": 0,
+    "consistent-return": "off"
   },
   "overrides": [
     {

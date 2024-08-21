@@ -44,10 +44,24 @@ const RadioInner = styled.div<{ checked: boolean; isDisabled: boolean }>`
   transition: all 0.2s ease; //TODO: theme hover로 바꿔야 합니다.
 `;
 
+const HiddenRadio = styled.input`
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
 const S = {
   RadioContainer,
   RadioOuter,
   RadioInner,
+  HiddenRadio,
 };
 
 export default S;
