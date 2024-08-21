@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceResponse;
+import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
@@ -15,6 +16,7 @@ import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.ChoiceFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.util.Comparator;
@@ -42,6 +44,9 @@ class QuestionServiceTest extends ServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ChoiceRepository choiceRepository;
 
     @Autowired
     private QuestionService questionService;
@@ -125,6 +130,24 @@ class QuestionServiceTest extends ServiceTest {
         assertAll(
                 () -> assertThat(choiceResponses1).isEmpty(),
                 () -> assertThat(choiceResponses2).isEmpty()
+        );
+    }
+
+    @DisplayName("해당 ApplyForm의 Question을 모두 삭제한다.")
+    @Test
+    void deleteAllByApplyForm() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend());
+        Question question = questionRepository.save(QuestionFixture.singleChoiceType(applyForm));
+        choiceRepository.save(ChoiceFixture.first(question));
+
+        // when
+        questionService.deleteAllByApplyForm(applyForm);
+
+        // then
+        assertAll(
+                () -> assertThat(questionRepository.findAllByApplyForm(applyForm)).isEmpty(),
+                () -> assertThat(choiceRepository.findAllByQuestion(question)).isEmpty()
         );
     }
 }

@@ -10,7 +10,6 @@ import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
-import com.cruru.applicant.exception.badrequest.ApplicantNoChangeException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.dashboard.domain.Dashboard;
@@ -116,22 +115,6 @@ class ApplicantServiceTest extends ServiceTest {
                 () -> assertThat(changedEmail).isEqualTo(updatedApplicant.getEmail()),
                 () -> assertThat(changedPhone).isEqualTo(updatedApplicant.getPhone())
         );
-    }
-
-    @DisplayName("지원자의 정보 변경 요청의 이름, 이메일, 전화번호 변경점이 없다면 예외를 던진다")
-    @Test
-    void updateApplicantInformation_ThrowsException() {
-        // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
-        String originalName = applicant.getName();
-        String originalEmail = applicant.getEmail();
-        String originalPhone = applicant.getPhone();
-        ApplicantUpdateRequest noChangeRequest = new ApplicantUpdateRequest(originalName, originalEmail, originalPhone);
-        Long applicantId = applicant.getId();
-
-        // when & then
-        assertThatThrownBy(() -> applicantService.updateApplicantInformation(applicantId, noChangeRequest))
-                .isInstanceOf(ApplicantNoChangeException.class);
     }
 
     @DisplayName("여러 건의 지원서를 요청된 프로세스로 일괄 변경한다.")

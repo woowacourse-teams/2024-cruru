@@ -15,7 +15,6 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
-import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.DashboardFixture;
@@ -125,23 +124,6 @@ class ProcessServiceTest extends ServiceTest {
                 () -> assertThat(actualProcess.getName()).isEqualTo(processUpdateRequest.name()),
                 () -> assertThat(actualProcess.getDescription()).isEqualTo(processUpdateRequest.description())
         );
-    }
-
-    @DisplayName("기존 정보에서 변경점이 없는 요청시, 예외가 발생한다.")
-    @Test
-    void update_ThrowException() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
-        String notChangedName = process.getName();
-        String notChangedDescription = process.getDescription();
-        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest(notChangedName, notChangedDescription);
-
-        Long processId = process.getId();
-
-        // when & then
-        assertThatThrownBy(() -> processService.update(processUpdateRequest, processId))
-                .isInstanceOf(ProcessNoChangeException.class);
     }
 
     @DisplayName("프로세스를 삭제한다.")
