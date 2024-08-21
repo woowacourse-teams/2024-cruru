@@ -28,7 +28,7 @@ const Bounce = styled.div`
   width: var(--design-height);
   aspect-ratio: 1/1;
 
-  background-color: ${({ theme }) => theme.baseColors.grayscale[500]};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   border-radius: 100%;
   animation: ${bounceDelay} 1.4s infinite ease-in-out both;
 

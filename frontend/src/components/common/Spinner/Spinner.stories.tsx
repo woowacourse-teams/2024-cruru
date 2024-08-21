@@ -12,7 +12,13 @@ const meta = {
       },
     },
   },
-
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '10px', backgroundColor: '#dcdcdc' }}>
+        <Story />
+      </div>
+    ),
+  ],
   tags: ['autodocs'],
 } satisfies Meta<typeof Spinner>;
 
