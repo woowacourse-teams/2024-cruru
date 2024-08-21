@@ -1,5 +1,4 @@
 /* eslint-disable no-promise-executor-return */
-
 import { AUTH } from '@api/endPoint';
 import { http } from 'msw';
 import { Success } from './response';
@@ -13,7 +12,9 @@ const authHandlers = [
   http.post(`${AUTH}/login`, async ({ request }) => {
     const body = (await request.json()) as LoginFormData;
 
-    if (!body.email || !body.password || body.email !== 'member@mail.com' || body.password !== 'qwer1234') {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    if (!body.email || !body.password || body.email !== 'admin@gmail.com' || body.password !== 'admin') {
       return new Response(null, {
         status: 401,
         statusText: '[Mock Data Error] Login Failed',

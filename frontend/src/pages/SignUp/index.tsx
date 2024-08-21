@@ -6,6 +6,7 @@ import useSignUp from '@hooks/useSignUp';
 import useForm from '@hooks/utils/useForm';
 import { validateEmail, validatePhoneNumber } from '@domain/validations/apply';
 import { formatPhoneNumber } from '@utils/formatPhoneNumber';
+import Spinner from '@components/common/Spinner';
 import PasswordInput from './PasswordInput';
 import S from './style';
 
@@ -28,7 +29,7 @@ export default function SignUp() {
       return;
     }
 
-    signUpMutate.mutate(formData);
+    signUpMutate.mutate({ ...formData, phone: formData.phone.split('-').join('') });
   };
 
   const deleteHangulFormatter = (value: string) => {
@@ -80,7 +81,7 @@ export default function SignUp() {
             color="primary"
             type="submit"
           >
-            회원가입
+            {signUpMutate.isPending ? <Spinner width={40} /> : '회원가입'}
           </Button>
         </S.ButtonContainer>
 
