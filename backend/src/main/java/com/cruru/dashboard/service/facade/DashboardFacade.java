@@ -42,14 +42,14 @@ public class DashboardFacade {
     public long create(long clubId, DashboardCreateRequest request) {
         Club club = clubService.findById(clubId);
         Dashboard createdDashboard = dashboardService.create(club);
-        ApplyForm applyForm = applyFormService.create(toApplyFormCreateRequest(request), createdDashboard);
+        ApplyForm applyForm = applyFormService.create(toApplyFormWriteRequest(request), createdDashboard);
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
         }
         return createdDashboard.getId();
     }
 
-    private ApplyFormWriteRequest toApplyFormCreateRequest(DashboardCreateRequest request) {
+    private ApplyFormWriteRequest toApplyFormWriteRequest(DashboardCreateRequest request) {
         return new ApplyFormWriteRequest(
                 request.title(),
                 request.postingContent(),
