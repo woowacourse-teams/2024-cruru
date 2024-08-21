@@ -73,15 +73,7 @@ public class ApplyFormFacade {
         ApplyForm applyForm = applyFormService.findById(applyFormId);
 
         if (changeExists(request, applyForm)) {
-            ApplyForm toUpdateApplyForm = new ApplyForm(
-                    applyFormId,
-                    request.title(),
-                    request.postingContent(),
-                    applyForm.getUrl(),
-                    request.startDate(),
-                    request.endDate(),
-                    applyForm.getDashboard()
-            );
+            ApplyForm toUpdateApplyForm = toUpdateApplyForm(request, applyForm, applyFormId);
             applyFormService.update(toUpdateApplyForm);
         }
     }
@@ -91,6 +83,22 @@ public class ApplyFormFacade {
                 applyForm.getDescription().equals(request.postingContent()) &&
                 applyForm.getStartDate().equals(request.startDate()) &&
                 applyForm.getEndDate().equals(request.endDate())
+        );
+    }
+
+    private static ApplyForm toUpdateApplyForm(
+            ApplyFormWriteRequest request,
+            ApplyForm applyForm,
+            long applyFormId
+    ) {
+        return new ApplyForm(
+                applyFormId,
+                request.title(),
+                request.postingContent(),
+                applyForm.getUrl(),
+                request.startDate(),
+                request.endDate(),
+                applyForm.getDashboard()
         );
     }
 }
