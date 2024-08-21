@@ -63,7 +63,7 @@ class QuestionServiceTest extends ServiceTest {
                 question1.getContent(),
                 List.of(),
                 0,
-                question1.getRequired()
+                question1.isRequired()
         );
 
         // when

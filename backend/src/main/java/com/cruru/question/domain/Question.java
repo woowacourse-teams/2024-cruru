@@ -36,7 +36,7 @@ public class Question {
 
     private Integer sequence;
 
-    private Boolean required;
+    private boolean required;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_form_id")
