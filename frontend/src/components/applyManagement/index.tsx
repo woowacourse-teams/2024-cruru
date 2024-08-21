@@ -18,6 +18,7 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
   const {
     isLoading,
     applyState,
+    modifyApplyQuestionsMutator,
     addQuestion,
     setQuestionTitle,
     setQuestionType,
@@ -37,6 +38,11 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
   if (isLoading) {
     <div>로딩 중입니다...</div>;
   }
+
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    modifyApplyQuestionsMutator.mutate();
+  };
 
   return (
     <S.Wrapper ref={wrapperRef}>
@@ -93,9 +99,10 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
       <S.Section>
         <S.ModifyButtonContainer>
           <Button
-            type="submit"
+            type="button"
             color="primary"
             size="fillContainer"
+            onClick={handleSubmit}
           >
             수정하기
           </Button>

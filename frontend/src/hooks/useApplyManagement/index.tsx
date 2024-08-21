@@ -4,10 +4,14 @@ import { Question as QuestionData } from '@customTypes/apply';
 
 import { applyQueries } from '@hooks/apply';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
+import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
+import questionApis from '@api/domain/question';
+import QUERY_KEYS from '@hooks/queryKeys';
 
 interface UseApplyManagementReturn {
   isLoading: boolean;
   applyState: Question[];
+  modifyApplyQuestionsMutator: UseMutationResult<unknown, Error, void, unknown>;
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
@@ -43,6 +47,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   const { data, isLoading } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -53,7 +58,28 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
     }
   }, [data]);
 
-  // TODO: dashboard patch API가 필요합니다.
+  const modifyApplyQuestionsMutator = useMutation({
+    mutationFn: () =>
+      questionApis.patch({
+        applyformId: postId,
+        questions: applyState.slice(DEFAULT_QUESTIONS.length).map((value, index) => ({
+          orderIndex: index,
+          type: value.type,
+          label: value.question,
+          choices: value.choices
+            .filter(({ choice }) => !!choice)
+            .map(({ choice, orderIndex }) => ({ label: choice, orderIndex })),
+          required: value.required,
+        })),
+      }),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId] });
+      alert('지원서의 사전 질문 항목 수정에 성공했습니다.');
+    },
+    onError: () => {
+      alert('지원서의 사전 질문 항목 수정에 실패했습니다.');
+    },
+  });
 
   const addQuestion = () => {
     setApplyState((prev) => [
@@ -138,6 +164,9 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   return {
     isLoading,
     applyState,
+
+    modifyApplyQuestionsMutator,
+
     addQuestion,
     setQuestionTitle,
     setQuestionType,
