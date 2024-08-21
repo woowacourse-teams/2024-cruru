@@ -84,7 +84,7 @@ class ApplyFormServiceTest extends ServiceTest {
         String description = "description";
         LocalDateTime startDate = LocalDateTime.now().minusDays(1);
         LocalDateTime endDate = LocalDateTime.now().plusDays(1);
-        ApplyFormCreateRequest request = new ApplyFormCreateRequest(title, description, startDate, endDate);
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, description, startDate, endDate);
 
         // when&then
         assertThatThrownBy(() -> applyFormService.create(request, dashboard))
@@ -143,7 +143,8 @@ class ApplyFormServiceTest extends ServiceTest {
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "", toChangeStartDate, toChangeEndDate, dashboard);
+        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "",
+                toChangeStartDate, toChangeEndDate, dashboard);
 
         // when
         applyFormService.update(toUpdateApplyForm);
