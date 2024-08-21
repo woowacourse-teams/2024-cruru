@@ -3,6 +3,7 @@ import InputField from '@components/common/InputField';
 import Button from '@components/common/Button';
 import useForm from '@hooks/utils/useForm';
 import useSignIn from '@hooks/useSignIn';
+import Spinner from '@components/common/Spinner';
 import S from './style';
 
 export default function SignIn() {
@@ -26,7 +27,7 @@ export default function SignIn() {
             color="primary"
             type="submit"
           >
-            로그인
+            {signInMutate.isPending ? <Spinner width={40} /> : '로그인'}
           </Button>
         </S.ButtonContainer>
         <S.LinkContainer>
