@@ -52,6 +52,8 @@ jobs:
       with:
         name: docker-compose
         path: ${{ github.workspace }}/backend/docker-compose.prod.yml
+    outputs:
+      BUILD_VERSION: ${{ steps.datetime.outputs.datetime }}
 
   deploy:
     environment: prod
@@ -72,7 +74,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
-        DOCKER_IMAGE_TAG=prod-${{ steps.datetime.outputs.datetime }}
+        DOCKER_IMAGE_VERSION_TAG=prod-${{ needs.build.outputs.BUILD_VERSION }}
         
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
