@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import useApplyManagement from '@hooks/useApplyManagement';
 
-import { HiOutlinePlusCircle } from 'react-icons/hi';
+import useApplyManagement from '@hooks/useApplyManagement';
+import Button from '@components/common/Button';
 import QuestionBuilder from '@components/dashboard/DashboardCreate/Apply/QuestionBuilder';
 import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 
+import { HiOutlinePlusCircle } from 'react-icons/hi';
 import S from './style';
 
 export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
@@ -86,7 +87,15 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
       </S.Section>
 
       <S.Section>
-        <button type="button">수정하기</button>
+        <S.ModifyButtonContainer>
+          <Button
+            type="submit"
+            color="primary"
+            size="fillContainer"
+          >
+            수정하기
+          </Button>
+        </S.ModifyButtonContainer>
       </S.Section>
     </S.Wrapper>
   );

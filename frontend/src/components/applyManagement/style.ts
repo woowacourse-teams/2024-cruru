@@ -121,25 +121,10 @@ const ButtonContent = styled.div`
 `;
 
 const ModifyButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 2.4rem;
-`;
-
-const ModifyButton = styled.button`
-  width: 30rem;
-  background: ${({ theme }) => theme.baseColors.purplescale[500]};
-  border-radius: 0.8rem;
-  padding: 1.6rem;
-  transition: all 0.2 ease-in-out;
-
-  ${({ theme }) => theme.typography.common.default};
-  color: ${({ theme }) => theme.baseColors.grayscale[50]};
-
-  :hover {
-    background: ${({ theme }) => theme.baseColors.purplescale[600]};
-  }
+  width: 100%;
+  max-width: 30rem;
+  height: 5.2rem;
+  margin: 0 auto;
 `;
 
 const S = {
@@ -158,7 +143,6 @@ const S = {
   ButtonContent,
 
   ModifyButtonContainer,
-  ModifyButton,
 };
 
 export default S;
