@@ -24,7 +24,7 @@ services:
     depends_on:
       - database-mysql
     restart: always
-    image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_TAG}
+    image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
       - ${SERVER_BINDING_PORT}
       - ${MONITORING_BINDING_PORT}
