@@ -6,7 +6,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,9 +46,9 @@ public class ApplyFormService {
     }
 
     private void validateStartDateNotInPast(ApplyForm applyForm) {
-        LocalDateTime startDate = applyForm.getStartDate();
-        if (startDate.isBefore(LocalDateTime.now())) {
-            throw new StartDatePastException(startDate, LocalDateTime.now());
+        LocalDate startDate = applyForm.getStartDate().toLocalDate();
+        if (startDate.isBefore(LocalDate.now())) {
+            throw new StartDatePastException(startDate, LocalDate.now());
         }
     }
 
