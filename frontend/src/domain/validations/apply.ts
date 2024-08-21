@@ -4,7 +4,7 @@ import { isEmptyString, isNumber } from './common';
 
 const regex = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-  phone: /^\d{3}-\d{3,4}-\d{4}$/,
+  phone: /^\d{11}$/,
   name: /[^ㄱ-ㅎ가-힣a-zA-Z\s-]/,
 };
 
