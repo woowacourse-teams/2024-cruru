@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 import { AUTH } from '@api/endPoint';
 import { http } from 'msw';
 
@@ -9,6 +10,8 @@ interface LoginFormData {
 const authHandlers = [
   http.post(`${AUTH}/login`, async ({ request }) => {
     const body = (await request.json()) as LoginFormData;
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     if (!body.email || !body.password || body.email !== 'admin@gmail.com' || body.password !== 'admin') {
       return new Response(null, {
