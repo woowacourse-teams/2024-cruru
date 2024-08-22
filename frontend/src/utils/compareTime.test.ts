@@ -48,4 +48,16 @@ describe('getTimeStatus 테스트', () => {
     expect(result.isOngoing).toBe(false);
     expect(result.isClosed).toBe(true);
   });
+
+  it('현재 날짜가 종료 날짜 이후이면 Closed를 반환해야 한다', () => {
+    const result = getTimeStatus({
+      startDate: '2024-08-21T00:00:00Z',
+      endDate: '2024-08-21T00:00:00Z',
+    });
+
+    expect(result.status).toBe('Ongoing');
+    expect(result.isPending).toBe(false);
+    expect(result.isOngoing).toBe(true);
+    expect(result.isClosed).toBe(false);
+  });
 });
