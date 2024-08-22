@@ -123,7 +123,7 @@ class AnswerServiceTest extends ServiceTest {
 
     @DisplayName("다중 선택 답변은 하나의 답변으로 묶어 DTO로 변환한다.")
     @Test
-    void toAnswerResponses_MultipleChoice() {
+    void toAnswerResponses_multipleChoice() {
         // given
         Question question = questionRepository.save(QuestionFixture.multipleChoiceType(null));
 
