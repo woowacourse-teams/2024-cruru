@@ -52,10 +52,12 @@ class AnswerServiceTest extends ServiceTest {
     @DisplayName("질문에 대한 지원자의 답변을 성공적으로 저장한다.")
     @Test
     void savedAnswerReplies() {
-        // given & when
+        // given
         String reply = "첫 번째 단답";
         List<String> replies1 = List.of(reply);
         AnswerCreateRequest request = new AnswerCreateRequest(question1.getId(), replies1);
+
+        // when
         answerService.saveAnswerReplies(request, question1, applicant);
 
         // then
@@ -67,9 +69,29 @@ class AnswerServiceTest extends ServiceTest {
         );
     }
 
-    @DisplayName("질문에 대한 지원자의 답변이 존재하지 않으면 예외가 발생한다.")
+    @DisplayName("선택 질문에 대한 지원자의 답변이 존재하지 않으면 빈 문자열을 저장한다.")
     @Test
-    void savedAnswerReplies_replyNotExists() {
+    void savedAnswerReplies_notRequiredReplyNotExists() {
+        // given
+        List<String> replies = List.of();
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(null));
+        AnswerCreateRequest request = new AnswerCreateRequest(question.getId(), replies);
+
+        // then
+        answerService.saveAnswerReplies(request, question, applicant);
+
+        // then
+        List<Answer> actualAnswer = answerRepository.findAllByApplicant(applicant);
+        String content = actualAnswer.get(0).getContent();
+        assertAll(
+                () -> assertThat(actualAnswer).hasSize(1),
+                () -> assertThat(content).isEqualTo("")
+        );
+    }
+
+    @DisplayName("필수 질문에 대한 지원자의 답변이 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void savedAnswerReplies_requiredReplyNotExists() {
         // given
         List<String> replies = List.of();
         Question question = questionRepository.save(QuestionFixture.required(null));

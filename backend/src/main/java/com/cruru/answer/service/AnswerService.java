@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerService {
 
     private static final String DELIMITER = ", ";
+    private static final String NOT_REPLIED = "";
     private final AnswerRepository answerRepository;
 
     @Transactional
@@ -29,6 +30,9 @@ public class AnswerService {
         List<String> replies = answerCreateRequest.replies();
         if (question.isRequired() && replies.isEmpty()) {
             throw new ReplyNotExistsException();
+        }
+        if (!question.isRequired() && replies.isEmpty()) {
+            answerRepository.save(new Answer(NOT_REPLIED, question, applicant));
         }
         for (String reply : replies) {
             Answer answer = new Answer(reply, question, applicant);
