@@ -25,6 +25,17 @@ const applyHandlers = [
 
     return Success();
   }),
+
+  http.patch(`${APPLY}/:postId`, async ({ request }) => {
+    const url = new URL(request.url);
+    const postId = url.pathname.split('/').pop();
+
+    if (!postId) {
+      return NotFoundError();
+    }
+
+    return Success();
+  }),
 ];
 
 export default applyHandlers;
