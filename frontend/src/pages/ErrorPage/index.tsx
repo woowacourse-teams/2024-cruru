@@ -24,12 +24,12 @@ const ErrorMessages: Record<number | string, ErrorMessageConfig> = {
     buttons: [
       {
         label: '로그인',
-        to: '/login',
+        to: '/sign-in',
         color: 'primary',
       },
       {
         label: '회원가입',
-        to: '/signup',
+        to: '/sign-up',
         color: 'white',
       },
     ],
