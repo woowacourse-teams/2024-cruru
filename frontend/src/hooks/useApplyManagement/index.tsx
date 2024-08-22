@@ -55,7 +55,11 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
       const newApplyState = [...DEFAULT_QUESTIONS, ...newData];
       setApplyState(newApplyState);
       setUniqueId(newApplyState.length);
+      return;
     }
+
+    setApplyState([...DEFAULT_QUESTIONS]);
+    setUniqueId(DEFAULT_QUESTIONS.length);
   }, [data]);
 
   const modifyApplyQuestionsMutator = useMutation({
