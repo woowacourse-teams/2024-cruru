@@ -27,8 +27,5 @@ export default function useEvaluationMutation({ processId, applicantId }: UseEva
     onSuccess: () => {
       invalidateQueries();
     },
-    onError: () => {
-      alert('지원자 평가 등록에 실패했습니다.');
-    },
   });
 }
