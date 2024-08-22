@@ -20,7 +20,7 @@ export const applyQueries = {
     const { data, ...restQueryObj } = useGetRecruitmentInfo({ postId });
 
     const { startDate, endDate } = data?.recruitmentPost ?? { startDate: '', endDate: '' };
-    const isClosed = getTimeStatus({ startDate, endDate }) !== 1;
+    const isClosed = !getTimeStatus({ startDate, endDate }).isOngoing;
 
     return {
       isClosed,
