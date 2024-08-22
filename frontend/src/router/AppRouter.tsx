@@ -10,6 +10,7 @@ import ConfirmApply from '@pages/ConfirmApply';
 import DashboardLayout from '@pages/DashboardLayout';
 import DashboardList from '@pages/DashBoardList';
 import DashboardCreate from '@pages/DashboardCreate';
+import Landing from '@pages/Landing';
 import { useToast } from '@contexts/ToastContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
@@ -21,6 +22,10 @@ const router = createBrowserRouter(
       element: <App />,
       errorElement: <ErrorPage />,
       children: [
+        {
+          index: true,
+          element: <Landing />,
+        },
         {
           path: '/sign-in',
           element: <SignIn />,
