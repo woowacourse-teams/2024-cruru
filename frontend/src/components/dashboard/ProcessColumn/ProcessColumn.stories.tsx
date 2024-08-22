@@ -59,6 +59,7 @@ export const Default: Story = {
           createdAt: '2024-08-10T12:00:00',
           isRejected: false,
           evaluationCount: 1,
+          averageScore: 4.4,
         },
         {
           applicantId: 2,
@@ -66,6 +67,7 @@ export const Default: Story = {
           createdAt: '2024-08-11T12:00:00',
           isRejected: true,
           evaluationCount: 1,
+          averageScore: 2.8,
         },
       ],
     },

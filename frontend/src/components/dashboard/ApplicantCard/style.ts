@@ -80,20 +80,6 @@ const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: n
       color: ${theme.colors.text.default};
     `;
   }}
-
-  /**
-   * averageScore가 API 스펙에 추가될 때까지 임시로 적용할 스타일입니다.
-   * - 2024-08-18 by 아르
-   */
-  ${({ theme, evaluationCount }) => {
-    if (evaluationCount) {
-      return css`
-        background: ${theme.baseColors.purplescale[50]};
-        color: ${theme.colors.brand.primary};
-      `;
-    }
-    return '';
-  }}
 `;
 
 const CardInfoContainer = styled.div`
