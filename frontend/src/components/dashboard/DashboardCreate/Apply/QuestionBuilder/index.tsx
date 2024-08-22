@@ -109,7 +109,7 @@ export default function QuestionBuilder({
         )}
 
         <S.RequiredBox>
-          이 질문은 필수 질문입니다.
+          {isRequired ? '이 질문은 필수 질문입니다.' : '이 질문은 선택 질문입니다.'}
           <ToggleSwitch
             width="4rem"
             isChecked={isRequired}
