@@ -13,30 +13,39 @@ describe('getTimeStatus 테스트', () => {
     jest.useRealTimers();
   });
 
-  it('현재 날짜가 시작 날짜 이전이면 "0"를 반환해야 한다', () => {
+  it('현재 날짜가 시작 날짜 이전이면 Pending을 반환해야 한다', () => {
     const result = getTimeStatus({
       startDate: '2024-08-22T00:00:00Z',
       endDate: '2024-08-25T00:00:00Z',
     });
 
-    expect(result).toBe(0);
+    expect(result.status).toBe('Pending');
+    expect(result.isPending).toBe(true);
+    expect(result.isOngoing).toBe(false);
+    expect(result.isClosed).toBe(false);
   });
 
-  it('현재 날짜가 종료 날짜 이후이면 "2"를 반환해야 한다', () => {
-    const result = getTimeStatus({
-      startDate: '2024-08-18T00:00:00Z',
-      endDate: '2024-08-20T00:00:00Z',
-    });
-
-    expect(result).toBe(2);
-  });
-
-  it('현재 날짜가 시작일과 종료일 사이에 있으면 "1"를 반환해야 한다', () => {
+  it('현재 날짜가 시작일과 종료일 사이에 있으면 Ongoing를 반환해야 한다', () => {
     const result = getTimeStatus({
       startDate: '2024-08-20T00:00:00Z',
       endDate: '2024-08-23T00:00:00Z',
     });
 
-    expect(result).toBe(1);
+    expect(result.status).toBe('Ongoing');
+    expect(result.isPending).toBe(false);
+    expect(result.isOngoing).toBe(true);
+    expect(result.isClosed).toBe(false);
+  });
+
+  it('현재 날짜가 종료 날짜 이후이면 Closed를 반환해야 한다', () => {
+    const result = getTimeStatus({
+      startDate: '2024-08-18T00:00:00Z',
+      endDate: '2024-08-20T00:00:00Z',
+    });
+
+    expect(result.status).toBe('Closed');
+    expect(result.isPending).toBe(false);
+    expect(result.isOngoing).toBe(false);
+    expect(result.isClosed).toBe(true);
   });
 });
