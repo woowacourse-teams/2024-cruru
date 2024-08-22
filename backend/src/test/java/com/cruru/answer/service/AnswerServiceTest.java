@@ -46,7 +46,7 @@ class AnswerServiceTest extends ServiceTest {
     void setUp() {
         applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         question1 = questionRepository.save(QuestionFixture.shortAnswerType(null));
-        question2 = questionRepository.save(QuestionFixture.shortAnswerType(null));
+        question2 = questionRepository.save(QuestionFixture.dropdownType(null));
     }
 
     @DisplayName("질문에 대한 지원자의 답변을 성공적으로 저장한다.")
@@ -118,6 +118,30 @@ class AnswerServiceTest extends ServiceTest {
 
                 () -> assertThat(actualAnswerResponse1.question()).isEqualTo(question1.getContent()),
                 () -> assertThat(actualAnswerResponse2.question()).isEqualTo(question2.getContent())
+        );
+    }
+
+    @DisplayName("다중 선택 답변은 하나의 답변으로 묶어 DTO로 변환한다.")
+    @Test
+    void toAnswerResponses_multipleChoice() {
+        // given
+        Question question = questionRepository.save(QuestionFixture.multipleChoiceType(null));
+
+        Answer expectedAnswer1 = AnswerFixture.first(question, applicant);
+        Answer expectedAnswer2 = AnswerFixture.second(question, applicant);
+        Answer expectedAnswer3 = AnswerFixture.second(question, applicant);
+
+        List<Answer> expectedAnswers = List.of(expectedAnswer1, expectedAnswer2, expectedAnswer3);
+
+        // when
+        List<AnswerResponse> actualAnswerResponses = answerService.toAnswerResponses(expectedAnswers);
+
+        // then
+        assertAll(
+                () -> assertThat(actualAnswerResponses).hasSize(1),
+                () -> assertThat(actualAnswerResponses.get(0).answer()).contains(expectedAnswer1.getContent()),
+                () -> assertThat(actualAnswerResponses.get(0).answer()).contains(expectedAnswer2.getContent()),
+                () -> assertThat(actualAnswerResponses.get(0).answer()).contains(expectedAnswer3.getContent())
         );
     }
 }

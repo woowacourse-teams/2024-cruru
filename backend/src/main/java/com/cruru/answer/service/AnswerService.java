@@ -7,7 +7,11 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.exception.badrequest.ReplyNotExistsException;
 import com.cruru.question.domain.Question;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AnswerService {
 
+    private static final String DELIMITER = ", ";
     private final AnswerRepository answerRepository;
 
     @Transactional
@@ -36,13 +41,24 @@ public class AnswerService {
     }
 
     public List<AnswerResponse> toAnswerResponses(List<Answer> answers) {
-        return answers.stream()
-                .map(this::toAnswerResponse)
-                .toList();
+        Map<Question, AnswerResponse> answerResponses = answers.stream()
+                .collect(Collectors.toMap(
+                        Answer::getQuestion,
+                        this::createAnswerResponse,
+                        this::mergeAnswers,
+                        LinkedHashMap::new
+                ));
+
+        return new ArrayList<>(answerResponses.values());
     }
 
-    private AnswerResponse toAnswerResponse(Answer answer) {
+    private AnswerResponse createAnswerResponse(Answer answer) {
         Question question = answer.getQuestion();
         return new AnswerResponse(question.getSequence(), question.getContent(), answer.getContent());
+    }
+
+    private AnswerResponse mergeAnswers(AnswerResponse existing, AnswerResponse newResponse) {
+        String mergedContent = existing.answer() + DELIMITER + newResponse.answer();
+        return new AnswerResponse(existing.sequence(), existing.question(), mergedContent);
     }
 }
