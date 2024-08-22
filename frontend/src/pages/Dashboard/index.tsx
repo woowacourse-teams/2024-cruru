@@ -5,6 +5,7 @@ import Tab from '@components/common/Tab';
 import ProcessBoard from '@components/dashboard/ProcessBoard';
 import ApplyManagement from '@components/applyManagement';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
+import PostManageBoard from '@components/postManagement/PostManageBoard';
 import OpenInNewTab from '@components/common/OpenInNewTab';
 import CopyToClipboard from '@components/common/CopyToClipboard';
 
@@ -17,7 +18,7 @@ import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import S from './style';
 
-export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '지원서 관리';
+export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
 
 export default function Dashboard() {
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
@@ -56,8 +57,8 @@ export default function Dashboard() {
         ))}
       </Tab>
 
-      {/* TODO: [08.21-lurgi] 현재 모달이 여러개를 컨트롤 할 수 없는 관계로 새로 렌더링 합니다. 
-      추후에 Modal에 id값을 부여하여 여러개의 모달을 컨트롤 할 수 있게 변경해야합니다. 
+      {/* TODO: [08.21-lurgi] 현재 모달이 여러개를 컨트롤 할 수 없는 관계로 새로 렌더링 합니다.
+      추후에 Modal에 id값을 부여하여 여러개의 모달을 컨트롤 할 수 있게 변경해야합니다.
       파일 맨 첫줄 주석도 삭제해야합니다. */}
       {currentMenu === '지원자 관리' && (
         <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
@@ -87,6 +88,13 @@ export default function Dashboard() {
           dashboardId={dashboardId}
           postId={postId}
           processes={processes}
+        />
+      </Tab.TabPanel>
+
+      <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
+        <PostManageBoard
+          dashboardId={dashboardId}
+          postId={postId}
         />
       </Tab.TabPanel>
 

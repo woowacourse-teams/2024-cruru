@@ -8,6 +8,7 @@ export const DASHBOARD_TAB_MENUS: Record<string, DashboardTabItems> = {
   applicant: '지원자 관리',
   rejected: '불합격자 관리',
   process: '모집 과정 관리',
+  post: '공고 관리',
   apply: '지원서 관리',
 } as const;
 
