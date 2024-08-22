@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import Tab from '@components/common/Tab';
 import ProcessBoard from '@components/dashboard/ProcessBoard';
+import ApplyManagement from '@components/applyManagement';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import OpenInNewTab from '@components/common/OpenInNewTab';
 import CopyToClipboard from '@components/common/CopyToClipboard';
@@ -16,7 +17,7 @@ import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import S from './style';
 
-export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리';
+export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '지원서 관리';
 
 export default function Dashboard() {
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
@@ -87,6 +88,10 @@ export default function Dashboard() {
           postId={postId}
           processes={processes}
         />
+      </Tab.TabPanel>
+
+      <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
+        <ApplyManagement isVisible={currentMenu === '지원서 관리'} />
       </Tab.TabPanel>
     </S.AppContainer>
   );
