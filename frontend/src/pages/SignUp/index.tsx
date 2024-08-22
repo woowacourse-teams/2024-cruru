@@ -6,6 +6,7 @@ import useSignUp from '@hooks/useSignUp';
 import useForm from '@hooks/utils/useForm';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useToast } from '@contexts/ToastContext';
 import PasswordInput from './PasswordInput';
 import S from './style';
 
@@ -16,15 +17,17 @@ export default function SignUp() {
   const { signUpMutate } = useSignUp();
   const [passwordError, setPasswordError] = useState(false);
 
+  const toast = useToast();
+
   const handleSignUp: React.FormEventHandler = (event) => {
     event.preventDefault();
     if (Object.values(errors).some((error) => error)) {
-      window.alert('회원가입 정보를 확인해주세요.');
+      toast.error('회원가입 정보를 확인해주세요.');
       return;
     }
 
     if (passwordError) {
-      window.alert('비밀번호를 확인해주세요.');
+      toast.error('비밀번호를 확인해주세요.');
       return;
     }
 

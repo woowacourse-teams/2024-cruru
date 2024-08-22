@@ -11,6 +11,7 @@ import useForm from '@hooks/utils/useForm';
 import { useParams } from 'react-router-dom';
 
 import CheckBox from '@components/common/CheckBox';
+import { useToast } from '@contexts/ToastContext';
 import C from '../style';
 import S from './style';
 import { useAnswers } from './useAnswers';
@@ -33,23 +34,24 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
   });
-
   const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(questions);
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
+
+  const { error } = useToast();
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     if (isRequiredFieldsIncomplete()) {
-      return window.alert('모든 필수 항목에 응답해 주세요.');
+      return error('모든 필수 항목에 응답해 주세요.');
     }
 
     if (hasErrors) {
-      return window.alert('지원자 정보를 확인해주세요.');
+      return error('지원자 정보를 확인해주세요.');
     }
 
     if (!personalDataCollection) {
-      return window.alert('개인정보 수집 및 이용 동의에 체크해주세요.');
+      return error('개인정보 수집 및 이용 동의에 체크해주세요.');
     }
 
     apply({
