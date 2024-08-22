@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { reactRouterParameters } from 'storybook-addon-remix-react-router';
+import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import ProcessColumn from './index';
@@ -32,6 +32,7 @@ const meta: Meta<typeof ProcessColumn> = {
     },
   },
   decorators: [
+    withRouter,
     (Child) => (
       <SpecificApplicantIdProvider>
         <SpecificProcessIdProvider>
@@ -59,6 +60,7 @@ export const Default: Story = {
           createdAt: '2024-08-10T12:00:00',
           isRejected: false,
           evaluationCount: 1,
+          averageScore: 4.4,
         },
         {
           applicantId: 2,
@@ -66,6 +68,7 @@ export const Default: Story = {
           createdAt: '2024-08-11T12:00:00',
           isRejected: true,
           evaluationCount: 1,
+          averageScore: 2.8,
         },
       ],
     },

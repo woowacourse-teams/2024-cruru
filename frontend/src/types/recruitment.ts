@@ -1,1 +1,1 @@
-export type RecruitmentStatusType = 'planned' | 'inProgress' | 'closed';
+export type RecruitmentStatusType = 'Pending' | 'Ongoing' | 'Closed';

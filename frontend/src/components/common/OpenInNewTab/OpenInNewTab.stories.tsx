@@ -1,3 +1,4 @@
+import { withRouter } from 'storybook-addon-remix-react-router';
 import type { Meta, StoryObj } from '@storybook/react';
 import OpenInNewTab from '.';
 
@@ -24,6 +25,8 @@ const meta = {
       control: { type: 'text' },
     },
   },
+
+  decorators: [withRouter], // 내부에서 React-Router의 Link를 사용하고 있으므로 넣어줘야 합니다.
 } satisfies Meta<typeof OpenInNewTab>;
 
 export default meta;

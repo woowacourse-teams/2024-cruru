@@ -33,9 +33,15 @@ const EvaluatorName = styled.h3`
   color: black;
 `;
 
-const EvaluatedDate = styled.span`
+const EvaluatedDate = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
+
   ${({ theme }) => theme.typography.common.small};
-  color: ${({ theme }) => theme.colors.text.block};
+  color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
 const ResultFlag = styled.div<{ $score: string }>`
