@@ -53,6 +53,9 @@ public class DataLoader implements ApplicationRunner {
     private final EvaluationRepository evaluationRepository;
     private final ApplyFormRepository applyFormRepository;
 
+    @Value("${base-url.applyform}")
+    private String applyPostBaseUrl;
+
     @Value("${dataloader.enable}")
     private boolean enableDataLoader;
 
@@ -87,7 +90,7 @@ public class DataLoader implements ApplicationRunner {
         ApplyForm applyForm = new ApplyForm(
                 "우아한테크코스 2025 백엔드 신입생 모집 ",
                 description,
-                "https://woowacourse.io/apply",
+                applyPostBaseUrl.formatted(dashboard.getId()),
                 startDate,
                 endDate,
                 dashboard
