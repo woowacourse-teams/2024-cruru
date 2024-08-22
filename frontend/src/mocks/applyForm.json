@@ -10,7 +10,8 @@
       "label": "1. 이전에 프로그래밍을 교육 받은 경험이 있다면 어디서 받았는지 간단히 적어주세요.",
       "description": "",
       "orderIndex": 0,
-      "choices": []
+      "choices": [],
+      "required": true
     },
     {
       "id": 4,
@@ -18,7 +19,8 @@
       "label": "2. 효과적인 학습 방식과 경험",
       "description": "프로그래밍 학습을 하고 장기간 개발자로 살아가기 위해, 본인만의 효과적인 학습 방식을 찾는 것은 매우 중요합니다. 프로그래밍이 아니더라도 지금까지의 모든 학습 경험을 되돌아봤을 때, 본인에게 유용했던 학습 방식을 찾아낸 과정과 경험을 공유해 주세요. 그리고 이 경험은 현재 본인의 프로그래밍 학습 과정에 어떻게 적용되고 있나요? (1000자 이내)",
       "orderIndex": 1,
-      "choices": []
+      "choices": [],
+      "required": true
     },
     {
       "id": 6,
@@ -42,7 +44,8 @@
           "orderIndex": 1
         }
       ],
-      "orderIndex": 2
+      "orderIndex": 2,
+      "required": true
     },
     {
       "id": 5,
@@ -60,7 +63,8 @@
           "orderIndex": 1
         }
       ],
-      "orderIndex": 3
+      "orderIndex": 3,
+      "required": false
     }
   ]
 }

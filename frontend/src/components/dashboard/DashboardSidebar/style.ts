@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
+  position: relative;
+
   width: 20%;
   min-width: 25rem;
   max-width: 30rem;

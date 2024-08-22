@@ -1,19 +1,19 @@
 import { ApplyForm, QuestionType, RecruitmentPost, Question as CustomQuestion } from '@customTypes/apply';
 import { ISO8601 } from '@customTypes/common';
 
-interface Choice {
+interface ChoiceDto {
   id: number;
   label: string;
   orderIndex: number;
 }
 
-interface Question {
+interface QuestionDto {
   id: string;
   type: QuestionType;
   label: string;
   description: string;
   orderIndex: number;
-  choices: Choice[];
+  choices: ChoiceDto[];
   required: boolean;
 }
 
@@ -22,7 +22,7 @@ export interface ApplyDto {
   postingContent: string;
   startDate: ISO8601;
   endDate: ISO8601;
-  questions: Question[];
+  questions: QuestionDto[];
 }
 
 // INFO: 백엔드 API 응답 객체로부터 필요한 데이터를 그루핑하기 위해 DTO를 변환하는 함수를 만들었습니다.

@@ -8,7 +8,6 @@ import { validateEmail, validateName, validatePhoneNumber } from '@domain/valida
 import { ApplicantData, ApplyRequestBody, Question } from '@customTypes/apply';
 import { applyMutations, applyQueries } from '@hooks/apply';
 import useForm from '@hooks/utils/useForm';
-import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 import { useParams } from 'react-router-dom';
 
 import CheckBox from '@components/common/CheckBox';
@@ -30,38 +29,34 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const {
     formData: applicant,
     register,
-    errors,
+    hasErrors,
   } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
   });
 
-  const { answers, changeHandler } = useAnswers(questions);
+  const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(questions);
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    if (Object.values(answers).some((answer) => answer.length === 0)) {
-      if (!window.confirm('작성하지 않은 질문이 있습니다. 제출하시겠습니까?')) {
-        return;
-      }
+    if (isRequiredFieldsIncomplete()) {
+      return window.alert('모든 필수 항목에 응답해 주세요.');
     }
 
-    if (Object.values(errors).some((error) => error)) {
-      window.alert('지원자 정보를 확인해주세요.');
-      return;
+    if (hasErrors) {
+      return window.alert('지원자 정보를 확인해주세요.');
     }
 
     if (!personalDataCollection) {
-      window.alert('개인정보 수집 및 이용 동의에 체크해주세요.');
-      return;
+      return window.alert('개인정보 수집 및 이용 동의에 체크해주세요.');
     }
 
     apply({
       body: {
         applicant: {
           ...applicant,
-          phone: applicant.phone.replace(/-/g, ''),
+          phone: applicant.phone,
         },
         answers: Object.entries(answers).map(([questionId, answer]) => ({
           questionId,
@@ -99,12 +94,11 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
               onBlur: validatePhoneNumber.onBlur,
               onChange: validatePhoneNumber.onChange,
             },
-            formatter: formatPhoneNumber,
           })}
           inputMode="numeric"
           label="전화 번호"
           placeholder="번호만 입력해 주세요."
-          maxLength={13}
+          maxLength={11}
           required
         />
 

@@ -1,6 +1,7 @@
 /* eslint-disable no-promise-executor-return */
 import { AUTH } from '@api/endPoint';
 import { http } from 'msw';
+import { Success } from './response';
 
 interface LoginFormData {
   email: string;
@@ -14,9 +15,8 @@ const authHandlers = [
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     if (!body.email || !body.password || body.email !== 'admin@gmail.com' || body.password !== 'admin') {
-      return new Response(null, {
+      return new Response(JSON.stringify({ detail: '로그인 정보가 일치하지 않습니다.' }), {
         status: 401,
-        statusText: '[Mock Data Error] Login Failed',
       });
     }
 
@@ -26,11 +26,15 @@ const authHandlers = [
 
     return new Response(responseBody, {
       status: 201,
-      statusText: 'Created',
       headers: {
         'Content-Type': 'application/json',
       },
     });
+  }),
+
+  http.post(`${AUTH}/logout`, async () => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    return Success();
   }),
 ];
 

@@ -80,5 +80,12 @@ export default function useForm<TFieldData>({ initialValues }: UseFormProps<TFie
     };
   };
 
-  return { register, formData, handleSubmit, validateAndSetErrors, errors };
+  return {
+    errors,
+    register,
+    formData,
+    handleSubmit,
+    validateAndSetErrors,
+    hasErrors: Object.values(errors).some((error) => error),
+  };
 }

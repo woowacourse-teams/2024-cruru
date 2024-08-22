@@ -9,6 +9,8 @@ const authApi = {
       path: '/login',
       body: { email, password },
     }),
+
+  logout: async () => apiClient.post({ path: '/logout' }),
 };
 
 export default authApi;
