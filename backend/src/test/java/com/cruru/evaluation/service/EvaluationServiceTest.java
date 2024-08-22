@@ -127,4 +127,14 @@ class EvaluationServiceTest extends ServiceTest {
         assertThatThrownBy(() -> evaluationService.update(request, invalidId))
                 .isInstanceOf(EvaluationNotFoundException.class);
     }
+
+    @DisplayName("평가가 없을 시 평균 점수는 0점이다.")
+    @Test
+    void calculateAverageScore() {
+        // when
+        double averageScore = evaluationService.calculateAverageScore(process, applicant);
+
+        // then
+        assertThat(averageScore).isZero();
+    }
 }
