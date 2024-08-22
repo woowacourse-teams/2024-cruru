@@ -57,7 +57,7 @@ export default function SignUp() {
             validate: validatePhoneNumber,
             placeholder: '전화번호',
             inputMode: 'numeric',
-            maxLength: 13,
+            maxLength: 11,
             type: 'text',
           })}
           label="전화번호"
