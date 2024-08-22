@@ -77,9 +77,9 @@ const colors: Colors = {
 };
 
 const breakpoints = {
-  mobile: '60rem',
-  tablet: '90rem',
-  desktop: '1800rem',
+  mobile: '48rem',
+  tablet: '76.8rem',
+  desktop: '120rem',
 };
 
 const typography = {
