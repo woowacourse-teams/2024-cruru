@@ -12,7 +12,7 @@ export default function formatDate(dateString: ISO8601 | string) {
 
 export function getCleanDateString(dateString?: ISO8601 | string) {
   const date = dateString ? new Date(dateString) : new Date();
-  date.setHours(date.getHours() + 9);
+  date.setHours(date.getHours());
   return new Date(date.toDateString());
 }
 
