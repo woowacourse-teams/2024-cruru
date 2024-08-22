@@ -1,6 +1,13 @@
+import { RecruitmentInfoState } from '@customTypes/dashboard';
+
 import DateInput from '@components/common/DateInput';
+import InputField from '@components/common/InputField';
+
 import usePostManagement from '@hooks/usePostManagement';
+import useForm from '@hooks/utils/useForm';
 import formatDate from '@utils/formatDate';
+
+import { validateTitle } from '@domain/validations/recruitment';
 import S from './style';
 
 interface PostManageBoardProps {
@@ -15,9 +22,21 @@ export default function PostManageBoard({ dashboardId, postId }: PostManageBoard
   const startDateText = postState ? formatDate(postState.startDate) : '';
   const endDateText = postState ? formatDate(postState.endDate) : '';
 
+  const { register } = useForm<RecruitmentInfoState>({ initialValues: postState });
+
   if (isLoading || !postState) {
     return <div>로딩 중입니다...</div>;
   }
+
+  // const isModifyButtonValid = !!(
+  //   endDate &&
+  //   contentText?.trim() &&
+  //   startDate &&
+  //   title.trim() &&
+  //   !Object.values(errors).some((error) => error)
+  // );
+
+  // const isModifyButtonValid = !Object.values(errors).some((error) => error);
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostState((prev) => ({
@@ -30,6 +49,13 @@ export default function PostManageBoard({ dashboardId, postId }: PostManageBoard
     setPostState((prev) => ({
       ...prev,
       endDate: new Date(e.target.value).toISOString(),
+    }));
+  };
+
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostState((prev) => ({
+      ...prev,
+      title: e.target.value,
     }));
   };
 
@@ -63,6 +89,23 @@ export default function PostManageBoard({ dashboardId, postId }: PostManageBoard
           </S.DatePickerBox>
         </S.DatePickerContainer>
       </S.Section>
+
+      <S.Section>
+        <S.SectionTitleContainer>
+          <h2>상세 정보</h2>
+        </S.SectionTitleContainer>
+        <InputField
+          {...register('title', {
+            validate: { onBlur: validateTitle, onChange: validateTitle },
+            placeholder: '공고 제목을 입력해 주세요',
+            maxLength: 32,
+            onChange: handleTitle,
+          })}
+          value={postState.title}
+        />
+      </S.Section>
+
+      <S.Section />
     </S.Wrapper>
   );
 }
