@@ -81,7 +81,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
       toast.success('지원서의 사전 질문 항목 수정에 성공했습니다.');
     },
     onError: () => {
-      toast.success('지원서의 사전 질문 항목 수정에 실패했습니다.');
+      toast.error('지원서의 사전 질문 항목 수정에 실패했습니다.');
     },
   });
 

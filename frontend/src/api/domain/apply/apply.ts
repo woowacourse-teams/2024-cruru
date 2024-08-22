@@ -23,6 +23,12 @@ const applyApis = {
       path: `/${postId}/submit`,
       body,
     }),
+
+  modify: async ({ postId, body }: { postId: string; body: RecruitmentPost }) =>
+    apiClient.patch({
+      path: `/${postId}`,
+      body,
+    }),
 };
 
 export default applyApis;
