@@ -1,5 +1,6 @@
+import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import type { Meta, StoryObj } from '@storybook/react';
-import DashboardSidebar from './index';
+import DashboardSidebar from '.';
 
 const meta: Meta<typeof DashboardSidebar> = {
   title: 'Components/Dashboard/Sidebar',
@@ -11,9 +12,30 @@ const meta: Meta<typeof DashboardSidebar> = {
         component: 'DashboardSidebar 컴포넌트는 로고와 여러 개의 Accordion으로 구성된 사이드바입니다.',
       },
     },
+    reactRouter: reactRouterParameters({
+      location: {
+        pathParams: { dashboardId: '21' },
+      },
+      routing: { path: '/dashboard/:dashboardId' },
+    }),
+  },
+  args: {
+    options: [
+      {
+        text: '첫번째 옵션',
+        isSelected: true,
+        postId: 1,
+      },
+      {
+        text: '두번째 옵션',
+        isSelected: false,
+        postId: 2,
+      },
+    ],
   },
   tags: ['autodocs'],
   decorators: [
+    withRouter,
     (Child) => (
       <div
         style={{

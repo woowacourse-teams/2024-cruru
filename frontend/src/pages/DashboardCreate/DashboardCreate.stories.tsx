@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { reactRouterParameters } from 'storybook-addon-remix-react-router';
+import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import DashboardCreate from './index';
 
 const meta: Meta<typeof DashboardCreate> = {
   title: 'Pages/DashboardCreate',
   component: DashboardCreate,
+  decorators: [withRouter],
   parameters: {
     layout: 'fullscreen',
     docs: {
