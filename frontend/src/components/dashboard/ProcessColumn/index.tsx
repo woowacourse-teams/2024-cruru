@@ -49,13 +49,14 @@ export default function ProcessColumn({ process, showRejectedApplicant }: Proces
       <S.ApplicantList>
         {process.applicants
           .filter(({ isRejected }) => (showRejectedApplicant ? isRejected : !isRejected))
-          .map(({ applicantId, applicantName, createdAt, evaluationCount, isRejected }) => (
+          .map(({ applicantId, applicantName, createdAt, evaluationCount, averageScore, isRejected }) => (
             <ApplicantCard
               key={applicantId}
               name={applicantName}
               isRejected={isRejected}
               createdAt={createdAt}
               evaluationCount={evaluationCount}
+              averageScore={averageScore}
               popOverMenuItems={menuItemsList({ applicantId })}
               onCardClick={() => cardClickHandler(applicantId)}
             />

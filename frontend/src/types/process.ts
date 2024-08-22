@@ -4,6 +4,7 @@ export interface ApplicantCardInfo {
   createdAt: string;
   isRejected: boolean;
   evaluationCount: number;
+  averageScore: number;
 }
 
 export interface Process {
