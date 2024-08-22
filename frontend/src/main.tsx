@@ -8,11 +8,12 @@ import { ModalProvider } from '@contexts/ModalContext';
 import { Global, ThemeProvider } from '@emotion/react';
 import ToastProvider from '@contexts/ToastContext';
 
-import { BASE_URL } from '@constants/constants';
 import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
 import AppRouter from './router/AppRouter';
+
+const { PROD_URL, DEV_URL } = process.env;
 
 async function setPrev() {
   if (process.env.NODE_ENV === 'development') {
@@ -29,7 +30,7 @@ async function setPrev() {
     integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
     // Performance Monitoring
     tracesSampleRate: 1.0, //  Capture 100% of the transactions
-    tracePropagationTargets: ['localhost', BASE_URL],
+    tracePropagationTargets: ['localhost', PROD_URL, DEV_URL],
     // Session Replay
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,

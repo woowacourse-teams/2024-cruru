@@ -19,8 +19,14 @@ export default function SignIn() {
     <S.Layout>
       <S.SignUpContainer onSubmit={handleSignIn}>
         <S.Title>로그인</S.Title>
-        <InputField {...register('email', { placeholder: '이메일', type: 'email' })} />
-        <InputField {...register('password', { placeholder: '비밀번호', type: 'password' })} />
+        <InputField
+          {...register('email', { placeholder: '이메일', type: 'email' })}
+          required
+        />
+        <InputField
+          {...register('password', { placeholder: '비밀번호', type: 'password' })}
+          required
+        />
         <S.ButtonContainer>
           <Button
             size="fillContainer"

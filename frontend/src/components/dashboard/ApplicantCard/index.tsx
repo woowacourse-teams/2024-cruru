@@ -16,6 +16,7 @@ interface ApplicantCardProps {
   isRejected: boolean;
   createdAt: string;
   evaluationCount: number;
+  averageScore: number;
   popOverMenuItems: PopOverMenuItem[];
   onCardClick: () => void;
 }
@@ -25,20 +26,14 @@ export default function ApplicantCard({
   isRejected,
   createdAt,
   evaluationCount,
+  averageScore,
   popOverMenuItems,
   onCardClick,
 }: ApplicantCardProps) {
   const [isPopOverOpen, setIsPopOverOpen] = useState<boolean>(false);
   const optionButtonWrapperRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * 현재는 API 스펙상 지원자 카드에 평점(averageScore)을 보여줄 방법이 아직 없습니다.
-   * 따라서 평가자 수를 기준으로 '평가 대기 중', '평가 완료'의 2가지 플래그로 우선 적용했습니다.
-   * 추후 API 스펙 변경시 이에 대한 PR을 별도로 올릴 예정입니다.
-   * - 2024-08-18 by 아르
-   */
-  // const evaluationString = averageScore ? `★ ${averageScore.toFixed(1)}` : '평가 대기 중';
-  const evaluationString = evaluationCount ? '평가 완료' : '평가 대기 중';
+  const evaluationString = averageScore ? `★ ${averageScore.toFixed(1)}` : '평가 대기 중';
 
   const handleClickPopOverButton = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -78,7 +73,7 @@ export default function ApplicantCard({
       <S.CardDetail>
         <S.CardHeader>{name}</S.CardHeader>
         <S.CardEvaluationFlag
-          averageScore={0}
+          averageScore={averageScore}
           evaluationCount={evaluationCount}
         >
           {evaluationString}

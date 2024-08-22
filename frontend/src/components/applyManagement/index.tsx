@@ -1,48 +1,57 @@
-import { HiOutlinePlusCircle } from 'react-icons/hi';
-import { Question, QuestionOptionValue } from '@customTypes/dashboard';
+import { useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+
+import useApplyManagement from '@hooks/useApplyManagement';
+import Button from '@components/common/Button';
+import QuestionBuilder from '@components/dashboard/DashboardCreate/Apply/QuestionBuilder';
 import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 
-import Button from '@components/common/Button';
-import ChevronButton from '@components/common/ChevronButton';
-import QuestionBuilder from './QuestionBuilder';
-
+import { HiOutlinePlusCircle } from 'react-icons/hi';
 import S from './style';
 
-interface ApplyProps {
-  applyState: Question[];
-  addQuestion: () => void;
-  setQuestionTitle: (index: number) => (title: string) => void;
-  setQuestionType: (index: number) => (type: Question['type']) => void;
-  setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
-  setQuestionRequiredToggle: (index: number) => () => void;
-  setQuestionPrev: (index: number) => () => void;
-  setQuestionNext: (index: number) => () => void;
-  deleteQuestion: (index: number) => void;
-  prevStep: () => void;
-  nextStep: () => void;
-}
+export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { postId } = useParams<{ postId: string }>() as {
+    postId: string;
+  };
 
-export default function Apply({
-  applyState,
-  addQuestion,
-  setQuestionTitle,
-  setQuestionType,
-  setQuestionOptions,
-  setQuestionRequiredToggle,
-  setQuestionPrev,
-  setQuestionNext,
-  deleteQuestion,
-  prevStep,
-  nextStep,
-}: ApplyProps) {
+  const {
+    isLoading,
+    applyState,
+    modifyApplyQuestionsMutator,
+    addQuestion,
+    setQuestionTitle,
+    setQuestionType,
+    setQuestionOptions,
+    setQuestionRequiredToggle,
+    setQuestionPrev,
+    setQuestionNext,
+    deleteQuestion,
+  } = useApplyManagement({ postId });
+
+  useEffect(() => {
+    if (isVisible && wrapperRef.current && !isLoading) {
+      wrapperRef.current.scrollTop = 0;
+    }
+  }, [isVisible, isLoading]);
+
+  if (isLoading) {
+    <div>로딩 중입니다...</div>;
+  }
+
   const isNextBtnValid =
     applyState.length === DEFAULT_QUESTIONS.length ||
     applyState
       .slice(DEFAULT_QUESTIONS.length)
       .every((question) => question.question.trim() && question.choices.length !== 1);
 
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    modifyApplyQuestionsMutator.mutate();
+  };
+
   return (
-    <S.Wrapper>
+    <S.Wrapper ref={wrapperRef}>
       <S.Section>
         <S.SectionTitleContainer>
           <h2>{APPLY_QUESTION_HEADER.defaultQuestions.title}</h2>
@@ -62,7 +71,7 @@ export default function Apply({
         </S.SectionTitleContainer>
 
         {applyState.map((question, index) => {
-          if (index >= 3) {
+          if (index >= DEFAULT_QUESTIONS.length) {
             return (
               <S.QuestionsContainer key={question.id}>
                 <QuestionBuilder
@@ -94,36 +103,17 @@ export default function Apply({
       </S.Section>
 
       <S.Section>
-        <S.StepButtonsContainer>
+        <S.ModifyButtonContainer>
           <Button
-            disabled={false}
-            onClick={prevStep}
-            size="sm"
-            color="white"
-          >
-            <S.ButtonContent>
-              <ChevronButton
-                direction="left"
-                size="sm"
-              />
-              이전
-            </S.ButtonContent>
-          </Button>
-          <Button
+            type="button"
+            color="primary"
+            size="fillContainer"
             disabled={!isNextBtnValid}
-            onClick={nextStep}
-            size="sm"
-            color="white"
+            onClick={handleSubmit}
           >
-            <S.ButtonContent>
-              다음
-              <ChevronButton
-                direction="right"
-                size="sm"
-              />
-            </S.ButtonContent>
+            수정하기
           </Button>
-        </S.StepButtonsContainer>
+        </S.ModifyButtonContainer>
       </S.Section>
     </S.Wrapper>
   );

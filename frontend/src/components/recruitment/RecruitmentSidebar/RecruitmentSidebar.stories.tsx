@@ -13,6 +13,13 @@ const meta: Meta<typeof RecruitmentSidebar> = {
     },
   },
   tags: ['autodocs'],
+  args: {
+    options: [
+      { text: '첫번째 옵션', isSelected: true },
+      { text: '두번째 옵션', isSelected: true },
+      { text: '세번째 옵션', isSelected: false },
+    ],
+  },
   decorators: [
     (Child) => (
       <div

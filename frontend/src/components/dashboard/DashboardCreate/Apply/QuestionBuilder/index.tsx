@@ -38,7 +38,7 @@ export default function QuestionBuilder({
 }: QuestionBuilderProps) {
   const [title, setTitle] = useState<string>(question?.question || '');
   const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>(question?.type || 'SHORT_ANSWER');
-  const [isRequired, setIsRequired] = useState<boolean>(question?.required || true);
+  const [isRequired, setIsRequired] = useState<boolean>(question ? question.required : true);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -109,7 +109,7 @@ export default function QuestionBuilder({
         )}
 
         <S.RequiredBox>
-          이 질문은 필수 질문입니다.
+          {isRequired ? '이 질문은 필수 질문입니다.' : '이 질문은 선택 질문입니다.'}
           <ToggleSwitch
             width="4rem"
             isChecked={isRequired}
