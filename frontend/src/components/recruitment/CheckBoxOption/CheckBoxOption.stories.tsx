@@ -61,7 +61,7 @@ export const Default: Story = {
     isChecked: false,
     isDisabled: false,
     inputAttrs: {
-      value: '옵션을 입력하세요.',
+      value: '',
     },
   },
   decorators: [

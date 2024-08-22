@@ -27,7 +27,7 @@ export default function DashboardSidebar({ options }: DashboardSidebarProps) {
       </Link>
 
       <S.Contents>
-        <Accordion title={<Link to="/dashboard/1/posts">공고</Link>}>
+        <Accordion title={<Link to={`/dashboard/${dashboardId}/posts`}>공고</Link>}>
           {options.map(({ text, isSelected, postId }, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <Accordion.ListItem key={index}>
