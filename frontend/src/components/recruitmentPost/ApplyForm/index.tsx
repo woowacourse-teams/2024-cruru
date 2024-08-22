@@ -98,7 +98,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
           inputMode="numeric"
           label="전화 번호"
           placeholder="번호만 입력해 주세요."
-          maxLength={13}
+          maxLength={11}
           required
         />
 
