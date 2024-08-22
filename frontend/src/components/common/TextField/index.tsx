@@ -6,6 +6,7 @@ interface TextFieldProps extends ComponentProps<'textarea'> {
   error?: string;
   focus?: boolean;
   resize?: boolean;
+  isLengthVisible?: boolean;
 }
 
 export default function TextField({
@@ -16,6 +17,7 @@ export default function TextField({
   error,
   required,
   resize = true,
+  isLengthVisible,
   ...props
 }: TextFieldProps) {
   return (
@@ -37,7 +39,14 @@ export default function TextField({
         {...props}
       />
 
-      {error && <S.ErrorText>{error}</S.ErrorText>}
+      {(isLengthVisible || error) && (
+        <S.Footer isError={!!error}>
+          {error && <S.ErrorText>{error}</S.ErrorText>}
+          {isLengthVisible && (
+            <S.LengthText>{`${value ? value.toString().length : 0} / ${props.maxLength}`}</S.LengthText>
+          )}
+        </S.Footer>
+      )}
     </S.Wrapper>
   );
 }

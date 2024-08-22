@@ -71,6 +71,7 @@ export default function ProcessAddForm({ dashboardId, postId, priorOrderIndex, t
         value={formState.description}
         onChange={handleChange}
         name="description"
+        required
       />
 
       <C.ButtonWrapper>

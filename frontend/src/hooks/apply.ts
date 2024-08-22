@@ -1,4 +1,4 @@
-import applyApis from '@api/apply';
+import applyApis from '@api/domain/apply/apply';
 import { ApplyRequestBody } from '@customTypes/apply';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import processApis from '@api/process';
+import processApis from '@api/domain/process';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import QUERY_KEYS from './queryKeys';
 

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DashboardList from '.';
 
 const meta: Meta<typeof DashboardList> = {
-  title: 'Components/DashboardList',
+  title: 'Pages/DashboardList',
   component: DashboardList,
   decorators: [withRouter],
   parameters: {

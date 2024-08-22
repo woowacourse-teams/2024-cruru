@@ -56,4 +56,12 @@ const meta: Meta<typeof DashboardSidebar> = {
 export default meta;
 type Story = StoryObj<typeof DashboardSidebar>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    options: [
+      { text: '우아한테크코스 6기 프론트엔드', isSelected: true, postId: 1 },
+      { text: '우아한테크코스 6기 백엔드', isSelected: false, postId: 2 },
+      { text: '우아한테크코스 6기 안드로이드', isSelected: false, postId: 3 },
+    ],
+  },
+};

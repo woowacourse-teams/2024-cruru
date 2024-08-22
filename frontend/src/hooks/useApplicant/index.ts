@@ -1,4 +1,4 @@
-import applicantApis from '@api/applicant';
+import applicantApis from '@api/domain/applicant';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
@@ -7,7 +7,7 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
   const queryClient = useQueryClient();
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
 
-  const moveApplicantProcess = useMutation({
+  return useMutation({
     mutationFn: ({ processId, applicants }: { processId: number; applicants: number[] }) =>
       applicantApis.move({ processId, applicants }),
     onSuccess: () => {
@@ -17,8 +17,4 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
       }
     },
   });
-
-  return {
-    moveApplicantProcess,
-  };
 }

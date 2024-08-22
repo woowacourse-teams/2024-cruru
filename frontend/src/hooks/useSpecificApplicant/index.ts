@@ -1,4 +1,4 @@
-import applicantApis from '@api/applicant';
+import applicantApis from '@api/domain/applicant';
 import { ApplicantDetail, SpecificApplicant } from '@customTypes/applicant';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -19,6 +19,17 @@ const specificApplicant = {
 
     return useMutation({
       mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.reject({ applicantId }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+      },
+    });
+  },
+
+  useUnrejectApplicant: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+      mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.unreject({ applicantId }),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
       },

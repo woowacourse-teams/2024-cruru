@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import handlers from '@mocks/handlers';
 import { ModalProvider } from '@contexts/ModalContext';
+import ToastProvider from '@contexts/ToastContext';
 
 initialize();
 
@@ -30,7 +31,9 @@ const preview: Preview = {
           <QueryClientProvider client={new QueryClient()}>
             <Global styles={globalStyles()} />
             <ThemeProvider theme={theme}>
-              <Story />
+              <ToastProvider>
+                <Story />
+              </ToastProvider>
             </ThemeProvider>
           </QueryClientProvider>
         </ModalProvider>

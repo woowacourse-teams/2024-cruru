@@ -24,6 +24,7 @@ const Header = styled.div`
 const Content = styled.div`
   ${({ theme }) => theme.typography.common.paragraph}
   padding: 1.6rem;
+  white-space: pre-wrap;
 `;
 
 const FileRow = styled.div`

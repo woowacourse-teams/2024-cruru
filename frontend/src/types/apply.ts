@@ -21,6 +21,7 @@ export interface Question {
   label: string;
   description: string;
   choices: Choice[];
+  required: boolean;
 }
 
 export interface ApplyForm {

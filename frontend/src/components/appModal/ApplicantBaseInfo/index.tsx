@@ -15,11 +15,12 @@ interface ApplicantBaseInfoProps {
 
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { mutate: moveApplicantProcess } = useApplicant({ applicantId });
   const { mutate: rejectMutate } = specificApplicant.useRejectApplicant({ dashboardId, postId });
+  const { mutate: unrejectMutate } = specificApplicant.useUnrejectApplicant({ dashboardId, postId });
   const { processList, isLoading: isProcessLoading } = useProcess({ dashboardId, postId });
-
   const { data: applicantBaseInfo, isLoading: isBaseInfoLoading } = specificApplicant.useGetBaseInfo({ applicantId });
-  const { moveApplicantProcess } = useApplicant({ applicantId });
+
   const { close } = useModal();
 
   if (!applicantBaseInfo) {
@@ -38,16 +39,23 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
       id: processId,
       name: processName,
       onClick: ({ targetProcessId }: { targetProcessId: number }) => {
-        moveApplicantProcess.mutate({ processId: targetProcessId, applicants: [applicantId] });
+        moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
       },
     }));
 
   const rejectAppHandler = () => {
-    const isConfirmed = window.confirm('정말 해당 지원자를 불합격 하시겠습니까? 불합격은 번복할 수 없습니다.');
+    const confirmAction = (message: string, action: () => void) => {
+      const isConfirmed = window.confirm(message);
+      if (isConfirmed) {
+        action();
+        close();
+      }
+    };
 
-    if (isConfirmed) {
-      rejectMutate({ applicantId });
-      close();
+    if (!applicant.isRejected) {
+      confirmAction('정말 해당 지원자를 불합격 하시겠습니까?', () => rejectMutate({ applicantId }));
+    } else {
+      confirmAction('지원자의 불합격을 취소하시겠습니까?', () => unrejectMutate({ applicantId }));
     }
   };
 
@@ -61,13 +69,14 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
           items={items}
           width={112}
           isShadow={false}
+          disabled={applicant.isRejected}
         />
         <Button
           size="sm"
           color="error"
           onClick={rejectAppHandler}
         >
-          불합격
+          {applicant.isRejected ? '불합격 취소' : '불합격'}
         </Button>
       </S.ActionRow>
       <S.DetailContainer>
