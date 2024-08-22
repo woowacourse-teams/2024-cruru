@@ -41,9 +41,9 @@ public class AnswerService {
     }
 
     public List<AnswerResponse> toAnswerResponses(List<Answer> answers) {
-        Map<Integer, AnswerResponse> answerResponses = answers.stream()
+        Map<Question, AnswerResponse> answerResponses = answers.stream()
                 .collect(Collectors.toMap(
-                        answer -> answer.getQuestion().getSequence(),
+                        Answer::getQuestion,
                         this::createAnswerResponse,
                         this::mergeAnswers,
                         LinkedHashMap::new
