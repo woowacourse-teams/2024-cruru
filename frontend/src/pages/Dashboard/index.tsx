@@ -92,10 +92,7 @@ export default function Dashboard() {
       </Tab.TabPanel>
 
       <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
-        <PostManageBoard
-          dashboardId={dashboardId}
-          postId={postId}
-        />
+        <PostManageBoard postId={postId} />
       </Tab.TabPanel>
 
       <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>

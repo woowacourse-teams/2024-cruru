@@ -63,7 +63,7 @@ const ModifyButtonContainer = styled.div`
   width: 100%;
   max-width: 30rem;
   height: 5.2rem;
-  margin: 0 auto;
+  margin: 2.4rem auto;
 `;
 
 const S = {

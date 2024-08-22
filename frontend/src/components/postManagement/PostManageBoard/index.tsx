@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill-new';
 import { RecruitmentInfoState } from '@customTypes/dashboard';
 
 import DateInput from '@components/common/DateInput';
@@ -8,35 +10,47 @@ import useForm from '@hooks/utils/useForm';
 import formatDate from '@utils/formatDate';
 
 import { validateTitle } from '@domain/validations/recruitment';
+import TextEditor from '@components/common/TextEditor';
+import Button from '@components/common/Button';
 import S from './style';
 
 interface PostManageBoardProps {
-  dashboardId: string;
   postId: string;
 }
 
-export default function PostManageBoard({ dashboardId, postId }: PostManageBoardProps) {
-  console.log(dashboardId, postId);
+export default function PostManageBoard({ postId }: PostManageBoardProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const quillRef = useRef<ReactQuill | null>(null);
 
-  const { isLoading, postState, setPostState } = usePostManagement({ postId });
+  const { isLoading, postState, setPostState, modifyPostMutator } = usePostManagement({ postId });
   const startDateText = postState ? formatDate(postState.startDate) : '';
   const endDateText = postState ? formatDate(postState.endDate) : '';
+  const [contentText, setContentText] = useState<string | undefined>('');
 
-  const { register } = useForm<RecruitmentInfoState>({ initialValues: postState });
+  const { register, errors } = useForm<RecruitmentInfoState>({ initialValues: postState });
+
+  useEffect(() => {
+    setContentText(quillRef.current?.unprivilegedEditor?.getText());
+  }, [quillRef]);
+
+  useEffect(() => {
+    if (wrapperRef.current && !isLoading) {
+      wrapperRef.current.scrollTop = 0;
+    }
+  }, [isLoading]);
 
   if (isLoading || !postState) {
     return <div>로딩 중입니다...</div>;
   }
 
-  // const isModifyButtonValid = !!(
-  //   endDate &&
-  //   contentText?.trim() &&
-  //   startDate &&
-  //   title.trim() &&
-  //   !Object.values(errors).some((error) => error)
-  // );
-
-  // const isModifyButtonValid = !Object.values(errors).some((error) => error);
+  const isModifyButtonValid = !!(
+    postState &&
+    postState.startDate &&
+    postState.endDate &&
+    postState.title.trim() &&
+    contentText?.trim() &&
+    !Object.values(errors).some((error) => error)
+  );
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostState((prev) => ({
@@ -59,8 +73,21 @@ export default function PostManageBoard({ dashboardId, postId }: PostManageBoard
     }));
   };
 
+  const handlePostingContentChange = (string: string) => {
+    setPostState((prev) => ({
+      ...prev,
+      postingContent: string,
+    }));
+    setContentText(quillRef.current?.unprivilegedEditor?.getText());
+  };
+
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    modifyPostMutator.mutate();
+  };
+
   return (
-    <S.Wrapper>
+    <S.Wrapper ref={wrapperRef}>
       <S.Section>
         <S.SectionTitleContainer>
           <h2>모집일자</h2>
@@ -90,9 +117,9 @@ export default function PostManageBoard({ dashboardId, postId }: PostManageBoard
         </S.DatePickerContainer>
       </S.Section>
 
-      <S.Section>
+      <S.RecruitTitleContainer>
         <S.SectionTitleContainer>
-          <h2>상세 정보</h2>
+          <h2>공고 제목</h2>
         </S.SectionTitleContainer>
         <InputField
           {...register('title', {
@@ -103,9 +130,32 @@ export default function PostManageBoard({ dashboardId, postId }: PostManageBoard
           })}
           value={postState.title}
         />
-      </S.Section>
+      </S.RecruitTitleContainer>
 
-      <S.Section />
+      <S.RecruitDetailContainer>
+        <S.SectionTitleContainer>
+          <h2>상세 정보</h2>
+        </S.SectionTitleContainer>
+        <TextEditor
+          quillRef={quillRef}
+          value={postState.postingContent}
+          onChange={handlePostingContentChange}
+        />
+      </S.RecruitDetailContainer>
+
+      <S.Section>
+        <S.ModifyButtonContainer>
+          <Button
+            type="button"
+            color="primary"
+            size="fillContainer"
+            disabled={!isModifyButtonValid}
+            onClick={handleSubmit}
+          >
+            수정하기
+          </Button>
+        </S.ModifyButtonContainer>
+      </S.Section>
     </S.Wrapper>
   );
 }
