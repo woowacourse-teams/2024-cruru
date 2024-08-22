@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable no-promise-executor-return */
 import { http, HttpResponse } from 'msw';
 
 import { EVALUATIONS } from '@api/endPoint';
@@ -22,6 +22,8 @@ const evaluationHandlers = [
         statusText: 'Evaluation Not Found',
       });
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     return new Response(null, {
       status: 201,
