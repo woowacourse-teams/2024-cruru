@@ -1,12 +1,11 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import InputField from '@components/common/InputField';
 import Button from '@components/common/Button';
+import InputField from '@components/common/InputField';
+import Spinner from '@components/common/Spinner';
+import { validateEmail, validatePhoneNumber } from '@domain/validations/apply';
 import useSignUp from '@hooks/useSignUp';
 import useForm from '@hooks/utils/useForm';
-import { validateEmail, validatePhoneNumber } from '@domain/validations/apply';
-import { formatPhoneNumber } from '@utils/formatPhoneNumber';
-import Spinner from '@components/common/Spinner';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PasswordInput from './PasswordInput';
 import S from './style';
 
@@ -29,7 +28,7 @@ export default function SignUp() {
       return;
     }
 
-    signUpMutate.mutate({ ...formData, phone: formData.phone.split('-').join('') });
+    signUpMutate.mutate({ ...formData });
   };
 
   const deleteHangulFormatter = (value: string) => {
@@ -56,10 +55,9 @@ export default function SignUp() {
         <InputField
           {...register('phone', {
             validate: validatePhoneNumber,
-            formatter: formatPhoneNumber,
             placeholder: '전화번호',
             inputMode: 'numeric',
-            maxLength: 13,
+            maxLength: 11,
             type: 'text',
           })}
           label="전화번호"

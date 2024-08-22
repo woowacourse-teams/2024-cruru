@@ -8,7 +8,6 @@ import { validateEmail, validateName, validatePhoneNumber } from '@domain/valida
 import { ApplicantData, ApplyRequestBody, Question } from '@customTypes/apply';
 import { applyMutations, applyQueries } from '@hooks/apply';
 import useForm from '@hooks/utils/useForm';
-import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 import { useParams } from 'react-router-dom';
 
 import CheckBox from '@components/common/CheckBox';
@@ -57,7 +56,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
       body: {
         applicant: {
           ...applicant,
-          phone: applicant.phone.replace(/-/g, ''),
+          phone: applicant.phone,
         },
         answers: Object.entries(answers).map(([questionId, answer]) => ({
           questionId,
@@ -95,12 +94,11 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
               onBlur: validatePhoneNumber.onBlur,
               onChange: validatePhoneNumber.onChange,
             },
-            formatter: formatPhoneNumber,
           })}
           inputMode="numeric"
           label="전화 번호"
           placeholder="번호만 입력해 주세요."
-          maxLength={13}
+          maxLength={11}
           required
         />
 
