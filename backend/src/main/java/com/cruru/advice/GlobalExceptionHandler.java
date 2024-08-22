@@ -62,4 +62,13 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.of(problemDetail).build();
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ProblemDetail> handleUnexpectedException(Exception e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "예기치 못한 오류가 발생하였습니다."
+        );
+        return ResponseEntity.of(problemDetail).build();
+    }
 }
