@@ -7,6 +7,7 @@ import { DEFAULT_QUESTIONS } from '@constants/constants';
 import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 import questionApis from '@api/domain/question';
 import QUERY_KEYS from '@hooks/queryKeys';
+import { useToast } from '@contexts/ToastContext';
 
 interface UseApplyManagementReturn {
   isLoading: boolean;
@@ -47,6 +48,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   const { data, isLoading } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
+  const toast = useToast();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -76,10 +78,10 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
       }),
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId] });
-      alert('지원서의 사전 질문 항목 수정에 성공했습니다.');
+      toast.success('지원서의 사전 질문 항목 수정에 성공했습니다.');
     },
     onError: () => {
-      alert('지원서의 사전 질문 항목 수정에 실패했습니다.');
+      toast.success('지원서의 사전 질문 항목 수정에 실패했습니다.');
     },
   });
 

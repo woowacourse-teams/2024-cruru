@@ -21,9 +21,20 @@ const FormButtonWrapper = styled.div`
   }
 `;
 
+const SpinnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 4.5rem;
+  height: 1.4rem;
+`;
+
 const S = {
   EvaluationForm,
   FormButtonWrapper,
+  SpinnerContainer,
 };
 
 export default S;

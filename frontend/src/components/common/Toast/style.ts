@@ -30,7 +30,7 @@ const slideOut = keyframes`
 `;
 
 const ToastContainer = styled.div<ToastContainerProps & { visible: boolean }>`
-  position: absolute;
+  position: fixed;
   top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -47,7 +47,7 @@ const ToastContainer = styled.div<ToastContainerProps & { visible: boolean }>`
   padding: 0 1.2rem;
 
   border-radius: 0.8rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
   background-color: ${({ type, theme }) => {
     switch (type) {

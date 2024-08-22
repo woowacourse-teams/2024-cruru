@@ -45,9 +45,6 @@ export const applyMutations = {
 
     return useMutation({
       mutationFn: (params: { body: ApplyRequestBody }) => applyApis.apply({ ...params, postId }),
-      onError: (error) => {
-        window.alert(error.message);
-      },
       onSuccess: () => {
         navigate(`/post/${postId}/confirm`, { state: { title } });
       },
