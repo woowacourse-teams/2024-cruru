@@ -55,13 +55,12 @@ export default function RadioInputField({ choices, setChoices }: Props) {
       if (index === choices.length - 1) {
         addOption();
       }
-      focusLastOption();
     }
   };
 
   useEffect(() => {
     focusLastOption();
-  }, [choices.length, focusLastOption]);
+  }, [focusLastOption]);
 
   const setInputRefCallback = (index: number) => (node: HTMLInputElement) => {
     inputRefs.current[index] = node;

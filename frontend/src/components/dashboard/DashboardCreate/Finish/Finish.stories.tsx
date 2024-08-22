@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { reactRouterParameters } from 'storybook-addon-remix-react-router';
+import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import Finish from '.';
 
 const meta: Meta<typeof Finish> = {
   title: 'Components/Dashboard/Create/Finish',
   component: Finish,
+  decorators: [withRouter],
   parameters: {
     layout: 'centered',
     docs: {

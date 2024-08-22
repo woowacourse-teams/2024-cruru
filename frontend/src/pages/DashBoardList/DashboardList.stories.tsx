@@ -1,10 +1,11 @@
-import { reactRouterParameters } from 'storybook-addon-remix-react-router';
+import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import type { Meta, StoryObj } from '@storybook/react';
 import DashboardList from '.';
 
 const meta: Meta<typeof DashboardList> = {
   title: 'Pages/DashboardList',
   component: DashboardList,
+  decorators: [withRouter],
   parameters: {
     layout: 'centered',
     docs: {
