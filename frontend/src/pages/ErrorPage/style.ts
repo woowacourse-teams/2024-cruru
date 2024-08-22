@@ -11,6 +11,16 @@ const Wrapper = styled.div`
 
   padding: 0 16rem;
   color: ${({ theme }) => theme.colors.text.default};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    padding: 0 4rem;
+    gap: 2rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 0 2.4rem;
+    gap: 1.6rem;
+  }
 `;
 
 const StatusCode = styled.h1`
@@ -20,16 +30,44 @@ const StatusCode = styled.h1`
   font-weight: 700;
 
   color: ${({ theme }) => theme.colors.brand.primary};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 10rem;
+    line-height: 10rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 8rem;
+    line-height: 8rem;
+  }
 `;
 
 const Title = styled.h2`
   ${({ theme }) => theme.typography.heading[900]};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    ${({ theme }) => theme.typography.heading[800]};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    ${({ theme }) => theme.typography.heading[600]};
+  }
 `;
 
 const Description = styled.p`
   ${({ theme }) => theme.typography.common.large};
   white-space: pre-line;
   line-height: 3rem; // 3rem = line-height of 2rem + paragraph spacing of 1rem
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    ${({ theme }) => theme.typography.common.default};
+    line-height: 2.4rem; // 3rem = line-height of 1.4 + paragraph spacing of 1rem
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    ${({ theme }) => theme.typography.common.small};
+    line-height: 2rem; // 3rem = line-height of 1.2 + paragraph spacing of 0.8rem
+  }
 `;
 
 const ButtonContainer = styled.div`

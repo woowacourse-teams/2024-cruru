@@ -13,3 +13,5 @@ export const DASHBOARDS = `${BASE_URL}/dashboards`;
 export const AUTH = `${BASE_URL}/auth`;
 
 export const MEMBERS = `${BASE_URL}/members`;
+
+export const QUESTIONS = `${BASE_URL}/questions`;
