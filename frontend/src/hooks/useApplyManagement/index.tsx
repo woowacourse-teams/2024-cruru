@@ -82,7 +82,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   const addQuestion = () => {
     setApplyState((prev) => [
       ...prev,
-      { type: 'SHORT_ANSWER', question: '', choices: [], required: false, id: uniqueId },
+      { type: 'SHORT_ANSWER', question: '', choices: [], required: true, id: uniqueId },
     ]);
 
     setUniqueId(uniqueId + 1);
