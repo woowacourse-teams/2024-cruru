@@ -1,23 +1,17 @@
-import dashboardApis from '@api/domain/dashboard';
+import { useEffect, useState } from 'react';
+import type { Question, QuestionOptionValue } from '@customTypes/dashboard';
+import { Question as QuestionData } from '@customTypes/apply';
+
+import { applyQueries } from '@hooks/apply';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
-import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
+import questionApis from '@api/domain/question';
+import QUERY_KEYS from '@hooks/queryKeys';
 
-interface FinishResJson {
-  postUrl: string;
-  postId: string;
-}
-
-interface UseDashboardCreateFormReturn {
-  stepState: StepState;
-  prevStep: () => void;
-  nextStep: (dashboardId?: string) => void;
-
-  recruitmentInfoState: RecruitmentInfoState;
-  setRecruitmentInfoState: React.Dispatch<React.SetStateAction<RecruitmentInfoState>>;
+interface UseApplyManagementReturn {
+  isLoading: boolean;
   applyState: Question[];
-
+  modifyApplyQuestionsMutator: UseMutationResult<unknown, Error, void, unknown>;
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
@@ -26,62 +20,68 @@ interface UseDashboardCreateFormReturn {
   setQuestionPrev: (index: number) => () => void;
   setQuestionNext: (index: number) => () => void;
   deleteQuestion: (index: number) => void;
-
-  submitMutator: UseMutationResult<
-    FinishResJson,
-    Error,
-    {
-      clubId: string;
-    },
-    unknown
-  >;
-  finishResJson: FinishResJson | null;
 }
 
-const initialRecruitmentInfoState: RecruitmentInfoState = {
-  startDate: '',
-  endDate: '',
-  title: '',
-  postingContent: '',
-};
+interface UseApplyManagementProps {
+  postId: string;
+}
 
-export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
-  const [stepState, setStepState] = useState<StepState>('recruitmentForm');
-  const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
-  const [applyState, setApplyState] = useState<Question[]>(DEFAULT_QUESTIONS);
-  const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
+function getQuestions(data: QuestionData[] | undefined): Question[] {
+  if (!data) return [];
+
+  return data
+    .sort((a, b) => a.orderIndex - b.orderIndex)
+    .map((question) => ({
+      id: Number(question.questionId),
+      type: question.type,
+      question: question.label,
+      choices: question.choices.map((choice) => ({
+        choice: choice.label,
+        orderIndex: choice.orderIndex,
+      })),
+      required: question.required,
+    }));
+}
+
+export default function useApplyManagement({ postId }: UseApplyManagementProps): UseApplyManagementReturn {
+  const { data, isLoading } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
+  const [applyState, setApplyState] = useState(getQuestions(data));
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
+  const queryClient = useQueryClient();
 
-  const submitMutator = useMutation({
-    mutationFn: ({ clubId }: { clubId: string }) =>
-      dashboardApis.create({
-        clubId,
-        dashboardFormInfo: {
-          ...recruitmentInfoState,
-          questions: applyState.slice(DEFAULT_QUESTIONS.length).map(({ id, ...value }) => {
-            const temp = { ...value, choices: value.choices.filter(({ choice }) => !!choice) };
-            return { ...temp, orderIndex: id };
-          }),
-        },
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const newData = getQuestions(data);
+      const newApplyState = [...DEFAULT_QUESTIONS, ...newData];
+      setApplyState(newApplyState);
+      setUniqueId(newApplyState.length);
+      return;
+    }
+
+    setApplyState([...DEFAULT_QUESTIONS]);
+    setUniqueId(DEFAULT_QUESTIONS.length);
+  }, [data]);
+
+  const modifyApplyQuestionsMutator = useMutation({
+    mutationFn: () =>
+      questionApis.patch({
+        applyformId: postId,
+        questions: applyState.slice(DEFAULT_QUESTIONS.length).map((value, index) => ({
+          orderIndex: index,
+          type: value.type,
+          question: value.question,
+          choices: value.choices.filter(({ choice }) => !!choice),
+          required: value.required,
+        })),
       }),
-    onSuccess: async (data) => {
-      setStepState('finished');
-      setFinishResJson(data);
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId] });
+      alert('지원서의 사전 질문 항목 수정에 성공했습니다.');
+    },
+    onError: () => {
+      alert('지원서의 사전 질문 항목 수정에 실패했습니다.');
     },
   });
-
-  const prevStep = () => {
-    if (stepState === 'applyForm') setStepState('recruitmentForm');
-  };
-
-  const nextStep = (dashboardId?: string) => {
-    if (stepState === 'recruitmentForm') setStepState('applyForm');
-    if (stepState === 'applyForm') {
-      if (dashboardId) {
-        submitMutator.mutate({ clubId: dashboardId });
-      }
-    }
-  };
 
   const addQuestion = () => {
     setApplyState((prev) => [
@@ -164,13 +164,10 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   };
 
   return {
-    stepState,
-    prevStep,
-    nextStep,
-
-    recruitmentInfoState,
-    setRecruitmentInfoState,
+    isLoading,
     applyState,
+
+    modifyApplyQuestionsMutator,
 
     addQuestion,
     setQuestionTitle,
@@ -180,8 +177,5 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     setQuestionPrev,
     setQuestionNext,
     deleteQuestion,
-
-    submitMutator,
-    finishResJson,
   };
 }
