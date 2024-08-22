@@ -6,14 +6,17 @@ import QUERY_KEYS from '@hooks/queryKeys';
 interface UseEvaluationMutationParams {
   processId: number;
   applicantId: number;
+  closeOnSuccess: () => void;
 }
 
-interface MutationParams extends UseEvaluationMutationParams {
+interface MutationParams {
+  processId: number;
+  applicantId: number;
   score: string;
   content: string;
 }
 
-export default function useEvaluationMutation({ processId, applicantId }: UseEvaluationMutationParams) {
+export default function useEvaluationMutation({ processId, applicantId, closeOnSuccess }: UseEvaluationMutationParams) {
   const queryClient = useQueryClient();
   const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
 
@@ -26,9 +29,7 @@ export default function useEvaluationMutation({ processId, applicantId }: UseEva
     mutationFn: (params: MutationParams) => evaluationApis.create(params),
     onSuccess: () => {
       invalidateQueries();
-    },
-    onError: () => {
-      alert('지원자 평가 등록에 실패했습니다.');
+      closeOnSuccess();
     },
   });
 }

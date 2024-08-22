@@ -1,3 +1,4 @@
+import { useToast } from '@contexts/ToastContext';
 import { useEffect, useState } from 'react';
 
 interface useCopyToClipboardProps {
@@ -6,21 +7,21 @@ interface useCopyToClipboardProps {
 
 export default function useCopyToClipboard({ url }: useCopyToClipboardProps) {
   const [isCopied, setIsCopied] = useState(false);
+  const { success, error } = useToast();
 
   const copyToClipboard = () => {
     if (navigator.clipboard) {
       navigator.clipboard
         .writeText(url)
         .then(() => {
-          // TODO: toast 모달로 변경
-          window.alert('링크가 복사되었습니다.');
+          success('링크가 복사되었습니다.');
           setIsCopied(true);
         })
         .catch(() => {
-          window.alert('링크 복사에 실패했습니다.');
+          error('링크 복사에 실패했습니다.');
         });
     } else {
-      window.alert('해당 브라우저에서는 지원하지 않습니다.');
+      error('해당 브라우저에서는 지원하지 않습니다.');
     }
   };
 
