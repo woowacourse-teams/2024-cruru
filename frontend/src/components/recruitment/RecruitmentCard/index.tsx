@@ -1,7 +1,7 @@
 import { HiOutlineClock } from 'react-icons/hi';
 import { RecruitmentStatusType } from '@customTypes/recruitment';
-import { useGetRecruitmentStatus } from '@hooks/useRecruitment';
 import formatDate from '@utils/formatDate';
+import { getTimeStatus } from '@utils/compareTime';
 
 import RecruitmentCardStat from '../RecruitmentCardStat';
 import S from './style';
@@ -30,9 +30,9 @@ const POST_STATS_KEY: Record<string, string> = {
 } as const;
 
 const RECRUITMENT_STATUS: Record<RecruitmentStatusType, string> = {
-  planned: '모집 예정',
-  inProgress: '모집 진행 중',
-  closed: '모집 마감',
+  Pending: '모집 예정',
+  Ongoing: '모집 진행 중',
+  Closed: '모집 마감',
 };
 
 export default function RecruitmentCard({
@@ -43,7 +43,7 @@ export default function RecruitmentCard({
   endDate,
   onClick,
 }: RecruitmentCardProps) {
-  const status = useGetRecruitmentStatus({ startDate, endDate });
+  const { status } = getTimeStatus({ startDate, endDate });
 
   const postStatsMap: [string, number][] = [
     [POST_STATS_KEY.total, postStats.total],

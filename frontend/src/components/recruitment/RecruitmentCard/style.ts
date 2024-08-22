@@ -47,14 +47,14 @@ const RecruitmentStatusFlag = styled.div<{ status: RecruitmentStatusType }>`
   ${({ theme }) => theme.typography.common.small};
 
   ${({ theme, status }) => {
-    if (status === 'planned') {
+    if (status === 'Pending') {
       return css`
         border: 1px solid ${theme.baseColors.bluescale[100]};
         background: ${theme.baseColors.bluescale[50]};
         color: ${theme.baseColors.bluescale[500]};
       `;
     }
-    if (status === 'inProgress') {
+    if (status === 'Ongoing') {
       return css`
         border: 1px solid ${theme.baseColors.purplescale[100]};
         background: ${theme.baseColors.purplescale[50]};
