@@ -8,6 +8,7 @@ import useEvaluationMutation from '@hooks/useEvaluationMutation';
 import ValidationError from '@utils/errors/ValidationError';
 import { validateEvalContent } from '@domain/validations/evaluation';
 
+import Spinner from '@components/common/Spinner';
 import { EVALUATION_CONTENT_MAX_LENGTH, EVALUATION_SCORE } from '../constants';
 import S from './style';
 
@@ -25,7 +26,11 @@ interface EvaluationFormProps {
 export default function EvaluationForm({ processId, applicantId, onClose }: EvaluationFormProps) {
   const [formState, setFormState] = useState<EvaluationData>({ score: '', content: '' });
   const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
-  const { mutate: submitNewEvaluation } = useEvaluationMutation({ processId, applicantId });
+  const { mutate: submitNewEvaluation, isPending } = useEvaluationMutation({
+    processId,
+    applicantId,
+    closeOnSuccess: onClose,
+  });
 
   const handleChangeScore = (value: string) => {
     if (Object.keys(EVALUATION_SCORE).includes(value)) {
@@ -56,7 +61,6 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
     event.preventDefault();
     if (Object.keys(EVALUATION_SCORE).includes(formState.score)) {
       submitNewEvaluation({ processId, applicantId, ...formState });
-      onClose();
     }
   };
 
@@ -90,6 +94,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           color="white"
           onClick={onClose}
           size="sm"
+          disabled={isPending}
         >
           취소
         </Button>
@@ -99,7 +104,13 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           size="sm"
           disabled={formState.score === '' || !!contentErrorMessage}
         >
-          평가 저장
+          {isPending ? (
+            <S.SpinnerContainer>
+              <Spinner width={25} />
+            </S.SpinnerContainer>
+          ) : (
+            '평가 저장'
+          )}
         </Button>
       </S.FormButtonWrapper>
     </S.EvaluationForm>
