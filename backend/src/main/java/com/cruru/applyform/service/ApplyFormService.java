@@ -1,10 +1,12 @@
 package com.cruru.applyform.service;
 
-import com.cruru.applyform.controller.dto.ApplyFormCreateRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
+import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,9 @@ public class ApplyFormService {
     private String applyPostBaseUrl;
 
     @Transactional
-    public ApplyForm create(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+    public ApplyForm create(ApplyFormWriteRequest request, Dashboard createdDashboard) {
         ApplyForm applyForm = toApplyForm(request, createdDashboard);
+        validateStartDateNotInPast(applyForm);
 
         ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
         Long savedPostingId = savedApplyForm.getId();
@@ -32,7 +35,7 @@ public class ApplyFormService {
         return savedApplyForm;
     }
 
-    private ApplyForm toApplyForm(ApplyFormCreateRequest request, Dashboard createdDashboard) {
+    private ApplyForm toApplyForm(ApplyFormWriteRequest request, Dashboard createdDashboard) {
         return new ApplyForm(
                 request.title(),
                 request.postingContent(),
@@ -40,6 +43,19 @@ public class ApplyFormService {
                 request.endDate(),
                 createdDashboard
         );
+    }
+
+    private void validateStartDateNotInPast(ApplyForm applyForm) {
+        LocalDate startDate = applyForm.getStartDate().toLocalDate();
+        if (startDate.isBefore(LocalDate.now())) {
+            throw new StartDatePastException(startDate, LocalDate.now());
+        }
+    }
+
+    @Transactional
+    public void update(ApplyForm applyForm) {
+        validateStartDateNotInPast(applyForm);
+        applyFormRepository.save(applyForm);
     }
 
     public ApplyForm findById(long applyFormId) {

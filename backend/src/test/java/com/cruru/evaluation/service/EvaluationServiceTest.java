@@ -1,8 +1,5 @@
 package com.cruru.evaluation.service;
 
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -14,10 +11,12 @@ import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
 import com.cruru.evaluation.domain.Evaluation;
 import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.evaluation.exception.EvaluationNotFoundException;
-import com.cruru.evaluation.exception.badrequest.EvaluationNoChangeException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,9 +45,9 @@ class EvaluationServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        process = processRepository.save(createFirstProcess());
+        process = processRepository.save(ProcessFixture.applyType());
 
-        applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 
     @DisplayName("새로운 평가를 생성한다.")
@@ -97,7 +96,7 @@ class EvaluationServiceTest extends ServiceTest {
     @Test
     void update() {
         // given
-        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
         int score = 1;
         String content = "수정된 평가입니다.";
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
@@ -108,11 +107,11 @@ class EvaluationServiceTest extends ServiceTest {
         // then
         Optional<Evaluation> updatedEvaluation = evaluationRepository.findById(evaluation.getId());
 
-        assertAll(() -> {
-            assertThat(updatedEvaluation).isPresent();
-            assertThat(updatedEvaluation.get().getScore()).isEqualTo(score);
-            assertThat(updatedEvaluation.get().getContent()).isEqualTo(content);
-        });
+        assertAll(
+                () -> assertThat(updatedEvaluation).isPresent(),
+                () -> assertThat(updatedEvaluation.get().getScore()).isEqualTo(score),
+                () -> assertThat(updatedEvaluation.get().getContent()).isEqualTo(content)
+        );
     }
 
     @DisplayName("평가 수정 시, 존재하지 않을 경우 예외가 발생한다.")
@@ -129,18 +128,31 @@ class EvaluationServiceTest extends ServiceTest {
                 .isInstanceOf(EvaluationNotFoundException.class);
     }
 
-    @DisplayName("평가 수정 시, 수정된 내용이 없을 경우 예외가 발생한다.")
+    @DisplayName("평가에 대한 평균 점수를 계산한다.")
     @Test
-    void update_evaluationNotChanged() {
+    void calculateAverageScore() {
         // given
-        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
-        long validId = evaluation.getId();
-        int notChangedScore = 5;
-        String notChangedContent = "서류가 인상 깊었습니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(notChangedScore, notChangedContent);
+        List<Evaluation> evaluations = List.of(
+                new Evaluation(1, null, process, applicant),
+                new Evaluation(2, null, process, applicant),
+                new Evaluation(3, null, process, applicant));
+        evaluationRepository.saveAll(evaluations);
 
-        // when & then
-        assertThatThrownBy(() -> evaluationService.update(request, validId))
-                .isInstanceOf(EvaluationNoChangeException.class);
+        // when
+        // 평균 점수 = (1 + 2 + 3) / 3 = 2
+        double averageScore = evaluationService.calculateAverageScore(process, applicant);
+
+        // then
+        assertThat(averageScore).isEqualTo(2.0);
+    }
+
+    @DisplayName("평가가 없을 시 평균 점수는 0점이다.")
+    @Test
+    void calculateAverageScore_zero() {
+        // when
+        double averageScore = evaluationService.calculateAverageScore(process, applicant);
+
+        // then
+        assertThat(averageScore).isZero();
     }
 }

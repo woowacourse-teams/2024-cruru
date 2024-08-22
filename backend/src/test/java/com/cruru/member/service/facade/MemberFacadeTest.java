@@ -26,7 +26,7 @@ class MemberFacadeTest extends ServiceTest {
     void create() {
         // given
         String clubName = "크루루";
-        String email = "mail@mail.com";
+        String email = "new@mail.com";
         String password = "newPassword214!";
         String phone = "01012341234";
         MemberCreateRequest request = new MemberCreateRequest(clubName, email, password, phone);
@@ -36,11 +36,10 @@ class MemberFacadeTest extends ServiceTest {
 
         // then
         Optional<Member> member = memberRepository.findById(memberId);
-        assertAll(() -> {
-            assertThat(member).isPresent();
-            Member presentMemeber = member.get();
-            assertThat(presentMemeber.getEmail()).isEqualTo(email);
-            assertThat(presentMemeber.getPhone()).isEqualTo(phone);
-        });
+        assertAll(
+                () -> assertThat(member).isPresent(),
+                () -> assertThat(member.get().getEmail()).isEqualTo(email),
+                () -> assertThat(member.get().getPhone()).isEqualTo(phone)
+        );
     }
 }

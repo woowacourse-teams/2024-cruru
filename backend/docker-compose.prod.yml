@@ -5,23 +5,14 @@ services:
     container_name: app_container
     platform: linux/arm64
     restart: always
-    image: ${DOCKER_REPO_NAME}/cruru:prod-latest
+    image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
       - ${SERVER_BINDING_PORT}
       - ${MONITORING_BINDING_PORT}
+    env_file:
+      - .env
     environment:
-      DB_URL: ${DB_URL}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DDL_AUTO: ${DDL_AUTO}
-      SERVER_PORT: ${SERVER_PORT}
-      DOCKER_REPO_NAME: ${DOCKER_REPO_NAME}
-      MONITORING_PORT: ${MONITORING_PORT}
-      MONITORING_BASE_PATH: ${MONITORING_BASE_PATH}
-      APPLY_POST_BASE_URL: ${APPLY_POST_BASE_URL}
-      JWT_TOKEN_SECRET_KEY: ${JWT_TOKEN_SECRET_KEY}
-      JWT_TOKEN_EXPIRE_CYCLE: ${JWT_TOKEN_EXPIRE_CYCLE}
-      JWT_SIGN_ALGORITHM: ${JWT_SIGN_ALGORITHM}
+      PROFILE: prod
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}

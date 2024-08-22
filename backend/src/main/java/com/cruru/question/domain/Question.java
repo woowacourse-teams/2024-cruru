@@ -34,11 +34,9 @@ public class Question {
 
     private String content;
 
-    private String description;
-
     private Integer sequence;
 
-    private Boolean required;
+    private boolean required;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_form_id")
@@ -47,14 +45,12 @@ public class Question {
     public Question(
             QuestionType questionType,
             String content,
-            String description,
             Integer sequence,
             Boolean required,
             ApplyForm applyForm
     ) {
         this.questionType = questionType;
         this.content = content;
-        this.description = description;
         this.sequence = sequence;
         this.required = required;
         this.applyForm = applyForm;
@@ -62,6 +58,14 @@ public class Question {
 
     public boolean hasChoice() {
         return questionType.hasChoice();
+    }
+
+    public boolean isShortAnswer() {
+        return questionType == QuestionType.SHORT_ANSWER;
+    }
+
+    public boolean isLongAnswer() {
+        return questionType == QuestionType.LONG_ANSWER;
     }
 
     @Override
@@ -87,7 +91,6 @@ public class Question {
                 "id=" + id +
                 ", questionType=" + questionType +
                 ", content='" + content + '\'' +
-                ", description='" + description + '\'' +
                 ", sequence=" + sequence +
                 ", applyForm=" + applyForm +
                 '}';

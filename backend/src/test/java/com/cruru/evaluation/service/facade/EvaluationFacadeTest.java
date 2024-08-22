@@ -1,7 +1,5 @@
 package com.cruru.evaluation.service.facade;
 
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -14,7 +12,9 @@ import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,15 +42,15 @@ class EvaluationFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        process = processRepository.save(createFirstProcess());
-        applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        process = processRepository.save(ProcessFixture.applyType());
+        applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 
     @DisplayName("평가 등록 요청 정보로 평가를 생성한다.")
     @Test
     void create() {
         // given
-        Evaluation evaluation = EvaluationFixture.createEvaluationExcellent();
+        Evaluation evaluation = EvaluationFixture.fivePoints();
         Integer score = evaluation.getScore();
         String content = evaluation.getContent();
         EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
@@ -72,11 +72,12 @@ class EvaluationFacadeTest extends ServiceTest {
     @Test
     void readEvaluationsOfApplicantInProcess() {
         // given
-        Evaluation evaluationExcellent = EvaluationFixture.createEvaluationExcellent(process, applicant);
-        Evaluation evaluationGood = EvaluationFixture.createEvaluationGood(process, applicant);
-
-        Evaluation savedEvaluation1 = evaluationRepository.save(evaluationExcellent);
-        Evaluation savedEvaluation2 = evaluationRepository.save(evaluationGood);
+        Evaluation evaluationExcellent = EvaluationFixture.fivePoints(process, applicant);
+        Evaluation evaluationGood = EvaluationFixture.fourPoints(process, applicant);
+        Evaluation evaluation1 = evaluationRepository.save(evaluationExcellent);
+        Evaluation evaluation2 = evaluationRepository.save(evaluationGood);
+        Evaluation savedEvaluation1 = evaluationRepository.findById(evaluation1.getId()).get();
+        Evaluation savedEvaluation2 = evaluationRepository.findById(evaluation2.getId()).get();
 
         // when
         List<EvaluationResponse> evaluationResponses = evaluationFacade.readEvaluationsOfApplicantInProcess(
@@ -87,16 +88,19 @@ class EvaluationFacadeTest extends ServiceTest {
         // then
         EvaluationResponse actualEvaluation1 = evaluationResponses.get(0);
         EvaluationResponse actualEvaluation2 = evaluationResponses.get(1);
-        assertAll(() -> {
-            assertThat(evaluationResponses).hasSize(2);
+        assertAll(
+                () -> assertThat(evaluationResponses).hasSize(2),
 
-            assertThat(actualEvaluation1.evaluationId()).isEqualTo(savedEvaluation1.getId());
-            assertThat(actualEvaluation1.content()).isEqualTo(savedEvaluation1.getContent());
-            assertThat(actualEvaluation1.score()).isEqualTo(savedEvaluation1.getScore());
+                () -> assertThat(actualEvaluation1.evaluationId()).isEqualTo(savedEvaluation1.getId()),
+                () -> assertThat(actualEvaluation1.content()).isEqualTo(savedEvaluation1.getContent()),
+                () -> assertThat(actualEvaluation1.score()).isEqualTo(savedEvaluation1.getScore()),
+                () -> assertThat(actualEvaluation1.createdDate()).isEqualTo(savedEvaluation1.getCreatedDate()),
 
-            assertThat(actualEvaluation2.evaluationId()).isEqualTo(savedEvaluation2.getId());
-            assertThat(actualEvaluation2.content()).isEqualTo(savedEvaluation2.getContent());
-            assertThat(actualEvaluation2.score()).isEqualTo(savedEvaluation2.getScore());
-        });
+                () -> assertThat(actualEvaluation2.evaluationId()).isEqualTo(savedEvaluation2.getId()),
+                () -> assertThat(actualEvaluation2.content()).isEqualTo(savedEvaluation2.getContent()),
+                () -> assertThat(actualEvaluation2.score()).isEqualTo(savedEvaluation2.getScore()),
+                () -> assertThat(actualEvaluation2.createdDate()).isEqualTo(savedEvaluation2.getCreatedDate())
+        );
+
     }
 }

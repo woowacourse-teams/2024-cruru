@@ -7,12 +7,12 @@ import com.cruru.process.controller.dto.ProcessCreateRequest;
 import com.cruru.process.controller.dto.ProcessSimpleResponse;
 import com.cruru.process.controller.dto.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
+import com.cruru.process.domain.ProcessType;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.process.exception.ProcessNotFoundException;
 import com.cruru.process.exception.badrequest.ProcessCountException;
-import com.cruru.process.exception.badrequest.ProcessDeleteEndsException;
+import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
-import com.cruru.process.exception.badrequest.ProcessNoChangeException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProcessService {
 
     private static final int MAX_PROCESS_COUNT = 5;
-    private static final int PROCESS_FIRST_SEQUENCE = 0;
     private static final int ZERO = 0;
 
     private final ApplicantRepository applicantRepository;
@@ -41,7 +40,7 @@ public class ProcessService {
 
         rearrangeProcesses(request.sequence(), processes);
 
-        processRepository.save(toProcess(request, dashboard));
+        processRepository.save(toEvaluateProcess(request, dashboard));
     }
 
     private void validateProcessCount(Dashboard dashboard) {
@@ -61,14 +60,14 @@ public class ProcessService {
                 .forEach(Process::increaseSequenceNumber);
     }
 
-    private Process toProcess(ProcessCreateRequest request, Dashboard dashboard) {
-        return new Process(request.sequence(), request.name(), request.description(), dashboard);
+    private Process toEvaluateProcess(ProcessCreateRequest request, Dashboard dashboard) {
+        return new Process(request.sequence(), request.name(), request.description(), ProcessType.EVALUATE, dashboard);
     }
 
-    public Process findFirstProcessOnDashboard(Dashboard dashboard) {
+    public Process findApplyProcessOnDashboard(Dashboard dashboard) {
         List<Process> processes = findAllByDashboard(dashboard);
         return processes.stream()
-                .filter(process -> process.getSequence() == PROCESS_FIRST_SEQUENCE)
+                .filter(Process::isApplyType)
                 .findFirst()
                 .orElseThrow(InternalServerException::new);
     }
@@ -77,11 +76,10 @@ public class ProcessService {
     public Process update(ProcessUpdateRequest request, long processId) {
         Process process = findById(processId);
 
-        if (nothingToChange(request, process)) {
-            throw new ProcessNoChangeException();
+        if (changeExists(request, process)) {
+            process.updateName(request.name());
+            process.updateDescription(request.description());
         }
-        process.updateName(request.name());
-        process.updateDescription(request.description());
 
         return process;
     }
@@ -91,22 +89,21 @@ public class ProcessService {
                 .orElseThrow(ProcessNotFoundException::new);
     }
 
-    private boolean nothingToChange(ProcessUpdateRequest request, Process process) {
-        return request.name().equals(process.getName()) && request.description().equals(process.getDescription());
+    private boolean changeExists(ProcessUpdateRequest request, Process process) {
+        return !(request.name().equals(process.getName()) && request.description().equals(process.getDescription()));
     }
 
     @Transactional
     public void delete(long processId) {
         Process process = findById(processId);
-        validateFirstOrLastProcess(process);
+        validateFixedProcess(process);
         validateApplicantRemains(process);
         processRepository.deleteById(processId);
     }
 
-    private void validateFirstOrLastProcess(Process process) {
-        int processCount = processRepository.countByDashboard(process.getDashboard());
-        if (process.isSameSequence(PROCESS_FIRST_SEQUENCE) || process.isSameSequence(processCount - 1)) {
-            throw new ProcessDeleteEndsException();
+    private void validateFixedProcess(Process process) {
+        if (process.isFixed()) {
+            throw new ProcessDeleteFixedException();
         }
     }
 

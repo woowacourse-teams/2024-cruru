@@ -1,6 +1,5 @@
 package com.cruru.process.domain;
 
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,6 +7,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
 import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
+import com.cruru.util.fixture.DashboardFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,10 +21,10 @@ class ProcessTest {
     @ParameterizedTest
     void validProcessName(String name) {
         // given
-        Dashboard dashboard = createBackendDashboard();
+        Dashboard dashboard = DashboardFixture.backend();
 
         // when&then
-        assertThatCode(() -> new Process(0, name, "desc", dashboard)).doesNotThrowAnyException();
+        assertThatCode(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard)).doesNotThrowAnyException();
     }
 
     @DisplayName("프로세스 이름이 비어있으면 예외가 발생한다.")
@@ -35,7 +35,7 @@ class ProcessTest {
         Dashboard dashboard = new Dashboard(null);
 
         // when&then
-        assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+        assertThatThrownBy(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard))
                 .isInstanceOf(ProcessNameBlankException.class);
     }
 
@@ -44,9 +44,10 @@ class ProcessTest {
     void invalidProcessNameLength() {
         // given
         Dashboard dashboard = new Dashboard(null);
+        String name = "ThisStringLengthIs33!!!!!!!!!!!!!";
 
         // when&then
-        assertThatThrownBy(() -> new Process(0, "ThisStringLengthIs33!!!!!!!!!!!!!", "desc", dashboard))
+        assertThatThrownBy(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard))
                 .isInstanceOf(ProcessNameLengthException.class);
     }
 
@@ -58,7 +59,7 @@ class ProcessTest {
         Dashboard dashboard = new Dashboard(null);
 
         // when&then
-        assertThatThrownBy(() -> new Process(0, name, "desc", dashboard))
+        assertThatThrownBy(() -> new Process(0, name, "desc", ProcessType.EVALUATE, dashboard))
                 .isInstanceOf(ProcessNameCharacterException.class);
     }
 }

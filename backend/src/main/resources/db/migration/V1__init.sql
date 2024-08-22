@@ -18,7 +18,7 @@ CREATE TABLE applicant
     email        VARCHAR(255),
     name         VARCHAR(255),
     phone        VARCHAR(255),
-    state        VARCHAR(255),
+    is_rejected  BOOLEAN,
     PRIMARY KEY (applicant_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -105,6 +105,7 @@ CREATE TABLE process
     dashboard_id BIGINT NOT NULL,
     description  TEXT,
     name         VARCHAR(255),
+    type         VARCHAR(255),
     PRIMARY KEY (process_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -117,7 +118,6 @@ CREATE TABLE question
     sequence      INTEGER,
     apply_form_id BIGINT NOT NULL,
     content       TEXT,
-    description   TEXT,
     question_type VARCHAR(255),
     PRIMARY KEY (question_id)
 ) ENGINE = InnoDB

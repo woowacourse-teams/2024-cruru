@@ -1,4 +1,4 @@
-name: BE/CD - Docker image build & deploy
+name: BE/CD - [PROD] Build & Deploy
 
 on:
   workflow_dispatch:
@@ -16,6 +16,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Set timezone to Korea
+      uses: szenius/set-timezone@v2.0
+      with:
+        timezoneLinux: "Asia/Seoul"
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -37,16 +42,23 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Get current date and time
+      id: datetime
+      run: | 
+        echo "datetime=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
+
     - name: Image build and push
       run: |
-        docker build --build-arg PROFILE=prod --build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-latest --platform linux/arm64 .
-        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-latest
+        docker build --build-arg PROFILE=prod -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-${{ steps.datetime.outputs.datetime }} --platform linux/arm64 .
+        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-${{ steps.datetime.outputs.datetime }}
 
     - name: Upload docker-compose yaml script to artifact
       uses: actions/upload-artifact@v4
       with:
         name: docker-compose
         path: ${{ github.workspace }}/backend/docker-compose.prod.yml
+    outputs:
+      BUILD_VERSION: ${{ steps.datetime.outputs.datetime }}
 
   deploy:
     environment: prod
@@ -67,6 +79,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
+        DOCKER_IMAGE_VERSION_TAG=prod-${{ needs.build.outputs.BUILD_VERSION }}
         
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
@@ -95,6 +108,14 @@ jobs:
         JWT_TOKEN_EXPIRE_CYCLE=${{ secrets.JWT_TOKEN_EXPIRE_CYCLE }}
         JWT_SIGN_ALGORITHM=${{ secrets.JWT_SIGN_ALGORITHM }}
         
+        # Cookie settings
+        COOKIE_ACCESS_TOKEN_KEY=${{ secrets.COOKIE_ACCESS_TOKEN_KEY }}
+        COOKIE_HTTP_ONLY=${{ secrets.COOKIE_HTTP_ONLY }}
+        COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
+        COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}
+        COOKIE_PATH=${{ secrets.COOKIE_PATH }}
+        COOKIE_SAME_SITE=${{ secrets.COOKIE_SAME_SITE }}
+        COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}        
         EOF
 
     - name: Stop and remove existing containers

@@ -1,15 +1,15 @@
 package com.cruru.auth.security;
 
-import static com.cruru.member.domain.MemberRole.CLUB_OWNER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.member.domain.Member;
-import com.cruru.util.fixture.MemberFixture;
+import com.cruru.auth.security.jwt.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,74 +24,70 @@ import org.springframework.test.context.ActiveProfiles;
 class JwtTokenProviderTest {
 
     private static final String TEST_SECRET_KEY = "test";
-    private static final String PAYLOAD_KEY_ROLE = "role";
-    private static final String PAYLOAD_KEY_EMAIL = "email";
+    private static final String EMAIL_CLAIM = "email";
+    private static final String ROLE_CLAIM = "role";
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    private Member member;
+    private Map<String, Object> claims;
 
     @BeforeEach
     void setUp() {
-        member = MemberFixture.createMember1();
+        claims = new HashMap<>();
+        claims.put(EMAIL_CLAIM, "email@example.com");
+        claims.put(ROLE_CLAIM, "ADMIN");
     }
 
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
     @Test
     void create() {
-        // when
-        String token = jwtTokenProvider.create(member);
-        Claims claims = Jwts.parser()
+        // given&when
+        String token = jwtTokenProvider.createToken(claims);
+        Claims extractedClaims = Jwts.parser()
                 .setSigningKey(TEST_SECRET_KEY.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
 
         // then
-        String expectedRole = member.getRole().name();
-        String expectedEmail = member.getEmail();
-        assertAll(() -> {
-            assertThat(claims).containsEntry(PAYLOAD_KEY_ROLE, expectedRole);
-            assertThat(claims).containsEntry(PAYLOAD_KEY_EMAIL, expectedEmail);
-            assertThat(claims.getExpiration()).isNotNull();
-        });
+        String expectedRole = (String) claims.get(ROLE_CLAIM);
+        String expectedEmail = (String) claims.get(EMAIL_CLAIM);
+
+        assertAll(
+                () -> assertThat(extractedClaims).containsEntry(ROLE_CLAIM, expectedRole),
+                () -> assertThat(extractedClaims).containsEntry(EMAIL_CLAIM, expectedEmail),
+                () -> assertThat(extractedClaims.getExpiration()).isNotNull()
+        );
     }
 
     @DisplayName("유효한 토큰에서 이메일과 역할을 추출할 수 있는지 확인한다")
     @Test
     void extractEmailAndRole() {
         // given
-        String token = jwtTokenProvider.create(member);
+        String token = jwtTokenProvider.createToken(claims);
 
         // when
-        String email = jwtTokenProvider.extractMemberEmail(token);
-        String role = jwtTokenProvider.extractMemberRole(token);
+        String email = jwtTokenProvider.extractClaim(token, EMAIL_CLAIM);
+        String role = jwtTokenProvider.extractClaim(token, ROLE_CLAIM);
 
         // then
-        String expectedRole = member.getRole().name();
-        String expectedEmail = member.getEmail();
-        assertThat(email).isEqualTo(expectedEmail);
-        assertThat(role).isEqualTo(expectedRole);
+        String expectedRole = (String) claims.get(ROLE_CLAIM);
+        String expectedEmail = (String) claims.get(EMAIL_CLAIM);
+
+        assertAll(
+                () -> assertThat(email).isEqualTo(expectedEmail),
+                () -> assertThat(role).isEqualTo(expectedRole)
+        );
     }
 
     @DisplayName("만료된 토큰을 검증한다.")
     @Test
-    void isExpired_expired() {
+    void isAlive() {
         // given
         String expiredToken = generateExpiredToken();
 
         // when&then
-        assertThat(jwtTokenProvider.isExpired(expiredToken)).isTrue();
-    }
-
-    @DisplayName("만료되지 않은 토큰을 검증한다.")
-    @Test
-    void isExpired_notExpired() {
-        // given
-        String notExpiredToken = jwtTokenProvider.create(member);
-
-        // when&then
-        assertThat(jwtTokenProvider.isExpired(notExpiredToken)).isFalse();
+        assertThat(jwtTokenProvider.isAlive(expiredToken)).isFalse();
     }
 
     private String generateExpiredToken() {
@@ -99,11 +95,20 @@ class JwtTokenProviderTest {
         Date validity = new Date(now.getTime() - 3600000); // 1시간 전 만료
 
         return Jwts.builder()
-                .claim(PAYLOAD_KEY_ROLE, CLUB_OWNER.name())
-                .claim(PAYLOAD_KEY_EMAIL, "test@example.com")
+                .addClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY.getBytes())
                 .compact();
+    }
+
+    @DisplayName("만료되지 않은 토큰을 검증한다.")
+    @Test
+    void isAlive_notValid() {
+        // given
+        String notExpiredToken = jwtTokenProvider.createToken(claims);
+
+        // when&then
+        assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isTrue();
     }
 }

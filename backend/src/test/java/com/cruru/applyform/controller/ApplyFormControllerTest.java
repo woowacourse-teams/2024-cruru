@@ -1,15 +1,9 @@
 package com.cruru.applyform.controller;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.ApplyFormFixture.createFrontendApplyForm;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-import static com.cruru.util.fixture.QuestionFixture.createLongAnswerQuestion;
-import static com.cruru.util.fixture.QuestionFixture.createShortAnswerQuestion;
-
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
@@ -18,11 +12,19 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("지원서 폼 컨트롤러 테스트")
@@ -40,15 +42,30 @@ class ApplyFormControllerTest extends ControllerTest {
     @Autowired
     private QuestionRepository questionRepository;
 
+    private static Stream<ApplicantCreateRequest> InvalidApplicantCreateRequest() {
+        String validName = "초코칩";
+        String validMail = "dev.chocochip@gmail.com";
+        String validPhone = "01000000000";
+        return Stream.of(
+                new ApplicantCreateRequest(null, validMail, validPhone),
+                new ApplicantCreateRequest("", validMail, validPhone),
+                new ApplicantCreateRequest(validName, null, validPhone),
+                new ApplicantCreateRequest(validName, "", validPhone),
+                new ApplicantCreateRequest(validName, "notMail", validPhone),
+                new ApplicantCreateRequest(validName, validMail, null),
+                new ApplicantCreateRequest(validName, validMail, "")
+        );
+    }
+
     @DisplayName("지원서 폼 제출 시, 201을 반환한다.")
     @Test
     void submit() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
 
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
@@ -62,6 +79,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -72,11 +90,11 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void submit_rejectPersonalDataCollection() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question1 = questionRepository.save(createShortAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(createLongAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
 
         List<AnswerCreateRequest> answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
@@ -90,6 +108,62 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 지원자 정보가 잘못된 경우 400 에러가 발생한다.")
+    @ParameterizedTest
+    @MethodSource("InvalidApplicantCreateRequest")
+    void submit_invalidApplicantCreateRequest(ApplicantCreateRequest applicantCreateRequest) {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        List<AnswerCreateRequest> answerCreateRequests = List.of(
+                new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다."))
+        );
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                applicantCreateRequest,
+                answerCreateRequests,
+                true
+        );
+
+        // when&then
+        RestAssured.given().log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 지원자 답변이 잘못된 경우 400 에러가 발생한다.")
+    @Test
+    void submit_invalidAnswerCreateRequests() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        List<AnswerCreateRequest> answerCreateRequests = List.of(
+                new AnswerCreateRequest(question1.getId(), null)
+        );
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                answerCreateRequests,
+                true
+        );
+
+        // when&then
+        RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -100,9 +174,9 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void submit_dashboardWithNoProcess() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        ApplyForm applyForm = applyFormRepository.save(createFrontendApplyForm(dashboard));
-        Question question = questionRepository.save(createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
                 new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
@@ -112,6 +186,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -122,13 +197,14 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        questionRepository.save(createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().get("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
@@ -138,15 +214,37 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void read_notFound() {
         // given
-        Dashboard dashboard = dashboardRepository.save(createBackendDashboard());
-        processRepository.save(createFirstProcess(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(createBackendApplyForm(dashboard));
-        questionRepository.save(createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        // when&then
+        RestAssured.given().log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .when().get("/v1/applyform/{applyFormId}", -1)
+                .then().log().all().statusCode(404);
+    }
+
+    @DisplayName("지원서 폼을 성공적으로 수정하면, 200을 응답한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
+        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate);
 
         // when&then
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .when().get("/v1/applyform/{applyFormId}", -1)
-                .then().log().all().statusCode(404);
+                .body(request)
+                .when().patch("/v1/applyform/{applyFormId}", applyForm.getId())
+                .then().log().all().statusCode(200);
     }
 }

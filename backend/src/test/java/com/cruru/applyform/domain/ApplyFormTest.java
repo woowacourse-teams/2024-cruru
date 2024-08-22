@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 @DisplayName("지원서 폼 도메인 테스트")
 class ApplyFormTest {
 
-    @DisplayName("시작 날짜가 마감 날짜보다 늦을 경우 예외가 발생한다")
+    @DisplayName("시작 날짜가 마감 날짜보다 늦을 경우 예외가 발생한다.")
     @Test
     void invalidDate() {
         // given

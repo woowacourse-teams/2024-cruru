@@ -1,6 +1,8 @@
 package com.cruru.dashboard.domain;
 
+import com.cruru.auth.util.SecureResource;
 import com.cruru.club.domain.Club;
+import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Dashboard {
+public class Dashboard implements SecureResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +34,12 @@ public class Dashboard {
 
     public Dashboard(Club club) {
         this.club = club;
+    }
+
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return club.isAuthorizedBy(member);
     }
 
     @Override

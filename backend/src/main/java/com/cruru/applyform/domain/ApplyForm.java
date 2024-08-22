@@ -65,6 +65,10 @@ public class ApplyForm extends BaseEntity {
     }
 
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
+        validateStartDateBeforeEndDate(startDate, endDate);
+    }
+
+    private void validateStartDateBeforeEndDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new StartDateAfterEndDateException(startDate, endDate);
         }

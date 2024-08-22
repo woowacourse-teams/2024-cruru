@@ -33,7 +33,7 @@ class MemberServiceTest extends ServiceTest {
     void create() {
         // given
         String clubName = "크루루";
-        String email = "mail@mail.com";
+        String email = "new@mail.com";
         String password = "newPassword214!";
         String phone = "01012341234";
         MemberCreateRequest request = new MemberCreateRequest(clubName, email, password, phone);
@@ -43,28 +43,28 @@ class MemberServiceTest extends ServiceTest {
 
         // then
         Optional<Member> actualMember = memberRepository.findById(member.getId());
-        assertAll(() -> {
-            assertThat(actualMember).isPresent();
-            Member presentMember = actualMember.get();
-            assertThat(presentMember.getEmail()).isEqualTo(email);
-            assertThat(presentMember.getPhone()).isEqualTo(phone);
-        });
+        assertAll(
+                () -> assertThat(actualMember).isPresent(),
+
+                () -> assertThat(actualMember.get().getEmail()).isEqualTo(email),
+                () -> assertThat(actualMember.get().getPhone()).isEqualTo(phone)
+        );
     }
 
     @DisplayName("회원을 ID로 조회한다.")
     @Test
     void findById() {
         // given
-        Member savedMember = memberRepository.save(MemberFixture.createMember1());
-
+        Member savedMember = memberRepository.save(MemberFixture.DOBBY);
+        Member actualMember = memberService.findById(savedMember.getId());
         // when&then
-        assertAll(() -> {
-            assertDoesNotThrow(() -> memberService.findById(savedMember.getId()));
-            Member actualMember = memberService.findById(savedMember.getId());
-            assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail());
-            assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone());
-            assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword());
-        });
+        assertAll(
+                () -> assertDoesNotThrow(() -> memberService.findById(savedMember.getId())),
+
+                () -> assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail()),
+                () -> assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone()),
+                () -> assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword())
+        );
     }
 
     @DisplayName("허용되지 않는 비밀번호 길이로 Member 생성 시 예외를 발생시킨다.")
@@ -99,5 +99,22 @@ class MemberServiceTest extends ServiceTest {
         // when&then
         assertThatThrownBy(() -> memberService.create(memberCreateRequest))
                 .isInstanceOf(MemberIllegalPasswordException.class);
+    }
+
+    @DisplayName("회원을 email로 조회한다.")
+    @Test
+    void findByEmail() {
+        // given
+        Member savedMember = memberRepository.save(MemberFixture.DOBBY);
+        Member actualMember = memberService.findByEmail(savedMember.getEmail());
+        // when&then
+        assertAll(
+                () -> assertDoesNotThrow(() -> memberService.findByEmail(savedMember.getEmail())),
+
+                () -> assertThat(actualMember.getId()).isEqualTo(savedMember.getId()),
+                () -> assertThat(actualMember.getEmail()).isEqualTo(savedMember.getEmail()),
+                () -> assertThat(actualMember.getPhone()).isEqualTo(savedMember.getPhone()),
+                () -> assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword())
+        );
     }
 }

@@ -1,11 +1,15 @@
 package com.cruru.process.domain;
 
+import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.member.domain.Member;
 import com.cruru.process.exception.badrequest.ProcessNameBlankException;
 import com.cruru.process.exception.badrequest.ProcessNameCharacterException;
 import com.cruru.process.exception.badrequest.ProcessNameLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Process {
+public class Process implements SecureResource {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
@@ -41,15 +45,20 @@ public class Process {
 
     private String description;
 
+    @Column(columnDefinition = "varchar")
+    @Enumerated(EnumType.STRING)
+    private ProcessType type;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dashboard_id")
     private Dashboard dashboard;
 
-    public Process(int sequence, String name, String description, Dashboard dashboard) {
+    public Process(int sequence, String name, String description, ProcessType type, Dashboard dashboard) {
         validateName(name);
         this.sequence = sequence;
         this.name = name;
         this.description = description;
+        this.type = type;
         this.dashboard = dashboard;
     }
 
@@ -76,6 +85,18 @@ public class Process {
         return !NAME_PATTERN.matcher(name).matches();
     }
 
+    public boolean isApplyType() {
+        return type == ProcessType.APPLY;
+    }
+
+    public boolean isApproveType() {
+        return type == ProcessType.APPROVE;
+    }
+
+    public boolean isFixed() {
+        return type.isFixed();
+    }
+
     public void updateName(String name) {
         validateName(name);
         this.name = name;
@@ -89,8 +110,9 @@ public class Process {
         this.sequence++;
     }
 
-    public boolean isSameSequence(int other) {
-        return this.sequence == other;
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return dashboard.isAuthorizedBy(member);
     }
 
     @Override
@@ -117,6 +139,7 @@ public class Process {
                 ", sequence=" + sequence +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", type=" + type +
                 ", dashboard=" + dashboard +
                 '}';
     }

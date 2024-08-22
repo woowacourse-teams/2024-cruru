@@ -58,7 +58,7 @@ class DashboardFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        club = clubRepository.save(ClubFixture.createClub());
+        club = clubRepository.save(ClubFixture.create(defaultMember));
     }
 
     @DisplayName("대시보드(공고)를 생성한다.")
@@ -67,10 +67,10 @@ class DashboardFacadeTest extends ServiceTest {
         // given
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
-                new QuestionCreateRequest("DROPDOWN", "객관식질문1", "하나를 선택한다.", choiceCreateRequests, 1, false));
+                new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
         String title = "크루루대시보드";
         String postingContent = "# 공고 내용";
-        LocalDateTime startDate = LocalDateTime.of(2000, 1, 1, 0, 0);
+        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
         LocalDateTime endDate = LocalDateTime.of(2999, 12, 31, 23, 59);
         DashboardCreateRequest request = new DashboardCreateRequest(
                 title,
@@ -81,7 +81,7 @@ class DashboardFacadeTest extends ServiceTest {
         );
 
         // when
-        long savedDashboardId = dashboardFacade.create(club.getId(), request);
+        long savedDashboardId = dashboardFacade.create(loginProfile, club.getId(), request);
 
         // then
         assertThat(dashboardRepository.findById(savedDashboardId)).isPresent();
@@ -92,47 +92,54 @@ class DashboardFacadeTest extends ServiceTest {
     void findFormUrlByDashboardId() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
 
         // when
         ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboard.getId());
 
         // then
-        assertAll(() -> {
-            assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId());
-            assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl());
-        });
+        assertAll(
+                () -> assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId()),
+                () -> assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl())
+        );
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")
     @Test
     void findAllDashboardsByClubId() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Process firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Applicant failApplicant = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        failApplicant.reject();
-        Applicant pendingApplicant1 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        Applicant pendingApplicant2 = ApplicantFixture.createPendingApplicantDobby(firstProcess);
-        List<Applicant> applicants = List.of(failApplicant, pendingApplicant1, pendingApplicant2);
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Process firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process lastProcess = processRepository.save(ProcessFixture.approveType(dashboard));
+
+        List<Applicant> applicants = List.of(
+                // 마지막 프로세스에 있으면서 불합격 상태인 경우, 불합격
+                ApplicantFixture.rejectedRush(lastProcess),
+                ApplicantFixture.rejectedRush(firstProcess),
+                ApplicantFixture.pendingDobby(lastProcess),
+                ApplicantFixture.pendingDobby(firstProcess),
+                ApplicantFixture.pendingDobby(firstProcess),
+                ApplicantFixture.pendingDobby(firstProcess)
+        );
         applicantRepository.saveAll(applicants);
 
         // when
-        DashboardsOfClubResponse dashboardsOfClubResponse = dashboardFacade.findAllDashboardsByClubId(club.getId());
+        DashboardsOfClubResponse dashboardsOfClubResponse =
+                dashboardFacade.findAllDashboardsByClubId(loginProfile, club.getId());
 
         // then
         DashboardPreviewResponse dashboardPreview = dashboardsOfClubResponse.dashboardPreviewResponses().get(0);
         StatsResponse stats = dashboardPreview.stats();
-        assertAll(() -> {
-            assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName());
-            assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId());
-            assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle());
-            assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl());
-            assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate());
-            assertThat(stats.accept()).isEqualTo(0);
-            assertThat(stats.fail()).isEqualTo(1);
-            assertThat(stats.inProgress()).isEqualTo(2);
-        });
+        assertAll(
+                () -> assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName()),
+                () -> assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId()),
+                () -> assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle()),
+                () -> assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl()),
+                () -> assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate()),
+                () -> assertThat(stats.accept()).isEqualTo(1),
+                () -> assertThat(stats.fail()).isEqualTo(2),
+                () -> assertThat(stats.inProgress()).isEqualTo(3)
+        );
     }
 }

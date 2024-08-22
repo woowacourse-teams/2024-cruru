@@ -17,7 +17,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: create-drop
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
 dataloader:
   enable: false
 base-url:
@@ -29,3 +29,12 @@ security:
       secret-key: test
       expire-length: 1209600000
       algorithm: HS256
+
+cookie:
+  access-token-key: token
+  http-only: false
+  secure: false
+  domain: localhost
+  path: /
+  same-site: none
+  max-age: 7200 #2시간

@@ -35,13 +35,14 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateProcess() {
         // given
-        Process now = processRepository.save(ProcessFixture.createFirstProcess());
-        Process next = processRepository.save(ProcessFixture.createFinalProcess());
-        Applicant applicant = ApplicantFixture.createPendingApplicantDobby(now);
+        Process now = processRepository.save(ProcessFixture.applyType());
+        Process next = processRepository.save(ProcessFixture.approveType());
+        Applicant applicant = ApplicantFixture.pendingDobby(now);
         applicantRepository.save(applicant);
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
                 .when().put("/v1/applicants/move-process/" + next.getId())
@@ -52,11 +53,12 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read() {
         // given
-        Process process = processRepository.save(ProcessFixture.createFirstProcess());
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Process process = processRepository.save(ProcessFixture.applyType());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get("/v1/applicants/" + applicant.getId())
                 .then().log().all().statusCode(200);
     }
@@ -65,25 +67,40 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void readDetail() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard());
-        Process process = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby(process));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().get("/v1/applicants/" + applicant.getId() + "/detail")
                 .then().log().all().statusCode(200);
     }
 
     @DisplayName("지원자를 불합격시키는 데 성공하면 200을 응답한다.")
     @Test
-    void updateReject() {
+    void reject() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원자를 불합격 해제시키는 데 성공하면 200을 응답한다.")
+    @Test
+    void unreject() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.rejectedRush());
+
+        // when&then
+        RestAssured.given().log().all()
+                .cookie("token", token)
+                .when().patch("/v1/applicants/{applicantId}/unreject", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -92,13 +109,14 @@ class ApplicantControllerTest extends ControllerTest {
     void updateInformation() {
         // given
         String toChangeName = "도비";
-        String toChangeEmail = "dev.dobby@gmail.com";
-        String toChangePhone = "010111111111";
-        Applicant applicant = applicantRepository.save(ApplicantFixture.createPendingApplicantDobby());
+        String toChangeEmail = "dev.DOBBY@gmail.com";
+        String toChangePhone = "01011111111";
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().patch("/v1/applicants/" + applicant.getId())

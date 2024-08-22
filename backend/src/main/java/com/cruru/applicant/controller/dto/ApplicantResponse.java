@@ -11,6 +11,8 @@ public record ApplicantResponse(
 
         String phone,
 
+        boolean isRejected,
+
         LocalDateTime createdAt
 ) {
 

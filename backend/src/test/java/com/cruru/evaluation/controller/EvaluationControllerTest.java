@@ -1,9 +1,5 @@
 package com.cruru.evaluation.controller;
 
-import static com.cruru.util.fixture.ApplicantFixture.createPendingApplicantDobby;
-import static com.cruru.util.fixture.EvaluationFixture.createEvaluationExcellent;
-import static com.cruru.util.fixture.ProcessFixture.createFirstProcess;
-
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
@@ -13,19 +9,18 @@ import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 @DisplayName("평가 컨트롤러 테스트")
 class EvaluationControllerTest extends ControllerTest {
-
-    @LocalServerPort
-    private int port;
 
     @Autowired
     private ProcessRepository processRepository;
@@ -42,11 +37,9 @@ class EvaluationControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        RestAssured.port = port;
+        process = processRepository.save(ProcessFixture.applyType());
 
-        process = processRepository.save(createFirstProcess());
-
-        applicant = applicantRepository.save(createPendingApplicantDobby(process));
+        applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 
     @DisplayName("평가 생성 성공 시, 201을 응답한다.")
@@ -60,6 +53,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -82,6 +76,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -104,6 +99,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().post(url)
@@ -118,6 +114,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .when().get(url)
                 .then().log().all().statusCode(200);
@@ -127,13 +124,14 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void update() {
         // given
-        Evaluation evaluation = evaluationRepository.save(createEvaluationExcellent());
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
         int score = 2;
         String content = "맞춤법이 틀렸습니다.";
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().patch("/v1/evaluations/{evaluationId}", evaluation.getId())
@@ -150,6 +148,7 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given().log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when().patch("/v1/evaluations/{evaluationId}", -1)

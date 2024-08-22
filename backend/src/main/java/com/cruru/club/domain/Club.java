@@ -1,5 +1,6 @@
 package com.cruru.club.domain;
 
+import com.cruru.auth.util.SecureResource;
 import com.cruru.club.exception.badrequest.ClubNameBlankException;
 import com.cruru.club.exception.badrequest.ClubNameCharacterException;
 import com.cruru.club.exception.badrequest.ClubNameLengthException;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Club {
+public class Club implements SecureResource {
 
     private static final int MAX_NAME_LENGTH = 32;
     private static final Pattern NAME_PATTERN = Pattern.compile("^[^\\\\|]*$");
@@ -68,6 +69,11 @@ public class Club {
 
     private boolean isContainingInvalidCharacter(String name) {
         return !NAME_PATTERN.matcher(name).matches();
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return this.member.equals(member);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.cruru.applyform.service.facade;
 
-import static com.cruru.util.fixture.ApplyFormFixture.createBackendApplyForm;
-import static com.cruru.util.fixture.DashboardFixture.createBackendDashboard;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -12,9 +10,11 @@ import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
+import com.cruru.applyform.exception.badrequest.ApplyFormSubmitOutOfPeriodException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
@@ -27,6 +27,7 @@ import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -66,12 +67,12 @@ class ApplyFormFacadeTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.createBackendDashboard(null));
-        firstProcess = processRepository.save(ProcessFixture.createFirstProcess(dashboard));
-        finalProcess = processRepository.save(ProcessFixture.createFinalProcess(dashboard));
-        applyForm = applyFormRepository.save(ApplyFormFixture.createBackendApplyForm(dashboard));
-        Question question1 = questionRepository.save(QuestionFixture.createLongAnswerQuestion(applyForm));
-        Question question2 = questionRepository.save(QuestionFixture.createShortAnswerQuestion(applyForm));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(null));
+        firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
+        finalProcess = processRepository.save(ProcessFixture.approveType(dashboard));
+        applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         answerCreateRequests = List.of(
                 new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 첫 번째 답변입니다")),
@@ -94,19 +95,19 @@ class ApplyFormFacadeTest extends ServiceTest {
         applyFormFacade.submit(applyForm.getId(), applyFormSubmitrequest);
 
         // then
-        assertAll(() -> {
-            assertThat(answerRepository.findAll()).hasSize(answerCreateRequests.size());
-            assertThat(applicantRepository.countByProcess(firstProcess)).isEqualTo(1);
-            assertThat(applicantRepository.countByProcess(finalProcess)).isZero();
-        });
+        assertAll(
+                () -> assertThat(answerRepository.findAll()).hasSize(answerCreateRequests.size()),
+                () -> assertThat(applicantRepository.countByProcess(firstProcess)).isEqualTo(1),
+                () -> assertThat(applicantRepository.countByProcess(finalProcess)).isZero()
+        );
     }
 
     @DisplayName("지원서 폼 제출 시, 대시보드에 프로세스가 존재하지 않으면 예외가 발생한다.")
     @Test
     void submit_dashboardWithNoProcess() {
         // given
-        Dashboard emptyProcessDashboard = dashboardRepository.save(createBackendDashboard(null));
-        ApplyForm emptyProcessApplyForm = applyFormRepository.save(createBackendApplyForm(emptyProcessDashboard));
+        Dashboard emptyProcessDashboard = dashboardRepository.save(DashboardFixture.backend(null));
+        ApplyForm emptyProcessApplyForm = applyFormRepository.save(ApplyFormFixture.backend(emptyProcessDashboard));
 
         // when&then
         Long emptyProcessApplyFormId = emptyProcessApplyForm.getId();
@@ -130,11 +131,60 @@ class ApplyFormFacadeTest extends ServiceTest {
                 .isInstanceOf(PersonalDataCollectDisagreeException.class);
     }
 
+    @DisplayName("지원서 폼 제출 시, 지원 날짜 범위 밖이면 예외가 발생한다.")
+    @Test
+    void submit_invalidSubmitDate() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        ApplyForm pastApplyForm = applyFormRepository.save(new ApplyForm(
+                "지난 모집 공고", "description", "url",
+                now.minusDays(2), now.minusDays(1), null));
+        ApplyForm futureApplyForm = applyFormRepository.save(new ApplyForm(
+                "미래의 모집 공고", "description", "url",
+                now.plusDays(1), now.plusDays(2), null));
+
+        // when&then
+        assertAll(
+                () -> assertThatThrownBy(() -> applyFormFacade.submit(pastApplyForm.getId(), applyFormSubmitrequest))
+                        .isInstanceOf(ApplyFormSubmitOutOfPeriodException.class),
+                () -> assertThatThrownBy(() -> applyFormFacade.submit(futureApplyForm.getId(), applyFormSubmitrequest))
+                        .isInstanceOf(ApplyFormSubmitOutOfPeriodException.class)
+        );
+    }
+
     @DisplayName("지원서 폼 제출 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")
     @Test
     void submit_invalidApplyForm() {
         // given&when&then
         assertThatThrownBy(() -> applyFormFacade.submit(-1, applyFormSubmitrequest))
                 .isInstanceOf(ApplyFormNotFoundException.class);
+    }
+
+    @DisplayName("지원서 폼을 수정한다.")
+    @Test
+    void update() {
+        // given
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
+        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
+        );
+
+        // when
+        applyFormFacade.update(request, applyForm.getId());
+
+        // then
+        ApplyForm actual = applyFormRepository.findById(applyForm.getId()).get();
+        assertAll(
+                () -> assertThat(actual.getTitle()).isEqualTo(toChangeTitle),
+                () -> assertThat(actual.getDescription()).isEqualTo(toChangeDescription),
+                () -> assertThat(actual.getStartDate()).isEqualTo(toChangeStartDate),
+                () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
+        );
     }
 }
