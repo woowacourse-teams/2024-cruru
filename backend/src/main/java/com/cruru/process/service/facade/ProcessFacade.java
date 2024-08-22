@@ -104,6 +104,7 @@ public class ProcessFacade {
         Member member = memberService.findByEmail(loginProfile.email());
         Process process = processService.findById(processId);
         AuthChecker.checkAuthority(process, member);
+        evaluationService.deleteByProcess(process);
         processService.delete(processId);
     }
 }

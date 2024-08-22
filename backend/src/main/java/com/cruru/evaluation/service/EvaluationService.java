@@ -61,4 +61,8 @@ public class EvaluationService {
     private boolean changeExists(EvaluationUpdateRequest request, Evaluation evaluation) {
         return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
     }
+
+    public void deleteByProcess(Process process) {
+        evaluationRepository.deleteByProcess(process);
+    }
 }
