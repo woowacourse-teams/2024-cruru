@@ -3,14 +3,14 @@ import { QUESTION_TYPE_NAME } from '@constants/constants';
 type QuestionType = keyof typeof QUESTION_TYPE_NAME;
 
 interface QuestionChoice {
-  label: string;
+  choice: string;
   orderIndex: number;
 }
 
 export interface ModifyQuestionData {
   orderIndex: number;
   type: QuestionType;
-  label: string;
+  question: string;
   choices: QuestionChoice[];
   required: boolean;
 }

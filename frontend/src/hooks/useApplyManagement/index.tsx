@@ -65,10 +65,8 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
         questions: applyState.slice(DEFAULT_QUESTIONS.length).map((value, index) => ({
           orderIndex: index,
           type: value.type,
-          label: value.question,
-          choices: value.choices
-            .filter(({ choice }) => !!choice)
-            .map(({ choice, orderIndex }) => ({ label: choice, orderIndex })),
+          question: value.question,
+          choices: value.choices.filter(({ choice }) => !!choice),
           required: value.required,
         })),
       }),
