@@ -83,21 +83,27 @@ export default function Dashboard() {
         </Tab.TabPanel>
       )}
 
-      <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
-        <ProcessManageBoard
-          dashboardId={dashboardId}
-          postId={postId}
-          processes={processes}
-        />
-      </Tab.TabPanel>
+      {currentMenu === '모집 과정 관리' && (
+        <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
+          <ProcessManageBoard
+            dashboardId={dashboardId}
+            postId={postId}
+            processes={processes}
+          />
+        </Tab.TabPanel>
+      )}
 
-      <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
-        <PostManageBoard postId={postId} />
-      </Tab.TabPanel>
+      {currentMenu === '공고 관리' && (
+        <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
+          <PostManageBoard postId={postId} />
+        </Tab.TabPanel>
+      )}
 
-      <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
-        <ApplyManagement isVisible={currentMenu === '지원서 관리'} />
-      </Tab.TabPanel>
+      {currentMenu === '지원서 관리' && (
+        <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
+          <ApplyManagement isVisible={currentMenu === '지원서 관리'} />
+        </Tab.TabPanel>
+      )}
     </S.AppContainer>
   );
 }
