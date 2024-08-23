@@ -2,15 +2,12 @@ package com.cruru.question.controller;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.controller.dto.QuestionUpdateRequests;
 import com.cruru.question.domain.QuestionType;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
-import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -23,9 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 class QuestionControllerTest extends ControllerTest {
 
     @Autowired
-    private DashboardRepository dashboardRepository;
-
-    @Autowired
     private QuestionRepository questionRepository;
 
     @Autowired
@@ -35,8 +29,7 @@ class QuestionControllerTest extends ControllerTest {
     @Test
     void update() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
         QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(List.of(
                 new QuestionCreateRequest(QuestionType.LONG_ANSWER.name(), "new", List.of(), 0, true)
