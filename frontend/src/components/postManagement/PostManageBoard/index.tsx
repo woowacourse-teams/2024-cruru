@@ -23,15 +23,29 @@ export default function PostManageBoard({ postId }: PostManageBoardProps) {
   const quillRef = useRef<ReactQuill | null>(null);
 
   const { isLoading, postState, setPostState, modifyPostMutator } = usePostManagement({ postId });
+  const todayText = new Date().toISOString().split('T')[0];
   const startDateText = postState ? formatDate(postState.startDate) : '';
   const endDateText = postState ? formatDate(postState.endDate) : '';
   const [contentText, setContentText] = useState<string | undefined>('');
 
   const { register, errors } = useForm<RecruitmentInfoState>({ initialValues: postState });
 
+  const isModifyButtonValid = !!(
+    postState &&
+    postState.startDate &&
+    postState.endDate &&
+    postState.title.trim() &&
+    contentText?.trim() &&
+    !Object.values(errors).some((error) => error)
+  );
+
   useEffect(() => {
+    if (!contentText) {
+      setContentText(postState.postingContent);
+      return;
+    }
     setContentText(quillRef.current?.unprivilegedEditor?.getText());
-  }, [quillRef]);
+  }, [postState.postingContent, contentText, quillRef]);
 
   useEffect(() => {
     if (wrapperRef.current && !isLoading) {
@@ -42,15 +56,6 @@ export default function PostManageBoard({ postId }: PostManageBoardProps) {
   if (isLoading || !postState) {
     return <div>로딩 중입니다...</div>;
   }
-
-  const isModifyButtonValid = !!(
-    postState &&
-    postState.startDate &&
-    postState.endDate &&
-    postState.title.trim() &&
-    contentText?.trim() &&
-    !Object.values(errors).some((error) => error)
-  );
 
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostState((prev) => ({
@@ -98,7 +103,7 @@ export default function PostManageBoard({ postId }: PostManageBoardProps) {
             <DateInput
               width="22rem"
               label="시작일"
-              min={postState.startDate.split('T')[0]}
+              min={todayText}
               max={postState.endDate.split('T')[0]}
               innerText={startDateText}
               onChange={handleStartDate}
