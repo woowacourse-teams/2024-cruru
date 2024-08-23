@@ -1,4 +1,15 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+
+const bounceInUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
 
 const Layout = styled.div`
   width: 100vw;
@@ -20,6 +31,8 @@ const SignUpContainer = styled.form`
   flex-direction: column;
   gap: 3rem;
   align-items: center;
+
+  animation: ${bounceInUp} 1s ease forwards;
 `;
 
 const Title = styled.h1`
