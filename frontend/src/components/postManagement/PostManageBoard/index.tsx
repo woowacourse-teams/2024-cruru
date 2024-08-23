@@ -23,6 +23,7 @@ export default function PostManageBoard({ postId }: PostManageBoardProps) {
   const quillRef = useRef<ReactQuill | null>(null);
 
   const { isLoading, postState, setPostState, modifyPostMutator } = usePostManagement({ postId });
+  const todayText = new Date().toISOString().split('T')[0];
   const startDateText = postState ? formatDate(postState.startDate) : '';
   const endDateText = postState ? formatDate(postState.endDate) : '';
   const [contentText, setContentText] = useState<string | undefined>('');
@@ -102,7 +103,7 @@ export default function PostManageBoard({ postId }: PostManageBoardProps) {
             <DateInput
               width="22rem"
               label="시작일"
-              min={postState.startDate.split('T')[0]}
+              min={todayText}
               max={postState.endDate.split('T')[0]}
               innerText={startDateText}
               onChange={handleStartDate}
