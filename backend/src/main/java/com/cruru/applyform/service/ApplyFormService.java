@@ -6,6 +6,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
+import java.time.LocalDate;
 import java.time.Clock;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -47,18 +48,18 @@ public class ApplyFormService {
         );
     }
 
+    @Transactional
+    public void update(ApplyForm applyForm) {
+        validateStartDateNotInPast(applyForm);
+        applyFormRepository.save(applyForm);
+    }
+
     private void validateStartDateNotInPast(ApplyForm applyForm) {
         LocalDate startDate = applyForm.getStartDate().toLocalDate();
         LocalDate now = LocalDate.now(clock);
         if (startDate.isBefore(now)) {
             throw new StartDatePastException(startDate, now);
         }
-    }
-
-    @Transactional
-    public void update(ApplyForm applyForm) {
-        validateStartDateNotInPast(applyForm);
-        applyFormRepository.save(applyForm);
     }
 
     public ApplyForm findById(long applyFormId) {

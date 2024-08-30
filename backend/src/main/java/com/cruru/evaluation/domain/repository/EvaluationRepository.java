@@ -11,4 +11,6 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     int countByApplicantAndProcess(Applicant applicant, Process process);
 
     List<Evaluation> findAllByProcessAndApplicant(Process process, Applicant applicant);
+
+    void deleteByProcess(Process process);
 }

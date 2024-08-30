@@ -30,10 +30,10 @@ public class EvaluationService {
 
     public double calculateAverageScore(Process process, Applicant applicant) {
         List<Evaluation> evaluations = findAllByProcessAndApplicant(process, applicant);
-        double totalScore = evaluations.stream()
+        return evaluations.stream()
                 .mapToDouble(Evaluation::getScore)
-                .sum();
-        return totalScore / evaluations.size();
+                .average()
+                .orElse(0.0);
     }
 
     public List<Evaluation> findAllByProcessAndApplicant(Process process, Applicant applicant) {
@@ -60,5 +60,9 @@ public class EvaluationService {
 
     private boolean changeExists(EvaluationUpdateRequest request, Evaluation evaluation) {
         return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
+    }
+
+    public void deleteByProcess(Process process) {
+        evaluationRepository.deleteByProcess(process);
     }
 }
