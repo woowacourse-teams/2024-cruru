@@ -90,8 +90,8 @@ public class ApplyForm extends BaseEntity {
         this.dashboard = dashboard;
     }
 
-    public boolean hasStarted() {
-        return !startDate.toLocalDate().isAfter(LocalDate.now());
+    public boolean hasStarted(LocalDate now) {
+        return !startDate.toLocalDate().isAfter(now);
     }
 
     @Override

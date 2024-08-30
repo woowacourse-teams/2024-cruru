@@ -43,7 +43,6 @@ class QuestionFacadeTest extends ServiceTest {
     void update() {
         // given
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend());
         Question question = questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
         choiceRepository.save(ChoiceFixture.first(question));
         choiceRepository.save(ChoiceFixture.second(question));
