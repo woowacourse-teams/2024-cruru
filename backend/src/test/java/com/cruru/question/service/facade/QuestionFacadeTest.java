@@ -83,7 +83,7 @@ class QuestionFacadeTest extends ServiceTest {
         );
     }
 
-    @DisplayName("모집 공고가 시작된 이후이면 질문을 수정할 수 없다..")
+    @DisplayName("모집 공고가 시작된 이후이면 질문을 수정할 수 없다.")
     @Test
     void update_ApplyFormInProgress() {
         // given
