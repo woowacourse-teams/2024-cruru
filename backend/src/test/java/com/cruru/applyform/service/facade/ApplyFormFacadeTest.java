@@ -137,7 +137,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     void submit_invalidSubmitDate() {
         // given
         ApplyForm pastApplyForm = applyFormRepository.save(new ApplyForm(
-                applyForm.getId(), "지난 모집 공고", "description", "url",
+                "지난 모집 공고", "description", "url",
                 LocalDateFixture.oneWeekAgo(), LocalDateFixture.oneDayAgo(), null));
         ApplyForm futureApplyForm = applyFormRepository.save(new ApplyForm(
                 "미래의 모집 공고", "description", "url",
