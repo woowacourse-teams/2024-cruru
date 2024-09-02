@@ -1,4 +1,4 @@
-package com.cruru.global;
+package com.cruru.global.interceptor;
 
 import com.cruru.auth.exception.IllegalCookieException;
 import com.cruru.auth.exception.LoginUnauthorizedException;

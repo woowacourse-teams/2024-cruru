@@ -1,4 +1,4 @@
-package com.cruru.global;
+package com.cruru.global.resolver;
 
 import com.cruru.advice.UnauthorizedException;
 import com.cruru.auth.controller.dto.LoginProfile;

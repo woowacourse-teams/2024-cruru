@@ -1,9 +1,9 @@
 package com.cruru.config;
 
 import com.cruru.auth.service.AuthService;
-import com.cruru.global.AuthenticationInterceptor;
-import com.cruru.global.LoggingInterceptor;
-import com.cruru.global.LoginArgumentResolver;
+import com.cruru.global.interceptor.AuthenticationInterceptor;
+import com.cruru.global.interceptor.LoggingInterceptor;
+import com.cruru.global.resolver.LoginArgumentResolver;
 import com.cruru.global.util.CookieManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

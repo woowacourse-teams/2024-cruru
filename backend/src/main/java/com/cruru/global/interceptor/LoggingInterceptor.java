@@ -1,4 +1,4 @@
-package com.cruru.global;
+package com.cruru.global.interceptor;
 
 import com.cruru.aspect.query.QueryCounter;
 import jakarta.servlet.http.HttpServletRequest;
