@@ -6,6 +6,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
+import java.time.Clock;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApplyFormService {
 
     private final ApplyFormRepository applyFormRepository;
+    private final Clock clock;
 
     @Value("${base-url.applyform}")
     private String applyPostBaseUrl;
@@ -47,8 +49,9 @@ public class ApplyFormService {
 
     private void validateStartDateNotInPast(ApplyForm applyForm) {
         LocalDate startDate = applyForm.getStartDate().toLocalDate();
-        if (startDate.isBefore(LocalDate.now())) {
-            throw new StartDatePastException(startDate, LocalDate.now());
+        LocalDate now = LocalDate.now(clock);
+        if (startDate.isBefore(now)) {
+            throw new StartDatePastException(startDate, now);
         }
     }
 

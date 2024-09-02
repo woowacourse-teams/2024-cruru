@@ -17,6 +17,7 @@ import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
@@ -56,8 +57,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String title = "우아한테크코스 백엔드 7기 모집";
         String postingContent = "# 모집합니다! ## 사실 안모집합니다";
-        LocalDateTime startDate = LocalDateTime.of(2099, 1, 1, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2099, 12, 31, 23, 59);
+        LocalDateTime startDate = LocalDateFixture.oneDayLater();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, postingContent, startDate, endDate);
 
         // when
@@ -82,8 +83,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String title = "title";
         String description = "description";
-        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(title, description, startDate, endDate);
 
         // when&then
@@ -138,8 +139,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
-        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
-        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
+        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
@@ -165,8 +166,8 @@ class ApplyFormServiceTest extends ServiceTest {
         // given
         String title = "title";
         String description = "description";
-        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description, "",

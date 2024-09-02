@@ -22,6 +22,7 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.service.QuestionService;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -42,6 +43,7 @@ public class DashboardFacade {
     private final QuestionService questionService;
     private final ProcessService processService;
     private final ApplicantService applicantService;
+    private final Clock clock;
 
     @Transactional
     public long create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
@@ -82,7 +84,7 @@ public class DashboardFacade {
         List<Dashboard> dashboardIds = dashboardService.findAllByClub(club);
 
         String clubName = clubService.findById(clubId).getName();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(clock);
         List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
                 .map(this::createDashboardPreviewResponse)
                 .toList();

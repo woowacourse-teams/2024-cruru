@@ -12,9 +12,9 @@ import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,8 +88,8 @@ class DashboardControllerTest extends ControllerTest {
                 "크루루대시보드",
                 "# 공고 내용",
                 questionCreateRequests,
-                LocalDateTime.now().plusDays(1),
-                LocalDateTime.of(2999, 12, 31, 23, 59)
+                LocalDateFixture.oneDayLater(),
+                LocalDateFixture.oneWeekLater()
         );
         String url = String.format("/v1/dashboards?clubId=%d", club.getId());
 
@@ -112,8 +112,8 @@ class DashboardControllerTest extends ControllerTest {
                 "크루루대시보드",
                 "# 공고 내용",
                 questionCreateRequests,
-                LocalDateTime.of(2000, 1, 1, 0, 0),
-                LocalDateTime.of(2999, 12, 31, 23, 59)
+                LocalDateFixture.oneDayLater(),
+                LocalDateFixture.oneWeekLater()
         );
         String url = String.format("/v1/dashboards?clubId=%d", club.getId());
 

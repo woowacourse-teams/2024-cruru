@@ -9,6 +9,7 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,8 +42,8 @@ class ApplyFormRepositoryTest extends RepositoryTest {
         String title = "수정된 공고 제목";
         String description = "수정된 상세 내용";
         String url = "www.modified.url";
-        LocalDateTime startDate = LocalDateTime.of(2024, 1, 1, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2024, 12, 31, 23, 59);
+        LocalDateTime startDate = LocalDateFixture.oneDayLater();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
 
         ApplyForm expectedApplyForm = applyFormRepository.save(new ApplyForm(
                 initialApplyForm.getId(),

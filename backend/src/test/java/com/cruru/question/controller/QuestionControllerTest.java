@@ -2,12 +2,15 @@ package com.cruru.question.controller;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.controller.dto.QuestionUpdateRequests;
 import com.cruru.question.domain.QuestionType;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
