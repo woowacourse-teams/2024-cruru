@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@DisplayName("인증 컨트롤러 테스트")
 class AuthControllerTest extends ControllerTest {
 
     @Autowired

@@ -25,6 +25,7 @@ import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,8 +71,8 @@ class DashboardFacadeTest extends ServiceTest {
                 new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
         String title = "크루루대시보드";
         String postingContent = "# 공고 내용";
-        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
-        LocalDateTime endDate = LocalDateTime.of(2999, 12, 31, 23, 59);
+        LocalDateTime startDate = LocalDateFixture.oneDayLater();
+        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         DashboardCreateRequest request = new DashboardCreateRequest(
                 title,
                 postingContent,
