@@ -12,18 +12,18 @@ public class LocalDateFixture {
     }
 
     public static LocalDateTime oneDayAgo() {
-        return LocalDateTime.of(2024, 7, 31, 11, 0, 0);
+        return LocalDateTime.now(fixedClock()).minusDays(1);
     }
 
     public static LocalDateTime oneWeekAgo() {
-        return LocalDateTime.of(2024, 7, 25, 11, 0, 0);
+        return LocalDateTime.now(fixedClock()).minusWeeks(1);
     }
 
     public static LocalDateTime oneDayLater() {
-        return LocalDateTime.of(2024, 8, 2, 11, 0, 0);
+        return LocalDateTime.now(fixedClock()).plusDays(1);
     }
 
     public static LocalDateTime oneWeekLater() {
-        return LocalDateTime.of(2024, 8, 9, 11, 0, 0);
+        return LocalDateTime.now(fixedClock()).plusWeeks(1);
     }
 }
