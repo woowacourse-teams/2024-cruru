@@ -23,9 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 class QuestionControllerTest extends ControllerTest {
 
     @Autowired
-    private DashboardRepository dashboardRepository;
-
-    @Autowired
     private QuestionRepository questionRepository;
 
     @Autowired
