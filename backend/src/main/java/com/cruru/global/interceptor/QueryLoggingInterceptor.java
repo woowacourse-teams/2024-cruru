@@ -11,7 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class LoggingInterceptor implements HandlerInterceptor {
+public class QueryLoggingInterceptor implements HandlerInterceptor {
 
     private static final String QUERY_COUNT_LOG = "METHOD: {}, URL: {}, STATUS_CODE: {}, QUERY_COUNT: {}";
 
@@ -25,8 +25,13 @@ public class LoggingInterceptor implements HandlerInterceptor {
             Exception ex
     ) {
         if (queryCounter.isWarn()) {
-            log.warn(QUERY_COUNT_LOG, request.getMethod(), request.getRequestURI(), response.getStatus(),
-                    queryCounter.getCount());
+            log.warn(
+                    QUERY_COUNT_LOG,
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    response.getStatus(),
+                    queryCounter.getCount()
+            );
         }
     }
 }

@@ -2,7 +2,7 @@ package com.cruru.config;
 
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.interceptor.AuthenticationInterceptor;
-import com.cruru.global.interceptor.LoggingInterceptor;
+import com.cruru.global.interceptor.QueryLoggingInterceptor;
 import com.cruru.global.resolver.LoginArgumentResolver;
 import com.cruru.global.util.CookieManager;
 import java.util.List;
@@ -19,7 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthService authService;
     private final CookieManager cookieManager;
-    private final LoggingInterceptor loggingInterceptor;
+    private final QueryLoggingInterceptor queryLoggingInterceptor;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -47,7 +47,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/**/posts/**")
         ;
 
-        registry.addInterceptor(loggingInterceptor);
+        registry.addInterceptor(queryLoggingInterceptor);
     }
 
     @Override
