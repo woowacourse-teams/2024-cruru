@@ -10,7 +10,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
+import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
@@ -82,26 +82,26 @@ class DashboardFacadeTest extends ServiceTest {
         );
 
         // when
-        long savedDashboardId = dashboardFacade.create(loginProfile, club.getId(), request);
+        Dashboard savedDashboard = dashboardFacade.create(loginProfile, club.getId(), request);
 
         // then
-        assertThat(dashboardRepository.findById(savedDashboardId)).isPresent();
+        assertThat(dashboardRepository.findById(savedDashboard.getId())).isPresent();
     }
 
-    @DisplayName("대시보드로 공고 URL을 찾는다.")
+    @DisplayName("대시보드로 공고를 찾는다.")
     @Test
-    void findFormUrlByDashboardId() {
+    void findApplyFormByDashboard() {
         // given
         Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
 
         // when
-        ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboard.getId());
+        DashboardCreateResponse dashboardCreateResponse = dashboardFacade.findApplyFormByDashboard(dashboard);
 
         // then
         assertAll(
-                () -> assertThat(applyFormUrlResponse.applyFormId()).isEqualTo(applyForm.getId()),
-                () -> assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl())
+                () -> assertThat(dashboardCreateResponse.applyFormId()).isEqualTo(applyForm.getId()),
+                () -> assertThat(dashboardCreateResponse.dashboardId()).isEqualTo(dashboard.getId())
         );
     }
 

@@ -9,7 +9,7 @@ import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
-import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
+import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
@@ -46,7 +46,7 @@ public class DashboardFacade {
     private final Clock clock;
 
     @Transactional
-    public long create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
+    public Dashboard create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
         Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
 
@@ -57,7 +57,7 @@ public class DashboardFacade {
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
         }
-        return createdDashboard.getId();
+        return createdDashboard;
     }
 
     private ApplyFormWriteRequest toApplyFormWriteRequest(DashboardCreateRequest request) {
@@ -69,10 +69,9 @@ public class DashboardFacade {
         );
     }
 
-    public ApplyFormUrlResponse findFormUrlByDashboardId(long dashboardId) {
-        Dashboard dashboard = dashboardService.findById(dashboardId);
+    public DashboardCreateResponse findApplyFormByDashboard(Dashboard dashboard) {
         ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
-        return new ApplyFormUrlResponse(applyForm.getId(), applyForm.getUrl());
+        return new DashboardCreateResponse(applyForm.getId(), dashboard.getId());
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(LoginProfile loginProfile, long clubId) {
@@ -81,11 +80,11 @@ public class DashboardFacade {
 
         AuthChecker.checkAuthority(club, member);
 
-        List<Dashboard> dashboardIds = dashboardService.findAllByClub(club);
+        List<Dashboard> dashboards = dashboardService.findAllByClub(club);
 
         String clubName = clubService.findById(clubId).getName();
         LocalDateTime now = LocalDateTime.now(clock);
-        List<DashboardPreviewResponse> dashboardResponses = dashboardIds.stream()
+        List<DashboardPreviewResponse> dashboardResponses = dashboards.stream()
                 .map(this::createDashboardPreviewResponse)
                 .toList();
 

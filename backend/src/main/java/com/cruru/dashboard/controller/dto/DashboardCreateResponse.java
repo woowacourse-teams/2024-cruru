@@ -1,8 +1,8 @@
 package com.cruru.dashboard.controller.dto;
 
-public record ApplyFormUrlResponse(
+public record DashboardCreateResponse(
         long applyFormId,
-        String postUrl
+        long dashboardId
 ) {
 
 }
