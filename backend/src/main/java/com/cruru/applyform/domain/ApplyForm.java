@@ -17,7 +17,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,9 +34,6 @@ public class ApplyForm extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Setter
-    private String url;
-
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
@@ -51,7 +47,6 @@ public class ApplyForm extends BaseEntity {
     public ApplyForm(
             String title,
             String description,
-            String url,
             LocalDateTime startDate,
             LocalDateTime endDate,
             Dashboard dashboard
@@ -59,7 +54,6 @@ public class ApplyForm extends BaseEntity {
         validateDate(startDate, endDate);
         this.title = title;
         this.description = description;
-        this.url = url;
         this.startDate = startDate;
         this.endDate = endDate;
         this.dashboard = dashboard;
@@ -73,21 +67,6 @@ public class ApplyForm extends BaseEntity {
         if (startDate.isAfter(endDate)) {
             throw new StartDateAfterEndDateException(startDate, endDate);
         }
-    }
-
-    public ApplyForm(
-            String title,
-            String description,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
-            Dashboard dashboard
-    ) {
-        validateDate(startDate, endDate);
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.dashboard = dashboard;
     }
 
     public boolean hasStarted(LocalDate now) {
@@ -116,7 +95,6 @@ public class ApplyForm extends BaseEntity {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", url='" + url + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", dashboard=" + dashboard +
