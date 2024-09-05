@@ -9,7 +9,7 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 public class QueryCounter {
 
-    private static final int WARN_QUERY_COUNT = 10;
+    private static final int WARN_QUERY_COUNT = 1;
 
     private int count;
 
