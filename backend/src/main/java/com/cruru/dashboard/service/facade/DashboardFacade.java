@@ -9,8 +9,8 @@ import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
-import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
+import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
@@ -99,9 +99,9 @@ public class DashboardFacade {
         StatsResponse stats = calculateStats(allApplicants);
         return new DashboardPreviewResponse(
                 dashboard.getId(),
+                applyForm.getId(),
                 applyForm.getTitle(),
                 stats,
-                applyForm.getUrl(),
                 applyForm.getStartDate(),
                 applyForm.getEndDate()
         );

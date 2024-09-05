@@ -8,11 +8,11 @@ public record DashboardPreviewResponse(
 
         long dashboardId,
 
+        long applyFormId,
+
         String title,
 
         StatsResponse stats,
-
-        String postUrl,
 
         @JsonFormat(shape = Shape.STRING)
         LocalDateTime startDate,

@@ -10,8 +10,8 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
+import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
@@ -136,7 +136,7 @@ class DashboardFacadeTest extends ServiceTest {
                 () -> assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName()),
                 () -> assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId()),
                 () -> assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle()),
-                () -> assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl()),
+                () -> assertThat(dashboardPreview.applyFormId()).isEqualTo(applyForm.getId()),
                 () -> assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate()),
                 () -> assertThat(stats.accept()).isEqualTo(1),
                 () -> assertThat(stats.fail()).isEqualTo(2),
