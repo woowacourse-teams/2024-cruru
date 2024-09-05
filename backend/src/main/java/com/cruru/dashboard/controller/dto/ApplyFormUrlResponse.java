@@ -1,7 +1,7 @@
 package com.cruru.dashboard.controller.dto;
 
 public record ApplyFormUrlResponse(
-        long postId,
+        long applyFormId,
         String postUrl
 ) {
 

@@ -100,7 +100,7 @@ class DashboardFacadeTest extends ServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId()),
+                () -> assertThat(applyFormUrlResponse.applyFormId()).isEqualTo(applyForm.getId()),
                 () -> assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl())
         );
     }
