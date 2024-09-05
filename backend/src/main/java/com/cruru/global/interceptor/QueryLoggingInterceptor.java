@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class QueryLoggingInterceptor implements HandlerInterceptor {
 
-    private static final String QUERY_COUNT_LOG = "METHOD: {}, URL: {}, STATUS_CODE: {}, QUERY_COUNT: {}";
+    private static final String QUERY_COUNT_LOG = "method={}, url={}, status={}, query_count={}";
 
     private final QueryCounter queryCounter;
 
