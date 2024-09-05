@@ -5,7 +5,7 @@ import java.util.List;
 
 public record ProcessResponses(
 
-        String postUrl,
+        long applyFormId,
 
         @JsonProperty("processes")
         List<ProcessResponse> processResponses,
