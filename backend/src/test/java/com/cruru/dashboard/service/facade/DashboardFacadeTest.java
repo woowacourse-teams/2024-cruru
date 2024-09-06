@@ -82,27 +82,10 @@ class DashboardFacadeTest extends ServiceTest {
         );
 
         // when
-        Dashboard savedDashboard = dashboardFacade.create(loginProfile, club.getId(), request);
+        DashboardCreateResponse response = dashboardFacade.create(loginProfile, club.getId(), request);
 
         // then
-        assertThat(dashboardRepository.findById(savedDashboard.getId())).isPresent();
-    }
-
-    @DisplayName("대시보드로 공고를 찾는다.")
-    @Test
-    void findApplyFormByDashboard() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-
-        // when
-        DashboardCreateResponse dashboardCreateResponse = dashboardFacade.findApplyFormByDashboard(dashboard);
-
-        // then
-        assertAll(
-                () -> assertThat(dashboardCreateResponse.applyFormId()).isEqualTo(applyForm.getId()),
-                () -> assertThat(dashboardCreateResponse.dashboardId()).isEqualTo(dashboard.getId())
-        );
+        assertThat(dashboardRepository.findById(response.dashboardId())).isPresent();
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")

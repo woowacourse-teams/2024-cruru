@@ -46,18 +46,18 @@ public class DashboardFacade {
     private final Clock clock;
 
     @Transactional
-    public Dashboard create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
+    public DashboardCreateResponse create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
         Member member = memberService.findByEmail(loginProfile.email());
         Club club = clubService.findById(clubId);
 
         AuthChecker.checkAuthority(club, member);
 
-        Dashboard createdDashboard = dashboardService.create(club);
-        ApplyForm applyForm = applyFormService.create(toApplyFormWriteRequest(request), createdDashboard);
+        Dashboard dashboard = dashboardService.create(club);
+        ApplyForm applyForm = applyFormService.create(toApplyFormWriteRequest(request), dashboard);
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
         }
-        return createdDashboard;
+        return new DashboardCreateResponse(applyForm.getId(), dashboard.getId());
     }
 
     private ApplyFormWriteRequest toApplyFormWriteRequest(DashboardCreateRequest request) {
@@ -67,11 +67,6 @@ public class DashboardFacade {
                 request.startDate(),
                 request.endDate()
         );
-    }
-
-    public DashboardCreateResponse findApplyFormByDashboard(Dashboard dashboard) {
-        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
-        return new DashboardCreateResponse(applyForm.getId(), dashboard.getId());
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(LoginProfile loginProfile, long clubId) {
