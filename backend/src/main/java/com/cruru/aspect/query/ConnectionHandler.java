@@ -18,13 +18,13 @@ public class ConnectionHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        countQuery(method);
+        countQuery(method, args);
         return method.invoke(connection, args);
     }
 
-    private void countQuery(Method method) {
+    private void countQuery(Method method, Object[] args) {
         if (isPrepareStatement(method) && isRequest()) {
-            queryCounter.increaseCount();
+            queryCounter.addQuery((String) args[0]);
         }
     }
 

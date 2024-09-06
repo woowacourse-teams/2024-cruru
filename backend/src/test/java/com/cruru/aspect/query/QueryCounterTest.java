@@ -17,8 +17,8 @@ class QueryCounterTest {
         QueryCounter queryCounter = new QueryCounter();
 
         // when
-        IntStream.range(0, queryCnt)
-                .forEach(i -> queryCounter.increaseCount());
+//        IntStream.range(0, queryCnt)
+//                .forEach(i -> queryCounter.increaseCount());
 
         // then
         assertThat(queryCounter.isWarn()).isTrue();

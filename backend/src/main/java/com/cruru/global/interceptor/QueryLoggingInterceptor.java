@@ -13,7 +13,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class QueryLoggingInterceptor implements HandlerInterceptor {
 
-    private static final String QUERY_COUNT_LOG = "method={}, url={}, status={}, query_count={}";
+    private static final String QUERY_COUNT_LOG = "method={}, url={}, status={}, query_count={}, queries={}";
+    private static final String QUERIES_FORMAT = "\"%s\"";
+    private static final String QUERY_DELIMITER = "; ";
 
     private final QueryCounter queryCounter;
 
@@ -30,8 +32,16 @@ public class QueryLoggingInterceptor implements HandlerInterceptor {
                     request.getMethod(),
                     request.getRequestURI(),
                     response.getStatus(),
-                    queryCounter.getCount()
+                    queryCounter.getCount(),
+                    getFormattedQueries()
             );
         }
+    }
+
+    private String getFormattedQueries() {
+        return String.format(
+                QUERIES_FORMAT,
+                String.join(QUERY_DELIMITER, queryCounter.getQueries())
+        );
     }
 }
