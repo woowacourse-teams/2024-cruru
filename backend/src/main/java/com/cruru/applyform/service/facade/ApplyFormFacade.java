@@ -101,7 +101,7 @@ public class ApplyFormFacade {
         );
     }
 
-    private static ApplyForm toUpdateApplyForm(
+    private ApplyForm toUpdateApplyForm(
             ApplyFormWriteRequest request,
             ApplyForm applyForm,
             long applyFormId
@@ -110,7 +110,6 @@ public class ApplyFormFacade {
                 applyFormId,
                 request.title(),
                 request.postingContent(),
-                applyForm.getUrl(),
                 request.startDate(),
                 request.endDate(),
                 applyForm.getDashboard()
