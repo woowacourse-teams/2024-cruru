@@ -43,8 +43,6 @@ cookie:
 dataloader:
   enable: true
 
-base-url:
-  applyform: www.cruru.kr/post/%d
 ---
 spring:
   config:
@@ -105,9 +103,6 @@ management:
     prometheus:
       enabled: true
 
-base-url:
-  applyform: ${APPLY_POST_BASE_URL}
-
 ---
 spring:
   config:
@@ -165,6 +160,3 @@ management:
   endpoint:
     prometheus:
       enabled: true
-
-base-url:
-  applyform: ${APPLY_POST_BASE_URL}

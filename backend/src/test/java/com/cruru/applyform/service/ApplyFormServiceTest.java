@@ -64,14 +64,12 @@ class ApplyFormServiceTest extends ServiceTest {
         // when
         ApplyForm savedApplyForm = applyFormService.create(request, dashboard);
         long applyFormId = savedApplyForm.getId();
-        String applyPostUrl = String.format("www.cruru.kr/post/%d", applyFormId);
 
         // then
         ApplyForm actualApplyForm = applyFormRepository.findById(applyFormId).get();
         assertAll(
                 () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
                 () -> assertThat(actualApplyForm.getDescription()).isEqualTo(postingContent),
-                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(applyPostUrl),
                 () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
                 () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
         );
@@ -144,7 +142,7 @@ class ApplyFormServiceTest extends ServiceTest {
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription, "",
+        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription,
                 toChangeStartDate, toChangeEndDate, dashboard);
 
         // when
@@ -170,7 +168,7 @@ class ApplyFormServiceTest extends ServiceTest {
         LocalDateTime endDate = LocalDateFixture.oneWeekLater();
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description, "",
+        ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description,
                 startDate, endDate, dashboard);
 
         // when&then

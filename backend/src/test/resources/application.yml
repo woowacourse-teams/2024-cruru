@@ -20,8 +20,6 @@ spring:
     defer-datasource-initialization: false
 dataloader:
   enable: false
-base-url:
-  applyform: www.cruru.kr/post/%d
 
 security:
   jwt:

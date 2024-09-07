@@ -10,8 +10,8 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
+import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.dto.StatsResponse;
@@ -82,27 +82,10 @@ class DashboardFacadeTest extends ServiceTest {
         );
 
         // when
-        long savedDashboardId = dashboardFacade.create(loginProfile, club.getId(), request);
+        DashboardCreateResponse response = dashboardFacade.create(loginProfile, club.getId(), request);
 
         // then
-        assertThat(dashboardRepository.findById(savedDashboardId)).isPresent();
-    }
-
-    @DisplayName("대시보드로 공고 URL을 찾는다.")
-    @Test
-    void findFormUrlByDashboardId() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(new Dashboard(club));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-
-        // when
-        ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboard.getId());
-
-        // then
-        assertAll(
-                () -> assertThat(applyFormUrlResponse.postId()).isEqualTo(applyForm.getId()),
-                () -> assertThat(applyFormUrlResponse.postUrl()).isEqualTo(applyForm.getUrl())
-        );
+        assertThat(dashboardRepository.findById(response.dashboardId())).isPresent();
     }
 
     @DisplayName("다건의 대시보드 정보를 조회한다.")
@@ -136,7 +119,7 @@ class DashboardFacadeTest extends ServiceTest {
                 () -> assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName()),
                 () -> assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId()),
                 () -> assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle()),
-                () -> assertThat(dashboardPreview.postUrl()).isEqualTo(applyForm.getUrl()),
+                () -> assertThat(dashboardPreview.applyFormId()).isEqualTo(applyForm.getId()),
                 () -> assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate()),
                 () -> assertThat(stats.accept()).isEqualTo(1),
                 () -> assertThat(stats.fail()).isEqualTo(2),

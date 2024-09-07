@@ -41,7 +41,6 @@ class ApplyFormRepositoryTest extends RepositoryTest {
         // when
         String title = "수정된 공고 제목";
         String description = "수정된 상세 내용";
-        String url = "www.modified.url";
         LocalDateTime startDate = LocalDateFixture.oneDayLater();
         LocalDateTime endDate = LocalDateFixture.oneWeekLater();
 
@@ -49,7 +48,6 @@ class ApplyFormRepositoryTest extends RepositoryTest {
                 initialApplyForm.getId(),
                 title,
                 description,
-                url,
                 startDate,
                 endDate,
                 initialApplyForm.getDashboard()
@@ -61,7 +59,6 @@ class ApplyFormRepositoryTest extends RepositoryTest {
                 () -> assertThat(actualApplyForm.getDashboard()).isEqualTo(applyForm.getDashboard()),
                 () -> assertThat(actualApplyForm.getTitle()).isEqualTo(title),
                 () -> assertThat(actualApplyForm.getDescription()).isEqualTo(description),
-                () -> assertThat(actualApplyForm.getUrl()).isEqualTo(url),
                 () -> assertThat(actualApplyForm.getStartDate()).isEqualTo(startDate),
                 () -> assertThat(actualApplyForm.getEndDate()).isEqualTo(endDate)
         );

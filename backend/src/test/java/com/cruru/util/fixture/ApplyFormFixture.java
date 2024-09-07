@@ -2,7 +2,6 @@ package com.cruru.util.fixture;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.dashboard.domain.Dashboard;
-import java.time.LocalDateTime;
 
 public class ApplyFormFixture {
 
@@ -10,7 +9,6 @@ public class ApplyFormFixture {
         return new ApplyForm(
                 "크루루 백엔드 모집 공고",
                 "# 모집공고 설명1 ## 이렇게 지원하세요",
-                "www.cruru.kr/post/" + backendDashboard.getId(),
                 LocalDateFixture.oneDayAgo(),
                 LocalDateFixture.oneWeekLater(),
                 backendDashboard
@@ -21,7 +19,6 @@ public class ApplyFormFixture {
         return new ApplyForm(
                 "크루루 백엔드 모집 공고",
                 "# 모집공고 설명1 ## 이렇게 지원하세요",
-                "www.cruru.kr/post/" + 1,
                 LocalDateFixture.oneDayAgo(),
                 LocalDateFixture.oneWeekLater(),
                 null
@@ -32,7 +29,6 @@ public class ApplyFormFixture {
         return new ApplyForm(
                 "크루루 프론트엔드 모집 공고",
                 "# 모집공고 설명2 ## 이렇게 지원하세요",
-                "www.cruru.kr/post/" + frontendDashboard.getId(),
                 LocalDateFixture.oneDayAgo(),
                 LocalDateFixture.oneWeekLater(),
                 frontendDashboard
@@ -43,7 +39,6 @@ public class ApplyFormFixture {
         return new ApplyForm(
                 "크루루 프론트엔드 모집 공고",
                 "# 모집공고 설명2 ## 이렇게 지원하세요",
-                "www.cruru.kr/post/" + 1,
                 LocalDateFixture.oneDayLater(),
                 LocalDateFixture.oneWeekLater(),
                 null

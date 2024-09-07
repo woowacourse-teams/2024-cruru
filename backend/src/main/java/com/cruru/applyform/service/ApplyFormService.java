@@ -9,7 +9,6 @@ import com.cruru.dashboard.domain.Dashboard;
 import java.time.Clock;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,20 +20,12 @@ public class ApplyFormService {
     private final ApplyFormRepository applyFormRepository;
     private final Clock clock;
 
-    @Value("${base-url.applyform}")
-    private String applyPostBaseUrl;
-
     @Transactional
     public ApplyForm create(ApplyFormWriteRequest request, Dashboard createdDashboard) {
         ApplyForm applyForm = toApplyForm(request, createdDashboard);
         validateStartDateNotInPast(applyForm);
 
-        ApplyForm savedApplyForm = applyFormRepository.save(applyForm);
-        Long savedPostingId = savedApplyForm.getId();
-        String generatedUrl = String.format(applyPostBaseUrl, savedPostingId);
-        savedApplyForm.setUrl(generatedUrl);
-
-        return savedApplyForm;
+        return applyFormRepository.save(applyForm);
     }
 
     private ApplyForm toApplyForm(ApplyFormWriteRequest request, Dashboard createdDashboard) {
