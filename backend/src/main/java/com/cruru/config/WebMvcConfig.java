@@ -43,7 +43,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/**/login")
                 .excludePathPatterns("/**/applyform/**")
                 .excludePathPatterns("/**/posts/**")
-        ;
+                .excludePathPatterns("/docs/index.html");
     }
 
     @Override
