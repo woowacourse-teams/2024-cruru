@@ -3,6 +3,7 @@ package com.cruru.dashboard.controller;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
@@ -10,17 +11,20 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
+import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
+import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.LocalDateFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
@@ -48,6 +52,19 @@ class DashboardControllerTest extends ControllerTest {
             fieldWithPath("endDate").description("마감날짜")
     };
 
+    private static final FieldDescriptor[] QUESTION_FIELD_DESCRIPTORS = {
+            fieldWithPath("type").description("질문 유형"),
+            fieldWithPath("question").description("질문 내용"),
+            fieldWithPath("choices").description("질문의 선택지들"),
+            fieldWithPath("orderIndex").description("질문의 순서"),
+            fieldWithPath("required").description("질문의 필수여부")
+    };
+
+    private static final FieldDescriptor[] CHOICE_FIELD_DESCRIPTORS = {
+            fieldWithPath("choice").description("객관식 질문의 선택지"),
+            fieldWithPath("orderIndex").description("선택지의 순서")
+    };
+
     @Autowired
     private ClubRepository clubRepository;
 
@@ -56,6 +73,12 @@ class DashboardControllerTest extends ControllerTest {
 
     @Autowired
     private ApplyFormRepository applyFormRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private ChoiceRepository choiceRepository;
 
     private Club club;
 
@@ -122,6 +145,14 @@ class DashboardControllerTest extends ControllerTest {
                 .filter(document("dashboard/create",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
+                        requestFields(
+                                fieldWithPath("title").description("공고 제목"),
+                                fieldWithPath("postingContent").description("공고 내용"),
+                                fieldWithPath("questions").description("질문들"),
+                                fieldWithPath("startDate").description("공고 시작 날짜"),
+                                fieldWithPath("endDate").description("공고 마감 날짜")
+                        ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
+                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
                                 fieldWithPath("dashboardId").description("대시보드의 id")
@@ -154,6 +185,14 @@ class DashboardControllerTest extends ControllerTest {
                 .filter(document("dashboard/create-fail/invalid-question",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
+                        requestFields(
+                                fieldWithPath("title").description("공고 제목"),
+                                fieldWithPath("postingContent").description("공고 내용"),
+                                fieldWithPath("questions").description("질문들"),
+                                fieldWithPath("startDate").description("공고 시작 날짜"),
+                                fieldWithPath("endDate").description("공고 마감 날짜")
+                        ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
+                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS),
                         responseFields(
                                 fieldWithPath("type").description("-"),
                                 fieldWithPath("title").description("실패 메세지"),
@@ -190,7 +229,15 @@ class DashboardControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("dashboard/create-fail/club-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        queryParameters(parameterWithName("clubId").description("존재하지 않는 동아리 id"))
+                        queryParameters(parameterWithName("clubId").description("존재하지 않는 동아리 id")),
+                        requestFields(
+                                fieldWithPath("title").description("공고 제목"),
+                                fieldWithPath("postingContent").description("공고 내용"),
+                                fieldWithPath("questions").description("질문들"),
+                                fieldWithPath("startDate").description("공고 시작 날짜"),
+                                fieldWithPath("endDate").description("공고 마감 날짜")
+                        ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
+                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
                 ))
                 .when().post(url)
                 .then().log().all().statusCode(404);
@@ -207,7 +254,7 @@ class DashboardControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("dashboard/create",
+                .filter(document("dashboard/read",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         responseFields(
