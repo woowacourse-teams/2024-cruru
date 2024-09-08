@@ -36,4 +36,4 @@ operation::applicant/read-applyform-fail/applyform-not-found[snippets="http-requ
 
 ==== 성공
 
-operation::applicant/update[snippets="http-request,path-parameters,http-response,response-fields"]
+operation::applicant/update[snippets="http-request,path-parameters,http-response"]
