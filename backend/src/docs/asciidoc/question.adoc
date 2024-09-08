@@ -1,0 +1,7 @@
+== 질문
+
+=== 질문 변경
+
+==== 성공
+
+operation::question/update[snippets="http-request,query-parameters,http-response,response-fields"]
