@@ -74,12 +74,6 @@ class DashboardControllerTest extends ControllerTest {
     @Autowired
     private ApplyFormRepository applyFormRepository;
 
-    @Autowired
-    private QuestionRepository questionRepository;
-
-    @Autowired
-    private ChoiceRepository choiceRepository;
-
     private Club club;
 
     private static Stream<QuestionCreateRequest> InvalidQuestionCreateRequest() {
