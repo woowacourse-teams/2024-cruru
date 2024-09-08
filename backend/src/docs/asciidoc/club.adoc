@@ -1,0 +1,15 @@
+== 동아리
+
+=== 동아리 생성
+
+==== 성공
+
+operation::club/create[snippets="http-request,query-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 사용자
+
+operation::club/create-fail/member-not-found[snippets="http-request,query-parameters,request-fields,http-response"]
+
+==== 실패: 조건에 맞지 않는 동아리 이름
+
+operation::club/create-fail/invalid-name[snippets="http-request,query-parameters,request-fields,http-response"]
