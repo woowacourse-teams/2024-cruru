@@ -80,10 +80,10 @@ class ApplicantControllerTest extends ControllerTest {
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
                 .filter(document("applicant/move-process/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("process_id").description("지원자들이 옮겨질 프로세스의 id")),
+                        pathParameters(parameterWithName("processId").description("지원자들이 옮겨질 프로세스의 id")),
                         requestFields(fieldWithPath("applicantIds").description("프로세스를 옮길 지원자들의 id"))
                 ))
-                .when().put("/v1/applicants/move-process/{process_id}", next.getId())
+                .when().put("/v1/applicants/move-process/{processId}", next.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -103,10 +103,10 @@ class ApplicantControllerTest extends ControllerTest {
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
                 .filter(document("applicant/move-process-fail/process-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("process_id").description("존재하지 않는 프로세스의 id")),
+                        pathParameters(parameterWithName("processId").description("존재하지 않는 프로세스의 id")),
                         requestFields(fieldWithPath("applicantIds").description("프로세스를 옮길 지원자들의 id"))
                 ))
-                .when().put("/v1/applicants/move-process/{process_id}", invalidProcessId)
+                .when().put("/v1/applicants/move-process/{processId}", invalidProcessId)
                 .then().log().all().statusCode(404);
     }
 
