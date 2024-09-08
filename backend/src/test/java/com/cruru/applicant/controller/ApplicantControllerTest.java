@@ -181,6 +181,23 @@ class ApplicantControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
+    @DisplayName("존재하지 않는 지원자 정보 조회를 시도하면 404를 응답한다.")
+    @Test
+    void readDetail_applicantNotFound() {
+        // given
+        long invalidApplicantId = -1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .filter(document("applicant/read-detail-profile-fail/applicant-not-found",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().get("/v1/applicants/{applicant_id}/detail", invalidApplicantId)
+                .then().log().all().statusCode(404);
+    }
+
     @DisplayName("지원자를 불합격시키는 데 성공하면 200을 응답한다.")
     @Test
     void reject() {

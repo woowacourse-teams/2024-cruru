@@ -4,59 +4,59 @@
 
 ==== 성공
 
-operation::applicant/move-process[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::applicant/move-process[snippets="http-request,path-parameters,request-cookies,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 프로세스
 
-operation::applicant/move-process-fail/process-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::applicant/move-process-fail/process-not-found[snippets="http-request,path-parameters,request-cookies,request-fields,http-response"]
 
 === 지원자 기본 정보 조회
 
 ==== 성공
 
-operation::applicant/read-profile[snippets="http-request,path-parameters,http-response,response-fields"]
+operation::applicant/read-profile[snippets="http-request,path-parameters,request-cookies,http-response,response-fields"]
 
 ==== 실패: 존재하지 않는 지원자
 
-operation::applicant/read-profile-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+operation::applicant/read-profile-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 === 지원자 상세 정보 조회
 
 ==== 성공
 
-operation::applicant/read-detail-profile[snippets="http-request,path-parameters,http-response,response-fields"]
+operation::applicant/read-detail-profile[snippets="http-request,path-parameters,request-cookies,http-response,response-fields"]
 
 ==== 실패: 존재하지 않는 지원자
 
-operation::applicant/read-detail-profile-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+operation::applicant/read-detail-profile-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 === 지원자 불합격
 
 ==== 성공
 
-operation::applicant/reject[snippets="http-request,path-parameters,http-response"]
+operation::applicant/reject[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 ==== 실패: 존재하지 않는 지원자
 
-operation::applicant/reject-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+operation::applicant/reject-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 ==== 실패: 이미 불합격한 지원자
 
-operation::applicant/reject-fail/already-rejected[snippets="http-request,path-parameters,http-response"]
+operation::applicant/reject-fail/already-rejected[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 === 지원자 불합격 해제
 
 ==== 성공
 
-operation::applicant/unreject[snippets="http-request,path-parameters,http-response"]
+operation::applicant/unreject[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 ==== 실패: 존재하지 않는 지원자
 
-operation::applicant/unreject-fail/applicant-not-found[snippets="http-request,path-parameters,http-response"]
+operation::applicant/unreject-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
 
 === 지원자 정보 변경
 
 ==== 성공
 
-operation::applicant/change-info[snippets="http-request,path-parameters,http-response"]
+operation::applicant/change-info[snippets="http-request,path-parameters,request-cookies,http-response"]
 

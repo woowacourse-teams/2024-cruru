@@ -18,4 +18,4 @@ operation::dashboard/create-fail/club-not-found[snippets="http-request,query-par
 
 === 대시보드 조회
 
-operation::dashboard/read[snippets="http-request,query-parameters,request-fields,http-response"]
+operation::dashboard/read[snippets="http-request,query-parameters,http-response"]

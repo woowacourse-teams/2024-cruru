@@ -36,12 +36,12 @@ operation::evaluation/read-fail/process-not-found[snippets="http-request,query-p
 
 ==== 성공
 
-operation::evaluation/update[snippets="http-request,query-parameters,http-response,response-fields"]
+operation::evaluation/update[snippets="http-request,path-parameters,http-response"]
 
 ==== 실패: 존재하지 않는 평가
 
-operation::evaluation/update-fail/evaluation-not-found[snippets="http-request,query-parameters,http-response,response-fields"]
+operation::evaluation/update-fail/evaluation-not-found[snippets="http-request,path-parameters,http-response"]
 
 ==== 실패: 조건에 맞지 않는 평가 점수
 
-operation::evaluation/update-fail/invalid-score[snippets="http-request,query-parameters,request-fields,http-response"]
+operation::evaluation/update-fail/invalid-score[snippets="http-request,path-parameters,request-fields,http-response"]

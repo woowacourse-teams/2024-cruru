@@ -251,7 +251,7 @@ class ProcessControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
-                .filter(document("process/update-failed/invalid-name",
+                .filter(document("process/update-fail/invalid-name",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("수정될 프로세스의 id")),
                         requestFields(
