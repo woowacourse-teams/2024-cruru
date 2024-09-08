@@ -1,5 +1,13 @@
 package com.cruru.applicant.controller;
 
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
+
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
@@ -41,12 +49,40 @@ class ApplicantControllerTest extends ControllerTest {
         applicantRepository.save(applicant);
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
-                .when().put("/v1/applicants/move-process/" + next.getId())
+                .filter(document("applicant/move-process/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("process_id").description("지원자들이 옮겨질 프로세스의 id")),
+                        requestFields(fieldWithPath("applicantIds").description("프로세스를 옮길 지원자들의 id"))
+                ))
+                .when().put("/v1/applicants/move-process/{process_id}", next.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하지 않는 프로세스로 지원자를 옮기려 시도하면 404를 응답한다.")
+    @Test
+    void updateApplicantProcess_processNotFound() {
+        // given
+        Process now = processRepository.save(ProcessFixture.applyType());
+        Applicant applicant = ApplicantFixture.pendingDobby(now);
+        applicantRepository.save(applicant);
+        long invalidProcessId = -1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(new ApplicantMoveRequest(List.of(applicant.getId())))
+                .filter(document("applicant/move-process-fail/process-not-found/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("process_id").description("존재하지 않는 프로세스의 id")),
+                        requestFields(fieldWithPath("applicantIds").description("프로세스를 옮길 지원자들의 id"))
+                ))
+                .when().put("/v1/applicants/move-process/{process_id}", invalidProcessId)
+                .then().log().all().statusCode(404);
     }
 
     @DisplayName("지원자의 기본 정보를 읽어오는 데 성공하면 200을 응답한다.")
@@ -57,10 +93,32 @@ class ApplicantControllerTest extends ControllerTest {
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .when().get("/v1/applicants/" + applicant.getId())
+                .filter(document("applicant/read-profile",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().get("/v1/applicants/{applicant_id}", applicant.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하지 않는 지원자 정보 조회를 시도하면 404를 응답한다.")
+    @Test
+    void read_applicantNotFound() {
+        // given
+        long invalidApplicantId = -1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .filter(document("applicant/read-profile-fail/applicant-not-found/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
+                ))
+                .when().get("/v1/applicants/{applicant_id}", invalidApplicantId)
+                .then().log().all().statusCode(404);
     }
 
     @DisplayName("지원자의 상세 정보를 읽어오는 데 성공하면 200을 응답한다.")
@@ -72,9 +130,13 @@ class ApplicantControllerTest extends ControllerTest {
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .when().get("/v1/applicants/" + applicant.getId() + "/detail")
+                .filter(document("applicant/read-detail-profile",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().get("/v1/applicants/{applicant_id}/detail", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -85,10 +147,52 @@ class ApplicantControllerTest extends ControllerTest {
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .when().patch("/v1/applicants/" + applicant.getId() + "/reject")
+                .filter(document("applicant/reject",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicant_id}/reject", applicant.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하지 않는 지원자 불합격 시, 404를 응답한다.")
+    @Test
+    void reject_applicantNotFound() {
+        // given
+        long invalidApplicantId = 1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .filter(document("applicant/reject-fail/applicant-not-found/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicant_id}/reject", invalidApplicantId)
+                .then().log().all().statusCode(404);
+    }
+
+    @DisplayName("이미 불합격한 지원자일 경우 400를 응답한다.")
+    @Test
+    void reject_alreadyReject() {
+        // given
+        Applicant applicant = ApplicantFixture.pendingDobby();
+        applicant.reject();
+        Applicant savedApplicant = applicantRepository.save(applicant);
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .filter(document("applicant/reject-fail/already-rejected/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicant_id}/reject", savedApplicant.getId())
+                .then().log().all().statusCode(400);
     }
 
     @DisplayName("지원자를 불합격 해제시키는 데 성공하면 200을 응답한다.")
@@ -98,10 +202,32 @@ class ApplicantControllerTest extends ControllerTest {
         Applicant applicant = applicantRepository.save(ApplicantFixture.rejectedRush());
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .when().patch("/v1/applicants/{applicantId}/unreject", applicant.getId())
+                .filter(document("applicant/unreject",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicant_id}/unreject", applicant.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하지 않는 지원자 불합격 해제 시, 404를 응답한다.")
+    @Test
+    void unreject_applicantNotFound() {
+        // given
+        long invalidApplicantId = -1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .filter(document("applicant/unreject-fail/applicant-not-found/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicant_id}/unreject", invalidApplicantId)
+                .then().log().all().statusCode(404);
     }
 
     @DisplayName("지원자 정보 변경에 성공하면 200을 응답한다.")
@@ -115,11 +241,15 @@ class ApplicantControllerTest extends ControllerTest {
         ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .when().patch("/v1/applicants/" + applicant.getId())
+                .filter(document("applicant/change-info",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicant_id}", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 }

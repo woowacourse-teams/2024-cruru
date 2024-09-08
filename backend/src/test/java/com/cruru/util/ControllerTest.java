@@ -69,7 +69,7 @@ public class ControllerTest {
                         documentationConfiguration(restDocumentation)
                                 .operationPreprocessors()
                                 .withRequestDefaults(prettyPrint())
-                                .withRequestDefaults(prettyPrint())
+                                .withResponseDefaults(prettyPrint())
                 ).build();
     }
 
