@@ -1,0 +1,47 @@
+== 평가
+
+=== 평가 생성
+
+==== 성공
+
+operation::evaluation/create[snippets="http-request,query-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::evaluation/create-fail/applicant-not-found[snippets="http-request,query-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 프로세스
+
+operation::evaluation/create-fail/process-not-found[snippets="http-request,query-parameters,request-fields,http-response"]
+
+==== 실패: 조건에 맞지 않는 평가 점수
+
+operation::evaluation/create-fail/invalid-score[snippets="http-request,query-parameters,request-fields,http-response"]
+
+=== 평가 조회
+
+==== 성공
+
+operation::evaluation/read[snippets="http-request,query-parameters,http-response,response-fields"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::evaluation/read-fail/applicant-not-found[snippets="http-request,query-parameters,http-response"]
+
+==== 실패: 존재하지 않는 프로세스
+
+operation::evaluation/read-fail/process-not-found[snippets="http-request,query-parameters,http-response"]
+
+=== 평가 변경
+
+==== 성공
+
+operation::evaluation/update[snippets="http-request,query-parameters,http-response,response-fields"]
+
+==== 실패: 존재하지 않는 평가
+
+operation::evaluation/update-fail/evaluation-not-found[snippets="http-request,query-parameters,http-response,response-fields"]
+
+==== 실패: 조건에 맞지 않는 평가 점수
+
+operation::evaluation/update-fail/invalid-score[snippets="http-request,query-parameters,request-fields,http-response"]
