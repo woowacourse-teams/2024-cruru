@@ -1,0 +1,17 @@
+== 인증
+
+=== 로그인
+
+==== 성공
+
+operation::auth/login[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 잘못된 패스워드
+
+operation::auth/login-fail/invalid-password[snippets="http-request,path-parameters,request-fields,http-response"]
+
+=== 로그아웃
+
+==== 성공
+
+operation::auth/logout[snippets="http-request,path-parameters,request-fields,http-response"]
