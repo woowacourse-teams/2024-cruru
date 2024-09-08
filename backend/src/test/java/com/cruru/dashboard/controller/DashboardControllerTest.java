@@ -11,20 +11,17 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
-import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
-import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.LocalDateFixture;
-import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
