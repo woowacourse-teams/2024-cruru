@@ -14,4 +14,4 @@ operation::auth/login-fail/invalid-password[snippets="http-request,request-field
 
 ==== 성공
 
-operation::auth/logout[snippets="http-request,http-response"]
+operation::auth/logout[snippets="http-request,request-cookies,http-response"]

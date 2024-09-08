@@ -4,4 +4,4 @@
 
 ==== 성공
 
-operation::question/update[snippets="http-request,query-parameters,http-response"]
+operation::question/update[snippets="http-request,request-cookies,query-parameters,http-response"]

@@ -4,54 +4,54 @@
 
 ==== 성공
 
-operation::process/read[snippets="http-request,query-parameters,http-response,response-fields"]
+operation::process/read[snippets="http-request,request-cookies,query-parameters,http-response,response-fields"]
 
 ==== 실패: 존재하지 않는 대시보드
 
-operation::process/read-fail/dashboard-not-found[snippets="http-request,query-parameters,http-response"]
+operation::process/read-fail/dashboard-not-found[snippets="http-request,request-cookies,query-parameters,http-response"]
 
 === 프로세스 생성
 
 ==== 성공
 
-operation::process/create[snippets="http-request,query-parameters,request-fields,http-response"]
+operation::process/create[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 대시보드
 
-operation::process/create-fail/dashboard-not-found[snippets="http-request,query-parameters,http-response"]
+operation::process/create-fail/dashboard-not-found[snippets="http-request,request-cookies,query-parameters,http-response"]
 
 ==== 실패: 조건에 맞지 않는 프로세스 이름
 
-operation::process/create-fail/invalid-name[snippets="http-request,query-parameters,http-response"]
+operation::process/create-fail/invalid-name[snippets="http-request,request-cookies,query-parameters,http-response"]
 
 ==== 실퍠: 최대 프로세스 개수 초과
 
-operation::process/create-fail/process-count-overed[snippets="http-request,query-parameters,http-response"]
+operation::process/create-fail/process-count-overed[snippets="http-request,request-cookies,query-parameters,http-response"]
 
 === 프로세스 수정
 
 ==== 성공
 
-operation::process/update[snippets="http-request,path-parameters,request-fields,http-response,response-fields"]
+operation::process/update[snippets="http-request,request-cookies,path-parameters,request-fields,http-response,response-fields"]
 
 ==== 실패: 조건에 맞지 않는 프로세스 이름
 
-operation::process/update-fail/invalid-name[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::process/update-fail/invalid-name[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
 
 === 프로세스 삭제
 
 ==== 성공
 
-operation::process/delete[snippets="http-request,path-parameters,http-response"]
+operation::process/delete[snippets="http-request,request-cookies,path-parameters,http-response"]
 
 ==== 실패: 존재하지 않는 프로세스
 
-operation::process/delete-fail/process-not-found[snippets="http-request,path-parameters,http-response"]
+operation::process/delete-fail/process-not-found[snippets="http-request,request-cookies,path-parameters,http-response"]
 
 ==== 실패: 처음 혹은 마지막 프로세스
 
-operation::process/delete-fail/process-order-first-or-last[snippets="http-request,path-parameters,http-response"]
+operation::process/delete-fail/process-order-first-or-last[snippets="http-request,request-cookies,path-parameters,http-response"]
 
 ==== 실패: 지원자가 존재하는 프로세스
 
-operation::process/delete-fail/process-not-found[snippets="http-request,path-parameters,http-response"]
+operation::process/delete-fail/process-not-found[snippets="http-request,request-cookies,path-parameters,http-response"]
