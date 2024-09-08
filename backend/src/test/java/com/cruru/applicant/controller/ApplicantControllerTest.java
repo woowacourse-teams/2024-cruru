@@ -4,31 +4,47 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWit
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
+import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
 import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.AnswerFixture;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.restdocs.payload.FieldDescriptor;
 
 @DisplayName("지원자 컨트롤러 테스트")
 class ApplicantControllerTest extends ControllerTest {
+
+    private static final FieldDescriptor[] ANSWER_RESPONSE_FIELD_DESCRIPTORS = {
+            fieldWithPath("orderIndex").description("순서"),
+            fieldWithPath("question").description("질문"),
+            fieldWithPath("answer").description("질문에 대한 응답")
+    };
 
     @Autowired
     private ProcessRepository processRepository;
@@ -38,6 +54,15 @@ class ApplicantControllerTest extends ControllerTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @DisplayName("지원자들의 프로세스를 일괄적으로 옮기는 데 성공하면 200을 응답한다.")
     @Test
@@ -97,7 +122,17 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .filter(document("applicant/read-profile",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id")),
+                        responseFields(
+                                fieldWithPath("applicant.id").description("지원자의 id"),
+                                fieldWithPath("applicant.name").description("지원자의 이름"),
+                                fieldWithPath("applicant.email").description("지원자의 이메일"),
+                                fieldWithPath("applicant.phone").description("지원자의 전화번호"),
+                                fieldWithPath("applicant.isRejected").description("지원자의 합불 여부"),
+                                fieldWithPath("applicant.createdAt").description("지원자의 생성날짜"),
+                                fieldWithPath("process.id").description("프로세스의 id"),
+                                fieldWithPath("process.name").description("프로세스 이름")
+                        )
                 ))
                 .when().get("/v1/applicants/{applicant_id}", applicant.getId())
                 .then().log().all().statusCode(200);
@@ -128,13 +163,19 @@ class ApplicantControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        answerRepository.save(AnswerFixture.first(question, applicant));
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .filter(document("applicant/read-detail-profile",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicant_id").description("지원자의 id")),
+                        responseFields(
+                                fieldWithPath("details").description("답변들")
+                        ).andWithPrefix("details[].", ANSWER_RESPONSE_FIELD_DESCRIPTORS)
                 ))
                 .when().get("/v1/applicants/{applicant_id}/detail", applicant.getId())
                 .then().log().all().statusCode(200);
