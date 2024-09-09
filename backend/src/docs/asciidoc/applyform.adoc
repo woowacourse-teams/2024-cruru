@@ -10,7 +10,7 @@ operation::applyform/submit[snippets="http-request,path-parameters,request-field
 
 operation::applicant/submit-fail/reject-personal-data-collection[snippets="http-request,path-parameters,request-fields,http-response"]
 
-==== 실패: 지원자 정보 누락
+==== 실패: 잘못된 지원자 정보
 
 operation::applicant/submit-fail/invalid-applicant-info[snippets="http-request,path-parameters,request-fields,http-response"]
 
