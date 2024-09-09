@@ -28,8 +28,11 @@ operation::applicant/submit-fail/date-out-of-range[snippets="http-request,path-p
 
 ==== 실패: 존재하지 않는 지원폼
 
-operation::applicant/submit-fail/applyform-not-found[snippets="http-request,path-parameters,http-response"]
+operation::applicant/submit-fail/applyform-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
 
+==== 실패: 존재하지 않는 질문
+
+operation::applicant/submit-fail/question-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
 
 === 지원폼 조회
 
