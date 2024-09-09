@@ -87,7 +87,7 @@ class ClubControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("club/create-fail/invalid-name/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        queryParameters(parameterWithName("memberId").description("존재하지 않는 사용자의 id")),
+                        queryParameters(parameterWithName("memberId").description("동아리를 생성할 사용자의 id")),
                         requestFields(fieldWithPath("name").description("조건에 맞지 않는 동아리의 이름"))
                 ))
                 .when().post(url)
