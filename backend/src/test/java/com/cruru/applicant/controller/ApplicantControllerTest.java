@@ -288,6 +288,24 @@ class ApplicantControllerTest extends ControllerTest {
                 .then().log().all().statusCode(404);
     }
 
+    @DisplayName("불합격하지 않은 지원자 불합격 해제 시, 400를 응답한다.")
+    @Test
+    void unreject_notRejected() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .filter(document("applicant/unreject-fail/applicant-not-rejected/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicantId").description("불합격하지 않는 지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicantId}/unreject", applicant.getId())
+                .then().log().all().statusCode(400);
+    }
+
     @DisplayName("지원자 정보 변경에 성공하면 200을 응답한다.")
     @Test
     void updateInformation() {

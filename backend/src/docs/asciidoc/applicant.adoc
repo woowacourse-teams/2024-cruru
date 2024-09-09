@@ -54,6 +54,10 @@ operation::applicant/unreject[snippets="http-request,path-parameters,request-coo
 
 operation::applicant/unreject-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
 
+==== 실패: 불합격하지 않은 지원자
+
+operation::applicant/unreject-fail/applicant-not-rejected[snippets="http-request,path-parameters,request-cookies,http-response"]
+
 === 지원자 정보 변경
 
 ==== 성공
