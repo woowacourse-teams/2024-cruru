@@ -3,6 +3,8 @@ package com.cruru.auth.controller;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -57,6 +59,7 @@ class AuthControllerTest extends ControllerTest {
                                 fieldWithPath("password").description("사용자 패스워드")
                         ),
                         responseFields(fieldWithPath("clubId").description("동아리의 id")),
+                        responseHeaders(headerWithName("Set-Cookie").description("인증 쿠키 설정")),
                         responseCookies(cookieWithName("token").description("사용자 토큰"))
                 ))
                 .when().post("/v1/auth/login")
