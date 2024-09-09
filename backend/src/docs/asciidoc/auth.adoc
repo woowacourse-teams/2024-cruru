@@ -19,3 +19,7 @@ operation::auth/login-fail/email-not-found[snippets="http-request,request-fields
 ==== 성공
 
 operation::auth/logout[snippets="http-request,request-cookies,http-response,response-headers"]
+
+==== 실패: 존재하지 않는 토큰
+
+operation::auth/logout-fail/token-not-found[snippets="http-request,http-response"]

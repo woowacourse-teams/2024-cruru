@@ -120,4 +120,15 @@ class AuthControllerTest extends ControllerTest {
                 .when().post("/v1/auth/logout")
                 .then().log().all().statusCode(204);
     }
+
+    @DisplayName("토큰이 없는 사용자가 로그아웃을 시도할 경우 401을 반환한다.")
+    @Test
+    void logout_withNoToken() {
+        // given&when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .filter(document("auth/logout-fail/token-not-found"))
+                .when().post("/v1/auth/logout")
+                .then().log().all().statusCode(401);
+    }
 }
