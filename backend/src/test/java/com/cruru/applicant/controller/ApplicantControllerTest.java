@@ -328,4 +328,27 @@ class ApplicantControllerTest extends ControllerTest {
                 .when().patch("/v1/applicants/{applicantId}", applicant.getId())
                 .then().log().all().statusCode(200);
     }
+
+    @DisplayName("존재하지 않는 지원자의 정보 변경 시, 404를 응답한다.")
+    @Test
+    void updateInformation_applicantNotFound() {
+        // given
+        long invalidApplicantId = -1;
+        String toChangeName = "도비";
+        String toChangeEmail = "dev.DOBBY@gmail.com";
+        String toChangePhone = "01011111111";
+        ApplicantUpdateRequest request = new ApplicantUpdateRequest(toChangeName, toChangeEmail, toChangePhone);
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/change-info-fail/applicant-not-found/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
+                ))
+                .when().patch("/v1/applicants/{applicantId}", invalidApplicantId)
+                .then().log().all().statusCode(404);
+    }
 }

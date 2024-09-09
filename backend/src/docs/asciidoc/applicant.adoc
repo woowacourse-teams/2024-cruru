@@ -64,3 +64,6 @@ operation::applicant/unreject-fail/applicant-not-rejected[snippets="http-request
 
 operation::applicant/change-info[snippets="http-request,path-parameters,request-cookies,http-response"]
 
+==== 실패: 존재하지 않는 지원자
+
+operation::applicant/change-info-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
