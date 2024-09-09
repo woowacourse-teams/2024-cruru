@@ -1,3 +1,4 @@
+import ApiError from '@api/ApiError';
 import { useToast } from '@contexts/ToastContext';
 
 const CLUB_ID_KEY = 'clubId';
@@ -14,7 +15,7 @@ export default function useClubId() {
 
     if (!clubId) {
       error('세션이 만료되었습니다. 다시 로그인해주세요.');
-      return null;
+      throw new ApiError({ message: '세션이 만료되었습니다. 다시 로그인해주세요.', statusCode: 401, method: 'GET' });
     }
 
     return clubId;
