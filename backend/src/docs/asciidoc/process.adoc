@@ -18,15 +18,15 @@ operation::process/create[snippets="http-request,request-cookies,query-parameter
 
 ==== 실패: 존재하지 않는 대시보드
 
-operation::process/create-fail/dashboard-not-found[snippets="http-request,request-cookies,query-parameters,http-response"]
+operation::process/create-fail/dashboard-not-found[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
 ==== 실패: 조건에 맞지 않는 프로세스 이름
 
-operation::process/create-fail/invalid-name[snippets="http-request,request-cookies,query-parameters,http-response"]
+operation::process/create-fail/invalid-name[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
 ==== 실퍠: 최대 프로세스 개수 초과
 
-operation::process/create-fail/process-count-overed[snippets="http-request,request-cookies,query-parameters,http-response"]
+operation::process/create-fail/process-count-overed[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
 === 프로세스 수정
 

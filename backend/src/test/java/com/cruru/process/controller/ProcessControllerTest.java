@@ -52,6 +52,12 @@ class ProcessControllerTest extends ControllerTest {
             fieldWithPath("averageScore").description("지원자의 평가 평균 점수"),
             };
 
+    private static final FieldDescriptor[] PROCESS_CREATE_FIELD_DESCRIPTORS = {
+            fieldWithPath("processName").description("프로세스명"),
+            fieldWithPath("description").description("프로세스의 설명"),
+            fieldWithPath("orderIndex").description("프로세스의 순서")
+    };
+
     @Autowired
     private DashboardRepository dashboardRepository;
 
@@ -134,11 +140,7 @@ class ProcessControllerTest extends ControllerTest {
                 .filter(document("process/create",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
-                        requestFields(
-                                fieldWithPath("processName").description("프로세스명"),
-                                fieldWithPath("description").description("프로세스의 설명"),
-                                fieldWithPath("orderIndex").description("프로세스의 순서")
-                        )
+                        requestFields(PROCESS_CREATE_FIELD_DESCRIPTORS)
                 ))
                 .when().post(url)
                 .then().log().all().statusCode(201);
@@ -158,7 +160,8 @@ class ProcessControllerTest extends ControllerTest {
                 .body(processCreateRequest)
                 .filter(document("process/create-fail/dashboard-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        queryParameters(parameterWithName("dashboardId").description("대시보드의 id"))
+                        queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
+                        requestFields(PROCESS_CREATE_FIELD_DESCRIPTORS)
                 ))
                 .when().post(url)
                 .then().log().all().statusCode(404);
@@ -178,7 +181,12 @@ class ProcessControllerTest extends ControllerTest {
                 .body(processCreateRequest)
                 .filter(document("process/create-fail/invalid-name",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        queryParameters(parameterWithName("dashboardId").description("대시보드의 id"))
+                        queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
+                        requestFields(
+                                fieldWithPath("processName").description("부적절한 프로세스명"),
+                                fieldWithPath("description").description("프로세스의 설명"),
+                                fieldWithPath("orderIndex").description("프로세스의 순서")
+                        )
                 ))
                 .when().post(url)
                 .then().log().all().statusCode(400);
@@ -206,7 +214,8 @@ class ProcessControllerTest extends ControllerTest {
                 .body(processCreateRequest)
                 .filter(document("process/create-fail/process-count-overed/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        queryParameters(parameterWithName("dashboardId").description("생성할 프로세스의 대시보드 id"))
+                        queryParameters(parameterWithName("dashboardId").description("생성할 프로세스의 대시보드 id")),
+                        requestFields(PROCESS_CREATE_FIELD_DESCRIPTORS)
                 ))
                 .when().post(url)
                 .then().log().all().statusCode(400);
