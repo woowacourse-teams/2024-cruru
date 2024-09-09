@@ -122,7 +122,7 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .filter(document("applicant/read-profile",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id")),
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id")),
                         responseFields(
                                 fieldWithPath("applicant.id").description("지원자의 id"),
                                 fieldWithPath("applicant.name").description("지원자의 이름"),
@@ -134,7 +134,7 @@ class ApplicantControllerTest extends ControllerTest {
                                 fieldWithPath("process.name").description("프로세스 이름")
                         )
                 ))
-                .when().get("/v1/applicants/{applicant_id}", applicant.getId())
+                .when().get("/v1/applicants/{applicantId}", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -150,9 +150,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .filter(document("applicant/read-profile-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))
-                .when().get("/v1/applicants/{applicant_id}", invalidApplicantId)
+                .when().get("/v1/applicants/{applicantId}", invalidApplicantId)
                 .then().log().all().statusCode(404);
     }
 
@@ -172,12 +172,12 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .filter(document("applicant/read-detail-profile",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id")),
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id")),
                         responseFields(
                                 fieldWithPath("details").description("답변들")
                         ).andWithPrefix("details[].", ANSWER_RESPONSE_FIELD_DESCRIPTORS)
                 ))
-                .when().get("/v1/applicants/{applicant_id}/detail", applicant.getId())
+                .when().get("/v1/applicants/{applicantId}/detail", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -192,9 +192,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .filter(document("applicant/read-detail-profile-fail/applicant-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
-                .when().get("/v1/applicants/{applicant_id}/detail", invalidApplicantId)
+                .when().get("/v1/applicants/{applicantId}/detail", invalidApplicantId)
                 .then().log().all().statusCode(404);
     }
 
@@ -209,9 +209,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .filter(document("applicant/reject",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
-                .when().patch("/v1/applicants/{applicant_id}/reject", applicant.getId())
+                .when().patch("/v1/applicants/{applicantId}/reject", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -227,9 +227,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .filter(document("applicant/reject-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
-                .when().patch("/v1/applicants/{applicant_id}/reject", invalidApplicantId)
+                .when().patch("/v1/applicants/{applicantId}/reject", invalidApplicantId)
                 .then().log().all().statusCode(404);
     }
 
@@ -247,9 +247,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .filter(document("applicant/reject-fail/already-rejected/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))
-                .when().patch("/v1/applicants/{applicant_id}/reject", savedApplicant.getId())
+                .when().patch("/v1/applicants/{applicantId}/reject", savedApplicant.getId())
                 .then().log().all().statusCode(400);
     }
 
@@ -264,9 +264,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .filter(document("applicant/unreject",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
-                .when().patch("/v1/applicants/{applicant_id}/unreject", applicant.getId())
+                .when().patch("/v1/applicants/{applicantId}/unreject", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 
@@ -282,9 +282,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .filter(document("applicant/unreject-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("존재하지 않는 지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))
-                .when().patch("/v1/applicants/{applicant_id}/unreject", invalidApplicantId)
+                .when().patch("/v1/applicants/{applicantId}/unreject", invalidApplicantId)
                 .then().log().all().statusCode(404);
     }
 
@@ -305,9 +305,9 @@ class ApplicantControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/change-info",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applicant_id").description("지원자의 id"))
+                        pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
-                .when().patch("/v1/applicants/{applicant_id}", applicant.getId())
+                .when().patch("/v1/applicants/{applicantId}", applicant.getId())
                 .then().log().all().statusCode(200);
     }
 }
