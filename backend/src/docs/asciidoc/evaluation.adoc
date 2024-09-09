@@ -36,7 +36,7 @@ operation::evaluation/read-fail/process-not-found[snippets="http-request,request
 
 ==== 성공
 
-operation::evaluation/update[snippets="http-request,request-cookies,path-parameters,http-response"]
+operation::evaluation/update[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 평가
 
