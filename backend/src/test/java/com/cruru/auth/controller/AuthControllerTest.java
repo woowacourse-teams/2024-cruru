@@ -63,7 +63,7 @@ class AuthControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("잘못된 password로 로그인 시도시 401을 응답한다.")
+    @DisplayName("잘못된 password로 로그인 시도 시 401을 응답한다.")
     @Test
     void login_unverifiedPassword() {
         // given
@@ -81,6 +81,26 @@ class AuthControllerTest extends ControllerTest {
                 ))
                 .when().post("/v1/auth/login")
                 .then().log().all().statusCode(401);
+    }
+
+    @DisplayName("존재하지 않는 이메일로 로그인 시도 시 404를 응답한다.")
+    @Test
+    void login_emailNotFound() {
+        // given
+        LoginRequest request = new LoginRequest("invalid@email.com", member.getPassword());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("auth/login-fail/email-not-found",
+                        requestFields(
+                                fieldWithPath("email").description("존재하지 않는 이메일"),
+                                fieldWithPath("password").description("사용자 패스워드")
+                        )
+                ))
+                .when().post("/v1/auth/login")
+                .then().log().all().statusCode(404);
     }
 
     @DisplayName("로그아웃을 성공하면 204를 반환한다.")
