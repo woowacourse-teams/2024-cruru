@@ -47,7 +47,7 @@ class ProcessControllerTest extends ControllerTest {
             fieldWithPath("applicantId").description("지원자의 id"),
             fieldWithPath("applicantName").description("지원자의 이름"),
             fieldWithPath("createdAt").description("지원자의 지원날짜"),
-            fieldWithPath("isRejected").description("지원자의 합불여부"),
+            fieldWithPath("isRejected").description("지원자의 불합격 여부"),
             fieldWithPath("evaluationCount").description("지원자의 평가 개수"),
             fieldWithPath("averageScore").description("지원자의 평가 평균 점수"),
             };
