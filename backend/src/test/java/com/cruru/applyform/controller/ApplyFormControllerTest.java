@@ -272,6 +272,37 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(500);
     }
 
+    @DisplayName("지원서 폼 제출 시, 모집 기간을 벗어난 경우 400을 반환한다.")
+    @Test
+    void submit_dateOutOfRange() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
+                true
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/submit-fail/date-out-of-range",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(
+                                fieldWithPath("applicant.name").description("지원자의 이름"),
+                                fieldWithPath("applicant.email").description("지원자의 이메일"),
+                                fieldWithPath("applicant.phone").description("지원자의 전화번호"),
+                                fieldWithPath("answers").description("지원폼에 대한 응답 모음"),
+                                fieldWithPath("personalDataCollection").description("개인정보 활용 동의 여부")
+                        ).andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
     @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
     @Test
     void read() {

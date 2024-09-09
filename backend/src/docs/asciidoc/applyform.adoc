@@ -22,6 +22,10 @@ operation::applicant/submit-fail/invalid-answers[snippets="http-request,path-par
 
 operation::applicant/submit-fail/no-process[snippets="http-request,path-parameters,request-fields,http-response"]
 
+==== 실패: 모집 기간을 벗어난 제출
+
+operation::applicant/submit-fail/date-out-of-range[snippets="http-request,path-parameters,request-fields,http-response"]
+
 === 지원폼 조회
 
 ==== 성공
