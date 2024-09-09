@@ -25,6 +25,7 @@ import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
@@ -135,13 +136,12 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void submit_invalidSubmitDate() {
         // given
-        LocalDateTime now = LocalDateTime.now();
         ApplyForm pastApplyForm = applyFormRepository.save(new ApplyForm(
-                "지난 모집 공고", "description", "url",
-                now.minusDays(2), now.minusDays(1), null));
+                "지난 모집 공고", "description",
+                LocalDateFixture.oneWeekAgo(), LocalDateFixture.oneDayAgo(), null));
         ApplyForm futureApplyForm = applyFormRepository.save(new ApplyForm(
-                "미래의 모집 공고", "description", "url",
-                now.plusDays(1), now.plusDays(2), null));
+                "미래의 모집 공고", "description",
+                LocalDateFixture.oneDayLater(), LocalDateFixture.oneWeekLater(), null));
 
         // when&then
         assertAll(
@@ -166,8 +166,8 @@ class ApplyFormFacadeTest extends ServiceTest {
         // given
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
-        LocalDateTime toChangeStartDate = LocalDateTime.of(2099, 11, 30, 23, 59, 59);
-        LocalDateTime toChangeEndDate = LocalDateTime.of(2099, 12, 25, 23, 59, 59);
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
+        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
 
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));

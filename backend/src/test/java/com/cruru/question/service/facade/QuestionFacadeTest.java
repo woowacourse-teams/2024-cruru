@@ -1,6 +1,7 @@
 package com.cruru.question.service.facade;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
@@ -12,6 +13,7 @@ import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.controller.dto.QuestionUpdateRequests;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;
+import com.cruru.question.exception.QuestionUnmodifiableException;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ChoiceFixture;
@@ -40,7 +42,7 @@ class QuestionFacadeTest extends ServiceTest {
     @Test
     void update() {
         // given
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend());
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         Question question = questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
         choiceRepository.save(ChoiceFixture.first(question));
         choiceRepository.save(ChoiceFixture.second(question));
@@ -79,5 +81,30 @@ class QuestionFacadeTest extends ServiceTest {
                 () -> assertThat(actualChoice.getContent()).isEqualTo(newChoice.getContent()),
                 () -> assertThat(actualChoice.getSequence()).isEqualTo(newChoice.getSequence())
         );
+    }
+
+    @DisplayName("모집 공고가 시작된 이후이면 질문을 수정할 수 없다.")
+    @Test
+    void update_ApplyFormInProgress() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend());
+        Question question = questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
+        choiceRepository.save(ChoiceFixture.first(question));
+        choiceRepository.save(ChoiceFixture.second(question));
+
+        Question newQuestion = QuestionFixture.shortAnswerType(applyForm);
+
+        QuestionUpdateRequests questionUpdateRequest = new QuestionUpdateRequests(List.of(
+                new QuestionCreateRequest(
+                        newQuestion.getQuestionType().name(),
+                        newQuestion.getContent(),
+                        List.of(),
+                        newQuestion.getSequence(),
+                        newQuestion.isRequired()
+                )));
+
+        // when&then
+        assertThatThrownBy(() -> questionFacade.update(questionUpdateRequest, applyForm.getId()))
+                .isInstanceOf(QuestionUnmodifiableException.class);
     }
 }

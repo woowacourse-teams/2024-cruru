@@ -23,9 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 class QuestionControllerTest extends ControllerTest {
 
     @Autowired
-    private DashboardRepository dashboardRepository;
-
-    @Autowired
     private QuestionRepository questionRepository;
 
     @Autowired
@@ -35,8 +32,7 @@ class QuestionControllerTest extends ControllerTest {
     @Test
     void update() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
         QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(List.of(
                 new QuestionCreateRequest(QuestionType.LONG_ANSWER.name(), "new", List.of(), 0, true)

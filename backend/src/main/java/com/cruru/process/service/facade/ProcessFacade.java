@@ -54,7 +54,7 @@ public class ProcessFacade {
         ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         List<Process> processes = processService.findAllByDashboard(dashboard);
         List<ProcessResponse> processResponses = toProcessResponses(processes);
-        return new ProcessResponses(applyForm.getUrl(), processResponses, applyForm.getTitle());
+        return new ProcessResponses(applyForm.getId(), processResponses, applyForm.getTitle());
     }
 
     private List<ProcessResponse> toProcessResponses(List<Process> processes) {

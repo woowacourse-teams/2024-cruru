@@ -1,8 +1,8 @@
 package com.cruru.dashboard.controller;
 
 import com.cruru.auth.controller.dto.LoginProfile;
-import com.cruru.dashboard.controller.dto.ApplyFormUrlResponse;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
+import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
 import com.cruru.dashboard.service.facade.DashboardFacade;
 import jakarta.validation.Valid;
@@ -24,16 +24,15 @@ public class DashboardController {
     private final DashboardFacade dashboardFacade;
 
     @PostMapping
-    public ResponseEntity<ApplyFormUrlResponse> create(
+    public ResponseEntity<DashboardCreateResponse> create(
             @RequestParam(name = "clubId") Long clubId,
             @RequestBody @Valid DashboardCreateRequest request,
             LoginProfile loginProfile
     ) {
 
-        long dashboardId = dashboardFacade.create(loginProfile, clubId, request);
-        ApplyFormUrlResponse applyFormUrlResponse = dashboardFacade.findFormUrlByDashboardId(dashboardId);
-        return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardId))
-                .body(applyFormUrlResponse);
+        DashboardCreateResponse dashboardCreateResponse = dashboardFacade.create(loginProfile, clubId, request);
+        return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardCreateResponse.dashboardId()))
+                .body(dashboardCreateResponse);
     }
 
     @GetMapping
