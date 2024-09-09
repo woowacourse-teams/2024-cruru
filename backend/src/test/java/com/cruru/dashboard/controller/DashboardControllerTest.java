@@ -41,10 +41,10 @@ class DashboardControllerTest extends ControllerTest {
             fieldWithPath("dashboardId").description("동아리의 id"),
             fieldWithPath("applyFormId").description("지원폼의 id"),
             fieldWithPath("title").description("지원폼의 공고명"),
-            fieldWithPath("stats.accept").description("합격"),
-            fieldWithPath("stats.fail").description("불합격"),
-            fieldWithPath("stats.inProgress").description("진행중"),
-            fieldWithPath("stats.total").description("총계"),
+            fieldWithPath("stats.accept").description("합격 인원"),
+            fieldWithPath("stats.fail").description("불합격 인원"),
+            fieldWithPath("stats.inProgress").description("진행중 인원"),
+            fieldWithPath("stats.total").description("인원 총계"),
             fieldWithPath("startDate").description("시작날짜"),
             fieldWithPath("endDate").description("마감날짜")
     };
