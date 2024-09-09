@@ -1,7 +1,7 @@
 package com.cruru.notice.controller;
 
 import com.cruru.notice.controller.dto.EmailRequest;
-import com.cruru.notice.service.EmailService;
+import com.cruru.notice.facade.EmailFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EmailController {
 
-    private final EmailService emailService;
+    private final EmailFacade emailFacade;
 
     @PostMapping
     public void sendEmail(@Valid @ModelAttribute EmailRequest request) {
-        emailService.send(request);
+        emailFacade.send(request);
     }
 }

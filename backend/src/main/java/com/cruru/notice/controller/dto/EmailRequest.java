@@ -10,8 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public record EmailRequest(
 
         @NotNull(message = "발신자는 필수 값입니다.")
-        @Email(message = "올바른 이메일 형식이어야 합니다.")
-        String from,
+        Long clubId,
 
         @NotEmpty(message = "수신자는 필수 값입니다.")
         @Valid
