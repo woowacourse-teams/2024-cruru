@@ -14,7 +14,7 @@ interface SimpleProcess {
 
 interface UseProcessProps {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
 }
 
 interface UseProcessReturn {
@@ -26,9 +26,9 @@ interface UseProcessReturn {
   postUrl: string;
 }
 
-export default function useProcess({ dashboardId, postId }: UseProcessProps): UseProcessReturn {
+export default function useProcess({ dashboardId, applyFormId }: UseProcessProps): UseProcessReturn {
   const { data, error, isLoading } = useQuery<ProcessResponse>({
-    queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId],
+    queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId],
     queryFn: () => processApis.get({ dashboardId }),
   });
 
@@ -37,7 +37,7 @@ export default function useProcess({ dashboardId, postId }: UseProcessProps): Us
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
   return {
     title: data?.title ?? '',
-    postUrl: `${DOMAIN_URL}${routes.post({ postId: data?.postId ?? '' })}`,
+    postUrl: `${DOMAIN_URL}${routes.post({ applyFormId: data?.applyFormId ?? '' })}`,
     processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
     processList,
     error,

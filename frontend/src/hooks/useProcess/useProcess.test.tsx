@@ -11,7 +11,7 @@ const wrapper = ({ children }: PropsWithChildren) => (
 
 describe('useProcess', () => {
   it('should return processes and processNameList when data is loaded', async () => {
-    const { result } = renderHook(() => useProcess({ dashboardId: '1', postId: '1' }), { wrapper });
+    const { result } = renderHook(() => useProcess({ dashboardId: '1', applyFormId: '1' }), { wrapper });
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 

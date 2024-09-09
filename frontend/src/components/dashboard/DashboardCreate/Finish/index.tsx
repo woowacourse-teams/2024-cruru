@@ -8,21 +8,21 @@ import S from './style';
 
 interface FinishProps {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
 }
 
-export default function Finish({ dashboardId, postId }: FinishProps) {
+export default function Finish({ dashboardId, applyFormId }: FinishProps) {
   const navigate = useNavigate();
 
   const handleClickButton = () => {
-    navigate(routes.dashboard.post({ dashboardId, postId }));
+    navigate(routes.dashboard.post({ dashboardId, applyFormId }));
   };
 
   return (
     <S.Container>
       <S.Icon>🎉</S.Icon>
       <S.Message>공고가 게시됐어요!</S.Message>
-      <SharePost url={`${DOMAIN_URL}${routes.post({ postId })}`} />
+      <SharePost url={`${DOMAIN_URL}${routes.post({ applyFormId })}`} />
       <Button
         size="sm"
         color="white"

@@ -3,7 +3,7 @@
   "dashboards": [
     {
       "dashboardId": "1",
-      "postId": "1",
+      "applyFormId": "1",
       "title": "우아한테크코스 프론트엔드 크루 모집",
       "stats": {
         "accept": 3,
@@ -16,7 +16,7 @@
     },
     {
       "dashboardId": "2",
-      "postId": "2",
+      "applyFormId": "2",
       "title": "백엔드 7기 모집",
       "stats": {
         "accept": 3,
@@ -29,7 +29,7 @@
     },
     {
       "dashboardId": "3",
-      "postId": "3",
+      "applyFormId": "3",
       "title": "안드로이드 7기 모집",
       "stats": {
         "accept": 3,

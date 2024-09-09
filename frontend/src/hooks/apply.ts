@@ -6,10 +6,10 @@ import { getTimeStatus } from '@utils/compareTime';
 import { routes } from '@router/path';
 import QUERY_KEYS from './queryKeys';
 
-const useGetRecruitmentInfo = ({ postId }: { postId: string }) => {
+const useGetRecruitmentInfo = ({ applyFormId }: { applyFormId: string }) => {
   const queryObj = useQuery({
-    queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId],
-    queryFn: () => applyApis.get({ postId }),
+    queryKey: [QUERY_KEYS.RECRUITMENT_INFO, applyFormId],
+    queryFn: () => applyApis.get({ applyFormId }),
     staleTime: 1000 * 60 * 10, // 10 minutes
   });
 
@@ -17,8 +17,8 @@ const useGetRecruitmentInfo = ({ postId }: { postId: string }) => {
 };
 
 export const applyQueries = {
-  useGetRecruitmentPost: ({ postId }: { postId: string }) => {
-    const { data, ...restQueryObj } = useGetRecruitmentInfo({ postId });
+  useGetRecruitmentPost: ({ applyFormId }: { applyFormId: string }) => {
+    const { data, ...restQueryObj } = useGetRecruitmentInfo({ applyFormId });
 
     const { startDate, endDate } = data?.recruitmentPost ?? { startDate: '', endDate: '' };
     const isClosed = !getTimeStatus({ startDate, endDate }).isOngoing;
@@ -30,8 +30,8 @@ export const applyQueries = {
     };
   },
 
-  useGetApplyForm: ({ postId }: { postId: string }) => {
-    const { data, ...restQueryObj } = useGetRecruitmentInfo({ postId });
+  useGetApplyForm: ({ applyFormId }: { applyFormId: string }) => {
+    const { data, ...restQueryObj } = useGetRecruitmentInfo({ applyFormId });
 
     return {
       data: data?.applyForm.questions,
@@ -41,13 +41,13 @@ export const applyQueries = {
 };
 
 export const applyMutations = {
-  useApply: (postId: string, title: string) => {
+  useApply: (applyFormId: string, title: string) => {
     const navigate = useNavigate();
 
     return useMutation({
-      mutationFn: (params: { body: ApplyRequestBody }) => applyApis.apply({ ...params, postId }),
+      mutationFn: (params: { body: ApplyRequestBody }) => applyApis.apply({ ...params, applyFormId }),
       onSuccess: () => {
-        navigate(routes.confirmApply({ postId }), { state: { title } });
+        navigate(routes.confirmApply({ applyFormId }), { state: { title } });
       },
     });
   },

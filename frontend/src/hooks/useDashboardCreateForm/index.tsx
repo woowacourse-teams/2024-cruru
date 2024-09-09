@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface FinishResJson {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
 }
 
 interface UseDashboardCreateFormReturn {

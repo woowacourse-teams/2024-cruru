@@ -4,16 +4,16 @@ import { Outlet, useParams } from 'react-router-dom';
 import S from './style';
 
 export default function DashboardLayout() {
-  const { postId: currentPostId } = useParams();
+  const { applyFormId: currentPostId } = useParams();
   const { data, isLoading } = useGetDashboards();
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>something wrong</div>;
 
-  const titleList = data.dashboards.map(({ title, dashboardId, postId }) => ({
+  const titleList = data.dashboards.map(({ title, dashboardId, applyFormId }) => ({
     text: title,
-    isSelected: !!currentPostId && currentPostId === postId,
-    postId,
+    isSelected: !!currentPostId && currentPostId === applyFormId,
+    applyFormId,
     dashboardId,
   }));
 

@@ -7,9 +7,13 @@ import APIClient from '../../APIClient';
 const apiClient = new APIClient(APPLY);
 
 const applyApis = {
-  get: async ({ postId }: { postId: string }): Promise<{ recruitmentPost: RecruitmentPost; applyForm: ApplyForm }> => {
+  get: async ({
+    applyFormId,
+  }: {
+    applyFormId: string;
+  }): Promise<{ recruitmentPost: RecruitmentPost; applyForm: ApplyForm }> => {
     const data = await apiClient.get<any>({
-      path: `/${postId}`,
+      path: `/${applyFormId}`,
     });
 
     const recruitmentPost = dtoToRecruitmentPost(data);
@@ -18,15 +22,15 @@ const applyApis = {
     return { recruitmentPost, applyForm };
   },
 
-  apply: async ({ postId, body }: { postId: string; body: ApplyRequestBody }) =>
+  apply: async ({ applyFormId, body }: { applyFormId: string; body: ApplyRequestBody }) =>
     apiClient.post({
-      path: `/${postId}/submit`,
+      path: `/${applyFormId}/submit`,
       body,
     }),
 
-  modify: async ({ postId, body }: { postId: string; body: RecruitmentPost }) =>
+  modify: async ({ applyFormId, body }: { applyFormId: string; body: RecruitmentPost }) =>
     apiClient.patch({
-      path: `/${postId}`,
+      path: `/${applyFormId}`,
       body,
     }),
 };

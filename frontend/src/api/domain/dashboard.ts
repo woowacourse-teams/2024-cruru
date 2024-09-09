@@ -19,7 +19,7 @@ const dashboardApis = {
   create: async ({ clubId, dashboardFormInfo }: { clubId: string; dashboardFormInfo: DashboardFormInfo }) =>
     apiClient.post<{
       dashboardId: string;
-      postId: string;
+      applyFormId: string;
     }>({
       path: `?${convertParamsToQueryString({ clubId })}`,
       body: dashboardFormInfo,

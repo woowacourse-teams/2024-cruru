@@ -15,14 +15,14 @@ import Button from '@components/common/Button';
 import S from './style';
 
 interface PostManageBoardProps {
-  postId: string;
+  applyFormId: string;
 }
 
-export default function PostManageBoard({ postId }: PostManageBoardProps) {
+export default function PostManageBoard({ applyFormId }: PostManageBoardProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<ReactQuill | null>(null);
 
-  const { isLoading, postState, setPostState, modifyPostMutator } = usePostManagement({ postId });
+  const { isLoading, postState, setPostState, modifyPostMutator } = usePostManagement({ applyFormId });
   const todayText = new Date().toISOString().split('T')[0];
   const startDateText = postState ? formatDate(postState.startDate) : '';
   const endDateText = postState ? formatDate(postState.endDate) : '';

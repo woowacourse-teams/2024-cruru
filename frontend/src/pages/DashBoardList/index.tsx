@@ -8,8 +8,8 @@ export default function DashboardList() {
   const { data } = useGetDashboards();
   const navigate = useNavigate();
 
-  const handleCardClick = (dashboardId: string, postId: string) => {
-    navigate(routes.dashboard.post({ dashboardId, postId }));
+  const handleCardClick = (dashboardId: string, applyFormId: string) => {
+    navigate(routes.dashboard.post({ dashboardId, applyFormId }));
   };
 
   return (
@@ -18,13 +18,13 @@ export default function DashboardList() {
       <S.CardGrid>
         {data?.dashboards.map((dashboard) => (
           <RecruitmentCard
-            key={`${dashboard.dashboardId}-${dashboard.postId}`}
+            key={`${dashboard.dashboardId}-${dashboard.applyFormId}`}
             dashboardId={dashboard.dashboardId}
             title={dashboard.title}
             postStats={dashboard.stats}
             startDate={dashboard.startDate}
             endDate={dashboard.endDate}
-            onClick={() => handleCardClick(dashboard.dashboardId, dashboard.postId)}
+            onClick={() => handleCardClick(dashboard.dashboardId, dashboard.applyFormId)}
           />
         ))}
         <S.AddCard onClick={() => navigate(routes.dashboard.create())}>

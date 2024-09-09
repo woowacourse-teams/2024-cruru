@@ -8,7 +8,7 @@ import S from './style';
 interface Option {
   text: string;
   isSelected: boolean;
-  postId: string;
+  applyFormId: string;
   dashboardId: string;
 }
 
@@ -28,11 +28,11 @@ export default function DashboardSidebar({ options }: DashboardSidebarProps) {
 
       <S.Contents>
         <Accordion title={<Link to={routes.dashboard.list()}>공고</Link>}>
-          {options.map(({ text, isSelected, postId, dashboardId }, index) => (
+          {options.map(({ text, isSelected, applyFormId, dashboardId }, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <Accordion.ListItem key={index}>
               <S.LinkContainer isSelected={isSelected}>
-                <Link to={routes.dashboard.post({ dashboardId, postId })}>{text}</Link>
+                <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>{text}</Link>
               </S.LinkContainer>
             </Accordion.ListItem>
           ))}

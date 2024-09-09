@@ -15,9 +15,9 @@ const meta: Meta<typeof ApplyManagement> = {
     },
     reactRouter: reactRouterParameters({
       location: {
-        pathParams: { postId: '1' },
+        pathParams: { applyFormId: '1' },
       },
-      routing: { path: '/postId/:postId' },
+      routing: { path: '/applyFormId/:applyFormId' },
     }),
   },
   tags: ['autodocs'],

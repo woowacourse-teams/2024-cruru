@@ -4,9 +4,9 @@ export const PATH = {
   home: '/',
   signIn: '/sign-in',
   signUp: '/sign-up',
-  post: '/post/:postId',
-  confirmApply: '/post/:postId/confirm',
-  dashboard: { list: '/dashboard', create: '/create', post: '/:dashboardId/:postId' },
+  post: '/post/:applyFormId',
+  confirmApply: '/post/:applyFormId/confirm',
+  dashboard: { list: '/dashboard', create: '/create', post: '/:dashboardId/:applyFormId' },
 };
 
 export const routes = {
@@ -14,14 +14,14 @@ export const routes = {
   signIn: () => generatePath(PATH.signIn),
   signUp: () => generatePath(PATH.signUp),
 
-  post: ({ postId }: { postId: string }) => generatePath(PATH.post, { postId }),
+  post: ({ applyFormId }: { applyFormId: string }) => generatePath(PATH.post, { applyFormId }),
 
-  confirmApply: ({ postId }: { postId: string }) => generatePath(PATH.confirmApply, { postId }),
+  confirmApply: ({ applyFormId }: { applyFormId: string }) => generatePath(PATH.confirmApply, { applyFormId }),
 
   dashboard: {
     list: () => generatePath(PATH.dashboard.list),
     create: () => generatePath(`${PATH.dashboard.list}${PATH.dashboard.create}`),
-    post: ({ dashboardId, postId }: { dashboardId: string; postId: string }) =>
-      generatePath(`${PATH.dashboard.list}${PATH.dashboard.post}`, { dashboardId, postId }),
+    post: ({ dashboardId, applyFormId }: { dashboardId: string; applyFormId: string }) =>
+      generatePath(`${PATH.dashboard.list}${PATH.dashboard.post}`, { dashboardId, applyFormId }),
   },
 };

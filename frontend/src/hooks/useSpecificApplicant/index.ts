@@ -15,7 +15,7 @@ const specificApplicant = {
       queryFn: () => applicantApis.get({ applicantId }),
     }),
 
-  useRejectApplicant: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
+  useRejectApplicant: ({ dashboardId, applyFormId }: { dashboardId: string; applyFormId: string }) => {
     const queryClient = useQueryClient();
     const toast = useToast();
 
@@ -23,12 +23,12 @@ const specificApplicant = {
       mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.reject({ applicantId }),
       onSuccess: () => {
         toast.success('불합격 처리 되었습니다.');
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
       },
     });
   },
 
-  useUnrejectApplicant: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
+  useUnrejectApplicant: ({ dashboardId, applyFormId }: { dashboardId: string; applyFormId: string }) => {
     const queryClient = useQueryClient();
     const toast = useToast();
 
@@ -36,7 +36,7 @@ const specificApplicant = {
       mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.unreject({ applicantId }),
       onSuccess: () => {
         toast.success('부활하였습니다. 👻예토전생👻');
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
       },
     });
   },

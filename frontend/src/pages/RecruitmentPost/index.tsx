@@ -7,9 +7,9 @@ import { useParams } from 'react-router-dom';
 import S from './style';
 
 export default function RecruitmentPost() {
-  const { postId } = useParams<{ postId: string }>();
+  const { applyFormId } = useParams<{ applyFormId: string }>();
 
-  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
+  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
   const recruitmentPeriod = {
     startDate: ISOtoLocaleString({ date: recruitmentPost?.startDate }),
     endDate: ISOtoLocaleString({ date: recruitmentPost?.endDate }),

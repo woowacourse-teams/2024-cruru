@@ -69,7 +69,7 @@ export default function DashboardCreate() {
 
         {finishResJson && (
           <Finish
-            postId={finishResJson.postId}
+            applyFormId={finishResJson.applyFormId}
             dashboardId={finishResJson.dashboardId}
           />
         )}

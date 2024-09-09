@@ -18,7 +18,7 @@ const dashboardHandlers = [
     }
 
     const responseBody = JSON.stringify({
-      postId: 1,
+      applyFormId: 1,
       dashboardId: 1,
     });
 

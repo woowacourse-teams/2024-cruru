@@ -24,7 +24,7 @@ interface UseApplyManagementReturn {
 }
 
 interface UseApplyManagementProps {
-  postId: string;
+  applyFormId: string;
 }
 
 function getQuestions(data: QuestionData[] | undefined): Question[] {
@@ -44,8 +44,8 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
     }));
 }
 
-export default function useApplyManagement({ postId }: UseApplyManagementProps): UseApplyManagementReturn {
-  const { data, isLoading } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
+export default function useApplyManagement({ applyFormId }: UseApplyManagementProps): UseApplyManagementReturn {
+  const { data, isLoading } = applyQueries.useGetApplyForm({ applyFormId: applyFormId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
   const toast = useToast();
@@ -67,7 +67,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
   const modifyApplyQuestionsMutator = useMutation({
     mutationFn: () =>
       questionApis.patch({
-        applyformId: postId,
+        applyformId: applyFormId,
         questions: applyState.slice(DEFAULT_QUESTIONS.length).map((value, index) => ({
           orderIndex: index,
           type: value.type,
@@ -77,7 +77,7 @@ export default function useApplyManagement({ postId }: UseApplyManagementProps):
         })),
       }),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, applyFormId] });
       toast.success('지원서의 사전 질문 항목 수정에 성공했습니다.');
     },
     onError: () => {

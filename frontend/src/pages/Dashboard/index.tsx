@@ -21,8 +21,8 @@ import S from './style';
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
 
 export default function Dashboard() {
-  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
-  const { processes, isLoading, title, postUrl } = useProcess({ dashboardId, postId });
+  const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
+  const { processes, isLoading, title, postUrl } = useProcess({ dashboardId, applyFormId });
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
@@ -87,7 +87,7 @@ export default function Dashboard() {
         <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
           <ProcessManageBoard
             dashboardId={dashboardId}
-            postId={postId}
+            applyFormId={applyFormId}
             processes={processes}
           />
         </Tab.TabPanel>
@@ -95,7 +95,7 @@ export default function Dashboard() {
 
       {currentMenu === '공고 관리' && (
         <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
-          <PostManageBoard postId={postId} />
+          <PostManageBoard applyFormId={applyFormId} />
         </Tab.TabPanel>
       )}
 

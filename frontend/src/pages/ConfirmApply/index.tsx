@@ -10,11 +10,11 @@ export default function ConfirmApply() {
   const location = useLocation();
   const state = location.state as { title: string };
 
-  const { postId } = useParams() as { postId: string };
+  const { applyFormId } = useParams() as { applyFormId: string };
 
   const navigate = useNavigate();
   const navigateToPost = () => {
-    navigate(routes.post({ postId }));
+    navigate(routes.post({ applyFormId }));
   };
 
   if (!state) {

@@ -22,10 +22,10 @@ interface ApplyFormProps {
 }
 
 export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
-  const { postId } = useParams<{ postId: string }>() as { postId: string };
+  const { applyFormId } = useParams<{ applyFormId: string }>() as { applyFormId: string };
 
-  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
-  const { mutate: apply } = applyMutations.useApply(postId, recruitmentPost?.title ?? '');
+  const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
+  const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '');
 
   const {
     formData: applicant,

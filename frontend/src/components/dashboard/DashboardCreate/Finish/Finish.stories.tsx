@@ -30,7 +30,7 @@ const meta: Meta<typeof Finish> = {
         type: { summary: 'string' },
       },
     },
-    postId: {
+    applyFormId: {
       description: '게시된 공고의 ID입니다.',
       control: { type: 'text' },
       table: {
@@ -46,6 +46,6 @@ type Story = StoryObj<typeof Finish>;
 export const Template: Story = {
   args: {
     dashboardId: '1',
-    postId: '1',
+    applyFormId: '1',
   },
 };
