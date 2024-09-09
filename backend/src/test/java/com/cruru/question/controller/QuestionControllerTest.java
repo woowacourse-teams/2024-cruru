@@ -11,7 +11,6 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.choice.controller.dto.ChoiceCreateRequest;
-import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;
 import com.cruru.question.controller.dto.QuestionUpdateRequests;
 import com.cruru.question.domain.QuestionType;
@@ -48,9 +47,6 @@ class QuestionControllerTest extends ControllerTest {
 
     @Autowired
     private ApplyFormRepository applyFormRepository;
-
-    @Autowired
-    private ChoiceRepository choiceRepository;
 
     @DisplayName("존재하는 질문의 변경 성공시, 200을 응답한다.")
     @Test
