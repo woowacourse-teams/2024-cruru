@@ -16,11 +16,13 @@ concurrency:
 
 defaults:
   run:
-    working-directory: backend
     shell: bash
 
 jobs:
   build-deploy-docs:
+    defaults:
+      run:
+        working-directory: backend
     runs-on: ubuntu-latest
 
     steps:
