@@ -56,9 +56,7 @@ class AuthControllerTest extends ControllerTest {
                                 fieldWithPath("email").description("사용자 이메일"),
                                 fieldWithPath("password").description("사용자 패스워드")
                         ),
-                        responseFields(
-                                fieldWithPath("clubId").description("동아리의 id")
-                        ),
+                        responseFields(fieldWithPath("clubId").description("동아리의 id")),
                         responseCookies(cookieWithName("token").description("사용자 토큰"))
                 ))
                 .when().post("/v1/auth/login")
