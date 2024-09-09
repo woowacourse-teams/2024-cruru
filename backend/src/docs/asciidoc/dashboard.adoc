@@ -10,11 +10,9 @@ operation::dashboard/create[snippets="http-request,request-cookies,query-paramet
 
 operation::dashboard/create-fail/invalid-question[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
-
 ==== 실패: 존재하지 않는 동아리
 
 operation::dashboard/create-fail/club-not-found[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
-
 
 === 대시보드 조회
 
