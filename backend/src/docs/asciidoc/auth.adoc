@@ -4,7 +4,7 @@
 
 ==== 성공
 
-operation::auth/login[snippets="http-request,request-fields,response-headers,response-cookies,http-response"]
+operation::auth/login[snippets="http-request,request-fields,http-response,response-headers,response-cookies"]
 
 ==== 실패: 잘못된 패스워드
 
@@ -18,4 +18,4 @@ operation::auth/login-fail/email-not-found[snippets="http-request,request-fields
 
 ==== 성공
 
-operation::auth/logout[snippets="http-request,request-cookies,http-response"]
+operation::auth/logout[snippets="http-request,request-cookies,http-response,response-headers"]

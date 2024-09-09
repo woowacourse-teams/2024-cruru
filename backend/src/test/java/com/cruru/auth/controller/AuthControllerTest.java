@@ -114,7 +114,8 @@ class AuthControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .filter(document("auth/logout",
-                        requestCookies(cookieWithName("token").description("사용자 토큰"))
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        responseHeaders(headerWithName("Set-Cookie").description("인증 해제 쿠키 설정"))
                 ))
                 .when().post("/v1/auth/logout")
                 .then().log().all().statusCode(204);
