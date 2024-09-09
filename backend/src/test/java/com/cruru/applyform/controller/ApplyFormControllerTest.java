@@ -303,6 +303,31 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(400);
     }
 
+    @DisplayName("지원서 폼 제출 시, 지원서 폼이 존재하지 않을 경우 404를 반환한다.")
+    @Test
+    void submit_notFound() {
+        // given
+        int invalidApplyFormId = -1;
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
+                true
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/submit-fail/applyform-not-found",
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id"))
+                ))
+                .when().post("/v1/applyform/{applyFormId}/submit", invalidApplyFormId)
+                .then().log().all().statusCode(404);
+    }
+
     @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
     @Test
     void read() {
