@@ -40,7 +40,7 @@ class QuestionControllerTest extends ControllerTest {
 
     private static final FieldDescriptor[] CHOICE_FIELD_DESCRIPTORS = {
             fieldWithPath("choice").description("선택지의 내용"),
-            fieldWithPath("orderIndex").description("선택지의 필수 여부")
+            fieldWithPath("orderIndex").description("선택지의 순서")
     };
 
     @Autowired

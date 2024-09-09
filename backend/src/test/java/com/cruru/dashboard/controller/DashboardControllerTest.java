@@ -38,7 +38,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 class DashboardControllerTest extends ControllerTest {
 
     private static final FieldDescriptor[] DASHBOARD_PREVIEW_FIELD_DESCRIPTORS = {
-            fieldWithPath("dashboardId").description("동아리의 id"),
+            fieldWithPath("dashboardId").description("대시보드의 id"),
             fieldWithPath("applyFormId").description("지원폼의 id"),
             fieldWithPath("title").description("지원폼의 공고명"),
             fieldWithPath("stats.accept").description("합격 인원"),

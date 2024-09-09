@@ -128,7 +128,7 @@ class ApplicantControllerTest extends ControllerTest {
                                 fieldWithPath("applicant.name").description("지원자의 이름"),
                                 fieldWithPath("applicant.email").description("지원자의 이메일"),
                                 fieldWithPath("applicant.phone").description("지원자의 전화번호"),
-                                fieldWithPath("applicant.isRejected").description("지원자의 합불 여부"),
+                                fieldWithPath("applicant.isRejected").description("지원자의 불합격 여부"),
                                 fieldWithPath("applicant.createdAt").description("지원자의 생성날짜"),
                                 fieldWithPath("process.id").description("프로세스의 id"),
                                 fieldWithPath("process.name").description("프로세스 이름")
