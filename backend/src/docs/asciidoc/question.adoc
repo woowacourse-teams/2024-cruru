@@ -4,4 +4,8 @@
 
 ==== 성공
 
-operation::question/update[snippets="http-request,request-cookies,query-parameters,http-response"]
+operation::question/update[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 지원폼
+
+operation::question/update[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]

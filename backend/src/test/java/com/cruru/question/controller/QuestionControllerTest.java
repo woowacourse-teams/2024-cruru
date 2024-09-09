@@ -58,11 +58,17 @@ class QuestionControllerTest extends ControllerTest {
         // given
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
-        QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(List.of(
-                new QuestionCreateRequest(QuestionType.LONG_ANSWER.name(), "new", List.of(
-                        new ChoiceCreateRequest("좋아하는 음식은?", 0)
-                ), 0, true)
-        ));
+        QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(
+                List.of(
+                        new QuestionCreateRequest(
+                                QuestionType.LONG_ANSWER.name(),
+                                "new",
+                                List.of(new ChoiceCreateRequest("좋아하는 음식은?", 0)),
+                                0,
+                                true
+                        )
+                )
+        );
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -78,5 +84,40 @@ class QuestionControllerTest extends ControllerTest {
                 ))
                 .when().patch("/v1/questions?applyformId={applyformId}", applyForm.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하는 않는 지원폼의 질문 변경 시, 404를 응답한다.")
+    @Test
+    void update_applyFormNotFound() {
+        // given
+        long invalidApplyFormId = -1;
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
+        questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
+        QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(
+                List.of(
+                        new QuestionCreateRequest(
+                                QuestionType.LONG_ANSWER.name(),
+                                "new",
+                                List.of(new ChoiceCreateRequest("좋아하는 음식은?", 0)),
+                                0,
+                                true
+                        )
+                )
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(questionUpdateRequests)
+                .filter(document("question/update",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        queryParameters(parameterWithName("applyformId").description("존재하지 않는 지원폼의 id")),
+                        requestFields(fieldWithPath("questions").description("변경할 질문들"))
+                                .andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
+                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
+                ))
+                .when().patch("/v1/questions?applyformId={applyformId}", invalidApplyFormId)
+                .then().log().all().statusCode(404);
     }
 }
