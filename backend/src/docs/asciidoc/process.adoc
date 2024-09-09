@@ -24,7 +24,7 @@ operation::process/create-fail/dashboard-not-found[snippets="http-request,reques
 
 operation::process/create-fail/invalid-name[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
-==== 실퍠: 최대 프로세스 개수 초과
+==== 실패: 최대 프로세스 개수 초과
 
 operation::process/create-fail/process-count-overed[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
