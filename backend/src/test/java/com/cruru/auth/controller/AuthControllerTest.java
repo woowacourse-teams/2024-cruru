@@ -47,7 +47,7 @@ class AuthControllerTest extends ControllerTest {
         // given
         LoginRequest request = new LoginRequest(member.getEmail(), "qwer1234");
 
-        // when&&then
+        // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
@@ -69,7 +69,7 @@ class AuthControllerTest extends ControllerTest {
         // given
         LoginRequest request = new LoginRequest(member.getEmail(), "wrongPassword");
 
-        // when&&then
+        // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
@@ -86,7 +86,7 @@ class AuthControllerTest extends ControllerTest {
     @DisplayName("로그아웃을 성공하면 204를 반환한다.")
     @Test
     void logout() {
-        // given&when&&then
+        // given&when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
