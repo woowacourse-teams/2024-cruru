@@ -18,9 +18,9 @@ operation::applicant/submit-fail/invalid-applicant-info[snippets="http-request,p
 
 operation::applicant/submit-fail/invalid-answers[snippets="http-request,path-parameters,request-fields,http-response"]
 
-==== 실패: 대시보드 내에 프로세스 존재하지 않을 경우
+==== 실패: 대시보드 내에 제출 프로세스 존재하지 않을 경우
 
-operation::applicant/submit-fail/no-process[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::applicant/submit-fail/no-submit-process[snippets="http-request,path-parameters,request-fields,http-response"]
 
 ==== 실패: 모집 기간을 벗어난 제출
 

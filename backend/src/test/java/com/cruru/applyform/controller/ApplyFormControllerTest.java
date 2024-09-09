@@ -233,9 +233,9 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(400);
     }
 
-    @DisplayName("지원서 폼 제출 시, 대시보드에 프로세스가 존재하지 않으면 500을 반환한다.")
+    @DisplayName("지원서 폼 제출 시, 대시보드에 제출 프로세스가 존재하지 않으면 500을 반환한다.")
     @Test
-    void submit_dashboardWithNoProcess() {
+    void submit_dashboardWithNoSubmitProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
@@ -251,7 +251,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("applicant/submit-fail/no-process",
+                .filter(document("applicant/submit-fail/no-submit-process",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
                         requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS).
                                 andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
