@@ -69,6 +69,13 @@ class ApplyFormControllerTest extends ControllerTest {
             fieldWithPath("personalDataCollection").description("개인정보 활용 동의 여부")
     };
 
+    private static final FieldDescriptor[] APPLYFORM_WRITE_FIELD_DESCRIPTORS = {
+            fieldWithPath("title").description("지원폼 제목"),
+            fieldWithPath("postingContent").description("지원폼 내용(본문)"),
+            fieldWithPath("startDate").description("지원 시작 날짜"),
+            fieldWithPath("endDate").description("지원 마감 날짜")
+    };
+
     @Autowired
     private DashboardRepository dashboardRepository;
 
@@ -406,8 +413,8 @@ class ApplyFormControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document("applicant/update",
-                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id"))
-                        // TODO
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
                 ))
                 .when().patch("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
@@ -431,7 +438,8 @@ class ApplyFormControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document("applicant/update-fail/applyform-not-found",
-                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id"))
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id")),
+                        requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
                 ))
                 .when().patch("/v1/applyform/{applyFormId}", invalidApplyFormId)
                 .then().log().all().statusCode(404);
