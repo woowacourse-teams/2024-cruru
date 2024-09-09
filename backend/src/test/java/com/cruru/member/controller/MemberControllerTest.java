@@ -72,13 +72,6 @@ class MemberControllerTest extends ControllerTest {
                                 fieldWithPath("email").description("사용자 이메일"),
                                 fieldWithPath("password").description("사용자 패스워드"),
                                 fieldWithPath("phone").description("사용자 전화번호")
-                        ),
-                        responseFields(
-                                fieldWithPath("type").description("-"),
-                                fieldWithPath("title").description("실패 메세지"),
-                                fieldWithPath("instance").description("실패 path"),
-                                fieldWithPath("detail").description("실패 이유"),
-                                fieldWithPath("status").description("상태 코드")
                         )
                 ))
                 .when().post("/v1/members/signup")

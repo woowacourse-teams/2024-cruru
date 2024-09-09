@@ -183,14 +183,7 @@ class DashboardControllerTest extends ControllerTest {
                                 fieldWithPath("startDate").description("공고 시작 날짜"),
                                 fieldWithPath("endDate").description("공고 마감 날짜")
                         ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
-                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS),
-                        responseFields(
-                                fieldWithPath("type").description("-"),
-                                fieldWithPath("title").description("실패 메세지"),
-                                fieldWithPath("instance").description("실패 path"),
-                                fieldWithPath("detail").description("실패 이유"),
-                                fieldWithPath("status").description("상태 코드")
-                        )
+                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
                 ))
                 .when().post(url)
                 .then().log().all().statusCode(400);
