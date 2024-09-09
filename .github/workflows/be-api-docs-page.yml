@@ -19,11 +19,11 @@ defaults:
     shell: bash
 
 jobs:
-  build-deploy-docs:
+  build-docs:
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Latest
@@ -41,8 +41,24 @@ jobs:
       - name: Build RestDocs with Gradle
         run: ./gradlew asciidoctor
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/docs/asciidoc
+          name: github-pages
+          path: ./build/docs/asciidoc
+
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    needs: build-docs
+    steps:
+      - name: Deploy API Docs to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
