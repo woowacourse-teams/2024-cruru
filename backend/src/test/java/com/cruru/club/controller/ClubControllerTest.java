@@ -41,7 +41,7 @@ class ClubControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("club/create/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        queryParameters(parameterWithName("memberId").description("동아리를 생성한 사용자의 id")),
+                        queryParameters(parameterWithName("memberId").description("동아리를 생성할 사용자의 id")),
                         requestFields(fieldWithPath("name").description("생성할 동아리의 이름"))
                 ))
                 .when().post(url)
