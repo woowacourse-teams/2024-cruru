@@ -16,4 +16,6 @@ operation::dashboard/create-fail/club-not-found[snippets="http-request,request-c
 
 === 대시보드 조회
 
-operation::dashboard/read[snippets="http-request,request-cookies,query-parameters,http-response"]
+==== 성공
+
+operation::dashboard/read[snippets="http-request,request-cookies,query-parameters,response-fields,http-response"]
