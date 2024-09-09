@@ -38,6 +38,10 @@ operation::process/update[snippets="http-request,request-cookies,path-parameters
 
 operation::process/update-fail/invalid-name[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
 
+==== 실패: 존재하지 않는 프로세스
+
+operation::process/update-fail/process-not-found[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
+
 === 프로세스 삭제
 
 ==== 성공

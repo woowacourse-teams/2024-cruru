@@ -227,7 +227,7 @@ class ProcessControllerTest extends ControllerTest {
                 .body(processUpdateRequest)
                 .filter(document("process/update",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
-                        pathParameters(parameterWithName("processId").description("생성할 프로세스의 대시보드 id")),
+                        pathParameters(parameterWithName("processId").description("수정될 프로세스의 id")),
                         requestFields(
                                 fieldWithPath("processName").description("프로세스명"),
                                 fieldWithPath("description").description("프로세스의 설명")
@@ -261,6 +261,31 @@ class ProcessControllerTest extends ControllerTest {
                 ))
                 .when().patch("/v1/processes/{processId}", process.getId())
                 .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("존재하지 않는 프로세스 변경 시도 시, 404를 응답한다.")
+    @Test
+    void update_processNotFound() {
+        // given
+        long invalidProcessId = -1;
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        ProcessUpdateRequest processUpdateRequest = new ProcessUpdateRequest("임시 과정", "수정된 프로세스");
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(processUpdateRequest)
+                .filter(document("process/update-fail/process-not-found",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("processId").description("수정될 프로세스의 id")),
+                        requestFields(
+                                fieldWithPath("processName").description("조건에 맞지 않는 프로세스 이름"),
+                                fieldWithPath("description").description("수정될 프로세스 설명")
+                        )
+                ))
+                .when().patch("/v1/processes/{processId}", invalidProcessId)
+                .then().log().all().statusCode(404);
     }
 
     @DisplayName("프로세스 삭제 성공 시, 204를 응답한다.")
