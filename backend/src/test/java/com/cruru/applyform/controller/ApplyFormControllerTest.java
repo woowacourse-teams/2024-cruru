@@ -61,7 +61,7 @@ class ApplyFormControllerTest extends ControllerTest {
             fieldWithPath("orderIndex").description("선택지 순서")
     };
 
-    private static final FieldDescriptor[] QUESTION_REQUEST_FIELD_DESCRIPTORS = {
+    private static final FieldDescriptor[] APPLICANT_SUBMIT_FIELD_DESCRIPTORS = {
             fieldWithPath("applicant.name").description("지원자의 이름"),
             fieldWithPath("applicant.email").description("지원자의 이메일"),
             fieldWithPath("applicant.phone").description("지원자의 전화번호"),
@@ -132,7 +132,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applyform/submit",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS)
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -202,7 +202,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/submit-fail/invalid-applicant-info",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS)
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -233,7 +233,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/submit-fail/invalid-answers",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS)
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -260,7 +260,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/submit-fail/no-submit-process",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS).
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS).
                                 andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -286,7 +286,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/submit-fail/date-out-of-range",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS)
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
@@ -313,7 +313,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/submit-fail/applyform-not-found",
                         pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS)
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
                 .when().post("/v1/applyform/{applyFormId}/submit", invalidApplyFormId)
@@ -339,7 +339,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/submit-fail/question-not-found",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(QUESTION_REQUEST_FIELD_DESCRIPTORS)
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].",
                                         fieldWithPath("questionId").description("존재하지 않는 질문의 id"),
                                         fieldWithPath("replies").description("질문에 대한 응답")
