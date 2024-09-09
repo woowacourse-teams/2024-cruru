@@ -156,16 +156,15 @@ class EvaluationControllerTest extends ControllerTest {
                 .then().log().all().statusCode(404);
     }
 
-    @DisplayName("프로세스가 존재하지 않을 경우, 404를 응답한다.")
+    @DisplayName("유효하지 않는 점수일 경우, 400을 응답한다.")
     @Test
     void create_invalidScore() {
         // given
-        int invalidScore = 4;
+        int invalidScore = -4;
         String content = "서류가 인상적입니다.";
-        long invalidProcessId = -1;
         String url = String.format(
                 "/v1/evaluations?processId=%d&applicantId=%d",
-                invalidProcessId,
+                process.getId(),
                 applicant.getId()
         );
         EvaluationCreateRequest request = new EvaluationCreateRequest(invalidScore, content);
@@ -187,7 +186,7 @@ class EvaluationControllerTest extends ControllerTest {
                         )
                 ))
                 .when().post(url)
-                .then().log().all().statusCode(404);
+                .then().log().all().statusCode(400);
     }
 
     @DisplayName("평가 조회에 성공할 경우, 200을 응답한다.")
