@@ -6,9 +6,9 @@ import APIClient from '../APIClient';
 const apiClient = new APIClient(PROCESSES);
 
 const processApis = {
-  get: async ({ id }: { id: string }): Promise<ProcessResponse> =>
+  get: async ({ dashboardId }: { dashboardId: string }): Promise<ProcessResponse> =>
     apiClient.get({
-      path: `?${createParams({ dashboardId: id })}`,
+      path: `?${createParams({ dashboardId })}`,
     }),
 
   create: async (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) =>

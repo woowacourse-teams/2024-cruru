@@ -16,7 +16,7 @@ export interface Process {
 }
 
 export interface ProcessResponse {
-  postUrl: string;
+  postId: string;
   title: string;
   processes: Process[];
 }

@@ -6,9 +6,9 @@ import APIClient from '../APIClient';
 const apiClient = new APIClient(DASHBOARDS);
 
 const dashboardApis = {
-  get: async ({ dashboardId }: { dashboardId: string }) => {
+  get: async ({ clubId }: { clubId: string }) => {
     const queryParams = {
-      clubId: dashboardId,
+      clubId,
     };
 
     return apiClient.get<Club>({
@@ -18,7 +18,7 @@ const dashboardApis = {
 
   create: async ({ clubId, dashboardFormInfo }: { clubId: string; dashboardFormInfo: DashboardFormInfo }) =>
     apiClient.post<{
-      postUrl: string;
+      dashboardId: string;
       postId: string;
     }>({
       path: `?${convertParamsToQueryString({ clubId })}`,

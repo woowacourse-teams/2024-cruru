@@ -3,6 +3,7 @@
   "dashboards": [
     {
       "dashboardId": "1",
+      "postId": "1",
       "title": "우아한테크코스 프론트엔드 크루 모집",
       "stats": {
         "accept": 3,
@@ -10,12 +11,12 @@
         "inProgress": 9,
         "total": 15
       },
-      "postUrl": "www.cruru.kr/123543920/recruit",
       "startDate": "1900-01-21T00:00:00",
       "endDate": "2024-09-24T18:00:00"
     },
     {
       "dashboardId": "2",
+      "postId": "2",
       "title": "백엔드 7기 모집",
       "stats": {
         "accept": 3,
@@ -23,12 +24,12 @@
         "inProgress": 9,
         "total": 15
       },
-      "postUrl": "www.cruru.kr/98765101/recruit",
       "startDate": "2024-12-21T00:00:00",
       "endDate": "2024-12-24T20:30:00"
     },
     {
       "dashboardId": "3",
+      "postId": "3",
       "title": "안드로이드 7기 모집",
       "stats": {
         "accept": 3,
@@ -36,7 +37,6 @@
         "inProgress": 9,
         "total": 15
       },
-      "postUrl": "www.cruru.kr/7777890/recruit",
       "startDate": "1900-01-21T00:00:00",
       "endDate": "2024-07-24T21:00:00"
     }

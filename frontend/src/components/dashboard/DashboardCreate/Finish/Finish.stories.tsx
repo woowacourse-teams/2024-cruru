@@ -23,8 +23,8 @@ const meta: Meta<typeof Finish> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    postUrl: {
-      description: '게시된 공고의 URL입니다.',
+    dashboardId: {
+      description: '게시된 공고의 대시보드 ID입니다.',
       control: { type: 'text' },
       table: {
         type: { summary: 'string' },
@@ -45,7 +45,7 @@ type Story = StoryObj<typeof Finish>;
 
 export const Template: Story = {
   args: {
-    postUrl: 'https://www.cruru.kr/123543920/recruit',
+    dashboardId: '1',
     postId: '1',
   },
 };

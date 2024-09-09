@@ -2,6 +2,7 @@ import { RecruitmentPostTabItems } from '@components/recruitmentPost/Recruitment
 import { DashboardTabItems } from '@pages/Dashboard';
 import type { Question } from '@customTypes/dashboard';
 
+export const DOMAIN_URL = process.env.NODE_ENV === 'development' ? process.env.DEV_URL : process.env.PROD_URL;
 export const BASE_URL = `${process.env.API_URL}/${process.env.API_VERSION}`;
 
 export const DASHBOARD_TAB_MENUS: Record<string, DashboardTabItems> = {

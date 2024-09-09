@@ -4,6 +4,8 @@ import type { Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
+import { routes } from '@router/path';
+import { DOMAIN_URL } from '../../constants/constants';
 
 interface SimpleProcess {
   processName: string;
@@ -27,7 +29,7 @@ interface UseProcessReturn {
 export default function useProcess({ dashboardId, postId }: UseProcessProps): UseProcessReturn {
   const { data, error, isLoading } = useQuery<ProcessResponse>({
     queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId],
-    queryFn: () => processApis.get({ id: postId }),
+    queryFn: () => processApis.get({ dashboardId }),
   });
 
   const processes = data?.processes || [];
@@ -35,7 +37,7 @@ export default function useProcess({ dashboardId, postId }: UseProcessProps): Us
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
   return {
     title: data?.title ?? '',
-    postUrl: data?.postUrl ?? '',
+    postUrl: `${DOMAIN_URL}${routes.post({ postId: data?.postId ?? '' })}`,
     processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
     processList,
     error,

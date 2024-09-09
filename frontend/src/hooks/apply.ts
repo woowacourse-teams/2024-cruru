@@ -3,6 +3,7 @@ import { ApplyRequestBody } from '@customTypes/apply';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { getTimeStatus } from '@utils/compareTime';
+import { routes } from '@router/path';
 import QUERY_KEYS from './queryKeys';
 
 const useGetRecruitmentInfo = ({ postId }: { postId: string }) => {
@@ -46,7 +47,7 @@ export const applyMutations = {
     return useMutation({
       mutationFn: (params: { body: ApplyRequestBody }) => applyApis.apply({ ...params, postId }),
       onSuccess: () => {
-        navigate(`/post/${postId}/confirm`, { state: { title } });
+        navigate(routes.confirmApply({ postId }), { state: { title } });
       },
     });
   },

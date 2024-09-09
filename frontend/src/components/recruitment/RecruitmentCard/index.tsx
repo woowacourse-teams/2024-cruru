@@ -14,12 +14,12 @@ interface RecruitmentStats {
 }
 
 interface RecruitmentCardProps {
-  dashboardId: number;
+  dashboardId: string;
   title: string;
   postStats: RecruitmentStats;
   startDate: string;
   endDate: string;
-  onClick: (dashboardId: number) => void;
+  onClick: () => void;
 }
 
 const POST_STATS_KEY: Record<string, string> = {
@@ -53,7 +53,7 @@ export default function RecruitmentCard({
   ];
 
   return (
-    <S.CardWrapper onClick={() => onClick(dashboardId)}>
+    <S.CardWrapper onClick={onClick}>
       <S.RecruitmentInfoContainer>
         <S.RecruitmentTitle>{title}</S.RecruitmentTitle>
         <S.RecruitmentStatusFlag status={status}>{RECRUITMENT_STATUS[status]}</S.RecruitmentStatusFlag>

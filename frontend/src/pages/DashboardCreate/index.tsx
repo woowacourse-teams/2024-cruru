@@ -1,10 +1,8 @@
-import RecruitmentSidebar from '@components/recruitment/RecruitmentSidebar';
-import useDashboardCreateForm from '@hooks/useDashboardCreateForm';
-import Recruitment from '@components/dashboard/DashboardCreate/Recruitment';
 import Apply from '@components/dashboard/DashboardCreate/Apply';
 import Finish from '@components/dashboard/DashboardCreate/Finish';
-
-import { useParams } from 'react-router-dom';
+import Recruitment from '@components/dashboard/DashboardCreate/Recruitment';
+import RecruitmentSidebar from '@components/recruitment/RecruitmentSidebar';
+import useDashboardCreateForm from '@hooks/useDashboardCreateForm';
 
 import S from './style';
 
@@ -29,8 +27,6 @@ export default function DashboardCreate() {
 
     finishResJson,
   } = useDashboardCreateForm();
-
-  const { dashboardId } = useParams() as { dashboardId: string };
 
   const isRecruitmentStep = stepState === 'recruitmentForm';
   const isApplyStep = stepState === 'applyForm';
@@ -67,14 +63,14 @@ export default function DashboardCreate() {
             setQuestionNext={setQuestionNext}
             deleteQuestion={deleteQuestion}
             prevStep={prevStep}
-            nextStep={() => nextStep(dashboardId)}
+            nextStep={nextStep}
           />
         )}
 
         {finishResJson && (
           <Finish
             postId={finishResJson.postId}
-            postUrl={finishResJson.postUrl}
+            dashboardId={finishResJson.dashboardId}
           />
         )}
       </S.MainContainer>

@@ -38,10 +38,10 @@ export default function Dashboard() {
 
         <S.CopyWrapper>
           <OpenInNewTab
-            url={`https://${postUrl}`}
+            url={postUrl}
             title="공고로 이동"
           />
-          <CopyToClipboard url={`https://${postUrl}`} />
+          <CopyToClipboard url={postUrl} />
         </S.CopyWrapper>
       </S.Header>
 

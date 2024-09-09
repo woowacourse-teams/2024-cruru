@@ -48,6 +48,7 @@ module.exports = {
       '@utils': path.resolve(__dirname, 'src/utils/'),
       '@mocks': path.resolve(__dirname, 'src/mocks/'),
       '@domain': path.resolve(__dirname, 'src/domain/'),
+      '@router': path.resolve(__dirname, 'src/router/'),
     },
   },
 

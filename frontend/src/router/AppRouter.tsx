@@ -14,11 +14,12 @@ import Landing from '@pages/Landing';
 import { useToast } from '@contexts/ToastContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
+import { PATH } from './path';
 
 const router = createBrowserRouter(
   [
     {
-      path: '/',
+      path: PATH.home,
       element: <App />,
       errorElement: <ErrorPage />,
       children: [
@@ -27,37 +28,37 @@ const router = createBrowserRouter(
           element: <Landing />,
         },
         {
-          path: '/sign-in',
+          path: PATH.signIn,
           element: <SignIn />,
         },
         {
-          path: '/sign-up',
+          path: PATH.signUp,
           element: <SignUp />,
         },
         {
-          path: 'post/:postId',
+          path: PATH.post,
           element: <RecruitmentPost />,
         },
         {
-          path: 'post/:postId/confirm',
+          path: PATH.confirmApply,
           element: <ConfirmApply />,
         },
         {
-          path: 'dashboard/:dashboardId/',
+          path: PATH.dashboard.list,
           element: <DashboardLayout />,
           children: [
             {
-              path: ':postId',
-              element: <Dashboard />,
+              index: true,
+              element: <DashboardList />,
             },
             {
-              path: 'posts',
-              element: <DashboardList />,
+              path: `${PATH.dashboard.list}${PATH.dashboard.post}`,
+              element: <Dashboard />,
             },
           ],
         },
         {
-          path: 'dashboard/:dashboardId/create',
+          path: `${PATH.dashboard.list}${PATH.dashboard.create}`,
           element: <DashboardCreate />,
         },
       ],
