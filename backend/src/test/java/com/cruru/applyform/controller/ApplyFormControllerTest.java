@@ -407,8 +407,33 @@ class ApplyFormControllerTest extends ControllerTest {
                 .body(request)
                 .filter(document("applicant/update",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id"))
+                        // TODO
                 ))
                 .when().patch("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원서 폼 변경 시, 지원서 폼이 존재하지 않을 경우 404을 반환한다.")
+    @Test
+    void update_notFound() {
+        // given
+        int invalidApplyFormId = -1;
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
+        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/update-fail/applyform-not-found",
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id"))
+                ))
+                .when().patch("/v1/applyform/{applyFormId}", invalidApplyFormId)
+                .then().log().all().statusCode(404);
     }
 }
