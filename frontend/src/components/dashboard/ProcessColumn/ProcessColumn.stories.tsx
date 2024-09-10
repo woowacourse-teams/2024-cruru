@@ -16,9 +16,9 @@ const meta: Meta<typeof ProcessColumn> = {
     },
     reactRouter: reactRouterParameters({
       location: {
-        pathParams: { dashboardId: '1', postId: '1' },
+        pathParams: { dashboardId: '1', applyFormId: '1' },
       },
-      routing: { path: '/dashboard/:dashboardId/post/:postId' },
+      routing: { path: '/dashboard/:dashboardId/post/:applyFormId' },
     }),
   },
   tags: ['autodocs'],

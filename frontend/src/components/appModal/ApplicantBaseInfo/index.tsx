@@ -14,11 +14,11 @@ interface ApplicantBaseInfoProps {
 }
 
 export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProps) {
-  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { mutate: moveApplicantProcess } = useApplicant({ applicantId });
-  const { mutate: rejectMutate } = specificApplicant.useRejectApplicant({ dashboardId, postId });
-  const { mutate: unrejectMutate } = specificApplicant.useUnrejectApplicant({ dashboardId, postId });
-  const { processList, isLoading: isProcessLoading } = useProcess({ dashboardId, postId });
+  const { mutate: rejectMutate } = specificApplicant.useRejectApplicant({ dashboardId, applyFormId });
+  const { mutate: unrejectMutate } = specificApplicant.useUnrejectApplicant({ dashboardId, applyFormId });
+  const { processList, isLoading: isProcessLoading } = useProcess({ dashboardId, applyFormId });
   const { data: applicantBaseInfo, isLoading: isBaseInfoLoading } = specificApplicant.useGetBaseInfo({ applicantId });
 
   const { close } = useModal();

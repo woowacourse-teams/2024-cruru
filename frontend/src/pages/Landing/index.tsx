@@ -1,13 +1,14 @@
 import { useNavigate } from 'react-router-dom';
 import Logo from '@assets/images/logo.svg';
 import { useEffect } from 'react';
+import { routes } from '@router/path';
 import S from './style';
 
 export default function Landing() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate('/sign-in'), 2000);
+    setTimeout(() => navigate(routes.signIn()), 2000);
   }, [navigate]);
 
   return (

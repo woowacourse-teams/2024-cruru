@@ -9,11 +9,11 @@ import S from './style';
 
 interface ProcessAddButtonProps {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
   priorOrderIndex: number;
 }
 
-export default function ProcessAddButton({ dashboardId, postId, priorOrderIndex }: ProcessAddButtonProps) {
+export default function ProcessAddButton({ dashboardId, applyFormId, priorOrderIndex }: ProcessAddButtonProps) {
   const [isToggled, setIsToggled] = useState(false);
 
   const toggleProcessAddForm = () => {
@@ -25,7 +25,7 @@ export default function ProcessAddButton({ dashboardId, postId, priorOrderIndex 
       {isToggled ? (
         <ProcessAddForm
           dashboardId={dashboardId}
-          postId={postId}
+          applyFormId={applyFormId}
           priorOrderIndex={priorOrderIndex}
           toggleForm={toggleProcessAddForm}
         />

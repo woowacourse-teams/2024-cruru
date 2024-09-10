@@ -17,8 +17,8 @@ interface ProcessColumnProps {
 }
 
 export default function ProcessColumn({ process, showRejectedApplicant }: ProcessColumnProps) {
-  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
-  const { processList } = useProcess({ dashboardId, postId });
+  const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
+  const { processList } = useProcess({ dashboardId, applyFormId });
   const { mutate: moveApplicantProcess } = useApplicant({});
 
   const { setApplicantId } = useSpecificApplicantId();

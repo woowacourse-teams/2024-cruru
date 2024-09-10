@@ -1,12 +1,13 @@
 import dashboardApis from '@api/domain/dashboard';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
 import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
+import useClubId from '@hooks/service/useClubId';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
 
 interface FinishResJson {
-  postUrl: string;
-  postId: string;
+  dashboardId: string;
+  applyFormId: string;
 }
 
 interface UseDashboardCreateFormReturn {
@@ -27,14 +28,7 @@ interface UseDashboardCreateFormReturn {
   setQuestionNext: (index: number) => () => void;
   deleteQuestion: (index: number) => void;
 
-  submitMutator: UseMutationResult<
-    FinishResJson,
-    Error,
-    {
-      clubId: string;
-    },
-    unknown
-  >;
+  submitMutator: UseMutationResult<FinishResJson, Error, void, unknown>;
   finishResJson: FinishResJson | null;
 }
 
@@ -52,8 +46,10 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
 
+  const clubId = useClubId().getClubId() || '';
+
   const submitMutator = useMutation({
-    mutationFn: ({ clubId }: { clubId: string }) =>
+    mutationFn: () =>
       dashboardApis.create({
         clubId,
         dashboardFormInfo: {
@@ -75,11 +71,11 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     if (stepState === 'applyForm') setStepState('recruitmentForm');
   };
 
-  const nextStep = (dashboardId?: string) => {
+  const nextStep = () => {
     if (stepState === 'recruitmentForm') setStepState('applyForm');
     if (stepState === 'applyForm') {
-      if (dashboardId) {
-        submitMutator.mutate({ clubId: dashboardId });
+      if (clubId) {
+        submitMutator.mutate();
       }
     }
   };

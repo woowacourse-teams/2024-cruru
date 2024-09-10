@@ -1,14 +1,25 @@
 import { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook } from '@testing-library/react';
+import ToastProvider from '@contexts/ToastContext';
 import useDashboardCreateForm from '.';
 
 describe('useDashboardCreateForm', () => {
+  beforeAll(() => {
+    localStorage.setItem('clubId', '1');
+  });
+
+  afterAll(() => {
+    localStorage.removeItem('clubId');
+  });
+
   const createWrapper = () => {
     const queryClient = new QueryClient();
     // eslint-disable-next-line react/function-component-definition
     return ({ children }: PropsWithChildren) => (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <ToastProvider>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      </ToastProvider>
     );
   };
 

@@ -14,7 +14,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    dashboardId: { control: 'number' },
+    dashboardId: { control: 'text' },
     title: { control: 'text' },
     postStats: {
       accept: { control: 'number' },
@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 
 export const RecruitmentCardDefault: Story = {
   args: {
-    dashboardId: 1,
+    dashboardId: '1',
     title: '프론트엔드 7기 모집',
     postStats: {
       accept: 42,

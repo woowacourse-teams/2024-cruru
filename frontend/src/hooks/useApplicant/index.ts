@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 export default function useApplicant({ applicantId }: { applicantId?: number }) {
   const queryClient = useQueryClient();
-  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const toast = useToast();
 
   return useMutation({
@@ -14,7 +14,7 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
       applicantApis.move({ processId, applicants }),
     onSuccess: (_, variables) => {
       const { processId } = variables;
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVALUATION, processId, applicantId] });
       if (applicantId) {
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.APPLICANT, applicantId] });

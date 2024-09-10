@@ -24,12 +24,14 @@ const meta: Meta<typeof DashboardSidebar> = {
       {
         text: '첫번째 옵션',
         isSelected: true,
-        postId: 1,
+        dashboardId: '1',
+        applyFormId: '10',
       },
       {
         text: '두번째 옵션',
         isSelected: false,
-        postId: 2,
+        dashboardId: '2',
+        applyFormId: '11',
       },
     ],
   },
@@ -59,9 +61,9 @@ type Story = StoryObj<typeof DashboardSidebar>;
 export const Default: Story = {
   args: {
     options: [
-      { text: '우아한테크코스 6기 프론트엔드', isSelected: true, postId: 1 },
-      { text: '우아한테크코스 6기 백엔드', isSelected: false, postId: 2 },
-      { text: '우아한테크코스 6기 안드로이드', isSelected: false, postId: 3 },
+      { text: '우아한테크코스 6기 프론트엔드', isSelected: true, dashboardId: '1', applyFormId: '10' },
+      { text: '우아한테크코스 6기 백엔드', isSelected: false, dashboardId: '2', applyFormId: '11' },
+      { text: '우아한테크코스 6기 안드로이드', isSelected: false, dashboardId: '3', applyFormId: '12' },
     ],
   },
 };

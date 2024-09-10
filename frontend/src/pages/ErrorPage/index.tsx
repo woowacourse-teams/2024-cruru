@@ -2,6 +2,8 @@ import ApiError from '@api/ApiError';
 import Button from '@components/common/Button';
 import { ButtonColor } from '@components/common/Button/style';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
+import { routes } from '@router/path';
+import useClubId from '@hooks/service/useClubId';
 import S from './style';
 
 interface ButtonConfig {
@@ -24,12 +26,12 @@ const ErrorMessages: Record<number | string, ErrorMessageConfig> = {
     buttons: [
       {
         label: '로그인',
-        to: '/sign-in',
+        to: routes.signIn(),
         color: 'primary',
       },
       {
         label: '회원가입',
-        to: '/sign-up',
+        to: routes.signUp(),
         color: 'white',
       },
     ],
@@ -103,6 +105,7 @@ function renderButtons(buttons: ButtonConfig[], navigate: ReturnType<typeof useN
 export default function ErrorPage() {
   const error = useRouteError();
   const navigate = useNavigate();
+  const { clearClubId } = useClubId();
 
   let status;
 
@@ -110,6 +113,9 @@ export default function ErrorPage() {
     status = error.status;
   } else if (error instanceof ApiError) {
     status = error.statusCode;
+    if (status === 401) {
+      clearClubId();
+    }
   }
 
   const { title, description, buttons } = ErrorMessages[status ?? 'default'] || ErrorMessages.default;
