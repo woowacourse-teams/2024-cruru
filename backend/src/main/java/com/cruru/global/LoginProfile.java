@@ -1,4 +1,4 @@
-package com.cruru.auth.controller.request;
+package com.cruru.global;
 
 import com.cruru.member.domain.MemberRole;
 

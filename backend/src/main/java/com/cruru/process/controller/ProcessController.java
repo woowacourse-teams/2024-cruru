@@ -1,6 +1,6 @@
 package com.cruru.process.controller;
 
-import com.cruru.auth.controller.request.LoginProfile;
+import com.cruru.global.LoginProfile;
 import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
