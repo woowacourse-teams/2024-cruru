@@ -10,7 +10,7 @@ import com.cruru.applicant.controller.response.ApplicantResponse;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.process.controller.dto.ProcessSimpleResponse;
+import com.cruru.process.controller.response.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import java.util.List;

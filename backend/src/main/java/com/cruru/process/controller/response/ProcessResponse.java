@@ -1,4 +1,4 @@
-package com.cruru.process.controller.dto;
+package com.cruru.process.controller.response;
 
 import com.cruru.applicant.controller.response.ApplicantCardResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;

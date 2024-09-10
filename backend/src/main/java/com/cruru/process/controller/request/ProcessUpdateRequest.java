@@ -1,4 +1,4 @@
-package com.cruru.process.controller.dto;
+package com.cruru.process.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
