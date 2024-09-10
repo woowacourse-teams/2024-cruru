@@ -1,9 +1,9 @@
 package com.cruru.dashboard.controller;
 
 import com.cruru.auth.controller.request.LoginProfile;
-import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
-import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
-import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;
+import com.cruru.dashboard.controller.request.DashboardCreateRequest;
+import com.cruru.dashboard.controller.response.DashboardCreateResponse;
+import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
 import com.cruru.dashboard.service.facade.DashboardFacade;
 import jakarta.validation.Valid;
 import java.net.URI;

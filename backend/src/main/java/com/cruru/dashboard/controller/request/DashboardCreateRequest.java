@@ -1,4 +1,4 @@
-package com.cruru.dashboard.controller.dto;
+package com.cruru.dashboard.controller.request;
 
 import com.cruru.question.controller.request.QuestionCreateRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -1,4 +1,4 @@
-package com.cruru.dashboard.controller.dto;
+package com.cruru.dashboard.controller.response;
 
 public record StatsResponse(
         int accept,

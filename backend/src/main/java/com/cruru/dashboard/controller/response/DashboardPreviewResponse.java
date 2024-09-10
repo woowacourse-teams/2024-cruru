@@ -1,4 +1,4 @@
-package com.cruru.dashboard.controller.dto;
+package com.cruru.dashboard.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;

@@ -13,7 +13,7 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
-import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
+import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.request.QuestionCreateRequest;
