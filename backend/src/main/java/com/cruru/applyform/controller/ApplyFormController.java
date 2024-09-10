@@ -1,8 +1,8 @@
 package com.cruru.applyform.controller;
 
-import com.cruru.applyform.controller.dto.ApplyFormResponse;
-import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
+import com.cruru.applyform.controller.response.ApplyFormResponse;
+import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.service.facade.ApplyFormFacade;
 import jakarta.validation.Valid;
 import java.net.URI;

@@ -4,7 +4,7 @@ import com.cruru.question.domain.Answer;
 import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.question.controller.response.AnswerResponse;
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.applyform.controller.dto.AnswerCreateRequest;
+import com.cruru.applyform.controller.request.AnswerCreateRequest;
 import com.cruru.applyform.exception.badrequest.ReplyNotExistsException;
 import com.cruru.question.domain.Question;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.cruru.applyform.controller.dto;
+package com.cruru.applyform.controller.response;
 
 import com.cruru.question.controller.response.QuestionResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;

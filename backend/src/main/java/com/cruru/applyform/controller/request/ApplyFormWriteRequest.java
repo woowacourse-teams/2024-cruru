@@ -1,4 +1,4 @@
-package com.cruru.applyform.controller.dto;
+package com.cruru.applyform.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;

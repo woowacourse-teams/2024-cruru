@@ -2,7 +2,7 @@ package com.cruru.dashboard.service.facade;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
+import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
 import com.cruru.auth.controller.dto.LoginProfile;

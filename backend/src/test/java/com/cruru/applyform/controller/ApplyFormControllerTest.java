@@ -8,9 +8,9 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.applicant.controller.request.ApplicantCreateRequest;
-import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
+import com.cruru.applyform.controller.request.AnswerCreateRequest;
+import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.question.domain.repository.ChoiceRepository;

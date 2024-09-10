@@ -1,4 +1,4 @@
-package com.cruru.applyform.controller.dto;
+package com.cruru.applyform.controller.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;

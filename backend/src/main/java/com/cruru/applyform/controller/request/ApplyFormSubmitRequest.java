@@ -1,4 +1,4 @@
-package com.cruru.applyform.controller.dto;
+package com.cruru.applyform.controller.request;
 
 import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
