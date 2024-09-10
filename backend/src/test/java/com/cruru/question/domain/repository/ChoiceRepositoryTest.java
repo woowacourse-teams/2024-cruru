@@ -1,8 +1,8 @@
-package com.cruru.choice.domain.repository;
+package com.cruru.question.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cruru.choice.domain.Choice;
+import com.cruru.question.domain.Choice;
 import com.cruru.util.RepositoryTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

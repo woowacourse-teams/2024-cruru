@@ -5,14 +5,14 @@ import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
-import com.cruru.answer.domain.Answer;
-import com.cruru.answer.domain.repository.AnswerRepository;
+import com.cruru.question.domain.Answer;
+import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.domain.Choice;
-import com.cruru.choice.domain.repository.ChoiceRepository;
+import com.cruru.question.domain.Choice;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.Dashboard;

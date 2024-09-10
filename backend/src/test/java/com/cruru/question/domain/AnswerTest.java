@@ -1,9 +1,8 @@
-package com.cruru.answer.domain;
+package com.cruru.question.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.cruru.answer.exception.AnswerContentLengthException;
-import com.cruru.question.domain.Question;
+import com.cruru.question.exception.AnswerContentLengthException;
 import com.cruru.util.fixture.QuestionFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

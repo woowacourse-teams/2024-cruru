@@ -10,7 +10,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.controller.dto.ChoiceCreateRequest;
+import com.cruru.question.controller.dto.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;

@@ -1,6 +1,5 @@
 package com.cruru.question.controller.dto;
 
-import com.cruru.choice.controller.dto.ChoiceCreateRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

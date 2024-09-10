@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.controller.dto.ChoiceResponse;
-import com.cruru.choice.domain.repository.ChoiceRepository;
+import com.cruru.question.controller.dto.ChoiceResponse;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.controller.dto.QuestionCreateRequest;

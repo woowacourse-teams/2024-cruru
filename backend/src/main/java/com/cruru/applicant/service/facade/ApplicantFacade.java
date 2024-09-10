@@ -1,8 +1,8 @@
 package com.cruru.applicant.service.facade;
 
-import com.cruru.answer.domain.Answer;
-import com.cruru.answer.dto.AnswerResponse;
-import com.cruru.answer.service.AnswerService;
+import com.cruru.question.domain.Answer;
+import com.cruru.question.dto.AnswerResponse;
+import com.cruru.question.service.AnswerService;
 import com.cruru.applicant.controller.dto.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;

@@ -1,8 +1,8 @@
-package com.cruru.answer.domain.repository;
+package com.cruru.question.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cruru.answer.domain.Answer;
+import com.cruru.question.domain.Answer;
 import com.cruru.question.domain.Question;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.QuestionFixture;

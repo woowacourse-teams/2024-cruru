@@ -1,6 +1,6 @@
 package com.cruru.util.fixture;
 
-import com.cruru.choice.domain.Choice;
+import com.cruru.question.domain.Choice;
 import com.cruru.question.domain.Question;
 import java.util.List;
 

@@ -1,6 +1,5 @@
-package com.cruru.choice.domain;
+package com.cruru.question.domain;
 
-import com.cruru.question.domain.Question;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

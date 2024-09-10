@@ -1,6 +1,6 @@
 package com.cruru.applicant.controller.dto;
 
-import com.cruru.answer.dto.AnswerResponse;
+import com.cruru.question.dto.AnswerResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 

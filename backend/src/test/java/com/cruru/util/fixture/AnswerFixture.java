@@ -1,6 +1,6 @@
 package com.cruru.util.fixture;
 
-import com.cruru.answer.domain.Answer;
+import com.cruru.question.domain.Answer;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.question.domain.Question;
 

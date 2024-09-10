@@ -1,12 +1,12 @@
-package com.cruru.answer.service;
+package com.cruru.question.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.answer.domain.Answer;
-import com.cruru.answer.domain.repository.AnswerRepository;
-import com.cruru.answer.dto.AnswerResponse;
+import com.cruru.question.domain.Answer;
+import com.cruru.question.domain.repository.AnswerRepository;
+import com.cruru.question.dto.AnswerResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;

@@ -1,4 +1,4 @@
-package com.cruru.choice.service;
+package com.cruru.question.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.controller.dto.ChoiceCreateRequest;
-import com.cruru.choice.domain.Choice;
-import com.cruru.choice.domain.repository.ChoiceRepository;
-import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
-import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
+import com.cruru.question.controller.dto.ChoiceCreateRequest;
+import com.cruru.question.domain.Choice;
+import com.cruru.question.domain.repository.ChoiceRepository;
+import com.cruru.question.exception.badrequest.ChoiceEmptyException;
+import com.cruru.question.exception.badrequest.ChoiceIllegalSaveException;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.QuestionRepository;

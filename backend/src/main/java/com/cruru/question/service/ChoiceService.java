@@ -1,11 +1,11 @@
-package com.cruru.choice.service;
+package com.cruru.question.service;
 
-import com.cruru.choice.controller.dto.ChoiceCreateRequest;
-import com.cruru.choice.controller.dto.ChoiceResponse;
-import com.cruru.choice.domain.Choice;
-import com.cruru.choice.domain.repository.ChoiceRepository;
-import com.cruru.choice.exception.badrequest.ChoiceEmptyException;
-import com.cruru.choice.exception.badrequest.ChoiceIllegalSaveException;
+import com.cruru.question.controller.dto.ChoiceCreateRequest;
+import com.cruru.question.controller.dto.ChoiceResponse;
+import com.cruru.question.domain.Choice;
+import com.cruru.question.domain.repository.ChoiceRepository;
+import com.cruru.question.exception.badrequest.ChoiceEmptyException;
+import com.cruru.question.exception.badrequest.ChoiceIllegalSaveException;
 import com.cruru.question.domain.Question;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

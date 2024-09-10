@@ -13,7 +13,7 @@ import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.domain.repository.ChoiceRepository;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.repository.ProcessRepository;

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.advice.InternalServerException;
-import com.cruru.answer.domain.repository.AnswerRepository;
+import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
