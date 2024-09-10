@@ -11,15 +11,15 @@ export const processMutations = {
   useCreateProcess: ({
     handleSuccess,
     dashboardId,
-    postId,
+    applyFormId,
   }: {
     handleSuccess: () => void;
     dashboardId: string;
-    postId: string;
+    applyFormId: string;
   }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
     };
 
     return useMutation({
@@ -32,10 +32,10 @@ export const processMutations = {
     });
   },
 
-  useModifyProcess: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
+  useModifyProcess: ({ dashboardId, applyFormId }: { dashboardId: string; applyFormId: string }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
     };
 
     const toast = useToast();
@@ -49,10 +49,10 @@ export const processMutations = {
     });
   },
 
-  useDeleteProcess: ({ dashboardId, postId }: { dashboardId: string; postId: string }) => {
+  useDeleteProcess: ({ dashboardId, applyFormId }: { dashboardId: string; applyFormId: string }) => {
     const queryClient = useQueryClient();
     const invalidateQueries = () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
     };
 
     return useMutation({

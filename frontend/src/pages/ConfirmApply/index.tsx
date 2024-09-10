@@ -3,17 +3,18 @@ import Button from '@components/common/Button';
 
 import { LuCheckCircle } from 'react-icons/lu';
 
+import { routes } from '@router/path';
 import S from './style';
 
 export default function ConfirmApply() {
   const location = useLocation();
   const state = location.state as { title: string };
 
-  const { postId } = useParams<{ postId: string }>();
+  const { applyFormId } = useParams() as { applyFormId: string };
 
   const navigate = useNavigate();
   const navigateToPost = () => {
-    navigate(`/post/${postId}`);
+    navigate(routes.post({ applyFormId }));
   };
 
   if (!state) {

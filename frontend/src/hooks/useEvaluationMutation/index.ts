@@ -18,11 +18,11 @@ interface MutationParams {
 
 export default function useEvaluationMutation({ processId, applicantId, closeOnSuccess }: UseEvaluationMutationParams) {
   const queryClient = useQueryClient();
-  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
+  const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
   const invalidateQueries = () => {
     queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVALUATION, processId, applicantId] });
-    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, postId] });
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
   };
 
   return useMutation({

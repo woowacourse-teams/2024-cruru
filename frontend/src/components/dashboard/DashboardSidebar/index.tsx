@@ -1,13 +1,15 @@
 import Logo from '@assets/images/logo.svg';
 import Accordion from '@components/common/Accordion';
-import { Link, useParams } from 'react-router-dom';
+import { routes } from '@router/path';
+import { Link } from 'react-router-dom';
 import LogoutButton from './LogoutButton';
 import S from './style';
 
 interface Option {
   text: string;
   isSelected: boolean;
-  postId: number;
+  applyFormId: string;
+  dashboardId: string;
 }
 
 interface DashboardSidebarProps {
@@ -15,11 +17,9 @@ interface DashboardSidebarProps {
 }
 
 export default function DashboardSidebar({ options }: DashboardSidebarProps) {
-  const { dashboardId } = useParams<{ dashboardId: string }>();
-
   return (
     <S.Container>
-      <Link to={`/dashboard/${dashboardId}/posts`}>
+      <Link to={routes.dashboard.list()}>
         <S.Logo
           src={Logo}
           alt="크루루 로고"
@@ -27,12 +27,12 @@ export default function DashboardSidebar({ options }: DashboardSidebarProps) {
       </Link>
 
       <S.Contents>
-        <Accordion title={<Link to={`/dashboard/${dashboardId}/posts`}>공고</Link>}>
-          {options.map(({ text, isSelected, postId }, index) => (
+        <Accordion title={<Link to={routes.dashboard.list()}>공고</Link>}>
+          {options.map(({ text, isSelected, applyFormId, dashboardId }, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <Accordion.ListItem key={index}>
               <S.LinkContainer isSelected={isSelected}>
-                <Link to={`/dashboard/${dashboardId}/${postId}`}>{text}</Link>
+                <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>{text}</Link>
               </S.LinkContainer>
             </Accordion.ListItem>
           ))}

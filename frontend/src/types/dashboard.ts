@@ -44,9 +44,9 @@ interface Stats {
 
 interface Dashboard {
   dashboardId: string;
+  applyFormId: string;
   title: string;
   stats: Stats;
-  postUrl: string;
   startDate: string;
   endDate: string;
 }

@@ -6,11 +6,11 @@ import ProcessAddButton from '../ProcessAddButton';
 
 interface ProcessManageBoardProps {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
   processes: Process[];
 }
 
-export default function ProcessManageBoard({ dashboardId, postId, processes }: ProcessManageBoardProps) {
+export default function ProcessManageBoard({ dashboardId, applyFormId, processes }: ProcessManageBoardProps) {
   const FIRST_INDEX = 0;
   const LAST_INDEX = processes.length - 1;
   const isAddable = processes.length < 5;
@@ -21,7 +21,7 @@ export default function ProcessManageBoard({ dashboardId, postId, processes }: P
         <Fragment key={process.processId}>
           <ProcessModifyForm
             dashboardId={dashboardId}
-            postId={postId}
+            applyFormId={applyFormId}
             process={process}
             isDeletable={index !== FIRST_INDEX && index !== LAST_INDEX}
           />
@@ -29,7 +29,7 @@ export default function ProcessManageBoard({ dashboardId, postId, processes }: P
           {isAddable && index !== LAST_INDEX && (
             <ProcessAddButton
               dashboardId={dashboardId}
-              postId={postId}
+              applyFormId={applyFormId}
               priorOrderIndex={process.orderIndex}
             />
           )}

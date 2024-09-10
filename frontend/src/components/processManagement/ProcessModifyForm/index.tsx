@@ -10,19 +10,19 @@ import C from '../style';
 
 interface ProcessModifyFormProps {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
   process: Process;
   isDeletable?: boolean;
 }
 
 export default function ProcessModifyForm({
   dashboardId,
-  postId,
+  applyFormId,
   process,
   isDeletable = false,
 }: ProcessModifyFormProps) {
-  const { mutate: modifyMutate } = processMutations.useModifyProcess({ dashboardId, postId });
-  const { mutate: deleteMutate } = processMutations.useDeleteProcess({ dashboardId, postId });
+  const { mutate: modifyMutate } = processMutations.useModifyProcess({ dashboardId, applyFormId });
+  const { mutate: deleteMutate } = processMutations.useDeleteProcess({ dashboardId, applyFormId });
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: process.name ?? '',

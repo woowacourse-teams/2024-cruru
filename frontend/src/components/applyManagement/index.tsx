@@ -11,8 +11,8 @@ import S from './style';
 
 export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { postId } = useParams<{ postId: string }>() as {
-    postId: string;
+  const { applyFormId } = useParams<{ applyFormId: string }>() as {
+    applyFormId: string;
   };
 
   const {
@@ -27,7 +27,7 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
     setQuestionPrev,
     setQuestionNext,
     deleteQuestion,
-  } = useApplyManagement({ postId });
+  } = useApplyManagement({ applyFormId });
 
   useEffect(() => {
     if (isVisible && wrapperRef.current && !isLoading) {

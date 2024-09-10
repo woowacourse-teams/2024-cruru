@@ -1,16 +1,16 @@
 import dashboardApis from '@api/domain/dashboard';
 import type { Club } from '@customTypes/dashboard';
 import QUERY_KEYS from '@hooks/queryKeys';
+import useClubId from '@hooks/service/useClubId';
 import { useQuery } from '@tanstack/react-query';
 
-interface UseGetDashboardsProps {
-  dashboardId: string;
-}
+export default function useGetDashboards() {
+  const clubId = useClubId().getClubId() || '';
 
-export default function useGetDashboards({ dashboardId }: UseGetDashboardsProps) {
   const { data, error, isLoading } = useQuery<Club>({
-    queryKey: [QUERY_KEYS.DASHBOARD, dashboardId],
-    queryFn: () => dashboardApis.get({ dashboardId }),
+    queryKey: [QUERY_KEYS.DASHBOARD, clubId],
+    queryFn: () => dashboardApis.get({ clubId }),
+    enabled: !!clubId,
   });
 
   return { data, error, isLoading };

@@ -13,15 +13,15 @@ import C from '../style';
 
 interface ProcessAddFormProps {
   dashboardId: string;
-  postId: string;
+  applyFormId: string;
   priorOrderIndex: number;
   toggleForm: () => void;
 }
 
-export default function ProcessAddForm({ dashboardId, postId, priorOrderIndex, toggleForm }: ProcessAddFormProps) {
+export default function ProcessAddForm({ dashboardId, applyFormId, priorOrderIndex, toggleForm }: ProcessAddFormProps) {
   const formRef = useClickOutside<HTMLFormElement>(toggleForm);
 
-  const { mutate } = processMutations.useCreateProcess({ handleSuccess: toggleForm, dashboardId, postId });
+  const { mutate } = processMutations.useCreateProcess({ handleSuccess: toggleForm, dashboardId, applyFormId });
 
   const [formState, setFormState] = useState<Pick<Process, 'name' | 'description'>>({
     name: '',
@@ -44,7 +44,7 @@ export default function ProcessAddForm({ dashboardId, postId, priorOrderIndex, t
     // 따라서 API로 데이터를 전송할 때, dashboardId 필드에는 Number로 변환된 postId를 보내야 합니다.
     // 2024-08-12 by 아르
     mutate({
-      dashboardId: Number(postId),
+      dashboardId: Number(applyFormId),
       orderIndex: priorOrderIndex + 1,
       ...formState,
     });

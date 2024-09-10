@@ -1,15 +1,15 @@
 import RecruitmentCard from '@components/recruitment/RecruitmentCard';
-import { useNavigate, useParams } from 'react-router-dom';
 import useGetDashboards from '@hooks/useGetDashboards';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '@router/path';
 import S from './style';
 
 export default function DashboardList() {
-  const { dashboardId } = useParams() as { dashboardId: string };
-  const { data } = useGetDashboards({ dashboardId });
+  const { data } = useGetDashboards();
   const navigate = useNavigate();
 
-  const handleCardClick = (postId: number) => {
-    navigate(`/dashboard/${dashboardId}/${postId}`);
+  const handleCardClick = (dashboardId: string, applyFormId: string) => {
+    navigate(routes.dashboard.post({ dashboardId, applyFormId }));
   };
 
   return (
@@ -18,17 +18,16 @@ export default function DashboardList() {
       <S.CardGrid>
         {data?.dashboards.map((dashboard) => (
           <RecruitmentCard
-            key={dashboard.dashboardId}
-            // TODO: dashboardId -> postId로 변경
-            dashboardId={Number(dashboard.dashboardId)}
+            key={`${dashboard.dashboardId}-${dashboard.applyFormId}`}
+            dashboardId={dashboard.dashboardId}
             title={dashboard.title}
             postStats={dashboard.stats}
             startDate={dashboard.startDate}
             endDate={dashboard.endDate}
-            onClick={handleCardClick}
+            onClick={() => handleCardClick(dashboard.dashboardId, dashboard.applyFormId)}
           />
         ))}
-        <S.AddCard onClick={() => navigate(`/dashboard/${dashboardId}/create`)}>
+        <S.AddCard onClick={() => navigate(routes.dashboard.create())}>
           <div>+</div>
           <span>새 공고 추가</span>
         </S.AddCard>

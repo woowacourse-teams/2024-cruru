@@ -40,7 +40,8 @@
       "@customTypes/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"],
       "@mocks/*": ["src/mocks/*"],
-      "@domain/*": ["src/domain/*"]
+      "@domain/*": ["src/domain/*"],
+      "@router/*": ["src/router/*"]
     }
   },
   "include": ["src/**/*", "setupTests.ts", ".storybook/*"]

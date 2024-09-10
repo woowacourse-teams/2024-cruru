@@ -13,9 +13,9 @@ export type RecruitmentPostTabItems = '모집 공고' | '지원하기';
 export default function RecruitmentPostTab() {
   const { currentMenu, moveTab } = useTab<RecruitmentPostTabItems>({ defaultValue: '모집 공고' });
 
-  const { postId } = useParams<{ postId: string }>() as { postId: string };
-  const { data: questions } = applyQueries.useGetApplyForm({ postId: postId ?? '' });
-  const { data: recruitmentPost, isClosed } = applyQueries.useGetRecruitmentPost({ postId: postId ?? '' });
+  const { applyFormId } = useParams<{ applyFormId: string }>() as { applyFormId: string };
+  const { data: questions } = applyQueries.useGetApplyForm({ applyFormId: applyFormId ?? '' });
+  const { data: recruitmentPost, isClosed } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
 
   return (
     <>

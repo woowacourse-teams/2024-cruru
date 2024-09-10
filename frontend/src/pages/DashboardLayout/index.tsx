@@ -1,19 +1,20 @@
-import useGetDashboards from '@hooks/useGetDashboards';
 import DashboardSidebar from '@components/dashboard/DashboardSidebar';
+import useGetDashboards from '@hooks/useGetDashboards';
 import { Outlet, useParams } from 'react-router-dom';
 import S from './style';
 
 export default function DashboardLayout() {
-  const { dashboardId, postId } = useParams() as { dashboardId: string; postId: string };
-  const { data, isLoading } = useGetDashboards({ dashboardId });
+  const { applyFormId: currentPostId } = useParams();
+  const { data, isLoading } = useGetDashboards();
 
   if (isLoading) return <div>Loading...</div>;
   if (!data) return <div>something wrong</div>;
 
-  const titleList = data.dashboards.map(({ title, dashboardId: postId2 }) => ({
+  const titleList = data.dashboards.map(({ title, dashboardId, applyFormId }) => ({
     text: title,
-    isSelected: !!postId && postId === postId2,
-    postId: Number(postId2),
+    isSelected: !!currentPostId && currentPostId === applyFormId,
+    applyFormId,
+    dashboardId,
   }));
 
   return (

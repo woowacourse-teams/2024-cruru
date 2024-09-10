@@ -9,7 +9,7 @@ import { RecruitmentPost } from '@customTypes/apply';
 import { useToast } from '@contexts/ToastContext';
 
 interface usePostManagementProps {
-  postId: string;
+  applyFormId: string;
 }
 
 const INITIAL_POST_INFO: RecruitmentInfoState = {
@@ -19,8 +19,8 @@ const INITIAL_POST_INFO: RecruitmentInfoState = {
   postingContent: '',
 };
 
-export default function usePostManagement({ postId }: usePostManagementProps) {
-  const { data: postInfo, isLoading } = applyQueries.useGetRecruitmentPost({ postId });
+export default function usePostManagement({ applyFormId }: usePostManagementProps) {
+  const { data: postInfo, isLoading } = applyQueries.useGetRecruitmentPost({ applyFormId });
   const [postState, setPostState] = useState<RecruitmentInfoState>(INITIAL_POST_INFO);
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -32,9 +32,9 @@ export default function usePostManagement({ postId }: usePostManagementProps) {
   }, [isLoading, postInfo]);
 
   const modifyPostMutator = useMutation({
-    mutationFn: () => applyApis.modify({ postId, body: postState as RecruitmentPost }),
+    mutationFn: () => applyApis.modify({ applyFormId, body: postState as RecruitmentPost }),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, postId] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, applyFormId] });
       toast.success('공고의 내용 수정에 성공했습니다.');
     },
     onError: () => {

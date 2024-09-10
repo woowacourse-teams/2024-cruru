@@ -36,7 +36,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     dashboardId: '1',
-    postId: '1',
+    applyFormId: '1',
     priorOrderIndex: 0,
     toggleForm: () => {},
   },
