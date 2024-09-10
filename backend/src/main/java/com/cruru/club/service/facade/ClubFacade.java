@@ -1,6 +1,6 @@
 package com.cruru.club.service.facade;
 
-import com.cruru.club.controller.dto.ClubCreateRequest;
+import com.cruru.club.controller.request.ClubCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.member.domain.Member;

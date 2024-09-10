@@ -3,7 +3,7 @@ package com.cruru.club.service.facade;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.club.controller.dto.ClubCreateRequest;
+import com.cruru.club.controller.request.ClubCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;

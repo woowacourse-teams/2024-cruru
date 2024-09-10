@@ -1,6 +1,6 @@
 package com.cruru.club.controller;
 
-import com.cruru.club.controller.dto.ClubCreateRequest;
+import com.cruru.club.controller.request.ClubCreateRequest;
 import com.cruru.club.service.facade.ClubFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
