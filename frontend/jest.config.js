@@ -17,6 +17,7 @@ module.exports = {
     '^@types/(.*)$': '<rootDir>/src/types/$1',
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@mocks/(.*)$': '<rootDir>/src/mocks/$1',
+    '^@router/(.*)$': '<rootDir>/src/router/$1',
   },
   testEnvironmentOptions: {
     customExportConditions: [''],
