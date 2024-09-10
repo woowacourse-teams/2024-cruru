@@ -18,4 +18,4 @@ operation::dashboard/create-fail/club-not-found[snippets="http-request,request-c
 
 ==== 성공
 
-operation::dashboard/read[snippets="http-request,request-cookies,query-parameters,response-fields,http-response"]
+operation::dashboard/read[snippets="http-request,request-cookies,query-parameters,http-response,response-fields"]
