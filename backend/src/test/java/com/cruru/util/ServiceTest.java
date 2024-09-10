@@ -2,7 +2,7 @@ package com.cruru.util;
 
 import static org.mockito.Mockito.doReturn;
 
-import com.cruru.auth.controller.dto.LoginProfile;
+import com.cruru.auth.controller.request.LoginProfile;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.Dashboard;

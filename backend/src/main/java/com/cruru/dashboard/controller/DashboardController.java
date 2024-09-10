@@ -1,6 +1,6 @@
 package com.cruru.dashboard.controller;
 
-import com.cruru.auth.controller.dto.LoginProfile;
+import com.cruru.auth.controller.request.LoginProfile;
 import com.cruru.dashboard.controller.dto.DashboardCreateRequest;
 import com.cruru.dashboard.controller.dto.DashboardCreateResponse;
 import com.cruru.dashboard.controller.dto.DashboardsOfClubResponse;

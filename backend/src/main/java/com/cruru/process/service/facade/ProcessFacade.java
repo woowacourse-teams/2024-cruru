@@ -5,7 +5,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
-import com.cruru.auth.controller.dto.LoginProfile;
+import com.cruru.auth.controller.request.LoginProfile;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;

@@ -1,4 +1,4 @@
-package com.cruru.auth.controller.dto;
+package com.cruru.auth.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
