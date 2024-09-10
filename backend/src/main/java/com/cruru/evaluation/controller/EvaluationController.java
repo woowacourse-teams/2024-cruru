@@ -46,7 +46,7 @@ public class EvaluationController {
 
     @PatchMapping("/{evaluationId}")
     public ResponseEntity<Void> update(
-            @RequestBody EvaluationUpdateRequest request,
+            @RequestBody @Valid EvaluationUpdateRequest request,
             @PathVariable long evaluationId
     ) {
         evaluationFacade.updateSingleEvaluation(request, evaluationId);

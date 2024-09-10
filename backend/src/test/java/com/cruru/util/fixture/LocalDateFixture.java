@@ -7,12 +7,12 @@ import java.time.ZoneOffset;
 
 public class LocalDateFixture {
 
-    public static Clock fixedClock() {
-        return Clock.fixed(Instant.parse("2024-08-01T02:00:00Z"), ZoneOffset.UTC);
-    }
-
     public static LocalDateTime oneDayAgo() {
         return LocalDateTime.now(fixedClock()).minusDays(1);
+    }
+
+    public static Clock fixedClock() {
+        return Clock.fixed(Instant.parse("2024-08-01T02:00:00Z"), ZoneOffset.UTC);
     }
 
     public static LocalDateTime oneWeekAgo() {
