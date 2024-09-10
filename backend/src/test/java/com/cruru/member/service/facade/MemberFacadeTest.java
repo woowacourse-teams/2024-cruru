@@ -3,7 +3,7 @@ package com.cruru.member.service.facade;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.member.controller.dto.MemberCreateRequest;
+import com.cruru.member.controller.request.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;

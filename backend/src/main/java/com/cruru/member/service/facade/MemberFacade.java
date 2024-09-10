@@ -1,7 +1,7 @@
 package com.cruru.member.service.facade;
 
 import com.cruru.club.service.ClubService;
-import com.cruru.member.controller.dto.MemberCreateRequest;
+import com.cruru.member.controller.request.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import lombok.RequiredArgsConstructor;

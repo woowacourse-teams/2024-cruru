@@ -1,6 +1,6 @@
 package com.cruru.member.controller;
 
-import com.cruru.member.controller.dto.MemberCreateRequest;
+import com.cruru.member.controller.request.MemberCreateRequest;
 import com.cruru.member.service.facade.MemberFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
