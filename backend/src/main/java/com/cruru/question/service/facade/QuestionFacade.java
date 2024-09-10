@@ -2,8 +2,8 @@ package com.cruru.question.service.facade;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
-import com.cruru.question.controller.dto.QuestionCreateRequest;
-import com.cruru.question.controller.dto.QuestionUpdateRequests;
+import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.controller.request.QuestionUpdateRequests;
 import com.cruru.question.exception.QuestionUnmodifiableException;
 import com.cruru.question.service.QuestionService;
 import java.time.Clock;

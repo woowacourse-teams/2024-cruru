@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.question.domain.Answer;
 import com.cruru.question.domain.repository.AnswerRepository;
-import com.cruru.question.dto.AnswerResponse;
+import com.cruru.question.controller.response.AnswerResponse;
 import com.cruru.applicant.controller.dto.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
 import com.cruru.applicant.controller.dto.ApplicantMoveRequest;

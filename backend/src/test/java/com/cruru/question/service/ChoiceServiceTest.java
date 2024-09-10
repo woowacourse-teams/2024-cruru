@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.question.controller.dto.ChoiceCreateRequest;
+import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.question.domain.Choice;
 import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.exception.badrequest.ChoiceEmptyException;

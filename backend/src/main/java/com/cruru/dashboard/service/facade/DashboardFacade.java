@@ -20,7 +20,7 @@ import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
-import com.cruru.question.controller.dto.QuestionCreateRequest;
+import com.cruru.question.controller.request.QuestionCreateRequest;
 import com.cruru.question.service.QuestionService;
 import java.time.Clock;
 import java.time.LocalDateTime;

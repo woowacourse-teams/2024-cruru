@@ -1,6 +1,6 @@
 package com.cruru.dashboard.controller.dto;
 
-import com.cruru.question.controller.dto.QuestionCreateRequest;
+import com.cruru.question.controller.request.QuestionCreateRequest;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import jakarta.validation.Valid;

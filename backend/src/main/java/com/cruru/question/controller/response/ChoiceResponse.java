@@ -1,4 +1,4 @@
-package com.cruru.question.controller.dto;
+package com.cruru.question.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

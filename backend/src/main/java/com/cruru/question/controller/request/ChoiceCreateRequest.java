@@ -1,4 +1,4 @@
-package com.cruru.question.controller.dto;
+package com.cruru.question.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
