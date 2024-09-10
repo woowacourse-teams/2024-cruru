@@ -1,6 +1,6 @@
 package com.cruru.process.service.facade;
 
-import com.cruru.applicant.controller.dto.ApplicantCardResponse;
+import com.cruru.applicant.controller.response.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.domain.ApplyForm;

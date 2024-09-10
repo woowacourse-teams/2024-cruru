@@ -1,4 +1,4 @@
-package com.cruru.applicant.controller.dto;
+package com.cruru.applicant.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;

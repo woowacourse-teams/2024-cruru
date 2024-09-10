@@ -1,6 +1,6 @@
 package com.cruru.applyform.controller.dto;
 
-import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
+import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

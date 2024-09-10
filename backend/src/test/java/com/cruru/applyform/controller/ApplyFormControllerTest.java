@@ -7,7 +7,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
+import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;
 import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;

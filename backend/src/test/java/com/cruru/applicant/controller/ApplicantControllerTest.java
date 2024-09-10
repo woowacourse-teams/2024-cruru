@@ -10,8 +10,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.question.domain.repository.AnswerRepository;
-import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
-import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
+import com.cruru.applicant.controller.request.ApplicantMoveRequest;
+import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.ApplyForm;

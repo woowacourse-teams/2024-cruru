@@ -1,4 +1,4 @@
-package com.cruru.applicant.controller.dto;
+package com.cruru.applicant.controller.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

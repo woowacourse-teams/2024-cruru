@@ -1,7 +1,7 @@
 package com.cruru.applyform.service.facade;
 
 import com.cruru.question.service.AnswerService;
-import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
+import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.dto.AnswerCreateRequest;

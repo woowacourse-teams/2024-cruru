@@ -3,7 +3,7 @@ package com.cruru.process.service.facade;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.applicant.controller.dto.ApplicantCardResponse;
+import com.cruru.applicant.controller.response.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;

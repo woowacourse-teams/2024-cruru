@@ -2,10 +2,10 @@ package com.cruru.applicant.service.facade;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.applicant.controller.dto.EvaluationCreateRequest;
-import com.cruru.applicant.controller.dto.EvaluationResponse;
-import com.cruru.applicant.controller.dto.EvaluationResponses;
-import com.cruru.applicant.controller.dto.EvaluationUpdateRequest;
+import com.cruru.applicant.controller.request.EvaluationCreateRequest;
+import com.cruru.applicant.controller.response.EvaluationResponse;
+import com.cruru.applicant.controller.response.EvaluationResponses;
+import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.service.EvaluationService;
 import com.cruru.process.domain.Process;

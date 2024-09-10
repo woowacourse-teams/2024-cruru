@@ -12,8 +12,8 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.applicant.controller.dto.EvaluationCreateRequest;
-import com.cruru.applicant.controller.dto.EvaluationUpdateRequest;
+import com.cruru.applicant.controller.request.EvaluationCreateRequest;
+import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;

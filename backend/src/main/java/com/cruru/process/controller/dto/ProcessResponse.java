@@ -1,6 +1,6 @@
 package com.cruru.process.controller.dto;
 
-import com.cruru.applicant.controller.dto.ApplicantCardResponse;
+import com.cruru.applicant.controller.response.ApplicantCardResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 

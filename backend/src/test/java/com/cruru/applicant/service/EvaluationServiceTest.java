@@ -6,12 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.applicant.controller.dto.EvaluationCreateRequest;
-import com.cruru.applicant.controller.dto.EvaluationUpdateRequest;
+import com.cruru.applicant.controller.request.EvaluationCreateRequest;
+import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applicant.exception.EvaluationNotFoundException;
-import com.cruru.applicant.service.EvaluationService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
