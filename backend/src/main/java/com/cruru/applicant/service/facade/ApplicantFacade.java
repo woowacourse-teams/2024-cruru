@@ -1,18 +1,18 @@
 package com.cruru.applicant.service.facade;
 
-import com.cruru.question.domain.Answer;
-import com.cruru.question.controller.response.AnswerResponse;
-import com.cruru.question.service.AnswerService;
+import com.cruru.applicant.controller.request.ApplicantMoveRequest;
+import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.response.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.response.ApplicantBasicResponse;
-import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.response.ApplicantResponse;
-import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.process.controller.response.ProcessSimpleResponse;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
+import com.cruru.question.controller.response.AnswerResponse;
+import com.cruru.question.domain.Answer;
+import com.cruru.question.service.AnswerService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 package com.cruru.question.domain;
 
-import com.cruru.question.exception.AnswerContentLengthException;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.auth.util.SecureResource;
 import com.cruru.member.domain.Member;
+import com.cruru.question.exception.AnswerContentLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

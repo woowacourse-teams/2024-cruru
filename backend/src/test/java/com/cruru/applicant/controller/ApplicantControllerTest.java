@@ -9,7 +9,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
@@ -21,6 +20,7 @@ import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.AnswerFixture;

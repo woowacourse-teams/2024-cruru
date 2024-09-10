@@ -5,14 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.controller.response.ApplicantCardResponse;
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.process.controller.request.ProcessCreateRequest;
+import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
-import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;

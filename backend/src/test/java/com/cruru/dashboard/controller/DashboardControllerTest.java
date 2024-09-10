@@ -10,12 +10,12 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.question.controller.request.QuestionCreateRequest;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;

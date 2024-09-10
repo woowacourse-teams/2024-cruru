@@ -10,11 +10,11 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.applicant.domain.Applicant;
-import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.controller.request.EvaluationCreateRequest;
 import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
+import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;

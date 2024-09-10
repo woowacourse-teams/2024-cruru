@@ -2,9 +2,9 @@ package com.cruru.process.controller;
 
 import com.cruru.global.LoginProfile;
 import com.cruru.process.controller.request.ProcessCreateRequest;
+import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
-import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.service.facade.ProcessFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

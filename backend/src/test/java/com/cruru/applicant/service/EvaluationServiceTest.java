@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.applicant.domain.Applicant;
-import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.controller.request.EvaluationCreateRequest;
 import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
+import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applicant.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;

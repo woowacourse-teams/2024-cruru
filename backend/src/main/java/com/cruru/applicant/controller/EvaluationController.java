@@ -1,8 +1,8 @@
 package com.cruru.applicant.controller;
 
 import com.cruru.applicant.controller.request.EvaluationCreateRequest;
-import com.cruru.applicant.controller.response.EvaluationResponses;
 import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
+import com.cruru.applicant.controller.response.EvaluationResponses;
 import com.cruru.applicant.service.facade.EvaluationFacade;
 import jakarta.validation.Valid;
 import java.net.URI;

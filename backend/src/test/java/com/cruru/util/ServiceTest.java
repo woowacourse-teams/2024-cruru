@@ -2,11 +2,11 @@ package com.cruru.util;
 
 import static org.mockito.Mockito.doReturn;
 
-import com.cruru.global.LoginProfile;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.global.LoginProfile;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.fixture.ClubFixture;
