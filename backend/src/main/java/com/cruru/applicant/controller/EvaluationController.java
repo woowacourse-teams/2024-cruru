@@ -1,9 +1,9 @@
-package com.cruru.evaluation.controller;
+package com.cruru.applicant.controller;
 
-import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
-import com.cruru.evaluation.controller.dto.EvaluationResponses;
-import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
-import com.cruru.evaluation.service.facade.EvaluationFacade;
+import com.cruru.applicant.controller.dto.EvaluationCreateRequest;
+import com.cruru.applicant.controller.dto.EvaluationResponses;
+import com.cruru.applicant.controller.dto.EvaluationUpdateRequest;
+import com.cruru.applicant.service.facade.EvaluationFacade;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;

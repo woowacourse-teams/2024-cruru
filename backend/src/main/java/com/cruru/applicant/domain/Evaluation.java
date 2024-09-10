@@ -1,8 +1,7 @@
-package com.cruru.evaluation.domain;
+package com.cruru.applicant.domain;
 
 import com.cruru.BaseEntity;
-import com.cruru.applicant.domain.Applicant;
-import com.cruru.evaluation.exception.badrequest.EvaluationScoreException;
+import com.cruru.applicant.exception.badrequest.EvaluationScoreException;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

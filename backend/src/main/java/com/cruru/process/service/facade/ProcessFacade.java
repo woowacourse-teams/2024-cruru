@@ -9,7 +9,7 @@ import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
-import com.cruru.evaluation.service.EvaluationService;
+import com.cruru.applicant.service.EvaluationService;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import com.cruru.process.controller.dto.ProcessCreateRequest;

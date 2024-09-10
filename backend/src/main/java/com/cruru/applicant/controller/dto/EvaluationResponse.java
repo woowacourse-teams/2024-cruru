@@ -1,4 +1,4 @@
-package com.cruru.evaluation.controller.dto;
+package com.cruru.applicant.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;

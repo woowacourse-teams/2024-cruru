@@ -1,13 +1,13 @@
-package com.cruru.evaluation.service.facade;
+package com.cruru.applicant.service.facade;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
-import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
-import com.cruru.evaluation.controller.dto.EvaluationResponse;
-import com.cruru.evaluation.controller.dto.EvaluationResponses;
-import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
-import com.cruru.evaluation.domain.Evaluation;
-import com.cruru.evaluation.service.EvaluationService;
+import com.cruru.applicant.controller.dto.EvaluationCreateRequest;
+import com.cruru.applicant.controller.dto.EvaluationResponse;
+import com.cruru.applicant.controller.dto.EvaluationResponses;
+import com.cruru.applicant.controller.dto.EvaluationUpdateRequest;
+import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.service.EvaluationService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import java.util.List;

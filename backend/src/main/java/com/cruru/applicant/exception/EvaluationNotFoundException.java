@@ -1,4 +1,4 @@
-package com.cruru.evaluation.exception;
+package com.cruru.applicant.exception;
 
 import com.cruru.advice.NotFoundException;
 

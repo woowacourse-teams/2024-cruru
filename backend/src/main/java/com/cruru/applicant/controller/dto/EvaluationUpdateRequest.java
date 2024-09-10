@@ -1,4 +1,4 @@
-package com.cruru.evaluation.controller.dto;
+package com.cruru.applicant.controller.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

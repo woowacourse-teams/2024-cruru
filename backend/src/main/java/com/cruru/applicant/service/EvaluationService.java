@@ -1,11 +1,11 @@
-package com.cruru.evaluation.service;
+package com.cruru.applicant.service;
 
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.evaluation.controller.dto.EvaluationCreateRequest;
-import com.cruru.evaluation.controller.dto.EvaluationUpdateRequest;
-import com.cruru.evaluation.domain.Evaluation;
-import com.cruru.evaluation.domain.repository.EvaluationRepository;
-import com.cruru.evaluation.exception.EvaluationNotFoundException;
+import com.cruru.applicant.controller.dto.EvaluationCreateRequest;
+import com.cruru.applicant.controller.dto.EvaluationUpdateRequest;
+import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.domain.repository.EvaluationRepository;
+import com.cruru.applicant.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

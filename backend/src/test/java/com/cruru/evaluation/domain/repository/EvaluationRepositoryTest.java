@@ -2,7 +2,8 @@ package com.cruru.evaluation.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.cruru.evaluation.domain.Evaluation;
+import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.EvaluationFixture;
 import org.junit.jupiter.api.BeforeEach;
