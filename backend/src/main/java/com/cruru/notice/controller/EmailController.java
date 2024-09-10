@@ -4,6 +4,7 @@ import com.cruru.notice.controller.dto.EmailRequest;
 import com.cruru.notice.facade.EmailFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,8 @@ public class EmailController {
     private final EmailFacade emailFacade;
 
     @PostMapping
-    public void sendEmail(@Valid @ModelAttribute EmailRequest request) {
+    public ResponseEntity<Void> send(@Valid @ModelAttribute EmailRequest request) {
         emailFacade.send(request);
+        return ResponseEntity.ok().build();
     }
 }
