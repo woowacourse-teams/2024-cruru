@@ -1,8 +1,7 @@
-package com.cruru.evaluation.domain;
+package com.cruru.applicant.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.exception.badrequest.EvaluationScoreException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,4 +1,4 @@
-package com.cruru.evaluation.service;
+package com.cruru.applicant.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

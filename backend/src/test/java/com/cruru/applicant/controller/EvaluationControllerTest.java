@@ -1,4 +1,4 @@
-package com.cruru.evaluation.controller;
+package com.cruru.applicant.controller;
 
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
