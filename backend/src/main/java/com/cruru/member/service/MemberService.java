@@ -1,7 +1,7 @@
 package com.cruru.member.service;
 
 import com.cruru.auth.security.PasswordValidator;
-import com.cruru.member.controller.dto.MemberCreateRequest;
+import com.cruru.member.controller.request.MemberCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.member.exception.MemberEmailDuplicatedException;

@@ -1,6 +1,14 @@
 package com.cruru.club.controller;
 
-import com.cruru.club.controller.dto.ClubCreateRequest;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
+
+import com.cruru.club.controller.request.ClubCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ControllerTest;
@@ -27,10 +35,15 @@ class ClubControllerTest extends ControllerTest {
         String url = String.format("/v1/clubs?memberId=%d", member.getId());
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("club/create/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        queryParameters(parameterWithName("memberId").description("동아리를 생성할 사용자의 id")),
+                        requestFields(fieldWithPath("name").description("생성할 동아리의 이름"))
+                ))
                 .when().post(url)
                 .then().log().all().statusCode(201);
     }
@@ -45,11 +58,39 @@ class ClubControllerTest extends ControllerTest {
         String url = String.format("/v1/clubs?memberId=%d", invalidMemberId);
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("club/create-fail/member-not-found/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        queryParameters(parameterWithName("memberId").description("존재하지 않는 사용자의 id")),
+                        requestFields(fieldWithPath("name").description("생성할 동아리의 이름"))
+                ))
                 .when().post(url)
                 .then().log().all().statusCode(404);
+    }
+
+    @DisplayName("동아리 생성 시 조건에 맞지 않는 이름을 입력한 경우, 400을 응답한다.")
+    @Test
+    void create_invalidName() {
+        // given
+        String name = "";
+        Member member = memberRepository.save(MemberFixture.DOBBY);
+        ClubCreateRequest request = new ClubCreateRequest(name);
+        String url = String.format("/v1/clubs?memberId=%d", member.getId());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("club/create-fail/invalid-name/",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        queryParameters(parameterWithName("memberId").description("동아리를 생성할 사용자의 id")),
+                        requestFields(fieldWithPath("name").description("조건에 맞지 않는 동아리의 이름"))
+                ))
+                .when().post(url)
+                .then().log().all().statusCode(400);
     }
 }

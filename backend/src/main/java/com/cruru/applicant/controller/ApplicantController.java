@@ -1,10 +1,10 @@
 package com.cruru.applicant.controller;
 
-import com.cruru.applicant.controller.dto.ApplicantAnswerResponses;
-import com.cruru.applicant.controller.dto.ApplicantBasicResponse;
-import com.cruru.applicant.controller.dto.ApplicantMoveRequest;
-import com.cruru.applicant.controller.dto.ApplicantUpdateRequest;
-import com.cruru.applicant.service.facade.ApplicantFacade;
+import com.cruru.applicant.controller.request.ApplicantMoveRequest;
+import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
+import com.cruru.applicant.controller.response.ApplicantAnswerResponses;
+import com.cruru.applicant.controller.response.ApplicantBasicResponse;
+import com.cruru.applicant.facade.ApplicantFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -54,13 +54,13 @@ public class ApplicantController {
     }
 
     @PatchMapping("/{applicantId}/reject")
-    public ResponseEntity<ApplicantAnswerResponses> reject(@PathVariable Long applicantId) {
+    public ResponseEntity<Void> reject(@PathVariable Long applicantId) {
         applicantFacade.reject(applicantId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{applicantId}/unreject")
-    public ResponseEntity<ApplicantAnswerResponses> unreject(@PathVariable Long applicantId) {
+    public ResponseEntity<Void> unreject(@PathVariable Long applicantId) {
         applicantFacade.unreject(applicantId);
         return ResponseEntity.ok().build();
     }

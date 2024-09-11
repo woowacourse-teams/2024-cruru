@@ -1,9 +1,9 @@
 package com.cruru.auth.controller;
 
-import com.cruru.auth.controller.dto.LoginRequest;
-import com.cruru.auth.controller.dto.LoginResponse;
-import com.cruru.auth.service.facade.AuthFacade;
-import com.cruru.club.service.facade.ClubFacade;
+import com.cruru.auth.controller.request.LoginRequest;
+import com.cruru.auth.controller.response.LoginResponse;
+import com.cruru.auth.facade.AuthFacade;
+import com.cruru.club.facade.ClubFacade;
 import com.cruru.global.util.CookieManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,18 +1,27 @@
 package com.cruru.applyform.controller;
 
-import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
-import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
+
+import com.cruru.applicant.controller.request.ApplicantCreateRequest;
+import com.cruru.applyform.controller.request.AnswerCreateRequest;
+import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.ChoiceFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
@@ -27,9 +36,45 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.restdocs.payload.FieldDescriptor;
 
 @DisplayName("지원서 폼 컨트롤러 테스트")
 class ApplyFormControllerTest extends ControllerTest {
+
+    private static final FieldDescriptor[] ANSWER_SUBMIT_FIELD_DESCRIPTORS = {
+            fieldWithPath("questionId").description("질문의 id"),
+            fieldWithPath("replies").description("질문에 대한 응답")
+    };
+
+    private static final FieldDescriptor[] QUESTION_FIELD_DESCRIPTORS = {
+            fieldWithPath("id").description("질문의 id"),
+            fieldWithPath("type").description("질문 유형"),
+            fieldWithPath("label").description("질문의 내용"),
+            fieldWithPath("orderIndex").description("질문 순서"),
+            fieldWithPath("choices").description("질문의 선택지"),
+            fieldWithPath("required").description("질문 필수여부"),
+            };
+
+    private static final FieldDescriptor[] CHOICE_FIELD_DESCRIPTORS = {
+            fieldWithPath("id").description("선택지의 id"),
+            fieldWithPath("label").description("선택지의 내용"),
+            fieldWithPath("orderIndex").description("선택지 순서")
+    };
+
+    private static final FieldDescriptor[] APPLICANT_SUBMIT_FIELD_DESCRIPTORS = {
+            fieldWithPath("applicant.name").description("지원자의 이름"),
+            fieldWithPath("applicant.email").description("지원자의 이메일"),
+            fieldWithPath("applicant.phone").description("지원자의 전화번호"),
+            fieldWithPath("answers").description("지원폼에 대한 응답 모음"),
+            fieldWithPath("personalDataCollection").description("개인정보 활용 동의 여부")
+    };
+
+    private static final FieldDescriptor[] APPLYFORM_WRITE_FIELD_DESCRIPTORS = {
+            fieldWithPath("title").description("지원폼 제목"),
+            fieldWithPath("postingContent").description("지원폼 내용(본문)"),
+            fieldWithPath("startDate").description("지원 시작 날짜"),
+            fieldWithPath("endDate").description("지원 마감 날짜")
+    };
 
     @Autowired
     private DashboardRepository dashboardRepository;
@@ -42,6 +87,9 @@ class ApplyFormControllerTest extends ControllerTest {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private ChoiceRepository choiceRepository;
 
     private static Stream<ApplicantCreateRequest> InvalidApplicantCreateRequest() {
         String validName = "초코칩";
@@ -79,10 +127,14 @@ class ApplyFormControllerTest extends ControllerTest {
         );
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("applyform/submit",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                                .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(201);
     }
@@ -108,10 +160,19 @@ class ApplyFormControllerTest extends ControllerTest {
         );
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("applicant/submit-fail/reject-personal-data-collection",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(
+                                fieldWithPath("applicant.name").description("지원자의 이름"),
+                                fieldWithPath("applicant.email").description("지원자의 이메일"),
+                                fieldWithPath("applicant.phone").description("지원자의 전화번호"),
+                                fieldWithPath("answers").description("지원폼에 대한 응답 모음"),
+                                fieldWithPath("personalDataCollection").description("개인정보 활용 동의 거부")
+                        ).andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(400);
     }
@@ -136,10 +197,14 @@ class ApplyFormControllerTest extends ControllerTest {
         );
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("applicant/submit-fail/invalid-applicant-info",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                                .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(400);
     }
@@ -163,17 +228,21 @@ class ApplyFormControllerTest extends ControllerTest {
         );
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("applicant/submit-fail/invalid-answers",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                                .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(400);
     }
 
-    @DisplayName("지원서 폼 제출 시, 대시보드에 프로세스가 존재하지 않으면 500을 반환한다.")
+    @DisplayName("지원서 폼 제출 시, 대시보드에 제출 프로세스가 존재하지 않으면 500을 반환한다.")
     @Test
-    void submit_dashboardWithNoProcess() {
+    void submit_dashboardWithNoSubmitProcess() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
@@ -186,12 +255,98 @@ class ApplyFormControllerTest extends ControllerTest {
         );
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("applicant/submit-fail/no-submit-process",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS).
+                                andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
                 .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
                 .then().log().all().statusCode(500);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 모집 기간을 벗어난 경우 400을 반환한다.")
+    @Test
+    void submit_dateOutOfRange() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
+                true
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/submit-fail/date-out-of-range",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                                .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 지원서 폼이 존재하지 않을 경우 404를 반환한다.")
+    @Test
+    void submit_applyFormNotFound() {
+        // given
+        int invalidApplyFormId = -1;
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                List.of(new AnswerCreateRequest(question.getId(), List.of("온라인"))),
+                true
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/submit-fail/applyform-not-found",
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                                .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
+                ))
+                .when().post("/v1/applyform/{applyFormId}/submit", invalidApplyFormId)
+                .then().log().all().statusCode(404);
+    }
+
+    @DisplayName("지원서 폼 제출 시, 질문이 존재하지 않을 경우 400를 반환한다.")
+    @Test
+    void submit_questionNotFound() {
+        // given
+        long invalidQuestionId = -1;
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                List.of(new AnswerCreateRequest(invalidQuestionId, List.of("온라인"))),
+                true
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/submit-fail/question-not-found",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                                .andWithPrefix("answers[].",
+                                        fieldWithPath("questionId").description("존재하지 않는 질문의 id"),
+                                        fieldWithPath("replies").description("질문에 대한 응답")
+                                )
+                ))
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
     }
 
     @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
@@ -201,12 +356,24 @@ class ApplyFormControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
+        choiceRepository.saveAll(ChoiceFixture.fiveChoices(question2));
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
+                .filter(document("applicant/read-applyform",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        responseFields(
+                                fieldWithPath("title").description("지원폼의 제목"),
+                                fieldWithPath("postingContent").description("지원자의 내용(본문)"),
+                                fieldWithPath("startDate").description("지원 가능 날짜"),
+                                fieldWithPath("endDate").description("지원 마감 날짜"),
+                                fieldWithPath("questions").description("지원폼의 질문들")
+                        ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
+                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
+                ))
                 .when().get("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
     }
@@ -215,16 +382,15 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void read_notFound() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.applyType(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        int invalidApplyFormId = -1;
 
         // when&then
-        RestAssured.given().log().all()
-                .cookie("token", token)
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .when().get("/v1/applyform/{applyFormId}", -1)
+                .filter(document("applicant/read-applyform-fail/applyform-not-found",
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id"))
+                ))
+                .when().get("/v1/applyform/{applyFormId}", invalidApplyFormId)
                 .then().log().all().statusCode(404);
     }
 
@@ -239,13 +405,43 @@ class ApplyFormControllerTest extends ControllerTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(
-                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate);
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
+        );
 
         // when&then
-        RestAssured.given().log().all()
+        RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
+                .filter(document("applicant/update",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
+                ))
                 .when().patch("/v1/applyform/{applyFormId}", applyForm.getId())
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("지원서 폼 변경 시, 지원서 폼이 존재하지 않을 경우 404을 반환한다.")
+    @Test
+    void update_notFound() {
+        // given
+        int invalidApplyFormId = -1;
+        String toChangeTitle = "크루루 백엔드 모집 공고~~";
+        String toChangeDescription = "# 모집 공고 설명 #";
+        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
+        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/update-fail/applyform-not-found",
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id")),
+                        requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
+                ))
+                .when().patch("/v1/applyform/{applyFormId}", invalidApplyFormId)
+                .then().log().all().statusCode(404);
     }
 }

@@ -5,26 +5,26 @@ import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
 import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
-import com.cruru.answer.domain.Answer;
-import com.cruru.answer.domain.repository.AnswerRepository;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.domain.Choice;
-import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.evaluation.domain.Evaluation;
-import com.cruru.evaluation.domain.repository.EvaluationRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.ProcessType;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.question.domain.Answer;
+import com.cruru.question.domain.Choice;
 import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.AnswerRepository;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -82,8 +82,8 @@ public class DataLoader implements ApplicationRunner {
         LocalDateTime endDate = LocalDateTime.of(2024, 10, 16, 10, 0, 0);
         dashboardRepository.save(dashboard);
         String description = """
-                <h2>2025 신입생 (7기) 선발 일정 </h2><p><br></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>서류접수:</strong> 2024년 10월 6일(금) 오후 3시 ~ 10월 16일(월) 오전 10시</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>프리코스:</strong> 2024년 10월 19일(목) ~ 11월 15일(수)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>1차 합격자 발표:</strong> 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>최종 코딩 테스트:</strong> 2024년 12월 16일(토)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>최종 합격자 발표:</strong> 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보 </li></ol><p><br></p><h2>2025 신입생 (7기) 교육 기간 </h2><p><br></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>2025년 2월 ~ 11월 (약 10개월) </li></ol>
-                """;
+                             <h2>2025 신입생 (7기) 선발 일정 </h2><p><br></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>서류접수:</strong> 2024년 10월 6일(금) 오후 3시 ~ 10월 16일(월) 오전 10시</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>프리코스:</strong> 2024년 10월 19일(목) ~ 11월 15일(수)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>1차 합격자 발표:</strong> 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>최종 코딩 테스트:</strong> 2024년 12월 16일(토)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>최종 합격자 발표:</strong> 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보 </li></ol><p><br></p><h2>2025 신입생 (7기) 교육 기간 </h2><p><br></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>2025년 2월 ~ 11월 (약 10개월) </li></ol>
+                             """;
         ApplyForm applyForm = new ApplyForm(
                 "우아한테크코스 2025 백엔드 신입생 모집 ",
                 description,

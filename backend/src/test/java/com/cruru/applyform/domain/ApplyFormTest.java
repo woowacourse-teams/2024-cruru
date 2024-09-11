@@ -17,7 +17,7 @@ class ApplyFormTest {
         // given
         String title = "title";
         String description = "description";
-        LocalDateTime startDate =  LocalDateFixture.oneWeekLater();
+        LocalDateTime startDate = LocalDateFixture.oneWeekLater();
         LocalDateTime endDate = LocalDateFixture.oneDayLater();
 
         // when&then

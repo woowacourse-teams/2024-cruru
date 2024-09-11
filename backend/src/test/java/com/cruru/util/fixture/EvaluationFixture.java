@@ -1,7 +1,7 @@
 package com.cruru.util.fixture;
 
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.evaluation.domain.Evaluation;
+import com.cruru.applicant.domain.Evaluation;
 import com.cruru.process.domain.Process;
 
 public class EvaluationFixture {
