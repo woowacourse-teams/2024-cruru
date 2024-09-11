@@ -7,5 +7,6 @@ declare namespace NodeJS {
     GA_MEASUREMENT_ID: string;
     PROD_URL: string;
     DEV_URL: string;
+    DOMAIN_URL: string;
   }
 }
