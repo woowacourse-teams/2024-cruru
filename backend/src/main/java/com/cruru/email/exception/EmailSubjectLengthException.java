@@ -1,4 +1,4 @@
-package com.cruru.notice.exception;
+package com.cruru.email.exception;
 
 import com.cruru.advice.badrequest.TextLengthException;
 

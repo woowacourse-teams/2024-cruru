@@ -1,4 +1,4 @@
-package com.cruru.notice.controller;
+package com.cruru.email.controller;
 
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;

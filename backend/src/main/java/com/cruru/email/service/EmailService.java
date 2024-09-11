@@ -1,12 +1,11 @@
-package com.cruru.notice.service;
+package com.cruru.email.service;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
-import com.cruru.notice.controller.dto.EmailRequest;
-import com.cruru.notice.domain.Notice;
-import com.cruru.notice.domain.NoticeType;
-import com.cruru.notice.domain.repository.NoticeRepository;
-import com.cruru.notice.exception.EmailSendFailedException;
+import com.cruru.email.domain.Email;
+import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.domain.repository.EmailRepository;
+import com.cruru.email.exception.EmailSendFailedException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.Objects;
@@ -26,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EmailService {
 
     private final JavaMailSender mailSender;
-    private final NoticeRepository noticeRepository;
+    private final EmailRepository emailRepository;
 
     @Transactional
     public void send(EmailRequest request) {
@@ -55,6 +54,6 @@ public class EmailService {
     }
 
     public void save(EmailRequest request, Club from, Applicant to) {
-        noticeRepository.save(new Notice(from, to, request.subject(), request.text(), NoticeType.EMAIL));
+        emailRepository.save(new Email(from, to, request.subject(), request.text()));
     }
 }

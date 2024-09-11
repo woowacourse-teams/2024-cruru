@@ -1,13 +1,11 @@
-package com.cruru.notice.domain;
+package com.cruru.email.domain;
 
 import com.cruru.BaseEntity;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
-import com.cruru.notice.exception.EmailSubjectLengthException;
+import com.cruru.email.exception.EmailSubjectLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,14 +22,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Notice extends BaseEntity {
+public class Email extends BaseEntity {
 
     private static final int EMAIL_SUBJECT_MAX_LENGTH = 998;
     private static final int EMAIL_TEXT_MAX_LENGTH = 10_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_id")
+    @Column(name = "email_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,18 +45,13 @@ public class Notice extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String text;
 
-    @Column(columnDefinition = "varchar")
-    @Enumerated(EnumType.STRING)
-    private NoticeType type;
-
-    public Notice(Club from, Applicant to, String subject, String text, NoticeType type) {
+    public Email(Club from, Applicant to, String subject, String text) {
         validateSubjectLength(subject);
         validateTextLength(text);
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.text = text;
-        this.type = type;
     }
 
     private void validateSubjectLength(String subject) {
@@ -81,8 +74,8 @@ public class Notice extends BaseEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Notice notice = (Notice) o;
-        return Objects.equals(id, notice.id);
+        Email email = (Email) o;
+        return Objects.equals(id, email.id);
     }
 
     @Override
@@ -92,13 +85,12 @@ public class Notice extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Notice{" +
+        return "Email{" +
                 "id=" + id +
                 ", from=" + from +
                 ", to=" + to +
                 ", subject='" + subject + '\'' +
                 ", text='" + text + '\'' +
-                ", type=" + type +
                 '}';
     }
 }

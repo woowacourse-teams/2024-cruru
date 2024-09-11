@@ -1,7 +1,7 @@
-package com.cruru.notice.controller;
+package com.cruru.email.controller;
 
-import com.cruru.notice.controller.dto.EmailRequest;
-import com.cruru.notice.facade.EmailFacade;
+import com.cruru.email.facade.EmailFacade;
+import com.cruru.email.controller.dto.EmailRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

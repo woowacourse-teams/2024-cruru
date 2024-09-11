@@ -1,4 +1,4 @@
-package com.cruru.notice.controller.dto;
+package com.cruru.email.controller.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

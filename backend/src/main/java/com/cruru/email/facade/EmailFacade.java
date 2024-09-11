@@ -1,10 +1,10 @@
-package com.cruru.notice.facade;
+package com.cruru.email.facade;
 
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
-import com.cruru.notice.controller.dto.EmailRequest;
-import com.cruru.notice.service.EmailService;
+import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

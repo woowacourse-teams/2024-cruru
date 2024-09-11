@@ -1,12 +1,12 @@
-package com.cruru.notice.facade;
+package com.cruru.email.facade;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.notice.controller.dto.EmailRequest;
-import com.cruru.notice.domain.Notice;
-import com.cruru.notice.domain.repository.NoticeRepository;
+import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.domain.Email;
+import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import jakarta.mail.internet.MimeMessage;
@@ -25,7 +25,7 @@ class EmailFacadeTest extends ServiceTest {
     private JavaMailSender javaMailSender;
 
     @Autowired
-    private NoticeRepository noticeRepository;
+    private EmailRepository emailRepository;
 
     @Autowired
     private ApplicantRepository applicantRepository;
@@ -57,7 +57,7 @@ class EmailFacadeTest extends ServiceTest {
         emailFacade.send(emailRequest);
 
         // then
-        List<Notice> saved = noticeRepository.findAll();
+        List<Email> saved = emailRepository.findAll();
         assertThat(saved).anyMatch(notice -> notice.getSubject().equals(subject));
     }
 }

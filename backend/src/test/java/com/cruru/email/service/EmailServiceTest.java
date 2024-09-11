@@ -1,11 +1,11 @@
-package com.cruru.notice.service;
+package com.cruru.email.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.notice.controller.dto.EmailRequest;
-import com.cruru.notice.domain.Notice;
-import com.cruru.notice.domain.repository.NoticeRepository;
+import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.domain.Email;
+import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.util.ServiceTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 class EmailServiceTest extends ServiceTest {
 
     @Autowired
-    private NoticeRepository noticeRepository;
+    private EmailRepository emailRepository;
 
     @Autowired
     private EmailService emailService;
@@ -39,10 +39,10 @@ class EmailServiceTest extends ServiceTest {
         emailService.save(request, null, null);
 
         // then
-        List<Notice> notices = noticeRepository.findAll();
-        Notice actual = notices.get(0);
+        List<Email> emails = emailRepository.findAll();
+        Email actual = emails.get(0);
         assertAll(
-                () -> assertThat(notices.size()).isEqualTo(1),
+                () -> assertThat(emails.size()).isEqualTo(1),
                 () -> assertThat(actual.getSubject()).isEqualTo(subject),
                 () -> assertThat(actual.getText()).isEqualTo(text)
         );
