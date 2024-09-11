@@ -1,6 +1,6 @@
 package com.cruru.applyform.service;
 
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
+import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;

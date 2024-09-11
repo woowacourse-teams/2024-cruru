@@ -4,7 +4,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.member.controller.dto.MemberCreateRequest;
+import com.cruru.member.controller.request.MemberCreateRequest;
 import com.cruru.util.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;

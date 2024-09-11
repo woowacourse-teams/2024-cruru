@@ -10,9 +10,9 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.controller.dto.ChoiceCreateRequest;
-import com.cruru.question.controller.dto.QuestionCreateRequest;
-import com.cruru.question.controller.dto.QuestionUpdateRequests;
+import com.cruru.question.controller.request.ChoiceCreateRequest;
+import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.controller.request.QuestionUpdateRequests;
 import com.cruru.question.domain.QuestionType;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;

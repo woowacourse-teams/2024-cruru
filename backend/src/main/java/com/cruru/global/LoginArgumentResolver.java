@@ -1,7 +1,6 @@
 package com.cruru.global;
 
 import com.cruru.advice.UnauthorizedException;
-import com.cruru.auth.controller.dto.LoginProfile;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
 import com.cruru.member.domain.MemberRole;

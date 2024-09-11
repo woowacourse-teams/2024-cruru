@@ -10,7 +10,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.auth.controller.dto.LoginRequest;
+import com.cruru.auth.controller.request.LoginRequest;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;

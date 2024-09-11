@@ -1,11 +1,10 @@
 package com.cruru.question.service;
 
 import com.cruru.applyform.domain.ApplyForm;
-import com.cruru.choice.controller.dto.ChoiceResponse;
-import com.cruru.choice.domain.Choice;
-import com.cruru.choice.service.ChoiceService;
-import com.cruru.question.controller.dto.QuestionCreateRequest;
-import com.cruru.question.controller.dto.QuestionResponse;
+import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.controller.response.ChoiceResponse;
+import com.cruru.question.controller.response.QuestionResponse;
+import com.cruru.question.domain.Choice;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.QuestionType;
 import com.cruru.question.domain.repository.QuestionRepository;

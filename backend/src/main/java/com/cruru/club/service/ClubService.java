@@ -1,6 +1,6 @@
 package com.cruru.club.service;
 
-import com.cruru.club.controller.dto.ClubCreateRequest;
+import com.cruru.club.controller.request.ClubCreateRequest;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
