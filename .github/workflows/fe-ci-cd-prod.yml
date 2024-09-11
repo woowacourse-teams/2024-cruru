@@ -35,6 +35,7 @@ jobs:
       cancel-in-progress: true
     env:
       API_URL: ${{ secrets.API_URL }}
+      DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
       API_VERSION: ${{ secrets.API_VERSION }}
       GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
