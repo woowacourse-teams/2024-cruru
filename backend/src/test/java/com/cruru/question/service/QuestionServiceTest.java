@@ -6,13 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.controller.dto.ChoiceResponse;
-import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.question.controller.dto.QuestionCreateRequest;
-import com.cruru.question.controller.dto.QuestionResponse;
+import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.controller.response.ChoiceResponse;
+import com.cruru.question.controller.response.QuestionResponse;
 import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
