@@ -1,0 +1,25 @@
+== 인증
+
+=== 로그인
+
+==== 성공
+
+operation::auth/login[snippets="http-request,request-fields,http-response,response-headers,response-cookies"]
+
+==== 실패: 잘못된 패스워드
+
+operation::auth/login-fail/invalid-password[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 이메일
+
+operation::auth/login-fail/email-not-found[snippets="http-request,request-fields,http-response"]
+
+=== 로그아웃
+
+==== 성공
+
+operation::auth/logout[snippets="http-request,request-cookies,http-response,response-headers"]
+
+==== 실패: 존재하지 않는 토큰
+
+operation::auth/logout-fail/token-not-found[snippets="http-request,http-response"]

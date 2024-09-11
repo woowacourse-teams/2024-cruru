@@ -54,13 +54,13 @@ public class ApplicantController {
     }
 
     @PatchMapping("/{applicantId}/reject")
-    public ResponseEntity<ApplicantAnswerResponses> reject(@PathVariable Long applicantId) {
+    public ResponseEntity<Void> reject(@PathVariable Long applicantId) {
         applicantFacade.reject(applicantId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{applicantId}/unreject")
-    public ResponseEntity<ApplicantAnswerResponses> unreject(@PathVariable Long applicantId) {
+    public ResponseEntity<Void> unreject(@PathVariable Long applicantId) {
         applicantFacade.unreject(applicantId);
         return ResponseEntity.ok().build();
     }
