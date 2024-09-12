@@ -71,6 +71,19 @@ export default function Landing() {
         </S.PersonImgWrapper>
       </S.PainPointSection>
 
+      <S.ProductIntroSection>
+        <S.IntroText>
+          번거로운 지원 관리
+          <br />
+          까다로운 공고 제작
+          <br />
+          불필요한 관리 업무
+        </S.IntroText>
+        <S.StrongIntroText>
+          <S.StrongIntroHighlightText>크루루</S.StrongIntroHighlightText>로 한 번에 해결하세요.
+        </S.StrongIntroText>
+      </S.ProductIntroSection>
+
       <S.Footer>
         <p>
           Illustration by&nbsp;

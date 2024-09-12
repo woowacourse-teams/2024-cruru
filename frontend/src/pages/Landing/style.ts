@@ -205,6 +205,45 @@ const PersonImg = styled.img`
   left: 25%;
 `;
 
+// Product Intro Section
+const ProductIntroSection = styled.div`
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3.6rem;
+`;
+
+const IntroText = styled.p`
+  font-size: 3.6rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+
+  background: linear-gradient(
+    180deg,
+    ${({ theme }) => theme.baseColors.grayscale[700]} 30%,
+    ${({ theme }) => theme.baseColors.grayscale[600]} 70%,
+    ${({ theme }) => theme.baseColors.grayscale[500]} 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const StrongIntroText = styled.p`
+  font-size: 4.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+`;
+
+const StrongIntroHighlightText = styled.span`
+  color: ${({ theme }) => theme.colors.brand.primary};
+`;
+
 // Footer
 const Footer = styled.footer`
   width: 100%;
@@ -239,6 +278,11 @@ const S = {
   PersonImg,
   SpeechBubbleContainer,
   SpeechBubble,
+
+  ProductIntroSection,
+  IntroText,
+  StrongIntroText,
+  StrongIntroHighlightText,
 
   Footer,
 };
