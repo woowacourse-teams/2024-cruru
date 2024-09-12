@@ -63,7 +63,7 @@ class EmailControllerTest extends ControllerTest {
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))
-                .when().post("/v1/emails")
+                .when().post("/v1/emails/send")
                 .then().log().all().statusCode(200);
     }
 
@@ -100,7 +100,7 @@ class EmailControllerTest extends ControllerTest {
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))
-                .when().post("/v1/emails")
+                .when().post("/v1/emails/send")
                 .then().log().all().statusCode(400);
     }
 
@@ -140,7 +140,7 @@ class EmailControllerTest extends ControllerTest {
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))
-                .when().post("/v1/emails")
+                .when().post("/v1/emails/send")
                 .then().log().all().statusCode(404);
     }
 }

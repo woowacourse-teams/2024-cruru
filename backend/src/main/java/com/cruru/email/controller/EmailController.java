@@ -17,7 +17,7 @@ public class EmailController {
 
     private final EmailFacade emailFacade;
 
-    @PostMapping
+    @PostMapping("/send")
     public ResponseEntity<Void> send(@Valid @ModelAttribute EmailRequest request) {
         emailFacade.send(request);
         return ResponseEntity.ok().build();
