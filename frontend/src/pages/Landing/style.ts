@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -7,10 +8,12 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  white-space: nowrap;
 `;
 
 // Main Section
-const MainSection = styled.div`
+const MainSection = styled.section`
   position: relative;
   width: 100%;
   height: 100vh;
@@ -81,22 +84,6 @@ const ScrollDownArea = styled.div`
   position: absolute;
   bottom: -15vh;
 
-  background: -moz-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(246, 228, 243, 0.8) 20%,
-    rgba(243, 217, 238, 0.9) 50%,
-    rgba(247, 229, 243, 0.8) 80%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  background: -webkit-linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(246, 228, 243, 0.8) 20%,
-    rgba(243, 217, 238, 0.9) 50%,
-    rgba(247, 229, 243, 0.8) 80%,
-    rgba(255, 255, 255, 0) 100%
-  );
   background: linear-gradient(
     0deg,
     rgba(255, 255, 255, 0) 0%,
@@ -114,7 +101,7 @@ const ScrollDownArea = styled.div`
 `;
 
 // Pain Point Section
-const PainPointSection = styled.div`
+const PainPointSection = styled.section`
   position: relative;
 
   width: 100%;
@@ -124,12 +111,6 @@ const PainPointSection = styled.div`
   justify-content: center;
   align-items: center;
 
-  background:
-    -moz-linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
-    -moz-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  background:
-    -webkit-linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
-    -webkit-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
   background: linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
     linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
 `;
@@ -167,8 +148,8 @@ const SpeechBubble = styled.div`
   padding: 0.8rem;
 
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
-  -moz-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+
+  white-space: normal;
 
   &:nth-child(1) {
     top: 10%;
@@ -206,7 +187,7 @@ const PersonImg = styled.img`
 `;
 
 // Product Intro Section
-const ProductIntroSection = styled.div`
+const ProductIntroSection = styled.section`
   width: 100vw;
   height: 100vh;
 
@@ -244,6 +225,108 @@ const StrongIntroHighlightText = styled.span`
   color: ${({ theme }) => theme.colors.brand.primary};
 `;
 
+// Feature Section
+const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
+  width: 100vw;
+  height: 100vh;
+  padding: 0 12rem;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  &:nth-child(odd) {
+    flex-direction: row-reverse;
+  }
+
+  ${({ color }) => {
+    switch (color) {
+      case 'blue':
+        return css`
+          background: linear-gradient(
+            0deg,
+            rgba(214, 236, 255, 0) 0%,
+            rgba(214, 236, 255, 0.5) 10%,
+            rgba(214, 236, 255, 1) 75%,
+            rgba(214, 236, 255, 0.5) 90%,
+            rgba(214, 236, 255, 0) 100%
+          );
+        `;
+      case 'purple':
+        return css`
+          background: linear-gradient(
+            0deg,
+            rgba(246, 232, 238, 0) 0%,
+            rgba(246, 232, 238, 0.5) 10%,
+            rgba(246, 232, 238, 1) 75%,
+            rgba(246, 232, 238, 0.5) 90%,
+            rgba(246, 232, 238, 0) 100%
+          );
+        `;
+      case 'gray':
+        return css`
+          background: linear-gradient(
+            0deg,
+            rgba(243, 243, 243, 0) 0%,
+            rgba(243, 243, 243, 0.5) 10%,
+            rgba(243, 243, 243, 1) 75%,
+            rgba(243, 243, 243, 0.5) 90%,
+            rgba(243, 243, 243, 0) 100%
+          );
+        `;
+      default:
+        return css`
+          background: linear-gradient(
+            0deg,
+            rgba(243, 243, 243, 0) 0%,
+            rgba(243, 243, 243, 0.5) 10%,
+            rgba(243, 243, 243, 1) 75%,
+            rgba(243, 243, 243, 0.5) 90%,
+            rgba(243, 243, 243, 0) 100%
+          );
+        `;
+    }
+  }}
+`;
+
+const FeatureTitle = styled.h2`
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 3.2rem;
+  line-height: 1.2;
+
+  color: ${({ theme }) => theme.baseColors.grayscale[900]};
+`;
+const FeatureSubtitle = styled.h3<{ color: 'blue' | 'purple' | 'gray' }>`
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.6rem;
+
+  color: ${({ theme, color }) => {
+    switch (color) {
+      case 'blue':
+        return '#007AFF';
+      case 'purple':
+        return theme.colors.brand.primary;
+      case 'gray':
+        return theme.baseColors.grayscale[700];
+      default:
+        return theme.baseColors.grayscale[700];
+    }
+  }};
+`;
+const FeatureDescription = styled.p`
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.5;
+
+  color: ${({ theme }) => theme.colors.text.default};
+`;
+
+const FeatureImg = styled.img`
+  width: 55rem;
+`;
+
 // Footer
 const Footer = styled.footer`
   width: 100%;
@@ -254,7 +337,7 @@ const Footer = styled.footer`
   justify-content: center;
 
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
-  background-color: ${({ theme }) => theme.baseColors.grayscale[100]};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   & > p > a {
     ${({ theme }) => theme.typography.common.small};
@@ -283,6 +366,12 @@ const S = {
   IntroText,
   StrongIntroText,
   StrongIntroHighlightText,
+
+  FeatureSection,
+  FeatureTitle,
+  FeatureSubtitle,
+  FeatureDescription,
+  FeatureImg,
 
   Footer,
 };

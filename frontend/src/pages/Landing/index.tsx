@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import DashboardPng from '@assets/images/dashboard.png';
 import ManStrugglingPng from '@assets/images/manStruggling.png';
 import MessagePng from '@assets/images/message.png';
+import Feature1Png from '@assets/images/feature1.png';
+import Feature2Png from '@assets/images/feature2.png';
+import Feature3Png from '@assets/images/feature3.png';
 import { HiChevronDown } from 'react-icons/hi2';
 
 import S from './style';
@@ -83,6 +86,72 @@ export default function Landing() {
           <S.StrongIntroHighlightText>크루루</S.StrongIntroHighlightText>로 한 번에 해결하세요.
         </S.StrongIntroText>
       </S.ProductIntroSection>
+
+      <S.FeatureSection color="blue">
+        <div>
+          <S.FeatureSubtitle color="blue">원스톱 지원자 관리</S.FeatureSubtitle>
+          <S.FeatureTitle>
+            한눈에 파악하고
+            <br />
+            빠르게 결정하는 리크루팅
+          </S.FeatureTitle>
+          <S.FeatureDescription>
+            복잡한 엑셀 작업은 그만!
+            <br />
+            클릭 한 번으로 지원자의 정보를 손쉽게 살펴보세요.
+            <br />
+            크루루와 함께라면, 오직 우수한 지원자를
+            <br />
+            찾는 일에만 집중하실 수 있습니다.
+          </S.FeatureDescription>
+        </div>
+
+        <S.FeatureImg src={Feature1Png} />
+      </S.FeatureSection>
+
+      <S.FeatureSection color="purple">
+        <div>
+          <S.FeatureSubtitle color="purple">맞춤형 공고 제작</S.FeatureSubtitle>
+          <S.FeatureTitle>
+            인재들이 선호하는
+            <br />
+            매력적인 공고 관리
+          </S.FeatureTitle>
+          <S.FeatureDescription>
+            답답한 폼 작업 이젠 안녕!
+            <br />
+            다양한 질문 유형이 포함된 지원서를
+            <br />
+            원하는 대로 만들 수 있습니다.
+            <br />
+            우리 팀에 꼭 필요한 지원자의 관심을 사로잡으세요.
+          </S.FeatureDescription>
+        </div>
+
+        <S.FeatureImg src={Feature2Png} />
+      </S.FeatureSection>
+
+      <S.FeatureSection color="gray">
+        <div>
+          <S.FeatureSubtitle color="gray">심플한 지원 경험</S.FeatureSubtitle>
+          <S.FeatureTitle>
+            지원자를 사로잡는
+            <br />
+            스마트한 첫 만남
+          </S.FeatureTitle>
+          <S.FeatureDescription>
+            아직도 이메일로 지원서를 받고 계신가요?
+            <br />
+            간결하고 직관적인 지원 페이지로 변화를 만들어보세요.
+            <br />
+            심플한 지원 경험이 여러분의 팀 이미지를
+            <br />
+            한층 더 높여줄 것입니다.
+          </S.FeatureDescription>
+        </div>
+
+        <S.FeatureImg src={Feature3Png} />
+      </S.FeatureSection>
 
       <S.Footer>
         <p>
