@@ -11,6 +11,8 @@ import jakarta.mail.internet.MimeMessage;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -44,8 +46,8 @@ public class EmailService {
 
             mailSender.send(message);
             log.info("sent email: from={}, to={}, subject={}", request.clubId(), request.to(), request.subject());
-        } catch (MessagingException e) {
-            throw new EmailSendFailedException();
+        } catch (MessagingException | MailException e) {
+            throw new EmailSendFailedException(request.clubId(), request.to());
         }
     }
 
