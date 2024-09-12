@@ -20,7 +20,7 @@
     "prettier/prettier": "error",
     "no-console": "warn",
     "no-nested-ternary": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", "ts", "jpg", "png"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".js", ".tsx", "ts", "jpg", "png", "webp"] }],
     "react/jsx-uses-react": "off",
     "react/jsx-uses-vars": "warn",
     "react-hooks/rules-of-hooks": "error",
@@ -41,7 +41,8 @@
         "svg": "always",
         "json": "always",
         "jpg": "always",
-        "png": "always"
+        "png": "always",
+        "webp": "always"
       }
     ],
     "import/no-unresolved": "off",

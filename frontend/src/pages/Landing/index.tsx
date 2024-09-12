@@ -3,12 +3,12 @@ import Button from '@components/common/Button';
 import { routes } from '@router/path';
 import { useNavigate } from 'react-router-dom';
 
-import DashboardPng from '@assets/images/dashboard.png';
-import ManStrugglingPng from '@assets/images/manStruggling.png';
-import MessagePng from '@assets/images/message.png';
-import Feature1Png from '@assets/images/feature1.png';
-import Feature2Png from '@assets/images/feature2.png';
-import Feature3Png from '@assets/images/feature3.png';
+import DashboardWebp from '@assets/images/dashboard.webp';
+import ManStrugglingWebp from '@assets/images/manStruggling.webp';
+import MessageWebp from '@assets/images/message.webp';
+import Feature1Webp from '@assets/images/feature1.webp';
+import Feature2Webp from '@assets/images/feature2.webp';
+import Feature3Webp from '@assets/images/feature3.webp';
 import { HiChevronDown } from 'react-icons/hi2';
 
 import S from './style';
@@ -31,7 +31,7 @@ export default function Landing() {
         </S.Supporting>
 
         <S.MainImg
-          src={DashboardPng}
+          src={DashboardWebp}
           alt="지원자 현황을 한 눈에 확인할 수 있는 대시보드 페이지"
         />
 
@@ -58,10 +58,10 @@ export default function Landing() {
       </S.MainSection>
 
       <S.PainPointSection>
-        <S.MessageImg src={MessagePng} />
+        <S.MessageImg src={MessageWebp} />
         <S.PersonImgWrapper>
           <S.PersonImg
-            src={ManStrugglingPng}
+            src={ManStrugglingWebp}
             alt="복잡한 모집과정에 괴로워하는 유저의 모습"
           />
 
@@ -107,7 +107,7 @@ export default function Landing() {
           </S.FeatureDescription>
         </div>
 
-        <S.FeatureImg src={Feature1Png} />
+        <S.FeatureImg src={Feature1Webp} />
       </S.FeatureSection>
 
       <S.FeatureSection color="purple">
@@ -129,7 +129,7 @@ export default function Landing() {
           </S.FeatureDescription>
         </div>
 
-        <S.FeatureImg src={Feature2Png} />
+        <S.FeatureImg src={Feature2Webp} />
       </S.FeatureSection>
 
       <S.FeatureSection color="gray">
@@ -151,7 +151,7 @@ export default function Landing() {
           </S.FeatureDescription>
         </div>
 
-        <S.FeatureImg src={Feature3Png} />
+        <S.FeatureImg src={Feature3Webp} />
       </S.FeatureSection>
 
       <S.Footer>
