@@ -83,6 +83,7 @@ export default function Landing() {
           불필요한 관리 업무
         </S.IntroText>
         <S.StrongIntroText>
+          {/* eslint-disable-next-line */}
           <S.StrongIntroHighlightText>크루루</S.StrongIntroHighlightText>로 한 번에 해결하세요.
         </S.StrongIntroText>
       </S.ProductIntroSection>
