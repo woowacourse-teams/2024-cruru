@@ -154,6 +154,8 @@ export default function Landing() {
       </S.FeatureSection>
 
       <S.Footer>
+        <p>Copyright © 2024 Cruru, All rights reserved.</p>
+
         <p>
           Illustration by&nbsp;
           <a href="https://icons8.com/illustrations/author/zD2oqC8lLBBA">Icons 8</a>

@@ -330,14 +330,19 @@ const FeatureImg = styled.img`
 // Footer
 const Footer = styled.footer`
   width: 100%;
-  height: 10vh;
+  height: 20vh;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.8rem;
 
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+  border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[300]};
+
+  ${({ theme }) => theme.typography.common.default};
 
   & > p > a {
     ${({ theme }) => theme.typography.common.small};
