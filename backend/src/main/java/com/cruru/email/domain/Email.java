@@ -4,6 +4,7 @@ import com.cruru.BaseEntity;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
 import com.cruru.email.exception.EmailSubjectLengthException;
+import com.cruru.email.exception.EmailTextLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -62,7 +63,7 @@ public class Email extends BaseEntity {
 
     private void validateTextLength(String text) {
         if (text.length() > EMAIL_TEXT_MAX_LENGTH) {
-            throw new EmailSubjectLengthException(EMAIL_TEXT_MAX_LENGTH, text.length());
+            throw new EmailTextLengthException(EMAIL_TEXT_MAX_LENGTH, text.length());
         }
     }
 
