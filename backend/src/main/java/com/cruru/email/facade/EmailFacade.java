@@ -20,11 +20,11 @@ public class EmailFacade {
 
     @Transactional
     public void send(EmailRequest request) {
-        emailService.send(request);
         Club from = clubService.findById(request.clubId());
         request.to()
                 .stream()
                 .map(applicantService::findByEmail)
                 .forEach(to -> emailService.save(request, from, to));
+        emailService.send(request);
     }
 }
