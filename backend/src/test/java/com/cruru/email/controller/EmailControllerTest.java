@@ -12,20 +12,13 @@ import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import jakarta.mail.internet.MimeMessage;
 import java.io.File;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.javamail.JavaMailSender;
 
 @DisplayName("이메일 컨트롤러 테스트")
 class EmailControllerTest extends ControllerTest {
-
-    @MockBean
-    private JavaMailSender javaMailSender;
 
     @Autowired
     private ApplicantRepository applicantRepository;
@@ -34,10 +27,6 @@ class EmailControllerTest extends ControllerTest {
     @Test
     void send() {
         // given
-        Mockito.doReturn(Mockito.mock(MimeMessage.class))
-                .when(javaMailSender).createMimeMessage();
-        Mockito.doNothing()
-                .when(javaMailSender).send(Mockito.any(MimeMessage.class));
         Applicant applicant = ApplicantFixture.pendingDobby();
         applicantRepository.save(applicant);
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
@@ -71,10 +60,6 @@ class EmailControllerTest extends ControllerTest {
     @Test
     void send_invalidRequest() {
         // given
-        Mockito.doReturn(Mockito.mock(MimeMessage.class))
-                .when(javaMailSender).createMimeMessage();
-        Mockito.doNothing()
-                .when(javaMailSender).send(Mockito.any(MimeMessage.class));
         Applicant applicant = ApplicantFixture.pendingDobby();
         applicantRepository.save(applicant);
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
@@ -108,11 +93,6 @@ class EmailControllerTest extends ControllerTest {
     @Test
     void send_clubNotExist() {
         // given
-        Mockito.doReturn(Mockito.mock(MimeMessage.class))
-                .when(javaMailSender).createMimeMessage();
-        Mockito.doNothing()
-                .when(javaMailSender).send(Mockito.any(MimeMessage.class));
-
         Applicant applicant = ApplicantFixture.pendingDobby();
         applicantRepository.save(applicant);
         long invalidId = -1;
