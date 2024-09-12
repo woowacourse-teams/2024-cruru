@@ -1,5 +1,5 @@
+import Radio from '@components/_common/atoms/Radio';
 import S from './style';
-import Radio from '../Radio';
 
 interface RadioOptionProps {
   label: string;

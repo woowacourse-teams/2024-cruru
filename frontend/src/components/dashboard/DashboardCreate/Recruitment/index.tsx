@@ -5,11 +5,11 @@ import { RecruitmentInfoState } from '@customTypes/dashboard';
 import formatDate from '@utils/formatDate';
 import useForm from '@hooks/utils/useForm';
 
-import Button from '@components/common/Button';
-import ChevronButton from '@components/common/ChevronButton';
-import DateInput from '@components/common/DateInput';
-import InputField from '@components/common/InputField';
-import TextEditor from '@components/common/TextEditor';
+import Button from '@components/_common/atoms/Button';
+import ChevronButton from '@components/_common/atoms/ChevronButton';
+import DateInput from '@components/_common/atoms/DateInput';
+import InputField from '@components/_common/molecules/InputField';
+import TextEditor from '@components/_common/atoms/TextEditor';
 
 import { validateTitle } from '@domain/validations/recruitment';
 import S from './style';

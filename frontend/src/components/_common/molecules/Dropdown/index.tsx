@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import DropdownItem from '@components/common/DropdownItem';
-import ChevronButton from '@components/common/ChevronButton';
+import ChevronButton from '@components/_common/atoms/ChevronButton';
 import { DropdownListItem } from '@customTypes/common';
+import DropdownItem from '@components/_common/atoms/DropdownItem';
 import S from './style';
 
 export interface DropdownProps {

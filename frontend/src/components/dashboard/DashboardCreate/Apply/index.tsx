@@ -2,8 +2,8 @@ import { HiOutlinePlusCircle } from 'react-icons/hi';
 import { Question, QuestionOptionValue } from '@customTypes/dashboard';
 import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 
-import Button from '@components/common/Button';
-import ChevronButton from '@components/common/ChevronButton';
+import Button from '@components/_common/atoms/Button';
+import ChevronButton from '@components/_common/atoms/ChevronButton';
 import QuestionBuilder from './QuestionBuilder';
 
 import S from './style';

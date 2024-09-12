@@ -1,4 +1,4 @@
-import Radio from '../Radio';
+import CheckBox from '../../atoms/CheckBox';
 import S from './style';
 
 interface Option {
@@ -8,7 +8,7 @@ interface Option {
   name?: string;
 }
 
-interface RadioLabelFieldProps {
+interface CheckboxLabelField {
   label?: string;
   description?: string;
   disabled?: boolean;
@@ -17,14 +17,14 @@ interface RadioLabelFieldProps {
   options: Option[];
 }
 
-export default function RadioLabelField({
+export default function CheckboxLabelField({
   label,
   description,
   disabled = false,
   error,
   required = false,
   options,
-}: RadioLabelFieldProps) {
+}: CheckboxLabelField) {
   return (
     <S.Wrapper>
       <S.HeadWrapper>
@@ -40,10 +40,10 @@ export default function RadioLabelField({
       </S.HeadWrapper>
 
       <S.OptionsWrapper>
-        {options.map(({ optionLabel, isChecked, onToggle, name }, index) => (
+        {options.map(({ name, optionLabel, isChecked, onToggle }, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <S.Option key={index}>
-            <Radio
+            <CheckBox
               isChecked={isChecked}
               onToggle={onToggle}
               isDisabled={disabled}

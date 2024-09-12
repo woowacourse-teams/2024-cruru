@@ -1,9 +1,9 @@
-import BaseModal from '@components/common/BaseModal';
+import BaseModal from '@components/appModal/BaseModal';
 import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
 import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 import ApplicantBaseInfo from './ApplicantBaseInfo';
 
-import ModalHeader from '../common/ModalHeader';
+import ModalHeader from './ModalHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
 import S from './style';
 import ApplicantEvalInfo from './ApplicantEvalInfo';

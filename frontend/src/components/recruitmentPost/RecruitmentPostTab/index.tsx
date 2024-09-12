@@ -1,5 +1,5 @@
-import Tab from '@components/common/Tab';
-import useTab from '@components/common/Tab/useTab';
+import Tab from '@components/_common/atoms/Tab';
+import useTab from '@components/_common/atoms/Tab/useTab';
 
 import { RECRUITMENT_POST_MENUS } from '@constants/constants';
 import { applyQueries } from '@hooks/apply';

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
-import Dropdown from '@components/common/Dropdown';
-import Button from '@components/common/Button';
+import Dropdown from '@components/_common/molecules/Dropdown';
+import Button from '@components/_common/atoms/Button';
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
 import specificApplicant from '@hooks/useSpecificApplicant';

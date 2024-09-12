@@ -1,6 +1,6 @@
 import { useModal } from '@contexts/ModalContext';
 import { MdClose } from 'react-icons/md';
-import IconButton from '../IconButton';
+import IconButton from '@components/_common/atoms/IconButton';
 import S from './style';
 
 interface ModalHeaderProps {

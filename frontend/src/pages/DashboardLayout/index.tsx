@@ -1,4 +1,4 @@
-import DashboardSidebar from '@components/dashboard/DashboardSidebar';
+import DashboardSidebar from '@components/_common/dashboard/DashboardSidebar';
 import useGetDashboards from '@hooks/useGetDashboards';
 import { Outlet, useParams } from 'react-router-dom';
 import S from './style';

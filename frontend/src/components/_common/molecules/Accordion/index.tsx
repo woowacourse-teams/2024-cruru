@@ -1,8 +1,8 @@
+import ChevronButton from '@components/_common/atoms/ChevronButton';
 import React, { useState } from 'react';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 
 import S from './style';
-import ChevronButton from '../ChevronButton';
 
 interface AccordionProps {
   title: React.ReactNode;

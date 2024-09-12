@@ -1,5 +1,5 @@
-import S from './style';
 import RadioOption from '../RadioOption';
+import S from './style';
 
 interface Option {
   label: string;

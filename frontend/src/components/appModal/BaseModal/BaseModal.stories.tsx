@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { ModalProvider, useModal } from '@contexts/ModalContext';
-import Button from '@components/common/Button';
+import Button from '@components/_common/atoms/Button';
 import BaseModal from '.';
 
 const meta: Meta<typeof BaseModal> = {

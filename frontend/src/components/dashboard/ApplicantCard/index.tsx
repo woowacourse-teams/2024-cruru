@@ -5,8 +5,8 @@ import { useState, useRef, useEffect } from 'react';
 import EllipsisIcon from '@assets/icons/ellipsis.svg';
 import { PopOverMenuItem } from '@customTypes/common';
 
-import IconButton from '@components/common/IconButton';
-import PopOverMenu from '@components/common/PopOverMenu';
+import IconButton from '@components/_common/atoms/IconButton';
+import PopOverMenu from '@components/_common/molecules/PopOverMenu';
 import formatDate from '@utils/formatDate';
 
 import S from './style';

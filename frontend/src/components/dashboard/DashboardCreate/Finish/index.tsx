@@ -1,5 +1,5 @@
-import Button from '@components/common/Button';
-import ChevronButton from '@components/common/ChevronButton';
+import Button from '@components/_common/atoms/Button';
+import ChevronButton from '@components/_common/atoms/ChevronButton';
 import { routes } from '@router/path';
 import { useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '@constants/constants';

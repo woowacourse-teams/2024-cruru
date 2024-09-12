@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
-import RadioField from '@components/common/RadioField';
-import Button from '@components/common/Button';
-import TextField from '@components/common/TextField';
+import RadioField from '@components/_common/molecules/RadioField';
+import Button from '@components/_common/atoms/Button';
+import TextField from '@components/_common/molecules/TextField';
 
 import useEvaluationMutation from '@hooks/useEvaluationMutation';
 import ValidationError from '@utils/errors/ValidationError';
 import { validateEvalContent } from '@domain/validations/evaluation';
 
-import Spinner from '@components/common/Spinner';
+import Spinner from '@components/_common/atoms/Spinner';
 import { EVALUATION_CONTENT_MAX_LENGTH, EVALUATION_SCORE } from '../constants';
 import S from './style';
 

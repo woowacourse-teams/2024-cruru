@@ -1,28 +1,29 @@
+/* eslint-disable prefer-arrow-callback */
 import { ComponentPropsWithRef } from 'react';
 import { HiOutlineX } from 'react-icons/hi';
-import Radio from '@components/common/Radio';
+import CheckBox from '@components/_common/atoms/CheckBox';
 import S from './style';
 
-interface RadioInputOptionProps {
+interface CheckBoxOptionProps {
   isChecked?: boolean;
   isDisabled?: boolean;
   isDeleteBtn?: boolean;
   onCheck?: () => void;
-  onDeleteBtnClick?: () => void;
+  onDeleteBtnClick: () => void;
   inputAttrs: ComponentPropsWithRef<'input'>;
 }
 
-export default function RadioInputOption({
+export default function CheckBoxOption({
   isChecked = false,
   isDisabled = false,
   isDeleteBtn = true,
   onDeleteBtnClick,
   onCheck = () => {},
   inputAttrs,
-}: RadioInputOptionProps) {
+}: CheckBoxOptionProps) {
   return (
     <S.Container>
-      <Radio
+      <CheckBox
         isChecked={isChecked}
         isDisabled={isDisabled}
         onToggle={onCheck}

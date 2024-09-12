@@ -1,5 +1,5 @@
 import type { PopOverMenuItem } from '@customTypes/common';
-import DropdownItem from '@components/common/DropdownItem';
+import DropdownItem from '@components/_common/atoms/DropdownItem';
 import S from './style';
 
 export interface PopOverMenuProps {

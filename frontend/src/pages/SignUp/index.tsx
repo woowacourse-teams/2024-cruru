@@ -1,6 +1,6 @@
-import Button from '@components/common/Button';
-import InputField from '@components/common/InputField';
-import Spinner from '@components/common/Spinner';
+import Button from '@components/_common/atoms/Button';
+import InputField from '@components/_common/molecules/InputField';
+import Spinner from '@components/_common/atoms/Spinner';
 import { validateEmail, validatePhoneNumber } from '@domain/validations/apply';
 import useSignUp from '@hooks/useSignUp';
 import useForm from '@hooks/utils/useForm';

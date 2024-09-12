@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import { ComponentProps, useState } from 'react';
-import InputField from '@components/common/InputField';
+import InputField from '@components/_common/molecules/InputField';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { HiOutlineCheckCircle, HiOutlineMinusCircle } from 'react-icons/hi2';
 import S from './style';

@@ -1,4 +1,4 @@
-import QuestionBox from '@components/common/QuestionBox';
+import QuestionBox from '@components/_common/atoms/QuestionBox';
 import specificApplicant from '@hooks/useSpecificApplicant';
 import S from './style';
 

@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import { RecruitmentInfoState } from '@customTypes/dashboard';
 
-import DateInput from '@components/common/DateInput';
-import InputField from '@components/common/InputField';
+import DateInput from '@components/_common/atoms/DateInput';
+import InputField from '@components/_common/molecules/InputField';
 
 import usePostManagement from '@hooks/usePostManagement';
 import useForm from '@hooks/utils/useForm';
 import formatDate from '@utils/formatDate';
 
 import { validateTitle } from '@domain/validations/recruitment';
-import TextEditor from '@components/common/TextEditor';
-import Button from '@components/common/Button';
+import TextEditor from '@components/_common/atoms/TextEditor';
+import Button from '@components/_common/atoms/Button';
 import S from './style';
 
 interface PostManageBoardProps {
