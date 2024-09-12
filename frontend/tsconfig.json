@@ -44,5 +44,5 @@
       "@router/*": ["src/router/*"]
     }
   },
-  "include": ["src/**/*", "setupTests.ts", ".storybook/*"]
+  "include": ["src/**/*", "setupTests.ts", ".storybook/*", "src/types/images.d.ts"]
 }
