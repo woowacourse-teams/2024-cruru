@@ -12,7 +12,6 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -55,6 +54,7 @@ public class EmailService {
         return !CollectionUtils.isEmpty(request.files());
     }
 
+    @Transactional
     public void save(EmailRequest request, Club from, Applicant to) {
         emailRepository.save(new Email(from, to, request.subject(), request.text()));
     }
