@@ -4,6 +4,8 @@ import { routes } from '@router/path';
 import { useNavigate } from 'react-router-dom';
 
 import DashboardPng from '@assets/images/dashboard.png';
+import ManStrugglingPng from '@assets/images/manStruggling.png';
+import MessagePng from '@assets/images/message.png';
 import { HiChevronDown } from 'react-icons/hi2';
 
 import S from './style';
@@ -22,7 +24,7 @@ export default function Landing() {
         <S.Supporting>
           번거로운 엑셀 작업은 이제 그만!
           <br />
-          리크루팅의 모든 단계를 크루루와 함께 해결하세요
+          리크루팅의 모든 단계를 크루루와 함께 해결하세요.
         </S.Supporting>
 
         <S.MainImg
@@ -51,6 +53,32 @@ export default function Landing() {
           <HiChevronDown />
         </S.ScrollDownArea>
       </S.MainSection>
+
+      <S.PainPointSection>
+        <S.MessageImg src={MessagePng} />
+        <S.PersonImgWrapper>
+          <S.PersonImg
+            src={ManStrugglingPng}
+            alt="복잡한 모집과정에 괴로워하는 유저의 모습"
+          />
+
+          <S.SpeechBubbleContainer>
+            <S.SpeechBubble>면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?</S.SpeechBubble>
+            <S.SpeechBubble>지원자들에게 일일이 연락하는게 너무 번거로워..</S.SpeechBubble>
+            <S.SpeechBubble>지원자 정보랑 평가가 한눈에 안들어와...</S.SpeechBubble>
+            <S.SpeechBubble>여러 공고를 한 번에 관리하기가 힘드네..</S.SpeechBubble>
+          </S.SpeechBubbleContainer>
+        </S.PersonImgWrapper>
+      </S.PainPointSection>
+
+      <S.Footer>
+        <p>
+          Illustration by&nbsp;
+          <a href="https://icons8.com/illustrations/author/zD2oqC8lLBBA">Icons 8</a>
+          &nbsp;from&nbsp;
+          <a href="https://icons8.com/illustrations">Ouch!</a>
+        </p>
+      </S.Footer>
     </S.Container>
   );
 }
