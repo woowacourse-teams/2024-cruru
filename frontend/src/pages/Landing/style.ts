@@ -105,7 +105,6 @@ const ScrollDownArea = styled.div`
     rgba(247, 229, 243, 0.8) 80%,
     rgba(255, 255, 255, 0) 100%
   );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
 
   & > svg {
     display: block;
@@ -125,10 +124,14 @@ const PainPointSection = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: -moz-linear-gradient(45deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  background: -webkit-linear-gradient(45deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  background: linear-gradient(45deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f3d9ee",endColorstr="#ffffff",GradientType=1);
+  background:
+    -moz-linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
+    -moz-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  background:
+    -webkit-linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
+    -webkit-linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
 `;
 
 const MessageImg = styled.img`
