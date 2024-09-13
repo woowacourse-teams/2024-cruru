@@ -3,7 +3,7 @@ import EllipsisIcon from '@assets/icons/ellipsis.svg';
 import IconButton from '.';
 
 const meta = {
-  title: 'Common/Button/IconButton',
+  title: 'Common/Atoms/IconButton',
   component: IconButton,
   parameters: {
     layout: 'centered',

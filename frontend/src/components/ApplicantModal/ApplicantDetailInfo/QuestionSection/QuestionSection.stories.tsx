@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuestionSection from '.';
 
 const meta: Meta<typeof QuestionSection> = {
-  title: 'Components/ApplicantModal/ApplicantDetailInfo/QuestionSection',
+  title: 'Organisms/ApplicantModal/ApplicantDetailInfo/QuestionSection',
   component: QuestionSection,
   parameters: {
     layout: 'centered',

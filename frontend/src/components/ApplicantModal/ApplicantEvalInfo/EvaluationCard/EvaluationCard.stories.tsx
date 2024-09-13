@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import EvaluationCard from './index';
 
 const meta: Meta<typeof EvaluationCard> = {
-  title: 'Components/ApplicantModal/ApplicantEvalInfo/EvaluationCard',
+  title: 'Organisms/ApplicantModal/ApplicantEvalInfo/EvaluationCard',
   component: EvaluationCard,
   parameters: {
     layout: 'centered',

@@ -1,5 +1,5 @@
 import { Process } from '@customTypes/process';
-import ApplicantModal from '@components/appModal';
+import ApplicantModal from '@components/ApplicantModal';
 import ProcessColumn from '../ProcessColumn';
 import S from './style';
 

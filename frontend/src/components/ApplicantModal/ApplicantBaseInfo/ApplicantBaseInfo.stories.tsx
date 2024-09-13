@@ -1,18 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import EvaluationForm from './index';
+import ApplicantBaseInfo from '.';
 
-const meta: Meta<typeof EvaluationForm> = {
-  title: 'Components/ApplicantModal/ApplicantEvalInfo/EvaluationForm',
-  component: EvaluationForm,
+const meta: Meta<typeof ApplicantBaseInfo> = {
+  title: 'Organisms/ApplicantModal/ApplicantBaseInfo',
+  component: ApplicantBaseInfo,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: '모달의 지원자에 대한 평가 등록폼 컴포넌트입니다.',
+        component: '모달의 지원자 기본 정보 컴포넌트입니다.',
       },
     },
   },
-  argTypes: {},
   tags: ['autodocs'],
   decorators: [
     (Story) => (
@@ -28,9 +27,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    processId: 1,
     applicantId: 1,
-    onClose: () => {},
   },
 };
 

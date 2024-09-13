@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ProcessDescription from './index';
 
 const meta: Meta<typeof ProcessDescription> = {
-  title: 'Components/ProcessColumn/ProcessDescription',
+  title: 'Organisms/ProcessColumn/ProcessDescription',
   component: ProcessDescription,
   parameters: {
     layout: 'centered',

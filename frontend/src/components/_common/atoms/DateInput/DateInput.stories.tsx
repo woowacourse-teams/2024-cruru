@@ -4,7 +4,7 @@ import formatDate from '@utils/formatDate';
 import DateInput from './index';
 
 const meta: Meta<typeof DateInput> = {
-  title: 'Common/Input/DateInput',
+  title: 'Common/Atoms/DateInput',
   component: DateInput,
   parameters: {
     layout: 'centered',

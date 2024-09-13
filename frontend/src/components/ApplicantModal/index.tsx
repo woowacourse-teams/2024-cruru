@@ -1,13 +1,15 @@
-import BaseModal from '@components/appModal/BaseModal';
 import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
 import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
-import ApplicantBaseInfo from './ApplicantBaseInfo';
 
-import ModalHeader from './ModalHeader';
+import BaseModal from './BaseModal';
+
+import ApplicantBaseInfo from './ApplicantBaseInfo';
+import ApplicatnModalHeader from './ModalHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
-import S from './style';
 import ApplicantEvalInfo from './ApplicantEvalInfo';
 import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
+
+import S from './style';
 
 export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
@@ -18,7 +20,7 @@ export default function ApplicantModal() {
     <BaseModal>
       <S.Container>
         <S.ModalHeader>
-          <ModalHeader title="지원서" />
+          <ApplicatnModalHeader title="지원서" />
         </S.ModalHeader>
 
         <S.ModalSidebar>

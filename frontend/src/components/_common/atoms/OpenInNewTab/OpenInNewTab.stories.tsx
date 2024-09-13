@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import OpenInNewTab from '.';
 
 const meta = {
-  title: 'Common/Button/OpenInNewTab',
+  title: 'Common/Atoms/OpenInNewTab',
   component: OpenInNewTab,
   parameters: {
     docs: {

@@ -3,7 +3,7 @@ import Accordion from './index';
 import S from './style';
 
 const meta: Meta<typeof Accordion> = {
-  title: 'Common/Accordion',
+  title: 'Common/Molecules/Accordion',
   component: Accordion,
   parameters: {
     layout: 'centered',

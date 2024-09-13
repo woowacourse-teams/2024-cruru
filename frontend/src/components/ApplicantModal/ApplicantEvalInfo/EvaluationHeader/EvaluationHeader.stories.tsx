@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import EvaluationHeader from './index';
 
 const meta: Meta<typeof EvaluationHeader> = {
-  title: 'Components/ApplicantModal/ApplicantEvalInfo/EvaluationHeader',
+  title: 'Organisms/ApplicantModal/ApplicantEvalInfo/EvaluationHeader',
   component: EvaluationHeader,
   parameters: {
     layout: 'centered',

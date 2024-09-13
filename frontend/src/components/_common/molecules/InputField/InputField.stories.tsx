@@ -3,7 +3,7 @@ import { useState } from 'react';
 import InputField from '.';
 
 const meta = {
-  title: 'Common/Input/InputField',
+  title: 'Common/Molecules/InputField',
   component: InputField,
   parameters: {
     layout: 'centered',

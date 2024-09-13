@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import EvaluationAddButton from '.';
 
 const meta = {
-  title: 'Components/ApplicantModal/ApplicantEvalInfo/EvaluationAddButton',
+  title: 'Organisms/ApplicantModal/ApplicantEvalInfo/EvaluationAddButton',
   component: EvaluationAddButton,
   parameters: {
     layout: 'centered',

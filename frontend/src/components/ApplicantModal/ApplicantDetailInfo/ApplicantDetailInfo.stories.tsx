@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ApplicantDetailInfo from '.';
 
 const meta: Meta<typeof ApplicantDetailInfo> = {
-  title: 'Components/ApplicantDetailInfo',
+  title: 'Organisms/ApplicantModal/ApplicantDetailInfo',
   component: ApplicantDetailInfo,
   parameters: {
     layout: 'centered',

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TextEditor from '.';
 
 const meta = {
-  title: 'Common/Input/TextEditor',
+  title: 'Common/Atoms/TextEditor',
   component: TextEditor,
   parameters: {
     layout: 'centered',

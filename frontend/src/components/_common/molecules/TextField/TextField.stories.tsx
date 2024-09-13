@@ -3,7 +3,7 @@ import { useState } from 'react';
 import TextField from '.';
 
 const meta = {
-  title: 'Common/Input/TextField',
+  title: 'Common/Molecules/TextField',
   component: TextField,
   parameters: {
     layout: 'centered',

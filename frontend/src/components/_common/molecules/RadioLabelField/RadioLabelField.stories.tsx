@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import RadioLabelField from './index';
 
 const meta: Meta<typeof RadioLabelField> = {
-  title: 'Common/Radio/RadioLabelField',
+  title: 'Common/Molecules/RadioLabelField',
   component: RadioLabelField,
   parameters: {
     layout: 'centered',

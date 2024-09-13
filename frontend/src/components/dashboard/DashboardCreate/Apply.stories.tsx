@@ -2,10 +2,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from '@storybook/preview-api';
 import { Question } from '@customTypes/dashboard';
-import Apply from './index';
+import Apply from './Apply/index';
 
 const meta: Meta<typeof Apply> = {
-  title: 'Components/Dashboard/Create/Apply',
+  title: 'Organisms/Dashboard/DashboardCreate/Apply',
   component: Apply,
   parameters: {
     layout: 'centered',

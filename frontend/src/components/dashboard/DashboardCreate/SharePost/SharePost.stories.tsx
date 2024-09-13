@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SharePost from '.';
 
 const meta = {
-  title: 'Components/Dashboard/Create/Finish/SharePost',
+  title: 'Organisms/Dashboard/Create/Finish/SharePost',
   component: SharePost,
   parameters: {
     docs: {

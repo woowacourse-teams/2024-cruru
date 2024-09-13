@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CheckboxLabelField from './index';
 
 const meta: Meta<typeof CheckboxLabelField> = {
-  title: 'Common/Checkbox/CheckboxLabelField',
+  title: 'Common/Molecules/CheckboxLabelField',
   component: CheckboxLabelField,
   parameters: {
     layout: 'centered',

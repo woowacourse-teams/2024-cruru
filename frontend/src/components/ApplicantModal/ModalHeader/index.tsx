@@ -7,7 +7,7 @@ interface ModalHeaderProps {
   title: string;
 }
 
-export default function ModalHeader({ title }: ModalHeaderProps) {
+export default function ApplicatnModalHeader({ title }: ModalHeaderProps) {
   const { close } = useModal();
   return (
     <S.Container>

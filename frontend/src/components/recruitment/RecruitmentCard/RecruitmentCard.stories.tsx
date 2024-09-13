@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import RecruitmentCard from '.';
 
 const meta = {
-  title: 'Components/Recruitment/RecruitmentCard',
+  title: 'Organisms/Recruitment/RecruitmentCard',
   component: RecruitmentCard,
   parameters: {
     layout: 'centered',

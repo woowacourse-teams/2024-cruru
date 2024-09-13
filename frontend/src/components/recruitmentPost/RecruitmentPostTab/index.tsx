@@ -1,5 +1,5 @@
-import Tab from '@components/_common/atoms/Tab';
-import useTab from '@components/_common/atoms/Tab/useTab';
+import Tab from '@components/_common/molecules/Tab';
+import useTab from '@components/_common/molecules/Tab/useTab';
 
 import { RECRUITMENT_POST_MENUS } from '@constants/constants';
 import { applyQueries } from '@hooks/apply';

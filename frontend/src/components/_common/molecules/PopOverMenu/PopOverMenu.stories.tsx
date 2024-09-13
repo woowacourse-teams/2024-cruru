@@ -5,7 +5,7 @@ import PopOverMenu, { PopOverMenuProps } from '.';
 
 export default {
   component: PopOverMenu,
-  title: 'Common/PopOverMenu/PopOverMenu',
+  title: 'Common/Molecules/PopOverMenu',
   args: { isOpen: true },
 } as Meta;
 

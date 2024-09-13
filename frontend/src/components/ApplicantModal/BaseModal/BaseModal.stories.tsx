@@ -4,7 +4,7 @@ import Button from '@components/_common/atoms/Button';
 import BaseModal from '.';
 
 const meta: Meta<typeof BaseModal> = {
-  title: 'Common/Modal/BaseModal',
+  title: 'Common/Atoms/BaseModal',
   component: BaseModal,
   parameters: {
     layout: 'centered',

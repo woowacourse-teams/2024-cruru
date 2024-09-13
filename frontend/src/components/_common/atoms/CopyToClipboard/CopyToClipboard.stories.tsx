@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CopyToClipboard from '.';
 
 const meta = {
-  title: 'Common/Button/CopyToClipboard',
+  title: 'Common/Atoms/CopyToClipboard',
   component: CopyToClipboard,
   parameters: {
     docs: {
