@@ -5,8 +5,8 @@ import { RecruitmentInfoState } from '@customTypes/dashboard';
 import formatDate from '@utils/formatDate';
 import useForm from '@hooks/utils/useForm';
 
+import { HiChevronRight } from 'react-icons/hi';
 import Button from '@components/_common/atoms/Button';
-import ChevronButton from '@components/_common/atoms/ChevronButton';
 import DateInput from '@components/_common/atoms/DateInput';
 import InputField from '@components/_common/molecules/InputField';
 import TextEditor from '@components/_common/atoms/TextEditor';
@@ -135,10 +135,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
         >
           <S.ButtonContent>
             다음
-            <ChevronButton
-              direction="right"
-              size="sm"
-            />
+            <HiChevronRight size={24} />
           </S.ButtonContent>
         </Button>
       </S.NextButtonContainer>

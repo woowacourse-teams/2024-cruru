@@ -110,9 +110,10 @@ const ButtonContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
 
-  padding: 0 0.4rem;
-  gap: 0.4rem;
+const ButtonContentText = styled.div`
+  padding: 0 0.8rem;
 `;
 
 const S = {
@@ -129,6 +130,7 @@ const S = {
   StepButtonsContainer,
   StepButton,
   ButtonContent,
+  ButtonContentText,
 };
 
 export default S;

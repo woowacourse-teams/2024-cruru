@@ -31,7 +31,7 @@ const Header = styled.div<{ isOpen: boolean; size: 'sm' | 'md' }>`
   justify-content: space-between;
   align-items: center;
 
-  padding: ${({ size }) => (size === 'md' ? '16px 24px' : '8px 12px')};
+  padding: ${({ size }) => (size === 'md' ? '16px 24px' : '12px 4px 12px 8px ')};
 
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 

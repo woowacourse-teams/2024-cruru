@@ -1,6 +1,5 @@
-import ChevronButton from '@components/_common/atoms/ChevronButton';
 import React, { useState } from 'react';
-import { HiOutlineClipboardList } from 'react-icons/hi';
+import { HiChevronDown, HiChevronUp, HiOutlineClipboardList } from 'react-icons/hi';
 
 import S from './style';
 
@@ -24,10 +23,7 @@ function Accordion({ title, children }: AccordionProps) {
           <HiOutlineClipboardList />
           <S.TitleText>{title}</S.TitleText>
         </S.Title>
-        <ChevronButton
-          size="sm"
-          direction={isOpen ? 'down' : 'up'}
-        />
+        {isOpen ? <HiChevronDown size={24} /> : <HiChevronUp size={24} />}
       </S.Header>
       {isOpen && <S.List>{children}</S.List>}
     </S.Container>

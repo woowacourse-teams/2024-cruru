@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import ChevronButton from '@components/_common/atoms/ChevronButton';
 import { DropdownListItem } from '@customTypes/common';
 import DropdownItem from '@components/_common/atoms/DropdownItem';
+import { HiChevronDown } from 'react-icons/hi';
 import S from './style';
 
 export interface DropdownProps {
@@ -48,6 +48,11 @@ export default function Dropdown({
     setIsOpen(false);
   };
 
+  const sizeObj: Record<typeof size, number> = {
+    sm: 24,
+    md: 36,
+  };
+
   return (
     <S.Container
       ref={dropdownRef}
@@ -63,10 +68,7 @@ export default function Dropdown({
         isOpen={isOpen}
       >
         {selected || 'Default'}
-        <ChevronButton
-          direction="down"
-          size={size}
-        />
+        <HiChevronDown size={sizeObj[size]} />
       </S.Header>
 
       {isOpen && (

@@ -1,9 +1,8 @@
-import { HiOutlinePlusCircle } from 'react-icons/hi';
+import { HiChevronLeft, HiChevronRight, HiOutlinePlusCircle } from 'react-icons/hi';
 import { Question, QuestionOptionValue } from '@customTypes/dashboard';
 import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 
 import Button from '@components/_common/atoms/Button';
-import ChevronButton from '@components/_common/atoms/ChevronButton';
 import QuestionBuilder from './QuestionBuilder';
 
 import S from './style';
@@ -102,11 +101,8 @@ export default function Apply({
             color="white"
           >
             <S.ButtonContent>
-              <ChevronButton
-                direction="left"
-                size="sm"
-              />
-              이전
+              <HiChevronLeft size={24} />
+              <S.ButtonContentText>이전</S.ButtonContentText>
             </S.ButtonContent>
           </Button>
           <Button
@@ -116,11 +112,8 @@ export default function Apply({
             color="white"
           >
             <S.ButtonContent>
-              다음
-              <ChevronButton
-                direction="right"
-                size="sm"
-              />
+              <S.ButtonContentText>다음</S.ButtonContentText>
+              <HiChevronRight size={24} />
             </S.ButtonContent>
           </Button>
         </S.StepButtonsContainer>
