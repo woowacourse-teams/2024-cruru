@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import EllipsisIcon from '@assets/icons/ellipsis.svg';
+import { HiEllipsisVertical } from 'react-icons/hi2';
+
 import IconButton from '.';
 
 const meta = {
@@ -45,12 +46,7 @@ const meta = {
       control: { type: 'select' },
       options: ['Ellipsis'],
       mapping: {
-        Ellipsis: (
-          <img
-            src={EllipsisIcon}
-            alt="더보기 아이콘 버튼"
-          />
-        ),
+        Ellipsis: <HiEllipsisVertical />,
       },
       table: {
         type: { summary: 'React.ReactNode' },

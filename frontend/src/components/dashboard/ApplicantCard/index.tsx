@@ -1,8 +1,8 @@
 import { HiOutlineClock, HiOutlineChat } from 'react-icons/hi';
+import { HiEllipsisVertical } from 'react-icons/hi2';
 
 import { useState, useRef, useEffect } from 'react';
 
-import EllipsisIcon from '@assets/icons/ellipsis.svg';
 import { PopOverMenuItem } from '@customTypes/common';
 
 import IconButton from '@components/_common/atoms/IconButton';
@@ -99,10 +99,7 @@ export default function ApplicantCard({
             onClick={handleClickPopOverButton}
             disabled={isRejected}
           >
-            <img
-              alt="심사단계 이동 버튼 아이콘"
-              src={EllipsisIcon}
-            />
+            <HiEllipsisVertical />
           </IconButton>
           <PopOverMenu
             isOpen={isPopOverOpen}
