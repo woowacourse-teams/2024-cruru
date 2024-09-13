@@ -5,7 +5,7 @@ import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import ProcessColumn from './index';
 
 const meta: Meta<typeof ProcessColumn> = {
-  title: 'Components/ProcessColumn',
+  title: 'Organisms/ProcessColumn',
   component: ProcessColumn,
   parameters: {
     layout: 'fullscreen',

@@ -1,5 +1,5 @@
 import useSignOut from '@hooks/useSignOut';
-import Spinner from '@components/common/Spinner';
+import Spinner from '@components/_common/atoms/Spinner';
 import S from './style';
 
 export default function LogoutButton() {

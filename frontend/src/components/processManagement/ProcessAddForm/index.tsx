@@ -1,8 +1,8 @@
 import React, { FormEvent, useState } from 'react';
 
-import Button from '@components/common/Button';
-import InputField from '@components/common/InputField';
-import TextField from '@components/common/TextField';
+import Button from '@components/_common/atoms/Button';
+import InputField from '@components/_common/molecules/InputField';
+import TextField from '@components/_common/molecules/TextField';
 
 import { processMutations } from '@hooks/process';
 import { useClickOutside } from '@hooks/utils/useClickOutside';

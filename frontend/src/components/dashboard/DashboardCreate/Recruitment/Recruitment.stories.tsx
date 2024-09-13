@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Recruitment from './index';
 
 const meta: Meta<typeof Recruitment> = {
-  title: 'Components/Dashboard/Create/Recruitment',
+  title: 'Organisms/Dashboard/Create/Recruitment',
   component: Recruitment,
   parameters: {
     layout: 'centered',

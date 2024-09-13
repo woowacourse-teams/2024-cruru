@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import { Question, QuestionControlActionType, QuestionOptionValue } from '@customTypes/dashboard';
 
-import InputField from '@components/common/InputField';
-import Dropdown from '@components/common/Dropdown';
-import ToggleSwitch from '@components/common/ToggleSwitch';
+import InputField from '@components/_common/molecules/InputField';
+import Dropdown from '@components/_common/molecules/Dropdown';
+import ToggleSwitch from '@components/_common/atoms/ToggleSwitch';
 import { QUESTION_TYPE_NAME } from '@constants/constants';
 
 import CheckBoxField from '@components/recruitment/CheckBoxField';

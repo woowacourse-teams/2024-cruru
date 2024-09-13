@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ProcessAddButton from '.';
 
 const meta = {
-  title: 'Common/ProcessManagement/ProcessAddButton',
+  title: 'Organisms/ProcessManagement/ProcessAddButton',
   component: ProcessAddButton,
   parameters: {
     layout: 'centered',

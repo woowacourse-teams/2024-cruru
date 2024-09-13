@@ -1,7 +1,7 @@
-import TextField from '@components/common/TextField';
-import InputField from '@components/common/InputField';
-import RadioLabelField from '@components/common/RadioLabelField';
-import CheckboxLabelField from '@components/common/CheckboxLabelField';
+import TextField from '@components/_common/molecules/TextField';
+import InputField from '@components/_common/molecules/InputField';
+import RadioLabelField from '@components/_common/molecules/RadioLabelField';
+import CheckboxLabelField from '@components/_common/molecules/CheckboxLabelField';
 import { Question } from '@customTypes/apply';
 import { ChangeEventHandler } from 'react';
 import { QUESTION_INPUT_LENGTH } from '@constants/constants';
