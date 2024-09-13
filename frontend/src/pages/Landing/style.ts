@@ -19,6 +19,16 @@ const bounce = keyframes`
   }
 `;
 
+const getBubblePosition = (index: number) => {
+  const positions = [
+    { top: '10%', right: '10%' },
+    { top: '10%', left: '10%' },
+    { top: '40%', right: '5%' },
+    { top: '40%', left: '5%' },
+  ];
+  return positions[index] || positions[0];
+};
+
 const Container = styled.div`
   width: 100vw;
 
@@ -144,21 +154,15 @@ const PersonImgWrapper = styled.div`
   max-width: 85rem;
   max-height: 43rem;
 `;
-
 const SpeechBubbleContainer = styled.div`
   position: relative;
-  top: 0;
-  left: 0;
-
   width: 100%;
   height: 100%;
 `;
 
-const SpeechBubble = styled.div`
+const SpeechBubble = styled.div<{ index: number }>`
   position: absolute;
-
   ${({ theme }) => theme.typography.common.large};
-
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   border-radius: 1rem;
   max-width: 29rem;
@@ -168,33 +172,9 @@ const SpeechBubble = styled.div`
 
   white-space: normal;
 
-  &:nth-child(1) {
-    top: 10%;
-    left: 10%;
-  }
+  ${({ index }) => getBubblePosition(index)};
 
-  &:nth-child(2) {
-    top: 10%;
-    right: 10%;
-  }
-
-  &:nth-child(3) {
-    top: 40%;
-    left: 5%;
-  }
-
-  &:nth-child(4) {
-    top: 40%;
-    right: 5%;
-  }
-
-  &:nth-child(odd) {
-    border-bottom-right-radius: 0;
-  }
-
-  &:nth-child(even) {
-    border-bottom-left-radius: 0;
-  }
+  ${({ index }) => (index % 2 === 1 ? 'border-bottom-right-radius: 0;' : 'border-bottom-left-radius: 0;')};
 `;
 
 const PersonImg = styled.img`
@@ -244,6 +224,7 @@ const StrongIntroHighlightText = styled.span`
 
 // Feature Section
 const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
+  position: relative;
   width: 100vw;
   height: 100vh;
   padding: 0 12rem;

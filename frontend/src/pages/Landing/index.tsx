@@ -15,6 +15,14 @@ import S from './style';
 
 export default function Landing() {
   const navigate = useNavigate();
+
+  const SPEECH_BUBBLE_TEXTS = [
+    '면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?',
+    '지원자들에게 일일이 연락하는게 너무 번거로워..',
+    '지원자 정보랑 평가가 한눈에 안들어와...',
+    '여러 공고를 한 번에 관리하기가 힘드네..',
+  ];
+
   return (
     <S.Container>
       <S.MainSection>
@@ -66,10 +74,15 @@ export default function Landing() {
           />
 
           <S.SpeechBubbleContainer>
-            <S.SpeechBubble>면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?</S.SpeechBubble>
-            <S.SpeechBubble>지원자들에게 일일이 연락하는게 너무 번거로워..</S.SpeechBubble>
-            <S.SpeechBubble>지원자 정보랑 평가가 한눈에 안들어와...</S.SpeechBubble>
-            <S.SpeechBubble>여러 공고를 한 번에 관리하기가 힘드네..</S.SpeechBubble>
+            {SPEECH_BUBBLE_TEXTS.map((text, index) => (
+              <S.SpeechBubble
+                // eslint-disable-next-line react/no-array-index-key
+                key={index}
+                index={index}
+              >
+                {text}
+              </S.SpeechBubble>
+            ))}
           </S.SpeechBubbleContainer>
         </S.PersonImgWrapper>
       </S.PainPointSection>
