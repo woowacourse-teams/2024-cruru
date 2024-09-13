@@ -1,10 +1,22 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const dropdownShadow = css`
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+`;
+
+const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(0.8rem);
+  }
+  60% {
+    transform: translateY(0.8rem);
+  }
 `;
 
 const Container = styled.div`
@@ -82,10 +94,10 @@ const ScrollDownArea = styled.div`
   align-items: center;
 
   width: 100%;
-  height: 30vh;
+  height: 20vh;
 
   position: absolute;
-  bottom: -15vh;
+  bottom: -10vh;
 
   background: linear-gradient(
     0deg,
@@ -100,6 +112,8 @@ const ScrollDownArea = styled.div`
     display: block;
     font-size: 4rem;
     color: ${({ theme }) => theme.baseColors.purplescale[500]};
+
+    animation: ${bounce} 2s infinite;
   }
 `;
 
