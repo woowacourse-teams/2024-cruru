@@ -9,8 +9,9 @@ import MessageWebp from '@assets/images/message.webp';
 import Feature1Webp from '@assets/images/feature1.webp';
 import Feature2Webp from '@assets/images/feature2.webp';
 import Feature3Webp from '@assets/images/feature3.webp';
-import { HiChevronDown } from 'react-icons/hi2';
+import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 
+import IconButton from '@components/common/IconButton';
 import S from './style';
 
 export default function Landing() {
@@ -23,8 +24,22 @@ export default function Landing() {
     '여러 공고를 한 번에 관리하기가 힘드네..',
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <S.Container>
+      <IconButton
+        size="md"
+        shape="round"
+        outline={false}
+        onClick={scrollToTop}
+        style={{ position: 'fixed', bottom: '4.8rem', right: '4.8rem', zIndex: 10, padding: '0.8rem' }}
+      >
+        <HiChevronUp />
+      </IconButton>
+
       <S.MainSection>
         <S.Catchphrase>
           복잡했던 리크루팅,
