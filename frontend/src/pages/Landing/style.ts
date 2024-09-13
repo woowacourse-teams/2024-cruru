@@ -331,7 +331,7 @@ const StartButtonWrapper = styled.div`
   bottom: 0;
 
   width: 30%;
-  height: 4.2rem;
+  height: 4.8rem;
 
   display: flex;
   justify-content: center;

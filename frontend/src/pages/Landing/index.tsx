@@ -185,6 +185,7 @@ export default function Landing() {
             size="fillContainer"
             onClick={() => navigate(routes.signUp())}
             color="primary"
+            style={{ fontSize: '1.6rem' }}
           >
             크루루 새로 시작하기
           </Button>
