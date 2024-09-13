@@ -4,7 +4,7 @@ import PostManageBoard from '.';
 
 export default {
   component: PostManageBoard,
-  title: 'common/molecules/postManagement/PostManageBoard',
+  title: 'common/Molecules/postManagement/PostManageBoard',
   parameters: {
     docs: {
       description: {
