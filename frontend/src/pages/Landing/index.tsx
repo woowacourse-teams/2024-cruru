@@ -1,5 +1,3 @@
-import Button from '@components/common/Button';
-
 import { routes } from '@router/path';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +9,8 @@ import Feature2Webp from '@assets/images/feature2.webp';
 import Feature3Webp from '@assets/images/feature3.webp';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 
-import IconButton from '@components/common/IconButton';
+import Button from '@components/_common/atoms/Button';
+import IconButton from '@components/_common/atoms/IconButton';
 import S from './style';
 
 export default function Landing() {
