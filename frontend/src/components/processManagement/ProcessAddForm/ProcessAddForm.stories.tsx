@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ProcessAddForm from '.';
 
 const meta = {
-  title: 'Components/ProcessManagement/ProcessAddForm',
+  title: 'Organisms/ProcessManagement/ProcessAddForm',
   component: ProcessAddForm,
   parameters: {
     layout: 'centered',

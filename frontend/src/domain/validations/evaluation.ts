@@ -1,4 +1,4 @@
-import { EVALUATION_CONTENT_MAX_LENGTH } from '@components/appModal/ApplicantEvalInfo/constants';
+import { EVALUATION_CONTENT_MAX_LENGTH } from '@components/ApplicantModal/ApplicantEvalInfo/constants';
 import ValidationError from '@utils/errors/ValidationError';
 
 export const validateEvalContent = (title: string) => {

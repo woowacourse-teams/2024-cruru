@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import useApplyManagement from '@hooks/useApplyManagement';
-import Button from '@components/common/Button';
+import Button from '@components/_common/atoms/Button';
 import QuestionBuilder from '@components/dashboard/DashboardCreate/Apply/QuestionBuilder';
 import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@constants/constants';
 

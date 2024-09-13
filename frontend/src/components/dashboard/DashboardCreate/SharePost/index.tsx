@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HiClipboard, HiClipboardCheck, HiExternalLink } from 'react-icons/hi';
 
-import IconButton from '@components/common/IconButton';
+import IconButton from '@components/_common/atoms/IconButton';
 import useCopyToClipboard from '@hooks/utils/useCopyToClipboard';
 import S from './style';
 

@@ -3,7 +3,7 @@ import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-r
 import Finish from '.';
 
 const meta: Meta<typeof Finish> = {
-  title: 'Components/Dashboard/Create/Finish',
+  title: 'Organisms/Dashboard/Create/Finish',
   component: Finish,
   decorators: [withRouter],
   parameters: {

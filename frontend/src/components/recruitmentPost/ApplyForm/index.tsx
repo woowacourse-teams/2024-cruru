@@ -1,5 +1,5 @@
-import Button from '@components/common/Button';
-import InputField from '@components/common/InputField';
+import Button from '@components/_common/atoms/Button';
+import InputField from '@components/_common/molecules/InputField';
 import CustomQuestion from '@components/recruitmentPost/CustomQuestion';
 import { FormEventHandler, useState } from 'react';
 
@@ -10,7 +10,7 @@ import { applyMutations, applyQueries } from '@hooks/apply';
 import useForm from '@hooks/utils/useForm';
 import { useParams } from 'react-router-dom';
 
-import CheckBox from '@components/common/CheckBox';
+import CheckBox from '@components/_common/atoms/CheckBox';
 import { useToast } from '@contexts/ToastContext';
 import C from '../style';
 import S from './style';

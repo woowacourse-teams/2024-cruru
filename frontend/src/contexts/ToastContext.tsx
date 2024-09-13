@@ -1,4 +1,4 @@
-import { ToastModal } from '@components/common/Toast';
+import { ToastModal } from '@components/_common/atoms/Toast';
 import { createContext, ReactNode, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 type ToastContextType = {

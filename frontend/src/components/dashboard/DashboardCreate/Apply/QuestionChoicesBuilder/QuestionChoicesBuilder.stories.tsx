@@ -5,7 +5,7 @@ import { QuestionOptionValue } from '@customTypes/dashboard';
 import QuestionChoicesBuilder from './index';
 
 const meta: Meta<typeof QuestionChoicesBuilder> = {
-  title: 'Components/Dashboard/Create/Apply/QuestionChoicesBuilder',
+  title: 'Organisms/Dashboard/DashboardCreate/Apply/QuestionChoicesBuilder',
   component: QuestionChoicesBuilder,
   parameters: {
     layout: 'centered',

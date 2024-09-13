@@ -1,5 +1,5 @@
 import Logo from '@assets/images/logo.svg';
-import Accordion from '@components/common/Accordion';
+import Accordion from '@components/_common/molecules/Accordion';
 import { routes } from '@router/path';
 import { Link } from 'react-router-dom';
 import LogoutButton from './LogoutButton';

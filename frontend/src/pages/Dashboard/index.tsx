@@ -1,15 +1,15 @@
 /* eslint-disable no-trailing-spaces */
 import { useParams } from 'react-router-dom';
 
-import Tab from '@components/common/Tab';
+import Tab from '@components/_common/molecules/Tab';
 import ProcessBoard from '@components/dashboard/ProcessBoard';
 import ApplyManagement from '@components/applyManagement';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import PostManageBoard from '@components/postManagement/PostManageBoard';
-import OpenInNewTab from '@components/common/OpenInNewTab';
-import CopyToClipboard from '@components/common/CopyToClipboard';
+import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
+import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
 
-import useTab from '@components/common/Tab/useTab';
+import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';

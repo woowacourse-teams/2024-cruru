@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QuestionBuilder from './index';
 
 const meta: Meta<typeof QuestionBuilder> = {
-  title: 'Components/Dashboard/Create/Apply/QuestionBuilder',
+  title: 'Organisms/Dashboard/DashboardCreate/Apply/QuestionBuilder',
   component: QuestionBuilder,
   parameters: {
     layout: 'centered',

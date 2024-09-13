@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import RecruitmentSidebar from './index';
 
 const meta: Meta<typeof RecruitmentSidebar> = {
-  title: 'Components/Recruitment/RecruitmentSidebar',
+  title: 'Organisms/Recruitment/RecruitmentSidebar',
   component: RecruitmentSidebar,
   parameters: {
     layout: 'centered',

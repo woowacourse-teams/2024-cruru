@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import RadioInputField from './index';
 
 const meta: Meta<typeof RadioInputField> = {
-  title: 'Components/Recruitment/Radio/RadioInputField',
+  title: 'Organisms/Recruitment/Radio/RadioInputField',
   component: RadioInputField,
   parameters: {
     layout: 'centered',
