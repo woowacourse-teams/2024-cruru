@@ -227,11 +227,12 @@ const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
   position: relative;
   width: 100vw;
   height: 100vh;
-  padding: 0 12rem;
+  padding: 4rem 12rem;
 
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  flex-wrap: wrap;
 
   &:nth-child(odd) {
     flex-direction: row-reverse;
@@ -293,11 +294,14 @@ const FeatureDescription = styled.p`
 `;
 
 const FeatureImg = styled.img`
-  width: 55rem;
+  width: 100%;
+  max-width: 55rem;
+  min-width: 40rem;
 `;
 
 // Footer
 const Footer = styled.footer`
+  margin-top: 20rem;
   width: 100%;
   height: 20vh;
 
@@ -321,7 +325,7 @@ const Footer = styled.footer`
 
 const StartButtonWrapper = styled.div`
   position: absolute;
-  bottom: 10%;
+  bottom: 0;
 
   width: 30%;
   height: 4.2rem;
