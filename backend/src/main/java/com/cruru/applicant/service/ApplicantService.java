@@ -109,9 +109,4 @@ public class ApplicantService {
                 averageScore
         );
     }
-
-    public Applicant findByEmail(String email) {
-        return applicantRepository.findByEmail(email)
-                .orElseThrow(ApplicantNotFoundException::new);
-    }
 }

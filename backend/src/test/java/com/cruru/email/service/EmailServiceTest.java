@@ -27,16 +27,9 @@ class EmailServiceTest extends ServiceTest {
         // given
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
         String text = "우아한테크코스 합격을 진심으로 축하합니다!";
-        EmailRequest request = new EmailRequest(
-                null,
-                null,
-                subject,
-                text,
-                null
-        );
 
         // when
-        emailService.save(request, null, null);
+        emailService.save(null, null, subject, text);
 
         // then
         List<Email> emails = emailRepository.findAll();

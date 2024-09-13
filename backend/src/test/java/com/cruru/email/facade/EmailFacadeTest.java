@@ -47,7 +47,7 @@ class EmailFacadeTest extends ServiceTest {
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
         EmailRequest emailRequest = new EmailRequest(
                 defaultClub.getId(),
-                List.of(applicant.getEmail()),
+                List.of(applicant.getId()),
                 subject,
                 "우아한테크코스 합격을 진심으로 축하합니다!",
                 null

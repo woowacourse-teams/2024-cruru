@@ -1,13 +1,16 @@
 package com.cruru.email.facade;
 
+import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.email.controller.dto.EmailRequest;
 import com.cruru.email.service.EmailService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,10 +24,15 @@ public class EmailFacade {
     @Transactional
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
-        request.to()
+        request.applicantIds()
                 .stream()
-                .map(applicantService::findByEmail)
-                .forEach(to -> emailService.save(request, from, to));
-        emailService.send(request);
+                .map(applicantService::findById)
+                .forEach(to -> sendAndSave(from, to, request.subject(), request.text(), request.files()));
+    }
+
+    @Transactional
+    public void sendAndSave(Club from, Applicant to, String subject, String text, List<MultipartFile> files) {
+        emailService.save(from, to, subject, text);
+        emailService.send(from, to, subject, text, files);
     }
 }

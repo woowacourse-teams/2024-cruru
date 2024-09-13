@@ -27,8 +27,7 @@ class EmailControllerTest extends ControllerTest {
     @Test
     void send() {
         // given
-        Applicant applicant = ApplicantFixture.pendingDobby();
-        applicantRepository.save(applicant);
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
         String text = "우아한테크코스 합격을 진심으로 축하합니다!";
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
@@ -37,7 +36,7 @@ class EmailControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .multiPart("clubId", defaultClub.getId())
-                .multiPart("to", applicant.getEmail())
+                .multiPart("applicantIds", applicant.getId())
                 .multiPart("subject", subject)
                 .multiPart("text", text)
                 .multiPart("files", file)
@@ -46,7 +45,7 @@ class EmailControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         requestParts(
                                 partWithName("clubId").description("발송 동아리 id"),
-                                partWithName("to").description("수신자 이메일 목록"),
+                                partWithName("applicantIds").description("수신자 id 목록"),
                                 partWithName("subject").description("이메일 제목"),
                                 partWithName("text").description("이메일 본문"),
                                 partWithName("files").description("이메일 첨부 파일")
@@ -56,12 +55,11 @@ class EmailControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("이메일 형식이 올바르지 않은 경우, 400을 응답한다.")
+    @DisplayName("존재하지 않는 지원자 id를 수신자로 설정한 경우, 404를 응답한다.")
     @Test
     void send_invalidRequest() {
         // given
-        Applicant applicant = ApplicantFixture.pendingDobby();
-        applicantRepository.save(applicant);
+        long invalidId = -1;
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
         String text = "우아한테크코스 합격을 진심으로 축하합니다!";
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
@@ -70,7 +68,7 @@ class EmailControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .multiPart("clubId", defaultClub.getId())
-                .multiPart("to", "notEmail")
+                .multiPart("applicantIds", invalidId)
                 .multiPart("subject", subject)
                 .multiPart("text", text)
                 .multiPart("files", file)
@@ -79,24 +77,23 @@ class EmailControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         requestParts(
                                 partWithName("clubId").description("발송 동아리 id"),
-                                partWithName("to").description("적절하지 않은 수신자 이메일이 포함된 목록"),
+                                partWithName("applicantIds").description("적절하지 않은 수신자 id가 포함된 목록"),
                                 partWithName("subject").description("이메일 제목"),
                                 partWithName("text").description("이메일 본문"),
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))
                 .when().post("/v1/emails/send")
-                .then().log().all().statusCode(400);
+                .then().log().all().statusCode(404);
     }
 
     @DisplayName("존재하지 않는 동아리 id를 발송자로 설정한 경우, 404를 응답한다.")
     @Test
     void send_clubNotExist() {
         // given
-        Applicant applicant = ApplicantFixture.pendingDobby();
-        applicantRepository.save(applicant);
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         long invalidId = -1;
-        String email = applicant.getEmail();
+        long email = applicant.getId();
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
         String text = "우아한테크코스 합격을 진심으로 축하합니다!";
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
@@ -105,7 +102,7 @@ class EmailControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .multiPart("clubId", invalidId)
-                .multiPart("to", email)
+                .multiPart("applicantIds", email)
                 .multiPart("subject", subject)
                 .multiPart("text", text)
                 .multiPart("files", file)
@@ -114,7 +111,7 @@ class EmailControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         requestParts(
                                 partWithName("clubId").description("존재하지 않는 발송 동아리 id"),
-                                partWithName("to").description("수신자 이메일 목록"),
+                                partWithName("applicantIds").description("수신자 id 목록"),
                                 partWithName("subject").description("이메일 제목"),
                                 partWithName("text").description("이메일 본문"),
                                 partWithName("files").description("이메일 첨부 파일")

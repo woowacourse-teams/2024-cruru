@@ -1,7 +1,6 @@
 package com.cruru.email.controller.dto;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -14,7 +13,7 @@ public record EmailRequest(
 
         @NotEmpty(message = "수신자는 필수 값입니다.")
         @Valid
-        List<@Email(message = "올바른 이메일 형식이어야 합니다.") String> to,
+        List<@NotNull(message = "수신자는 필수 값입니다.") Long> applicantIds,
 
         String subject,
 

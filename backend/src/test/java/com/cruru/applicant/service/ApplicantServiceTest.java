@@ -199,15 +199,4 @@ class ApplicantServiceTest extends ServiceTest {
         assertThatThrownBy(() -> applicantService.unreject(applicantId))
                 .isInstanceOf(ApplicantUnrejectException.class);
     }
-
-    @DisplayName("email에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")
-    @Test
-    void findByEmail_notFound() {
-        // given
-        String invalidEmail = "invalidEmail";
-
-        // when&then
-        assertThatThrownBy(() -> applicantService.findByEmail(invalidEmail))
-                .isInstanceOf(ApplicantNotFoundException.class);
-    }
 }
