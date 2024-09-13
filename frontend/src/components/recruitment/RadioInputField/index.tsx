@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { QuestionOptionValue } from '@customTypes/dashboard';
 
 import S from './style';
-import RadioInputOption from '../RadioInputOption';
+import RadioInputOption from '../../_common/molecules/RadioInputOption';
 
 interface ChoiceOption {
   choice: string;

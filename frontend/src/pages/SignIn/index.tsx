@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import Button from '@components/common/Button';
-import Spinner from '@components/common/Spinner';
-import InputField from '@components/common/InputField';
+import Button from '@components/_common/atoms/Button';
+import Spinner from '@components/_common/atoms/Spinner';
+import InputField from '@components/_common/molecules/InputField';
 
 import useForm from '@hooks/utils/useForm';
 import useSignIn from '@hooks/useSignIn';

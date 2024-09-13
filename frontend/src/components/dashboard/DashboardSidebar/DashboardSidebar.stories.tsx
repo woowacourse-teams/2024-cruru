@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DashboardSidebar from '.';
 
 const meta: Meta<typeof DashboardSidebar> = {
-  title: 'Components/Dashboard/Sidebar',
+  title: 'Organisms/Dashboard/Sidebar',
   component: DashboardSidebar,
   parameters: {
     layout: 'centered',

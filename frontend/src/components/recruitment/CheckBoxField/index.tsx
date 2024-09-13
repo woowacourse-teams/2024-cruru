@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { QuestionOptionValue } from '@customTypes/dashboard';
-import CheckBoxOption from '../CheckBoxOption';
+import CheckBoxOption from '../../_common/molecules/CheckBoxOption';
 
 import S from './style';
 

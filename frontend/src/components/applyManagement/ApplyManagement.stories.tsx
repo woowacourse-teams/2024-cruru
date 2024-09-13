@@ -4,7 +4,7 @@ import { reactRouterParameters } from 'storybook-addon-remix-react-router';
 import ApplyManagement from './index';
 
 const meta: Meta<typeof ApplyManagement> = {
-  title: 'Components/Dashboard/ApplyManagement',
+  title: 'Organisms/ApplyManagement',
   component: ApplyManagement,
   parameters: {
     layout: 'centered',

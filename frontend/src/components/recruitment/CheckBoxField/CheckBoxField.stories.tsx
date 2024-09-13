@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CheckBoxField from './index';
 
 const meta: Meta<typeof CheckBoxField> = {
-  title: 'Components/Recruitment/CheckBox/CheckBoxField',
+  title: 'Organisms/Recruitment/CheckBox/CheckBoxField',
   component: CheckBoxField,
   parameters: {
     layout: 'centered',

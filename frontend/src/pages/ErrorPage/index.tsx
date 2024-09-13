@@ -1,6 +1,6 @@
 import ApiError from '@api/ApiError';
-import Button from '@components/common/Button';
-import { ButtonColor } from '@components/common/Button/style';
+import Button from '@components/_common/atoms/Button';
+import { ButtonColor } from '@components/_common/atoms/Button/style';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom';
 import { routes } from '@router/path';
 import useClubId from '@hooks/service/useClubId';

@@ -1,5 +1,5 @@
-import Button from '@components/common/Button';
-import TextEditor from '@components/common/TextEditor';
+import Button from '@components/_common/atoms/Button';
+import TextEditor from '@components/_common/atoms/TextEditor';
 import { RecruitmentPost } from '@customTypes/apply';
 import C from '../style';
 

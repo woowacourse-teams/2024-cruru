@@ -1,6 +1,6 @@
 import { Process } from '@customTypes/process';
-import ProcessColumn from '@components/dashboard/ProcessColumn';
-import ApplicantModal from '@components/appModal';
+import ApplicantModal from '@components/ApplicantModal';
+import ProcessColumn from '../ProcessColumn';
 import S from './style';
 
 interface KanbanBoardProps {
