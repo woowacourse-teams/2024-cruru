@@ -1,6 +1,12 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+const dropdownShadow = css`
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+`;
+
 const Container = styled.div`
   width: 100vw;
 
@@ -45,7 +51,6 @@ const HightLight = styled.span`
 `;
 
 const Supporting = styled.p`
-  font-family: 'Pretendard', sans-serif;
   font-weight: 500;
   font-size: 2.4rem;
   line-height: 1.4;
@@ -59,9 +64,7 @@ const CtaButtons = styled.div`
   gap: 1.5rem;
 
   & > button {
-    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+    ${dropdownShadow}
   }
 `;
 
@@ -147,7 +150,7 @@ const SpeechBubble = styled.div`
   max-width: 29rem;
   padding: 0.8rem;
 
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
+  ${dropdownShadow}
 
   white-space: normal;
 
@@ -240,52 +243,24 @@ const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
   }
 
   ${({ color }) => {
-    switch (color) {
-      case 'blue':
-        return css`
-          background: linear-gradient(
-            0deg,
-            rgba(214, 236, 255, 0) 0%,
-            rgba(214, 236, 255, 0.5) 10%,
-            rgba(214, 236, 255, 1) 75%,
-            rgba(214, 236, 255, 0.5) 90%,
-            rgba(214, 236, 255, 0) 100%
-          );
-        `;
-      case 'purple':
-        return css`
-          background: linear-gradient(
-            0deg,
-            rgba(246, 232, 238, 0) 0%,
-            rgba(246, 232, 238, 0.5) 10%,
-            rgba(246, 232, 238, 1) 75%,
-            rgba(246, 232, 238, 0.5) 90%,
-            rgba(246, 232, 238, 0) 100%
-          );
-        `;
-      case 'gray':
-        return css`
-          background: linear-gradient(
-            0deg,
-            rgba(243, 243, 243, 0) 0%,
-            rgba(243, 243, 243, 0.5) 10%,
-            rgba(243, 243, 243, 1) 75%,
-            rgba(243, 243, 243, 0.5) 90%,
-            rgba(243, 243, 243, 0) 100%
-          );
-        `;
-      default:
-        return css`
-          background: linear-gradient(
-            0deg,
-            rgba(243, 243, 243, 0) 0%,
-            rgba(243, 243, 243, 0.5) 10%,
-            rgba(243, 243, 243, 1) 75%,
-            rgba(243, 243, 243, 0.5) 90%,
-            rgba(243, 243, 243, 0) 100%
-          );
-        `;
-    }
+    const colors = {
+      blue: '214, 236, 255',
+      purple: '246, 232, 238',
+      gray: '243, 243, 243',
+    };
+
+    const selectedColor = colors[color] || colors.gray;
+
+    return css`
+      background: linear-gradient(
+        0deg,
+        rgba(${selectedColor}, 0) 0%,
+        rgba(${selectedColor}, 0.5) 10%,
+        rgba(${selectedColor}, 1) 75%,
+        rgba(${selectedColor}, 0.5) 90%,
+        rgba(${selectedColor}, 0) 100%
+      );
+    `;
   }}
 `;
 
@@ -297,24 +272,23 @@ const FeatureTitle = styled.h2`
 
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
 `;
+
 const FeatureSubtitle = styled.h3<{ color: 'blue' | 'purple' | 'gray' }>`
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1.6rem;
 
   color: ${({ theme, color }) => {
-    switch (color) {
-      case 'blue':
-        return '#007AFF';
-      case 'purple':
-        return theme.colors.brand.primary;
-      case 'gray':
-        return theme.baseColors.grayscale[700];
-      default:
-        return theme.baseColors.grayscale[700];
-    }
+    const colorMap = {
+      blue: '#007AFF',
+      purple: theme.colors.brand.primary,
+      gray: theme.baseColors.grayscale[700],
+    };
+
+    return colorMap[color] || theme.baseColors.grayscale[700];
   }};
 `;
+
 const FeatureDescription = styled.p`
   font-size: 1.8rem;
   font-weight: 500;
