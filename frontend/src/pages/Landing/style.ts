@@ -120,6 +120,9 @@ const ScrollDownArea = styled.div`
 
   & > svg {
     display: block;
+    position: relative;
+    bottom: -3rem;
+
     font-size: 4rem;
     color: ${({ theme }) => theme.baseColors.purplescale[500]};
 
