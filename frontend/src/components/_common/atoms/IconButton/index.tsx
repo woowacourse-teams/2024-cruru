@@ -11,6 +11,7 @@ export default function IconButton({
   disabled,
   onClick,
   children,
+  ...props
 }: PropsWithChildren<IconButtonProps>) {
   return (
     <S.IconButton
@@ -20,6 +21,7 @@ export default function IconButton({
       type={type}
       disabled={disabled}
       onClick={onClick}
+      {...props}
     >
       {children}
     </S.IconButton>
