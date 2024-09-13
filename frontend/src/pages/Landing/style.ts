@@ -19,6 +19,26 @@ const bounce = keyframes`
   }
 `;
 
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const fadeInUp = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 const getBubblePosition = (index: number) => {
   const positions = [
     { top: '10%', right: '10%' },
@@ -64,12 +84,33 @@ const Catchphrase = styled.h1`
   font-weight: 900;
   font-size: 6.4rem;
   letter-spacing: -1px;
-`;
 
-const HightLight = styled.span`
-  background: linear-gradient(90deg, #aa2298 0%, #841b76 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  span {
+    opacity: 0;
+    display: inline-block;
+    animation: ${fadeIn} 0.5s ease-in-out forwards;
+    white-space: pre-wrap;
+  }
+
+  span:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  span:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  span:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  span:nth-child(5) {
+    animation-delay: 0.3s;
+
+    background: linear-gradient(90deg, #aa2298 0%, #841b76 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 `;
 
 const Supporting = styled.p`
@@ -78,12 +119,20 @@ const Supporting = styled.p`
   line-height: 1.4;
 
   color: ${({ theme }) => theme.baseColors.grayscale[700]};
+
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease-in-out forwards;
+  animation-delay: 0.6s;
 `;
 
 const CtaButtons = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease-in-out forwards;
+  animation-delay: 0.6s;
 
   & > button {
     ${dropdownShadow}
@@ -96,6 +145,10 @@ const MainImg = styled.img`
   position: absolute;
   bottom: -18rem;
   z-index: 0;
+
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease-in-out forwards;
+  animation-delay: 0.6s;
 `;
 
 const ScrollDownArea = styled.div`
@@ -108,15 +161,6 @@ const ScrollDownArea = styled.div`
 
   position: absolute;
   bottom: -10vh;
-
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(246, 228, 243, 0.8) 20%,
-    rgba(243, 217, 238, 0.9) 50%,
-    rgba(247, 229, 243, 0.8) 80%,
-    rgba(255, 255, 255, 0) 100%
-  );
 
   & > svg {
     display: block;
@@ -342,7 +386,6 @@ const S = {
   Container,
   MainSection,
   Catchphrase,
-  HightLight,
   Supporting,
   CtaButtons,
   MainImg,

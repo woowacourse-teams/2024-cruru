@@ -2,11 +2,11 @@ import { routes } from '@router/path';
 import { useNavigate } from 'react-router-dom';
 
 import DashboardWebp from '@assets/images/dashboard.webp';
-import ManStrugglingWebp from '@assets/images/manStruggling.webp';
-import MessageWebp from '@assets/images/message.webp';
 import Feature1Webp from '@assets/images/feature1.webp';
 import Feature2Webp from '@assets/images/feature2.webp';
 import Feature3Webp from '@assets/images/feature3.webp';
+import ManStrugglingWebp from '@assets/images/manStruggling.webp';
+import MessageWebp from '@assets/images/message.webp';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 
 import Button from '@components/_common/atoms/Button';
@@ -41,10 +41,11 @@ export default function Landing() {
 
       <S.MainSection>
         <S.Catchphrase>
-          복잡했던 리크루팅,
+          <span>복잡했던 </span>
+          <span>리크루팅,</span>
           <br />
-          하루만에
-          <S.HightLight> 크루루.</S.HightLight>
+          <span>하루만에</span>
+          <span> 크루루.</span>
         </S.Catchphrase>
         <S.Supporting>
           번거로운 엑셀 작업은 이제 그만!
