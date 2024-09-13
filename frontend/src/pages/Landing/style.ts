@@ -338,6 +338,18 @@ const Footer = styled.footer`
   }
 `;
 
+const StartButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 10%;
+
+  width: 30%;
+  height: 4.2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const S = {
   Container,
   MainSection,
@@ -365,6 +377,7 @@ const S = {
   FeatureSubtitle,
   FeatureDescription,
   FeatureImg,
+  StartButtonWrapper,
 
   Footer,
 };

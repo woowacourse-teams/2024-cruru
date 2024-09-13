@@ -152,6 +152,16 @@ export default function Landing() {
         </div>
 
         <S.FeatureImg src={Feature3Webp} />
+
+        <S.StartButtonWrapper>
+          <Button
+            size="fillContainer"
+            onClick={() => navigate(routes.signUp())}
+            color="primary"
+          >
+            크루루 새로 시작하기
+          </Button>
+        </S.StartButtonWrapper>
       </S.FeatureSection>
 
       <S.Footer>
