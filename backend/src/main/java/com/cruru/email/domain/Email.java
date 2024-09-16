@@ -4,7 +4,7 @@ import com.cruru.BaseEntity;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
 import com.cruru.email.exception.EmailSubjectLengthException;
-import com.cruru.email.exception.EmailTextLengthException;
+import com.cruru.email.exception.EmailContentLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,15 +44,15 @@ public class Email extends BaseEntity {
     private String subject;
 
     @Column(columnDefinition = "TEXT")
-    private String text;
+    private String content;
 
-    public Email(Club from, Applicant to, String subject, String text) {
+    public Email(Club from, Applicant to, String subject, String content) {
         validateSubjectLength(subject);
-        validateTextLength(text);
+        validateContentLength(content);
         this.from = from;
         this.to = to;
         this.subject = subject;
-        this.text = text;
+        this.content = content;
     }
 
     private void validateSubjectLength(String subject) {
@@ -61,9 +61,9 @@ public class Email extends BaseEntity {
         }
     }
 
-    private void validateTextLength(String text) {
-        if (text.length() > EMAIL_TEXT_MAX_LENGTH) {
-            throw new EmailTextLengthException(EMAIL_TEXT_MAX_LENGTH, text.length());
+    private void validateContentLength(String content) {
+        if (content.length() > EMAIL_TEXT_MAX_LENGTH) {
+            throw new EmailContentLengthException(EMAIL_TEXT_MAX_LENGTH, content.length());
         }
     }
 
@@ -91,7 +91,7 @@ public class Email extends BaseEntity {
                 ", from=" + from +
                 ", to=" + to +
                 ", subject='" + subject + '\'' +
-                ", text='" + text + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

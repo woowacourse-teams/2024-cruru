@@ -29,7 +29,7 @@ class EmailControllerTest extends ControllerTest {
         // given
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String text = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
 
         // when&then
@@ -38,7 +38,7 @@ class EmailControllerTest extends ControllerTest {
                 .multiPart("clubId", defaultClub.getId())
                 .multiPart("applicantIds", applicant.getId())
                 .multiPart("subject", subject)
-                .multiPart("text", text)
+                .multiPart("content", content)
                 .multiPart("files", file)
                 .contentType(ContentType.MULTIPART)
                 .filter(document("email/send",
@@ -47,7 +47,7 @@ class EmailControllerTest extends ControllerTest {
                                 partWithName("clubId").description("발송 동아리 id"),
                                 partWithName("applicantIds").description("수신자 id 목록"),
                                 partWithName("subject").description("이메일 제목"),
-                                partWithName("text").description("이메일 본문"),
+                                partWithName("content").description("이메일 본문"),
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))
@@ -61,7 +61,7 @@ class EmailControllerTest extends ControllerTest {
         // given
         long invalidId = -1;
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String text = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
 
         // when&then
@@ -70,7 +70,7 @@ class EmailControllerTest extends ControllerTest {
                 .multiPart("clubId", defaultClub.getId())
                 .multiPart("applicantIds", invalidId)
                 .multiPart("subject", subject)
-                .multiPart("text", text)
+                .multiPart("content", content)
                 .multiPart("files", file)
                 .contentType(ContentType.MULTIPART)
                 .filter(document("email/send-fail/invalid-email",
@@ -79,7 +79,7 @@ class EmailControllerTest extends ControllerTest {
                                 partWithName("clubId").description("발송 동아리 id"),
                                 partWithName("applicantIds").description("적절하지 않은 수신자 id가 포함된 목록"),
                                 partWithName("subject").description("이메일 제목"),
-                                partWithName("text").description("이메일 본문"),
+                                partWithName("content").description("이메일 본문"),
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))
@@ -95,7 +95,7 @@ class EmailControllerTest extends ControllerTest {
         long invalidId = -1;
         long email = applicant.getId();
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String text = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
 
         // when&then
@@ -104,7 +104,7 @@ class EmailControllerTest extends ControllerTest {
                 .multiPart("clubId", invalidId)
                 .multiPart("applicantIds", email)
                 .multiPart("subject", subject)
-                .multiPart("text", text)
+                .multiPart("content", content)
                 .multiPart("files", file)
                 .contentType(ContentType.MULTIPART)
                 .filter(document("email/send-fail/club-not-found",
@@ -113,7 +113,7 @@ class EmailControllerTest extends ControllerTest {
                                 partWithName("clubId").description("존재하지 않는 발송 동아리 id"),
                                 partWithName("applicantIds").description("수신자 id 목록"),
                                 partWithName("subject").description("이메일 제목"),
-                                partWithName("text").description("이메일 본문"),
+                                partWithName("content").description("이메일 본문"),
                                 partWithName("files").description("이메일 첨부 파일")
                         )
                 ))

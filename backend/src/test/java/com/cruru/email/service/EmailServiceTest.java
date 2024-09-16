@@ -3,7 +3,6 @@ package com.cruru.email.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.cruru.email.controller.dto.EmailRequest;
 import com.cruru.email.domain.Email;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.util.ServiceTest;
@@ -26,10 +25,10 @@ class EmailServiceTest extends ServiceTest {
     void save() {
         // given
         String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String text = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
 
         // when
-        emailService.save(null, null, subject, text);
+        emailService.save(null, null, subject, content);
 
         // then
         List<Email> emails = emailRepository.findAll();
@@ -37,7 +36,7 @@ class EmailServiceTest extends ServiceTest {
         assertAll(
                 () -> assertThat(emails.size()).isEqualTo(1),
                 () -> assertThat(actual.getSubject()).isEqualTo(subject),
-                () -> assertThat(actual.getText()).isEqualTo(text)
+                () -> assertThat(actual.getContent()).isEqualTo(content)
         );
     }
 }

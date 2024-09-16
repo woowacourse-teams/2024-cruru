@@ -40,7 +40,7 @@ class EmailRepositoryTest extends RepositoryTest {
 
         //then
         Email findEmail = emailRepository.findById(saved.getId()).get();
-        assertThat(findEmail.getText()).isEqualTo("지원해주셔서 감사합니다. 불합격입니다.");
+        assertThat(findEmail.getContent()).isEqualTo("지원해주셔서 감사합니다. 불합격입니다.");
     }
 
     @DisplayName("ID가 없는 프로세스를 저장하면, ID를 순차적으로 부여하여 저장한다.")

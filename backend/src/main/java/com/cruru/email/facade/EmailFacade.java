@@ -27,12 +27,12 @@ public class EmailFacade {
         request.applicantIds()
                 .stream()
                 .map(applicantService::findById)
-                .forEach(to -> sendAndSave(from, to, request.subject(), request.text(), request.files()));
+                .forEach(to -> sendAndSave(from, to, request.subject(), request.content(), request.files()));
     }
 
     @Transactional
-    public void sendAndSave(Club from, Applicant to, String subject, String text, List<MultipartFile> files) {
-        emailService.save(from, to, subject, text);
-        emailService.send(from, to, subject, text, files);
+    public void sendAndSave(Club from, Applicant to, String subject, String content, List<MultipartFile> files) {
+        emailService.save(from, to, subject, content);
+        emailService.send(from, to, subject, content, files);
     }
 }

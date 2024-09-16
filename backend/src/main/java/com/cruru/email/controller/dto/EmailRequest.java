@@ -17,7 +17,7 @@ public record EmailRequest(
 
         String subject,
 
-        String text,
+        String content,
 
         List<MultipartFile> files
 ) {
