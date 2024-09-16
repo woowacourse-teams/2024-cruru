@@ -36,7 +36,7 @@ public class EmailService {
             helper.setTo(to.getEmail());
             helper.setSubject(subject);
             helper.setText(text);
-            if (existsFile(files)) {
+            if (hasFile(files)) {
                 for (MultipartFile file : files) {
                     helper.addAttachment(Objects.requireNonNull(file.getOriginalFilename()), file);
                 }
@@ -49,7 +49,7 @@ public class EmailService {
         }
     }
 
-    private boolean existsFile(List<MultipartFile> files) {
+    private boolean hasFile(List<MultipartFile> files) {
         return files != null && !files.isEmpty();
     }
 
