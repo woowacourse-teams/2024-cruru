@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.cruru.email.domain.Email;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.EmailFixture;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,8 @@ class EmailServiceTest extends ServiceTest {
     @Test
     void save() {
         // given
-        String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String subject = EmailFixture.SUBJECT;
+        String content = EmailFixture.APPROVE_CONTENT;
 
         // when
         emailService.save(null, null, subject, content);

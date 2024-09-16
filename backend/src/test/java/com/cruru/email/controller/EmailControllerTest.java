@@ -10,6 +10,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.EmailFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.io.File;
@@ -28,8 +29,8 @@ class EmailControllerTest extends ControllerTest {
     void send() {
         // given
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
-        String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String subject = EmailFixture.SUBJECT;
+        String content = EmailFixture.APPROVE_CONTENT;
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
 
         // when&then
@@ -60,8 +61,8 @@ class EmailControllerTest extends ControllerTest {
     void send_invalidRequest() {
         // given
         long invalidId = -1;
-        String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String subject = EmailFixture.SUBJECT;
+        String content = EmailFixture.APPROVE_CONTENT;
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
 
         // when&then
@@ -94,8 +95,8 @@ class EmailControllerTest extends ControllerTest {
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         long invalidId = -1;
         long email = applicant.getId();
-        String subject = "[우아한테크코스] 7기 최종 심사 결과 안내";
-        String content = "우아한테크코스 합격을 진심으로 축하합니다!";
+        String subject = EmailFixture.SUBJECT;
+        String content = EmailFixture.APPROVE_CONTENT;
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());
 
         // when&then

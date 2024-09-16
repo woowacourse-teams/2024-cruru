@@ -21,7 +21,7 @@ class EmailRepositoryTest extends RepositoryTest {
         emailRepository.deleteAllInBatch();
     }
 
-    @DisplayName("이미 DB에 저장되어 있는 ID를 가진 프로세스를 저장하면, 해당 ID의 프로세스는 후에 작성된 정보로 업데이트한다.")
+    @DisplayName("이미 DB에 저장되어 있는 ID를 가진 이메일 발송 내역을 저장하면, 해당 ID의 이메일 발송 내역은 후에 작성된 정보로 업데이트한다.")
     @Test
     void sameIdUpdate() {
         //given
@@ -33,17 +33,17 @@ class EmailRepositoryTest extends RepositoryTest {
                 email.getId(),
                 null,
                 null,
-                "[우아한테크코스] 7기 최종 심사 결과 안내",
-                "지원해주셔서 감사합니다. 불합격입니다."
+                EmailFixture.SUBJECT,
+                EmailFixture.REJECT_CONTENT
         );
         emailRepository.save(updatedEmail);
 
         //then
         Email findEmail = emailRepository.findById(saved.getId()).get();
-        assertThat(findEmail.getContent()).isEqualTo("지원해주셔서 감사합니다. 불합격입니다.");
+        assertThat(findEmail.getContent()).isEqualTo(EmailFixture.REJECT_CONTENT);
     }
 
-    @DisplayName("ID가 없는 프로세스를 저장하면, ID를 순차적으로 부여하여 저장한다.")
+    @DisplayName("ID가 없는 이메일 발송 내역을 저장하면, ID를 순차적으로 부여하여 저장한다.")
     @Test
     void saveNoId() {
         //given
