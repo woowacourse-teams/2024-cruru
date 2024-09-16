@@ -8,7 +8,6 @@ import com.cruru.email.exception.EmailSendFailedException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
@@ -32,14 +31,11 @@ public class EmailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
             helper.setTo(to.getEmail());
             helper.setSubject(subject);
             helper.setText(text);
             if (hasFile(files)) {
-                for (MultipartFile file : files) {
-                    helper.addAttachment(Objects.requireNonNull(file.getOriginalFilename()), file);
-                }
+                addAttachments(helper, files);
             }
 
             mailSender.send(message);
@@ -51,6 +47,23 @@ public class EmailService {
 
     private boolean hasFile(List<MultipartFile> files) {
         return files != null && !files.isEmpty();
+    }
+
+    private void addAttachments(MimeMessageHelper helper, List<MultipartFile> files) throws MessagingException {
+        for (MultipartFile file : files) {
+            addAttachment(helper, file);
+        }
+    }
+
+    private void addAttachment(MimeMessageHelper helper, MultipartFile file) throws MessagingException {
+        String fileName = file.getOriginalFilename();
+        if (isValidateFileName(fileName)) {
+            helper.addAttachment(fileName, file);
+        }
+    }
+
+    private boolean isValidateFileName(String fileName) {
+        return fileName != null && !fileName.isEmpty();
     }
 
     @Transactional
