@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class Email extends BaseEntity {
 
     private static final int EMAIL_SUBJECT_MAX_LENGTH = 998;
-    private static final int EMAIL_TEXT_MAX_LENGTH = 10_000;
+    private static final int EMAIL_CONTENT_MAX_LENGTH = 10_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,8 +62,8 @@ public class Email extends BaseEntity {
     }
 
     private void validateContentLength(String content) {
-        if (content.length() > EMAIL_TEXT_MAX_LENGTH) {
-            throw new EmailContentLengthException(EMAIL_TEXT_MAX_LENGTH, content.length());
+        if (content.length() > EMAIL_CONTENT_MAX_LENGTH) {
+            throw new EmailContentLengthException(EMAIL_CONTENT_MAX_LENGTH, content.length());
         }
     }
 
