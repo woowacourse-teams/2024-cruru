@@ -349,6 +349,33 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(400);
     }
 
+    @DisplayName("지원서 폼 제출 시, 필수 질문에 응답하지 않은 경우 400를 반환한다.")
+    @Test
+    void submit_RequiredNotReplied() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        processRepository.save(ProcessFixture.applyType(dashboard));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        questionRepository.save(QuestionFixture.required(applyForm));
+
+        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
+                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
+                List.of(),
+                true
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("applicant/submit-fail/required-not-replied",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
+                ))
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.getId())
+                .then().log().all().statusCode(400);
+    }
+
     @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
     @Test
     void read() {

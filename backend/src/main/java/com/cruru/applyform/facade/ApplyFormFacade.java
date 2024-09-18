@@ -20,6 +20,7 @@ import com.cruru.question.service.QuestionService;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,9 +62,11 @@ public class ApplyFormFacade {
         Applicant applicant = applicantService.create(applicantCreateRequest, firstProcess);
 
         List<AnswerCreateRequest> answerCreateRequests = request.answerCreateRequest();
-        for (AnswerCreateRequest answerCreateRequest : answerCreateRequests) {
-            Question targetQuestion = questionService.findById(answerCreateRequest.questionId());
-            answerService.saveAnswerReplies(answerCreateRequest, targetQuestion, applicant);
+        List<Question> questions = questionService.findByApplyForm(applyForm);
+
+        for (Question question : questions) {
+            AnswerCreateRequest answerCreateRequest = getAnswerCreateRequest(question, answerCreateRequests);
+            answerService.saveAnswerReplies(answerCreateRequest, question, applicant);
         }
     }
 
@@ -81,6 +84,16 @@ public class ApplyFormFacade {
         if (now.isBefore(startDate) || now.isAfter(endDate)) {
             throw new ApplyFormSubmitOutOfPeriodException();
         }
+    }
+
+    private AnswerCreateRequest getAnswerCreateRequest(
+            Question question,
+            List<AnswerCreateRequest> answerCreateRequests
+    ) {
+        return answerCreateRequests.stream()
+                .filter(answerCreateRequest -> Objects.equals(answerCreateRequest.questionId(), question.getId()))
+                .findAny()
+                .orElseGet(() -> new AnswerCreateRequest(question.getId(), List.of()));
     }
 
     @Transactional
