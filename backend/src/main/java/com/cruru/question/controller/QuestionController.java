@@ -1,7 +1,7 @@
 package com.cruru.question.controller;
 
-import com.cruru.question.controller.dto.QuestionUpdateRequests;
-import com.cruru.question.service.facade.QuestionFacade;
+import com.cruru.question.controller.request.QuestionUpdateRequests;
+import com.cruru.question.facade.QuestionFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
