@@ -2,17 +2,7 @@ name: ALL/PM - Issue 자동 관리
 
 on:
   issues:
-    types: [opened, assigned, closed]
-
-env:
-  Dobby-Kim: "U07BJABU6G1"
-  Chocochip101: "U07BUEJDS8G"
-  xogns1514: "U07AZ26UC2J"
-  lurgi: "U07BJB1M53K"
-  llqqssttyy: "U07AZ2992CW"
-  cutehumanS2: "U07B88ZQDU4"
-  HyungHoKim00: "U07B5HBKZM1"
-  seongjinme: "U07B9HQDF4M"
+    types: [assigned, closed]
 
 jobs:
   create-issue-branch:
@@ -21,7 +11,7 @@ jobs:
     if: github.event.action == 'assigned'
     steps:
       - name: create the issue branch
-        uses: robvanderleek/create-issue-branch@main
+        uses: robvanderleek/create-issue-branch@1.7.0
         id: create-issue-branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -34,15 +24,15 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
-
+          ASSIGNEE_LOGIN=${{ github.event.issue.assignee.login }}
+          echo "ASSIGNEE_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ secrets.IN_PROGRESS_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "pr review request",
+              "text": "🔔 작업 시작 알림 🔔",
               "blocks": [
                 {
                   "type": "section",
@@ -55,7 +45,7 @@ jobs:
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          
+
   notify-close-issue:
     name: "이슈 작업 종료 -> Slack 체널 알림"
     runs-on: ubuntu-latest
@@ -64,15 +54,16 @@ jobs:
       - name: Set assignee variables
         id: set-vars
         run: |
-          echo "ASSIGNEE_SLACK_ID=${{ env[github.event.issue.assignee.login] }}" >> $GITHUB_ENV
-
+          ASSIGNEE_LOGIN=${{ github.event.issue.assignee.login }}
+          echo "ASSIGNEE_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
+          
       - name: 작업 시작 -> Slack 체널 알림
         uses: slackapi/slack-github-action@v1.26.0
         with:
           channel-id: ${{ secrets.TASK_COMPLETE_SLACK_CHANNEL_ID }}
           payload: |
             {
-              "text": "pr review request",
+              "text": "🎉 작업 완료 알림 🎉",
               "blocks": [
                 {
                   "type": "section",

@@ -34,6 +34,10 @@ operation::applicant/submit-fail/applyform-not-found[snippets="http-request,path
 
 operation::applicant/submit-fail/question-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
 
+==== 실패: 필수 질문에 응답하지 않음
+
+operation::applicant/submit-fail/required-not-replied[snippets="http-request,path-parameters,request-fields,http-response"]
+
 === 지원폼 조회
 
 ==== 성공
