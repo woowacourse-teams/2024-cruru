@@ -8,7 +8,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.club.controller.dto.ClubCreateRequest;
+import com.cruru.club.controller.request.ClubCreateRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ControllerTest;

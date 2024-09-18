@@ -7,17 +7,17 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
-import com.cruru.applicant.controller.dto.ApplicantCreateRequest;
-import com.cruru.applyform.controller.dto.AnswerCreateRequest;
-import com.cruru.applyform.controller.dto.ApplyFormSubmitRequest;
-import com.cruru.applyform.controller.dto.ApplyFormWriteRequest;
+import com.cruru.applicant.controller.request.ApplicantCreateRequest;
+import com.cruru.applyform.controller.request.AnswerCreateRequest;
+import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
+import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.choice.domain.repository.ChoiceRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplyFormFixture;
