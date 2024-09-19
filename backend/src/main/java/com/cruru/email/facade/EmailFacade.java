@@ -24,10 +24,10 @@ public class EmailFacade {
         request.applicantIds()
                 .stream()
                 .map(applicantService::findById)
-                .forEach(to -> sendAndSave(from, to, request.subject(), request.content(), request.files()));
+                .forEach(to -> saveAndSend(from, to, request.subject(), request.content(), request.files()));
     }
 
-    public void sendAndSave(Club from, Applicant to, String subject, String content, List<MultipartFile> files) {
+    public void saveAndSend(Club from, Applicant to, String subject, String content, List<MultipartFile> files) {
         emailService.save(from, to, subject, content);
         emailService.send(from, to, subject, content, files);
     }
