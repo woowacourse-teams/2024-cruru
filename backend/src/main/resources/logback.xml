@@ -1,44 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
+
+    <!-- Color Converter 설정 -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <springProperty name="PROFILE" source="monitoring-profile" />
 
-    <property name="CONSOLE_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %clr(%5level) %cyan(%logger) - %msg%n"/>
-    <property name="INFO_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %logger - %msg%n"/>
-    <property name="WARN_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %M %logger - %msg%n"/>
-    <property name="ERROR_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %5level %M %logger - %msg%n"/>
+    <!-- 패턴 정의 -->
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %clr(%5level) %cyan(%logger) - %msg%n"/>
+    <property name="LOG_PATTERN" value="{ &quot;timestamp&quot;:&quot;%d{yyyy-MM-dd'T'HH:mm:ss.SSS}&quot;, &quot;level&quot;:&quot;%level&quot;, &quot;logger&quot;:&quot;%logger&quot;, &quot;httpMethod&quot;:&quot;%X{httpMethod}&quot;, &quot;requestUri&quot;:&quot;%X{requestUri}&quot;, &quot;statusCode&quot;:&quot;%X{statusCode}&quot;, &quot;sourceClass&quot;:&quot;%X{sourceClass}&quot;, &quot;sourceMethod&quot;:&quot;%X{sourceMethod}&quot;, &quot;exceptionClass&quot;:&quot;%X{exceptionClass}&quot;, &quot;exceptionMessage&quot;:&quot;%X{exceptionMessage}&quot;, &quot;environment&quot;:&quot;${PROFILE}&quot;}%n"/>
 
-    <!-- Console Appender -->
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            </encoder>
-        </appender>
-
-    <!-- JSON Encoder 추가 -->
-<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
-<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
-<!--            <customFields>{"app":"cruru-dev"}</customFields>-->
-<!--        </encoder>-->
-<!--    </appender>-->
-
-    <appender name="LOKI_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"app":"cruru-dev"}</customFields>
+    <!-- Console Appender (표준 출력용) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/error/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>100MB</maxFileSize>
-            <maxHistory>120</maxHistory>
-        </rollingPolicy>
     </appender>
 
-    <!-- INFO Appender -->
+    <!-- INFO 로그용 파일 Appender -->
     <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
@@ -46,16 +24,16 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>${INFO_LOG_PATTERN}</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./log/info/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
-            <maxHistory>120</maxHistory>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
 
-    <!-- WARN Appender -->
+    <!-- WARN 로그용 파일 Appender -->
     <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
@@ -63,16 +41,16 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>${WARN_LOG_PATTERN}</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./log/warn/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
-            <maxHistory>120</maxHistory>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
 
-    <!-- ERROR Appender -->
+    <!-- ERROR 로그용 파일 Appender -->
     <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -80,24 +58,17 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <encoder>
-            <pattern>${ERROR_LOG_PATTERN}</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>./log/error/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
-            <maxHistory>120</maxHistory>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
 
-    <!-- Local Profile -->
+    <!-- Local Profile 설정 -->
     <springProfile name="local">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-        </root>
-    </springProfile>
-
-    <!-- Dev Profile -->
-    <springProfile name="dev">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="INFO"/>
@@ -106,13 +77,23 @@
         </root>
     </springProfile>
 
-    <!-- Prod Profile -->
+    <!-- Dev Profile 설정 -->
+    <springProfile name="dev">
+        <root level="INFO">
+<!--            <appender-ref ref="CONSOLE"/>-->
+            <appender-ref ref="INFO"/>
+            <appender-ref ref="WARN"/>
+            <appender-ref ref="ERROR"/>
+        </root>
+    </springProfile>
+
+    <!-- Prod Profile 설정 -->
     <springProfile name="prod">
         <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-            <!--            <appender-ref ref="INFO"/>-->
-            <!--            <appender-ref ref="WARN"/>-->
-            <!--            <appender-ref ref="ERROR"/>-->
+<!--            <appender-ref ref="CONSOLE"/>-->
+            <appender-ref ref="INFO"/>
+            <appender-ref ref="WARN"/>
+            <appender-ref ref="ERROR"/>
         </root>
     </springProfile>
 </configuration>
