@@ -26,7 +26,6 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final EmailRepository emailRepository;
 
-    @Transactional
     public void send(Club from, Applicant to, String subject, String text, List<MultipartFile> files) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
