@@ -46,6 +46,7 @@ public class Email extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "is_succeed")
     private Boolean isSucceed;
 
     public Email(Club from, Applicant to, String subject, String content, Boolean isSucceed) {
