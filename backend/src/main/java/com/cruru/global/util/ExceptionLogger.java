@@ -1,53 +1,68 @@
 package com.cruru.global.util;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExceptionLogger {
 
     public static void info(HttpServletRequest request, Exception exception, HttpStatus status) {
-        String logMessage = buildLog(request, exception, status);
-        log.info(logMessage);
+        setMDC(request, exception, status);
+        log.info("handle info level exception");
+        clearMDC();
     }
 
-    public static void warn(HttpServletRequest request, Exception exception, HttpStatus status) {
-        String logMessage = buildLog(request, exception, status);
-        log.warn(logMessage);
+    // MDC에 메타데이터 설정
+    private static void setMDC(HttpServletRequest request, Exception exception, HttpStatus status) {
+        StackTraceElement origin = exception.getStackTrace()[0];
+
+        MDC.put("httpMethod", request.getMethod());
+        MDC.put("requestUri", request.getRequestURI());
+        MDC.put("statusCode", java.lang.String.valueOf(status.value()));
+        MDC.put("sourceClass", origin.getClassName());
+        MDC.put("sourceMethod", origin.getMethodName());
+        MDC.put("exceptionClass", exception.getClass().getSimpleName());
+        MDC.put("exceptionMessage", exception.getMessage());
     }
 
-    public static void error(HttpServletRequest request, Exception exception, HttpStatus status) {
-        String logMessage = buildLog(request, exception, status);
-        log.error(logMessage, exception);
+    // MDC 초기화
+    public static void info(ProblemDetail problemDetail) {
+        setMDC(problemDetail);
+        log.info("handle info level exception");
+        clearMDC();
     }
 
-    private static String buildLog(HttpServletRequest request, Exception exception, HttpStatus status) {
-        StackTraceElement[] stackTrace = exception.getStackTrace();
-        StackTraceElement origin = stackTrace[0];
+    public static void warn(ProblemDetail problemDetail) {
+        setMDC(problemDetail);
+        log.warn("handle warn level exception");
+        clearMDC();
+    }
 
-        String className = origin.getClassName();
-        String methodName = origin.getMethodName();
+    public static void error(ProblemDetail problemDetail) {
+        setMDC(problemDetail);
+        log.error("handle error level exception");
+        clearMDC();
+    }
 
-        String httpRequestMethod = request.getMethod();
-        String requestUri = request.getRequestURI();
-        String statusCode = String.valueOf(status.value());
-        String exceptionName = exception.getClass().getSimpleName();
-        String exceptionMessage = exception.getMessage();
+    private static void setMDC(ProblemDetail problemDetail) {
+        Map<String, Object> details = problemDetail.getProperties();
+        Map<String, String> map = new HashMap<>();
+        for (Entry<String, Object> stringObjectEntry : details.entrySet()) {
+            map.put(stringObjectEntry.getKey(), java.lang.String.valueOf(stringObjectEntry.getValue()));
+        }
+        MDC.setContextMap(map);
+    }
 
-        return String.format(
-                "\"httpRequestMethod\"=\"%s\", \"requestUri\"=\"%s\", \"statusCode\"=\"%s\", \"source-class\"=\"%s\", \"source-method\"=\"%s\", \"exception_class\"=\"%s\", \"exception_message\"=\"%s\", \"labels\"={ \"module\"=\"user-service\", \"environment\"=\"prod\" }",
-                httpRequestMethod,
-                requestUri,
-                statusCode,
-                className,
-                methodName,
-                exceptionName,
-                exceptionMessage
-        );
+    private static void clearMDC() {
+        MDC.clear();
     }
 }
