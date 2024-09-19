@@ -1,5 +1,6 @@
 package com.cruru.global.util;
 
+import com.cruru.advice.CruruCustomException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,19 +16,19 @@ import org.springframework.http.ProblemDetail;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExceptionLogger {
 
-    public static void info(HttpServletRequest request, Exception exception, HttpStatus status) {
-        setMDC(request, exception, status);
+    public static void info(HttpServletRequest request, CruruCustomException exception) {
+        setMDC(request, exception);
         log.info("handle info level exception");
         clearMDC();
     }
 
     // MDC에 메타데이터 설정
-    private static void setMDC(HttpServletRequest request, Exception exception, HttpStatus status) {
+    private static void setMDC(HttpServletRequest request, CruruCustomException exception) {
         StackTraceElement origin = exception.getStackTrace()[0];
 
         MDC.put("httpMethod", request.getMethod());
         MDC.put("requestUri", request.getRequestURI());
-        MDC.put("statusCode", java.lang.String.valueOf(status.value()));
+        MDC.put("statusCode", exception.getStatusCode());
         MDC.put("sourceClass", origin.getClassName());
         MDC.put("sourceMethod", origin.getMethodName());
         MDC.put("exceptionClass", exception.getClass().getSimpleName());

@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleBadRequestException(BadRequestException e) {
         HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e, HttpStatus.BAD_REQUEST);
+        ExceptionLogger.info(request, e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
         return ResponseEntity.of(problemDetail).build();
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleUnauthorizedException(UnauthorizedException e) {
         HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e, HttpStatus.UNAUTHORIZED);
+        ExceptionLogger.info(request, e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
         return ResponseEntity.of(problemDetail).build();
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleForbiddenException(ForbiddenException e) {
         HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e, HttpStatus.FORBIDDEN);
+        ExceptionLogger.info(request, e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
         return ResponseEntity.of(problemDetail).build();
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException e) {
         HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e, HttpStatus.NOT_FOUND);
+        ExceptionLogger.info(request, e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         return ResponseEntity.of(problemDetail).build();
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleConflictException(ConflictException e) {
         HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e, HttpStatus.CONFLICT);
+        ExceptionLogger.info(request, e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
         return ResponseEntity.of(problemDetail).build();
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ProblemDetail> handleInternalServerException(InternalServerException e) {
         HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e, HttpStatus.INTERNAL_SERVER_ERROR);
+        ExceptionLogger.info(request, e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.INTERNAL_SERVER_ERROR,
