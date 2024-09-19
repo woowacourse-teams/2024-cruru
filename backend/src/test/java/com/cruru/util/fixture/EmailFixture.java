@@ -18,7 +18,8 @@ public class EmailFixture {
                 null,
                 null,
                 SUBJECT,
-                APPROVE_CONTENT
+                APPROVE_CONTENT,
+                true
         );
     }
 
@@ -27,7 +28,8 @@ public class EmailFixture {
                 null,
                 null,
                 SUBJECT,
-                REJECT_CONTENT
+                REJECT_CONTENT,
+                true
         );
     }
 }

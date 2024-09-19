@@ -5,8 +5,12 @@ import com.cruru.applicant.service.ApplicantService;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.exception.EmailAttachmentsException;
 import com.cruru.email.service.EmailService;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,14 +25,24 @@ public class EmailFacade {
 
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
-        request.applicantIds()
+        List<Applicant> applicants = request.applicantIds()
                 .stream()
                 .map(applicantService::findById)
-                .forEach(to -> saveAndSend(from, to, request.subject(), request.content(), request.files()));
+                .toList();
+        sendAll(from, applicants, request.subject(), request.content(), request.files());
     }
 
-    public void saveAndSend(Club from, Applicant to, String subject, String content, List<MultipartFile> files) {
-        emailService.save(from, to, subject, content);
-        emailService.send(from, to, subject, content, files);
+    private void sendAll(Club from, List<Applicant> tos, String subject, String text, List<MultipartFile> files) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                List<File> tempFiles = emailService.saveTempFiles(files);
+
+                tos.parallelStream()
+                        .map(to -> emailService.send(from, to, subject, text, tempFiles))
+                        .forEach(email -> email.thenAccept(emailService::save));
+            } catch (IOException e) {
+                throw new EmailAttachmentsException(from.getId(), subject);
+            }
+        });
     }
 }

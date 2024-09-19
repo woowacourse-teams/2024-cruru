@@ -34,7 +34,8 @@ class EmailRepositoryTest extends RepositoryTest {
                 null,
                 null,
                 EmailFixture.SUBJECT,
-                EmailFixture.REJECT_CONTENT
+                EmailFixture.REJECT_CONTENT,
+                true
         );
         emailRepository.save(updatedEmail);
 

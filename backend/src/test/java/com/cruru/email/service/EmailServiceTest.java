@@ -29,7 +29,7 @@ class EmailServiceTest extends ServiceTest {
         String content = EmailFixture.APPROVE_CONTENT;
 
         // when
-        emailService.save(null, null, subject, content);
+        emailService.saveAll(List.of(EmailFixture.approveEmail()));
 
         // then
         List<Email> emails = emailRepository.findAll();

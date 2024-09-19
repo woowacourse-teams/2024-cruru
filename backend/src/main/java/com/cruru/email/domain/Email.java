@@ -46,13 +46,16 @@ public class Email extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    public Email(Club from, Applicant to, String subject, String content) {
+    private Boolean isSucceed;
+
+    public Email(Club from, Applicant to, String subject, String content, Boolean isSucceed) {
         validateSubjectLength(subject);
         validateContentLength(content);
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.content = content;
+        this.isSucceed = isSucceed;
     }
 
     private void validateSubjectLength(String subject) {
@@ -92,6 +95,7 @@ public class Email extends BaseEntity {
                 ", to=" + to +
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
+                ", isSucceed=" + isSucceed +
                 '}';
     }
 }
