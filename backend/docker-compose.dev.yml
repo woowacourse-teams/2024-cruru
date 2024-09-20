@@ -32,9 +32,21 @@ services:
       - .env
     environment:
       PROFILE: dev
+    volumes:
+      - "./log:/log"
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - "./log:/log"
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      cruru_network:
 
 networks:
   cruru_network:
