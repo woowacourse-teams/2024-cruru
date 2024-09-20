@@ -26,6 +26,7 @@ export default function DateInput({ label, innerText, ...props }: DateInputProps
           ref={inputRef}
           type="date"
           {...props}
+          required
         />
       </S.Wrapper>
 

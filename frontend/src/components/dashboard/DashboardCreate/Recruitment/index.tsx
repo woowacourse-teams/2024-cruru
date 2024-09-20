@@ -48,14 +48,14 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => ({
       ...prev,
-      startDate: new Date(e.target.value).toISOString(),
+      startDate: e.target.value ? new Date(e.target.value).toISOString() : '',
     }));
   };
 
   const handleEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => ({
       ...prev,
-      endDate: new Date(e.target.value).toISOString(),
+      endDate: e.target.value ? new Date(e.target.value).toISOString() : '',
     }));
   };
 
