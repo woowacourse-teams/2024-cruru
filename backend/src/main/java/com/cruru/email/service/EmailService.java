@@ -7,8 +7,6 @@ import com.cruru.email.domain.repository.EmailRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -29,20 +26,6 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
     private final EmailRepository emailRepository;
-
-    public List<File> saveTempFiles(List<MultipartFile> files) throws IOException {
-        if (files == null || files.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<File> tempFiles = new ArrayList<>();
-        for (MultipartFile file : files) {
-            File tempFile = File.createTempFile("temp_", "_" + file.getOriginalFilename());
-            file.transferTo(tempFile);
-            tempFiles.add(tempFile);
-        }
-        return tempFiles;
-    }
 
     @Async
     public CompletableFuture<Email> send(
@@ -90,10 +73,5 @@ public class EmailService {
     @Transactional
     public void save(Email email) {
         emailRepository.save(email);
-    }
-
-    @Transactional
-    public void saveAll(List<Email> emails) {
-        emailRepository.saveAll(emails);
     }
 }

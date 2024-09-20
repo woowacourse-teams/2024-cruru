@@ -7,6 +7,7 @@ import com.cruru.club.service.ClubService;
 import com.cruru.email.controller.dto.EmailRequest;
 import com.cruru.email.exception.EmailAttachmentsException;
 import com.cruru.email.service.EmailService;
+import com.cruru.email.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -29,20 +30,26 @@ public class EmailFacade {
                 .stream()
                 .map(applicantService::findById)
                 .toList();
-        sendAll(from, applicants, request.subject(), request.content(), request.files());
+        sendAndSave(from, applicants, request.subject(), request.content(), request.files());
     }
 
-    private void sendAll(Club from, List<Applicant> tos, String subject, String text, List<MultipartFile> files) {
-        CompletableFuture.runAsync(() -> {
-            try {
-                List<File> tempFiles = emailService.saveTempFiles(files);
+    private void sendAndSave(Club from, List<Applicant> tos, String subject, String text, List<MultipartFile> files) {
+        List<File> tempFiles = saveTempFiles(from, subject, files);
 
-                tos.parallelStream()
-                        .map(to -> emailService.send(from, to, subject, text, tempFiles))
-                        .forEach(email -> email.thenAccept(emailService::save));
-            } catch (IOException e) {
-                throw new EmailAttachmentsException(from.getId(), subject);
-            }
-        });
+        List<CompletableFuture<Void>> futures = tos.stream()
+                .map(to -> emailService.send(from, to, subject, text, tempFiles))
+                .map(future -> future.thenAccept(emailService::save))
+                .toList();
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenRun(() -> FileUtil.deleteFiles(tempFiles));
+    }
+
+    private List<File> saveTempFiles(Club from, String subject, List<MultipartFile> files) {
+        try {
+            return FileUtil.saveTempFiles(files);
+        } catch (IOException e) {
+            throw new EmailAttachmentsException(from.getId(), subject);
+        }
     }
 }

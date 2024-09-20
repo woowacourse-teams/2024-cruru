@@ -1,7 +1,9 @@
 package com.cruru.util;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
@@ -18,7 +20,6 @@ import jakarta.mail.internet.MimeMessage;
 import java.time.Clock;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -69,9 +70,9 @@ public class ServiceTest {
 
     @BeforeEach
     void setJavaMailSender() {
-        doReturn(Mockito.mock(MimeMessage.class))
+        doReturn(mock(MimeMessage.class))
                 .when(javaMailSender).createMimeMessage();
         doNothing()
-                .when(javaMailSender).send(Mockito.any(MimeMessage.class));
+                .when(javaMailSender).send(any(MimeMessage.class));
     }
 }
