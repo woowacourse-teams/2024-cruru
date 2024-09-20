@@ -12,10 +12,24 @@ services:
     env_file:
       - .env
     environment:
+      TZ: Asia/Seoul
       PROFILE: prod
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
+
+  promtail:
+    environment:
+      TZ: Asia/Seoul
+    container_name: promtail
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - "./log:/log"
+    command: -config.expand-env=true -config.file=/etc/promtail/config.yml
+    networks:
+      cruru_network:
+        ipv4_address: 172.18.0.4
 
 networks:
   cruru_network:

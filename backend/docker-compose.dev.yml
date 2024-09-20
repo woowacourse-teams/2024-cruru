@@ -32,6 +32,7 @@ services:
       - .env
     environment:
       PROFILE: dev
+      TZ: Asia/Seoul
     volumes:
       - "./log:/log"
     networks:
@@ -39,14 +40,18 @@ services:
         ipv4_address: ${APP_IP_ADDRESS}
 
   promtail:
+    environment:
+      TZ: Asia/Seoul
+      MONITORING_INSTANCE_ADDR_LOKI_PORT: ${MONITORING_INSTANCE_ADDR_LOKI_PORT}
     container_name: promtail
     image: grafana/promtail:latest
     volumes:
       - ./promtail-config.yml:/etc/promtail/config.yml
       - "./log:/log"
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.expand-env=true -config.file=/etc/promtail/config.yml
     networks:
       cruru_network:
+        ipv4_address: 172.18.0.4
 
 networks:
   cruru_network:
