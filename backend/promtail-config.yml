@@ -6,7 +6,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://${MONITORING_INSTANCE_ADDR_LOKI_PORT}/loki/api/v1/push
+  - url: "http://${MONITORING_INSTANCE_ADDR_LOKI_PORT}/loki/api/v1/push"
 
 scrape_configs:
   - job_name: error_logs
@@ -32,7 +32,6 @@ scrape_configs:
             module: module
             environment: environment
       - labels:
-          timestamp:
           level:
           logger:
           httpMethod:
@@ -44,6 +43,11 @@ scrape_configs:
           exceptionMessage:
           module:
           environment:
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02T15:04:05.000
+          location: "Asia/Seoul"
+
 
   - job_name: info_logs
     static_configs:
@@ -68,7 +72,6 @@ scrape_configs:
             module: module
             environment: environment
       - labels:
-          timestamp:
           level:
           logger:
           httpMethod:
@@ -80,6 +83,11 @@ scrape_configs:
           exceptionMessage:
           module:
           environment:
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02T15:04:05.000
+          location: "Asia/Seoul"
+
 
   - job_name: warn_logs
     static_configs:
@@ -104,7 +112,6 @@ scrape_configs:
             module: module
             environment: environment
       - labels:
-          timestamp:
           level:
           logger:
           httpMethod:
@@ -116,6 +123,10 @@ scrape_configs:
           exceptionMessage:
           module:
           environment:
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02T15:04:05.000
+          location: "Asia/Seoul"
 
   - job_name: http_logs
     static_configs:
@@ -123,7 +134,7 @@ scrape_configs:
           - localhost
         labels:
           job: http_logs
-          __path__: /log/nginx/*.log
+          __path__: /var/log/nginx/*.log
     pipeline_stages:
       - regex:
           expression: '^(?P<remote_addr>[^\s]+) - - \[(?P<timestamp>[^\]]+)\] "(?P<method>[A-Z]+) (?P<request>[^ ]+) HTTP/[^"]+" (?P<status>\d+) (?P<body_bytes_sent>\d+)'
