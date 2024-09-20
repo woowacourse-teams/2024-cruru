@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 
 public class BadRequestException extends CruruCustomException {
 
-    private static final String STATUS_CODE = HttpStatus.BAD_REQUEST.toString();
+    private static final HttpStatus STATUS = HttpStatus.BAD_REQUEST;
 
     public BadRequestException(String message) {
-        super(message, STATUS_CODE);
+        super(message, STATUS);
     }
 }

@@ -1,6 +1,5 @@
 package com.cruru.advice;
 
-import com.cruru.advice.badrequest.BadRequestException;
 import com.cruru.global.util.ExceptionLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -22,69 +21,17 @@ public class GlobalExceptionHandler {
 
     private final UncatchedExceptionHandler handler;
 
-    @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleBadRequestException(BadRequestException e) {
+    @ExceptionHandler(CruruCustomException.class)
+    public ResponseEntity<ProblemDetail> handleCustomException(CruruCustomException e) {
         HttpServletRequest request = getCurrentHttpRequest();
         ExceptionLogger.info(request, e);
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
         return ResponseEntity.of(problemDetail).build();
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleUnauthorizedException(UnauthorizedException e) {
-        HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e);
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
-        return ResponseEntity.of(problemDetail).build();
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleForbiddenException(ForbiddenException e) {
-        HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e);
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
-        return ResponseEntity.of(problemDetail).build();
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleNotFoundException(NotFoundException e) {
-        HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e);
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-        return ResponseEntity.of(problemDetail).build();
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleConflictException(ConflictException e) {
-        HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e);
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
-        return ResponseEntity.of(problemDetail).build();
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ProblemDetail> handleInternalServerException(InternalServerException e) {
-        HttpServletRequest request = getCurrentHttpRequest();
-        ExceptionLogger.info(request, e);
-
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                e.getMessage()
-        );
-        return ResponseEntity.of(problemDetail).build();
-    }
-
-    private HttpServletRequest getCurrentHttpRequest() {
-        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleUnexpectedException(Exception e, WebRequest request) {
+    public ResponseEntity<ProblemDetail> handleUnexpectedException(Exception e, WebRequest request) {
         ProblemDetail problemDetail = handleException(e, request);
         HttpStatus statusCode = HttpStatus.valueOf(problemDetail.getStatus());
         if (statusCode.is5xxServerError()) {
@@ -92,7 +39,7 @@ public class GlobalExceptionHandler {
         } else {
             ExceptionLogger.warn(problemDetail);
         }
-        ProblemDetail detailsToSend = ProblemDetail.forStatusAndDetail(statusCode, problemDetail.getDetail());
+        ProblemDetail detailsToSend = ProblemDetail.forStatus(statusCode);
         return ResponseEntity.of(detailsToSend).build();
     }
 
@@ -100,7 +47,7 @@ public class GlobalExceptionHandler {
         try {
             ProblemDetail problemDetail = (ProblemDetail) Objects.requireNonNull(handler.handleException(e, request))
                     .getBody();
-            problemDetail.setProperties(setDetails(getCurrentHttpRequest(), e, HttpStatus.OK));
+            problemDetail.setProperties(setDetails(getCurrentHttpRequest(), e, HttpStatus.INTERNAL_SERVER_ERROR));
             return problemDetail;
         } catch (Exception ex) {
             return ProblemDetail.forStatusAndDetail(
@@ -110,12 +57,16 @@ public class GlobalExceptionHandler {
         }
     }
 
+    private HttpServletRequest getCurrentHttpRequest() {
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+    }
+
     private static Map<String, Object> setDetails(HttpServletRequest request, Exception exception, HttpStatus status) {
         StackTraceElement origin = exception.getStackTrace()[0];
         Map<String, Object> map = new HashMap<>();
         map.put("httpMethod", request.getMethod());
         map.put("requestUri", request.getRequestURI());
-        map.put("statusCode", String.valueOf(status.value()));
+        map.put("statusCode", status.toString());
         map.put("sourceClass", origin.getClassName());
         map.put("sourceMethod", origin.getMethodName());
         map.put("exceptionClass", exception.getClass().getSimpleName());

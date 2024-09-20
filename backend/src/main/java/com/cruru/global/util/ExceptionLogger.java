@@ -28,7 +28,7 @@ public class ExceptionLogger {
 
         MDC.put("httpMethod", request.getMethod());
         MDC.put("requestUri", request.getRequestURI());
-        MDC.put("statusCode", exception.getStatusCode());
+        MDC.put("statusCode", exception.statusCode());
         MDC.put("sourceClass", origin.getClassName());
         MDC.put("sourceMethod", origin.getMethodName());
         MDC.put("exceptionClass", exception.getClass().getSimpleName());

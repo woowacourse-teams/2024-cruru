@@ -1,14 +1,19 @@
 package com.cruru.advice;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class CruruCustomException extends RuntimeException {
 
-    private final String statusCode;
+    private final HttpStatus status;
 
-    public CruruCustomException(String message, String statusCode) {
+    public CruruCustomException(String message, HttpStatus status) {
         super(message);
-        this.statusCode = statusCode;
+        this.status = status;
+    }
+
+    public String statusCode() {
+        return status.toString();
     }
 }
