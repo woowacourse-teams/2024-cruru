@@ -88,6 +88,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
               max={recruitmentInfoState.endDate.split('T')[0]}
               innerText={startDateText}
               onChange={handleStartDate}
+              required
             />
           </S.DatePickerBox>
           <S.DatePickerBox>
@@ -98,6 +99,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
               disabled={!startDateText}
               innerText={endDateText}
               onChange={handleEndDate}
+              required
             />
           </S.DatePickerBox>
         </S.DatePickerContainer>
