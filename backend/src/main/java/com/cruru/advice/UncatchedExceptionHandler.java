@@ -27,7 +27,7 @@ public class UncatchedExceptionHandler extends ResponseEntityExceptionHandler {
         for (FieldError fieldError : e.getFieldErrors()) {
             validation.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, validation.toString());
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, validation.values().toString());
         return ResponseEntity.of(problemDetail).build();
     }
 }
