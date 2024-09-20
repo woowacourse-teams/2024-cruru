@@ -1,7 +1,9 @@
 package com.cruru.util;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
 
@@ -21,7 +23,6 @@ import java.time.Clock;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -89,9 +90,9 @@ public class ControllerTest {
 
     @BeforeEach
     void setJavaMailSender() {
-        doReturn(Mockito.mock(MimeMessage.class))
+        doReturn(mock(MimeMessage.class))
                 .when(javaMailSender).createMimeMessage();
         doNothing()
-                .when(javaMailSender).send(Mockito.any(MimeMessage.class));
+                .when(javaMailSender).send(any(MimeMessage.class));
     }
 }

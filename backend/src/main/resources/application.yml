@@ -60,6 +60,8 @@ cookie:
 dataloader:
   enable: true
 
+monitoring-profile: local
+
 ---
 spring:
   config:
@@ -137,6 +139,8 @@ management:
     prometheus:
       enabled: true
 
+monitoring-profile: develop
+
 ---
 spring:
   config:
@@ -211,3 +215,5 @@ management:
   endpoint:
     prometheus:
       enabled: true
+
+monitoring-profile: production

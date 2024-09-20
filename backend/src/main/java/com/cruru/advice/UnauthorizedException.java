@@ -1,8 +1,12 @@
 package com.cruru.advice;
 
-public class UnauthorizedException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UnauthorizedException extends CruruCustomException {
+
+    private static final HttpStatus STATUS = HttpStatus.UNAUTHORIZED;
 
     public UnauthorizedException(String message) {
-        super(message);
+        super(message, STATUS);
     }
 }
