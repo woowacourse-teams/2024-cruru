@@ -47,9 +47,29 @@ public class ApplyFormService {
     }
 
     @Transactional
-    public void update(ApplyForm applyForm) {
-        validateStartDateNotInPast(applyForm);
-        applyFormRepository.save(applyForm);
+    public void update(ApplyForm targetApplyForm, ApplyFormWriteRequest updateRequest) {
+        if (changeExists(targetApplyForm, updateRequest)) {
+            applyFormRepository.save(toUpdateApplyForm(targetApplyForm, updateRequest));
+        }
+    }
+
+    private boolean changeExists(ApplyForm applyForm, ApplyFormWriteRequest updateRequest) {
+        return !(applyForm.getTitle().equals(updateRequest.title()) &&
+                applyForm.getDescription().equals(updateRequest.postingContent()) &&
+                applyForm.getStartDate().equals(updateRequest.startDate()) &&
+                applyForm.getEndDate().equals(updateRequest.endDate())
+        );
+    }
+
+    private ApplyForm toUpdateApplyForm(ApplyForm targetApplyForm, ApplyFormWriteRequest updateRequest) {
+        return new ApplyForm(
+                targetApplyForm.getId(),
+                updateRequest.title(),
+                updateRequest.postingContent(),
+                updateRequest.startDate(),
+                updateRequest.endDate(),
+                targetApplyForm.getDashboard()
+        );
     }
 
     public ApplyForm findById(long applyFormId) {

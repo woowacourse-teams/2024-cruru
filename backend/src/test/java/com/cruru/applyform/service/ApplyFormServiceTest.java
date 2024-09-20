@@ -139,14 +139,14 @@ class ApplyFormServiceTest extends ServiceTest {
         String toChangeDescription = "# 모집 공고 설명 #";
         LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
         LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
-
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyForm toUpdateApplyForm = new ApplyForm(applyForm.getId(), toChangeTitle, toChangeDescription,
-                toChangeStartDate, toChangeEndDate, dashboard);
+        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
+                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
+        );
 
         // when
-        applyFormService.update(toUpdateApplyForm);
+        applyFormService.update(applyForm, request);
 
         // then
         ApplyForm actual = applyFormRepository.findById(applyForm.getId()).get();
@@ -156,23 +156,5 @@ class ApplyFormServiceTest extends ServiceTest {
                 () -> assertThat(actual.getStartDate()).isEqualTo(toChangeStartDate),
                 () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
         );
-    }
-
-    @DisplayName("지원 공고 수정 시 시작 날짜가 현재 날짜보다 이전일 경우 예외가 발생한다.")
-    @Test
-    void update_startDateInPast() {
-        // given
-        String title = "title";
-        String description = "description";
-        LocalDateTime startDate = LocalDateFixture.oneWeekAgo();
-        LocalDateTime endDate = LocalDateFixture.oneWeekLater();
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyForm newApplyForm = new ApplyForm(applyForm.getId(), title, description,
-                startDate, endDate, dashboard);
-
-        // when&then
-        assertThatThrownBy(() -> applyFormService.update(newApplyForm))
-                .isInstanceOf(StartDatePastException.class);
     }
 }

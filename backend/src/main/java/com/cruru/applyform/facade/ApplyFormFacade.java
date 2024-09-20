@@ -98,34 +98,7 @@ public class ApplyFormFacade {
 
     @Transactional
     public void update(ApplyFormWriteRequest request, long applyFormId) {
-        ApplyForm applyForm = applyFormService.findById(applyFormId);
-
-        if (changeExists(request, applyForm)) {
-            ApplyForm toUpdateApplyForm = toUpdateApplyForm(request, applyForm, applyFormId);
-            applyFormService.update(toUpdateApplyForm);
-        }
-    }
-
-    private boolean changeExists(ApplyFormWriteRequest request, ApplyForm applyForm) {
-        return !(applyForm.getTitle().equals(request.title()) &&
-                applyForm.getDescription().equals(request.postingContent()) &&
-                applyForm.getStartDate().equals(request.startDate()) &&
-                applyForm.getEndDate().equals(request.endDate())
-        );
-    }
-
-    private ApplyForm toUpdateApplyForm(
-            ApplyFormWriteRequest request,
-            ApplyForm applyForm,
-            long applyFormId
-    ) {
-        return new ApplyForm(
-                applyFormId,
-                request.title(),
-                request.postingContent(),
-                request.startDate(),
-                request.endDate(),
-                applyForm.getDashboard()
-        );
+        ApplyForm updateTargetApplyForm = applyFormService.findById(applyFormId);
+        applyFormService.update(updateTargetApplyForm, request);
     }
 }
