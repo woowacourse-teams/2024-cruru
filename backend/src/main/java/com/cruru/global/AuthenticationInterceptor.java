@@ -37,11 +37,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
 
     private static boolean isGetRequest(HttpServletRequest request) {
-        return request.getMethod().equals(HttpMethod.GET.name());
+        return HttpMethod.GET.name().equalsIgnoreCase(request.getMethod());
     }
 
     private boolean isOptionsRequest(HttpServletRequest request) {
-        return "OPTIONS".equalsIgnoreCase(request.getMethod());
+        return HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod());
     }
 
     private boolean isAuthenticated(HttpServletRequest request) {
