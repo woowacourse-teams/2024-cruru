@@ -36,7 +36,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         return request.getRequestURI().matches(APPLYFORM_REQUEST_URI) && isGetRequest(request);
     }
 
-    private static boolean isGetRequest(HttpServletRequest request) {
+    private boolean isGetRequest(HttpServletRequest request) {
         return HttpMethod.GET.name().equalsIgnoreCase(request.getMethod());
     }
 
