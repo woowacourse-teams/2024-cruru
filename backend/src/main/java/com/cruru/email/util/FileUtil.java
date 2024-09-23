@@ -5,17 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileUtil {
 
     private static final String FILE_PREFIX = UUID.randomUUID() + "_";
     private static final String FILE_SUFFIX = "_";
-
-    private FileUtil() {
-    }
 
     public static List<File> saveTempFiles(List<MultipartFile> files) throws IOException {
         if (files == null) {
