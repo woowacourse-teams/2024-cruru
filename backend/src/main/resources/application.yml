@@ -111,7 +111,7 @@ monitoring-profile: develop
 spring:
   config:
     activate:
-      on-profile: load-test
+      on-profile: test
   datasource:
     url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -166,7 +166,7 @@ management:
     prometheus:
       enabled: true
 
-monitoring-profile: load-test
+monitoring-profile: test
 
 ---
 spring:
