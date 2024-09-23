@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Configuration
 public class AsyncConfig implements AsyncConfigurer {
 
-    public static final int THREAD_POOL_SIZE = 300;
+    private static final int THREAD_POOL_SIZE = 300;
 
     @Override
     public Executor getAsyncExecutor() {

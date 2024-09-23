@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FileUtil {
 
+    private static final String FILE_PREFIX = UUID.randomUUID() + "_";
+    private static final String FILE_SUFFIX = "_";
+
     private FileUtil() {
     }
 
@@ -20,7 +23,7 @@ public class FileUtil {
         }
         List<File> tempFiles = new ArrayList<>();
         for (MultipartFile file : files) {
-            File tempFile = File.createTempFile(UUID.randomUUID() + "_", "_" + file.getOriginalFilename());
+            File tempFile = File.createTempFile(FILE_PREFIX, FILE_SUFFIX + file.getOriginalFilename());
             file.transferTo(tempFile);
             tempFiles.add(tempFile);
         }
