@@ -19,9 +19,9 @@ class EmailTest {
         // given
         int repeatCount = 333;
         StringBuilder stringBuilder = new StringBuilder(subject.length() * repeatCount);
-        for (int i = 0; i < repeatCount; i++) {
-            stringBuilder.append(subject);
-        }
+        String thisSubjectLengthIs999 = subject.repeat(repeatCount);
+        stringBuilder.append(thisSubjectLengthIs999);
+
         String invalidSubject = stringBuilder.toString();
         String content = EmailFixture.APPROVE_CONTENT;
 
@@ -37,9 +37,9 @@ class EmailTest {
         // given
         int repeatCount = 1000;
         StringBuilder stringBuilder = new StringBuilder(content.length() * repeatCount);
-        for (int i = 0; i < repeatCount; i++) {
-            stringBuilder.append(content);
-        }
+        String thisContentLengthIs10000 = content.repeat(repeatCount);
+        stringBuilder.append(thisContentLengthIs10000);
+        
         String subject = EmailFixture.SUBJECT;
         String invalidContent = stringBuilder.append("!").toString();
 
