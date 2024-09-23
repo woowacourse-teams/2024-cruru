@@ -33,9 +33,9 @@ public class AuthCheckAspect {
         Object[] args = joinPoint.getArgs();  // 메서드의 실제 인자 값
         String[] parameterNames = signature.getParameterNames();  // 메서드 파라미터 이름들
 
-        Long targetId = null;
         LoginProfile loginProfile = null;
 
+        Long targetId = null;
         // 어노테이션에서 지정한 파라미터 이름을 기반으로 해당 파라미터 값을 찾음
         for (int i = 0; i < parameterNames.length; i++) {
             if (parameterNames[i].equals(authCheck.targetId())) {
@@ -49,7 +49,7 @@ public class AuthCheckAspect {
             throw new IllegalArgumentException("targetId, loginProfile가 존재하지 않습니다.");
         }
 
-        String targetDomain = authCheck.targetDomain().getName();
+        String targetDomain = authCheck.targetDomain().getSimpleName();
         // 도메인 이름을 기반으로 서비스 클래스 주입 및 권한 검사
         try {
             checkAuthorizationForTarget(targetDomain, targetId, loginProfile);
@@ -59,11 +59,15 @@ public class AuthCheckAspect {
     }
 
     // targetDomain에 따른 권한 검사 수행
-    private void checkAuthorizationForTarget(String targetDomain, Long targetId, LoginProfile loginProfile) throws Exception {
+    private void checkAuthorizationForTarget(
+            String targetDomain,
+            Long targetId,
+            LoginProfile loginProfile
+    ) throws Exception {
         Member member = memberService.findByEmail(loginProfile.email());
 
         // 도메인 이름을 기반으로 서비스 클래스의 이름을 동적으로 생성
-        String serviceName = targetDomain + "Service";
+        String serviceName = Character.toLowerCase(targetDomain.charAt(0)) + targetDomain.substring(1) + "Service";
 
         // ApplicationContext를 통해 해당 서비스 빈을 동적으로 가져옴
         Object service = applicationContext.getBean(serviceName);
