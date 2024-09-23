@@ -2,6 +2,7 @@ package com.cruru.auth.util;
 
 import com.cruru.advice.ForbiddenException;
 import com.cruru.member.domain.Member;
+import com.cruru.member.domain.MemberRole;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,10 @@ import lombok.NoArgsConstructor;
 public class AuthChecker {
 
     public static void checkAuthority(SecureResource resource, Member member) {
+        if (member.getRole() == MemberRole.ADMIN) {
+            return;
+        }
+
         if (!resource.isAuthorizedBy(member)) {
             throw new ForbiddenException();
         }
