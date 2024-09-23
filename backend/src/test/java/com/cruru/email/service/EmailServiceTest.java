@@ -35,7 +35,7 @@ class EmailServiceTest extends ServiceTest {
         List<Email> emails = emailRepository.findAll();
         Email actual = emails.get(0);
         assertAll(
-                () -> assertThat(emails.size()).isEqualTo(1),
+                () -> assertThat(emails).hasSize(1),
                 () -> assertThat(actual.getSubject()).isEqualTo(subject),
                 () -> assertThat(actual.getContent()).isEqualTo(content)
         );
