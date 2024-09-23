@@ -57,7 +57,8 @@ public class EvaluationFacade {
     }
 
     @Transactional
-    public void updateSingleEvaluation(EvaluationUpdateRequest request, long evaluationId) {
-        evaluationService.update(request, evaluationId);
+    public void updateSingleEvaluation(EvaluationUpdateRequest request, Long evaluationId) {
+        Evaluation evaluation = evaluationService.findById(evaluationId);
+        evaluationService.update(request, evaluation);
     }
 }

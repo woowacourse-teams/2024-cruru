@@ -1,7 +1,6 @@
 package com.cruru.applicant.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.controller.request.EvaluationCreateRequest;
@@ -10,7 +9,6 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
-import com.cruru.applicant.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -102,7 +100,7 @@ class EvaluationServiceTest extends ServiceTest {
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
 
         // when
-        evaluationService.update(request, evaluation.getId());
+        evaluationService.update(request, evaluation);
 
         // then
         Optional<Evaluation> updatedEvaluation = evaluationRepository.findById(evaluation.getId());
@@ -114,20 +112,6 @@ class EvaluationServiceTest extends ServiceTest {
         );
     }
 
-    @DisplayName("평가 수정 시, 존재하지 않을 경우 예외가 발생한다.")
-    @Test
-    void update_evaluationNotFound() {
-        // given
-        long invalidId = -1;
-        int score = 2;
-        String content = "맞춤법이 틀렸습니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
-
-        // when&then
-        assertThatThrownBy(() -> evaluationService.update(request, invalidId))
-                .isInstanceOf(EvaluationNotFoundException.class);
-    }
-
     @DisplayName("평가에 대한 평균 점수를 계산한다.")
     @Test
     void calculateAverageScore() {
@@ -135,7 +119,8 @@ class EvaluationServiceTest extends ServiceTest {
         List<Evaluation> evaluations = List.of(
                 new Evaluation(1, null, process, applicant),
                 new Evaluation(2, null, process, applicant),
-                new Evaluation(3, null, process, applicant));
+                new Evaluation(3, null, process, applicant)
+        );
         evaluationRepository.saveAll(evaluations);
 
         // when

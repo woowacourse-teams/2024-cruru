@@ -6,12 +6,8 @@ import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applicant.service.EvaluationService;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
-import com.cruru.auth.util.AuthChecker;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
-import com.cruru.global.LoginProfile;
-import com.cruru.member.domain.Member;
-import com.cruru.member.service.MemberService;
 import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
@@ -28,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProcessFacade {
 
-    private final MemberService memberService;
     private final ProcessService processService;
     private final DashboardService dashboardService;
     private final ApplicantService applicantService;
@@ -36,20 +31,14 @@ public class ProcessFacade {
     private final ApplyFormService applyFormService;
 
     @Transactional
-    public void create(LoginProfile loginProfile, ProcessCreateRequest request, long dashboardId) {
-        Member member = memberService.findByEmail(loginProfile.email());
+    public void create(ProcessCreateRequest request, long dashboardId) {
         Dashboard dashboard = dashboardService.findById(dashboardId);
-
-        AuthChecker.checkAuthority(dashboard, member);
 
         processService.create(request, dashboard);
     }
 
-    public ProcessResponses readAllByDashboardId(LoginProfile loginProfile, long dashboardId) {
-        Member member = memberService.findByEmail(loginProfile.email());
+    public ProcessResponses readAllByDashboardId(long dashboardId) {
         Dashboard dashboard = dashboardService.findById(dashboardId);
-
-        AuthChecker.checkAuthority(dashboard, member);
 
         ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         List<Process> processes = processService.findAllByDashboard(dashboard);
@@ -91,19 +80,17 @@ public class ProcessFacade {
     }
 
     @Transactional
-    public ProcessResponse update(LoginProfile loginProfile, ProcessUpdateRequest request, long processId) {
-        Member member = memberService.findByEmail(loginProfile.email());
+    public ProcessResponse update(ProcessUpdateRequest request, long processId) {
         Process process = processService.findById(processId);
-        AuthChecker.checkAuthority(process, member);
+
         processService.update(request, process.getId());
         return toProcessResponse(process);
     }
 
     @Transactional
-    public void delete(LoginProfile loginProfile, long processId) {
-        Member member = memberService.findByEmail(loginProfile.email());
+    public void delete(long processId) {
         Process process = processService.findById(processId);
-        AuthChecker.checkAuthority(process, member);
+
         evaluationService.deleteByProcess(process);
         processService.delete(processId);
     }

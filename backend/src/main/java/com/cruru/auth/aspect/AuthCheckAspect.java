@@ -6,6 +6,7 @@ import com.cruru.auth.util.SecureResource;
 import com.cruru.global.LoginProfile;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthCheckAspect {
 
+    private static final String SERVICE_IDENTIFIER = "Service";
     private final ApplicationContext applicationContext;  // 서비스 빈을 동적으로 가져오기 위해 ApplicationContext 사용
     private final MemberService memberService;
 
@@ -46,28 +48,33 @@ public class AuthCheckAspect {
         }
 
         if (targetId == null || loginProfile == null) {
-            throw new IllegalArgumentException("targetId, loginProfile가 존재하지 않습니다.");
+            throw new IllegalArgumentException("targetId 또는 loginProfile가 존재하지 않습니다.");
         }
 
-        String targetDomain = authCheck.targetDomain().getSimpleName();
+        Class<? extends SecureResource> domainClass = authCheck.targetDomain();
+
         // 도메인 이름을 기반으로 서비스 클래스 주입 및 권한 검사
         try {
-            checkAuthorizationForTarget(targetDomain, targetId, loginProfile);
+            checkAuthorizationForTarget(domainClass, targetId, loginProfile);
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
         } catch (ReflectiveOperationException e) {
-            throw new IllegalArgumentException(targetDomain + ": Service 또는 findById Method가 존재하지 않습니다.");
+            throw new IllegalArgumentException(domainClass + ": Service 또는 findById Method가 존재하지 않습니다.");
         }
     }
 
     // targetDomain에 따른 권한 검사 수행
     private void checkAuthorizationForTarget(
-            String targetDomain,
+            Class<? extends SecureResource> targetDomain,
             Long targetId,
             LoginProfile loginProfile
     ) throws Exception {
         Member member = memberService.findByEmail(loginProfile.email());
 
         // 도메인 이름을 기반으로 서비스 클래스의 이름을 동적으로 생성
-        String serviceName = Character.toLowerCase(targetDomain.charAt(0)) + targetDomain.substring(1) + "Service";
+        String targetDomainName = targetDomain.getSimpleName();
+        String serviceName =
+                Character.toLowerCase(targetDomainName.charAt(0)) + targetDomainName.substring(1) + SERVICE_IDENTIFIER;
 
         // ApplicationContext를 통해 해당 서비스 빈을 동적으로 가져옴
         Object service = applicationContext.getBean(serviceName);
