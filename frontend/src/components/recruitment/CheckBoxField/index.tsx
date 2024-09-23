@@ -54,8 +54,7 @@ export default function CheckBoxField({ choices, setChoices }: Props) {
       e.preventDefault();
       if (index === choices.length - 1) {
         addOption();
-      }
-      if (index !== choices.length - 1) {
+      } else {
         inputRefs.current[index + 1]?.focus();
       }
     }
