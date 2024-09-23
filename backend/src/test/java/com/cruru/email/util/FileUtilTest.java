@@ -1,6 +1,7 @@
 package com.cruru.email.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +29,11 @@ class FileUtilTest {
         List<File> tempFiles = FileUtil.saveTempFiles(List.of(multipartFile));
 
         // then
-        assertThat(tempFiles.get(0)).exists();
+        assertAll(
+                () -> assertThat(tempFiles).hasSize(1),
+                () -> assertThat(tempFiles.get(0)).isFile(),
+                () -> assertThat(tempFiles.get(0).getName()).endsWith("email_test.txt")
+        );
     }
 
     @DisplayName("인자로 들어온 파일 컬렉션이 null이거나 empty인 경우 빈 리스트를 반환한다.")
