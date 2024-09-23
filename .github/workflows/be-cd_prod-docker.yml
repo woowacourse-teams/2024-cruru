@@ -3,7 +3,7 @@ name: BE/CD - [PROD] Build & Deploy
 on:
   workflow_dispatch:
   push:
-    branches: be/main
+    branches: be/release
 
 jobs:
   build:
