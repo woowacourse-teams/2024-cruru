@@ -55,7 +55,7 @@ public class QuestionService {
         }
     }
 
-    public Question findById(long id) {
+    public Question findById(Long id) {
         return questionRepository.findById(id)
                 .orElseThrow(QuestionNotFoundException::new);
     }
