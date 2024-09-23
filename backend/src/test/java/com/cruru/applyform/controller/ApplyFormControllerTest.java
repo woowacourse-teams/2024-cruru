@@ -1,5 +1,7 @@
 package com.cruru.applyform.controller;
 
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -414,6 +416,7 @@ class ApplyFormControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .filter(document("applicant/read-applyform-fail/applyform-not-found",
                         pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id"))
                 ))
@@ -438,8 +441,10 @@ class ApplyFormControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .body(request)
                 .filter(document("applicant/update",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
                         requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
                 ))
@@ -463,6 +468,7 @@ class ApplyFormControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
+                .cookie("token", token)
                 .body(request)
                 .filter(document("applicant/update-fail/applyform-not-found",
                         pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼의 id")),
