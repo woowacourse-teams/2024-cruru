@@ -11,9 +11,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Configuration
 public class AsyncConfig implements AsyncConfigurer {
 
+    public static final int THREAD_POOL_SIZE = 300;
+
     @Override
     public Executor getAsyncExecutor() {
-        return Executors.newFixedThreadPool(300);
+        return Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     }
     
     @Override
