@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import useApplyManagement from '@hooks/useApplyManagement';
@@ -9,7 +9,7 @@ import { APPLY_QUESTION_HEADER, DEFAULT_QUESTIONS, MAX_QUESTION_LENGTH } from '@
 import { HiOutlinePlusCircle } from 'react-icons/hi';
 import S from './style';
 
-export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
+export default function ApplyManagement() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { applyFormId } = useParams<{ applyFormId: string }>() as {
     applyFormId: string;
@@ -28,12 +28,6 @@ export default function ApplyManagement({ isVisible }: { isVisible: boolean }) {
     setQuestionNext,
     deleteQuestion,
   } = useApplyManagement({ applyFormId });
-
-  useEffect(() => {
-    if (isVisible && wrapperRef.current && !isLoading) {
-      wrapperRef.current.scrollTop = 0;
-    }
-  }, [isVisible, isLoading]);
 
   if (isLoading) {
     <div>로딩 중입니다...</div>;
