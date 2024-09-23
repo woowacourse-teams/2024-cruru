@@ -2,7 +2,9 @@ package com.cruru.applyform.domain;
 
 import com.cruru.BaseEntity;
 import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
+import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class ApplyForm extends BaseEntity {
+public class ApplyForm extends BaseEntity implements SecureResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +73,11 @@ public class ApplyForm extends BaseEntity {
 
     public boolean hasStarted(LocalDate now) {
         return !startDate.toLocalDate().isAfter(now);
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return dashboard.isAuthorizedBy(member);
     }
 
     @Override

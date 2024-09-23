@@ -2,6 +2,8 @@ package com.cruru.applicant.domain;
 
 import com.cruru.BaseEntity;
 import com.cruru.applicant.exception.badrequest.EvaluationScoreException;
+import com.cruru.auth.util.SecureResource;
+import com.cruru.member.domain.Member;
 import com.cruru.process.domain.Process;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Evaluation extends BaseEntity {
+public class Evaluation extends BaseEntity implements SecureResource {
 
     private static final int MIN_SCORE = 1;
     private static final int MAX_SCORE = 5;
@@ -59,6 +61,11 @@ public class Evaluation extends BaseEntity {
 
     private boolean isOutOfRange(int score) {
         return score < MIN_SCORE || score > MAX_SCORE;
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return applicant.isAuthorizedBy(member);
     }
 
     @Override
