@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtil {
 
+    private FileUtil() {}
+
     public static List<File> saveTempFiles(List<MultipartFile> files) throws IOException {
         if (files == null) {
             return new ArrayList<>();
