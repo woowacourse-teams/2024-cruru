@@ -1,5 +1,6 @@
 package com.cruru.email.facade;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,8 +38,10 @@ class EmailFacadeTest extends ServiceTest {
     @Test
     void sendAndSave() {
         // given
-        Mockito.doAnswer(invocation -> waitSeconds(1))
-                .when(javaMailSender).send(any(MimeMessage.class));
+        Mockito.doAnswer(invocation -> {
+            TimeUnit.SECONDS.sleep(1);
+            return null;
+        }).when(javaMailSender).send(any(MimeMessage.class));
 
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
         EmailRequest request = new EmailRequest(
@@ -54,17 +57,9 @@ class EmailFacadeTest extends ServiceTest {
 
         // then
         verify(javaMailSender, times(0)).send(any(MimeMessage.class));
-        waitSeconds(2);
-        verify(javaMailSender, times(1)).send(any(MimeMessage.class));
-        verify(emailService, times(1)).save(any(Email.class));
-    }
-
-    private Object waitSeconds(long timeout) {
-        try {
-            TimeUnit.SECONDS.sleep(timeout);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() -> {
+            verify(javaMailSender, times(1)).send(any(MimeMessage.class));
+            verify(emailService, times(1)).save(any(Email.class));
+        });
     }
 }
