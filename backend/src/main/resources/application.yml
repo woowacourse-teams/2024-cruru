@@ -59,7 +59,7 @@ spring:
     enabled: true
     baseline-on-migrate: true
   jpa:
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
