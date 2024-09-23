@@ -39,6 +39,7 @@ public class FileUtil {
     private static void deleteFile(File file) {
         if (file.exists()) {
             file.delete();
+            return;
         }
         log.info("삭제할 파일이 존재하지 않습니다: {}", file.getAbsolutePath());
     }
