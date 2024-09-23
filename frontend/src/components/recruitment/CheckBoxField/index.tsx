@@ -55,11 +55,15 @@ export default function CheckBoxField({ choices, setChoices }: Props) {
       if (index === choices.length - 1) {
         addOption();
       }
+      if (index !== choices.length - 1) {
+        inputRefs.current[index + 1]?.focus();
+      }
     }
   };
 
   useEffect(() => {
-    focusLastOption();
+    const isAnyInputFocused = inputRefs.current.some((input) => input === document.activeElement);
+    if (isAnyInputFocused) focusLastOption();
   }, [focusLastOption]);
 
   const setInputRefCallback = (index: number) => (node: HTMLInputElement) => {
