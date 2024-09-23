@@ -4,13 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 public class FileUtil {
 
-    private FileUtil() {}
+    private FileUtil() {
+    }
 
     public static List<File> saveTempFiles(List<MultipartFile> files) throws IOException {
         if (files == null) {
@@ -18,7 +20,7 @@ public class FileUtil {
         }
         List<File> tempFiles = new ArrayList<>();
         for (MultipartFile file : files) {
-            File tempFile = File.createTempFile("temp_", "_" + file.getOriginalFilename());
+            File tempFile = File.createTempFile(UUID.randomUUID() + "_", "_" + file.getOriginalFilename());
             file.transferTo(tempFile);
             tempFiles.add(tempFile);
         }
