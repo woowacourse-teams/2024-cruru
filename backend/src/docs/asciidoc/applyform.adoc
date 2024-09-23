@@ -52,7 +52,7 @@ operation::applicant/read-applyform-fail/applyform-not-found[snippets="http-requ
 
 ==== 성공
 
-operation::applicant/update[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::applicant/update[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 지원폼
 
