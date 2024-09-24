@@ -15,13 +15,13 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
     long countByProcess(Process process);
 
     @Query("""
-           SELECT new com.cruru.applicant.domain.dto.ApplicantCard( 
-               a.id, a.name, a.createdDate, a.isRejected, COUNT(e), COALESCE(AVG(e.score), 0.00) 
-           )
-           FROM Applicant a
-           LEFT JOIN Evaluation e ON e.applicant = a
-           WHERE a.process = :process 
-           GROUP BY a.id, a.name, a.createdDate, a.isRejected
+                  SELECT new com.cruru.applicant.domain.dto.ApplicantCard( 
+                      a.id, a.name, a.createdDate, a.isRejected, COUNT(e), COALESCE(AVG(e.score), 0.00) 
+                  )
+                  FROM Applicant a
+                  LEFT JOIN Evaluation e ON e.applicant = a
+                  WHERE a.process = :process 
+                  GROUP BY a.id, a.name, a.createdDate, a.isRejected
            """)
     List<ApplicantCard> findApplicantCardsByProcess(@Param("process") Process process);
 }

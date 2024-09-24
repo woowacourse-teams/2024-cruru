@@ -33,15 +33,12 @@ public class ProcessFacade {
     @Transactional
     public void create(ProcessCreateRequest request, long dashboardId) {
         Dashboard dashboard = dashboardService.findById(dashboardId);
-
         processService.create(request, dashboard);
     }
 
     public ProcessResponses readAllByDashboardId(long dashboardId) {
-        Dashboard dashboard = dashboardService.findById(dashboardId);
-
-        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
-        List<Process> processes = processService.findAllByDashboard(dashboard);
+        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
+        List<Process> processes = processService.findAllByDashboard(dashboardId);
         List<ProcessResponse> processResponses = toProcessResponses(processes);
         return new ProcessResponses(applyForm.getId(), processResponses, applyForm.getTitle());
     }
