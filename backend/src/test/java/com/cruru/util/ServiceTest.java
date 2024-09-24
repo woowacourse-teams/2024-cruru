@@ -1,6 +1,9 @@
 package com.cruru.util;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
@@ -13,13 +16,16 @@ import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.MemberFixture;
+import jakarta.mail.internet.MimeMessage;
 import java.time.Clock;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
@@ -43,6 +49,8 @@ public class ServiceTest {
     private DashboardRepository dashboardRepository;
     @SpyBean
     private Clock clock;
+    @MockBean
+    protected JavaMailSender javaMailSender;
 
     @BeforeEach
     void resetDb() {
@@ -58,5 +66,13 @@ public class ServiceTest {
         doReturn(Instant.now(FIXED_TIME))
                 .when(clock)
                 .instant();
+    }
+
+    @BeforeEach
+    void setJavaMailSender() {
+        doReturn(mock(MimeMessage.class))
+                .when(javaMailSender).createMimeMessage();
+        doNothing()
+                .when(javaMailSender).send(any(MimeMessage.class));
     }
 }
