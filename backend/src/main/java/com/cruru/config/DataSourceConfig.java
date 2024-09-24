@@ -8,19 +8,25 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 @Configuration
 public class DataSourceConfig {
 
-    @Bean
+    private static final String READ_DATASOURCE = "readDataSource";
+    private static final String WRITE_DATASOURCE = "writeDataSource";
+    private static final String ROUTE_DATASOURCE = "routeDataSource";
+
+    @Bean(name = READ_DATASOURCE)
     @ConfigurationProperties(prefix = "spring.datasource.read")
-    public DataSource readeDataSource() {
+    public DataSource readDataSource() {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
     }
 
-    @Bean
+    @Bean(name = WRITE_DATASOURCE)
     @ConfigurationProperties(prefix = "spring.datasource.write")
     public DataSource writeDataSource() {
         return DataSourceBuilder.create()
@@ -28,18 +34,25 @@ public class DataSourceConfig {
                 .build();
     }
 
-    @Bean
-    @DependsOn({"readDataSource", "writeDataSource"})
+    @Bean(name = ROUTE_DATASOURCE)
+    @DependsOn({READ_DATASOURCE, WRITE_DATASOURCE})
     public DataSourceRouter routeDataSource() {
-        DataSourceRouter router = new DataSourceRouter();
+        DataSourceRouter dataSourceRouter = new DataSourceRouter();
         DataSource wrtieDataSource = writeDataSource();
-        DataSource readeDataSource = readeDataSource();
+        DataSource readDataSource = readDataSource();
 
         HashMap<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(DataSourceRouter.READ_DATASOURCE_KEY, readeDataSource);
+        dataSourceMap.put(DataSourceRouter.READ_DATASOURCE_KEY, readDataSource);
         dataSourceMap.put(DataSourceRouter.WRITE_DATASOURCE_KEY, wrtieDataSource);
-        router.setTargetDataSources(dataSourceMap);
-        router.setDefaultTargetDataSource(readeDataSource);
-        return router;
+        dataSourceRouter.setTargetDataSources(dataSourceMap);
+        dataSourceRouter.setDefaultTargetDataSource(readDataSource);
+        return dataSourceRouter;
+    }
+
+    @Bean
+    @Primary
+    @DependsOn(ROUTE_DATASOURCE)
+    public DataSource defaultDataSource() {
+        return new LazyConnectionDataSourceProxy(routeDataSource());
     }
 }
