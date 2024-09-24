@@ -225,10 +225,16 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    reader:
+      url: ${READER_DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    writer:
+      url: ${WRITER_DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
   flyway:
     enabled: true
     baseline-on-migrate: true
