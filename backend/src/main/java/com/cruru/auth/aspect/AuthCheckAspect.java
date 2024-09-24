@@ -8,6 +8,8 @@ import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Optional;
+import java.util.stream.IntStream;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Component;
 public class AuthCheckAspect {
 
     private static final String SERVICE_IDENTIFIER = "Service";
+
     private final ApplicationContext applicationContext;  // 서비스 빈을 동적으로 가져오기 위해 ApplicationContext 사용
     private final MemberService memberService;
 
@@ -32,28 +35,45 @@ public class AuthCheckAspect {
         Method method = signature.getMethod();
         RequireAuthCheck authCheck = method.getAnnotation(RequireAuthCheck.class);
 
-        Object[] args = joinPoint.getArgs();  // 메서드의 실제 인자 값
-        String[] parameterNames = signature.getParameterNames();  // 메서드 파라미터 이름들
+        Object[] args = joinPoint.getArgs();                        // 메서드의 실제 인자 값
+        String[] parameterNames = signature.getParameterNames();    // 메서드 파라미터 이름들
 
-        LoginProfile loginProfile = null;
-
-        Long targetId = null;
-        // 어노테이션에서 지정한 파라미터 이름을 기반으로 해당 파라미터 값을 찾음
-        for (int i = 0; i < parameterNames.length; i++) {
-            if (parameterNames[i].equals(authCheck.targetId())) {
-                targetId = (Long) args[i];  // targetIdParam에 맞는 파라미터 값 추출
-            } else if (parameterNames[i].equals("loginProfile")) {
-                loginProfile = (LoginProfile) args[i];
-            }
-        }
-
-        if (targetId == null || loginProfile == null) {
-            throw new IllegalArgumentException("targetId 또는 loginProfile가 존재하지 않습니다.");
-        }
+        LoginProfile loginProfile = extractLoginProfile(parameterNames, args);
+        Long targetId = extractTargetId(parameterNames, args, authCheck.targetId());
 
         Class<? extends SecureResource> domainClass = authCheck.targetDomain();
+        authorize(domainClass, targetId, loginProfile);
+    }
 
-        // 도메인 이름을 기반으로 서비스 클래스 주입 및 권한 검사
+    private LoginProfile extractLoginProfile(String[] parameterNames, Object[] args) {
+        return findParameterByName(parameterNames, args, "loginProfile", LoginProfile.class)
+                .orElseThrow(() -> new IllegalArgumentException("loginProfile가 존재하지 않습니다."));
+    }
+
+    private Long extractTargetId(String[] parameterNames, Object[] args, String targetIdParamName) {
+        return findParameterByName(parameterNames, args, targetIdParamName, Long.class)
+                .orElseThrow(() -> new IllegalArgumentException("targetId가 존재하지 않습니다."));
+    }
+
+    // 파라미터 이름과 값을 기반으로 원하는 타입의 파라미터 추출
+    private <T> Optional<T> findParameterByName(
+            String[] parameterNames,
+            Object[] args,
+            String targetParamName,
+            Class<T> type
+    ) {
+        return IntStream.range(0, parameterNames.length)
+                .filter(i -> parameterNames[i].equals(targetParamName) && type.isInstance(args[i]))
+                .mapToObj(i -> type.cast(args[i]))
+                .findFirst();
+    }
+
+    // 리소스에 대한 권한 검사 로직 분리
+    private void authorize(
+            Class<? extends SecureResource> domainClass,
+            Long targetId,
+            LoginProfile loginProfile
+    ) throws Throwable {
         try {
             checkAuthorizationForTarget(domainClass, targetId, loginProfile);
         } catch (InvocationTargetException e) {
@@ -86,7 +106,6 @@ public class AuthCheckAspect {
         // Lazy Loading된 연관 엔티티를 강제 로딩함
         Hibernate.initialize(secureResource);
 
-        // AuthChecker를 통해 권한 검사 수행
         AuthChecker.checkAuthority(secureResource, member);
     }
 }
