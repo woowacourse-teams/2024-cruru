@@ -88,9 +88,7 @@ public class ProcessFacade {
 
     @Transactional
     public void delete(long processId) {
-        Process process = processService.findById(processId);
-
-        evaluationService.deleteByProcess(process);
+        evaluationService.deleteByProcess(processId);
         processService.delete(processId);
     }
 }

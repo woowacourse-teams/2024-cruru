@@ -10,5 +10,5 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     List<Evaluation> findAllByProcessAndApplicant(Process process, Applicant applicant);
 
-    void deleteByProcess(Process process);
+    void deleteByProcessId(long processId);
 }

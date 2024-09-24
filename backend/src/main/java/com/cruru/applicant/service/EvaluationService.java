@@ -52,7 +52,7 @@ public class EvaluationService {
         return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
     }
 
-    public void deleteByProcess(Process process) {
-        evaluationRepository.deleteByProcess(process);
+    public void deleteByProcess(long processId) {
+        evaluationRepository.deleteByProcessId(processId);
     }
 }
