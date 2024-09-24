@@ -1,5 +1,15 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
+import { hideScrollBar } from '@styles/utils';
+
+const showUp = keyframes`
+  from {
+    transform: translateY(1rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
 
 const Nav = styled.nav`
   display: flex;
@@ -51,17 +61,14 @@ const TabButton = styled.button<{ isActive: boolean }>`
   }
 `;
 
-const TabPanel = styled.div<{ isVisible: boolean }>`
+const TabPanel = styled.div`
   width: 100%;
   height: 85%;
   padding: 2rem 0;
 
   ${hideScrollBar};
 
-  transition: transform 0.2s ease-in-out;
-  transform: translateY(${({ isVisible }) => (isVisible ? '0' : '1rem')});
-
-  ${({ isVisible }) => (isVisible ? visibleStyles : hiddenStyles)};
+  animation: ${showUp} 0.2s ease-in-out;
 `;
 
 const S = {

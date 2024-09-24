@@ -41,7 +41,7 @@ function TabItem({ label, isActive, name, handleClickTabItem, disabled }: TabIte
 }
 
 function TabPanel({ isVisible, children }: React.PropsWithChildren<TabPanelProps>) {
-  return <S.TabPanel isVisible={isVisible}>{children}</S.TabPanel>;
+  return isVisible && <S.TabPanel>{children}</S.TabPanel>;
 }
 
 Tab.TabItem = TabItem;
