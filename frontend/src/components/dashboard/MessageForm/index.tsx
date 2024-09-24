@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Button from '@components/_common/atoms/Button';
-import InputField from '../InputField';
+
+import InputField from '@components/_common/molecules/InputField';
+import TextField from '@components/_common/molecules/TextField';
 import S from './style';
-import TextField from '../TextField';
 
 interface MessageFormProps {
   recipient: string;
