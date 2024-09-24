@@ -3,9 +3,9 @@ package com.cruru.applicant.service;
 import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
-import com.cruru.applicant.controller.response.ApplicantCardResponse;
 import com.cruru.applicant.controller.response.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
@@ -95,18 +95,7 @@ public class ApplicantService {
         );
     }
 
-    public ApplicantCardResponse toApplicantCardResponse(
-            Applicant applicant,
-            int evaluationCount,
-            double averageScore
-    ) {
-        return new ApplicantCardResponse(
-                applicant.getId(),
-                applicant.getName(),
-                applicant.getCreatedDate(),
-                applicant.isRejected(),
-                evaluationCount,
-                averageScore
-        );
+    public List<ApplicantCard> findApplicantCards(Process process) {
+        return applicantRepository.findApplicantCardsByProcess(process);
     }
 }

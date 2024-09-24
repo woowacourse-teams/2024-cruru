@@ -1,7 +1,7 @@
 package com.cruru.process.facade;
 
 import com.cruru.applicant.controller.response.ApplicantCardResponse;
-import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applicant.service.EvaluationService;
 import com.cruru.applyform.domain.ApplyForm;
@@ -53,8 +53,11 @@ public class ProcessFacade {
     }
 
     private ProcessResponse toProcessResponse(Process process) {
-        List<Applicant> applicantsOfProcess = applicantService.findAllByProcess(process);
-        List<ApplicantCardResponse> applicantCardResponses = toApplicantCardResponses(process, applicantsOfProcess);
+        List<ApplicantCardResponse> applicantCardResponses = applicantService.findApplicantCards(process)
+                .stream()
+                .map(ApplicantCard::toResponse)
+                .toList();
+
         return new ProcessResponse(
                 process.getId(),
                 process.getSequence(),
@@ -62,21 +65,6 @@ public class ProcessFacade {
                 process.getDescription(),
                 applicantCardResponses
         );
-    }
-
-    private List<ApplicantCardResponse> toApplicantCardResponses(
-            Process process,
-            List<Applicant> applicantsOfProcess
-    ) {
-        return applicantsOfProcess.stream()
-                .map(applicant -> toApplicantCardResponse(process, applicant))
-                .toList();
-    }
-
-    private ApplicantCardResponse toApplicantCardResponse(Process process, Applicant applicant) {
-        int evaluationCount = evaluationService.count(process, applicant);
-        double averageScore = evaluationService.calculateAverageScore(process, applicant);
-        return applicantService.toApplicantCardResponse(applicant, evaluationCount, averageScore);
     }
 
     @Transactional

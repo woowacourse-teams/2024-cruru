@@ -29,18 +29,6 @@ public class EvaluationService {
         evaluationRepository.save(new Evaluation(request.score(), request.content(), process, applicant));
     }
 
-    public int count(Process process, Applicant applicant) {
-        return evaluationRepository.countByApplicantAndProcess(applicant, process);
-    }
-
-    public double calculateAverageScore(Process process, Applicant applicant) {
-        List<Evaluation> evaluations = findAllByProcessAndApplicant(process, applicant);
-        return evaluations.stream()
-                .mapToDouble(Evaluation::getScore)
-                .average()
-                .orElse(0.0);
-    }
-
     public List<Evaluation> findAllByProcessAndApplicant(Process process, Applicant applicant) {
         return evaluationRepository.findAllByProcessAndApplicant(process, applicant);
     }
