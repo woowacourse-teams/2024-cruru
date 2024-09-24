@@ -1,6 +1,9 @@
 package com.cruru.util;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
 
@@ -15,14 +18,17 @@ import com.cruru.util.fixture.MemberFixture;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import jakarta.mail.internet.MimeMessage;
 import java.time.Clock;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
@@ -52,6 +58,8 @@ public class ControllerTest {
     private DbCleaner dbCleaner;
     @SpyBean
     private Clock clock;
+    @MockBean
+    private JavaMailSender javaMailSender;
 
     @BeforeEach
     void createDefaultLoginMember() {
@@ -78,5 +86,13 @@ public class ControllerTest {
         doReturn(Instant.now(FIXED_TIME))
                 .when(clock)
                 .instant();
+    }
+
+    @BeforeEach
+    void setJavaMailSender() {
+        doReturn(mock(MimeMessage.class))
+                .when(javaMailSender).createMimeMessage();
+        doNothing()
+                .when(javaMailSender).send(any(MimeMessage.class));
     }
 }

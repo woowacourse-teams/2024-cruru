@@ -23,6 +23,23 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} # 테스트 시 직접 값 하드코딩 할 것
+    password: ${EMAIL_PASSWORD} # 테스트 시 직접 값 하드코딩 할 것
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
 
 security:
   jwt:
@@ -67,6 +84,23 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} 
+    password: ${EMAIL_PASSWORD} 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
 
 security:
   jwt:
@@ -127,6 +161,23 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} 
+    password: ${EMAIL_PASSWORD} 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
 
 security:
   jwt:

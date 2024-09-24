@@ -1,0 +1,15 @@
+== 이메일
+
+=== 이메일 발송 및 발송 내역 생성
+
+==== 성공
+
+operation::email/send[snippets="http-request,request-cookies,request-parts,http-response"]
+
+==== 실패: 이메일 형식이 올바르지 않은 이메일 형식
+
+operation::email/send-fail/invalid-email[snippets="http-request,request-cookies,request-parts,http-response"]
+
+==== 실패: 존재하지 않는 동아리
+
+operation::email/send-fail/club-not-found[snippets="http-request,request-cookies,request-parts,http-response"]

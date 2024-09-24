@@ -18,6 +18,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+
 dataloader:
   enable: false
 
@@ -36,3 +39,8 @@ cookie:
   path: /
   same-site: none
   max-age: 7200 #2시간
+
+management:
+  health:
+    mail:
+      enabled: false

@@ -10,4 +10,8 @@ public class InternalServerException extends CruruCustomException {
     public InternalServerException() {
         super(TEXT, STATUS);
     }
+
+    public InternalServerException(String text) {
+        super(text, STATUS);
+    }
 }
