@@ -67,7 +67,7 @@ class ProcessFacadeTest extends ServiceTest {
                 () -> assertThat(newProcessName).isEqualTo("새로운 프로세스")
         );
     }
-
+    
     @DisplayName("ID에 해당하는 대시보드의 프로세스 목록과 지원자 정보를 조회한다.")
     @Test
     void readAllByDashboardId() {
