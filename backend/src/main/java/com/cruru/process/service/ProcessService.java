@@ -84,7 +84,7 @@ public class ProcessService {
         return process;
     }
 
-    public Process findById(long processId) {
+    public Process findById(Long processId) {
         return processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
     }

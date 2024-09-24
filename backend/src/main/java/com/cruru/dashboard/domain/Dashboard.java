@@ -36,7 +36,6 @@ public class Dashboard implements SecureResource {
         this.club = club;
     }
 
-
     @Override
     public boolean isAuthorizedBy(Member member) {
         return club.isAuthorizedBy(member);

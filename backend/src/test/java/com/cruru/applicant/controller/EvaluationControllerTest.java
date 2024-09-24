@@ -16,10 +16,13 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import io.restassured.RestAssured;
@@ -41,6 +44,9 @@ class EvaluationControllerTest extends ControllerTest {
     };
 
     @Autowired
+    private DashboardRepository dashboardRepository;
+
+    @Autowired
     private ProcessRepository processRepository;
 
     @Autowired
@@ -55,7 +61,8 @@ class EvaluationControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        process = processRepository.save(ProcessFixture.applyType());
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
+        process = processRepository.save(ProcessFixture.applyType(dashboard));
         applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
     }
 
@@ -73,7 +80,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/create",
+                .filter(document(
+                        "evaluation/create",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
@@ -107,7 +115,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/create-fail/applicant-not-found",
+                .filter(document(
+                        "evaluation/create-fail/applicant-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
@@ -128,7 +137,7 @@ class EvaluationControllerTest extends ControllerTest {
         // given
         int score = 4;
         String content = "서류가 인상적입니다.";
-        long invalidProcessId = -1;
+        Long invalidProcessId = -1L;
         String url = String.format(
                 "/v1/evaluations?processId=%d&applicantId=%d",
                 invalidProcessId,
@@ -141,7 +150,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/create-fail/process-not-found",
+                .filter(document(
+                        "evaluation/create-fail/process-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("존재하지 않는 프로세스의 id"),
@@ -174,7 +184,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/create-fail/invalid-score",
+                .filter(document(
+                        "evaluation/create-fail/invalid-score",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
@@ -200,7 +211,8 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("evaluation/read",
+                .filter(document(
+                        "evaluation/read",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
@@ -229,7 +241,8 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("evaluation/read-fail/applicant-not-found",
+                .filter(document(
+                        "evaluation/read-fail/applicant-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
@@ -255,7 +268,8 @@ class EvaluationControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("evaluation/read-fail/process-not-found",
+                .filter(document(
+                        "evaluation/read-fail/process-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
@@ -270,7 +284,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void update() {
         // given
-        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
         int score = 2;
         String content = "맞춤법이 틀렸습니다.";
         EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
@@ -280,7 +294,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/update",
+                .filter(document(
+                        "evaluation/update",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("평가의 id")),
                         requestFields(
@@ -305,7 +320,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/update-fail/evaluation-not-found",
+                .filter(document(
+                        "evaluation/update-fail/evaluation-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("존재하지 않는 평가의 id")),
                         requestFields(
@@ -331,7 +347,8 @@ class EvaluationControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("evaluation/update-fail/invalid-score",
+                .filter(document(
+                        "evaluation/update-fail/invalid-score",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("평가의 id")),
                         requestFields(

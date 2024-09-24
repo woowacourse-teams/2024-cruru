@@ -68,8 +68,9 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateProcess() {
         // given
-        Process now = processRepository.save(ProcessFixture.applyType());
-        Process next = processRepository.save(ProcessFixture.approveType());
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
+        Process now = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process next = processRepository.save(ProcessFixture.approveType(dashboard));
         Applicant applicant = ApplicantFixture.pendingDobby(now);
         applicantRepository.save(applicant);
 
@@ -78,7 +79,8 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
-                .filter(document("applicant/move-process/",
+                .filter(document(
+                        "applicant/move-process/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("지원자들이 옮겨질 프로세스의 id")),
                         requestFields(fieldWithPath("applicantIds").description("프로세스를 옮길 지원자들의 id"))
@@ -94,14 +96,15 @@ class ApplicantControllerTest extends ControllerTest {
         Process now = processRepository.save(ProcessFixture.applyType());
         Applicant applicant = ApplicantFixture.pendingDobby(now);
         applicantRepository.save(applicant);
-        long invalidProcessId = -1;
+        Long invalidProcessId = -1L;
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(new ApplicantMoveRequest(List.of(applicant.getId())))
-                .filter(document("applicant/move-process-fail/process-not-found/",
+                .filter(document(
+                        "applicant/move-process-fail/process-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("존재하지 않는 프로세스의 id")),
                         requestFields(fieldWithPath("applicantIds").description("프로세스를 옮길 지원자들의 id"))
@@ -120,7 +123,8 @@ class ApplicantControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("applicant/read-profile",
+                .filter(document(
+                        "applicant/read-profile",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id")),
                         responseFields(
@@ -142,13 +146,14 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void read_applicantNotFound() {
         // given
-        long invalidApplicantId = -1;
+        Long invalidApplicantId = -1L;
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("applicant/read-profile-fail/applicant-not-found/",
+                .filter(document(
+                        "applicant/read-profile-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))
@@ -170,7 +175,8 @@ class ApplicantControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("applicant/read-detail-profile",
+                .filter(document(
+                        "applicant/read-detail-profile",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id")),
                         responseFields(
@@ -190,7 +196,8 @@ class ApplicantControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("applicant/read-detail-profile-fail/applicant-not-found",
+                .filter(document(
+                        "applicant/read-detail-profile-fail/applicant-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
@@ -207,7 +214,8 @@ class ApplicantControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("applicant/reject",
+                .filter(document(
+                        "applicant/reject",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
@@ -225,7 +233,8 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("applicant/reject-fail/applicant-not-found/",
+                .filter(document(
+                        "applicant/reject-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
@@ -245,7 +254,8 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("applicant/reject-fail/already-rejected/",
+                .filter(document(
+                        "applicant/reject-fail/already-rejected/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))
@@ -262,7 +272,8 @@ class ApplicantControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("applicant/unreject",
+                .filter(document(
+                        "applicant/unreject",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
@@ -280,7 +291,8 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("applicant/unreject-fail/applicant-not-found/",
+                .filter(document(
+                        "applicant/unreject-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))
@@ -298,7 +310,8 @@ class ApplicantControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
-                .filter(document("applicant/unreject-fail/applicant-not-rejected/",
+                .filter(document(
+                        "applicant/unreject-fail/applicant-not-rejected/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("불합격하지 않는 지원자의 id"))
                 ))
@@ -321,7 +334,8 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("applicant/change-info",
+                .filter(document(
+                        "applicant/change-info",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("지원자의 id"))
                 ))
@@ -344,7 +358,8 @@ class ApplicantControllerTest extends ControllerTest {
                 .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("applicant/change-info-fail/applicant-not-found/",
+                .filter(document(
+                        "applicant/change-info-fail/applicant-not-found/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("applicantId").description("존재하지 않는 지원자의 id"))
                 ))

@@ -53,7 +53,7 @@ class ProcessFacadeTest extends ServiceTest {
         ProcessCreateRequest processCreateRequest = new ProcessCreateRequest("새로운 프로세스", "기존 2개의 프로세스 사이에 생성.", 1);
 
         // when
-        processFacade.create(loginProfile, processCreateRequest, defaultDashboard.getId());
+        processFacade.create(processCreateRequest, defaultDashboard.getId());
 
         // then
         List<Process> allByDashboardId = processRepository.findAllByDashboardId(defaultDashboard.getId())
@@ -82,7 +82,7 @@ class ProcessFacadeTest extends ServiceTest {
         evaluationRepository.saveAll(evaluations);
 
         // when
-        ProcessResponses processResponses = processFacade.readAllByDashboardId(loginProfile, defaultDashboard.getId());
+        ProcessResponses processResponses = processFacade.readAllByDashboardId(defaultDashboard.getId());
 
         // then
         ProcessResponse firstProcessResponse = processResponses.processResponses().get(0);
@@ -106,7 +106,7 @@ class ProcessFacadeTest extends ServiceTest {
 
         // when
         Long processId = process.getId();
-        ProcessResponse actualProcessResponse = processFacade.update(loginProfile, processUpdateRequest, processId);
+        ProcessResponse actualProcessResponse = processFacade.update(processUpdateRequest, processId);
 
         // then
         assertAll(
@@ -122,7 +122,7 @@ class ProcessFacadeTest extends ServiceTest {
         Process process = processRepository.save(ProcessFixture.interview(defaultDashboard));
 
         // when
-        processFacade.delete(loginProfile, process.getId());
+        processFacade.delete(process.getId());
 
         // then
         assertThat(processRepository.findAll()).isEmpty();

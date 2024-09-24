@@ -1,5 +1,7 @@
 package com.cruru.dashboard.controller;
 
+import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.club.domain.Club;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.controller.response.DashboardCreateResponse;
 import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
@@ -24,21 +26,25 @@ public class DashboardController {
     private final DashboardFacade dashboardFacade;
 
     @PostMapping
+    @RequireAuthCheck(targetId = "clubId", targetDomain = Club.class)
     public ResponseEntity<DashboardCreateResponse> create(
             @RequestParam(name = "clubId") Long clubId,
             @RequestBody @Valid DashboardCreateRequest request,
             LoginProfile loginProfile
     ) {
 
-        DashboardCreateResponse dashboardCreateResponse = dashboardFacade.create(loginProfile, clubId, request);
+        DashboardCreateResponse dashboardCreateResponse = dashboardFacade.create(clubId, request);
         return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardCreateResponse.dashboardId()))
                 .body(dashboardCreateResponse);
     }
 
     @GetMapping
+    @RequireAuthCheck(targetId = "clubId", targetDomain = Club.class)
     public ResponseEntity<DashboardsOfClubResponse> readDashboards(
-            LoginProfile loginProfile, @RequestParam(name = "clubId") Long clubId) {
-        DashboardsOfClubResponse dashboards = dashboardFacade.findAllDashboardsByClubId(loginProfile, clubId);
+            @RequestParam(name = "clubId") Long clubId,
+            LoginProfile loginProfile
+    ) {
+        DashboardsOfClubResponse dashboards = dashboardFacade.findAllDashboardsByClubId(clubId);
         return ResponseEntity.ok().body(dashboards);
     }
 }

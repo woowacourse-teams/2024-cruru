@@ -82,7 +82,7 @@ class DashboardFacadeTest extends ServiceTest {
         );
 
         // when
-        DashboardCreateResponse response = dashboardFacade.create(loginProfile, club.getId(), request);
+        DashboardCreateResponse response = dashboardFacade.create(club.getId(), request);
 
         // then
         assertThat(dashboardRepository.findById(response.dashboardId())).isPresent();
@@ -110,7 +110,7 @@ class DashboardFacadeTest extends ServiceTest {
 
         // when
         DashboardsOfClubResponse dashboardsOfClubResponse =
-                dashboardFacade.findAllDashboardsByClubId(loginProfile, club.getId());
+                dashboardFacade.findAllDashboardsByClubId(club.getId());
 
         // then
         DashboardPreviewResponse dashboardPreview = dashboardsOfClubResponse.dashboardPreviewResponses().get(0);

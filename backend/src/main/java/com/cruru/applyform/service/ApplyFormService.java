@@ -72,7 +72,7 @@ public class ApplyFormService {
         );
     }
 
-    public ApplyForm findById(long applyFormId) {
+    public ApplyForm findById(Long applyFormId) {
         return applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
