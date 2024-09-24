@@ -55,19 +55,6 @@ public class AuthCheckAspect {
                 .orElseThrow(() -> new IllegalArgumentException("targetId가 존재하지 않습니다."));
     }
 
-    // 파라미터 이름과 값을 기반으로 원하는 타입의 파라미터 추출
-    private <T> Optional<T> findParameterByName(
-            String[] parameterNames,
-            Object[] args,
-            String targetParamName,
-            Class<T> type
-    ) {
-        return IntStream.range(0, parameterNames.length)
-                .filter(i -> parameterNames[i].equals(targetParamName) && type.isInstance(args[i]))
-                .mapToObj(i -> type.cast(args[i]))
-                .findFirst();
-    }
-
     // 리소스에 대한 권한 검사 로직 분리
     private void authorize(
             Class<? extends SecureResource> domainClass,
@@ -81,6 +68,19 @@ public class AuthCheckAspect {
         } catch (ReflectiveOperationException e) {
             throw new IllegalArgumentException(domainClass + ": Service 또는 findById Method가 존재하지 않습니다.");
         }
+    }
+
+    // 파라미터 이름과 값을 기반으로 원하는 타입의 파라미터 추출
+    private <T> Optional<T> findParameterByName(
+            String[] parameterNames,
+            Object[] args,
+            String targetParamName,
+            Class<T> type
+    ) {
+        return IntStream.range(0, parameterNames.length)
+                .filter(i -> parameterNames[i].equals(targetParamName) && type.isInstance(args[i]))
+                .mapToObj(i -> type.cast(args[i]))
+                .findFirst();
     }
 
     // targetDomain에 따른 권한 검사 수행
