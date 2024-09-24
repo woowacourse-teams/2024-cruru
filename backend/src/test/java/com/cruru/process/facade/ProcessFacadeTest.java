@@ -74,7 +74,7 @@ class ProcessFacadeTest extends ServiceTest {
         // given
         applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
         Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
-        Process process1 = processRepository.save(ProcessFixture.applyType(defaultDashboard));
+        Process process1 = processRepository.save(ProcessFixture.interview(defaultDashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         List<Evaluation> evaluations = List.of(

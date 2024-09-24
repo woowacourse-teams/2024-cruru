@@ -14,7 +14,9 @@ public record ApplicantCard(
 
         long evaluationCount,
 
-        double averageScore
+        double averageScore,
+
+        long processId
 ) {
 
     public ApplicantCardResponse toResponse() {

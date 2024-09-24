@@ -50,10 +50,6 @@ public class ProcessService {
         }
     }
 
-    public List<Process> findAllByDashboard(Long dashboardId) {
-        return processRepository.findAllByDashboardId(dashboardId);
-    }
-
     public List<Process> findAllByDashboard(Dashboard dashboard) {
         return processRepository.findAllByDashboard(dashboard);
     }
@@ -66,6 +62,10 @@ public class ProcessService {
 
     private Process toEvaluateProcess(ProcessCreateRequest request, Dashboard dashboard) {
         return new Process(request.sequence(), request.name(), request.description(), ProcessType.EVALUATE, dashboard);
+    }
+
+    public List<Process> findAllByDashboard(Long dashboardId) {
+        return processRepository.findAllByDashboardId(dashboardId);
     }
 
     public Process findApplyProcessOnDashboard(Dashboard dashboard) {

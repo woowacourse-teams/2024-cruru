@@ -95,7 +95,11 @@ public class ApplicantService {
         );
     }
 
+    public List<ApplicantCard> findApplicantCards(List<Process> processes) {
+        return applicantRepository.findApplicantCardsByProcesses(processes);
+    }
+
     public List<ApplicantCard> findApplicantCards(Process process) {
-        return applicantRepository.findApplicantCardsByProcess(process);
+        return applicantRepository.findApplicantCardsByProcesses(process);
     }
 }

@@ -39,19 +39,18 @@ public class ProcessFacade {
     public ProcessResponses readAllByDashboardId(long dashboardId) {
         ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
         List<Process> processes = processService.findAllByDashboard(dashboardId);
-        List<ProcessResponse> processResponses = toProcessResponses(processes);
+        List<ApplicantCard> applicantCards = applicantService.findApplicantCards(processes);
+
+        List<ProcessResponse> processResponses = processes.stream()
+                .map(process -> toProcessResponse(process, applicantCards))
+                .toList();
+
         return new ProcessResponses(applyForm.getId(), processResponses, applyForm.getTitle());
     }
 
-    private List<ProcessResponse> toProcessResponses(List<Process> processes) {
-        return processes.stream()
-                .map(this::toProcessResponse)
-                .toList();
-    }
-
-    private ProcessResponse toProcessResponse(Process process) {
-        List<ApplicantCardResponse> applicantCardResponses = applicantService.findApplicantCards(process)
-                .stream()
+    private ProcessResponse toProcessResponse(Process process, List<ApplicantCard> applicantCards) {
+        List<ApplicantCardResponse> applicantCardResponses = applicantCards.stream()
+                .filter(card -> card.processId() == process.getId())
                 .map(ApplicantCard::toResponse)
                 .toList();
 
@@ -70,6 +69,21 @@ public class ProcessFacade {
 
         processService.update(request, process.getId());
         return toProcessResponse(process);
+    }
+
+    private ProcessResponse toProcessResponse(Process process) {
+        List<ApplicantCardResponse> applicantCardResponses = applicantService.findApplicantCards(process)
+                .stream()
+                .map(ApplicantCard::toResponse)
+                .toList();
+
+        return new ProcessResponse(
+                process.getId(),
+                process.getSequence(),
+                process.getName(),
+                process.getDescription(),
+                applicantCardResponses
+        );
     }
 
     @Transactional

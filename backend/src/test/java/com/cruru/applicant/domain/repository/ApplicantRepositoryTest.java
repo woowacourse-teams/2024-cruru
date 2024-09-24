@@ -86,7 +86,7 @@ class ApplicantRepositoryTest extends RepositoryTest {
         evaluationRepository.saveAll(evaluations);
 
         // when
-        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcess(process);
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(List.of(process));
 
         // then
         assertThat(applicantCards).hasSize(2);
@@ -116,7 +116,7 @@ class ApplicantRepositoryTest extends RepositoryTest {
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
 
         // when
-        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcess(process);
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(List.of(process));
 
         // then
         assertThat(applicantCards).hasSize(1);
