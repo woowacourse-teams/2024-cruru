@@ -162,6 +162,23 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
 
 security:
   jwt:
