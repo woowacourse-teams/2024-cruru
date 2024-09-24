@@ -225,13 +225,13 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    reader:
-      url: ${READER_DB_URL}
+    read:
+      jdbc-url: ${READ_DB_URL}
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: ${DB_USER}
       password: ${DB_PASSWORD}
-    writer:
-      url: ${WRITER_DB_URL}
+    write:
+      jdbc-url: ${WRITE_DB_URL}
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: ${DB_USER}
       password: ${DB_PASSWORD}
