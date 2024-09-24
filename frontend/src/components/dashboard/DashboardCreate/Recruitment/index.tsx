@@ -48,14 +48,14 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
   const handleStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => ({
       ...prev,
-      startDate: new Date(e.target.value).toISOString(),
+      startDate: e.target.value ? new Date(e.target.value).toISOString() : '',
     }));
   };
 
   const handleEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRecruitmentInfoState((prev) => ({
       ...prev,
-      endDate: new Date(e.target.value).toISOString(),
+      endDate: e.target.value ? new Date(e.target.value).toISOString() : '',
     }));
   };
 
@@ -88,6 +88,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
               max={recruitmentInfoState.endDate.split('T')[0]}
               innerText={startDateText}
               onChange={handleStartDate}
+              required
             />
           </S.DatePickerBox>
           <S.DatePickerBox>
@@ -98,6 +99,7 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
               disabled={!startDateText}
               innerText={endDateText}
               onChange={handleEndDate}
+              required
             />
           </S.DatePickerBox>
         </S.DatePickerContainer>
