@@ -96,4 +96,14 @@
             <appender-ref ref="ERROR"/>
         </root>
     </springProfile>
+
+    <!-- Test Profile 설정 -->
+    <springProfile name="test">
+        <root level="INFO">
+           <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="INFO"/>
+            <appender-ref ref="WARN"/>
+            <appender-ref ref="ERROR"/>
+        </root>
+    </springProfile>
 </configuration>
