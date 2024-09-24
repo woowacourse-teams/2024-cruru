@@ -21,17 +21,6 @@ module.exports = merge(common, {
       openAnalyzer: false,
       excludeAssets: [/node_modules/],
     }),
-    sentryWebpackPlugin({
-      bundleSizeOptimizations: {
-        excludeDebugStatements: true,
-        /**
-         * 서비스에서 iframe과 shadow dom을 사용하지 않으므로 관련 코드를 제외합니다.
-         * 2024.09.24 렛서
-         */
-        excludeReplayIframe: true,
-        excludeReplayShadowDom: true,
-      },
-    }),
   ],
   optimization: {
     splitChunks: {
