@@ -1,13 +1,13 @@
-name: BE/CD - [PROD] Build & Deploy
+name: BE/CD - [TEST] Build & Deploy
 
 on:
   workflow_dispatch:
   push:
-    branches: be/release
+    branches: be/main
 
 jobs:
   build:
-    environment: prod
+    environment: test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -30,8 +30,6 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
-      with:
-          cache-write-only: true
 
     - name: Build with Gradle
       run: ./gradlew bootJar
@@ -49,22 +47,22 @@ jobs:
 
     - name: Image build and push
       run: |
-        docker build --build-arg PROFILE=prod -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-${{ steps.datetime.outputs.datetime }} --platform linux/arm64 .
-        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-${{ steps.datetime.outputs.datetime }}
+        docker build --build-arg PROFILE=test -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:test-${{ steps.datetime.outputs.datetime }} --platform linux/arm64 .
+        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:test-${{ steps.datetime.outputs.datetime }}
 
     - name: Upload docker-compose yaml script to artifact
       uses: actions/upload-artifact@v4
       with:
         name: docker-compose
         path:
-          - ${{ github.workspace }}/backend/docker-compose.prod.yml
+          - ${{ github.workspace }}/backend/docker-compose.test.yml
           - ${{ github.workspace }}/backend/promtail-config.yml
     outputs:
       BUILD_VERSION: ${{ steps.datetime.outputs.datetime }}
 
   deploy:
-    environment: prod
-    runs-on: [self-hosted, be-prod]
+    environment: test
+    runs-on: [self-hosted, be-test]
     needs: build
     defaults:
       run:
@@ -81,7 +79,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
-        DOCKER_IMAGE_VERSION_TAG=prod-${{ needs.build.outputs.BUILD_VERSION }}
+        DOCKER_IMAGE_VERSION_TAG=test-${{ needs.build.outputs.BUILD_VERSION }}
         
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
@@ -123,8 +121,8 @@ jobs:
 
     - name: Stop and remove existing containers
       run: |
-        sudo docker-compose -f docker-compose.prod.yml down --rmi all
+        sudo docker-compose -f docker-compose.test.yml down --rmi all
 
     - name: Deploy docker container
       run: |
-        sudo docker-compose --env-file .env -f docker-compose.prod.yml up -d
+        sudo docker-compose --env-file .env -f docker-compose.test.yml up -d
