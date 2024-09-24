@@ -38,12 +38,9 @@ export default meta;
 type Story = StoryObj<typeof ApplyManagement>;
 
 export const Default: Story = {
-  render: (args) => (
+  render: () => (
     <div style={{ width: '700px' }}>
-      <ApplyManagement
-        {...args}
-        isVisible
-      />
+      <ApplyManagement />
     </div>
   ),
 };
