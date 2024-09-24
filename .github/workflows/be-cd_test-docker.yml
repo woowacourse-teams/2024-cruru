@@ -54,9 +54,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: docker-compose
-        path:
-          - ${{ github.workspace }}/backend/docker-compose.test.yml
-          - ${{ github.workspace }}/backend/promtail-config.yml
+        path: |
+          ${{ github.workspace }}/backend/docker-compose.test.yml
+          ${{ github.workspace }}/backend/promtail-config.yml
     outputs:
       BUILD_VERSION: ${{ steps.datetime.outputs.datetime }}
 
