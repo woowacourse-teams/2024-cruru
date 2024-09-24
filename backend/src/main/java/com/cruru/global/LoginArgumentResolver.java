@@ -1,10 +1,12 @@
 package com.cruru.global;
 
 import com.cruru.advice.UnauthorizedException;
+import com.cruru.auth.annotation.RequireAuthCheck;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
 import com.cruru.member.domain.MemberRole;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -20,8 +22,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType()
-                .equals(LoginProfile.class);
+        return Objects.requireNonNull(parameter.getMethod()).isAnnotationPresent(RequireAuthCheck.class);
     }
 
     @Override

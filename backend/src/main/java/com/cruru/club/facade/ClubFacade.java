@@ -18,14 +18,14 @@ public class ClubFacade {
     private final MemberService memberService;
 
     @Transactional
-    public long create(ClubCreateRequest request, long memberId) {
+    public Long create(ClubCreateRequest request, long memberId) {
         Member clubOwner = memberService.findById(memberId);
         Club createdClub = clubService.create(request, clubOwner);
 
         return createdClub.getId();
     }
 
-    public long findByMemberEmail(String email) {
+    public Long findByMemberEmail(String email) {
         Member member = memberService.findByEmail(email);
         Club club = clubService.findByMember(member);
         return club.getId();

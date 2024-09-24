@@ -5,7 +5,6 @@ import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
-import com.cruru.auth.util.AuthChecker;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
@@ -15,8 +14,6 @@ import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.response.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.service.DashboardService;
-import com.cruru.global.LoginProfile;
-import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
@@ -46,11 +43,8 @@ public class DashboardFacade {
     private final Clock clock;
 
     @Transactional
-    public DashboardCreateResponse create(LoginProfile loginProfile, long clubId, DashboardCreateRequest request) {
-        Member member = memberService.findByEmail(loginProfile.email());
+    public DashboardCreateResponse create(long clubId, DashboardCreateRequest request) {
         Club club = clubService.findById(clubId);
-
-        AuthChecker.checkAuthority(club, member);
 
         Dashboard dashboard = dashboardService.create(club);
         ApplyForm applyForm = applyFormService.create(toApplyFormWriteRequest(request), dashboard);
@@ -69,11 +63,8 @@ public class DashboardFacade {
         );
     }
 
-    public DashboardsOfClubResponse findAllDashboardsByClubId(LoginProfile loginProfile, long clubId) {
-        Member member = memberService.findByEmail(loginProfile.email());
+    public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
         Club club = clubService.findById(clubId);
-
-        AuthChecker.checkAuthority(club, member);
 
         List<Dashboard> dashboards = dashboardService.findAllByClub(club);
 

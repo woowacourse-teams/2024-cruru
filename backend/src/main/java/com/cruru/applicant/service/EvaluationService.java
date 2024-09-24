@@ -19,6 +19,11 @@ public class EvaluationService {
 
     private final EvaluationRepository evaluationRepository;
 
+    public Evaluation findById(Long evaluationId) {
+        return evaluationRepository.findById(evaluationId)
+                .orElseThrow(EvaluationNotFoundException::new);
+    }
+
     @Transactional
     public void create(EvaluationCreateRequest request, Process process, Applicant applicant) {
         evaluationRepository.save(new Evaluation(request.score(), request.content(), process, applicant));
@@ -41,14 +46,11 @@ public class EvaluationService {
     }
 
     @Transactional
-    public void update(EvaluationUpdateRequest request, long evaluationId) {
-        Evaluation evaluation = evaluationRepository.findById(evaluationId)
-                .orElseThrow(EvaluationNotFoundException::new);
-
+    public void update(EvaluationUpdateRequest request, Evaluation evaluation) {
         if (changeExists(request, evaluation)) {
             evaluationRepository.save(
                     new Evaluation(
-                            evaluationId,
+                            evaluation.getId(),
                             request.score(),
                             request.content(),
                             evaluation.getProcess(),

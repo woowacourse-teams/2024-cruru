@@ -40,7 +40,7 @@ public class ApplicantService {
         }
     }
 
-    public Applicant findById(long applicantId) {
+    public Applicant findById(Long applicantId) {
         return applicantRepository.findById(applicantId)
                 .orElseThrow(ApplicantNotFoundException::new);
     }

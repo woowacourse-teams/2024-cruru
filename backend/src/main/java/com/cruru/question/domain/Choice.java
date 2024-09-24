@@ -1,5 +1,7 @@
 package com.cruru.question.domain;
 
+import com.cruru.auth.util.SecureResource;
+import com.cruru.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Choice {
+public class Choice implements SecureResource {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +39,11 @@ public class Choice {
         this.content = content;
         this.sequence = sequence;
         this.question = question;
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return question.isAuthorizedBy(member);
     }
 
     @Override

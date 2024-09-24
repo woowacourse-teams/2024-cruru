@@ -30,7 +30,7 @@ public class DashboardService {
         return savedDashboard;
     }
 
-    public Dashboard findById(long id) {
+    public Dashboard findById(Long id) {
         return dashboardRepository.findById(id)
                 .orElseThrow(DashboardNotFoundException::new);
     }

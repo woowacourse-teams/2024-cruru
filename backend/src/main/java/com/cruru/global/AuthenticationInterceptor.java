@@ -36,10 +36,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         return request.getRequestURI().matches(APPLYFORM_REQUEST_URI) && isGetRequest(request);
     }
 
-    private boolean isGetRequest(HttpServletRequest request) {
-        return HttpMethod.GET.name().equalsIgnoreCase(request.getMethod());
-    }
-
     private boolean isOptionsRequest(HttpServletRequest request) {
         return HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod());
     }
@@ -51,5 +47,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         } catch (IllegalCookieException e) {
             throw new LoginUnauthorizedException();
         }
+    }
+
+    private boolean isGetRequest(HttpServletRequest request) {
+        return HttpMethod.GET.name().equalsIgnoreCase(request.getMethod());
     }
 }
