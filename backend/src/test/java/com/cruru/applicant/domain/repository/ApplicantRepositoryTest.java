@@ -125,8 +125,8 @@ class ApplicantRepositoryTest extends RepositoryTest {
         assertAll(
                 () -> assertThat(applicantCard.id()).isEqualTo(applicant.getId()),
                 () -> assertThat(applicantCard.name()).isEqualTo(applicant.getName()),
-                () -> assertThat(applicantCard.evaluationCount()).isEqualTo(0),
-                () -> assertThat(applicantCard.averageScore()).isEqualTo(0.0)
+                () -> assertThat(applicantCard.evaluationCount()).isZero(),
+                () -> assertThat(applicantCard.averageScore()).isZero()
         );
     }
 
@@ -187,8 +187,8 @@ class ApplicantRepositoryTest extends RepositoryTest {
         assertAll(
                 () -> assertThat(applicantCard.id()).isEqualTo(applicant.getId()),
                 () -> assertThat(applicantCard.name()).isEqualTo(applicant.getName()),
-                () -> assertThat(applicantCard.evaluationCount()).isEqualTo(0),
-                () -> assertThat(applicantCard.averageScore()).isEqualTo(0.0)
+                () -> assertThat(applicantCard.evaluationCount()).isZero(),
+                () -> assertThat(applicantCard.averageScore()).isZero()
         );
     }
 }
