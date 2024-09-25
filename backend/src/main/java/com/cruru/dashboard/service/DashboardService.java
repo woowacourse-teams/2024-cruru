@@ -35,7 +35,7 @@ public class DashboardService {
                 .orElseThrow(DashboardNotFoundException::new);
     }
 
-    public List<Dashboard> findAllByClub(Club club) {
-        return dashboardRepository.findAllByClub(club);
+    public List<Dashboard> findAllByClub(long clubId) {
+        return dashboardRepository.findAllByClubWithJoinFetch(clubId);
     }
 }

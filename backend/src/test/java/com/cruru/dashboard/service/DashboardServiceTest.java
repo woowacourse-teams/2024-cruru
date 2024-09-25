@@ -77,7 +77,7 @@ class DashboardServiceTest extends ServiceTest {
         Dashboard frontendDashboard = dashboardRepository.save(DashboardFixture.frontend(club));
 
         // when & then
-        assertThat(dashboardService.findAllByClub(club)).containsExactlyInAnyOrder(
+        assertThat(dashboardService.findAllByClub(club.getId())).containsExactlyInAnyOrder(
                 backendDashboard,
                 frontendDashboard
         );

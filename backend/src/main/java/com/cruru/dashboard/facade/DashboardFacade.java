@@ -64,9 +64,7 @@ public class DashboardFacade {
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
-        Club club = clubService.findById(clubId);
-
-        List<Dashboard> dashboards = dashboardService.findAllByClub(club);
+        List<Dashboard> dashboards = dashboardService.findAllByClub(clubId);
 
         String clubName = clubService.findById(clubId).getName();
         LocalDateTime now = LocalDateTime.now(clock);
