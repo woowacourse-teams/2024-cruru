@@ -8,9 +8,11 @@ import useApplicant from '@hooks/useApplicant';
 import { useModal } from '@contexts/ModalContext';
 import { PopOverMenuItem } from '@customTypes/common';
 
-import S from './style';
+import specificApplicant from '@hooks/useSpecificApplicant';
+import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
 import ApplicantCard from '../ApplicantCard';
-import ProcessDescription from './ProcessDescription/index';
+import ProcessDescription from './ProcessDescription';
+import S from './style';
 
 interface ProcessColumnProps {
   process: Process;
@@ -21,10 +23,12 @@ export default function ProcessColumn({ process, showRejectedApplicant }: Proces
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { processList } = useProcess({ dashboardId, applyFormId });
   const { mutate: moveApplicantProcess } = useApplicant({});
+  const { mutate: rejectMutate } = specificApplicant.useRejectApplicant({ dashboardId, applyFormId });
 
   const { setApplicantId } = useSpecificApplicantId();
   const { setProcessId } = useSpecificProcessId();
   const { open } = useModal();
+  const { open: sideEmailFormOpen } = useFloatingEmailForm();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) => {
     const menuItems = processList.map(
@@ -43,8 +47,8 @@ export default function ProcessColumn({ process, showRejectedApplicant }: Proces
       name: '이메일 보내기',
       hasSeparate: true,
       onClick: () => {
-        // TODO: 이메일 보내는 로직 추가
-        alert('오픈해야함');
+        setApplicantId(applicantId);
+        sideEmailFormOpen();
       },
     });
 
@@ -54,8 +58,7 @@ export default function ProcessColumn({ process, showRejectedApplicant }: Proces
       isHighlight: true,
       hasSeparate: true,
       onClick: () => {
-        // TODO: 불합격 로직 추가
-        alert('오픈해야함');
+        rejectMutate({ applicantId });
       },
     });
 
