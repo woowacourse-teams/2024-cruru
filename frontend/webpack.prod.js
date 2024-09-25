@@ -26,8 +26,12 @@ module.exports = merge(common, {
     splitChunks: {
       cacheGroups: {
         defaultVendors: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](?!quill|quill-delta|react-quill-new|eventemitter3)/,
           name: 'vendors',
+        },
+        quillVendor: {
+          test: /[\\/]node_modules[\\/](quill|quill-delta|react-quill-new|eventemitter3)[\\/]/,
+          name: 'quill-vendor',
         },
         default: {
           test: /[\\/]src[\\/]/,
