@@ -15,6 +15,7 @@ import useProcess from '@hooks/useProcess';
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
+import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 
 import S from './style';
 
@@ -62,11 +63,13 @@ export default function Dashboard() {
       파일 맨 첫줄 주석도 삭제해야합니다. */}
 
       <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
-        <SpecificApplicantIdProvider>
-          <SpecificProcessIdProvider>
-            <ProcessBoard processes={processes} />
-          </SpecificProcessIdProvider>
-        </SpecificApplicantIdProvider>
+        <FloatingEmailFormProvider>
+          <SpecificApplicantIdProvider>
+            <SpecificProcessIdProvider>
+              <ProcessBoard processes={processes} />
+            </SpecificProcessIdProvider>
+          </SpecificApplicantIdProvider>
+        </FloatingEmailFormProvider>
       </Tab.TabPanel>
 
       <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
