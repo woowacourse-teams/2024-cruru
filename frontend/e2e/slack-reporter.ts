@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import type { Reporter, FullConfig, Suite, TestCase, TestResult, FullResult } from '@playwright/test/reporter';
+import path from 'path';
 
 const getSlackMessage = ({
   all,
@@ -21,7 +22,7 @@ const getSlackMessage = ({
       type: 'header',
       text: {
         type: 'plain_text',
-        text: '🏃 테스트 실행이 시작되었습니다: ',
+        text: '🏃 E2E 테스트가 실행되었습니다: ',
         emoji: true,
       },
     },
@@ -249,14 +250,22 @@ class MyReporter implements Reporter {
   }
 
   onTestEnd(test: TestCase, result: TestResult) {
+    const testDuration = `${(result.duration / 1000).toFixed(1)}s`;
+    const fileName = path.basename(test.location.file);
+    const testTitle = test.title;
+
     switch (result.status) {
       case 'failed':
       case 'timedOut':
-        this.addFailMessage(`❌ 테스트 실패: ${test.title}\n>${result.error?.message}`);
+        this.addFailMessage(
+          `✘ ${fileName}:${test.location.line}:${test.location.column} › ${testTitle}(${testDuration})`,
+        );
         this.failed += 1;
         break;
       case 'skipped':
-        this.addFailMessage(`⚠️ 테스트 건너뜀: ${test.title}`);
+        this.addFailMessage(
+          `⚠️ ${fileName}:${test.location.line}:${test.location.column} › ${testTitle}(${testDuration})`,
+        );
         this.skipped += 1;
         break;
       case 'passed':
@@ -301,16 +310,14 @@ class MyReporter implements Reporter {
 
   private async getBlockKit(result: FullResult) {
     const { duration } = result;
-    const minutes = Math.floor(duration / 6000);
-    const seconds = ((duration % 60000) / 1000).toFixed(0);
 
     const resultBlockKit = getSlackMessage({
       all: `${this.all}`,
       passed: `${this.passed}개`,
       failed: `${this.failed}개`,
       skipped: `${this.skipped}개`,
-      duration: `${minutes}분 ${seconds}초`,
-      result: `${this.failsMessage ? `테스트 실패 ❌\n${this.failsMessage}` : '👍 모든 테스트가 성공적으로 통과했습니다!'}`,
+      duration: `${(duration / 1000).toFixed(1)}s`,
+      result: `${this.failsMessage ? `통과하지 못한 테스트\n${this.failsMessage}` : '👍 모든 테스트가 성공적으로 통과했습니다!'}`,
     });
 
     return resultBlockKit;
