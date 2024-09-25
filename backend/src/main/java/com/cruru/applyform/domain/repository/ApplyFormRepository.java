@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
@@ -20,7 +19,6 @@ public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
                WHERE d.id = :dashboardId
            """)
     Optional<ApplyForm> findByDashboardId(long dashboardId);
-    Optional<ApplyForm> findByDashboard(Dashboard dashboardId);
 
     @Query("""
            SELECT new com.cruru.dashboard.domain.DashboardApplyFormDto(d, a) 
