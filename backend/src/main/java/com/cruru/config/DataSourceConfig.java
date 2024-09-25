@@ -2,6 +2,7 @@ package com.cruru.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.HashMap;
+import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -43,7 +44,7 @@ public class DataSourceConfig {
         DataSource writeDataSource = writeDataSource();
         DataSource readDataSource = readDataSource();
 
-        HashMap<Object, Object> dataSourceMap = new HashMap<>();
+        Map<Object, Object> dataSourceMap = new HashMap<>();
         dataSourceMap.put(DataSourceRouter.READ_DATASOURCE_KEY, readDataSource);
         dataSourceMap.put(DataSourceRouter.WRITE_DATASOURCE_KEY, writeDataSource);
         dataSourceRouter.setTargetDataSources(dataSourceMap);
