@@ -100,6 +100,6 @@ public class ApplicantService {
     }
 
     public List<ApplicantCard> findApplicantCards(Process process) {
-        return applicantRepository.findApplicantCardsByProcesses(process);
+        return applicantRepository.findApplicantCardsByProcess(process);
     }
 }

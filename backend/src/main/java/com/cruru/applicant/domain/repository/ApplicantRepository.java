@@ -34,5 +34,5 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
                   WHERE a.process = :process
                   GROUP BY a.id, a.name, a.createdDate, a.isRejected
            """)
-    List<ApplicantCard> findApplicantCardsByProcesses(@Param("process") Process process);
+    List<ApplicantCard> findApplicantCardsByProcess(@Param("process") Process process);
 }
