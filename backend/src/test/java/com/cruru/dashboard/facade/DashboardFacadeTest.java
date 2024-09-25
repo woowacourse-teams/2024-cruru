@@ -123,7 +123,6 @@ class DashboardFacadeTest extends ServiceTest {
         applicantRepository.saveAll(applicants1);
 
         // when
-        System.out.println("==========================================");
         DashboardsOfClubResponse dashboardsOfClubResponse =
                 dashboardFacade.findAllDashboardsByClubId(club.getId());
 
@@ -140,6 +139,5 @@ class DashboardFacadeTest extends ServiceTest {
                 () -> assertThat(stats.fail()).isEqualTo(2),
                 () -> assertThat(stats.inProgress()).isEqualTo(3)
         );
-        System.out.println("==========================================");
     }
 }
