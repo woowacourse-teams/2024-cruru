@@ -111,33 +111,4 @@ class EvaluationServiceTest extends ServiceTest {
                 () -> assertThat(updatedEvaluation.get().getContent()).isEqualTo(content)
         );
     }
-
-    @DisplayName("평가에 대한 평균 점수를 계산한다.")
-    @Test
-    void calculateAverageScore() {
-        // given
-        List<Evaluation> evaluations = List.of(
-                new Evaluation(1, null, process, applicant),
-                new Evaluation(2, null, process, applicant),
-                new Evaluation(3, null, process, applicant)
-        );
-        evaluationRepository.saveAll(evaluations);
-
-        // when
-        // 평균 점수 = (1 + 2 + 3) / 3 = 2
-        double averageScore = evaluationService.calculateAverageScore(process, applicant);
-
-        // then
-        assertThat(averageScore).isEqualTo(2.0);
-    }
-
-    @DisplayName("평가가 없을 시 평균 점수는 0점이다.")
-    @Test
-    void calculateAverageScore_zero() {
-        // when
-        double averageScore = evaluationService.calculateAverageScore(process, applicant);
-
-        // then
-        assertThat(averageScore).isZero();
-    }
 }

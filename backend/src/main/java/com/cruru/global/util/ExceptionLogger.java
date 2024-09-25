@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 
 @Slf4j
@@ -35,22 +34,14 @@ public class ExceptionLogger {
         MDC.put("exceptionMessage", exception.getMessage());
     }
 
+    private static void clearMDC() {
+        MDC.clear();
+    }
+
     // MDC 초기화
     public static void info(ProblemDetail problemDetail) {
         setMDC(problemDetail);
         log.info("handle info level exception");
-        clearMDC();
-    }
-
-    public static void warn(ProblemDetail problemDetail) {
-        setMDC(problemDetail);
-        log.warn("handle warn level exception");
-        clearMDC();
-    }
-
-    public static void error(ProblemDetail problemDetail) {
-        setMDC(problemDetail);
-        log.error("handle error level exception");
         clearMDC();
     }
 
@@ -63,7 +54,15 @@ public class ExceptionLogger {
         MDC.setContextMap(map);
     }
 
-    private static void clearMDC() {
-        MDC.clear();
+    public static void warn(ProblemDetail problemDetail) {
+        setMDC(problemDetail);
+        log.warn("handle warn level exception");
+        clearMDC();
+    }
+
+    public static void error(ProblemDetail problemDetail) {
+        setMDC(problemDetail);
+        log.error("handle error level exception");
+        clearMDC();
     }
 }

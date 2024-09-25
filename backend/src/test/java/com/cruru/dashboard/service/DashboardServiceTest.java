@@ -51,7 +51,7 @@ class DashboardServiceTest extends ServiceTest {
                 .toList();
         assertAll(
                 () -> assertThat(processes).hasSize(2),
-                () -> assertThat(processes.get(0).getSequence()).isEqualTo(0),
+                () -> assertThat(processes.get(0).getSequence()).isZero(),
                 () -> assertThat(processes.get(1).getSequence()).isEqualTo(1)
         );
     }

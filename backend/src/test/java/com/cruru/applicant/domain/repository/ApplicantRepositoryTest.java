@@ -1,10 +1,18 @@
 package com.cruru.applicant.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.Evaluation;
+import com.cruru.applicant.domain.dto.ApplicantCard;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +23,12 @@ class ApplicantRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private ProcessRepository processRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     @BeforeEach
     void setUp() {
@@ -52,5 +66,129 @@ class ApplicantRepositoryTest extends RepositoryTest {
 
         //then
         assertThat(savedApplicant1.getId() + 1).isEqualTo(savedApplicant2.getId());
+    }
+
+    @DisplayName("특정 Process들에 대한 ApplicantCard 목록을 반환한다.")
+    @Test
+    void findApplicantCardsByProcesses() {
+        // given
+        Process process = processRepository.save(ProcessFixture.applyType());
+
+        Applicant applicant1 = ApplicantFixture.pendingDobby(process);
+        Applicant applicant2 = ApplicantFixture.pendingRush(process);
+        applicantRepository.saveAll(List.of(applicant1, applicant2));
+
+        List<Evaluation> evaluations = List.of(
+                EvaluationFixture.fivePoints(process, applicant1),
+                EvaluationFixture.fivePoints(process, applicant1),
+                EvaluationFixture.fivePoints(process, applicant2)
+        );
+        evaluationRepository.saveAll(evaluations);
+
+        // when
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(List.of(process));
+
+        // then
+        assertThat(applicantCards).hasSize(2);
+
+        ApplicantCard applicantCard1 = applicantCards.get(0);
+        assertAll(
+                () -> assertThat(applicantCard1.id()).isEqualTo(applicant1.getId()),
+                () -> assertThat(applicantCard1.name()).isEqualTo(applicant1.getName()),
+                () -> assertThat(applicantCard1.evaluationCount()).isEqualTo(2),
+                () -> assertThat(applicantCard1.averageScore()).isEqualTo(5.0)
+        );
+
+        ApplicantCard applicantCard2 = applicantCards.get(1);
+        assertAll(
+                () -> assertThat(applicantCard2.id()).isEqualTo(applicant2.getId()),
+                () -> assertThat(applicantCard2.name()).isEqualTo(applicant2.getName()),
+                () -> assertThat(applicantCard2.evaluationCount()).isEqualTo(1),
+                () -> assertThat(applicantCard2.averageScore()).isEqualTo(5.0)
+        );
+    }
+
+    @DisplayName("평가가 없을 경우 ApplicantCard 목록에서 평균 점수는 0점이고 카운트는 0이다.")
+    @Test
+    void findApplicantCardsByProcesses_noEvaluations() {
+        // given
+        Process process = processRepository.save(ProcessFixture.applyType());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+
+        // when
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(List.of(process));
+
+        // then
+        assertThat(applicantCards).hasSize(1);
+        ApplicantCard applicantCard = applicantCards.get(0);
+
+        assertAll(
+                () -> assertThat(applicantCard.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantCard.name()).isEqualTo(applicant.getName()),
+                () -> assertThat(applicantCard.evaluationCount()).isZero(),
+                () -> assertThat(applicantCard.averageScore()).isZero()
+        );
+    }
+
+    @DisplayName("특정 Process에 대한 ApplicantCard 목록을 반환한다.")
+    @Test
+    void findApplicantCardsByProcess() {
+        // given
+        Process process = processRepository.save(ProcessFixture.applyType());
+
+        Applicant applicant1 = ApplicantFixture.pendingDobby(process);
+        Applicant applicant2 = ApplicantFixture.pendingRush(process);
+        applicantRepository.saveAll(List.of(applicant1, applicant2));
+
+        List<Evaluation> evaluations = List.of(
+                EvaluationFixture.fivePoints(process, applicant1),
+                EvaluationFixture.fivePoints(process, applicant1),
+                EvaluationFixture.fivePoints(process, applicant2)
+        );
+        evaluationRepository.saveAll(evaluations);
+
+        // when
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcess(process);
+
+        // then
+        assertThat(applicantCards).hasSize(2);
+
+        ApplicantCard applicantCard1 = applicantCards.get(0);
+        assertAll(
+                () -> assertThat(applicantCard1.id()).isEqualTo(applicant1.getId()),
+                () -> assertThat(applicantCard1.name()).isEqualTo(applicant1.getName()),
+                () -> assertThat(applicantCard1.evaluationCount()).isEqualTo(2),
+                () -> assertThat(applicantCard1.averageScore()).isEqualTo(5.0)
+        );
+
+        ApplicantCard applicantCard2 = applicantCards.get(1);
+        assertAll(
+                () -> assertThat(applicantCard2.id()).isEqualTo(applicant2.getId()),
+                () -> assertThat(applicantCard2.name()).isEqualTo(applicant2.getName()),
+                () -> assertThat(applicantCard2.evaluationCount()).isEqualTo(1),
+                () -> assertThat(applicantCard2.averageScore()).isEqualTo(5.0)
+        );
+    }
+
+    @DisplayName("평가가 없을 경우 ApplicantCard 목록에서 평균 점수는 0점이고 카운트는 0이다.")
+    @Test
+    void findApplicantCardsByProcess_noEvaluations() {
+        // given
+        Process process = processRepository.save(ProcessFixture.applyType());
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+
+        // when
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcess(process);
+
+        // then
+        assertThat(applicantCards).hasSize(1);
+        ApplicantCard applicantCard = applicantCards.get(0);
+
+        assertAll(
+                () -> assertThat(applicantCard.id()).isEqualTo(applicant.getId()),
+                () -> assertThat(applicantCard.name()).isEqualTo(applicant.getName()),
+                () -> assertThat(applicantCard.evaluationCount()).isZero(),
+                () -> assertThat(applicantCard.averageScore()).isZero()
+        );
     }
 }

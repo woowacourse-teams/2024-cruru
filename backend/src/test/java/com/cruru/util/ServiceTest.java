@@ -38,7 +38,8 @@ public class ServiceTest {
     protected Club defaultClub;
     protected Dashboard defaultDashboard;
     protected LoginProfile loginProfile;
-
+    @MockBean
+    protected JavaMailSender javaMailSender;
     @Autowired
     private DbCleaner dbCleaner;
     @Autowired
@@ -49,8 +50,6 @@ public class ServiceTest {
     private DashboardRepository dashboardRepository;
     @SpyBean
     private Clock clock;
-    @MockBean
-    protected JavaMailSender javaMailSender;
 
     @BeforeEach
     void resetDb() {
