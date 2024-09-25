@@ -40,12 +40,12 @@ public class DataSourceConfig {
     @DependsOn({READ_DATASOURCE, WRITE_DATASOURCE})
     public DataSourceRouter routeDataSource() {
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
-        DataSource wrtieDataSource = writeDataSource();
+        DataSource writeDataSource = writeDataSource();
         DataSource readDataSource = readDataSource();
 
         HashMap<Object, Object> dataSourceMap = new HashMap<>();
         dataSourceMap.put(DataSourceRouter.READ_DATASOURCE_KEY, readDataSource);
-        dataSourceMap.put(DataSourceRouter.WRITE_DATASOURCE_KEY, wrtieDataSource);
+        dataSourceMap.put(DataSourceRouter.WRITE_DATASOURCE_KEY, writeDataSource);
         dataSourceRouter.setTargetDataSources(dataSourceMap);
         dataSourceRouter.setDefaultTargetDataSource(readDataSource);
         return dataSourceRouter;
