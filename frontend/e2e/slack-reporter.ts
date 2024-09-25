@@ -258,13 +258,13 @@ class MyReporter implements Reporter {
       case 'failed':
       case 'timedOut':
         this.addFailMessage(
-          `✘ ${fileName}:${test.location.line}:${test.location.column} › ${testTitle}(${testDuration})`,
+          `✘ ${fileName}:${test.location.line}:${test.location.column} › ${testTitle} (${testDuration})`,
         );
         this.failed += 1;
         break;
       case 'skipped':
         this.addFailMessage(
-          `⚠️ ${fileName}:${test.location.line}:${test.location.column} › ${testTitle}(${testDuration})`,
+          `⚠️ ${fileName}:${test.location.line}:${test.location.column} › ${testTitle} (${testDuration})`,
         );
         this.skipped += 1;
         break;
