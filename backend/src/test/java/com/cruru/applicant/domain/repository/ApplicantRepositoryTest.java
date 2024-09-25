@@ -68,9 +68,9 @@ class ApplicantRepositoryTest extends RepositoryTest {
         assertThat(savedApplicant1.getId() + 1).isEqualTo(savedApplicant2.getId());
     }
 
-    @DisplayName("특정 Process에 대한 ApplicantCard 목록을 반환한다.")
+    @DisplayName("특정 Process들에 대한 ApplicantCard 목록을 반환한다.")
     @Test
-    void findApplicantCardsByProcess() {
+    void findApplicantCardsByProcesses() {
         // given
         Process process = processRepository.save(ProcessFixture.applyType());
 
