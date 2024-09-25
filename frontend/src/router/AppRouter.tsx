@@ -1,5 +1,6 @@
 /* eslint-disable @tanstack/query/stable-query-client */
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import ErrorPage from '@pages/ErrorPage';
 import SignIn from '@pages/SignIn';
@@ -15,7 +16,6 @@ import { useToast } from '@contexts/ToastContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from '../App';
 import { PATH } from './path';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const router = createBrowserRouter(
   [
