@@ -48,7 +48,7 @@ public class DataSourceConfig {
         dataSourceMap.put(DataSourceRouter.READ_DATASOURCE_KEY, readDataSource);
         dataSourceMap.put(DataSourceRouter.WRITE_DATASOURCE_KEY, writeDataSource);
         dataSourceRouter.setTargetDataSources(dataSourceMap);
-        dataSourceRouter.setDefaultTargetDataSource(readDataSource);
+        dataSourceRouter.setDefaultTargetDataSource(writeDataSource());
         return dataSourceRouter;
     }
 
