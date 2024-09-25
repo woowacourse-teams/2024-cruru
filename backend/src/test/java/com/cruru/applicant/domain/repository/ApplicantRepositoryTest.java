@@ -1,7 +1,6 @@
 package com.cruru.applicant.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.dashboard.domain.Dashboard;
@@ -86,12 +85,6 @@ class ApplicantRepositoryTest extends RepositoryTest {
 
         // then
         assertThat(applicants).hasSize(3);
-
-        assertAll(
-                () -> assertThat(applicants).contains(applicant1),
-                () -> assertThat(applicants).contains(applicant2),
-                () -> assertThat(applicants).contains(applicant3)
-        );
+        assertThat(applicants).containsExactlyInAnyOrder(applicant1, applicant2, applicant3);
     }
-
 }
