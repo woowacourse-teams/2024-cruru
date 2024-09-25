@@ -1,7 +1,6 @@
 package com.cruru.dashboard.facade;
 
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
@@ -13,10 +12,8 @@ import com.cruru.dashboard.controller.response.DashboardPreviewResponse;
 import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.response.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.DashboardApplyFormDto;
 import com.cruru.dashboard.service.DashboardService;
-import com.cruru.member.service.MemberService;
-import com.cruru.process.domain.Process;
-import com.cruru.process.service.ProcessService;
 import com.cruru.question.controller.request.QuestionCreateRequest;
 import com.cruru.question.service.QuestionService;
 import java.time.Clock;
@@ -33,13 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DashboardFacade {
 
-    private final MemberService memberService;
     private final ClubService clubService;
     private final DashboardService dashboardService;
     private final ApplyFormService applyFormService;
     private final QuestionService questionService;
-    private final ProcessService processService;
-    private final ApplicantService applicantService;
     private final Clock clock;
 
     @Transactional
@@ -64,7 +58,7 @@ public class DashboardFacade {
     }
 
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
-        List<Dashboard> dashboards = dashboardService.findAllByClub(clubId);
+        List<DashboardApplyFormDto> dashboards = dashboardService.findAllByClub(clubId);
 
         String clubName = clubService.findById(clubId).getName();
         LocalDateTime now = LocalDateTime.now(clock);
@@ -77,10 +71,12 @@ public class DashboardFacade {
         return new DashboardsOfClubResponse(clubName, sortedDashboardPreviews);
     }
 
-    private DashboardPreviewResponse createDashboardPreviewResponse(Dashboard dashboard) {
-        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
-        List<Applicant> allApplicants = getAllApplicantsByDashboardId(dashboard);
-        StatsResponse stats = calculateStats(allApplicants);
+    private DashboardPreviewResponse createDashboardPreviewResponse(DashboardApplyFormDto dashboardApplyformDto) {
+        Dashboard dashboard = dashboardApplyformDto.dashboard();
+        ApplyForm applyForm = dashboardApplyformDto.applyForm();
+
+        List<Applicant> applicants = dashboardService.findAllApplicants(dashboard);
+        StatsResponse stats = calculateStats(applicants);
         return new DashboardPreviewResponse(
                 dashboard.getId(),
                 applyForm.getId(),
@@ -111,14 +107,6 @@ public class DashboardFacade {
         sortedDashboards.addAll(expiredDashboards);
 
         return sortedDashboards;
-    }
-
-    private List<Applicant> getAllApplicantsByDashboardId(Dashboard dashboard) {
-        List<Process> processes = processService.findAllByDashboard(dashboard);
-        return processes.stream()
-                .flatMap(process -> applicantService.findAllByProcess(process)
-                        .stream())
-                .toList();
     }
 
     private StatsResponse calculateStats(List<Applicant> allApplicants) {

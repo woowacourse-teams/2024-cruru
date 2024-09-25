@@ -139,7 +139,7 @@ class ApplyFormServiceTest extends ServiceTest {
         String toChangeDescription = "# 모집 공고 설명 #";
         LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
         LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
-        
+
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         ApplyFormWriteRequest request = new ApplyFormWriteRequest(
                 toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate

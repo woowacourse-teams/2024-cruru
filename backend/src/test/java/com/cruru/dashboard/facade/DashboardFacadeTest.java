@@ -101,7 +101,6 @@ class DashboardFacadeTest extends ServiceTest {
         Process firstProcess1 = processRepository.save(ProcessFixture.applyType(dashboard1));
         Process lastProcess1 = processRepository.save(ProcessFixture.approveType(dashboard1));
 
-
         List<Applicant> applicants = List.of(
                 // 마지막 프로세스에 있으면서 불합격 상태인 경우, 불합격
                 ApplicantFixture.rejectedRush(lastProcess),

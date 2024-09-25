@@ -1,10 +1,12 @@
 package com.cruru.applicant.domain.repository;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
@@ -12,5 +14,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     long countByProcess(Process process);
 
-    Optional<Applicant> findByEmail(String email);
+    @Query("SELECT a FROM Applicant a JOIN FETCH a.process p JOIN FETCH p.dashboard d WHERE d = :dashboard")
+    List<Applicant> findAllByDashboard(@Param("dashboard") Dashboard dashboard);
 }
