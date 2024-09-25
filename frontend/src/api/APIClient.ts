@@ -94,14 +94,16 @@ export default class APIClient implements APIClientType {
     method,
     body,
     hasCookies,
+    isFormData,
   }: {
     path: string;
     method: Method;
     body?: BodyHashMap;
     hasCookies?: boolean;
+    isFormData?: boolean;
   }): Promise<T> {
     const url = this.baseURL + path;
-    const response = await fetch(url, this.getRequestInit({ method, body, hasCookies }));
+    const response = await fetch(url, this.getRequestInit({ method, body, hasCookies, isFormData }));
 
     if (!response.ok) {
       const json = await response.json();
