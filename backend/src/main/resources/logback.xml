@@ -80,7 +80,7 @@
     <!-- Dev Profile 설정 -->
     <springProfile name="dev">
         <root level="INFO">
-<!--            <appender-ref ref="CONSOLE"/>-->
+           <appender-ref ref="CONSOLE"/>
             <appender-ref ref="INFO"/>
             <appender-ref ref="WARN"/>
             <appender-ref ref="ERROR"/>
