@@ -60,9 +60,6 @@ class ApplyFormFacadeTest extends ServiceTest {
     private ApplicantRepository applicantRepository;
 
     @Autowired
-    private ChoiceRepository choiceRepository;
-
-    @Autowired
     private ApplyFormFacade applyFormFacade;
 
     private Process firstProcess;
@@ -214,7 +211,7 @@ class ApplyFormFacadeTest extends ServiceTest {
                     assertThat(questionResponse.content()).isEqualTo(question1.getContent());
                     assertThat(questionResponse.orderIndex()).isEqualTo(question1.getSequence());
                     assertThat(questionResponse.required()).isEqualTo(question1.isRequired());
-                    assertThat(questionResponse.choiceResponses().size()).isZero();
+                    assertThat(questionResponse.choiceResponses()).isEmpty();
                 }
         );
     }
