@@ -108,6 +108,10 @@ jobs:
         
         # Apply-form post URL generating format
         APPLY_POST_BASE_URL=${{ secrets.APPLY_POST_BASE_URL }}
+
+        # Email Auth info
+        EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
+        EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
         
         # Security settings
         JWT_TOKEN_SECRET_KEY=${{ secrets.JWT_TOKEN_SECRET_KEY }}
