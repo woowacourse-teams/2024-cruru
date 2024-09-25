@@ -4,13 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.DashboardApplyFormDto;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import java.util.Comparator;
@@ -33,6 +37,9 @@ class DashboardServiceTest extends ServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
 
     @DisplayName("새로운 대시보드를 생성시, 기본 프로세스 2개가 생성된다.")
     @Test
@@ -75,11 +82,13 @@ class DashboardServiceTest extends ServiceTest {
         Club club = clubRepository.save(ClubFixture.create());
         Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.backend(club));
         Dashboard frontendDashboard = dashboardRepository.save(DashboardFixture.frontend(club));
+        ApplyForm backendApplyform = applyFormRepository.save(ApplyFormFixture.backend(backendDashboard));
+        ApplyForm frontendApplyform = applyFormRepository.save(ApplyFormFixture.frontend(frontendDashboard));
 
-        // when & then
-        assertThat(dashboardService.findAllByClub(club)).containsExactlyInAnyOrder(
-                backendDashboard,
-                frontendDashboard
+        // when&then
+        assertThat(dashboardService.findAllByClub(club.getId())).containsExactlyInAnyOrder(
+                new DashboardApplyFormDto(backendDashboard, backendApplyform),
+                new DashboardApplyFormDto(frontendDashboard, frontendApplyform)
         );
     }
 }

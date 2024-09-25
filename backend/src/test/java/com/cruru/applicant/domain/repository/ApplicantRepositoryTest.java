@@ -4,12 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import java.util.List;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.util.List;
@@ -23,6 +30,9 @@ class ApplicantRepositoryTest extends RepositoryTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private DashboardRepository dashboardRepository;
 
     @Autowired
     private ProcessRepository processRepository;
@@ -190,5 +200,26 @@ class ApplicantRepositoryTest extends RepositoryTest {
                 () -> assertThat(applicantCard.evaluationCount()).isZero(),
                 () -> assertThat(applicantCard.averageScore()).isZero()
         );
+    }
+
+    @DisplayName("특정 대시보드에 해당하는 지원자 목록을 반환한다.")
+    @Test
+    void findAllByDashboard() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+
+        Process process1 = processRepository.save(ProcessFixture.applyType(dashboard));
+        Process process2 = processRepository.save(ProcessFixture.approveType(dashboard));
+
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby(process2));
+
+        // when
+        List<Applicant> applicants = applicantRepository.findAllByDashboard(dashboard);
+
+        // then
+        assertThat(applicants).hasSize(3);
+        assertThat(applicants).containsExactlyInAnyOrder(applicant1, applicant2, applicant3);
     }
 }

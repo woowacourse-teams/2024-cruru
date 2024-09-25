@@ -2,6 +2,7 @@ package com.cruru.applicant.domain.repository;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.dto.ApplicantCard;
+import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +36,7 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
                   GROUP BY a.id, a.name, a.createdDate, a.isRejected
            """)
     List<ApplicantCard> findApplicantCardsByProcess(@Param("process") Process process);
+
+    @Query("SELECT a FROM Applicant a JOIN FETCH a.process p JOIN FETCH p.dashboard d WHERE d = :dashboard")
+    List<Applicant> findAllByDashboard(@Param("dashboard") Dashboard dashboard);
 }
