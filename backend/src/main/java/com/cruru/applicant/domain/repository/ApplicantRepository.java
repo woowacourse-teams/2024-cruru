@@ -26,7 +26,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
     List<ApplicantCard> findApplicantCardsByProcesses(@Param("processes") List<Process> processes);
 
     @Query("""
-
            SELECT new com.cruru.applicant.domain.dto.ApplicantCard(
                       a.id, a.name, a.createdDate, a.isRejected, COUNT(e), COALESCE(AVG(e.score), 0.00), a.process.id
                   )
