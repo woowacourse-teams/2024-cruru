@@ -12,6 +12,7 @@ export interface DropdownListItem {
   name: string;
   isHighlight?: boolean;
   onClick: ({ targetProcessId }: { targetProcessId: number }) => void;
+  hasSeparate?: boolean;
 }
 
 export type ISO8601 = Branded<string, 'ISO8601'>;
