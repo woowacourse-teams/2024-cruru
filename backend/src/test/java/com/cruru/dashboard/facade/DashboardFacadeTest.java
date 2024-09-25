@@ -93,9 +93,13 @@ class DashboardFacadeTest extends ServiceTest {
     void findAllDashboardsByClubId() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        Dashboard dashboard1 = dashboardRepository.save(DashboardFixture.backend(club));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        ApplyForm applyForm1 = applyFormRepository.save(ApplyFormFixture.backend(dashboard1));
         Process firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
         Process lastProcess = processRepository.save(ProcessFixture.approveType(dashboard));
+        Process firstProcess1 = processRepository.save(ProcessFixture.applyType(dashboard1));
+        Process lastProcess1 = processRepository.save(ProcessFixture.approveType(dashboard1));
 
         List<Applicant> applicants = List.of(
                 // 마지막 프로세스에 있으면서 불합격 상태인 경우, 불합격
@@ -107,6 +111,16 @@ class DashboardFacadeTest extends ServiceTest {
                 ApplicantFixture.pendingDobby(firstProcess)
         );
         applicantRepository.saveAll(applicants);
+
+        List<Applicant> applicants1 = List.of(
+                ApplicantFixture.rejectedRush(lastProcess1),
+                ApplicantFixture.rejectedRush(firstProcess1),
+                ApplicantFixture.pendingDobby(lastProcess1),
+                ApplicantFixture.pendingDobby(firstProcess1),
+                ApplicantFixture.pendingDobby(firstProcess1),
+                ApplicantFixture.pendingDobby(firstProcess1)
+        );
+        applicantRepository.saveAll(applicants1);
 
         // when
         DashboardsOfClubResponse dashboardsOfClubResponse =

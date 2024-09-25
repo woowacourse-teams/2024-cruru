@@ -25,14 +25,12 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 @DisplayName("발송 내역 파사드 테스트")
 class EmailFacadeTest extends ServiceTest {
 
-    @Autowired
-    private ApplicantRepository applicantRepository;
-
-    @Autowired
-    private EmailFacade emailFacade;
-
     @SpyBean
     EmailService emailService;
+    @Autowired
+    private ApplicantRepository applicantRepository;
+    @Autowired
+    private EmailFacade emailFacade;
 
     @DisplayName("이메일을 비동기로 발송하고, 발송 내역을 저장한다.")
     @Test

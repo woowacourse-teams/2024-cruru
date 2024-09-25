@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("발송 내역 레포지토리 테스트")
 class EmailRepositoryTest extends RepositoryTest {
-    
+
     @Autowired
     private EmailRepository emailRepository;
 
