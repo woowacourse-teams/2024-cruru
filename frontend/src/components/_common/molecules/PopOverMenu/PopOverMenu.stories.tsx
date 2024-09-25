@@ -16,7 +16,7 @@ const Template: StoryObj<PopOverMenuProps> = {
 const testItem: PopOverMenuItem = {
   id: 123,
   name: 'Menu Label',
-  onClick: () => console.log('clicked'),
+  onClick: () => alert('clicked'),
 };
 const testItemList: PopOverMenuItem[] = Array.from({ length: 3 }, (_, index) => ({
   ...testItem,
@@ -37,5 +37,13 @@ export const SmallSize: StoryObj<PopOverMenuProps> = {
   args: {
     size: 'sm',
     items: testItemList,
+  },
+};
+
+export const SeparateTest: StoryObj<PopOverMenuProps> = {
+  ...Template,
+  args: {
+    size: 'sm',
+    items: [...testItemList, { ...testItem, name: 'SeparateTest', id: testItemList.length, hasSeparate: true }],
   },
 };
