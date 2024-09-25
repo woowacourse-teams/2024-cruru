@@ -34,7 +34,7 @@ export default class APIClient implements APIClientType {
     return this.request<T>({ method: 'GET', ...params });
   }
 
-  async post<T>(params: APIClientParamsWithBody): Promise<T> {
+  async post<T>(params: APIClientParamsWithBody & { isFormData?: boolean }): Promise<T> {
     return this.request<T>({ method: 'POST', ...params });
   }
 
