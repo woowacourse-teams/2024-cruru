@@ -40,8 +40,8 @@ public class AnswerService {
         }
     }
 
-    public List<Answer> findAllByApplicant(Applicant applicant) {
-        return answerRepository.findAllByApplicant(applicant);
+    public List<Answer> findAllByApplicantWithQuestions(Applicant applicant) {
+        return answerRepository.findAllByApplicantWithQuestions(applicant);
     }
 
     public List<AnswerResponse> toAnswerResponses(List<Answer> answers) {
