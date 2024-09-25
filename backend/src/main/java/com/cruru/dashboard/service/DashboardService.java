@@ -1,7 +1,11 @@
 package com.cruru.dashboard.service;
 
+import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.DashboardApplyFormDto;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.process.domain.Process;
@@ -19,6 +23,8 @@ public class DashboardService {
 
     private final DashboardRepository dashboardRepository;
     private final ProcessRepository processRepository;
+    private final ApplicantRepository applicantRepository;
+    private final ApplyFormRepository applyFormRepository;
 
     @Transactional
     public Dashboard create(Club club) {
@@ -35,7 +41,11 @@ public class DashboardService {
                 .orElseThrow(DashboardNotFoundException::new);
     }
 
-    public List<Dashboard> findAllByClub(Club club) {
-        return dashboardRepository.findAllByClub(club);
+    public List<DashboardApplyFormDto> findAllByClub(long clubId) {
+        return applyFormRepository.findAllByClub(clubId);
+    }
+
+    public List<Applicant> findAllApplicants(Dashboard dashboard) {
+        return applicantRepository.findAllByDashboard(dashboard);
     }
 }

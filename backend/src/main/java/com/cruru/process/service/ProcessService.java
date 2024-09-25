@@ -64,6 +64,10 @@ public class ProcessService {
         return new Process(request.sequence(), request.name(), request.description(), ProcessType.EVALUATE, dashboard);
     }
 
+    public List<Process> findAllByDashboard(Long dashboardId) {
+        return processRepository.findAllByDashboardId(dashboardId);
+    }
+
     public Process findApplyProcessOnDashboard(Dashboard dashboard) {
         List<Process> processes = findAllByDashboard(dashboard);
         return processes.stream()

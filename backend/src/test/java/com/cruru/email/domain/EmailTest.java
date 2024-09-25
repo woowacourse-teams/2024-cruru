@@ -39,7 +39,7 @@ class EmailTest {
         StringBuilder stringBuilder = new StringBuilder(content.length() * repeatCount);
         String thisContentLengthIs10000 = content.repeat(repeatCount);
         stringBuilder.append(thisContentLengthIs10000);
-        
+
         String subject = EmailFixture.SUBJECT;
         String invalidContent = stringBuilder.append("!").toString();
 

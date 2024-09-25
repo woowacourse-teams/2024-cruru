@@ -1,7 +1,7 @@
 package com.cruru.process.facade;
 
 import com.cruru.applicant.controller.response.ApplicantCardResponse;
-import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applicant.service.EvaluationService;
 import com.cruru.applyform.domain.ApplyForm;
@@ -33,28 +33,27 @@ public class ProcessFacade {
     @Transactional
     public void create(ProcessCreateRequest request, long dashboardId) {
         Dashboard dashboard = dashboardService.findById(dashboardId);
-
         processService.create(request, dashboard);
     }
 
     public ProcessResponses readAllByDashboardId(long dashboardId) {
-        Dashboard dashboard = dashboardService.findById(dashboardId);
+        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
+        List<Process> processes = processService.findAllByDashboard(dashboardId);
+        List<ApplicantCard> applicantCards = applicantService.findApplicantCards(processes);
 
-        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
-        List<Process> processes = processService.findAllByDashboard(dashboard);
-        List<ProcessResponse> processResponses = toProcessResponses(processes);
+        List<ProcessResponse> processResponses = processes.stream()
+                .map(process -> toProcessResponse(process, applicantCards))
+                .toList();
+
         return new ProcessResponses(applyForm.getId(), processResponses, applyForm.getTitle());
     }
 
-    private List<ProcessResponse> toProcessResponses(List<Process> processes) {
-        return processes.stream()
-                .map(this::toProcessResponse)
+    private ProcessResponse toProcessResponse(Process process, List<ApplicantCard> applicantCards) {
+        List<ApplicantCardResponse> applicantCardResponses = applicantCards.stream()
+                .filter(card -> card.processId() == process.getId())
+                .map(ApplicantCard::toResponse)
                 .toList();
-    }
 
-    private ProcessResponse toProcessResponse(Process process) {
-        List<Applicant> applicantsOfProcess = applicantService.findAllByProcess(process);
-        List<ApplicantCardResponse> applicantCardResponses = toApplicantCardResponses(process, applicantsOfProcess);
         return new ProcessResponse(
                 process.getId(),
                 process.getSequence(),
@@ -62,21 +61,6 @@ public class ProcessFacade {
                 process.getDescription(),
                 applicantCardResponses
         );
-    }
-
-    private List<ApplicantCardResponse> toApplicantCardResponses(
-            Process process,
-            List<Applicant> applicantsOfProcess
-    ) {
-        return applicantsOfProcess.stream()
-                .map(applicant -> toApplicantCardResponse(process, applicant))
-                .toList();
-    }
-
-    private ApplicantCardResponse toApplicantCardResponse(Process process, Applicant applicant) {
-        int evaluationCount = evaluationService.count(process, applicant);
-        double averageScore = evaluationService.calculateAverageScore(process, applicant);
-        return applicantService.toApplicantCardResponse(applicant, evaluationCount, averageScore);
     }
 
     @Transactional
@@ -87,11 +71,24 @@ public class ProcessFacade {
         return toProcessResponse(process);
     }
 
+    private ProcessResponse toProcessResponse(Process process) {
+        List<ApplicantCardResponse> applicantCardResponses = applicantService.findApplicantCards(process)
+                .stream()
+                .map(ApplicantCard::toResponse)
+                .toList();
+
+        return new ProcessResponse(
+                process.getId(),
+                process.getSequence(),
+                process.getName(),
+                process.getDescription(),
+                applicantCardResponses
+        );
+    }
+
     @Transactional
     public void delete(long processId) {
-        Process process = processService.findById(processId);
-
-        evaluationService.deleteByProcess(process);
+        evaluationService.deleteByProcess(processId);
         processService.delete(processId);
     }
 }

@@ -17,6 +17,10 @@ public class ApplicantFixture {
         return new Applicant("러쉬", "RUSH@email.com", "01000000001", null);
     }
 
+    public static Applicant pendingRush(Process process) {
+        return new Applicant("러쉬", "RUSH@email.com", "01000000001", process);
+    }
+
     public static Applicant rejectedRush() {
         Applicant applicant = new Applicant("러쉬", "RUSH@email.com", "01000000001", null);
         applicant.reject();

@@ -4,13 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.club.domain.Club;
+import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.DashboardApplyFormDto;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.LocalDateFixture;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +29,9 @@ class ApplyFormRepositoryTest extends RepositoryTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
 
     @BeforeEach
     void setUp() {
@@ -79,5 +87,33 @@ class ApplyFormRepositoryTest extends RepositoryTest {
 
         //then
         assertThat(savedApplyForm1.getId() + 1).isEqualTo(savedApplyForm2.getId());
+    }
+
+    @DisplayName("특정 동아리에 속하는 DashboardApplyForm 목록을 반환한다.")
+    @Test
+    void findAllByClub() {
+        // given
+        Club club = clubRepository.save(ClubFixture.create());
+        Dashboard dashboard1 = dashboardRepository.save(DashboardFixture.frontend(club));
+        Dashboard dashboard2 = dashboardRepository.save(DashboardFixture.backend(club));
+
+        ApplyForm applyForm1 = applyFormRepository.save(ApplyFormFixture.frontend(dashboard1));
+        ApplyForm applyForm2 = applyFormRepository.save(ApplyFormFixture.backend(dashboard2));
+
+        // when
+        List<DashboardApplyFormDto> dashboardApplyFormDtos = applyFormRepository.findAllByClub(club.getId());
+
+        // then
+        assertThat(dashboardApplyFormDtos).hasSize(2);
+
+        DashboardApplyFormDto dto1 = dashboardApplyFormDtos.get(0);
+        DashboardApplyFormDto dto2 = dashboardApplyFormDtos.get(1);
+
+        assertAll(
+                () -> assertThat(dto1.dashboard().getId()).isEqualTo(dashboard1.getId()),
+                () -> assertThat(dto1.applyForm().getId()).isEqualTo(applyForm1.getId()),
+                () -> assertThat(dto2.dashboard().getId()).isEqualTo(dashboard2.getId()),
+                () -> assertThat(dto2.applyForm().getId()).isEqualTo(applyForm2.getId())
+        );
     }
 }
