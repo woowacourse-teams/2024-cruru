@@ -8,5 +8,6 @@ declare namespace NodeJS {
     PROD_URL: string;
     DEV_URL: string;
     DOMAIN_URL: string;
+    SLACK_WEBHOOK_URL: string;
   }
 }
