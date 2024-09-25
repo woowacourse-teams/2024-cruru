@@ -4,13 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @DisplayName("Datasource Routing 테스트")
-@ActiveProfiles("test")
-@SpringBootTest(classes = DataSourceRouter.class)
 class DataSourceRouterTest {
 
     private final DataSourceRouter dataSourceRouter = new DataSourceRouter();
