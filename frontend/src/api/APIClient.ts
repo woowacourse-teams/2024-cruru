@@ -54,10 +54,12 @@ export default class APIClient implements APIClientType {
     method,
     body,
     hasCookies = true,
+    isFormData = false,
   }: {
     method: Method;
     body?: BodyHashMap;
     hasCookies?: boolean;
+    isFormData?: boolean;
   }) {
     const headers: HeadersInit = {
       Accept: 'application/json',
@@ -69,12 +71,19 @@ export default class APIClient implements APIClientType {
       headers,
     };
 
-    if (['POST', 'PUT', 'PATCH'].includes(method)) {
+    if (['POST', 'PUT', 'PATCH'].includes(method) && !isFormData) {
       headers['Content-Type'] = 'application/json';
     }
 
-    if (body) {
+    if (body && !isFormData) {
       requestInit.body = JSON.stringify(body);
+    }
+
+    if (body && isFormData) {
+      const formData = new FormData();
+      const bodyKeys = Object.keys(body);
+      bodyKeys.forEach((key) => formData.append(key, body[key]));
+      requestInit.body = formData;
     }
 
     return requestInit;
