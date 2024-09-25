@@ -7,10 +7,19 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
 
+    Optional<ApplyForm> findByDashboard(Dashboard dashboard);
+
+    @Query("""
+               SELECT af FROM ApplyForm af
+               JOIN FETCH af.dashboard d
+               WHERE d.id = :dashboardId
+           """)
+    Optional<ApplyForm> findByDashboardId(long dashboardId);
     Optional<ApplyForm> findByDashboard(Dashboard dashboardId);
 
     @Query("""

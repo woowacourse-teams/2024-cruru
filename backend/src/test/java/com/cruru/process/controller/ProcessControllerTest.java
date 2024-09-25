@@ -50,7 +50,7 @@ class ProcessControllerTest extends ControllerTest {
             fieldWithPath("isRejected").description("지원자의 불합격 여부"),
             fieldWithPath("evaluationCount").description("지원자의 평가 개수"),
             fieldWithPath("averageScore").description("지원자의 평가 평균 점수"),
-    };
+            };
 
     private static final FieldDescriptor[] PROCESS_CREATE_FIELD_DESCRIPTORS = {
             fieldWithPath("processName").description("프로세스명"),

@@ -40,7 +40,7 @@ public class ApplicantFacade {
 
     public ApplicantAnswerResponses readDetailById(long applicantId) {
         Applicant applicant = applicantService.findById(applicantId);
-        List<Answer> answers = answerService.findAllByApplicant(applicant);
+        List<Answer> answers = answerService.findAllByApplicantWithQuestions(applicant);
         List<AnswerResponse> answerResponses = answerService.toAnswerResponses(answers);
         return new ApplicantAnswerResponses(answerResponses);
     }

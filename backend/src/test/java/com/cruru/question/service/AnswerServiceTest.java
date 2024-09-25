@@ -61,7 +61,7 @@ class AnswerServiceTest extends ServiceTest {
         answerService.saveAnswerReplies(request, question1, applicant);
 
         // then
-        List<Answer> actualAnswer = answerRepository.findAllByApplicant(applicant);
+        List<Answer> actualAnswer = answerRepository.findAllByApplicantWithQuestions(applicant);
         String content = actualAnswer.get(0).getContent();
         assertAll(
                 () -> assertThat(actualAnswer).hasSize(1),
@@ -81,7 +81,7 @@ class AnswerServiceTest extends ServiceTest {
         answerService.saveAnswerReplies(request, question, applicant);
 
         // then
-        List<Answer> actualAnswer = answerRepository.findAllByApplicant(applicant);
+        List<Answer> actualAnswer = answerRepository.findAllByApplicantWithQuestions(applicant);
         String content = actualAnswer.get(0).getContent();
         assertAll(
                 () -> assertThat(actualAnswer).hasSize(1),
@@ -112,7 +112,7 @@ class AnswerServiceTest extends ServiceTest {
         ));
 
         // when
-        List<Answer> actualAnswers = answerService.findAllByApplicant(applicant);
+        List<Answer> actualAnswers = answerService.findAllByApplicantWithQuestions(applicant);
 
         // then
         assertThat(actualAnswers).hasSameElementsAs(expectedAnswers);
