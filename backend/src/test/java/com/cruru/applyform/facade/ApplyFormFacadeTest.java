@@ -10,6 +10,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.request.AnswerCreateRequest;
 import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
+import com.cruru.applyform.controller.response.ApplyFormResponse;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
@@ -19,8 +20,10 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.question.controller.response.QuestionResponse;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.AnswerRepository;
+import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
@@ -57,11 +60,15 @@ class ApplyFormFacadeTest extends ServiceTest {
     private ApplicantRepository applicantRepository;
 
     @Autowired
+    private ChoiceRepository choiceRepository;
+
+    @Autowired
     private ApplyFormFacade applyFormFacade;
 
     private Process firstProcess;
     private Process finalProcess;
     private ApplyForm applyForm;
+    private Question question1;
     private List<AnswerCreateRequest> answerCreateRequests;
     private ApplyFormSubmitRequest applyFormSubmitrequest;
     private ApplicantCreateRequest applicantCreateRequest;
@@ -72,7 +79,7 @@ class ApplyFormFacadeTest extends ServiceTest {
         firstProcess = processRepository.save(ProcessFixture.applyType(dashboard));
         finalProcess = processRepository.save(ProcessFixture.approveType(dashboard));
         applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        Question question1 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
+        question1 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
         Question question2 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         answerCreateRequests = List.of(
@@ -138,10 +145,12 @@ class ApplyFormFacadeTest extends ServiceTest {
         // given
         ApplyForm pastApplyForm = applyFormRepository.save(new ApplyForm(
                 "지난 모집 공고", "description",
-                LocalDateFixture.oneWeekAgo(), LocalDateFixture.oneDayAgo(), null));
+                LocalDateFixture.oneWeekAgo(), LocalDateFixture.oneDayAgo(), null
+        ));
         ApplyForm futureApplyForm = applyFormRepository.save(new ApplyForm(
                 "미래의 모집 공고", "description",
-                LocalDateFixture.oneDayLater(), LocalDateFixture.oneWeekLater(), null));
+                LocalDateFixture.oneDayLater(), LocalDateFixture.oneWeekLater(), null
+        ));
 
         // when&then
         assertAll(
@@ -185,6 +194,28 @@ class ApplyFormFacadeTest extends ServiceTest {
                 () -> assertThat(actual.getDescription()).isEqualTo(toChangeDescription),
                 () -> assertThat(actual.getStartDate()).isEqualTo(toChangeStartDate),
                 () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
+        );
+    }
+
+    @DisplayName("지원서 폼 조회에 성공한다.")
+    @Test
+    void readApplyFormById() {
+        // given&when
+        ApplyFormResponse applyFormResponse = applyFormFacade.readApplyFormById(applyForm.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(applyFormResponse.title()).isEqualTo(applyForm.getTitle()),
+                () -> assertThat(applyFormResponse.startDate()).isEqualTo(applyForm.getStartDate()),
+                () -> assertThat(applyFormResponse.endDate()).isEqualTo(applyForm.getEndDate()),
+                () -> {
+                    QuestionResponse questionResponse = applyFormResponse.questionResponses().get(0);
+                    assertThat(questionResponse.id()).isEqualTo(question1.getId());
+                    assertThat(questionResponse.content()).isEqualTo(question1.getContent());
+                    assertThat(questionResponse.orderIndex()).isEqualTo(question1.getSequence());
+                    assertThat(questionResponse.required()).isEqualTo(question1.isRequired());
+                    assertThat(questionResponse.choiceResponses().size()).isZero();
+                }
         );
     }
 }
