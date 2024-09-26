@@ -52,4 +52,26 @@ test.describe('공고 목록 페이지', () => {
       expect(await passed.isVisible()).toBeTruthy();
     });
   });
+
+  test.describe('[Action] 공고 목록 페이지의 기능이 올바르게 동작하는지 테스트한다.', () => {
+    test('공고 카드를 클릭하면 공고 대시보드 페이지로 이동한다.', async ({ page }) => {
+      await page.waitForSelector('article');
+
+      const card = await page.locator('article').nth(0);
+      await card.click();
+
+      const currentPath = new URL(page.url()).pathname;
+      const dashboardPathPattern = /^\/dashboard\/\d+\/\d+$/;
+      expect(currentPath).toMatch(dashboardPathPattern);
+    });
+
+    test('새 공고 추가 버튼을 클릭하면 공고 생성 페이지로 이동한다.', async ({ page }) => {
+      const createButton = await page.getByText('새 공고 추가');
+      await createButton.click();
+
+      const currentPath = new URL(page.url()).pathname;
+      const createPathPattern = /^\/dashboard\/create$/;
+      expect(currentPath).toMatch(createPathPattern);
+    });
+  });
 });
