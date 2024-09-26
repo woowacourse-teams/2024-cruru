@@ -14,7 +14,7 @@ const authHandlers = [
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    if (!body.email || !body.password || body.email !== 'admin@gmail.com' || body.password !== 'admin') {
+    if (!body.email || !body.password || body.email !== 'member@mail.com' || body.password !== 'qwer1234') {
       return new Response(JSON.stringify({ detail: '로그인 정보가 일치하지 않습니다.' }), {
         status: 401,
       });
