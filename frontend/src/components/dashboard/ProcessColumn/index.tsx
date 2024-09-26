@@ -17,9 +17,10 @@ import S from './style';
 interface ProcessColumnProps {
   process: Process;
   showRejectedApplicant: boolean;
+  isPassedColumn: boolean;
 }
 
-export default function ProcessColumn({ process, showRejectedApplicant }: ProcessColumnProps) {
+export default function ProcessColumn({ process, showRejectedApplicant, isPassedColumn = false }: ProcessColumnProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { processList } = useProcess({ dashboardId, applyFormId });
   const { mutate: moveApplicantProcess } = useApplicant({});
@@ -72,7 +73,7 @@ export default function ProcessColumn({ process, showRejectedApplicant }: Proces
   };
 
   return (
-    <S.ProcessWrapper>
+    <S.ProcessWrapper isPassedColumn={isPassedColumn}>
       <S.Header>
         <S.Title>{process.name}</S.Title>
         <ProcessDescription description={process.description} />
