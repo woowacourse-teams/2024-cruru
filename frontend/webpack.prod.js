@@ -1,19 +1,32 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.config.js');
 const webpack = require('webpack');
+
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
   devtool: 'hidden-source-map',
   output: {
-    filename: '[name].[contenthash].js',
-    chunkFilename: '[name].chunk.[contenthash].js',
+    filename: 'static/js/[name].[contenthash].js',
+    chunkFilename: 'static/js/[name].chunk.[contenthash].js',
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env),
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: process.env.ROBOTS_TXT_PATH || './src/assets/robots/robots.dev.txt',
+          to: 'robots.txt',
+        },
+        {
+          from: 'src/assets/images/ogCover',
+          to: 'static/images',
+        },
+      ],
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
