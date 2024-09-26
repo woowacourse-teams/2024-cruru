@@ -1,0 +1,140 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: "http://${MONITORING_INSTANCE_ADDR_LOKI_PORT}/loki/api/v1/push"
+
+scrape_configs:
+  - job_name: error_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: error_logs
+          __path__: /log/error/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            logger: logger
+            httpMethod: httpMethod
+            requestUri: requestUri
+            statusCode: statusCode
+            sourceClass: sourceClass
+            sourceMethod: sourceMethod
+            exceptionClass: exceptionClass
+            exceptionMessage: exceptionMessage
+            module: module
+            environment: environment
+      - labels:
+          level:
+          logger:
+          httpMethod:
+          requestUri:
+          statusCode:
+          sourceClass:
+          sourceMethod:
+          exceptionClass:
+          exceptionMessage:
+          module:
+          environment:
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02T15:04:05.000
+          location: "Asia/Seoul"
+
+
+  - job_name: info_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: info_logs
+          __path__: /log/info/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            logger: logger
+            httpMethod: httpMethod
+            requestUri: requestUri
+            statusCode: statusCode
+            sourceClass: sourceClass
+            sourceMethod: sourceMethod
+            exceptionClass: exceptionClass
+            exceptionMessage: exceptionMessage
+            module: module
+            environment: environment
+      - labels:
+          level:
+          logger:
+          httpMethod:
+          requestUri:
+          statusCode:
+          sourceClass:
+          sourceMethod:
+          exceptionClass:
+          exceptionMessage:
+          module:
+          environment:
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02T15:04:05.000
+          location: "Asia/Seoul"
+
+
+  - job_name: warn_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: warn_logs
+          __path__: /log/warn/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            logger: logger
+            httpMethod: httpMethod
+            requestUri: requestUri
+            statusCode: statusCode
+            sourceClass: sourceClass
+            sourceMethod: sourceMethod
+            exceptionClass: exceptionClass
+            exceptionMessage: exceptionMessage
+            module: module
+            environment: environment
+      - labels:
+          level:
+          logger:
+          httpMethod:
+          requestUri:
+          statusCode:
+          sourceClass:
+          sourceMethod:
+          exceptionClass:
+          exceptionMessage:
+          module:
+          environment:
+      - timestamp:
+          source: timestamp
+          format: 2006-01-02T15:04:05.000
+          location: "Asia/Seoul"
+
+  - job_name: http_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: http_logs
+          __path__: /var/log/nginx/*.log
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<remote_addr>[^\s]+) - - \[(?P<timestamp>[^\]]+)\] "(?P<method>[A-Z]+) (?P<request>[^ ]+) HTTP/[^"]+" (?P<status>\d+) (?P<body_bytes_sent>\d+)'
