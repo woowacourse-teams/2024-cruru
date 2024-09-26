@@ -18,7 +18,7 @@ module.exports = {
           },
         },
         generator: {
-          filename: 'assets/images/[contenthash][ext]',
+          filename: 'static/images/[contenthash][ext]',
         },
       },
       {
