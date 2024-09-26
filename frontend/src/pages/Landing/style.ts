@@ -21,7 +21,7 @@ const bounce = keyframes`
 
 const fadeIn = keyframes`
   0% {
-    opacity: 0;
+    opacity: 0.01;
   }
   100% {
     opacity: 1;
@@ -30,7 +30,7 @@ const fadeIn = keyframes`
 
 const fadeInUp = keyframes`
   0% {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(1rem);
   }
   100% {
