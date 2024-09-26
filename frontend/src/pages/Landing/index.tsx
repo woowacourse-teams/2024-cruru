@@ -81,7 +81,10 @@ export default function Landing() {
       </S.MainSection>
 
       <S.PainPointSection>
-        <S.MessageImg src={MessageWebp} />
+        <S.MessageImg
+          src={MessageWebp}
+          alt="복잡한 모집과정에 괴로워하는 유저의 메시지 대화 내용"
+        />
         <S.PersonImgWrapper>
           <S.PersonImg
             src={ManStrugglingWebp}
@@ -135,7 +138,10 @@ export default function Landing() {
           </S.FeatureDescription>
         </div>
 
-        <S.FeatureImg src={Feature1Webp} />
+        <S.FeatureImg
+          src={Feature1Webp}
+          alt="한눈에 파악하고 빠르게 결정하는 리크루팅"
+        />
       </S.FeatureSection>
 
       <S.FeatureSection color="purple">
@@ -157,7 +163,10 @@ export default function Landing() {
           </S.FeatureDescription>
         </div>
 
-        <S.FeatureImg src={Feature2Webp} />
+        <S.FeatureImg
+          src={Feature2Webp}
+          alt="인재들이 선호하는 매력적인 공고 관리"
+        />
       </S.FeatureSection>
 
       <S.FeatureSection color="gray">
@@ -179,7 +188,10 @@ export default function Landing() {
           </S.FeatureDescription>
         </div>
 
-        <S.FeatureImg src={Feature3Webp} />
+        <S.FeatureImg
+          src={Feature3Webp}
+          alt="지원자를 사로잡는 스마트한 첫 만남"
+        />
 
         <S.StartButtonWrapper>
           <Button
