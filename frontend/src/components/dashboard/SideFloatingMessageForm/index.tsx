@@ -15,7 +15,7 @@ export default function SideFloatingMessageForm() {
     applyFormId: string;
   };
   const { processes } = useProcess({ dashboardId, applyFormId });
-  const { mutate: sendMutate } = useEmail({ onClose: close });
+  const { mutate: sendMutate, isPending } = useEmail();
   const clubId = localStorage.getItem('clubId');
 
   if (!applicantId || !clubId) return null;
@@ -25,7 +25,7 @@ export default function SideFloatingMessageForm() {
     .find((applicant) => applicant.applicantId === applicantId)?.applicantName;
 
   const handleSubmit = (props: SubmitProps) => {
-    sendMutate({ clubId, applicantId, ...props });
+    if (!isPending) sendMutate({ clubId, applicantId, ...props }, { onSuccess: close });
   };
 
   return (
@@ -35,6 +35,7 @@ export default function SideFloatingMessageForm() {
           recipient={findApplicantName}
           onSubmit={handleSubmit}
           onClose={close}
+          isPending={isPending}
         />
       )}
     </S.SideFloatingContainer>

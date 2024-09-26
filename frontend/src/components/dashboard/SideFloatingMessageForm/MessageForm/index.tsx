@@ -4,6 +4,7 @@ import Button from '@components/_common/atoms/Button';
 import InputField from '@components/_common/molecules/InputField';
 import TextField from '@components/_common/molecules/TextField';
 import { HiChevronDown, HiChevronUp, HiX } from 'react-icons/hi';
+import Spinner from '@components/_common/atoms/Spinner';
 
 import S from './style';
 
@@ -16,9 +17,10 @@ interface MessageFormProps {
   recipient: string;
   onSubmit: (formData: SubmitProps) => void;
   onClose: () => void;
+  isPending: boolean;
 }
 
-export default function MessageForm({ recipient, onSubmit, onClose }: MessageFormProps) {
+export default function MessageForm({ recipient, onSubmit, onClose, isPending }: MessageFormProps) {
   const [subject, setSubject] = useState('');
   const [subjectError, setSubjectError] = useState<string | undefined>(undefined);
   const [content, setContent] = useState('');
@@ -27,9 +29,12 @@ export default function MessageForm({ recipient, onSubmit, onClose }: MessageFor
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!subjectError && !contentError) {
+    if (subject && content && !subjectError && !contentError) {
       onSubmit({ subject, content });
     }
+    if (!subject) setSubjectError('제목을 입력해주세요.');
+
+    if (!content) setContentError('내용을 입력해주세요.');
   };
 
   const handleSubjectBlur = () => {
@@ -100,7 +105,7 @@ export default function MessageForm({ recipient, onSubmit, onClose }: MessageFor
             color="primary"
             style={{ height: '4.4rem' }}
           >
-            이메일 보내기
+            {isPending ? <Spinner width={40} /> : '이메일 보내기 '}
           </Button>
         </S.FormWrapper>
       )}
