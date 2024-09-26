@@ -92,19 +92,19 @@ const Catchphrase = styled.h1`
     white-space: pre-wrap;
   }
 
-  span:nth-child(1) {
+  span:nth-of-type(1) {
     animation-delay: 0s;
   }
 
-  span:nth-child(2) {
+  span:nth-of-type(2) {
     animation-delay: 0.1s;
   }
 
-  span:nth-child(4) {
+  span:nth-of-type(3) {
     animation-delay: 0.2s;
   }
 
-  span:nth-child(5) {
+  span:nth-of-type(4) {
     animation-delay: 0.3s;
 
     background: linear-gradient(90deg, #aa2298 0%, #841b76 100%);
@@ -281,7 +281,7 @@ const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
   align-items: center;
   flex-wrap: wrap;
 
-  &:nth-child(odd) {
+  &:nth-of-type(odd) {
     flex-direction: row-reverse;
   }
 
