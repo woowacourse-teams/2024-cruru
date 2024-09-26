@@ -95,56 +95,8 @@
           "averageScore": 3.0
         }
       ],
-      "name": "프로세스 3",
-      "description": "지원서를 확인한다."
-    },
-    {
-      "processId": 3,
-      "orderIndex": 4,
-      "applicants": [
-        {
-          "applicantId": 11,
-          "applicantName": "러기",
-          "createdAt": "2024-07-16T05:46:08.328593",
-          "isRejected": false,
-          "evaluationCount": 0,
-          "averageScore": 0
-        },
-        {
-          "applicantId": 12,
-          "applicantName": "도비",
-          "createdAt": "2024-07-16T05:46:08.341936",
-          "isRejected": false,
-          "evaluationCount": 5,
-          "averageScore": 3.6
-        },
-        {
-          "applicantId": 13,
-          "applicantName": "러시",
-          "createdAt": "2024-07-16T05:46:08.356121",
-          "isRejected": false,
-          "evaluationCount": 4,
-          "averageScore": 4.3
-        },
-        {
-          "applicantId": 14,
-          "applicantName": "냥인",
-          "createdAt": "2024-07-16T05:46:08.359131",
-          "isRejected": false,
-          "evaluationCount": 5,
-          "averageScore": 2.8
-        },
-        {
-          "applicantId": 15,
-          "applicantName": "렛서",
-          "createdAt": "2024-07-16T05:46:08.361759",
-          "isRejected": false,
-          "evaluationCount": 0,
-          "averageScore": 0
-        }
-      ],
-      "name": "프로세스 1",
-      "description": "지원서를 확인한다."
+      "name": "프로세스 2",
+      "description": "프로세스 2."
     },
     {
       "processId": 4,
@@ -239,7 +191,7 @@
           "averageScore": 5.0
         }
       ],
-      "name": "프로세스 2",
+      "name": "프로세스 1",
       "description": "지원서를 확인한다."
     },
     {

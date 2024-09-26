@@ -15,6 +15,7 @@ import useProcess from '@hooks/useProcess';
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
+import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 
 import S from './style';
 
@@ -61,24 +62,26 @@ export default function Dashboard() {
       추후에 Modal에 id값을 부여하여 여러개의 모달을 컨트롤 할 수 있게 변경해야합니다.
       파일 맨 첫줄 주석도 삭제해야합니다. */}
 
-      <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
-        <SpecificApplicantIdProvider>
-          <SpecificProcessIdProvider>
-            <ProcessBoard processes={processes} />
-          </SpecificProcessIdProvider>
-        </SpecificApplicantIdProvider>
-      </Tab.TabPanel>
+      <FloatingEmailFormProvider>
+        <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
+          <SpecificApplicantIdProvider>
+            <SpecificProcessIdProvider>
+              <ProcessBoard processes={processes} />
+            </SpecificProcessIdProvider>
+          </SpecificApplicantIdProvider>
+        </Tab.TabPanel>
 
-      <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
-        <SpecificApplicantIdProvider>
-          <SpecificProcessIdProvider>
-            <ProcessBoard
-              processes={processes}
-              showRejectedApplicant
-            />
-          </SpecificProcessIdProvider>
-        </SpecificApplicantIdProvider>
-      </Tab.TabPanel>
+        <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
+          <SpecificApplicantIdProvider>
+            <SpecificProcessIdProvider>
+              <ProcessBoard
+                processes={processes}
+                showRejectedApplicant
+              />
+            </SpecificProcessIdProvider>
+          </SpecificApplicantIdProvider>
+        </Tab.TabPanel>
+      </FloatingEmailFormProvider>
 
       <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
         <ProcessManageBoard

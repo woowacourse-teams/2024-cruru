@@ -76,7 +76,7 @@ export default function Dropdown({
           size={size}
           isShadow={isShadow}
         >
-          {items.map(({ name, isHighlight, id, onClick }) => (
+          {items.map(({ name, isHighlight, id, hasSeparate, onClick }) => (
             <DropdownItem
               onClick={() => {
                 onClick({ targetProcessId: id });
@@ -86,6 +86,7 @@ export default function Dropdown({
               item={name}
               isHighlight={isHighlight}
               size={size}
+              hasSeparate={hasSeparate}
             />
           ))}
         </S.List>
