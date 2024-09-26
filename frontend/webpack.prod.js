@@ -2,7 +2,6 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.config.js');
 const webpack = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { sentryWebpackPlugin } = require('@sentry/webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
