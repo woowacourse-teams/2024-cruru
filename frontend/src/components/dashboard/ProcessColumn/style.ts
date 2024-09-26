@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { hideScrollBar } from '@styles/utils';
 
-const ProcessWrapper = styled.section`
+const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   width: 100%;
   min-width: 28rem;
   max-width: 28rem;
@@ -10,7 +10,8 @@ const ProcessWrapper = styled.section`
   padding: 1.2rem;
   border-radius: 0.8rem;
   border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
-  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+  background-color: ${({ theme, isPassedColumn = false }) =>
+    isPassedColumn ? '#F9FFF9' : theme.baseColors.grayscale[50]};
 
   overflow-y: scroll;
   overflow-x: visible;
