@@ -11,7 +11,10 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:database;MODE=MySQL;
+    read:
+      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+    write:
+      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
   flyway:
     enabled: false
   jpa:
@@ -68,10 +71,16 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    read:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    write:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -147,10 +156,16 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    read:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    write:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -225,10 +240,16 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    read:
+      jdbc-url: ${READ_DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    write:
+      jdbc-url: ${WRITE_DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
   flyway:
     enabled: true
     baseline-on-migrate: true

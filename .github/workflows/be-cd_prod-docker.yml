@@ -86,7 +86,8 @@ jobs:
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
         DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }}
-        DB_URL=${{ secrets.DB_URL }}
+        READ_DB_URL=${{ secrets.READ_DB_URL }}
+        WRITE_DB_URL=${{ secrets.WRITE_DB_URL }}
         DB_USER=${{ secrets.DB_USER }}
         DB_PASSWORD=${{ secrets.DB_PASSWORD }}
         DDL_AUTO=${{ secrets.DDL_AUTO }}
