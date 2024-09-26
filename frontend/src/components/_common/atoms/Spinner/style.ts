@@ -15,20 +15,39 @@ const bounceDelay = keyframes`
   }
 `;
 
-const eyeMove = keyframes`
-  0%, 10% { background-position: 0px 0px; }
-  13%, 40% { background-position: -15px 0px; }
-  43%, 70% { background-position: 15px 0px; }
-  73%, 90% { background-position: 0px 15px; }
-  93%, 100% { background-position: 0px 0px; }
+const rotate = keyframes`
+  0% { transform: rotate(0deg) scale(0.8); }
+  50% { transform: rotate(360deg) scale(1.2); }
+  100% { transform: rotate(720deg) scale(0.8); }
 `;
 
-const blink = keyframes`
-  0%, 10%, 12%, 20%, 22%, 40%, 42%, 60%, 62%, 70%, 72%, 90%, 92%, 98%, 100% {
-    height: 48px;
+const ball1 = keyframes`
+  0% {
+    box-shadow: 30px 0 0 #ff3d00;
   }
-  11%, 21%, 41%, 61%, 71%, 91%, 99% {
-    height: 18px;
+  50% {
+    box-shadow: 0 0 0 #ff3d00;
+    margin-bottom: 0;
+    transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #ff3d00;
+    margin-bottom: 10px;
+  }
+`;
+
+const ball2 = keyframes`
+  0% {
+    box-shadow: 30px 0 0 #fff;
+  }
+  50% {
+    box-shadow: 0 0 0 #fff;
+    margin-top: -20px;
+    transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #fff;
+    margin-top: 0;
   }
 `;
 
@@ -62,25 +81,30 @@ const Bounce = styled.div`
 `;
 
 const PageLoader = styled.span`
-  position: relative;
-  width: 108px;
-  display: flex;
-  justify-content: space-between;
+  animation: ${rotate} 1s infinite;
+  height: 50px;
+  width: 50px;
 
-  &::before,
-  &::after {
-    content: '';
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    background-color: #fff;
-    background-image: radial-gradient(circle 14px, #0d161b 100%, transparent 0);
-    background-repeat: no-repeat;
+  &:before,
+  &:after {
     border-radius: 50%;
-    animation:
-      ${eyeMove} 10s infinite,
-      ${blink} 10s infinite;
-    border: 2px solid ${({ theme }) => theme.baseColors.grayscale[300]};
+    content: '';
+    display: block;
+    height: 20px;
+    width: 20px;
+  }
+
+  &:before {
+    animation: ${ball1} 1s infinite;
+    background-color: #fff;
+    box-shadow: 30px 0 0 #ff3d00;
+    margin-bottom: 10px;
+  }
+
+  &:after {
+    animation: ${ball2} 1s infinite;
+    background-color: #ff3d00;
+    box-shadow: 30px 0 0 #fff;
   }
 `;
 
