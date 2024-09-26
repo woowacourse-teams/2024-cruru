@@ -17,6 +17,9 @@ module.exports = {
             maxSize: 4 * 1024,
           },
         },
+        generator: {
+          filename: 'assets/images/[contenthash][ext]',
+        },
       },
       {
         test: /\.(js|jsx|ts|tsx|mjs)$/,
