@@ -23,30 +23,30 @@ const rotate = keyframes`
 
 const ball1 = keyframes`
   0% {
-    box-shadow: 30px 0 0 #ff3d00;
+    box-shadow: 3rem 0 0 #ff3d00;
   }
   50% {
     box-shadow: 0 0 0 #ff3d00;
     margin-bottom: 0;
-    transform: translate(15px, 15px);
+    transform: translate(1.5rem, 1.5rem);
   }
   100% {
-    box-shadow: 30px 0 0 #ff3d00;
-    margin-bottom: 10px;
+    box-shadow: 3rem 0 0 #ff3d00;
+    margin-bottom: 1rem;
   }
 `;
 
 const ball2 = keyframes`
   0% {
-    box-shadow: 30px 0 0 #fff;
+    box-shadow: 3rem 0 0 #fff;
   }
   50% {
     box-shadow: 0 0 0 #fff;
-    margin-top: -20px;
-    transform: translate(15px, 15px);
+    margin-top: -2rem;
+    transform: translate(1.5rem, 1.5rem);
   }
   100% {
-    box-shadow: 30px 0 0 #fff;
+    box-shadow: 3rem 0 0 #fff;
     margin-top: 0;
   }
 `;
@@ -82,29 +82,29 @@ const Bounce = styled.div`
 
 const PageLoader = styled.span`
   animation: ${rotate} 1s infinite;
-  height: 50px;
-  width: 50px;
+  height: 5rem;
+  width: 5rem;
 
   &:before,
   &:after {
     border-radius: 50%;
     content: '';
     display: block;
-    height: 20px;
-    width: 20px;
+    height: 2rem;
+    width: 2rem;
   }
 
   &:before {
     animation: ${ball1} 1s infinite;
-    background-color: #fff;
-    box-shadow: 30px 0 0 #ff3d00;
-    margin-bottom: 10px;
+    background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+    box-shadow: 3rem 0 0 #ff3d00;
+    margin-bottom: 1rem;
   }
 
   &:after {
     animation: ${ball2} 1s infinite;
-    background-color: #ff3d00;
-    box-shadow: 30px 0 0 #fff;
+    background-color: ${({ theme }) => theme.colors.brand.primary};
+    box-shadow: 2rem 0 0 #fff;
   }
 `;
 
