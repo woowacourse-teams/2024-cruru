@@ -78,8 +78,8 @@ public class DataLoader implements ApplicationRunner {
         clubRepository.save(club2);
 
         Dashboard dashboard = new Dashboard(club);
-        LocalDateTime startDate = LocalDateTime.of(2024, 10, 6, 15, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2024, 10, 16, 10, 0, 0);
+        LocalDateTime startDate = LocalDateTime.of(2020, 10, 6, 15, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(2054, 10, 16, 10, 0, 0);
         dashboardRepository.save(dashboard);
         String description = """
                              <h2>2025 신입생 (7기) 선발 일정 </h2><p><br></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>서류접수:</strong> 2024년 10월 6일(금) 오후 3시 ~ 10월 16일(월) 오전 10시</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>프리코스:</strong> 2024년 10월 19일(목) ~ 11월 15일(수)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>1차 합격자 발표:</strong> 2024년 12월 11일(월) 오후 3시, 개별 E-mail 통보</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>최종 코딩 테스트:</strong> 2024년 12월 16일(토)</li><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><strong>최종 합격자 발표:</strong> 2024년 12월 27일(수) 오후 3시, 개별 E-mail 통보 </li></ol><p><br></p><h2>2025 신입생 (7기) 교육 기간 </h2><p><br></p><ol><li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span>2025년 2월 ~ 11월 (약 10개월) </li></ol>
@@ -104,7 +104,7 @@ public class DataLoader implements ApplicationRunner {
         Applicant chocochip = new Applicant(4L, "초코칩", "choc@mail.com", "01044444444", lastProcess, false);
         Applicant myungoh = new Applicant(5L, "명오", "myun@mail.com", "01055555555", lastProcess, false);
         Applicant rush = new Applicant(6L, "러시", "rush@mail.com", "01066666666", firstProcess, false);
-        Applicant nyangin = new Applicant(7L, "냥인", "nyan@mail.com", "01077777777", firstProcess, false);
+        Applicant nyangin = new Applicant(7L, "냥인", "oddpinkjadeite@gmail.com", "01077777777", firstProcess, false);
         Applicant redpanda = new Applicant(8L, "렛서", "pand@mail.com", "01088888888", firstProcess, false);
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
