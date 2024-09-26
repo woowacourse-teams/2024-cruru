@@ -12,8 +12,10 @@ services:
     env_file:
       - .env
     environment:
-      TZ: Asia/Seoul
       PROFILE: prod
+      TZ: Asia/Seoul
+    volumes:
+      - "./log:/log"
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
@@ -21,6 +23,7 @@ services:
   promtail:
     environment:
       TZ: Asia/Seoul
+      MONITORING_INSTANCE_ADDR_LOKI_PORT: ${MONITORING_INSTANCE_ADDR_LOKI_PORT}
     container_name: promtail
     image: grafana/promtail:latest
     volumes:
