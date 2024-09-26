@@ -20,7 +20,7 @@ export default function PopOverMenu({ isOpen, setClose, size = 'sm', popOverPosi
       {isOpen && (
         <S.ListWrapper>
           <S.List size={size}>
-            {items.map(({ name, isHighlight, id, onClick }) => (
+            {items.map(({ name, isHighlight, id, hasSeparate, onClick }) => (
               <DropdownItem
                 size={size}
                 onClick={() => {
@@ -30,6 +30,7 @@ export default function PopOverMenu({ isOpen, setClose, size = 'sm', popOverPosi
                 key={id}
                 item={name}
                 isHighlight={isHighlight}
+                hasSeparate={hasSeparate}
               />
             ))}
           </S.List>

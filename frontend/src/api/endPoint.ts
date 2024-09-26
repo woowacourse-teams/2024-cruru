@@ -15,3 +15,5 @@ export const AUTH = `${BASE_URL}/auth`;
 export const MEMBERS = `${BASE_URL}/members`;
 
 export const QUESTIONS = `${BASE_URL}/questions`;
+
+export const EMAILS = `${BASE_URL}/emails`;
