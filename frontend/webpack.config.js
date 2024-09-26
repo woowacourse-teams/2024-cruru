@@ -65,6 +65,54 @@ module.exports = {
       template: './index.html',
       filename: 'index.html',
       favicon: './src/assets/favicon/favicon.ico',
+      meta: {
+        title: {
+          name: 'title',
+          content: '크루루 | 쉽고 간편한 리크루팅 솔루션',
+        },
+        description: {
+          name: 'description',
+          content:
+            '크루루는 대학 연합동아리 및 스타트업 리크루팅에 최적화된 지원자 관리 솔루션입니다. 공고 제작, 지원자 관리, 평가 등 리크루팅의 모든 단계를 크루루와 함께 해결하세요.',
+        },
+        keywords: {
+          name: 'keywords',
+          content: '크루루, CRURU, 리크루팅, 채용솔루션, 지원자관리, ATS, 연합동아리, 스타트업, 우아한테크코스',
+        },
+        'og:url': {
+          property: 'og:url',
+          content: 'http://www.cruru.kr',
+        },
+        'og:site_name': {
+          property: 'og:site_name',
+          content: '크루루',
+        },
+        'og:type': {
+          property: 'og:type',
+          content: 'website',
+        },
+        'og:title': {
+          property: 'og:title',
+          content: '크루루 | 쉽고 간편한 리크루팅 솔루션',
+        },
+        'og:description': {
+          property: 'og:description',
+          content:
+            '크루루는 대학 연합동아리 및 스타트업 리크루팅에 최적화된 지원자 관리 솔루션입니다. 공고 제작, 지원자 관리, 평가 등 리크루팅의 모든 단계를 크루루와 함께 해결하세요.',
+        },
+        'og:image': {
+          property: 'og:image',
+          content: 'https://www.cruru.kr/assets/images/ogCover_1200x630.png',
+        },
+        'og:image:alt': {
+          property: 'og:image:alt',
+          content: '크루루 서비스 소개 이미지',
+        },
+        'og:locale': {
+          property: 'og:locale',
+          content: 'ko-KR',
+        },
+      },
     }),
     new ForkTsCheckerWebpackPlugin({
       async: false,
