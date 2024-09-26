@@ -72,6 +72,15 @@ module.exports = {
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: 'cruru',
       project: 'cruru-react',
+      bundleSizeOptimizations: {
+        excludeDebugStatements: true,
+        /**
+         * 서비스에서 iframe과 shadow dom을 사용하지 않으므로 관련 코드를 제외합니다.
+         * 2024.09.24 렛서
+         */
+        excludeReplayIframe: true,
+        excludeReplayShadowDom: true,
+      },
     }),
   ],
 

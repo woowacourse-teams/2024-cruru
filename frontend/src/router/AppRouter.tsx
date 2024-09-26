@@ -1,21 +1,25 @@
 /* eslint-disable @tanstack/query/stable-query-client */
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import ErrorPage from '@pages/ErrorPage';
-import SignIn from '@pages/SignIn';
-import SignUp from '@pages/SignUp';
-import Dashboard from '@pages/Dashboard';
-import RecruitmentPost from '@pages/RecruitmentPost';
-import ConfirmApply from '@pages/ConfirmApply';
-import DashboardLayout from '@pages/DashboardLayout';
-import DashboardList from '@pages/DashBoardList';
-import DashboardCreate from '@pages/DashboardCreate';
-import Landing from '@pages/Landing';
 import { useToast } from '@contexts/ToastContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { lazy, Suspense } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import LoadingPage from '@pages/LoadingPage';
+import Landing from '@pages/Landing';
 import App from '../App';
 import { PATH } from './path';
+
+const ErrorPage = lazy(() => import(/* webpackChunkName: "ErrorPage" */ '@pages/ErrorPage'));
+const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */ '@pages/SignIn'));
+const SignUp = lazy(() => import(/* webpackChunkName: "SignUp" */ '@pages/SignUp'));
+const Dashboard = lazy(() => import(/* webpackChunkName: "Dashboard" */ '@pages/Dashboard'));
+const RecruitmentPost = lazy(() => import(/* webpackChunkName: "RecruitmentPost" */ '@pages/RecruitmentPost'));
+const ConfirmApply = lazy(() => import(/* webpackChunkName: "SignConfirmApplyUp" */ '@pages/ConfirmApply'));
+const DashboardLayout = lazy(() => import(/* webpackChunkName: "DashboardLayout" */ '@pages/DashboardLayout'));
+const DashboardList = lazy(() => import(/* webpackChunkName: "DashBoardList" */ '@pages/DashBoardList'));
+const DashboardCreate = lazy(() => import(/* webpackChunkName: "DashboardCreate" */ '@pages/DashboardCreate'));
 
 const router = createBrowserRouter(
   [
@@ -85,10 +89,13 @@ export default function AppRouter() {
       },
     },
   });
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} />
+      <Suspense fallback={<LoadingPage />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </QueryClientProvider>
   );
 }

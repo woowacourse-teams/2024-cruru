@@ -13,3 +13,7 @@ export default function Spinner({ width, color = 'white' }: StyleProps) {
     </S.Spinner>
   );
 }
+
+export function PageLoadingSpinner() {
+  return <S.PageLoader />;
+}
