@@ -42,3 +42,12 @@ export const InitValueTest: StoryObj<DropdownProps> = {
     initValue: '아무 글자',
   },
 };
+
+export const SeparateTest: StoryObj<DropdownProps> = {
+  ...Template,
+  args: {
+    size: 'sm',
+    items: [...testItemList, { ...testItem, name: 'SeparateTest', id: testItemList.length, hasSeparate: true }],
+    initValue: '아무 글자',
+  },
+};
