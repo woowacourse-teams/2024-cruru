@@ -5,7 +5,8 @@
     "test": "jest",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "e2e": "npx playwright test"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -27,6 +28,7 @@
     "@chromatic-com/storybook": "^1.6.1",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.6.0",
+    "@playwright/test": "^1.47.2",
     "@storybook/addon-essentials": "^8.2.1",
     "@storybook/addon-interactions": "^8.2.1",
     "@storybook/addon-links": "^8.2.1",

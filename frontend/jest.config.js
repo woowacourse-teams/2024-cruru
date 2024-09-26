@@ -22,6 +22,7 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
+  testPathIgnorePatterns: ['/e2e/'],
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/?(*.)+(spec|test).+(ts|tsx|js)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
