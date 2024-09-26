@@ -7,6 +7,8 @@ import useApplicant from '@hooks/useApplicant';
 import specificApplicant from '@hooks/useSpecificApplicant';
 import formatDate from '@utils/formatDate';
 import { useModal } from '@contexts/ModalContext';
+
+import { DropdownListItem } from '@customTypes/common';
 import S from './style';
 
 interface ApplicantBaseInfoProps {
@@ -35,14 +37,36 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
 
   const items = processList
     .filter(({ processName }) => processName !== process.name)
-    .map(({ processId, processName }) => ({
-      id: processId,
-      name: processName,
-      onClick: ({ targetProcessId }: { targetProcessId: number }) => {
-        moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
-      },
-    }));
+    .map(
+      ({ processId, processName }) =>
+        ({
+          id: processId,
+          name: processName,
+          onClick: ({ targetProcessId }: { targetProcessId: number | string }) => {
+            moveApplicantProcess({ processId: Number(targetProcessId), applicants: [applicantId] });
+          },
+        }) as DropdownListItem,
+    );
+  items.push({
+    id: 'emailButton',
+    name: '이메일 보내기',
+    hasSeparate: true,
+    onClick: () => {
+      // TODO: 이메일 보내는 로직 추가
+      alert('오픈해야함');
+    },
+  });
 
+  items.push({
+    id: 'rejectButton',
+    name: '불합격 처리',
+    isHighlight: true,
+    hasSeparate: true,
+    onClick: () => {
+      // TODO: 불합격 로직 추가
+      alert('오픈해야함');
+    },
+  });
   const rejectAppHandler = () => {
     const confirmAction = (message: string, action: () => void) => {
       const isConfirmed = window.confirm(message);

@@ -6,6 +6,7 @@ import dashboardHandlers from './dashboardHandlers';
 import authHandlers from './authHandlers';
 import membersHandlers from './memberHandlers';
 import questionHandlers from './questionHandlers';
+import emailHandlers from './emailHandler';
 
 const handlers = [
   ...processHandlers,
@@ -16,6 +17,7 @@ const handlers = [
   ...authHandlers,
   ...membersHandlers,
   ...questionHandlers,
+  ...emailHandlers,
 ];
 
 export default handlers;

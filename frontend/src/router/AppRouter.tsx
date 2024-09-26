@@ -1,6 +1,7 @@
 /* eslint-disable @tanstack/query/stable-query-client */
 import { useToast } from '@contexts/ToastContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -90,6 +91,7 @@ export default function AppRouter() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <Suspense fallback={<LoadingPage />}>
         <RouterProvider router={router} />
       </Suspense>
