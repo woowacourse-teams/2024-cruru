@@ -1,0 +1,318 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  h2:
+    console:
+      enabled: true
+  datasource:
+    read:
+      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+    write:
+      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+  flyway:
+    enabled: false
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} # 테스트 시 직접 값 하드코딩 할 것
+    password: ${EMAIL_PASSWORD} # 테스트 시 직접 값 하드코딩 할 것
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
+
+security:
+  jwt:
+    token:
+      secret-key: test
+      expire-length: 3600000
+      algorithm: HS256
+
+cookie:
+  access-token-key: token
+  http-only: false
+  secure: false
+  domain: localhost
+  path: /
+  same-site: none
+  max-age: 7200 #2시간
+
+dataloader:
+  enable: true
+
+monitoring-profile: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    read:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    write:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} 
+    password: ${EMAIL_PASSWORD} 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
+cookie:
+  access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  http-only: ${COOKIE_HTTP_ONLY}
+  secure: ${COOKIE_SECURE}
+  domain: ${COOKIE_DOMAIN}
+  path: ${COOKIE_PATH}
+  same-site: ${COOKIE_SAME_SITE}
+  max-age: ${COOKIE_MAX_AGE}
+
+dataloader:
+  enable: true
+server:
+  port: ${SERVER_PORT}
+
+management:
+  server:
+    port: ${MONITORING_PORT}
+  endpoints:
+    web:
+      base-path: ${MONITORING_BASE_PATH}
+      exposure:
+        include: prometheus
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+
+monitoring-profile: develop
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    read:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    write:
+      jdbc-url: ${DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
+cookie:
+  access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  http-only: ${COOKIE_HTTP_ONLY}
+  secure: ${COOKIE_SECURE}
+  domain: ${COOKIE_DOMAIN}
+  path: ${COOKIE_PATH}
+  same-site: ${COOKIE_SAME_SITE}
+  max-age: ${COOKIE_MAX_AGE}
+
+dataloader:
+  enable: false
+server:
+  port: ${SERVER_PORT}
+
+management:
+  server:
+    port: ${MONITORING_PORT}
+  endpoints:
+    web:
+      base-path: ${MONITORING_BASE_PATH}
+      exposure:
+        include: prometheus
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+
+monitoring-profile: test
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    read:
+      jdbc-url: ${READ_DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    write:
+      jdbc-url: ${WRITE_DB_URL}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: ${DDL_AUTO}
+    defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} 
+    password: ${EMAIL_PASSWORD} 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
+
+security:
+  jwt:
+    token:
+      secret-key: ${JWT_TOKEN_SECRET_KEY}
+      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      algorithm: ${JWT_SIGN_ALGORITHM}
+
+cookie:
+  access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  http-only: ${COOKIE_HTTP_ONLY}
+  secure: ${COOKIE_SECURE}
+  domain: ${COOKIE_DOMAIN}
+  path: ${COOKIE_PATH}
+  same-site: ${COOKIE_SAME_SITE}
+  max-age: ${COOKIE_MAX_AGE}
+
+dataloader:
+  enable: false
+server:
+  port: ${SERVER_PORT}
+
+management:
+  server:
+    port: ${MONITORING_PORT}
+  endpoints:
+    web:
+      base-path: ${MONITORING_BASE_PATH}
+      exposure:
+        include: prometheus
+    enabled-by-default: false
+    jmx:
+      exposure:
+        exclude: "*"
+  endpoint:
+    prometheus:
+      enabled: true
+
+monitoring-profile: production

@@ -1,0 +1,1 @@
+ALTER TABLE apply_form DROP COLUMN url;
