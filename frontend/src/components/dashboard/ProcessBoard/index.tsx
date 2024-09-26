@@ -1,6 +1,7 @@
 import { Process } from '@customTypes/process';
 import ApplicantModal from '@components/ApplicantModal';
 import ProcessColumn from '../ProcessColumn';
+import SideFloatingMessageForm from '../SideFloatingMessageForm';
 import S from './style';
 
 interface KanbanBoardProps {
@@ -21,6 +22,8 @@ export default function ProcessBoard({ processes, showRejectedApplicant = false 
       ))}
 
       <ApplicantModal />
+
+      <SideFloatingMessageForm />
     </S.Wrapper>
   );
 }

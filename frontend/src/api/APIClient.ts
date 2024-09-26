@@ -34,7 +34,7 @@ export default class APIClient implements APIClientType {
     return this.request<T>({ method: 'GET', ...params });
   }
 
-  async post<T>(params: APIClientParamsWithBody): Promise<T> {
+  async post<T>(params: APIClientParamsWithBody & { isFormData?: boolean }): Promise<T> {
     return this.request<T>({ method: 'POST', ...params });
   }
 
@@ -54,10 +54,12 @@ export default class APIClient implements APIClientType {
     method,
     body,
     hasCookies = true,
+    isFormData = false,
   }: {
     method: Method;
     body?: BodyHashMap;
     hasCookies?: boolean;
+    isFormData?: boolean;
   }) {
     const headers: HeadersInit = {
       Accept: 'application/json',
@@ -69,12 +71,19 @@ export default class APIClient implements APIClientType {
       headers,
     };
 
-    if (['POST', 'PUT', 'PATCH'].includes(method)) {
+    if (['POST', 'PUT', 'PATCH'].includes(method) && !isFormData) {
       headers['Content-Type'] = 'application/json';
     }
 
-    if (body) {
+    if (body && !isFormData) {
       requestInit.body = JSON.stringify(body);
+    }
+
+    if (body && isFormData) {
+      const formData = new FormData();
+      const bodyKeys = Object.keys(body);
+      bodyKeys.forEach((key) => formData.append(key, body[key]));
+      requestInit.body = formData;
     }
 
     return requestInit;
@@ -85,14 +94,16 @@ export default class APIClient implements APIClientType {
     method,
     body,
     hasCookies,
+    isFormData,
   }: {
     path: string;
     method: Method;
     body?: BodyHashMap;
     hasCookies?: boolean;
+    isFormData?: boolean;
   }): Promise<T> {
     const url = this.baseURL + path;
-    const response = await fetch(url, this.getRequestInit({ method, body, hasCookies }));
+    const response = await fetch(url, this.getRequestInit({ method, body, hasCookies, isFormData }));
 
     if (!response.ok) {
       const json = await response.json();

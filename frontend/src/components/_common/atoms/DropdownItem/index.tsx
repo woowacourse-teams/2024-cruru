@@ -5,9 +5,16 @@ export interface DropdownItemProps {
   size: 'sm' | 'md';
   onClick: () => void;
   isHighlight?: boolean;
+  hasSeparate?: boolean;
 }
 
-export default function DropdownItem({ item, size, onClick, isHighlight = false }: DropdownItemProps) {
+export default function DropdownItem({
+  item,
+  size,
+  onClick,
+  isHighlight = false,
+  hasSeparate = false,
+}: DropdownItemProps) {
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onClick();
@@ -18,6 +25,7 @@ export default function DropdownItem({ item, size, onClick, isHighlight = false 
       size={size}
       onClick={clickHandler}
       isHighlight={isHighlight}
+      hasSeparate={hasSeparate}
     >
       {item}
     </S.Item>
