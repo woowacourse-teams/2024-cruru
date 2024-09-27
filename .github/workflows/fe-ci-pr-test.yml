@@ -1,0 +1,58 @@
+name: FE/CI - 테스트 실행 및 검증
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize]
+    branches:
+      - fe/develop
+
+jobs:
+  run-test-pr-opened:
+    if: startsWith(github.head_ref, 'fe-')
+    runs-on: ubuntu-22.04
+    environment: dev
+    permissions:
+      pull-requests: write
+    defaults:
+      run:
+        working-directory: ./frontend
+    env:
+      API_URL: ${{ secrets.API_URL }}
+      DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+      API_VERSION: ${{ secrets.API_VERSION }}
+      GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
+    steps:
+      - name: 저장소 checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js 셋업
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - uses: actions/cache@v4
+        id: npm-cache
+        with:
+          path: |
+            frontend/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: 애플리케이션 의존성 항목들 설치
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: 코드 문법 테스트
+        run: npm run lint
+
+      - name: 애플리케이션 기능 테스트
+        run: npm run test -- --passWithNoTests
+
+      - name: Storybook 빌드 테스트
+        run: npm run build-storybook
+
+      - name: 애플리케이션 빌드 테스트
+        run: npm run build

@@ -1,0 +1,14 @@
+{
+  "applicant": {
+    "id": 1,
+    "name": "러기",
+    "email": "lurg@mail.com",
+    "phone": "01011111111",
+    "createdAt": "2024-07-19T11:32:16.156406",
+    "isRejected": true
+  },
+  "process": {
+    "id": 1,
+    "name": "최종 합격"
+  }
+}
