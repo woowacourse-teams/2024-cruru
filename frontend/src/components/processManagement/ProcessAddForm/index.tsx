@@ -39,12 +39,8 @@ export default function ProcessAddForm({ dashboardId, applyFormId, priorOrderInd
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 현재 스펙상, API와 FE 측의 dashboardId 정의가 서로 다릅니다.
-    // API 측에서의 dashboardId는 개별 공고가 가진 ID값이지만, FE측에서는 postId가 이 ID값을 의미합니다.
-    // 따라서 API로 데이터를 전송할 때, dashboardId 필드에는 Number로 변환된 postId를 보내야 합니다.
-    // 2024-08-12 by 아르
     mutate({
-      dashboardId: Number(applyFormId),
+      dashboardId: Number(dashboardId),
       orderIndex: priorOrderIndex + 1,
       ...formState,
     });
