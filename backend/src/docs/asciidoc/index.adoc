@@ -1,0 +1,18 @@
+= 크루루 API 문서 v1.0
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:toc-title: API 목록
+:sectnums:
+
+include::auth.adoc[]
+include::member.adoc[]
+include::applicant.adoc[]
+include::club.adoc[]
+include::dashboard.adoc[]
+include::process.adoc[]
+include::question.adoc[]
+include::applyform.adoc[]
+include::evaluation.adoc[]
+include::email.adoc[]

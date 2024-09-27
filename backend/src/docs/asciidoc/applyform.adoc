@@ -1,0 +1,59 @@
+== 지원폼
+
+=== 지원폼 제출
+
+==== 성공
+
+operation::applyform/submit[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 개인정보 활용 거부
+
+operation::applicant/submit-fail/reject-personal-data-collection[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 잘못된 지원자 정보
+
+operation::applicant/submit-fail/invalid-applicant-info[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 잘못된 답변
+
+operation::applicant/submit-fail/invalid-answers[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 대시보드 내에 제출 프로세스 존재하지 않을 경우
+
+operation::applicant/submit-fail/no-submit-process[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 모집 기간을 벗어난 제출
+
+operation::applicant/submit-fail/date-out-of-range[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 지원폼
+
+operation::applicant/submit-fail/applyform-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 질문
+
+operation::applicant/submit-fail/question-not-found[snippets="http-request,path-parameters,request-fields,http-response"]
+
+==== 실패: 필수 질문에 응답하지 않음
+
+operation::applicant/submit-fail/required-not-replied[snippets="http-request,path-parameters,request-fields,http-response"]
+
+=== 지원폼 조회
+
+==== 성공
+
+operation::applicant/read-applyform[snippets="http-request,path-parameters,http-response,response-fields"]
+
+==== 실패: 존재하지 않는 지원폼
+
+operation::applicant/read-applyform-fail/applyform-not-found[snippets="http-request,path-parameters,http-response"]
+
+=== 지원폼 수정
+
+==== 성공
+
+operation::applicant/update[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 지원폼
+
+operation::applicant/update-fail/applyform-not-found[snippets="http-request,path-parameters,request-fields,http-response"]

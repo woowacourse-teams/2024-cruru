@@ -1,0 +1,49 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  h2:
+    console:
+      enabled: true
+  datasource:
+    read:
+      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+    write:
+      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+  flyway:
+    enabled: false
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: false
+  mail:
+    host: smtp.gmail.com
+
+dataloader:
+  enable: false
+
+security:
+  jwt:
+    token:
+      secret-key: test
+      expire-length: 1209600000
+      algorithm: HS256
+
+cookie:
+  access-token-key: token
+  http-only: false
+  secure: false
+  domain: localhost
+  path: /
+  same-site: none
+  max-age: 7200 #2시간
+
+management:
+  health:
+    mail:
+      enabled: false

@@ -1,0 +1,12 @@
+package com.cruru.applicant.exception.badrequest;
+
+import com.cruru.advice.badrequest.BadRequestException;
+
+public class ApplicantIllegalPhoneNumberException extends BadRequestException {
+
+    private static final String MESSAGE = "올바르지 않은 전화번호 형식입니다.";
+
+    public ApplicantIllegalPhoneNumberException() {
+        super(MESSAGE);
+    }
+}
