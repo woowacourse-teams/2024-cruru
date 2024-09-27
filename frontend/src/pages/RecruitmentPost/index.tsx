@@ -19,7 +19,7 @@ export default function RecruitmentPost() {
     <S.PageLayout>
       <S.Wrapper>
         <S.Header>
-          <S.Title>{recruitmentPost?.title}</S.Title>
+          <S.Title>{recruitmentPost?.title ?? ''}</S.Title>
           <S.PeriodContainer>
             <HiOutlineClock />
             <S.Period>{Object.values(recruitmentPeriod).join(' ~ ')}</S.Period>
