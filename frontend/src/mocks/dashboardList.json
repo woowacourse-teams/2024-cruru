@@ -1,0 +1,44 @@
+{
+  "clubName": "크루루",
+  "dashboards": [
+    {
+      "dashboardId": "1",
+      "applyFormId": "1",
+      "title": "우아한테크코스 프론트엔드 크루 모집",
+      "stats": {
+        "accept": 3,
+        "fail": 3,
+        "inProgress": 9,
+        "total": 15
+      },
+      "startDate": "1900-01-21T00:00:00",
+      "endDate": "2024-09-24T18:00:00"
+    },
+    {
+      "dashboardId": "2",
+      "applyFormId": "2",
+      "title": "백엔드 7기 모집",
+      "stats": {
+        "accept": 3,
+        "fail": 3,
+        "inProgress": 9,
+        "total": 15
+      },
+      "startDate": "2024-12-21T00:00:00",
+      "endDate": "2024-12-24T20:30:00"
+    },
+    {
+      "dashboardId": "3",
+      "applyFormId": "3",
+      "title": "안드로이드 7기 모집",
+      "stats": {
+        "accept": 3,
+        "fail": 3,
+        "inProgress": 9,
+        "total": 15
+      },
+      "startDate": "1900-01-21T00:00:00",
+      "endDate": "2024-07-24T21:00:00"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "evaluations": [
+    {
+      "evaluationId": 1,
+      "score": 2,
+      "content": "인재상과 맞지 않습니다.",
+      "createdDate": "2024-08-14T16:59:26.648864"
+    },
+    {
+      "evaluationId": 2,
+      "score": 3,
+      "content": "맞춤법 틀림",
+      "createdDate": "2024-08-15T16:59:26.648864"
+    },
+    {
+      "evaluationId": 3,
+      "score": 5,
+      "content": "전 마음에 들어요",
+      "createdDate": "2024-08-16T16:59:26.648864"
+    }
+  ]
+}

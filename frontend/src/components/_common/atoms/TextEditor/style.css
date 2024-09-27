@@ -1,0 +1,144 @@
+/****************************************************
+** Quill snow 테마 기반으로 스타일 수정을 위한 CSS 파일입니다.
+** 개별 요소 별로 스타일 적용 대상과 내용을 함께 명시합니다.
+**
+** - 작성자 : 크루루 FE팀 아르 (hongseongjin.to@gmail.com)
+** - 최초 작성일 : 2024/08/02
+****************************************************/
+
+/*************************
+** 에디터 영역 스타일
+**************************
+
+/* 에디터 상단 툴바 스타일 */
+.ql-toolbar.ql-snow {
+  border: 0.1rem solid #dedede; /* baseColors.grayscale[400] */
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+}
+
+/* 에디터 입력 영역의 서체 설정 초기화 */
+.ql-container {
+  font-family: inherit;
+}
+
+/* 에디터 입력 영역 스타일 */
+.ql-container.ql-snow {
+  margin-top: 0.6rem;
+  border: 0.1rem solid #dedede; /* baseColors.grayscale[400] */
+  border-radius: 0.8rem;
+}
+
+/* 에디터 입력 영역 상단의 border 설정 초기화 */
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 0.1rem solid #dedede; /* baseColors.grayscale[400] */
+}
+
+/* 에디터 입력 영역 내부 padding값 지정 */
+.ql-editor {
+  padding: 1.6rem;
+}
+
+.ql-bubble > .ql-editor {
+  padding: 0;
+}
+
+/* placeholder 스타일 */
+.ql-editor.ql-blank::before {
+  /* typography.common.paragraph + baseColors.grayscale[600] */
+  font-weight: 400;
+  font-size: 1.4rem;
+  font-style: normal;
+  line-height: 2.4rem;
+  letter-spacing: 0;
+  color: #979797;
+}
+
+/*************************
+** 에디터 내부의 각 옵션별 스타일
+**************************
+
+/* 일반 서체 스타일 */
+.ql-editor > * {
+  /* typography.common.paragraph */
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  letter-spacing: 0;
+}
+
+/* Heading 1 */
+.ql-editor h1 {
+  /* typography.heading.900 */
+  font-weight: 700;
+  font-size: 3.5rem;
+  line-height: 4rem;
+  letter-spacing: 0;
+
+  margin-top: 1.6rem;
+}
+
+/* Heading 2 */
+.ql-editor h2 {
+  /* typography.heading.700 */
+  font-weight: 700;
+  font-size: 2.4rem;
+  line-height: 2.8rem;
+  letter-spacing: 0;
+
+  margin-top: 1.2rem;
+}
+
+/* Heading 3 */
+.ql-editor h3 {
+  /* typography.heading.600 */
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.4rem;
+  letter-spacing: 0;
+
+  margin-top: 0.8rem;
+}
+
+/* Normal paragraph */
+.ql-editor p {
+  /* typography.common.paragraph */
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  letter-spacing: 0;
+
+  padding: 0.2rem;
+}
+
+/* 굵은 서체 */
+.ql-editor strong {
+  font-weight: 700;
+}
+
+/* 기울인 서체 */
+.ql-editor em {
+  font-style: italic;
+}
+
+/* 인용구 */
+.ql-editor blockquote {
+  margin: 0.5rem 0;
+  border-left: 0.4rem solid #979797;
+  padding-left: 1.6rem;
+
+  /* typography.common.paragraph */
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  letter-spacing: 0;
+}
+
+.ql-editor ol,
+.ql-editor ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  padding-left: 0.4rem; /* 기본 값은 21px입니다. */
+}

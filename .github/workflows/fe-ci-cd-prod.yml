@@ -1,0 +1,116 @@
+name: FE/CI-CD - Production 테스트, 빌드 및 배포
+
+on:
+  push:
+    branches:
+      - fe/main
+
+env:
+  lurgi: "U07BJB1M53K"
+  U07BJB1M53K: "FE팀 러기"
+  llqqssttyy: "U07AZ2992CW"
+  U07AZ2992CW: "FE팀 렛서"
+  seongjinme: "U07B9HQDF4M"
+  U07B9HQDF4M: "FE팀 아르"
+  Dobby-Kim: "U07BJABU6G1"
+  U07BJABU6G1: "BE팀 도비"
+  Chocochip101: "U07BUEJDS8G"
+  U07BUEJDS8G: "BE팀 초코칩"
+  xogns1514: "U07AZ26UC2J"
+  U07AZ26UC2J: "BE팀 러쉬"
+  cutehumanS2: "U07B88ZQDU4"
+  U07B88ZQDU4: "BE팀 냥인"
+  HyungHoKim00: "U07B5HBKZM1"
+  U07B5HBKZM1: "BE팀 명오"
+
+jobs:
+  test-build:
+    runs-on: ubuntu-22.04
+    environment: prod
+    defaults:
+      run:
+        working-directory: ./frontend
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+    env:
+      API_URL: ${{ secrets.API_URL }}
+      DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+      API_VERSION: ${{ secrets.API_VERSION }}
+      GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      ROBOTS_TXT_PATH: ${{ secrets.ROBOTS_TXT_PATH }}
+
+    steps:
+      - name: 저장소 checkout
+        uses: actions/checkout@v4
+        with:
+          # chromatic에서는 fetch-depth를 0으로 설정하지 않으면 에러가 발생
+          fetch-depth: 0
+
+      - name: Node.js 셋업
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - uses: actions/cache@v4
+        id: npm-cache
+        with:
+          path: |
+            frontend/node_modules
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: 애플리케이션 의존성 항목들 설치
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: 코드 문법 테스트
+        run: npm run lint
+
+      - name: 애플리케이션 기능 테스트
+        run: npm run test -- --passWithNoTests
+
+      - name: Storybook 빌드 테스트
+        run: npm run build-storybook
+
+      - name: 애플리케이션 빌드
+        run: npm run build
+
+      - name: 빌드된 파일을 artifact로 업로드
+        uses: actions/upload-artifact@v4
+        with:
+          name: fe-prod-dist
+          path: frontend/dist
+
+  deploy:
+    needs: test-build
+    runs-on: [self-hosted, linux, cruru-fe]
+    environment: prod
+
+    steps:
+      - name: 작업 디렉터리 생성 및 이동
+        run: |
+          mkdir -p ~/actions-runner/deploy/prod
+          cd ~/actions-runner/deploy/prod
+
+      - name: 기존 빌드 파일들 삭제
+        run: |
+          cd ~/actions-runner/deploy/prod
+          rm -rf dist
+
+      - name: 새 빌드 파일을 runner instance에 다운로드
+        uses: actions/download-artifact@v4
+        with:
+          name: fe-prod-dist
+          path: ~/actions-runner/deploy/prod/dist
+
+      - name: 다운로드 된 빌드 파일을 S3에 배포
+        run: |
+          cd ~/actions-runner/deploy/prod
+          aws s3 sync dist ${{ secrets.FE_DEPLOY_S3_URI }} --delete
+
+      - name: CloudFront 캐시 무효화
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.FE_CLOUDFRONT_ID }} --paths "/*"
