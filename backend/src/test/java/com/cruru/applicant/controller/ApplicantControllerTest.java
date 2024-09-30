@@ -390,7 +390,7 @@ class ApplicantControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("존재하지 않는 지원자 불합격 해제 시, 404를 응답한다.")
+    @DisplayName("존재하지 않는 지원자 불합격 시, 404를 응답한다.")
     @Test
     void rejectAll_applicantNotFound() {
         // given
@@ -410,7 +410,7 @@ class ApplicantControllerTest extends ControllerTest {
                 .then().log().all().statusCode(404);
     }
 
-    @DisplayName("불합격하지 않은 지원자 불합격 해제 시, 400를 응답한다.")
+    @DisplayName("불합격 한 지원자 불합격 시, 400를 응답한다.")
     @Test
     void rejectAll_alreadyReject() {
         // given
