@@ -5,13 +5,16 @@ import com.cruru.club.domain.Club;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.controller.response.DashboardCreateResponse;
 import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
+import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.facade.DashboardFacade;
 import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +49,12 @@ public class DashboardController {
     ) {
         DashboardsOfClubResponse dashboards = dashboardFacade.findAllDashboardsByClubId(clubId);
         return ResponseEntity.ok().body(dashboards);
+    }
+
+    @DeleteMapping("/{dashboardId}")
+    @RequireAuthCheck(targetId = "dashboardId", targetDomain = Dashboard.class)
+    public ResponseEntity<Void> delete(@PathVariable Long dashboardId, LoginProfile loginProfile) {
+        dashboardFacade.delete(dashboardId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -102,4 +102,15 @@ public class ApplicantService {
     public List<ApplicantCard> findApplicantCards(Process process) {
         return applicantRepository.findApplicantCardsByProcess(process);
     }
+
+    public List<Applicant> findAllByProcesses(List<Process> processes) {
+        return processes.stream()
+                .flatMap(process -> findAllByProcess(process).stream())
+                .toList();
+    }
+
+    @Transactional
+    public void deleteAllInBatch(List<Applicant> applicants) {
+        applicantRepository.deleteAllInBatch(applicants);
+    }
 }

@@ -65,4 +65,9 @@ public class AnswerService {
         String mergedContent = existing.answer() + DELIMITER + newResponse.answer();
         return new AnswerResponse(existing.sequence(), existing.question(), mergedContent);
     }
+
+    @Transactional
+    public void deleteAllByApplicants(List<Applicant> applicants) {
+        answerRepository.deleteAllByApplicantIds(applicants);
+    }
 }

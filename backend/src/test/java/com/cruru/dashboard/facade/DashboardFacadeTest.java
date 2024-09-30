@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.club.domain.Club;
@@ -16,17 +17,27 @@ import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.response.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.AnswerRepository;
+import com.cruru.question.domain.repository.ChoiceRepository;
+import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
+import com.cruru.util.fixture.AnswerFixture;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.ChoiceFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.EmailFixture;
+import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.LocalDateFixture;
 import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,6 +65,21 @@ class DashboardFacadeTest extends ServiceTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
+
+    @Autowired
+    private ChoiceRepository choiceRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+
+    @Autowired
+    private EmailRepository emailRepository;
 
     private Club club;
 
@@ -139,5 +165,23 @@ class DashboardFacadeTest extends ServiceTest {
                 () -> assertThat(stats.fail()).isEqualTo(2),
                 () -> assertThat(stats.inProgress()).isEqualTo(3)
         );
+    }
+
+    @DisplayName("대시보드를 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question = questionRepository.save(QuestionFixture.singleChoiceType(applyForm));
+        choiceRepository.save(ChoiceFixture.first(question));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        answerRepository.save(AnswerFixture.first(question, applicant));
+        emailRepository.save(EmailFixture.rejectEmail(club, applicant));
+        evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
+
+        // when
+        dashboardFacade.delete(dashboard.getId());
     }
 }
