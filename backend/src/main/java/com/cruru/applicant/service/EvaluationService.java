@@ -5,6 +5,7 @@ import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
+import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;
 import java.util.List;
@@ -21,6 +22,11 @@ public class EvaluationService {
 
     public Evaluation findById(Long evaluationId) {
         return evaluationRepository.findById(evaluationId)
+                .orElseThrow(EvaluationNotFoundException::new);
+    }
+
+    public Evaluation findByIdFetchingMember(Long applicantId) {
+        return evaluationRepository.findByIdFetchingMember(applicantId)
                 .orElseThrow(EvaluationNotFoundException::new);
     }
 
