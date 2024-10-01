@@ -6,6 +6,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -39,4 +40,12 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     @Query("SELECT a FROM Applicant a JOIN FETCH a.process p JOIN FETCH p.dashboard d WHERE d = :dashboard")
     List<Applicant> findAllByDashboard(@Param("dashboard") Dashboard dashboard);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+           UPDATE Applicant a
+           SET a.isRejected = :isRejected
+           WHERE a.id in :applicantIds
+           """)
+    void updateRejectedStatusForApplicants(List<Long> applicantIds, boolean isRejected);
 }

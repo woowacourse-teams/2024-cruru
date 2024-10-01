@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
+import com.cruru.applicant.controller.request.ApplicantsRejectRequest;
 import com.cruru.applicant.controller.response.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.response.ApplicantBasicResponse;
 import com.cruru.applicant.controller.response.ApplicantResponse;
@@ -189,5 +190,27 @@ class ApplicantFacadeTest extends ServiceTest {
         // then
         Applicant unrejectedApplicant = applicantRepository.findById(applicant.getId()).get();
         assertThat(unrejectedApplicant.isNotRejected()).isTrue();
+    }
+
+    @DisplayName("모든 지원자를 불합격시킨다.")
+    @Test
+    void rejectAll() {
+        // given
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingRush());
+        ApplicantsRejectRequest request = new ApplicantsRejectRequest(List.of(applicant1.getId(), applicant2.getId()));
+
+        // when
+        applicantFacade.reject(request);
+
+        // then
+        Applicant foundApplicant1 = applicantRepository.findById(applicant1.getId())
+                .orElseThrow();
+        Applicant foundApplicant2 = applicantRepository.findById(applicant2.getId())
+                .orElseThrow();
+        assertAll(
+                () -> assertThat(foundApplicant1.isRejected()).isTrue(),
+                () -> assertThat(foundApplicant2.isRejected()).isTrue()
+        );
     }
 }

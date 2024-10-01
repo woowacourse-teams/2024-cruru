@@ -2,6 +2,7 @@ package com.cruru.applicant.facade;
 
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
+import com.cruru.applicant.controller.request.ApplicantsRejectRequest;
 import com.cruru.applicant.controller.response.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.response.ApplicantBasicResponse;
 import com.cruru.applicant.controller.response.ApplicantResponse;
@@ -64,5 +65,10 @@ public class ApplicantFacade {
     @Transactional
     public void unreject(long applicantId) {
         applicantService.unreject(applicantId);
+    }
+
+    @Transactional
+    public void reject(ApplicantsRejectRequest request) {
+        applicantService.reject(request.applicantIds());
     }
 }
