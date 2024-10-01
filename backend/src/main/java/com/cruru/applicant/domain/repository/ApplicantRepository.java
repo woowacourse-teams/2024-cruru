@@ -5,6 +5,7 @@ import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,4 +40,14 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     @Query("SELECT a FROM Applicant a JOIN FETCH a.process p JOIN FETCH p.dashboard d WHERE d = :dashboard")
     List<Applicant> findAllByDashboard(@Param("dashboard") Dashboard dashboard);
+
+    @Query("""
+           SELECT a FROM Applicant a 
+           JOIN FETCH a.process p
+           JOIN FETCH p.dashboard d
+           JOIN FETCH d.club c
+           JOIN FETCH c.member m
+           WHERE a.id = :id
+           """)
+    Optional<Applicant> findByIdFetchingMember(@Param("id") long id);
 }
