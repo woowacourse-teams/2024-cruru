@@ -43,7 +43,7 @@ public class DashboardService {
 
     public Dashboard findByIdFetchingMember(Long id) {
         return dashboardRepository.findByIdFetchingMember(id)
-               .orElseThrow(DashboardNotFoundException::new);
+                .orElseThrow(DashboardNotFoundException::new);
     }
 
     public List<DashboardApplyFormDto> findAllByClub(long clubId) {

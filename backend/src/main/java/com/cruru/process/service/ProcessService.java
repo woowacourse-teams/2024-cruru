@@ -93,13 +93,13 @@ public class ProcessService {
                 .orElseThrow(ProcessNotFoundException::new);
     }
 
-    public Process findByIdFetchingMember(Long processId) {
-        return processRepository.findByIdFetchingMember(processId)
-               .orElseThrow(ProcessNotFoundException::new);
-    }
-
     private boolean changeExists(ProcessUpdateRequest request, Process process) {
         return !(request.name().equals(process.getName()) && request.description().equals(process.getDescription()));
+    }
+
+    public Process findByIdFetchingMember(Long processId) {
+        return processRepository.findByIdFetchingMember(processId)
+                .orElseThrow(ProcessNotFoundException::new);
     }
 
     @Transactional

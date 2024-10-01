@@ -45,16 +45,16 @@ public class ApplicantService {
                 .orElseThrow(ApplicantNotFoundException::new);
     }
 
-    public Applicant findByIdFetchingMember(Long applicantId) {
-        return applicantRepository.findByIdFetchingMember(applicantId)
-               .orElseThrow(ApplicantNotFoundException::new);
-    }
-
     private boolean changeExists(ApplicantUpdateRequest request, Applicant applicant) {
         return !(applicant.getName().equals(request.name())
                 && applicant.getEmail().equals(request.email())
                 && applicant.getPhone().equals(request.phone())
         );
+    }
+
+    public Applicant findByIdFetchingMember(Long applicantId) {
+        return applicantRepository.findByIdFetchingMember(applicantId)
+                .orElseThrow(ApplicantNotFoundException::new);
     }
 
     @Transactional

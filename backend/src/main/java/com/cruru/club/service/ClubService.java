@@ -33,7 +33,7 @@ public class ClubService {
 
     public Club findByIdFetchingMember(Long id) {
         return clubRepository.findByIdFetchingMember(id)
-               .orElseThrow(ClubNotFoundException::new);
+                .orElseThrow(ClubNotFoundException::new);
     }
 
     public Club findByMember(Member member) {
