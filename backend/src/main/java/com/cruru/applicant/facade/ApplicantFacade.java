@@ -69,7 +69,6 @@ public class ApplicantFacade {
 
     @Transactional
     public void reject(ApplicantsRejectRequest request) {
-        request.applicantIds()
-                .forEach(applicantService::reject);
+        applicantService.reject(request.applicantIds());
     }
 }
