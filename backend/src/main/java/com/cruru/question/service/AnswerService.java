@@ -68,6 +68,6 @@ public class AnswerService {
 
     @Transactional
     public void deleteAllByApplicants(List<Applicant> applicants) {
-        answerRepository.deleteAllByApplicantIds(applicants);
+        answerRepository.deleteAllByApplicants(applicants);
     }
 }

@@ -53,12 +53,12 @@ public class EvaluationService {
     }
 
     @Transactional
-    public void deleteAllByProcesses(List<Process> processes) {
-        evaluationRepository.deleteAllByProcesses(processes);
+    public void deleteByProcess(long processId) {
+        evaluationRepository.deleteByProcessId(processId);
     }
 
     @Transactional
-    public void deleteByProcess(long processId) {
-        evaluationRepository.deleteByProcessId(processId);
+    public void deleteAllByProcesses(List<Process> processes) {
+        evaluationRepository.deleteAllByProcesses(processes);
     }
 }

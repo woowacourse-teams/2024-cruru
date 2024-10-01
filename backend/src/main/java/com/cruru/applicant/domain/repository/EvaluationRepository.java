@@ -16,7 +16,6 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     void deleteByProcessId(long processId);
 
-
     @Modifying
     @Transactional
     @Query("DELETE FROM Evaluation e WHERE e.process IN :processes")

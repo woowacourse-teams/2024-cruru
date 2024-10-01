@@ -17,5 +17,5 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Modifying
     @Transactional
     @Query("DELETE FROM Answer a WHERE a.applicant IN :applicants")
-    void deleteAllByApplicantIds(@Param("applicants") List<Applicant> applicants);
+    void deleteAllByApplicants(@Param("applicants") List<Applicant> applicants);
 }
