@@ -72,6 +72,15 @@ public class ApplicantService {
     }
 
     @Transactional
+    public void reject(List<Long> applicantIds) {
+        applicantIds.stream()
+                .map(this::findById)
+                .forEach(this::validateRejectable);
+
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, true);
+    }
+
+    @Transactional
     public void unreject(long applicantId) {
         Applicant applicant = findById(applicantId);
         validateUnrejectable(applicant);
