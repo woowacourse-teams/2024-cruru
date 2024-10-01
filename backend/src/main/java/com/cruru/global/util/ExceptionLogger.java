@@ -47,6 +47,9 @@ public class ExceptionLogger {
 
     private static void setMDC(ProblemDetail problemDetail) {
         Map<String, Object> details = problemDetail.getProperties();
+        if (details == null || details.isEmpty()) {
+            return;
+        }
         Map<String, String> map = new HashMap<>();
         for (Entry<String, Object> stringObjectEntry : details.entrySet()) {
             map.put(stringObjectEntry.getKey(), java.lang.String.valueOf(stringObjectEntry.getValue()));
