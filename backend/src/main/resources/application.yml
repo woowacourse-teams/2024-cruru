@@ -26,6 +26,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: false
+    open-in-view: false
   mail:
     host: smtp.gmail.com
     port: 587
@@ -93,6 +94,7 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
+    open-in-view: false
   mail:
     host: smtp.gmail.com
     port: 587
@@ -177,6 +179,7 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
+    open-in-view: false
   mail:
     host: smtp.gmail.com
     port: 587
@@ -260,6 +263,7 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
+    open-in-view: false
   mail:
     host: smtp.gmail.com
     port: 587
