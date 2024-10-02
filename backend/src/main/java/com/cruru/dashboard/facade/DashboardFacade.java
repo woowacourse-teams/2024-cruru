@@ -135,7 +135,9 @@ public class DashboardFacade {
 
     @Transactional
     public void delete(Long dashboardId) {
-        ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+
+        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
         List<Question> questions = questionService.findByApplyForm(applyForm);
         List<Process> processes = processService.findAllByDashboard(dashboardId);
         List<Applicant> applicants = applicantService.findAllByProcesses(processes);

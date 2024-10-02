@@ -314,4 +314,21 @@ class DashboardControllerTest extends ControllerTest {
                 .when().delete("/v1/dashboards/{dashboardId}", dashboard.getId())
                 .then().log().all().statusCode(204);
     }
+
+    @DisplayName("대시보드 삭제 시 대시보드가 존재하지 않으면, 404를 응답한다.")
+    @Test
+    void delete_notFound() {
+        // given
+        long invalidId = -1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .filter(document("dashboard/delete/not-found",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("dashboardId").description("존재하지 않는 대시보드의 id"))
+                ))
+                .when().delete("/v1/dashboards/{dashboardId}", invalidId)
+                .then().log().all().statusCode(404);
+    }
 }

@@ -1,6 +1,7 @@
 package com.cruru.dashboard.facade;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
@@ -18,6 +19,7 @@ import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.response.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.dashboard.exception.DashboardNotFoundException;
 import com.cruru.email.domain.Email;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.process.domain.Process;
@@ -200,5 +202,16 @@ class DashboardFacadeTest extends ServiceTest {
                 () -> assertThat(applyFormRepository.findAll()).doesNotContain(applyForm),
                 () -> assertThat(dashboardRepository.findAll()).doesNotContain(dashboard)
         );
+    }
+
+    @DisplayName("존재하지 않는 대시보드를 삭제하면 예외가 발생한다.")
+    @Test
+    void delete_notFound() {
+        // given
+        long invalidId = -1;
+
+        // when && then
+        assertThatThrownBy(() -> dashboardFacade.delete(invalidId))
+                .isInstanceOf(DashboardNotFoundException.class);
     }
 }
