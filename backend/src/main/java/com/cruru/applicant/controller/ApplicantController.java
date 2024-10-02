@@ -89,7 +89,8 @@ public class ApplicantController {
 
     @PatchMapping("/unreject")
     public ResponseEntity<Void> unreject(
-            @RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile) {
+            @RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile
+    ) {
         applicantFacade.unreject(request);
         return ResponseEntity.ok().build();
     }
