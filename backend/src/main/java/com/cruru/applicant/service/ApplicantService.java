@@ -12,7 +12,6 @@ import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -114,49 +113,10 @@ public class ApplicantService {
         List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
 
         return applicantCards.stream()
-                .filter(card -> filterByScore(card, minScore, maxScore))
-                .filter(card -> filterByEvaluationExists(card, evaluationExists))
-                .sorted(getCombinedComparator(sortByCreatedAt, sortByScore))
+                .filter(card -> ApplicantCardFilter.filterByScore(card, minScore, maxScore))
+                .filter(card -> ApplicantCardFilter.filterByEvaluationStatus(card, evaluationExists))
+                .sorted(ApplicantCardSorter.getCombinedComparator(sortByCreatedAt, sortByScore))
                 .collect(Collectors.toList());
-    }
-
-    private boolean filterByScore(ApplicantCard card, Double minScore, Double maxScore) {
-        double avgScore = card.averageScore();
-        return avgScore >= minScore && avgScore <= maxScore;
-    }
-
-    private boolean filterByEvaluationExists(ApplicantCard card, EvaluationStatus evaluationExists) {
-        long evaluationCount = card.evaluationCount();
-        if (evaluationExists == EvaluationStatus.ALL) {
-            return true;
-        }
-        if (evaluationExists == EvaluationStatus.NO_EVALUATED) {
-            return evaluationCount == 0;
-        }
-        if (evaluationExists == EvaluationStatus.EVALUATED) {
-            return evaluationCount > 0;
-        }
-        return false;
-    }
-
-    private Comparator<ApplicantCard> getCombinedComparator(String sortByCreatedAt, String sortByScore) {
-        return getCreatedAtComparator(sortByCreatedAt)
-                .thenComparing(getScoreComparator(sortByScore));
-    }
-
-    private Comparator<ApplicantCard> getCreatedAtComparator(String sortByCreatedAt) {
-        if ("asc".equalsIgnoreCase(sortByCreatedAt)) {
-            return Comparator.comparing(ApplicantCard::createdAt);
-        }
-        return Comparator.comparing(ApplicantCard::createdAt, Comparator.reverseOrder());
-
-    }
-
-    private Comparator<ApplicantCard> getScoreComparator(String sortByScore) {
-        if ("asc".equalsIgnoreCase(sortByScore)) {
-            return Comparator.comparing(ApplicantCard::averageScore);
-        }
-        return Comparator.comparing(ApplicantCard::averageScore, Comparator.reverseOrder());
     }
 
     public List<ApplicantCard> findApplicantCards(Process process) {
