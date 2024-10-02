@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
@@ -47,5 +48,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
            SET a.isRejected = :isRejected
            WHERE a.id in :applicantIds
            """)
+    @Transactional
     void updateRejectedStatusForApplicants(List<Long> applicantIds, boolean isRejected);
 }
