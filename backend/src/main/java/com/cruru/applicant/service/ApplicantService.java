@@ -93,6 +93,15 @@ public class ApplicantService {
         }
     }
 
+    @Transactional
+    public void unreject(List<Long> applicantIds) {
+        applicantIds.stream()
+                .map(this::findById)
+                .forEach(this::validateUnrejectable);
+
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, false);
+    }
+
     public ApplicantResponse toApplicantResponse(Applicant applicant) {
         return new ApplicantResponse(
                 applicant.getId(),

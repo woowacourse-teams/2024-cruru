@@ -71,4 +71,9 @@ public class ApplicantFacade {
     public void reject(ApplicantsRejectRequest request) {
         applicantService.reject(request.applicantIds());
     }
+
+    @Transactional
+    public void unreject(ApplicantsRejectRequest request) {
+        applicantService.unreject(request.applicantIds());
+    }
 }

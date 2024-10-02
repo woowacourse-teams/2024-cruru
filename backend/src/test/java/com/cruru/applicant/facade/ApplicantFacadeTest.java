@@ -213,4 +213,27 @@ class ApplicantFacadeTest extends ServiceTest {
                 () -> assertThat(foundApplicant2.isRejected()).isTrue()
         );
     }
+
+    @DisplayName("모든 지원자 불합격 해제시킨다.")
+    @Test
+    void unrejectAll() {
+        // given
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.rejectedRush());
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.rejectedRush());
+
+        ApplicantsRejectRequest request = new ApplicantsRejectRequest(List.of(applicant1.getId(), applicant2.getId()));
+
+        // when
+        applicantFacade.unreject(request);
+
+        // then
+        Applicant foundApplicant1 = applicantRepository.findById(applicant1.getId())
+                .orElseThrow();
+        Applicant foundApplicant2 = applicantRepository.findById(applicant2.getId())
+                .orElseThrow();
+        assertAll(
+                () -> assertThat(foundApplicant1.isRejected()).isFalse(),
+                () -> assertThat(foundApplicant2.isRejected()).isFalse()
+        );
+    }
 }
