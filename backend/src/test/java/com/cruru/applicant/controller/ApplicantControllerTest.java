@@ -414,10 +414,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void rejectAll_alreadyReject() {
         // given
-        Applicant applicant = ApplicantFixture.pendingDobby();
-        applicant.reject();
-        Applicant savedApplicant = applicantRepository.save(applicant);
-        ApplicantsRejectRequest request = new ApplicantsRejectRequest(List.of(savedApplicant.getId()));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.rejectedRush());
+        ApplicantsRejectRequest request = new ApplicantsRejectRequest(List.of(applicant.getId()));
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -479,8 +477,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void unrejectAll_alreadyUnreject() {
         // given
-        Applicant savedApplicant = applicantRepository.save(ApplicantFixture.pendingDobby());
-        ApplicantsRejectRequest request = new ApplicantsRejectRequest(List.of(savedApplicant.getId()));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        ApplicantsRejectRequest request = new ApplicantsRejectRequest(List.of(applicant.getId()));
 
         // when&then
         RestAssured.given(spec).log().all()
