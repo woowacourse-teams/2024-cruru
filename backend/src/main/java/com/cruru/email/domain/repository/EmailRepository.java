@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface EmailRepository extends JpaRepository<Email, Long> {
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("DELETE FROM Email e WHERE e.to IN :tos")
     void deleteAllByTos(@Param("tos") List<Applicant> tos);

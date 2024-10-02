@@ -14,7 +14,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     @Query("SELECT a FROM Answer a JOIN FETCH a.question WHERE a.applicant = :applicant")
     List<Answer> findAllByApplicantWithQuestions(@Param("applicant") Applicant applicant);
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("DELETE FROM Answer a WHERE a.applicant IN :applicants")
     void deleteAllByApplicants(@Param("applicants") List<Applicant> applicants);
