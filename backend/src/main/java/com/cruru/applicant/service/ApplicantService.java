@@ -6,6 +6,7 @@ import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.response.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.EvaluationStatus;
+import com.cruru.applicant.domain.SortOption;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
@@ -111,8 +112,8 @@ public class ApplicantService {
             Double minScore,
             Double maxScore,
             EvaluationStatus evaluationStatus,
-            String sortByCreatedAt,
-            String sortByScore
+            SortOption sortByCreatedAt,
+            SortOption sortByScore
     ) {
         List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
 

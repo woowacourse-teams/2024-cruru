@@ -2,6 +2,7 @@ package com.cruru.applicant.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.cruru.applicant.domain.SortOption;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.util.fixture.ApplicantCardFixture;
 import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
@@ -47,7 +48,7 @@ class ApplicantCardSorterTest {
 
         // when
         applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
-                "asc",
+                SortOption.ASC,
                 DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
         ));
 
@@ -67,7 +68,7 @@ class ApplicantCardSorterTest {
         // when
         applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
                 DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                "desc"
+                SortOption.DESC
         ));
 
         // then
@@ -86,7 +87,7 @@ class ApplicantCardSorterTest {
         // when
         applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
                 DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                "asc"
+                SortOption.ASC
         ));
 
         // then

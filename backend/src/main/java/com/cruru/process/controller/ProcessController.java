@@ -1,5 +1,6 @@
 package com.cruru.process.controller;
 
+import com.cruru.applicant.domain.SortOption;
 import com.cruru.auth.annotation.RequireAuthCheck;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.global.LoginProfile;
@@ -39,8 +40,8 @@ public class ProcessController {
             @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
             @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
             @RequestParam(name = "evaluationStatus", required = false, defaultValue = "ALL") EvaluationStatus evaluationStatus,
-            @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "desc") String sortByCreatedAt,
-            @RequestParam(name = "sortByScore", required = false, defaultValue = "desc") String sortByScore
+            @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "DESC") SortOption sortByCreatedAt,
+            @RequestParam(name = "sortByScore", required = false, defaultValue = "DESC") SortOption sortByScore
     ) {
         ProcessResponses processes = processFacade.readAllByDashboardId(
                 dashboardId, minScore, maxScore, evaluationStatus, sortByCreatedAt, sortByScore

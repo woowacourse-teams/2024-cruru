@@ -141,8 +141,8 @@ class ProcessControllerTest extends ControllerTest {
                                 parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default)"),
                                 parameterWithName("evaluationStatus").description(
                                         "지원자 평가 유무: ALL(default), NOT_EVALUATION, EVALUATED"),
-                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: desc(default), asc"),
-                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: desc(default), asc")
+                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: DESC(default), ASC"),
+                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: DESC(default), ASC")
                         ),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
