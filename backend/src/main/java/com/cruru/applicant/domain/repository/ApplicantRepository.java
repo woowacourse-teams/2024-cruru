@@ -6,6 +6,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,15 +15,8 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     List<Applicant> findAllByProcess(Process process);
 
-    // TODO: 이유는 모르겠지만 entityGraph가 적용 안됨.
-    @Query("""
-           SELECT a FROM Applicant a
-           LEFT JOIN FETCH a.process p
-           LEFT JOIN FETCH p.dashboard d
-           LEFT JOIN FETCH d.club c
-           LEFT JOIN FETCH c.member m
-           WHERE a.id = :id
-           """)
+    @EntityGraph(attributePaths = {"process.dashboard.club.member"})
+    @Query("SELECT a FROM Applicant a WHERE a.id = :id")
     Optional<Applicant> findByIdFetchingMember(long id);
 
     long countByProcess(Process process);
