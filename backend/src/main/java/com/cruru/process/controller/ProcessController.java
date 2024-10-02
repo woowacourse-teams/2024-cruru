@@ -38,7 +38,7 @@ public class ProcessController {
             @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
             @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
-            @RequestParam(name = "evaluationExists", required = false, defaultValue = "ALL") EvaluationStatus evaluationExists,
+            @RequestParam(name = "EvaluationStatus", required = false, defaultValue = "ALL") EvaluationStatus evaluationExists,
             @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "desc") String sortByCreatedAt,
             @RequestParam(name = "sortByScore", required = false, defaultValue = "desc") String sortByScore
     ) {

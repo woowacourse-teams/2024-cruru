@@ -6,6 +6,9 @@
 
 operation::process/read[snippets="http-request,request-cookies,query-parameters,http-response,response-fields"]
 
+==== 지원자 카드 필터링 및 정렬
+operation::process/read-filter-and-order[snippets="http-request,request-cookies,query-parameters,http-response,response-fields"]
+
 ==== 실패: 존재하지 않는 대시보드
 
 operation::process/read-fail/dashboard-not-found[snippets="http-request,request-cookies,query-parameters,http-response"]

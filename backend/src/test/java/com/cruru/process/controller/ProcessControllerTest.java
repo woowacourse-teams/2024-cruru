@@ -120,26 +120,26 @@ class ProcessControllerTest extends ControllerTest {
         ));
         Double defaultMinScore = 0.00;
         Double defaultMaxScore = 5.00;
-        EvaluationStatus defaultEvaluationExists = EvaluationStatus.ALL;
+        EvaluationStatus defaultEvaluationStatus = EvaluationStatus.ALL;
         String defaultSortByCreatedAt = "desc";
         String defaultSortByScore = "desc";
         applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
         String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
-                        + "&evaluationExists=%s&sortByCreatedAt=%s&sortByScore=%s",
-                dashboard.getId(), defaultMinScore, defaultMaxScore, defaultEvaluationExists,
+                        + "&evaluationStatus=%s&sortByCreatedAt=%s&sortByScore=%s",
+                dashboard.getId(), defaultMinScore, defaultMaxScore, defaultEvaluationStatus,
                 defaultSortByCreatedAt, defaultSortByScore);
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
                 .filter(document(
-                        "process/read",
+                        "process/read-filter-and-order",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("dashboardId").description("대시보드의 id"),
                                 parameterWithName("minScore").description("지원자 최소 평균 점수: 0.00(default) ~ 5.00"),
                                 parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default)"),
-                                parameterWithName("evaluationExists").description(
+                                parameterWithName("evaluationStatus").description(
                                         "지원자 평가 유무: ALL(default), NO_EVALUATION, EVALUATED"),
                                 parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: desc(default), asc"),
                                 parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: desc(default), asc")
