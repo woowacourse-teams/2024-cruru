@@ -65,14 +65,14 @@ class DashboardServiceTest extends ServiceTest {
 
     @DisplayName("대시보드를 ID를 통해 조회한다.")
     @Test
-    void findByIdFetchingMember() {
+    void findById() {
         // given
         Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.backend());
 
         // when&then
         long id = backendDashboard.getId();
-        assertDoesNotThrow(() -> dashboardService.findByIdFetchingMember(id));
-        assertThat(dashboardService.findByIdFetchingMember(backendDashboard.getId())).isEqualTo(backendDashboard);
+        assertDoesNotThrow(() -> dashboardService.findById(id));
+        assertThat(dashboardService.findById(backendDashboard.getId())).isEqualTo(backendDashboard);
     }
 
     @DisplayName("동아리 ID로 동아리가 가지고 있는 모든 대시보드 ID를 조회한다.")

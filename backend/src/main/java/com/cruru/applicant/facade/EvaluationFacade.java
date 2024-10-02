@@ -26,15 +26,15 @@ public class EvaluationFacade {
 
     @Transactional
     public void create(EvaluationCreateRequest request, long processId, long applicantId) {
-        Process process = processService.findByIdFetchingMember(processId);
-        Applicant applicant = applicantService.findByIdFetchingMember(applicantId);
+        Process process = processService.findById(processId);
+        Applicant applicant = applicantService.findById(applicantId);
 
         evaluationService.create(request, process, applicant);
     }
 
     public EvaluationResponses readEvaluationsOfApplicantInProcess(long processId, long applicantId) {
-        Process process = processService.findByIdFetchingMember(processId);
-        Applicant applicant = applicantService.findByIdFetchingMember(applicantId);
+        Process process = processService.findById(processId);
+        Applicant applicant = applicantService.findById(applicantId);
 
         return toEvaluationResponses(evaluationService.findAllByProcessAndApplicant(process, applicant));
     }
@@ -58,7 +58,7 @@ public class EvaluationFacade {
 
     @Transactional
     public void updateSingleEvaluation(EvaluationUpdateRequest request, Long evaluationId) {
-        Evaluation evaluation = evaluationService.findByIdFetchingMember(evaluationId);
+        Evaluation evaluation = evaluationService.findById(evaluationId);
         evaluationService.update(request, evaluation);
     }
 }

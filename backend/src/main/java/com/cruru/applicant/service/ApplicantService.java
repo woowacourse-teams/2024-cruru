@@ -34,14 +34,14 @@ public class ApplicantService {
 
     @Transactional
     public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
-        Applicant applicant = findByIdFetchingMember(applicantId);
+        Applicant applicant = findById(applicantId);
         if (changeExists(request, applicant)) {
             applicant.updateInfo(request.name(), request.email(), request.phone());
         }
     }
 
-    public Applicant findByIdFetchingMember(Long applicantId) {
-        return applicantRepository.findByIdFetchingMember(applicantId)
+    public Applicant findById(Long applicantId) {
+        return applicantRepository.findById(applicantId)
                 .orElseThrow(ApplicantNotFoundException::new);
     }
 
@@ -60,7 +60,7 @@ public class ApplicantService {
 
     @Transactional
     public void reject(long applicantId) {
-        Applicant applicant = findByIdFetchingMember(applicantId);
+        Applicant applicant = findById(applicantId);
         validateRejectable(applicant);
         applicant.reject();
     }
@@ -73,7 +73,7 @@ public class ApplicantService {
 
     @Transactional
     public void unreject(long applicantId) {
-        Applicant applicant = findByIdFetchingMember(applicantId);
+        Applicant applicant = findById(applicantId);
         validateUnrejectable(applicant);
         applicant.unreject();
     }

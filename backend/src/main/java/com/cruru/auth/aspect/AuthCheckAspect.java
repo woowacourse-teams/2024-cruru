@@ -100,7 +100,7 @@ public class AuthCheckAspect {
         Object service = applicationContext.getBean(serviceName);
 
         // findById 메서드를 호출하여 해당 도메인 객체(SecureResource)를 가져옴
-        Method findByIdMethod = service.getClass().getMethod("findByIdFetchingMember", Long.class);
+        Method findByIdMethod = service.getClass().getMethod("findById", Long.class);
         SecureResource secureResource = (SecureResource) findByIdMethod.invoke(service, targetId);
 
         // Lazy Loading된 연관 엔티티를 강제 로딩함

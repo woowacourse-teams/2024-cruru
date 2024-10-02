@@ -19,8 +19,8 @@ public class EvaluationService {
 
     private final EvaluationRepository evaluationRepository;
 
-    public Evaluation findByIdFetchingMember(Long evaluationId) {
-        return evaluationRepository.findByIdFetchingMember(evaluationId)
+    public Evaluation findById(Long evaluationId) {
+        return evaluationRepository.findById(evaluationId)
                 .orElseThrow(EvaluationNotFoundException::new);
     }
 
