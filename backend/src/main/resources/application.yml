@@ -23,6 +23,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+        max_fetch_depth: 15
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: false
@@ -91,6 +92,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+        max_fetch_depth: 15
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
@@ -176,6 +178,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        max_fetch_depth: 15
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
@@ -260,6 +263,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        max_fetch_depth: 15
     hibernate:
       ddl-auto: ${DDL_AUTO}
     defer-datasource-initialization: false
