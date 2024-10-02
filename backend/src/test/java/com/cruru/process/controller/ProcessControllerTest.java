@@ -108,6 +108,51 @@ class ProcessControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
+    @DisplayName("프로세스 필터링 및 정렬 조회 성공 시, 200을 응답한다.")
+    @Test
+    void read_filterAndOrder() {
+        // given
+        List<Process> processes = processRepository.saveAll(List.of(
+                ProcessFixture.applyType(dashboard),
+                ProcessFixture.interview(dashboard),
+                ProcessFixture.applyType(dashboard)
+        ));
+        Double defaultMinScore = 0.00;
+        Double defaultMaxScore = 5.00;
+        Integer defaultEvaluationExists = 0;
+        String defaultSortByCreatedAt = "desc";
+        String defaultSortByScore = "desc";
+        applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
+        String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
+                        + "&evaluationExists=%d&sortByCreatedAt=%s&sortByScore=%s",
+                dashboard.getId(), defaultMinScore, defaultMaxScore, defaultEvaluationExists,
+                defaultSortByCreatedAt, defaultSortByScore);
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .filter(document(
+                        "process/read",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        queryParameters(
+                                parameterWithName("dashboardId").description("대시보드의 id"),
+                                parameterWithName("minScore").description("지원자 최소 평균 점수"),
+                                parameterWithName("maxScore").description("지원자 최대 평균 점수"),
+                                parameterWithName("evaluationExists").description("지원자 평가 유무"),
+                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건"),
+                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건")
+                        ),
+                        responseFields(
+                                fieldWithPath("applyFormId").description("지원폼의 id"),
+                                fieldWithPath("processes").description("프로세스 목록"),
+                                fieldWithPath("title").description("지원폼의 제목")
+                        ).andWithPrefix("processes[].", PROCESS_RESPONSE_FIELD_DESCRIPTORS)
+                                .andWithPrefix("processes[].applicants[]", APPLICANT_RESPONSE_FIELD_DESCRIPTORS)
+                ))
+                .when().get(url)
+                .then().log().all().statusCode(200);
+    }
+
     @DisplayName("프로세스 조회 실패 시, 404를 응답한다.")
     @Test
     void read_dashboardNotFound() {
