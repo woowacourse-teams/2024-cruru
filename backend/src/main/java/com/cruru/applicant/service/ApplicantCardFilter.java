@@ -9,7 +9,7 @@ public class ApplicantCardFilter {
 
     public static boolean filterByScore(ApplicantCard card, Double minScore, Double maxScore) {
         double avgScore = card.averageScore();
-        return avgScore >= minScore && avgScore <= maxScore;
+        return minScore <= avgScore && avgScore <= maxScore;
     }
 
     public static boolean filterByEvaluationStatus(ApplicantCard card, EvaluationStatus evaluationExists) {
