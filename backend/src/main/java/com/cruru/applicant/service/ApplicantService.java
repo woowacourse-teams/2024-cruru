@@ -120,7 +120,7 @@ public class ApplicantService {
                 .filter(card -> ApplicantCardFilter.filterByScore(card, minScore, maxScore))
                 .filter(card -> ApplicantCardFilter.filterByEvaluationStatus(card, evaluationStatus))
                 .sorted(ApplicantCardSorter.getCombinedComparator(sortByCreatedAt, sortByScore))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<ApplicantCard> findApplicantCards(Process process) {
