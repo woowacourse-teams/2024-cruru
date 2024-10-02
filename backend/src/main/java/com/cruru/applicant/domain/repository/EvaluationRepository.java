@@ -17,5 +17,6 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     @EntityGraph(attributePaths = {"applicant.process.dashboard.club.member"})
     @Query("SELECT e FROM Evaluation e WHERE e.id = :id")
-    Optional<Evaluation> findByIdFetchingMember(long id);
+    @Override
+    Optional<Evaluation> findById(Long id);
 }

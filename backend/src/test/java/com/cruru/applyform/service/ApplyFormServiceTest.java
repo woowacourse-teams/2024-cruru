@@ -92,13 +92,13 @@ class ApplyFormServiceTest extends ServiceTest {
 
     @DisplayName("지원서 폼 질문 조회에 성공한다.")
     @Test
-    void findByIdFetchingMember() {
+    void findById() {
         // given
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when
-        ApplyForm actualApplyForm = applyFormService.findByIdFetchingMember(applyForm.getId());
+        ApplyForm actualApplyForm = applyFormService.findById(applyForm.getId());
 
         // then
         assertAll(
@@ -117,7 +117,7 @@ class ApplyFormServiceTest extends ServiceTest {
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
-        assertThatThrownBy(() -> applyFormService.findByIdFetchingMember(-1L)).isInstanceOf(
+        assertThatThrownBy(() -> applyFormService.findById(-1L)).isInstanceOf(
                 ApplyFormNotFoundException.class);
     }
 

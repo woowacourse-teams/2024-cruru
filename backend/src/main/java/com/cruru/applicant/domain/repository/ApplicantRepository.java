@@ -17,7 +17,8 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     @EntityGraph(attributePaths = {"process.dashboard.club.member"})
     @Query("SELECT a FROM Applicant a WHERE a.id = :id")
-    Optional<Applicant> findByIdFetchingMember(long id);
+    @Override
+    Optional<Applicant> findById(Long id);
 
     long countByProcess(Process process);
 

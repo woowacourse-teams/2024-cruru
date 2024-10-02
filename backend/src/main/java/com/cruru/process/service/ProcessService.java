@@ -78,7 +78,7 @@ public class ProcessService {
 
     @Transactional
     public Process update(ProcessUpdateRequest request, long processId) {
-        Process process = findByIdFetchingMember(processId);
+        Process process = findById(processId);
 
         if (changeExists(request, process)) {
             process.updateName(request.name());
@@ -88,8 +88,8 @@ public class ProcessService {
         return process;
     }
 
-    public Process findByIdFetchingMember(Long processId) {
-        return processRepository.findByIdFetchingMember(processId)
+    public Process findById(Long processId) {
+        return processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
     }
 
@@ -99,7 +99,7 @@ public class ProcessService {
 
     @Transactional
     public void delete(long processId) {
-        Process process = findByIdFetchingMember(processId);
+        Process process = findById(processId);
         validateFixedProcess(process);
         validateApplicantRemains(process);
         processRepository.deleteById(processId);

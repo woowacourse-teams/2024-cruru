@@ -24,7 +24,7 @@ public class QuestionFacade {
 
     @Transactional
     public void update(QuestionUpdateRequests request, long applyFormId) {
-        ApplyForm applyForm = applyFormService.findByIdFetchingMember(applyFormId);
+        ApplyForm applyForm = applyFormService.findById(applyFormId);
         validateRecruitmentStarted(applyForm);
         questionService.deleteAllByApplyForm(applyForm);
         List<QuestionCreateRequest> newQuestions = request.questions();
