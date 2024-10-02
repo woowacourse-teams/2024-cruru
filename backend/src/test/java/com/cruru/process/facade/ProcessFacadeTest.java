@@ -13,12 +13,12 @@ import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
-import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.util.Comparator;
@@ -78,31 +78,30 @@ class ProcessFacadeTest extends ServiceTest {
         Process process2 = processRepository.save(ProcessFixture.interview(defaultDashboard));
         Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
         Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
-        List<Evaluation> evaluations = List.of(
+        List<Evaluation> evaluations1 = List.of(
                 EvaluationFixture.fivePoints(process1, applicant1),
                 EvaluationFixture.fourPoints(process1, applicant1),
                 EvaluationFixture.fourPoints(process1, applicant1),
                 EvaluationFixture.fourPoints(process1, applicant1)
         );
-        evaluationRepository.saveAll(evaluations);
+        evaluationRepository.saveAll(evaluations1);
 
-        List<Evaluation> evaluations1 = List.of(
+        List<Evaluation> evaluations2 = List.of(
                 EvaluationFixture.fivePoints(process2, applicant2),
                 EvaluationFixture.fivePoints(process2, applicant2),
                 EvaluationFixture.fivePoints(process2, applicant2),
                 EvaluationFixture.fourPoints(process2, applicant2)
         );
-        evaluationRepository.saveAll(evaluations1);
-        Double defaultMinScore = 0.00;
-        Double defaultMaxScore = 5.00;
-        EvaluationStatus defaultEvaluationExists = EvaluationStatus.ALL;
-        String defaultSortByCreatedAt = "desc";
-        String defaultSortByScore = "desc";
+        evaluationRepository.saveAll(evaluations2);
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(
-                defaultDashboard.getId(), defaultMinScore, defaultMaxScore,
-                defaultEvaluationExists, defaultSortByCreatedAt, defaultSortByScore
+                defaultDashboard.getId(),
+                DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
         );
 
         // then
@@ -113,7 +112,7 @@ class ProcessFacadeTest extends ServiceTest {
                 () -> assertThat(processResponses.processResponses()).hasSize(2),
                 () -> assertThat(processId).isEqualTo(process1.getId()),
                 () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant2.getId()),
-                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations.size()),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations1.size()),
                 () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.75)
         );
     }

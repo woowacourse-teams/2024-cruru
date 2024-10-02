@@ -22,6 +22,7 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import jakarta.persistence.EntityManager;
@@ -100,21 +101,21 @@ class ApplicantServiceTest extends ServiceTest {
 
         Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
         Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingRush(process1));
-        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby(process2));
+        applicantRepository.save(ApplicantFixture.pendingDobby(process2));
 
         evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant1));
         evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant2));
 
-        Double defaultMinScore = 0.00;
-        Double defaultMaxScore = 5.00;
-        EvaluationStatus evaluationExists = EvaluationStatus.EVALUATED;
-        String defaultSortByCreatedAt = "desc";
-        String defaultSortByScore = "desc";
+        EvaluationStatus evaluationStatus = EvaluationStatus.EVALUATED;
 
         // when
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
-                processes, defaultMinScore, defaultMaxScore, evaluationExists,
-                defaultSortByCreatedAt, defaultSortByScore
+                processes,
+                DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
+                evaluationStatus,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
         );
 
         // then

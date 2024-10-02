@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.applicant.domain.dto.ApplicantCard;
+import com.cruru.util.fixture.ApplicantCardFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class ApplicantCardFilterTest {
     @Test
     void filterByScore_returnTrue() {
         // given
-        ApplicantCard card = new ApplicantCard(1L, "최냥인", null, false, 5, 3.00, 1L);
+        ApplicantCard card = ApplicantCardFixture.evaluatedApplicantCard(null);
 
         // when
         boolean actual = ApplicantCardFilter.filterByScore(card, 0.00, 4.50);
@@ -28,7 +29,7 @@ class ApplicantCardFilterTest {
     @Test
     void filterByScore_returnFalse() {
         // given
-        ApplicantCard card = new ApplicantCard(2L, "최냥인", null, false, 0, 0.00, 1L);
+        ApplicantCard card = ApplicantCardFixture.notEvaluatedApplicantCard();
 
         // when
         boolean actual = ApplicantCardFilter.filterByScore(card, 4.00, 4.50);
@@ -41,8 +42,8 @@ class ApplicantCardFilterTest {
     @Test
     void filterByEvaluationStatus_all() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인", null, false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인", null, false, 0, 0.00, 1L);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard();
+        ApplicantCard applicantCard2 = ApplicantCardFixture.notEvaluatedApplicantCard();
 
         // when
         boolean actual1 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard1, EvaluationStatus.ALL);
@@ -57,10 +58,10 @@ class ApplicantCardFilterTest {
 
     @DisplayName("평가가 없는 지원자만 필터링 한다.")
     @Test
-    void filterByEvaluationStatus_noEvaluated() {
+    void filterByEvaluationStatus_notEvaluated() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인", null, false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인", null, false, 0, 0.00, 1L);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard();
+        ApplicantCard applicantCard2 = ApplicantCardFixture.notEvaluatedApplicantCard();
 
         // when
         boolean actual1 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard1, EvaluationStatus.NO_EVALUATED);
@@ -77,8 +78,8 @@ class ApplicantCardFilterTest {
     @Test
     void filterByEvaluationStatus_evaluated() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인", null, false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인", null, false, 0, 0.00, 1L);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard();
+        ApplicantCard applicantCard2 = ApplicantCardFixture.notEvaluatedApplicantCard();
 
         // when
         boolean actual1 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard1, EvaluationStatus.EVALUATED);

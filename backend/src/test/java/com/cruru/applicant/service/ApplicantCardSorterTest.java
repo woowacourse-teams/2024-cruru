@@ -3,6 +3,8 @@ package com.cruru.applicant.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.dto.ApplicantCard;
+import com.cruru.util.fixture.ApplicantCardFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -16,15 +18,18 @@ class ApplicantCardSorterTest {
     @Test
     void getCreatedAtComparator_desc() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인",
-                LocalDateTime.of(2024, 10, 2, 20, 0), false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인",
-                LocalDateTime.of(2024, 10, 3, 20, 0), false, 0, 0.00, 1L);
+        LocalDateTime createdAt1 = LocalDateTime.of(2024, 10, 2, 20, 0);
+        LocalDateTime createdAt2 = LocalDateTime.of(2024, 10, 3, 20, 0);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt1);
+        ApplicantCard applicantCard2 = ApplicantCardFixture.evaluatedApplicantCard(createdAt2);
         List<ApplicantCard> applicantCards = Arrays.asList(applicantCard1, applicantCard2);
-        String defaultSortByScore = "desc";
 
         // when
-        applicantCards.sort(ApplicantCardSorter.getCombinedComparator("desc", defaultSortByScore));
+        applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+
+        ));
 
         // then
         assertThat(applicantCards).containsExactly(applicantCard2, applicantCard1);
@@ -34,15 +39,17 @@ class ApplicantCardSorterTest {
     @Test
     void getCreatedAtComparator_asc() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인",
-                LocalDateTime.of(2024, 10, 2, 20, 0), false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인",
-                LocalDateTime.of(2024, 10, 3, 20, 0), false, 0, 0.00, 1L);
+        LocalDateTime createdAt1 = LocalDateTime.of(2024, 10, 2, 20, 0);
+        LocalDateTime createdAt2 = LocalDateTime.of(2024, 10, 3, 20, 0);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt1);
+        ApplicantCard applicantCard2 = ApplicantCardFixture.evaluatedApplicantCard(createdAt2);
         List<ApplicantCard> applicantCards = Arrays.asList(applicantCard2, applicantCard1);
-        String defaultSortByScore = "desc";
 
         // when
-        applicantCards.sort(ApplicantCardSorter.getCombinedComparator("asc", defaultSortByScore));
+        applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
+                "asc",
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+        ));
 
         // then
         assertThat(applicantCards).containsExactly(applicantCard1, applicantCard2);
@@ -52,15 +59,16 @@ class ApplicantCardSorterTest {
     @Test
     void getScoreComparator_desc() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인",
-                LocalDateTime.of(2024, 10, 2, 20, 0), false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인",
-                LocalDateTime.of(2024, 10, 2, 20, 0), false, 0, 0.00, 1L);
+        LocalDateTime createdAt = LocalDateTime.of(2024, 10, 2, 20, 0);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
+        ApplicantCard applicantCard2 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
         List<ApplicantCard> applicantCards = Arrays.asList(applicantCard2, applicantCard1);
-        String defaultSortByCreatedAt = "desc";
 
         // when
-        applicantCards.sort(ApplicantCardSorter.getCombinedComparator(defaultSortByCreatedAt, "desc"));
+        applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                "desc"
+        ));
 
         // then
         assertThat(applicantCards).containsExactly(applicantCard1, applicantCard2);
@@ -70,15 +78,16 @@ class ApplicantCardSorterTest {
     @Test
     void getScoreComparator_asc() {
         // given
-        ApplicantCard applicantCard1 = new ApplicantCard(1L, "최냥인",
-                LocalDateTime.of(2024, 10, 2, 20, 0), false, 5, 3.00, 1L);
-        ApplicantCard applicantCard2 = new ApplicantCard(2L, "최냥인",
-                LocalDateTime.of(2024, 10, 2, 20, 0), false, 0, 0.00, 1L);
+        LocalDateTime createdAt = LocalDateTime.of(2024, 10, 2, 20, 0);
+        ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
+        ApplicantCard applicantCard2 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
         List<ApplicantCard> applicantCards = Arrays.asList(applicantCard1, applicantCard2);
-        String defaultSortByCreatedAt = "desc";
 
         // when
-        applicantCards.sort(ApplicantCardSorter.getCombinedComparator(defaultSortByCreatedAt, "asc"));
+        applicantCards.sort(ApplicantCardSorter.getCombinedComparator(
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                "asc"
+        ));
 
         // then
         assertThat(applicantCards).containsExactly(applicantCard2, applicantCard1);

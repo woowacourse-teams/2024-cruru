@@ -16,13 +16,13 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
-import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -118,16 +118,16 @@ class ProcessControllerTest extends ControllerTest {
                 ProcessFixture.interview(dashboard),
                 ProcessFixture.applyType(dashboard)
         ));
-        Double defaultMinScore = 0.00;
-        Double defaultMaxScore = 5.00;
-        EvaluationStatus defaultEvaluationStatus = EvaluationStatus.ALL;
-        String defaultSortByCreatedAt = "desc";
-        String defaultSortByScore = "desc";
         applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
         String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
                         + "&evaluationStatus=%s&sortByCreatedAt=%s&sortByScore=%s",
-                dashboard.getId(), defaultMinScore, defaultMaxScore, defaultEvaluationStatus,
-                defaultSortByCreatedAt, defaultSortByScore);
+                dashboard.getId(),
+                DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+        );
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -140,7 +140,7 @@ class ProcessControllerTest extends ControllerTest {
                                 parameterWithName("minScore").description("지원자 최소 평균 점수: 0.00(default) ~ 5.00"),
                                 parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default)"),
                                 parameterWithName("evaluationStatus").description(
-                                        "지원자 평가 유무: ALL(default), NO_EVALUATION, EVALUATED"),
+                                        "지원자 평가 유무: ALL(default), NOT_EVALUATION, EVALUATED"),
                                 parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: desc(default), asc"),
                                 parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: desc(default), asc")
                         ),
