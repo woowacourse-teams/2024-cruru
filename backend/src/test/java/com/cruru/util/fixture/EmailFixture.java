@@ -1,5 +1,7 @@
 package com.cruru.util.fixture;
 
+import com.cruru.applicant.domain.Applicant;
+import com.cruru.club.domain.Club;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.email.domain.Email;
 
@@ -27,6 +29,16 @@ public class EmailFixture {
         return new Email(
                 null,
                 null,
+                SUBJECT,
+                REJECT_CONTENT,
+                true
+        );
+    }
+
+    public static Email rejectEmail(Club from, Applicant to) {
+        return new Email(
+                from,
+                to,
                 SUBJECT,
                 REJECT_CONTENT,
                 true

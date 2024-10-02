@@ -52,7 +52,13 @@ public class EvaluationService {
         return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
     }
 
+    @Transactional
     public void deleteByProcess(long processId) {
         evaluationRepository.deleteByProcessId(processId);
+    }
+
+    @Transactional
+    public void deleteAllByProcesses(List<Process> processes) {
+        evaluationRepository.deleteAllByProcesses(processes);
     }
 }

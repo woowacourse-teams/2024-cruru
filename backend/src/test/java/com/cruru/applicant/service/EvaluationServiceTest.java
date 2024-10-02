@@ -111,4 +111,44 @@ class EvaluationServiceTest extends ServiceTest {
                 () -> assertThat(updatedEvaluation.get().getContent()).isEqualTo(content)
         );
     }
+
+    @DisplayName("입력된 프로세스에 해당하는 평가들을 삭제한다.")
+    @Test
+    void deleteByProcess() {
+        // given
+        Process process1 = processRepository.save(ProcessFixture.applyType());
+        Process process2 = processRepository.save(ProcessFixture.approveType());
+
+        Evaluation evaluation1 = evaluationRepository.save(EvaluationFixture.fivePoints(process1, null));
+        Evaluation evaluation2 = evaluationRepository.save(EvaluationFixture.fivePoints(process1, null));
+        Evaluation evaluation3 = evaluationRepository.save(EvaluationFixture.fivePoints(process2, null));
+
+        // when
+        evaluationService.deleteByProcess(process1.getId());
+
+        // then
+        assertThat(evaluationRepository.findAll()).contains(evaluation3)
+                .doesNotContain(evaluation1, evaluation2);
+    }
+
+    @DisplayName("입력된 프로세스 목록에 해당하는 평가들을 삭제한다.")
+    @Test
+    void deleteAllByProcesses() {
+        // given
+        Process process1 = processRepository.save(ProcessFixture.applyType());
+        Process process2 = processRepository.save(ProcessFixture.interview(null));
+        Process process3 = processRepository.save(ProcessFixture.approveType());
+        List<Process> processes = List.of(process1, process2);
+
+        Evaluation evaluation1 = evaluationRepository.save(EvaluationFixture.fivePoints(process1, null));
+        Evaluation evaluation2 = evaluationRepository.save(EvaluationFixture.fivePoints(process2, null));
+        Evaluation evaluation3 = evaluationRepository.save(EvaluationFixture.fivePoints(process3, null));
+
+        // when
+        evaluationService.deleteAllByProcesses(processes);
+
+        // then
+        assertThat(evaluationRepository.findAll()).contains(evaluation3)
+                .doesNotContain(evaluation1, evaluation2);
+    }
 }
