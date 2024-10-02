@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applyform.domain.ApplyForm;
@@ -17,11 +18,14 @@ import com.cruru.dashboard.controller.response.DashboardsOfClubResponse;
 import com.cruru.dashboard.controller.response.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.email.domain.Email;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.domain.Answer;
+import com.cruru.question.domain.Choice;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.question.domain.repository.ChoiceRepository;
@@ -174,14 +178,27 @@ class DashboardFacadeTest extends ServiceTest {
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         Question question = questionRepository.save(QuestionFixture.singleChoiceType(applyForm));
-        choiceRepository.save(ChoiceFixture.first(question));
+        Choice choice = choiceRepository.save(ChoiceFixture.first(question));
         Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
-        answerRepository.save(AnswerFixture.first(question, applicant));
-        emailRepository.save(EmailFixture.rejectEmail(club, applicant));
-        evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
+        Answer answer = answerRepository.save(AnswerFixture.first(question, applicant));
+        Email email = emailRepository.save(EmailFixture.rejectEmail(club, applicant));
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
 
         // when
         dashboardFacade.delete(dashboard.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(evaluationRepository.findAll()).doesNotContain(evaluation),
+                () -> assertThat(emailRepository.findAll()).doesNotContain(email),
+                () -> assertThat(answerRepository.findAll()).doesNotContain(answer),
+                () -> assertThat(applicantRepository.findAll()).doesNotContain(applicant),
+                () -> assertThat(processRepository.findAll()).doesNotContain(process),
+                () -> assertThat(choiceRepository.findAll()).doesNotContain(choice),
+                () -> assertThat(questionRepository.findAll()).doesNotContain(question),
+                () -> assertThat(applyFormRepository.findAll()).doesNotContain(applyForm),
+                () -> assertThat(dashboardRepository.findAll()).doesNotContain(dashboard)
+        );
     }
 }
