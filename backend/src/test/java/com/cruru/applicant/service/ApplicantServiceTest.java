@@ -200,7 +200,7 @@ class ApplicantServiceTest extends ServiceTest {
                 .isInstanceOf(ApplicantUnrejectException.class);
     }
 
-    @DisplayName("압력된 지원자들을 삭제한다.")
+    @DisplayName("입력된 지원자들을 삭제한다.")
     @Test
     void deleteAllInBatch() {
         // given
