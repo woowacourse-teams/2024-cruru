@@ -5,12 +5,12 @@ import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.response.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
-import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -107,14 +107,18 @@ public class ApplicantService {
     }
 
     public List<ApplicantCard> findApplicantCards(
-            List<Process> processes, Double minScore, Double maxScore,
-            EvaluationStatus evaluationExists, String sortByCreatedAt, String sortByScore
+            List<Process> processes,
+            Double minScore,
+            Double maxScore,
+            EvaluationStatus evaluationStatus,
+            String sortByCreatedAt,
+            String sortByScore
     ) {
         List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
 
         return applicantCards.stream()
                 .filter(card -> ApplicantCardFilter.filterByScore(card, minScore, maxScore))
-                .filter(card -> ApplicantCardFilter.filterByEvaluationStatus(card, evaluationExists))
+                .filter(card -> ApplicantCardFilter.filterByEvaluationStatus(card, evaluationStatus))
                 .sorted(ApplicantCardSorter.getCombinedComparator(sortByCreatedAt, sortByScore))
                 .collect(Collectors.toList());
     }

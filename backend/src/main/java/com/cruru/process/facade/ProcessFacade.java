@@ -38,14 +38,18 @@ public class ProcessFacade {
     }
 
     public ProcessResponses readAllByDashboardId(
-            long dashboardId, Double minScore, Double maxScore,
-            EvaluationStatus evaluationExists, String sortByCreatedAt, String sortByScore
+            long dashboardId,
+            Double minScore,
+            Double maxScore,
+            EvaluationStatus evaluationStatus,
+            String sortByCreatedAt,
+            String sortByScore
     ) {
         ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
         List<Process> processes = processService.findAllByDashboard(dashboardId);
 
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
-                processes, minScore, maxScore, evaluationExists, sortByCreatedAt, sortByScore);
+                processes, minScore, maxScore, evaluationStatus, sortByCreatedAt, sortByScore);
 
         List<ProcessResponse> processResponses = processes.stream()
                 .map(process -> toProcessResponse(process, applicantCards))

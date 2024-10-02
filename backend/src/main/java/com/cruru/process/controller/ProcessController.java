@@ -38,12 +38,13 @@ public class ProcessController {
             @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
             @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
-            @RequestParam(name = "EvaluationStatus", required = false, defaultValue = "ALL") EvaluationStatus evaluationExists,
+            @RequestParam(name = "evaluationStatus", required = false, defaultValue = "ALL") EvaluationStatus evaluationStatus,
             @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "desc") String sortByCreatedAt,
             @RequestParam(name = "sortByScore", required = false, defaultValue = "desc") String sortByScore
     ) {
         ProcessResponses processes = processFacade.readAllByDashboardId(
-                dashboardId, minScore, maxScore, evaluationExists, sortByCreatedAt, sortByScore);
+                dashboardId, minScore, maxScore, evaluationStatus, sortByCreatedAt, sortByScore
+        );
         return ResponseEntity.ok().body(processes);
     }
 
