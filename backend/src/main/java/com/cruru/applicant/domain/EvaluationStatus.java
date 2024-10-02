@@ -2,5 +2,5 @@ package com.cruru.applicant.domain;
 
 public enum EvaluationStatus {
 
-    ALL, NO_EVALUATED, EVALUATED
+    ALL, NOT_EVALUATED, EVALUATED
 }

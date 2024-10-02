@@ -64,8 +64,8 @@ class ApplicantCardFilterTest {
         ApplicantCard applicantCard2 = ApplicantCardFixture.notEvaluatedApplicantCard();
 
         // when
-        boolean actual1 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard1, EvaluationStatus.NO_EVALUATED);
-        boolean actual2 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard2, EvaluationStatus.NO_EVALUATED);
+        boolean actual1 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard1, EvaluationStatus.NOT_EVALUATED);
+        boolean actual2 = ApplicantCardFilter.filterByEvaluationStatus(applicantCard2, EvaluationStatus.NOT_EVALUATED);
 
         // then
         assertAll(

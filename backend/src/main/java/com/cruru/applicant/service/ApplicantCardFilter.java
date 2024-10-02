@@ -17,7 +17,7 @@ public class ApplicantCardFilter {
         if (evaluationExists == EvaluationStatus.ALL) {
             return true;
         }
-        if (evaluationExists == EvaluationStatus.NO_EVALUATED) {
+        if (evaluationExists == EvaluationStatus.NOT_EVALUATED) {
             return evaluationCount == 0;
         }
         if (evaluationExists == EvaluationStatus.EVALUATED) {
