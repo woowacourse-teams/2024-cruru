@@ -86,4 +86,9 @@ public class ApplyFormService {
         return applyFormRepository.findByDashboard(dashboard)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
+
+    @Transactional
+    public void delete(ApplyForm applyForm) {
+        applyFormRepository.delete(applyForm);
+    }
 }

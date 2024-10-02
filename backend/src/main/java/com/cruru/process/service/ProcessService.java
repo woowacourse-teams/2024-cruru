@@ -117,4 +117,9 @@ public class ProcessService {
             throw new ProcessDeleteRemainingApplicantException();
         }
     }
+
+    @Transactional
+    public void deleteAllInBatch(List<Process> processes) {
+        processRepository.deleteAllInBatch(processes);
+    }
 }
