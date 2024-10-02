@@ -72,6 +72,15 @@ public class ApplicantService {
     }
 
     @Transactional
+    public void reject(List<Long> applicantIds) {
+        applicantIds.stream()
+                .map(this::findById)
+                .forEach(this::validateRejectable);
+
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, true);
+    }
+
+    @Transactional
     public void unreject(long applicantId) {
         Applicant applicant = findById(applicantId);
         validateUnrejectable(applicant);
@@ -82,6 +91,15 @@ public class ApplicantService {
         if (applicant.isNotRejected()) {
             throw new ApplicantUnrejectException();
         }
+    }
+
+    @Transactional
+    public void unreject(List<Long> applicantIds) {
+        applicantIds.stream()
+                .map(this::findById)
+                .forEach(this::validateUnrejectable);
+
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, false);
     }
 
     public ApplicantResponse toApplicantResponse(Applicant applicant) {
@@ -101,5 +119,16 @@ public class ApplicantService {
 
     public List<ApplicantCard> findApplicantCards(Process process) {
         return applicantRepository.findApplicantCardsByProcess(process);
+    }
+
+    public List<Applicant> findAllByProcesses(List<Process> processes) {
+        return processes.stream()
+                .flatMap(process -> findAllByProcess(process).stream())
+                .toList();
+    }
+
+    @Transactional
+    public void deleteAllInBatch(List<Applicant> applicants) {
+        applicantRepository.deleteAllInBatch(applicants);
     }
 }

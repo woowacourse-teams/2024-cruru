@@ -48,4 +48,9 @@ public class DashboardService {
     public List<Applicant> findAllApplicants(Dashboard dashboard) {
         return applicantRepository.findAllByDashboard(dashboard);
     }
+
+    @Transactional
+    public void deleteById(Long dashboardId) {
+        dashboardRepository.deleteById(dashboardId);
+    }
 }

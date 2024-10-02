@@ -67,3 +67,31 @@ operation::applicant/change-info[snippets="http-request,path-parameters,request-
 ==== 실패: 존재하지 않는 지원자
 
 operation::applicant/change-info-fail/applicant-not-found[snippets="http-request,path-parameters,request-cookies,http-response"]
+
+=== 지원자 일괄 불합격
+
+==== 성공
+
+operation::applicant/reject-all/[snippets="http-request,request-cookies,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::applicant/reject-all-fail/applicant-not-found[snippets="http-request,request-cookies,request-fields,http-response"]
+
+==== 실패: 이미 불합격한 지원자
+
+operation::applicant/reject-all-fail/already-rejected[snippets="http-request,request-cookies,request-fields,http-response"]
+
+=== 지원자 일괄 불합격 해제
+
+==== 성공
+
+operation::applicant/unreject-all/[snippets="http-request,request-cookies,request-fields,http-response"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::applicant/unreject-all-fail/applicant-not-found[snippets="http-request,request-cookies,request-fields,http-response"]
+
+==== 실패: 불합격 하지 않은 지원자
+
+operation::applicant/unreject-all-fail/already-unrejected[snippets="http-request,request-cookies,request-fields,http-response"]

@@ -74,4 +74,9 @@ public class EmailService {
     public void save(Email email) {
         emailRepository.save(email);
     }
+
+    @Transactional
+    public void deleteAllByTos(List<Applicant> applicants) {
+        emailRepository.deleteAllByTos(applicants);
+    }
 }

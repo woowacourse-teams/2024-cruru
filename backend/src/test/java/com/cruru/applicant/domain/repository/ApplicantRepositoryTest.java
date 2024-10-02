@@ -218,4 +218,31 @@ class ApplicantRepositoryTest extends RepositoryTest {
         assertThat(applicants).hasSize(3);
         assertThat(applicants).containsExactlyInAnyOrder(applicant1, applicant2, applicant3);
     }
+
+    @DisplayName("지원자를 전부 불합격시킨다.")
+    @Test
+    void rejectAll() {
+        // given
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby());
+
+        List<Long> applicantIds = List.of(applicant1.getId(), applicant2.getId(), applicant3.getId());
+
+        // when
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, true);
+
+        // then
+        Applicant foundApplicant1 = applicantRepository.findById(applicant1.getId())
+                .orElseThrow();
+        Applicant foundApplicant2 = applicantRepository.findById(applicant2.getId())
+                .orElseThrow();
+        Applicant foundApplicant3 = applicantRepository.findById(applicant3.getId())
+                .orElseThrow();
+        assertAll(
+                () -> assertThat(foundApplicant1.isRejected()).isTrue(),
+                () -> assertThat(foundApplicant2.isRejected()).isTrue(),
+                () -> assertThat(foundApplicant3.isRejected()).isTrue()
+        );
+    }
 }

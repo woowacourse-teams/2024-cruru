@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
@@ -46,4 +48,13 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     @Query("SELECT a FROM Applicant a JOIN FETCH a.process p JOIN FETCH p.dashboard d WHERE d = :dashboard")
     List<Applicant> findAllByDashboard(@Param("dashboard") Dashboard dashboard);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("""
+           UPDATE Applicant a
+           SET a.isRejected = :isRejected
+           WHERE a.id in :applicantIds
+           """)
+    @Transactional
+    void updateRejectedStatusForApplicants(List<Long> applicantIds, boolean isRejected);
 }
