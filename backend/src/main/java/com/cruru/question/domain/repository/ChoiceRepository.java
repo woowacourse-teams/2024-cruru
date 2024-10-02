@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ChoiceRepository extends JpaRepository<Choice, Long> {
 
-    @EntityGraph(attributePaths = {"question.applicant.process.dashboard.club.member"})
+    @EntityGraph(attributePaths = {"question.applyForm.dashboard.club.member"})
     @Query("SELECT c FROM Choice c WHERE c.id = :id")
     @Override
     Optional<Choice> findById(Long id);
