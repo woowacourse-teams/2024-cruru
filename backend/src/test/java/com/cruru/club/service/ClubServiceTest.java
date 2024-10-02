@@ -55,14 +55,14 @@ class ClubServiceTest extends ServiceTest {
 
     @DisplayName("동아리를 ID로 조회한다.")
     @Test
-    void findById() {
+    void findByIdFetchingMember() {
         // given
         Club savedClub = clubRepository.save(ClubFixture.create());
-        Club actual = clubService.findById(savedClub.getId());
+        Club actual = clubService.findByIdFetchingMember(savedClub.getId());
 
         // when&then
         assertAll(
-                () -> assertDoesNotThrow(() -> clubService.findById(savedClub.getId())),
+                () -> assertDoesNotThrow(() -> clubService.findByIdFetchingMember(savedClub.getId())),
                 () -> assertThat(actual.getName()).isEqualTo(savedClub.getName())
         );
     }

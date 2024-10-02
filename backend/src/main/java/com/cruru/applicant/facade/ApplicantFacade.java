@@ -28,7 +28,7 @@ public class ApplicantFacade {
     private final AnswerService answerService;
 
     public ApplicantBasicResponse readBasicById(long applicantId) {
-        Applicant applicant = applicantService.findById(applicantId);
+        Applicant applicant = applicantService.findByIdFetchingMember(applicantId);
         return toApplicantBasicResponse(applicant);
     }
 
@@ -39,7 +39,7 @@ public class ApplicantFacade {
     }
 
     public ApplicantAnswerResponses readDetailById(long applicantId) {
-        Applicant applicant = applicantService.findById(applicantId);
+        Applicant applicant = applicantService.findByIdFetchingMember(applicantId);
         List<Answer> answers = answerService.findAllByApplicantWithQuestions(applicant);
         List<AnswerResponse> answerResponses = answerService.toAnswerResponses(answers);
         return new ApplicantAnswerResponses(answerResponses);
@@ -52,7 +52,7 @@ public class ApplicantFacade {
 
     @Transactional
     public void updateApplicantProcess(long processId, ApplicantMoveRequest moveRequest) {
-        Process process = processService.findById(processId);
+        Process process = processService.findByIdFetchingMember(processId);
         applicantService.moveApplicantProcess(process, moveRequest);
     }
 

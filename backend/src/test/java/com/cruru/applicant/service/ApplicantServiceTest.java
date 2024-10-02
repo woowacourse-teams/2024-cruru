@@ -90,7 +90,7 @@ class ApplicantServiceTest extends ServiceTest {
         long invalidId = -1L;
 
         // when&then
-        assertThatThrownBy(() -> applicantService.findById(invalidId))
+        assertThatThrownBy(() -> applicantService.findByIdFetchingMember(invalidId))
                 .isInstanceOf(ApplicantNotFoundException.class);
     }
 

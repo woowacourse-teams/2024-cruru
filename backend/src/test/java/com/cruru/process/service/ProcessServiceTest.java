@@ -80,14 +80,14 @@ class ProcessServiceTest extends ServiceTest {
 
     @DisplayName("프로세스를 ID를 통해 조회한다")
     @Test
-    void findById() {
+    void findByIdFetchingMember() {
         // given
         Process savedProcess = processRepository.save(ProcessFixture.applyType());
 
         // when&then
         Long processId = savedProcess.getId();
-        assertDoesNotThrow(() -> processService.findById(processId));
-        assertThat(processService.findById(processId)).isEqualTo(savedProcess);
+        assertDoesNotThrow(() -> processService.findByIdFetchingMember(processId));
+        assertThat(processService.findByIdFetchingMember(processId)).isEqualTo(savedProcess);
     }
 
     @DisplayName("대시보드에 존재하는 첫 번째 프로세스를 조회한다.")
