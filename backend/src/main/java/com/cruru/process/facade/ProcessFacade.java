@@ -32,7 +32,7 @@ public class ProcessFacade {
 
     @Transactional
     public void create(ProcessCreateRequest request, long dashboardId) {
-        Dashboard dashboard = dashboardService.findById(dashboardId);
+        Dashboard dashboard = dashboardService.findByIdFetchingMember(dashboardId);
         processService.create(request, dashboard);
     }
 
@@ -65,7 +65,7 @@ public class ProcessFacade {
 
     @Transactional
     public ProcessResponse update(ProcessUpdateRequest request, long processId) {
-        Process process = processService.findById(processId);
+        Process process = processService.findByIdFetchingMember(processId);
 
         processService.update(request, process.getId());
         return toProcessResponse(process);

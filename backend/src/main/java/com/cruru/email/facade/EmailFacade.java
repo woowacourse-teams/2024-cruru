@@ -25,10 +25,10 @@ public class EmailFacade {
     private final ApplicantService applicantService;
 
     public void send(EmailRequest request) {
-        Club from = clubService.findById(request.clubId());
+        Club from = clubService.findByIdFetchingMember(request.clubId());
         List<Applicant> applicants = request.applicantIds()
                 .stream()
-                .map(applicantService::findById)
+                .map(applicantService::findByIdFetchingMember)
                 .toList();
         sendAndSave(from, applicants, request.subject(), request.content(), request.files());
     }

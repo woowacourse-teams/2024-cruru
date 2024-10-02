@@ -77,13 +77,13 @@ class QuestionServiceTest extends ServiceTest {
 
     @DisplayName("질문 ID를 통해 특정 질문을 조회한다.")
     @Test
-    void findById() {
+    void findByIdFetchingMember() {
         // given
         Question savedQuestion = questionRepository.save(QuestionFixture.longAnswerType(null));
 
         // when&then
-        assertDoesNotThrow(() -> questionService.findById(savedQuestion.getId()));
-        Question actualFoundQuestion = questionService.findById(savedQuestion.getId());
+        assertDoesNotThrow(() -> questionService.findByIdFetchingMember(savedQuestion.getId()));
+        Question actualFoundQuestion = questionService.findByIdFetchingMember(savedQuestion.getId());
         assertThat(actualFoundQuestion).isEqualTo(savedQuestion);
     }
 

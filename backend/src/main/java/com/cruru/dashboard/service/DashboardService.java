@@ -36,8 +36,8 @@ public class DashboardService {
         return savedDashboard;
     }
 
-    public Dashboard findById(Long id) {
-        return dashboardRepository.findById(id)
+    public Dashboard findByIdFetchingMember(Long id) {
+        return dashboardRepository.findByIdFetchingMember(id)
                 .orElseThrow(DashboardNotFoundException::new);
     }
 

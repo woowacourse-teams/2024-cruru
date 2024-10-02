@@ -26,8 +26,8 @@ public class ClubService {
         return clubRepository.save(new Club(name, member));
     }
 
-    public Club findById(Long id) {
-        return clubRepository.findById(id)
+    public Club findByIdFetchingMember(Long id) {
+        return clubRepository.findByIdFetchingMember(id)
                 .orElseThrow(ClubNotFoundException::new);
     }
 

@@ -38,7 +38,7 @@ public class ApplyFormFacade {
     private final Clock clock;
 
     public ApplyFormResponse readApplyFormById(long applyFormId) {
-        ApplyForm applyForm = applyFormService.findById(applyFormId);
+        ApplyForm applyForm = applyFormService.findByIdFetchingMember(applyFormId);
         List<Question> questions = questionService.findByApplyForm(applyForm);
 
         return new ApplyFormResponse(
@@ -53,7 +53,7 @@ public class ApplyFormFacade {
     @Transactional
     public void submit(long applyFormId, ApplyFormSubmitRequest request) {
         validatePersonalDataCollection(request);
-        ApplyForm applyForm = applyFormService.findById(applyFormId);
+        ApplyForm applyForm = applyFormService.findByIdFetchingMember(applyFormId);
         validateSubmitDate(applyForm);
         Dashboard dashboard = applyForm.getDashboard();
         Process firstProcess = processService.findApplyProcessOnDashboard(dashboard);
@@ -98,7 +98,7 @@ public class ApplyFormFacade {
 
     @Transactional
     public void update(ApplyFormWriteRequest request, long applyFormId) {
-        ApplyForm updateTargetApplyForm = applyFormService.findById(applyFormId);
+        ApplyForm updateTargetApplyForm = applyFormService.findByIdFetchingMember(applyFormId);
         applyFormService.update(updateTargetApplyForm, request);
     }
 }

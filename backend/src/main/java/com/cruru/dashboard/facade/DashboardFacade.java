@@ -38,7 +38,7 @@ public class DashboardFacade {
 
     @Transactional
     public DashboardCreateResponse create(long clubId, DashboardCreateRequest request) {
-        Club club = clubService.findById(clubId);
+        Club club = clubService.findByIdFetchingMember(clubId);
 
         Dashboard dashboard = dashboardService.create(club);
         ApplyForm applyForm = applyFormService.create(toApplyFormWriteRequest(request), dashboard);
@@ -60,7 +60,7 @@ public class DashboardFacade {
     public DashboardsOfClubResponse findAllDashboardsByClubId(long clubId) {
         List<DashboardApplyFormDto> dashboards = dashboardService.findAllByClub(clubId);
 
-        String clubName = clubService.findById(clubId).getName();
+        String clubName = clubService.findByIdFetchingMember(clubId).getName();
         LocalDateTime now = LocalDateTime.now(clock);
         List<DashboardPreviewResponse> dashboardResponses = dashboards.stream()
                 .map(this::createDashboardPreviewResponse)

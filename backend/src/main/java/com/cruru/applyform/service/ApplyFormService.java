@@ -72,8 +72,8 @@ public class ApplyFormService {
         );
     }
 
-    public ApplyForm findById(Long applyFormId) {
-        return applyFormRepository.findById(applyFormId)
+    public ApplyForm findByIdFetchingMember(Long applyFormId) {
+        return applyFormRepository.findByIdFetchingMember(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 
