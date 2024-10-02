@@ -12,6 +12,7 @@ import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import java.util.List;
@@ -38,11 +39,11 @@ public class ProcessFacade {
 
     public ProcessResponses readAllByDashboardId(
             long dashboardId, Double minScore, Double maxScore,
-            Integer evaluationExists, String sortByCreatedAt, String sortByScore
+            EvaluationStatus evaluationExists, String sortByCreatedAt, String sortByScore
     ) {
         ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
         List<Process> processes = processService.findAllByDashboard(dashboardId);
-        
+
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
                 processes, minScore, maxScore, evaluationExists, sortByCreatedAt, sortByScore);
 

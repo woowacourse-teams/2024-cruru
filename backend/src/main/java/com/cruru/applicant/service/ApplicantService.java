@@ -10,6 +10,7 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import java.util.Comparator;
 import java.util.List;
@@ -108,7 +109,7 @@ public class ApplicantService {
 
     public List<ApplicantCard> findApplicantCards(
             List<Process> processes, Double minScore, Double maxScore,
-            Integer evaluationExists, String sortByCreatedAt, String sortByScore
+            EvaluationStatus evaluationExists, String sortByCreatedAt, String sortByScore
     ) {
         List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
 
@@ -124,19 +125,18 @@ public class ApplicantService {
         return avgScore >= minScore && avgScore <= maxScore;
     }
 
-    private boolean filterByEvaluationExists(ApplicantCard card, Integer evaluationExists) {
-        // TODO: evaluationExists -> enum 전환 고려
+    private boolean filterByEvaluationExists(ApplicantCard card, EvaluationStatus evaluationExists) {
         long evaluationCount = card.evaluationCount();
-        if (evaluationExists == 0) {
-            return true; // 필터링 없이 모두 허용
+        if (evaluationExists == EvaluationStatus.ALL) {
+            return true;
         }
-        if (evaluationExists == 1) {
-            return evaluationCount == 0; // 평가가 없는 경우
+        if (evaluationExists == EvaluationStatus.NO_EVALUATED) {
+            return evaluationCount == 0;
         }
-        if (evaluationExists == 2) {
-            return evaluationCount > 0; // 평가가 있는 경우
+        if (evaluationExists == EvaluationStatus.EVALUATED) {
+            return evaluationCount > 0;
         }
-        return false; // 예상치 못한 값은 false
+        return false;
     }
 
     private Comparator<ApplicantCard> getCombinedComparator(String sortByCreatedAt, String sortByScore) {

@@ -7,6 +7,7 @@ import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.facade.ProcessFacade;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class ProcessController {
             @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
             @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
-            @RequestParam(name = "evaluationExists", required = false, defaultValue = "0") Integer evaluationExists,
+            @RequestParam(name = "evaluationExists", required = false, defaultValue = "ALL") EvaluationStatus evaluationExists,
             @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "desc") String sortByCreatedAt,
             @RequestParam(name = "sortByScore", required = false, defaultValue = "desc") String sortByScore
     ) {

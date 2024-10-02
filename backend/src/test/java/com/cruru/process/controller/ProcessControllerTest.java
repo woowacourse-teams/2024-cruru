@@ -16,6 +16,7 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
@@ -119,12 +120,12 @@ class ProcessControllerTest extends ControllerTest {
         ));
         Double defaultMinScore = 0.00;
         Double defaultMaxScore = 5.00;
-        Integer defaultEvaluationExists = 0;
+        EvaluationStatus defaultEvaluationExists = EvaluationStatus.ALL;
         String defaultSortByCreatedAt = "desc";
         String defaultSortByScore = "desc";
         applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
         String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
-                        + "&evaluationExists=%d&sortByCreatedAt=%s&sortByScore=%s",
+                        + "&evaluationExists=%s&sortByCreatedAt=%s&sortByScore=%s",
                 dashboard.getId(), defaultMinScore, defaultMaxScore, defaultEvaluationExists,
                 defaultSortByCreatedAt, defaultSortByScore);
 
@@ -136,11 +137,12 @@ class ProcessControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("dashboardId").description("대시보드의 id"),
-                                parameterWithName("minScore").description("지원자 최소 평균 점수"),
-                                parameterWithName("maxScore").description("지원자 최대 평균 점수"),
-                                parameterWithName("evaluationExists").description("지원자 평가 유무"),
-                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건"),
-                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건")
+                                parameterWithName("minScore").description("지원자 최소 평균 점수: 0.00(default) ~ 5.00"),
+                                parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default)"),
+                                parameterWithName("evaluationExists").description(
+                                        "지원자 평가 유무: ALL(default), NO_EVALUATION, EVALUATED"),
+                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: desc(default), asc"),
+                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: desc(default), asc")
                         ),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),

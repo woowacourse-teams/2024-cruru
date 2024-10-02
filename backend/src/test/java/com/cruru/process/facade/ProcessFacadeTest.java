@@ -13,6 +13,7 @@ import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -94,7 +95,7 @@ class ProcessFacadeTest extends ServiceTest {
         evaluationRepository.saveAll(evaluations1);
         Double defaultMinScore = 0.00;
         Double defaultMaxScore = 5.00;
-        Integer defaultEvaluationExists = 0;
+        EvaluationStatus defaultEvaluationExists = EvaluationStatus.ALL;
         String defaultSortByCreatedAt = "desc";
         String defaultSortByScore = "desc";
 

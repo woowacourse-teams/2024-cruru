@@ -8,7 +8,6 @@ import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
@@ -17,6 +16,7 @@ import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -107,13 +107,13 @@ class ApplicantServiceTest extends ServiceTest {
 
         Double defaultMinScore = 0.00;
         Double defaultMaxScore = 5.00;
-        Integer defaultEvaluationExists = 2;
+        EvaluationStatus evaluationExists = EvaluationStatus.EVALUATED;
         String defaultSortByCreatedAt = "desc";
         String defaultSortByScore = "desc";
 
         // when
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
-                processes, defaultMinScore, defaultMaxScore, defaultEvaluationExists,
+                processes, defaultMinScore, defaultMaxScore, evaluationExists,
                 defaultSortByCreatedAt, defaultSortByScore
         );
 
