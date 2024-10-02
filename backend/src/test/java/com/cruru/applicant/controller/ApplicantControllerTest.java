@@ -486,7 +486,7 @@ class ApplicantControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
-                        "applicant/unreject-all-fail/already-rejected/",
+                        "applicant/unreject-all-fail/already-unrejected/",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         requestFields(fieldWithPath("applicantIds").description("불합격하지 않은 지원자의 id"))
                 ))

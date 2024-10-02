@@ -94,4 +94,4 @@ operation::applicant/unreject-all-fail/applicant-not-found[snippets="http-reques
 
 ==== 실패: 불합격 하지 않은 지원자
 
-operation::applicant/unreject-all-fail/already-rejected[snippets="http-request,request-cookies,request-fields,http-response"]
+operation::applicant/unreject-all-fail/already-unrejected[snippets="http-request,request-cookies,request-fields,http-response"]
