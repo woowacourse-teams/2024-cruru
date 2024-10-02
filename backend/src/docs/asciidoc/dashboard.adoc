@@ -19,3 +19,13 @@ operation::dashboard/create-fail/club-not-found[snippets="http-request,request-c
 ==== 성공
 
 operation::dashboard/read[snippets="http-request,request-cookies,query-parameters,http-response,response-fields"]
+
+=== 대시보드 삭제
+
+==== 성공
+
+operation::dashboard/delete[snippets="http-request,request-cookies,path-parameters,http-response"]
+
+==== 실패: 존재하지 않는 대시보드
+
+operation::dashboard/delete/not-found[snippets="http-request,request-cookies,path-parameters,http-response"]

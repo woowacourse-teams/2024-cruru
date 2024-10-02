@@ -91,4 +91,17 @@ class DashboardServiceTest extends ServiceTest {
                 new DashboardApplyFormDto(frontendDashboard, frontendApplyform)
         );
     }
+
+    @DisplayName("해당 ID의 대시보드를 삭제한다.")
+    @Test
+    void deleteById() {
+        // given
+        Dashboard backendDashboard = dashboardRepository.save(DashboardFixture.backend());
+
+        // when
+        dashboardService.deleteById(backendDashboard.getId());
+
+        // then
+        assertThat(dashboardRepository.findAll()).doesNotContain(backendDashboard);
+    }
 }

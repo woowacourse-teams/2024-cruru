@@ -199,4 +199,21 @@ class ApplicantServiceTest extends ServiceTest {
         assertThatThrownBy(() -> applicantService.unreject(applicantId))
                 .isInstanceOf(ApplicantUnrejectException.class);
     }
+
+    @DisplayName("입력된 지원자들을 삭제한다.")
+    @Test
+    void deleteAllInBatch() {
+        // given
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        List<Applicant> applicants = List.of(applicant1, applicant2);
+
+        // when
+        applicantService.deleteAllInBatch(applicants);
+
+        // then
+        assertThat(applicantRepository.findAll()).contains(applicant3)
+                .doesNotContain(applicant1, applicant2);
+    }
 }

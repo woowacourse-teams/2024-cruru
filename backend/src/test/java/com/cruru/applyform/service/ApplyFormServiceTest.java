@@ -157,4 +157,17 @@ class ApplyFormServiceTest extends ServiceTest {
                 () -> assertThat(actual.getEndDate()).isEqualTo(toChangeEndDate)
         );
     }
+
+    @DisplayName("해당 지원폼을 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+
+        // when
+        applyFormService.delete(applyForm);
+
+        // then
+        assertThat(applyFormRepository.findAll()).doesNotContain(applyForm);
+    }
 }
