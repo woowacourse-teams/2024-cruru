@@ -7,9 +7,10 @@ import com.cruru.util.fixture.ApplicantCardFixture;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("지원자 평가 상태 필터링 테스트")
 class EvaluationStatusTest {
@@ -18,19 +19,21 @@ class EvaluationStatusTest {
     @DisplayName("ALL 상태 테스트")
     class AllStatusTest {
 
-        private static Stream<ApplicantCard> provideApplicantCardsForAllStatus() {
+        private static Stream<Arguments> provideApplicantCardsForAllStatus() {
             return Stream.of(
-                    ApplicantCardFixture.evaluatedApplicantCard(),
-                    ApplicantCardFixture.notEvaluatedApplicantCard()
+                    Arguments.of(ApplicantCardFixture.evaluatedApplicantCard(), "ALL"),
+                    Arguments.of(ApplicantCardFixture.notEvaluatedApplicantCard(), "ALL"),
+                    Arguments.of(ApplicantCardFixture.evaluatedApplicantCard(), "all"),
+                    Arguments.of(ApplicantCardFixture.notEvaluatedApplicantCard(), "all")
             );
         }
 
         @DisplayName("평가 상태가 ALL이면 항상 true를 반환한다.")
         @ParameterizedTest
         @MethodSource("provideApplicantCardsForAllStatus")
-        void matchesEvaluationStatus_all(ApplicantCard card) {
+        void matchesEvaluationStatus_all(ApplicantCard card, String evaluationStatus) {
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, "ALL");
+            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
 
             // then
             assertThat(actual).isTrue();
@@ -42,26 +45,28 @@ class EvaluationStatusTest {
     class NotEvaluatedStatusTest {
 
         @DisplayName("평가 상태가 NOT_EVALUATED일 때, 평가 수가 0이면 true를 반환한다.")
-        @Test
-        void matchesEvaluationStatus_notEvaluated_true() {
+        @ParameterizedTest
+        @ValueSource(strings = {"NOT_EVALUATED", "not_evaluated"})
+        void matchesEvaluationStatus_notEvaluated_true(String evaluationStatus) {
             // given
             ApplicantCard card = ApplicantCardFixture.notEvaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, "NOT_EVALUATED");
+            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
 
             // then
             assertThat(actual).isTrue();
         }
 
         @DisplayName("평가 상태가 NOT_EVALUATED일 때, 평가 수가 0보다 크면 false를 반환한다.")
-        @Test
-        void matchesEvaluationStatus_notEvaluated_false() {
+        @ParameterizedTest
+        @ValueSource(strings = {"NOT_EVALUATED", "not_evaluated"})
+        void matchesEvaluationStatus_notEvaluated_false(String evaluationStatus) {
             // given
             ApplicantCard card = ApplicantCardFixture.evaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, "NOT_EVALUATED");
+            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
 
             // then
             assertThat(actual).isFalse();
@@ -73,26 +78,28 @@ class EvaluationStatusTest {
     class EvaluatedStatusTest {
 
         @DisplayName("평가 상태가 EVALUATED일 때, 평가 수가 0보다 크면 true를 반환한다.")
-        @Test
-        void matchesEvaluationStatus_evaluated_true() {
+        @ParameterizedTest
+        @ValueSource(strings = {"EVALUATED", "evaluated"})
+        void matchesEvaluationStatus_evaluated_true(String evaluationStatus) {
             // given
             ApplicantCard card = ApplicantCardFixture.evaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, "EVALUATED");
+            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
 
             // then
             assertThat(actual).isTrue();
         }
 
         @DisplayName("평가 상태가 EVALUATED일 때, 평가 수가 0이면 false를 반환한다.")
-        @Test
-        void matchesEvaluationStatus_evaluated_false() {
+        @ParameterizedTest
+        @ValueSource(strings = {"EVALUATED", "evaluated"})
+        void matchesEvaluationStatus_evaluated_false(String evaluationStatus) {
             // given
             ApplicantCard card = ApplicantCardFixture.notEvaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, "EVALUATED");
+            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
 
             // then
             assertThat(actual).isFalse();

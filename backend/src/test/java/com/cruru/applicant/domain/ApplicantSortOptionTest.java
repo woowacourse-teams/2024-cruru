@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 
 @DisplayName("지원자 정렬 테스트")
@@ -21,8 +22,9 @@ class ApplicantSortOptionTest {
     class getCreatedAtComparatorTest {
 
         @DisplayName("지원자의 지원 날짜 기준으로 오름차순으로 정렬한다.")
-        @Test
-        void getCreatedAtComparator_asc() {
+        @ParameterizedTest
+        @ValueSource(strings = {"ASC", "asc"})
+        void getCreatedAtComparator_asc(String sortByCreatedAt) {
             // given
             LocalDateTime createdAt1 = LocalDateTime.of(2024, 10, 2, 20, 0);
             LocalDateTime createdAt2 = LocalDateTime.of(2024, 10, 3, 20, 0);
@@ -32,7 +34,7 @@ class ApplicantSortOptionTest {
 
             // when
             applicantCards.sort(ApplicantSortOption.getCombinedComparator(
-                    "ASC",
+                    sortByCreatedAt,
                     DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
             ));
 
@@ -41,8 +43,9 @@ class ApplicantSortOptionTest {
         }
 
         @DisplayName("지원자의 지원 날짜 기준으로 내림차순으로 정렬한다.")
-        @Test
-        void getCreatedAtComparator_desc() {
+        @ParameterizedTest
+        @ValueSource(strings = {"DESC", "desc"})
+        void getCreatedAtComparator_desc(String sortByCreatedAt) {
             // given
             LocalDateTime createdAt1 = LocalDateTime.of(2024, 10, 2, 20, 0);
             LocalDateTime createdAt2 = LocalDateTime.of(2024, 10, 3, 20, 0);
@@ -52,7 +55,7 @@ class ApplicantSortOptionTest {
 
             // when
             applicantCards.sort(ApplicantSortOption.getCombinedComparator(
-                    "desc",
+                    sortByCreatedAt,
                     DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
 
             ));
@@ -67,8 +70,9 @@ class ApplicantSortOptionTest {
     class getScoreComparatorTest {
 
         @DisplayName("지원자의 평균 점수 기준으로 오름차순으로 정렬한다.")
-        @Test
-        void getScoreComparator_asc() {
+        @ParameterizedTest
+        @ValueSource(strings = {"ASC", "asc"})
+        void getScoreComparator_asc(String sortByCreatedAt) {
             // given
             LocalDateTime createdAt = LocalDateTime.of(2024, 10, 2, 20, 0);
             ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
@@ -78,7 +82,7 @@ class ApplicantSortOptionTest {
             // when
             applicantCards.sort(ApplicantSortOption.getCombinedComparator(
                     DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                    "ASC"
+                    sortByCreatedAt
             ));
 
             // then
@@ -86,8 +90,9 @@ class ApplicantSortOptionTest {
         }
 
         @DisplayName("지원자의 평균 점수 기준으로 내림차순으로 정렬한다.")
-        @Test
-        void getScoreComparator_desc() {
+        @ParameterizedTest
+        @ValueSource(strings = {"DESC", "desc"})
+        void getScoreComparator_desc(String sortByCreatedAt) {
             // given
             LocalDateTime createdAt = LocalDateTime.of(2024, 10, 2, 20, 0);
             ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
@@ -97,7 +102,7 @@ class ApplicantSortOptionTest {
             // when
             applicantCards.sort(ApplicantSortOption.getCombinedComparator(
                     DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                    "DESC"
+                    sortByCreatedAt
             ));
 
             // then
