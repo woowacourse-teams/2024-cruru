@@ -117,8 +117,8 @@ class ApplyFormServiceTest extends ServiceTest {
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
-        assertThatThrownBy(() -> applyFormService.findById(-1L)).isInstanceOf(
-                ApplyFormNotFoundException.class);
+        assertThatThrownBy(() -> applyFormService.findById(-1L))
+                .isInstanceOf(ApplyFormNotFoundException.class);
     }
 
     @DisplayName("대시보드 ID로 지원폼을 조회한다.")
