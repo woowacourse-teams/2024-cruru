@@ -1,14 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
-import { DropdownListItem } from '@customTypes/common';
-import DropdownItem from '@components/_common/atoms/DropdownItem';
+import { useState, useRef, useEffect, PropsWithChildren, isValidElement, cloneElement, Children } from 'react';
 import { HiChevronDown } from 'react-icons/hi';
 import S from './style';
 
-export interface DropdownProps {
+export interface DropdownProps extends PropsWithChildren {
   initValue?: string;
   width?: number;
   size?: 'sm' | 'md';
-  items: DropdownListItem[];
   isShadow?: boolean;
   disabled?: boolean;
 }
@@ -17,9 +14,9 @@ export default function Dropdown({
   initValue,
   width,
   size = 'sm',
-  items,
   isShadow = true,
   disabled = false,
+  children,
 }: DropdownProps) {
   const [selected, setSelected] = useState(initValue);
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +50,17 @@ export default function Dropdown({
     md: 36,
   };
 
+  const cloneChild = (child: React.ReactNode) =>
+    isValidElement(child)
+      ? // eslint-disable-next-line prettier/prettier
+        cloneElement(
+          child,
+          child.props.onClick && {
+            onClick: handleClickItem,
+          },
+        )
+      : child;
+
   return (
     <S.Container
       ref={dropdownRef}
@@ -76,19 +84,7 @@ export default function Dropdown({
           size={size}
           isShadow={isShadow}
         >
-          {items.map(({ name, isHighlight, id, hasSeparate, onClick }) => (
-            <DropdownItem
-              onClick={() => {
-                onClick({ targetProcessId: id });
-                handleClickItem(name);
-              }}
-              key={id}
-              item={name}
-              isHighlight={isHighlight}
-              size={size}
-              hasSeparate={hasSeparate}
-            />
-          ))}
+          {Children.map(children, cloneChild)}
         </S.List>
       )}
     </S.Container>
