@@ -8,8 +8,8 @@ import java.util.function.Predicate;
 public enum EvaluationStatus {
 
     ALL(card -> true),
-    NOT_EVALUATED(card -> card.evaluationCount() == 0),
-    EVALUATED(card -> card.evaluationCount() > 0);
+    NOT_EVALUATED(ApplicantCard::hasEvaluation),
+    EVALUATED(ApplicantCard::hasNoEvaluation);
 
     private final Predicate<ApplicantCard> predicate;
 
