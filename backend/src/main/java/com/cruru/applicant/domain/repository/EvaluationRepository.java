@@ -18,7 +18,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     void deleteByProcessId(long processId);
 
-    @EntityGraph(attributePaths = {"applicant.process.dashboard.club.member"})
+    @EntityGraph(attributePaths = {"process.dashboard.club.member"})
     @Query("SELECT e FROM Evaluation e WHERE e.id = :id")
     @Override
     Optional<Evaluation> findById(Long id);
