@@ -16,7 +16,6 @@ import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
@@ -106,7 +105,7 @@ class ApplicantServiceTest extends ServiceTest {
         evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant1));
         evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant2));
 
-        EvaluationStatus evaluationStatus = EvaluationStatus.EVALUATED;
+        String evaluationStatus = "EVALUATED";
 
         // when
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(

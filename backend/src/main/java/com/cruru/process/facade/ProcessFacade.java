@@ -1,7 +1,6 @@
 package com.cruru.process.facade;
 
 import com.cruru.applicant.controller.response.ApplicantCardResponse;
-import com.cruru.applicant.domain.SortOption;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.applicant.service.EvaluationService;
@@ -13,7 +12,6 @@ import com.cruru.process.controller.request.ProcessCreateRequest;
 import com.cruru.process.controller.request.ProcessUpdateRequest;
 import com.cruru.process.controller.response.ProcessResponse;
 import com.cruru.process.controller.response.ProcessResponses;
-import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
 import java.util.List;
@@ -42,9 +40,9 @@ public class ProcessFacade {
             long dashboardId,
             Double minScore,
             Double maxScore,
-            EvaluationStatus evaluationStatus,
-            SortOption sortByCreatedAt,
-            SortOption sortByScore
+            String evaluationStatus,
+            String sortByCreatedAt,
+            String sortByScore
     ) {
         ApplyForm applyForm = applyFormService.findByDashboardId(dashboardId);
         List<Process> processes = processService.findAllByDashboard(dashboardId);
