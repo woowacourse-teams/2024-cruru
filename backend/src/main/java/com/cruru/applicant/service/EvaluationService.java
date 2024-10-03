@@ -24,6 +24,11 @@ public class EvaluationService {
                 .orElseThrow(EvaluationNotFoundException::new);
     }
 
+    public Evaluation findByIdFetchingMember(Long evaluationId) {
+        return evaluationRepository.findByIdFetchingMember(evaluationId)
+                .orElseThrow(EvaluationNotFoundException::new);
+    }
+
     @Transactional
     public void create(EvaluationCreateRequest request, Process process, Applicant applicant) {
         evaluationRepository.save(new Evaluation(request.score(), request.content(), process, applicant));

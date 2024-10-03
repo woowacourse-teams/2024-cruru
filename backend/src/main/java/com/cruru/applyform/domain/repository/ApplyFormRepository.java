@@ -14,8 +14,7 @@ public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
 
     @EntityGraph(attributePaths = {"dashboard.club.member"})
     @Query("SELECT a FROM ApplyForm a WHERE a.id = :id")
-    @Override
-    Optional<ApplyForm> findById(Long id);
+    Optional<ApplyForm> findByIdFetchingMember(long id);
 
     Optional<ApplyForm> findByDashboard(Dashboard dashboard);
 

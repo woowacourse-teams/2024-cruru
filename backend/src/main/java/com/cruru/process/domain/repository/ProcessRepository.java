@@ -18,6 +18,5 @@ public interface ProcessRepository extends JpaRepository<Process, Long> {
 
     @EntityGraph(attributePaths = {"dashboard.club.member"})
     @Query("SELECT p FROM Process p WHERE p.id = :id")
-    @Override
-    Optional<Process> findById(Long id);
+    Optional<Process> findByIdFetchingMember(long id);
 }

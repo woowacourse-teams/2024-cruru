@@ -15,8 +15,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @EntityGraph(attributePaths = {"applicant.process.dashboard.club.member"})
     @Query("SELECT a FROM Answer a WHERE a.id = :id")
-    @Override
-    Optional<Answer> findById(Long id);
+    Optional<Answer> findByIdFetchingMember(long id);
 
     @Query("SELECT a FROM Answer a JOIN FETCH a.question WHERE a.applicant = :applicant")
     List<Answer> findAllByApplicantWithQuestions(@Param("applicant") Applicant applicant);

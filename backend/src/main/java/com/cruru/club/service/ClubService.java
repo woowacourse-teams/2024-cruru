@@ -35,4 +35,9 @@ public class ClubService {
         return clubRepository.findByMember(member)
                 .orElseThrow(ClubNotFoundException::new);
     }
+
+    public Club findByIdFetchingMember(Long id) {
+        return clubRepository.findByIdFetchingMember(id)
+                .orElseThrow(ClubNotFoundException::new);
+    }
 }
