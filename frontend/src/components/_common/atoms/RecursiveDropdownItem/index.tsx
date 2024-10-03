@@ -22,15 +22,16 @@ export type DropdownItemType = ClickableItem | SubTrigger;
 
 interface RecursiveDropdownRendererProps {
   items: DropdownItemType[];
+  size: 'sm' | 'md';
 }
 
-export default function RecursiveDropdownItem({ items }: RecursiveDropdownRendererProps) {
+export default function RecursiveDropdownItem({ items, size }: RecursiveDropdownRendererProps) {
   const renderItem = (item: DropdownItemType) => {
     if (item.type === 'clickable') {
       return (
         <DropdownItem
           key={item.id}
-          size="sm"
+          size={size}
           onClick={() => {
             item.onClick({ targetProcessId: Number(item.id) });
           }}
@@ -43,11 +44,14 @@ export default function RecursiveDropdownItem({ items }: RecursiveDropdownRender
     if (item.type === 'subTrigger') {
       return (
         <DropdownSubTrigger
-          size="sm"
+          size={size}
           key={item.id}
           item={item.name}
         >
-          <RecursiveDropdownItem items={item.items} />
+          <RecursiveDropdownItem
+            size={size}
+            items={item.items}
+          />
         </DropdownSubTrigger>
       );
     }
