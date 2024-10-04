@@ -5,6 +5,8 @@ import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     List<Applicant> findAllByProcess(Process process);
+
+    @EntityGraph(attributePaths = {"process.dashboard.club.member"})
+    @Query("SELECT a FROM Applicant a WHERE a.id = :id")
+    Optional<Applicant> findByIdFetchingMember(long id);
 
     long countByProcess(Process process);
 

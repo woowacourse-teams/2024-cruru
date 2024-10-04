@@ -110,14 +110,15 @@ class ApplyFormServiceTest extends ServiceTest {
 
     @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 예외가 발생한다.")
     @Test
-    void findById_invalidApplyForm() {
+    void findById_FetchingMember_invalidApplyForm() {
         // given
         processRepository.save(ProcessFixture.applyType(dashboard));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
-        assertThatThrownBy(() -> applyFormService.findById(-1L)).isInstanceOf(ApplyFormNotFoundException.class);
+        assertThatThrownBy(() -> applyFormService.findById(-1L))
+                .isInstanceOf(ApplyFormNotFoundException.class);
     }
 
     @DisplayName("대시보드 ID로 지원폼을 조회한다.")

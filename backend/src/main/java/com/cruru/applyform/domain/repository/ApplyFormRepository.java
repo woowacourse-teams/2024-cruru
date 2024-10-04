@@ -5,11 +5,16 @@ import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.DashboardApplyFormDto;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
+
+    @EntityGraph(attributePaths = {"dashboard.club.member"})
+    @Query("SELECT a FROM ApplyForm a WHERE a.id = :id")
+    Optional<ApplyForm> findByIdFetchingMember(long id);
 
     Optional<ApplyForm> findByDashboard(Dashboard dashboard);
 

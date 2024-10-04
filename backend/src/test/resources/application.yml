@@ -18,9 +18,11 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+        max_fetch_depth: 15
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: false
+    open-in-view: false
   mail:
     host: smtp.gmail.com
 

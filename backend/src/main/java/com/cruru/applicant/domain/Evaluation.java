@@ -65,7 +65,7 @@ public class Evaluation extends BaseEntity implements SecureResource {
 
     @Override
     public boolean isAuthorizedBy(Member member) {
-        return applicant.isAuthorizedBy(member);
+        return process.isAuthorizedBy(member);
     }
 
     @Override

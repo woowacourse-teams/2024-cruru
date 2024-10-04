@@ -3,11 +3,11 @@ package com.cruru.applicant.controller;
 import com.cruru.applicant.controller.request.EvaluationCreateRequest;
 import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
 import com.cruru.applicant.controller.response.EvaluationResponses;
-import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.facade.EvaluationFacade;
 import com.cruru.auth.annotation.RequireAuthCheck;
 import com.cruru.global.LoginProfile;
+import com.cruru.process.domain.Process;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class EvaluationController {
 
     private final EvaluationFacade evaluationFacade;
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
+    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @PostMapping
     public ResponseEntity<Void> create(
             @RequestBody @Valid EvaluationCreateRequest request,
@@ -41,7 +41,7 @@ public class EvaluationController {
         return ResponseEntity.created(URI.create(url)).build();
     }
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
+    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @GetMapping
     public ResponseEntity<EvaluationResponses> read(
             @RequestParam(name = "processId") Long processId,
