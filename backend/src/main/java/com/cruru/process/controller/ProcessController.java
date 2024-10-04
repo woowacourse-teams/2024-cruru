@@ -33,9 +33,17 @@ public class ProcessController {
     @RequireAuthCheck(targetId = "dashboardId", targetDomain = Dashboard.class)
     @GetMapping
     public ResponseEntity<ProcessResponses> read(
-            LoginProfile loginProfile, @RequestParam(name = "dashboardId") Long dashboardId
+            LoginProfile loginProfile,
+            @RequestParam(name = "dashboardId") Long dashboardId,
+            @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
+            @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
+            @RequestParam(name = "evaluationStatus", required = false, defaultValue = "ALL") String evaluationStatus,
+            @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "DESC") String sortByCreatedAt,
+            @RequestParam(name = "sortByScore", required = false, defaultValue = "DESC") String sortByScore
     ) {
-        ProcessResponses processes = processFacade.readAllByDashboardId(dashboardId);
+        ProcessResponses processes = processFacade.readAllByDashboardId(
+                dashboardId, minScore, maxScore, evaluationStatus, sortByCreatedAt, sortByScore
+        );
         return ResponseEntity.ok().body(processes);
     }
 
