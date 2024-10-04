@@ -8,7 +8,9 @@ import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
 import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
@@ -19,6 +21,8 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
+import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -40,6 +44,9 @@ class ApplicantServiceTest extends ServiceTest {
 
     @Autowired
     private DashboardRepository dashboardRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -81,6 +88,39 @@ class ApplicantServiceTest extends ServiceTest {
 
         // then
         assertThat(applicantsInProcess).containsExactlyElementsOf(applicants);
+    }
+
+    @DisplayName("프로세스 내의 모든 지원자를 필터링 및 정렬하여 조회한다.")
+    @Test
+    void findAllByProcess_filterAndOrder() {
+        // given
+        Process process1 = processRepository.save(ProcessFixture.applyType());
+        Process process2 = processRepository.save(ProcessFixture.applyType());
+        List<Process> processes = List.of(process1, process2);
+
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingRush(process1));
+        applicantRepository.save(ApplicantFixture.pendingDobby(process2));
+
+        evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant1));
+        evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant2));
+
+        String evaluationStatus = "EVALUATED";
+
+        // when
+        List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
+                processes,
+                DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
+                evaluationStatus,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+        );
+
+        // then
+        assertThat(applicantCards).hasSize(2);
+        assertThat(applicantCards.get(0).id()).isEqualTo(applicant2.getId());
+        assertThat(applicantCards.get(1).id()).isEqualTo(applicant1.getId());
     }
 
     @DisplayName("id에 해당하는 지원자가 존재하지 않으면 Not Found 예외가 발생한다.")

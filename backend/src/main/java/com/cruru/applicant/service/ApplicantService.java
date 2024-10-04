@@ -5,6 +5,8 @@ import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.response.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.ApplicantSortOption;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
@@ -113,8 +115,26 @@ public class ApplicantService {
         );
     }
 
-    public List<ApplicantCard> findApplicantCards(List<Process> processes) {
-        return applicantRepository.findApplicantCardsByProcesses(processes);
+    public List<ApplicantCard> findApplicantCards(
+            List<Process> processes,
+            Double minScore,
+            Double maxScore,
+            String evaluationStatus,
+            String sortByCreatedAt,
+            String sortByScore
+    ) {
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
+
+        return applicantCards.stream()
+                .filter(card -> filterByScore(card, minScore, maxScore))
+                .filter(card -> EvaluationStatus.matches(card, evaluationStatus))
+                .sorted(ApplicantSortOption.getCombinedComparator(sortByCreatedAt, sortByScore))
+                .toList();
+    }
+
+    private boolean filterByScore(ApplicantCard card, Double minScore, Double maxScore) {
+        double avgScore = card.averageScore();
+        return minScore <= avgScore && avgScore <= maxScore;
     }
 
     public List<ApplicantCard> findApplicantCards(Process process) {

@@ -18,6 +18,7 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.util.Comparator;
@@ -73,28 +74,35 @@ class ProcessFacadeTest extends ServiceTest {
     void readAllByDashboardId() {
         // given
         applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
-        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
-        Process process1 = processRepository.save(ProcessFixture.interview(defaultDashboard));
-        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
-        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process));
-        List<Evaluation> evaluations = List.of(
-                EvaluationFixture.fivePoints(process, applicant),
-                EvaluationFixture.fourPoints(process, applicant),
-                EvaluationFixture.fourPoints(process, applicant),
-                EvaluationFixture.fourPoints(process, applicant)
-        );
-        evaluationRepository.saveAll(evaluations);
-
+        Process process1 = processRepository.save(ProcessFixture.applyType(defaultDashboard));
+        Process process2 = processRepository.save(ProcessFixture.interview(defaultDashboard));
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
         List<Evaluation> evaluations1 = List.of(
                 EvaluationFixture.fivePoints(process1, applicant1),
-                EvaluationFixture.fivePoints(process1, applicant1),
-                EvaluationFixture.fivePoints(process1, applicant1),
+                EvaluationFixture.fourPoints(process1, applicant1),
+                EvaluationFixture.fourPoints(process1, applicant1),
                 EvaluationFixture.fourPoints(process1, applicant1)
         );
         evaluationRepository.saveAll(evaluations1);
 
+        List<Evaluation> evaluations2 = List.of(
+                EvaluationFixture.fivePoints(process2, applicant2),
+                EvaluationFixture.fivePoints(process2, applicant2),
+                EvaluationFixture.fivePoints(process2, applicant2),
+                EvaluationFixture.fourPoints(process2, applicant2)
+        );
+        evaluationRepository.saveAll(evaluations2);
+
         // when
-        ProcessResponses processResponses = processFacade.readAllByDashboardId(defaultDashboard.getId());
+        ProcessResponses processResponses = processFacade.readAllByDashboardId(
+                defaultDashboard.getId(),
+                DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+        );
 
         // then
         ProcessResponse firstProcessResponse = processResponses.processResponses().get(0);
@@ -102,10 +110,10 @@ class ProcessFacadeTest extends ServiceTest {
         ApplicantCardResponse applicantCardResponse = firstProcessResponse.applicantCardResponses().get(0);
         assertAll(
                 () -> assertThat(processResponses.processResponses()).hasSize(2),
-                () -> assertThat(processId).isEqualTo(process.getId()),
-                () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant.getId()),
-                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations.size()),
-                () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.25)
+                () -> assertThat(processId).isEqualTo(process1.getId()),
+                () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant2.getId()),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations1.size()),
+                () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.75)
         );
     }
 

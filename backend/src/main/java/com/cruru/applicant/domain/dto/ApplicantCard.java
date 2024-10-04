@@ -22,4 +22,12 @@ public record ApplicantCard(
     public ApplicantCardResponse toResponse() {
         return new ApplicantCardResponse(id, name, createdAt, isRejected, (int) evaluationCount, averageScore);
     }
+
+    public boolean hasEvaluation() {
+        return evaluationCount == 0;
+    }
+
+    public boolean hasNoEvaluation() {
+        return evaluationCount > 0;
+    }
 }
