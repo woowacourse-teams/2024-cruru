@@ -117,7 +117,7 @@ public class ApplicantService {
         List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
 
         return applicantCards.stream()
-                .filter(card -> this.filterByScore(card, minScore, maxScore))
+                .filter(card -> filterByScore(card, minScore, maxScore))
                 .filter(card -> EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus))
                 .sorted(ApplicantSortOption.getCombinedComparator(sortByCreatedAt, sortByScore))
                 .toList();
