@@ -6,8 +6,8 @@ import { Process } from '@customTypes/process';
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
 import { useModal } from '@contexts/ModalContext';
-import { PopOverMenuItem } from '@customTypes/common';
 
+import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
 import specificApplicant from '@hooks/useSpecificApplicant';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
 import ApplicantCard from '../ApplicantCard';
@@ -32,36 +32,41 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
   const { open: sideEmailFormOpen } = useFloatingEmailForm();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) => {
-    const menuItems = processList.map(
-      ({ processName, processId }) =>
-        ({
+    const menuItems: DropdownItemType[] = [
+      {
+        type: 'subTrigger',
+        id: 'moveProcess',
+        name: '지원자 단계 이동',
+        items: processList.map(({ processName, processId }) => ({
+          type: 'clickable',
           id: processId,
           name: processName,
-          onClick: ({ targetProcessId }: { targetProcessId: number }) => {
+          onClick: ({ targetProcessId }) => {
             moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
           },
-        }) as PopOverMenuItem,
-    );
-
-    menuItems.push({
-      id: 'emailButton',
-      name: '이메일 보내기',
-      hasSeparate: true,
-      onClick: () => {
-        setApplicantId(applicantId);
-        sideEmailFormOpen();
+        })),
       },
-    });
-
-    menuItems.push({
-      id: 'rejectButton',
-      name: '불합격 처리',
-      isHighlight: true,
-      hasSeparate: true,
-      onClick: () => {
-        rejectMutate({ applicantId });
+      {
+        type: 'clickable',
+        id: 'emailButton',
+        name: '이메일 보내기',
+        hasSeparate: true,
+        onClick: () => {
+          setApplicantId(applicantId);
+          sideEmailFormOpen();
+        },
       },
-    });
+      {
+        type: 'clickable',
+        id: 'rejectButton',
+        name: '불합격 처리',
+        isHighlight: true,
+        hasSeparate: true,
+        onClick: () => {
+          rejectMutate({ applicantId });
+        },
+      },
+    ];
 
     return menuItems;
   };
