@@ -38,11 +38,13 @@ export const ApplicantCardDefault: Story = {
     isRejected: false,
     popOverMenuItems: [
       {
+        type: 'clickable',
         id: 1,
         name: '단계 이동',
         onClick: () => console.log('지원자에 대한 "단계 이동" 클릭'),
       },
       {
+        type: 'clickable',
         id: 2,
         name: '불합격',
         isHighlight: true,
@@ -62,11 +64,13 @@ export const RejectedApplicantCard: Story = {
     isRejected: true,
     popOverMenuItems: [
       {
+        type: 'clickable',
         id: 1,
         name: '단계 이동',
         onClick: () => console.log('지원자에 대한 "단계 이동" 클릭'),
       },
       {
+        type: 'clickable',
         id: 2,
         name: '불합격',
         isHighlight: true,

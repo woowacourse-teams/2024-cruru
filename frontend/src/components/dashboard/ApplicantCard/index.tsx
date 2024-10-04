@@ -3,11 +3,11 @@ import { HiEllipsisVertical } from 'react-icons/hi2';
 
 import { useState, useRef, useEffect } from 'react';
 
-import { PopOverMenuItem } from '@customTypes/common';
-
 import IconButton from '@components/_common/atoms/IconButton';
 import PopOverMenu from '@components/_common/molecules/PopOverMenu';
 import formatDate from '@utils/formatDate';
+import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
+import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
 
 import S from './style';
 
@@ -17,7 +17,7 @@ interface ApplicantCardProps {
   createdAt: string;
   evaluationCount: number;
   averageScore: number;
-  popOverMenuItems: PopOverMenuItem[];
+  popOverMenuItems: DropdownItemType[];
   onCardClick: () => void;
 }
 
@@ -103,10 +103,10 @@ export default function ApplicantCard({
           </IconButton>
           <PopOverMenu
             isOpen={isPopOverOpen}
-            setClose={() => setIsPopOverOpen(false)}
-            items={popOverMenuItems}
             popOverPosition="3.5rem 0 0 -6rem"
-          />
+          >
+            <RecursiveDropdownItem items={popOverMenuItems} />
+          </PopOverMenu>
         </div>
       </S.OptionButtonWrapper>
     </S.CardContainer>
