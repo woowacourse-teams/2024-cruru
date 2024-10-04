@@ -41,7 +41,7 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
     {
       type: 'subTrigger',
       id: 'moveProcess',
-      name: '지원자 단계 이동',
+      name: '단계 이동',
       items: processList.map(({ processName, processId }) => ({
         type: 'clickable',
         id: processId,

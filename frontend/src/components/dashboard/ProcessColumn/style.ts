@@ -6,8 +6,7 @@ const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   min-width: 28rem;
   max-width: 28rem;
 
-  height: fit-content;
-  max-height: 100%;
+  height: 100%;
 
   padding: 1.2rem;
   border-radius: 0.8rem;

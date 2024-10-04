@@ -44,8 +44,8 @@ const SubItemBoundary = styled.div<{ width: number }>`
   position: absolute;
   padding: 0.4rem;
 
-  top: -0.4rem;
-  right: ${({ width }) => `-${width}px`};
+  top: -0.36rem;
+  right: ${({ width }) => `${width - 4}px`};
 
   display: flex;
   justify-content: center;
