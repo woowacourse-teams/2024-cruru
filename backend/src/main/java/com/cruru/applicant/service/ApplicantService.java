@@ -118,7 +118,7 @@ public class ApplicantService {
 
         return applicantCards.stream()
                 .filter(card -> filterByScore(card, minScore, maxScore))
-                .filter(card -> EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus))
+                .filter(card -> EvaluationStatus.matches(card, evaluationStatus))
                 .sorted(ApplicantSortOption.getCombinedComparator(sortByCreatedAt, sortByScore))
                 .toList();
     }

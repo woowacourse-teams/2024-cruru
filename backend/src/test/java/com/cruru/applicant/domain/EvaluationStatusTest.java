@@ -33,7 +33,7 @@ class EvaluationStatusTest {
         @MethodSource("provideApplicantCardsForAllStatus")
         void matchesEvaluationStatus_all(ApplicantCard card, String evaluationStatus) {
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
+            boolean actual = EvaluationStatus.matches(card, evaluationStatus);
 
             // then
             assertThat(actual).isTrue();
@@ -52,7 +52,7 @@ class EvaluationStatusTest {
             ApplicantCard card = ApplicantCardFixture.notEvaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
+            boolean actual = EvaluationStatus.matches(card, evaluationStatus);
 
             // then
             assertThat(actual).isTrue();
@@ -66,7 +66,7 @@ class EvaluationStatusTest {
             ApplicantCard card = ApplicantCardFixture.evaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
+            boolean actual = EvaluationStatus.matches(card, evaluationStatus);
 
             // then
             assertThat(actual).isFalse();
@@ -85,7 +85,7 @@ class EvaluationStatusTest {
             ApplicantCard card = ApplicantCardFixture.evaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
+            boolean actual = EvaluationStatus.matches(card, evaluationStatus);
 
             // then
             assertThat(actual).isTrue();
@@ -99,7 +99,7 @@ class EvaluationStatusTest {
             ApplicantCard card = ApplicantCardFixture.notEvaluatedApplicantCard();
 
             // when
-            boolean actual = EvaluationStatus.matchesEvaluationStatus(card, evaluationStatus);
+            boolean actual = EvaluationStatus.matches(card, evaluationStatus);
 
             // then
             assertThat(actual).isFalse();

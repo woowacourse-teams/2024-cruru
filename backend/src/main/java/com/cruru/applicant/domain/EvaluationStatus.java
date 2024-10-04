@@ -17,7 +17,7 @@ public enum EvaluationStatus {
         this.predicate = predicate;
     }
 
-    public static boolean matchesEvaluationStatus(ApplicantCard card, String evaluationStatus) {
+    public static boolean matches(ApplicantCard card, String evaluationStatus) {
         return Arrays.stream(EvaluationStatus.values())
                 .filter(status -> status.name().equalsIgnoreCase(evaluationStatus))
                 .findAny()
