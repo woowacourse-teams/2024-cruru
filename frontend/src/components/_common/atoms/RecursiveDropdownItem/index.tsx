@@ -22,10 +22,10 @@ export type DropdownItemType = ClickableItem | SubTrigger;
 
 interface RecursiveDropdownRendererProps {
   items: DropdownItemType[];
-  size: 'sm' | 'md';
+  size?: 'sm' | 'md';
 }
 
-export default function RecursiveDropdownItem({ items, size }: RecursiveDropdownRendererProps) {
+export default function RecursiveDropdownItem({ items, size = 'sm' }: RecursiveDropdownRendererProps) {
   const renderItem = (item: DropdownItemType) => {
     if (item.type === 'clickable') {
       return (
