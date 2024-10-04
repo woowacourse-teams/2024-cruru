@@ -2,6 +2,7 @@ package com.cruru.applicant.controller;
 
 import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
+import com.cruru.applicant.controller.request.ApplicantsRejectRequest;
 import com.cruru.applicant.controller.response.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.response.ApplicantBasicResponse;
 import com.cruru.applicant.domain.Applicant;
@@ -77,6 +78,20 @@ public class ApplicantController {
     @PatchMapping("/{applicantId}/unreject")
     public ResponseEntity<Void> unreject(@PathVariable Long applicantId, LoginProfile loginProfile) {
         applicantFacade.unreject(applicantId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/reject")
+    public ResponseEntity<Void> reject(@RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile) {
+        applicantFacade.reject(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/unreject")
+    public ResponseEntity<Void> unreject(
+            @RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile
+    ) {
+        applicantFacade.unreject(request);
         return ResponseEntity.ok().build();
     }
 }

@@ -6,22 +6,41 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
+import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applicant.domain.repository.EvaluationRepository;
+import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.email.domain.repository.EmailRepository;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.controller.request.ChoiceCreateRequest;
 import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.AnswerRepository;
+import com.cruru.question.domain.repository.ChoiceRepository;
+import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.AnswerFixture;
+import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.ChoiceFixture;
 import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.EmailFixture;
+import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.LocalDateFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import com.cruru.util.fixture.QuestionFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
@@ -70,6 +89,27 @@ class DashboardControllerTest extends ControllerTest {
 
     @Autowired
     private ApplyFormRepository applyFormRepository;
+
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private ChoiceRepository choiceRepository;
+
+    @Autowired
+    private ProcessRepository processRepository;
+
+    @Autowired
+    private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
+
+    @Autowired
+    private EmailRepository emailRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     private Club club;
 
@@ -248,5 +288,47 @@ class DashboardControllerTest extends ControllerTest {
                 ))
                 .when().get(url)
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("대시보드 삭제 시, 204를 응답한다.")
+    @Test
+    void delete() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question = questionRepository.save(QuestionFixture.singleChoiceType(applyForm));
+        choiceRepository.save(ChoiceFixture.first(question));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        answerRepository.save(AnswerFixture.first(question, applicant));
+        emailRepository.save(EmailFixture.rejectEmail(club, applicant));
+        evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .filter(document("dashboard/delete",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("dashboardId").description("삭제할 대시보드의 id"))
+                ))
+                .when().delete("/v1/dashboards/{dashboardId}", dashboard.getId())
+                .then().log().all().statusCode(204);
+    }
+
+    @DisplayName("대시보드 삭제 시 대시보드가 존재하지 않으면, 404를 응답한다.")
+    @Test
+    void delete_notFound() {
+        // given
+        long invalidId = -1;
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .filter(document("dashboard/delete/not-found",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        pathParameters(parameterWithName("dashboardId").description("존재하지 않는 대시보드의 id"))
+                ))
+                .when().delete("/v1/dashboards/{dashboardId}", invalidId)
+                .then().log().all().statusCode(404);
     }
 }

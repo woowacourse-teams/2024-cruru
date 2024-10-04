@@ -1,6 +1,8 @@
 package com.cruru.dashboard.facade;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.service.ApplicantService;
+import com.cruru.applicant.service.EvaluationService;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.service.ApplyFormService;
@@ -14,7 +16,12 @@ import com.cruru.dashboard.controller.response.StatsResponse;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.DashboardApplyFormDto;
 import com.cruru.dashboard.service.DashboardService;
+import com.cruru.email.service.EmailService;
+import com.cruru.process.domain.Process;
+import com.cruru.process.service.ProcessService;
 import com.cruru.question.controller.request.QuestionCreateRequest;
+import com.cruru.question.domain.Question;
+import com.cruru.question.service.AnswerService;
 import com.cruru.question.service.QuestionService;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -35,6 +42,11 @@ public class DashboardFacade {
     private final ApplyFormService applyFormService;
     private final QuestionService questionService;
     private final Clock clock;
+    private final ProcessService processService;
+    private final ApplicantService applicantService;
+    private final AnswerService answerService;
+    private final EvaluationService evaluationService;
+    private final EmailService emailService;
 
     @Transactional
     public DashboardCreateResponse create(long clubId, DashboardCreateRequest request) {
@@ -119,5 +131,36 @@ public class DashboardFacade {
                 .count();
         int totalPending = totalApplicants - (totalFails + totalAccepts);
         return new StatsResponse(totalAccepts, totalFails, totalPending, totalApplicants);
+    }
+
+    @Transactional
+    public void delete(Long dashboardId) {
+        Dashboard dashboard = dashboardService.findById(dashboardId);
+
+        ApplyForm applyForm = applyFormService.findByDashboard(dashboard);
+        List<Question> questions = questionService.findByApplyForm(applyForm);
+        List<Process> processes = processService.findAllByDashboard(dashboardId);
+        List<Applicant> applicants = applicantService.findAllByProcesses(processes);
+
+        deleteProcesses(applicants, processes);
+        deleteApplyForm(questions, applyForm);
+        dashboardService.deleteById(dashboardId);
+    }
+
+    private void deleteProcesses(List<Applicant> applicants, List<Process> processes) {
+        if (!applicants.isEmpty()) {
+            answerService.deleteAllByApplicants(applicants);
+            emailService.deleteAllByTos(applicants);
+            evaluationService.deleteAllByProcesses(processes);
+            applicantService.deleteAllInBatch(applicants);
+        }
+        processService.deleteAllInBatch(processes);
+    }
+
+    private void deleteApplyForm(List<Question> questions, ApplyForm applyForm) {
+        if (!questions.isEmpty()) {
+            questionService.deleteAllByApplyForm(applyForm);
+        }
+        applyFormService.delete(applyForm);
     }
 }

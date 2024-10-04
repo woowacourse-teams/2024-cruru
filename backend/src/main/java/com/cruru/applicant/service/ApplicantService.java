@@ -5,6 +5,8 @@ import com.cruru.applicant.controller.request.ApplicantMoveRequest;
 import com.cruru.applicant.controller.request.ApplicantUpdateRequest;
 import com.cruru.applicant.controller.response.ApplicantResponse;
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.ApplicantSortOption;
+import com.cruru.applicant.domain.EvaluationStatus;
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.exception.ApplicantNotFoundException;
@@ -45,6 +47,11 @@ public class ApplicantService {
                 .orElseThrow(ApplicantNotFoundException::new);
     }
 
+    public Applicant findByIdFetchingMember(Long applicantId) {
+        return applicantRepository.findByIdFetchingMember(applicantId)
+                .orElseThrow(ApplicantNotFoundException::new);
+    }
+
     private boolean changeExists(ApplicantUpdateRequest request, Applicant applicant) {
         return !(applicant.getName().equals(request.name())
                 && applicant.getEmail().equals(request.email())
@@ -72,6 +79,15 @@ public class ApplicantService {
     }
 
     @Transactional
+    public void reject(List<Long> applicantIds) {
+        applicantIds.stream()
+                .map(this::findById)
+                .forEach(this::validateRejectable);
+
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, true);
+    }
+
+    @Transactional
     public void unreject(long applicantId) {
         Applicant applicant = findById(applicantId);
         validateUnrejectable(applicant);
@@ -82,6 +98,15 @@ public class ApplicantService {
         if (applicant.isNotRejected()) {
             throw new ApplicantUnrejectException();
         }
+    }
+
+    @Transactional
+    public void unreject(List<Long> applicantIds) {
+        applicantIds.stream()
+                .map(this::findById)
+                .forEach(this::validateUnrejectable);
+
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, false);
     }
 
     public ApplicantResponse toApplicantResponse(Applicant applicant) {
@@ -95,11 +120,40 @@ public class ApplicantService {
         );
     }
 
-    public List<ApplicantCard> findApplicantCards(List<Process> processes) {
-        return applicantRepository.findApplicantCardsByProcesses(processes);
+    public List<ApplicantCard> findApplicantCards(
+            List<Process> processes,
+            Double minScore,
+            Double maxScore,
+            String evaluationStatus,
+            String sortByCreatedAt,
+            String sortByScore
+    ) {
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(processes);
+
+        return applicantCards.stream()
+                .filter(card -> filterByScore(card, minScore, maxScore))
+                .filter(card -> EvaluationStatus.matches(card, evaluationStatus))
+                .sorted(ApplicantSortOption.getCombinedComparator(sortByCreatedAt, sortByScore))
+                .toList();
+    }
+
+    private boolean filterByScore(ApplicantCard card, Double minScore, Double maxScore) {
+        double avgScore = card.averageScore();
+        return minScore <= avgScore && avgScore <= maxScore;
     }
 
     public List<ApplicantCard> findApplicantCards(Process process) {
         return applicantRepository.findApplicantCardsByProcess(process);
+    }
+
+    public List<Applicant> findAllByProcesses(List<Process> processes) {
+        return processes.stream()
+                .flatMap(process -> findAllByProcess(process).stream())
+                .toList();
+    }
+
+    @Transactional
+    public void deleteAllInBatch(List<Applicant> applicants) {
+        applicantRepository.deleteAllInBatch(applicants);
     }
 }

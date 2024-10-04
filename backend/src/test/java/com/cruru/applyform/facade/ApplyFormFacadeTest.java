@@ -23,7 +23,6 @@ import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.question.controller.response.QuestionResponse;
 import com.cruru.question.domain.Question;
 import com.cruru.question.domain.repository.AnswerRepository;
-import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;

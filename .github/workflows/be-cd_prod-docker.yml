@@ -65,7 +65,8 @@ jobs:
   deploy:
     environment: prod
     strategy:
-      max-parallel: 2
+      fail-fast: true
+      max-parallel: 1
       matrix:
         runners: [be-prod-a, be-prod-b]
       
@@ -138,3 +139,6 @@ jobs:
     - name: Deploy docker container
       run: |
         sudo docker-compose --env-file .env -f docker-compose.prod.yml up -d
+
+    - name: Run server status check script with timeout
+      run: ../check_server_status_with_timeout.sh

@@ -172,4 +172,21 @@ class ProcessServiceTest extends ServiceTest {
         assertThatThrownBy(() -> processService.delete(processId))
                 .isInstanceOf(ProcessDeleteRemainingApplicantException.class);
     }
+
+    @DisplayName("입력된 프로세스들을 삭제한다.")
+    @Test
+    void deleteAllInBatch() {
+        // given
+        Process process1 = processRepository.save(ProcessFixture.applyType());
+        Process process2 = processRepository.save(ProcessFixture.interview(null));
+        Process process3 = processRepository.save(ProcessFixture.approveType());
+        List<Process> processes = List.of(process1, process2);
+
+        // when
+        processService.deleteAllInBatch(processes);
+
+        // then
+        assertThat(processRepository.findAll()).contains(process3)
+                .doesNotContain(process1, process2);
+    }
 }
