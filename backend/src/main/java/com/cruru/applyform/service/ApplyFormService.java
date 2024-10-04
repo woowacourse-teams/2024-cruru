@@ -77,6 +77,11 @@ public class ApplyFormService {
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 
+    public ApplyForm findByIdFetchingMember(Long applyFormId) {
+        return applyFormRepository.findByIdFetchingMember(applyFormId)
+                .orElseThrow(ApplyFormNotFoundException::new);
+    }
+
     public ApplyForm findByDashboardId(Long dashboardId) {
         return applyFormRepository.findByDashboardId(dashboardId)
                 .orElseThrow(ApplyFormNotFoundException::new);
