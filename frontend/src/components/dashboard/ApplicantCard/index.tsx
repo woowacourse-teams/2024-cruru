@@ -1,13 +1,15 @@
 import { HiOutlineClock, HiOutlineChat } from 'react-icons/hi';
 import { HiEllipsisVertical } from 'react-icons/hi2';
 
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 
 import IconButton from '@components/_common/atoms/IconButton';
 import PopOverMenu from '@components/_common/molecules/PopOverMenu';
 import formatDate from '@utils/formatDate';
 import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
 import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+
+import { useDropdown } from '@contexts/DropdownContext';
 
 import S from './style';
 
@@ -30,24 +32,28 @@ export default function ApplicantCard({
   popOverMenuItems,
   onCardClick,
 }: ApplicantCardProps) {
-  const [isPopOverOpen, setIsPopOverOpen] = useState<boolean>(false);
+  const { isOpen, open, close } = useDropdown();
   const optionButtonWrapperRef = useRef<HTMLDivElement>(null);
 
   const evaluationString = averageScore ? `★ ${averageScore.toFixed(1)}` : '평가 대기 중';
 
   const handleClickPopOverButton = (event: React.MouseEvent) => {
     event.stopPropagation();
-    setIsPopOverOpen((prevState) => !prevState);
+    if (isOpen) close();
+    if (!isOpen) open();
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (optionButtonWrapperRef.current && !optionButtonWrapperRef.current.contains(event.target as Node)) {
-      setIsPopOverOpen(false);
-    }
-  };
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (optionButtonWrapperRef.current && !optionButtonWrapperRef.current.contains(event.target as Node)) {
+        close();
+      }
+    },
+    [close],
+  );
 
   const handleMouseLeave = () => {
-    setIsPopOverOpen(false);
+    close();
   };
 
   const cardClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -56,14 +62,14 @@ export default function ApplicantCard({
   };
 
   useEffect(() => {
-    if (isPopOverOpen) {
+    if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isPopOverOpen]);
+  }, [isOpen, handleClickOutside]);
 
   return (
     <S.CardContainer
@@ -102,7 +108,7 @@ export default function ApplicantCard({
             <HiEllipsisVertical />
           </IconButton>
           <PopOverMenu
-            isOpen={isPopOverOpen}
+            isOpen={isOpen}
             popOverPosition="3.5rem 0 0 -6rem"
           >
             <RecursiveDropdownItem items={popOverMenuItems} />

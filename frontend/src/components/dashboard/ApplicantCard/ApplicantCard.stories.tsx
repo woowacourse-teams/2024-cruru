@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { DropdownProvider } from '@contexts/DropdownContext';
 import ApplicantCard from '.';
 
 const meta = {
@@ -20,7 +21,9 @@ const meta = {
   decorators: [
     (Child) => (
       <div style={{ width: '350px' }}>
-        <Child />
+        <DropdownProvider>
+          <Child />
+        </DropdownProvider>
       </div>
     ),
   ],

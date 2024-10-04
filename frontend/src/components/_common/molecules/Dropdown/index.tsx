@@ -1,65 +1,46 @@
-import { useState, useRef, useEffect, PropsWithChildren, isValidElement, cloneElement, Children } from 'react';
+/* eslint-disable no-shadow */
+import { useRef, useEffect, PropsWithChildren, useCallback } from 'react';
 import { HiChevronDown } from 'react-icons/hi';
+import { DropdownProvider, useDropdown } from '@contexts/DropdownContext';
 import S from './style';
 
-export interface DropdownProps extends PropsWithChildren {
-  initValue?: string;
+interface DropdownBaseProps extends PropsWithChildren {
   width?: number;
   size?: 'sm' | 'md';
   isShadow?: boolean;
   disabled?: boolean;
 }
 
-export default function Dropdown({
-  initValue,
-  width,
-  size = 'sm',
-  isShadow = true,
-  disabled = false,
-  children,
-}: DropdownProps) {
-  const [selected, setSelected] = useState(initValue);
-  const [isOpen, setIsOpen] = useState(false);
+function DropdownBase({ width, size = 'sm', isShadow = true, disabled = false, children }: DropdownBaseProps) {
+  const { isOpen, open, close, selected } = useDropdown();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
     if (disabled) return;
-    setIsOpen(!isOpen);
+    if (isOpen) close();
+    if (!isOpen) open();
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
-  };
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        close();
+      }
+    },
+    [close],
+  );
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
-
-  const handleClickItem = (item: string) => {
-    setSelected(item);
-    setIsOpen(false);
-  };
+  }, [handleClickOutside]);
 
   const sizeObj: Record<typeof size, number> = {
     sm: 24,
     md: 36,
   };
-
-  const cloneChild = (child: React.ReactNode) =>
-    isValidElement(child)
-      ? // eslint-disable-next-line prettier/prettier
-        cloneElement(
-          child,
-          child.props.onClick && {
-            onClick: handleClickItem,
-          },
-        )
-      : child;
 
   return (
     <S.Container
@@ -84,9 +65,21 @@ export default function Dropdown({
           size={size}
           isShadow={isShadow}
         >
-          {Children.map(children, cloneChild)}
+          {children}
         </S.List>
       )}
     </S.Container>
+  );
+}
+
+export interface DropdownProps extends DropdownBaseProps {
+  initValue: string;
+}
+
+export default function Dropdown({ initValue, ...props }: DropdownProps) {
+  return (
+    <DropdownProvider initValue={initValue}>
+      <DropdownBase {...props} />
+    </DropdownProvider>
   );
 }

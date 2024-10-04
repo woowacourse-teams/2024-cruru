@@ -7,6 +7,8 @@ import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
 import { useModal } from '@contexts/ModalContext';
 
+import { DropdownProvider } from '@contexts/DropdownContext';
+
 import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
 import specificApplicant from '@hooks/useSpecificApplicant';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
@@ -87,16 +89,18 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
         {process.applicants
           .filter(({ isRejected }) => (showRejectedApplicant ? isRejected : !isRejected))
           .map(({ applicantId, applicantName, createdAt, evaluationCount, averageScore, isRejected }) => (
-            <ApplicantCard
-              key={applicantId}
-              name={applicantName}
-              isRejected={isRejected}
-              createdAt={createdAt}
-              evaluationCount={evaluationCount}
-              averageScore={averageScore}
-              popOverMenuItems={menuItemsList({ applicantId })}
-              onCardClick={() => cardClickHandler(applicantId)}
-            />
+            <DropdownProvider>
+              <ApplicantCard
+                key={applicantId}
+                name={applicantName}
+                isRejected={isRejected}
+                createdAt={createdAt}
+                evaluationCount={evaluationCount}
+                averageScore={averageScore}
+                popOverMenuItems={menuItemsList({ applicantId })}
+                onCardClick={() => cardClickHandler(applicantId)}
+              />
+            </DropdownProvider>
           ))}
       </S.ApplicantList>
     </S.ProcessWrapper>

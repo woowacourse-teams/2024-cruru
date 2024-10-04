@@ -1,7 +1,8 @@
 /* eslint-disable react/function-component-definition */
-import React, { useState } from 'react';
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import { DropdownProvider, useDropdown } from '@contexts/DropdownContext';
 import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
 import PopOverMenu, { PopOverMenuProps } from '.';
 
@@ -57,14 +58,19 @@ const createSampleItems: DropdownItemType[] = [
   },
 ];
 
-const PopOverMenuWithToggle: React.FC<Omit<PopOverMenuProps, 'isOpen'>> = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
+const BaseComponent: React.FC<Omit<PopOverMenuProps, 'isOpen'>> = (props) => {
+  const { isOpen, open, close } = useDropdown();
+
+  const handleToggle = () => {
+    if (isOpen) close();
+    if (!isOpen) open();
+  };
 
   return (
     <div style={{ position: 'absolute' }}>
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
       >
         {isOpen ? 'Close Menu' : 'Open Menu'}
       </button>
@@ -76,6 +82,12 @@ const PopOverMenuWithToggle: React.FC<Omit<PopOverMenuProps, 'isOpen'>> = (props
     </div>
   );
 };
+
+const PopOverMenuWithToggle: React.FC<Omit<PopOverMenuProps, 'isOpen'>> = (props) => (
+  <DropdownProvider>
+    <BaseComponent {...props} />
+  </DropdownProvider>
+);
 
 const Template: StoryObj<Omit<PopOverMenuProps, 'isOpen'>> = {
   render: (args) => <PopOverMenuWithToggle {...args} />,

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DropdownSubTrigger from '@components/_common/molecules/DropdownSubTrigger';
 import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
 import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import { DropdownProvider } from '@contexts/DropdownContext';
 
 const meta = {
   title: 'Common/Molecules/DropdownSubTrigger',
@@ -42,7 +43,9 @@ const meta = {
   decorators: [
     (Story) => (
       <div style={{ width: '150px' }}>
-        <Story />
+        <DropdownProvider>
+          <Story />
+        </DropdownProvider>
       </div>
     ),
   ],

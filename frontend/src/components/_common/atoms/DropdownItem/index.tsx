@@ -1,3 +1,4 @@
+import { useDropdown } from '@contexts/DropdownContext';
 import S from './style';
 
 export interface DropdownItemProps {
@@ -15,9 +16,13 @@ export default function DropdownItem({
   isHighlight = false,
   hasSeparate = false,
 }: DropdownItemProps) {
+  const { close, setSelected } = useDropdown();
+
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onClick();
+    close();
+    setSelected(item);
   };
 
   return (
