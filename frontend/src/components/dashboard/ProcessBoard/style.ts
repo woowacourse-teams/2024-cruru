@@ -7,6 +7,8 @@ const Wrapper = styled.div`
   display: flex;
   gap: 2.4rem;
 
+  padding-bottom: 1.2rem;
+
   overflow-x: scroll;
   overflow-y: visible;
 `;
