@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import DropdownSubTrigger from '@components/_common/molecules/DropdownSubTrigger';
 import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
 import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
 import { DropdownProvider } from '@contexts/DropdownContext';
+import DropdownSubTrigger from '.';
 
 const meta = {
-  title: 'Common/Molecules/DropdownSubTrigger',
+  title: 'Common/Atoms/DropdownSubTrigger',
   component: DropdownSubTrigger,
   parameters: {
     layout: 'centered',

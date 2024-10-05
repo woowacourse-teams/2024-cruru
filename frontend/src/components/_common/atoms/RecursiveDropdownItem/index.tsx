@@ -1,4 +1,4 @@
-import DropdownSubTrigger from '@components/_common/molecules/DropdownSubTrigger';
+import DropdownSubTrigger from '@components/_common/atoms/DropdownSubTrigger';
 import DropdownItem from '../DropdownItem';
 
 interface BaseItem {
