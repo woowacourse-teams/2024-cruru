@@ -36,6 +36,11 @@ const meta = {
       description: '구분선 표시 여부',
       control: 'boolean',
     },
+    placement: {
+      description: '하위 메뉴의 위치',
+      control: { type: 'radio' },
+      options: ['left', 'right'],
+    },
     children: {
       description: '하위 메뉴 아이템들 (DropdownItemRenderer으로 구성)',
       control: 'object',
@@ -89,6 +94,7 @@ export const Default: Story = {
     size: 'md',
     isHighlight: false,
     hasSeparate: false,
+    placement: 'right',
     children: <DropdownItemRenderer items={sampleSubItems} />,
   },
 };
@@ -111,6 +117,13 @@ export const WithSeparator: Story = {
   args: {
     ...Default.args,
     hasSeparate: true,
+  },
+};
+
+export const LeftPlacement: Story = {
+  args: {
+    ...Default.args,
+    placement: 'left',
   },
 };
 

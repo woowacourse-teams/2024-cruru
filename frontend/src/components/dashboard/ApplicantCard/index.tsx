@@ -111,7 +111,10 @@ export default function ApplicantCard({
             isOpen={isOpen}
             popOverPosition="3.5rem 0 0 -6rem"
           >
-            <DropdownItemRenderer items={popOverMenuItems} />
+            <DropdownItemRenderer
+              items={popOverMenuItems}
+              subContentPlacement="left"
+            />
           </PopOverMenu>
         </div>
       </S.OptionButtonWrapper>

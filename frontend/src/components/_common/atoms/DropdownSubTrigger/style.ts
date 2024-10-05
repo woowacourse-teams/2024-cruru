@@ -40,12 +40,12 @@ const fadeIn = keyframes`
   }
 `;
 
-const SubItemBoundary = styled.div<{ width: number }>`
+const SubItemBoundary = styled.div<{ width: number; placement: 'right' | 'left' }>`
   position: absolute;
   padding: 0.4rem;
 
   top: -0.36rem;
-  right: ${({ width }) => `${width - 4}px`};
+  right: ${({ width, placement }) => (placement === 'left' ? `${width - 4}px` : `-${width + 4}px`)};
 
   display: flex;
   justify-content: center;

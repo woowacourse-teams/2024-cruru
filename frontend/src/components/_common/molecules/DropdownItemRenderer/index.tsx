@@ -23,9 +23,10 @@ export type DropdownItemType = ClickableItem | SubTrigger;
 interface DropdownItemRendererProps {
   items: DropdownItemType[];
   size?: 'sm' | 'md';
+  subContentPlacement?: 'left' | 'right';
 }
 
-export default function DropdownItemRenderer({ items, size = 'sm' }: DropdownItemRendererProps) {
+export default function DropdownItemRenderer({ items, size = 'sm', subContentPlacement }: DropdownItemRendererProps) {
   const renderItem = (item: DropdownItemType) => {
     if (item.type === 'clickable') {
       return (
@@ -47,10 +48,12 @@ export default function DropdownItemRenderer({ items, size = 'sm' }: DropdownIte
           size={size}
           key={item.id}
           item={item.name}
+          placement={subContentPlacement}
         >
           <DropdownItemRenderer
             size={size}
             items={item.items}
+            subContentPlacement={subContentPlacement}
           />
         </DropdownSubTrigger>
       );

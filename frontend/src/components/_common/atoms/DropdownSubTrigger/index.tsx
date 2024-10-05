@@ -6,6 +6,7 @@ export interface DropdownSubTriggerProps extends PropsWithChildren {
   item: string;
   size: 'sm' | 'md';
   isHighlight?: boolean;
+  placement?: 'left' | 'right';
   hasSeparate?: boolean;
 }
 
@@ -14,6 +15,7 @@ export default function DropdownSubTrigger({
   size,
   isHighlight = false,
   hasSeparate = false,
+  placement = 'right',
   children,
 }: DropdownSubTriggerProps) {
   const [isSubOpen, setIsSubOpen] = useState(false);
@@ -40,7 +42,10 @@ export default function DropdownSubTrigger({
       {item}
       <HiChevronRight size={size === 'sm' ? 16 : 18} />
       {isSubOpen && (
-        <S.SubItemBoundary width={ref.current?.offsetWidth || 0}>
+        <S.SubItemBoundary
+          placement={placement}
+          width={ref.current?.offsetWidth || 0}
+        >
           <S.SubItemContainer
             size={size}
             width={ref.current?.offsetWidth || 0}
