@@ -9,7 +9,7 @@ import { useModal } from '@contexts/ModalContext';
 
 import { DropdownProvider } from '@contexts/DropdownContext';
 
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import specificApplicant from '@hooks/useSpecificApplicant';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
 import ApplicantCard from '../ApplicantCard';

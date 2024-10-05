@@ -7,8 +7,8 @@ import Dropdown from '@components/_common/molecules/Dropdown';
 import ToggleSwitch from '@components/_common/atoms/ToggleSwitch';
 import { QUESTION_TYPE_NAME } from '@constants/constants';
 
-import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
 import CheckBoxField from '@components/recruitment/CheckBoxField';
 import RadioInputField from '@components/recruitment/RadioInputField';
 import QuestionController from '../QuestionController';
@@ -93,7 +93,7 @@ export default function QuestionBuilder({
             width={200}
             isShadow={false}
           >
-            <RecursiveDropdownItem items={QUESTION_TYPES} />
+            <DropdownItemRenderer items={QUESTION_TYPES} />
           </Dropdown>
         </S.InputBox>
 

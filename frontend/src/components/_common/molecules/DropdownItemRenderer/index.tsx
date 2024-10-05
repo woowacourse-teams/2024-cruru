@@ -1,5 +1,5 @@
 import DropdownSubTrigger from '@components/_common/atoms/DropdownSubTrigger';
-import DropdownItem from '../DropdownItem';
+import DropdownItem from '../../atoms/DropdownItem';
 
 interface BaseItem {
   id: number | string;
@@ -20,12 +20,12 @@ interface SubTrigger extends BaseItem {
 
 export type DropdownItemType = ClickableItem | SubTrigger;
 
-interface RecursiveDropdownRendererProps {
+interface DropdownItemRendererProps {
   items: DropdownItemType[];
   size?: 'sm' | 'md';
 }
 
-export default function RecursiveDropdownItem({ items, size = 'sm' }: RecursiveDropdownRendererProps) {
+export default function DropdownItemRenderer({ items, size = 'sm' }: DropdownItemRendererProps) {
   const renderItem = (item: DropdownItemType) => {
     if (item.type === 'clickable') {
       return (
@@ -48,7 +48,7 @@ export default function RecursiveDropdownItem({ items, size = 'sm' }: RecursiveD
           key={item.id}
           item={item.name}
         >
-          <RecursiveDropdownItem
+          <DropdownItemRenderer
             size={size}
             items={item.items}
           />

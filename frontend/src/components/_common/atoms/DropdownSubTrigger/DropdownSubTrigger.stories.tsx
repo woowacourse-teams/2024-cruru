@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
 import { DropdownProvider } from '@contexts/DropdownContext';
+
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import DropdownSubTrigger from '.';
 
 const meta = {
@@ -12,7 +13,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'DropdownSubTrigger 컴포넌트는 하위 메뉴를 가진 드롭다운 아이템을 표시합니다. 내부적으로 RecursiveDropdownItem을 사용하여 중첩된 메뉴 구조를 지원합니다.',
+          'DropdownSubTrigger 컴포넌트는 하위 메뉴를 가진 드롭다운 아이템을 표시합니다. 내부적으로 DropdownItemRenderer을 사용하여 중첩된 메뉴 구조를 지원합니다.',
       },
     },
   },
@@ -36,7 +37,7 @@ const meta = {
       control: 'boolean',
     },
     children: {
-      description: '하위 메뉴 아이템들 (RecursiveDropdownItem으로 구성)',
+      description: '하위 메뉴 아이템들 (DropdownItemRenderer으로 구성)',
       control: 'object',
     },
   },
@@ -88,7 +89,7 @@ export const Default: Story = {
     size: 'md',
     isHighlight: false,
     hasSeparate: false,
-    children: <RecursiveDropdownItem items={sampleSubItems} />,
+    children: <DropdownItemRenderer items={sampleSubItems} />,
   },
 };
 
@@ -117,7 +118,7 @@ export const ComplexNestedStructure: Story = {
   args: {
     ...Default.args,
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={[
           ...sampleSubItems,
           {

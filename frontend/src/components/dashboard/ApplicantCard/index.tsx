@@ -6,11 +6,11 @@ import { useRef, useEffect, useCallback } from 'react';
 import IconButton from '@components/_common/atoms/IconButton';
 import PopOverMenu from '@components/_common/molecules/PopOverMenu';
 import formatDate from '@utils/formatDate';
-import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
 
 import { useDropdown } from '@contexts/DropdownContext';
 
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
 import S from './style';
 
 interface ApplicantCardProps {
@@ -111,7 +111,7 @@ export default function ApplicantCard({
             isOpen={isOpen}
             popOverPosition="3.5rem 0 0 -6rem"
           >
-            <RecursiveDropdownItem items={popOverMenuItems} />
+            <DropdownItemRenderer items={popOverMenuItems} />
           </PopOverMenu>
         </div>
       </S.OptionButtonWrapper>

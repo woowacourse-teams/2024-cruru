@@ -1,9 +1,9 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import { DropdownProvider, useDropdown } from '@contexts/DropdownContext';
-import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
 import PopOverMenu, { PopOverMenuProps } from '.';
 
 export default {
@@ -14,7 +14,7 @@ export default {
     docs: {
       description: {
         component:
-          'PopOverMenu 컴포넌트는 팝오버 형태의 메뉴를 표시합니다. RecursiveDropdownItem을 사용하여 중첩된 메뉴 구조를 지원합니다.',
+          'PopOverMenu 컴포넌트는 팝오버 형태의 메뉴를 표시합니다. DropdownItemRenderer을 사용하여 중첩된 메뉴 구조를 지원합니다.',
       },
     },
   },
@@ -98,7 +98,7 @@ export const Default: StoryObj<Omit<PopOverMenuProps, 'isOpen'>> = {
   args: {
     size: 'md',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="md"
       />
@@ -111,7 +111,7 @@ export const SmallSize: StoryObj<Omit<PopOverMenuProps, 'isOpen'>> = {
   args: {
     size: 'sm',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="sm"
       />
@@ -124,7 +124,7 @@ export const WithSeparator: StoryObj<Omit<PopOverMenuProps, 'isOpen'>> = {
   args: {
     size: 'sm',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={[
           ...createSampleItems,
           {

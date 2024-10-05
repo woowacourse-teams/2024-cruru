@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import Dropdown, { DropdownProps } from '.';
 
 export default {
@@ -11,7 +11,7 @@ export default {
     docs: {
       description: {
         component:
-          'Dropdown 컴포넌트는 선택 가능한 옵션 목록을 표시합니다. RecursiveDropdownItem을 사용하여 중첩된 메뉴 구조를 지원합니다.',
+          'Dropdown 컴포넌트는 선택 가능한 옵션 목록을 표시합니다. DropdownItemRenderer을 사용하여 중첩된 메뉴 구조를 지원합니다.',
       },
     },
   },
@@ -67,7 +67,7 @@ export const Default: StoryObj<DropdownProps> = {
   args: {
     size: 'md',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="md"
       />
@@ -80,7 +80,7 @@ export const SmallSize: StoryObj<DropdownProps> = {
   args: {
     size: 'sm',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="sm"
       />
@@ -94,7 +94,7 @@ export const WithInitValue: StoryObj<DropdownProps> = {
     size: 'md',
     initValue: '선택된 옵션',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="md"
       />
@@ -107,7 +107,7 @@ export const WithSeparator: StoryObj<DropdownProps> = {
   args: {
     size: 'sm',
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={[
           ...createSampleItems,
           {
@@ -130,7 +130,7 @@ export const Disabled: StoryObj<DropdownProps> = {
     size: 'md',
     disabled: true,
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="md"
       />
@@ -144,7 +144,7 @@ export const CustomWidth: StoryObj<DropdownProps> = {
     size: 'md',
     width: 300,
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="md"
       />
@@ -158,7 +158,7 @@ export const WithoutShadow: StoryObj<DropdownProps> = {
     size: 'md',
     isShadow: false,
     children: (
-      <RecursiveDropdownItem
+      <DropdownItemRenderer
         items={createSampleItems}
         size="md"
       />

@@ -8,8 +8,8 @@ import specificApplicant from '@hooks/useSpecificApplicant';
 import formatDate from '@utils/formatDate';
 import { useModal } from '@contexts/ModalContext';
 
-import RecursiveDropdownItem from '@components/_common/atoms/RecursiveDropdownItem';
-import type { DropdownItemType } from '@components/_common/atoms/RecursiveDropdownItem';
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
 
 import S from './style';
 
@@ -37,21 +37,14 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
 
   const { applicant, process } = applicantBaseInfo;
 
-  const menuItems: DropdownItemType[] = [
-    {
-      type: 'subTrigger',
-      id: 'moveProcess',
-      name: '단계 이동',
-      items: processList.map(({ processName, processId }) => ({
-        type: 'clickable',
-        id: processId,
-        name: processName,
-        onClick: ({ targetProcessId }) => {
-          moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
-        },
-      })),
+  const menuItems: DropdownItemType[] = processList.map(({ processName, processId }) => ({
+    type: 'clickable',
+    id: processId,
+    name: processName,
+    onClick: ({ targetProcessId }) => {
+      moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
     },
-  ];
+  }));
 
   const rejectAppHandler = () => {
     const confirmAction = (message: string, action: () => void) => {
@@ -80,7 +73,7 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
           isShadow={false}
           disabled={applicant.isRejected}
         >
-          <RecursiveDropdownItem items={menuItems} />
+          <DropdownItemRenderer items={menuItems} />
         </Dropdown>
         <Button
           size="sm"
