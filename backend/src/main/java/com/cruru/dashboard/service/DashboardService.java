@@ -41,11 +41,21 @@ public class DashboardService {
                 .orElseThrow(DashboardNotFoundException::new);
     }
 
+    public Dashboard findByIdFetchingMember(Long id) {
+        return dashboardRepository.findByIdFetchingMember(id)
+                .orElseThrow(DashboardNotFoundException::new);
+    }
+
     public List<DashboardApplyFormDto> findAllByClub(long clubId) {
         return applyFormRepository.findAllByClub(clubId);
     }
 
     public List<Applicant> findAllApplicants(Dashboard dashboard) {
         return applicantRepository.findAllByDashboard(dashboard);
+    }
+
+    @Transactional
+    public void deleteById(Long dashboardId) {
+        dashboardRepository.deleteById(dashboardId);
     }
 }

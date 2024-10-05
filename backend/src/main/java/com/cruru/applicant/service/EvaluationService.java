@@ -24,6 +24,11 @@ public class EvaluationService {
                 .orElseThrow(EvaluationNotFoundException::new);
     }
 
+    public Evaluation findByIdFetchingMember(Long evaluationId) {
+        return evaluationRepository.findByIdFetchingMember(evaluationId)
+                .orElseThrow(EvaluationNotFoundException::new);
+    }
+
     @Transactional
     public void create(EvaluationCreateRequest request, Process process, Applicant applicant) {
         evaluationRepository.save(new Evaluation(request.score(), request.content(), process, applicant));
@@ -52,7 +57,13 @@ public class EvaluationService {
         return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
     }
 
+    @Transactional
     public void deleteByProcess(long processId) {
         evaluationRepository.deleteByProcessId(processId);
+    }
+
+    @Transactional
+    public void deleteAllByProcesses(List<Process> processes) {
+        evaluationRepository.deleteAllByProcesses(processes);
     }
 }

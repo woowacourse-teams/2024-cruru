@@ -22,6 +22,7 @@ import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.DashboardFixture;
+import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -97,6 +98,52 @@ class ProcessControllerTest extends ControllerTest {
                         "process/read",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
+                        responseFields(
+                                fieldWithPath("applyFormId").description("지원폼의 id"),
+                                fieldWithPath("processes").description("프로세스 목록"),
+                                fieldWithPath("title").description("지원폼의 제목")
+                        ).andWithPrefix("processes[].", PROCESS_RESPONSE_FIELD_DESCRIPTORS)
+                                .andWithPrefix("processes[].applicants[]", APPLICANT_RESPONSE_FIELD_DESCRIPTORS)
+                ))
+                .when().get(url)
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("프로세스 필터링 및 정렬 조회 성공 시, 200을 응답한다.")
+    @Test
+    void read_filterAndOrder() {
+        // given
+        List<Process> processes = processRepository.saveAll(List.of(
+                ProcessFixture.applyType(dashboard),
+                ProcessFixture.interview(dashboard),
+                ProcessFixture.applyType(dashboard)
+        ));
+        applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
+        String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
+                        + "&evaluationStatus=%s&sortByCreatedAt=%s&sortByScore=%s",
+                dashboard.getId(),
+                DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
+                DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
+                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+        );
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("token", token)
+                .filter(document(
+                        "process/read-filter-and-order",
+                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        queryParameters(
+                                parameterWithName("dashboardId").description("대시보드의 id, required=true"),
+                                parameterWithName("minScore").description("지원자 최소 평균 점수: 0.00(default) ~ 5.00, required=false").optional(),
+                                parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default), required=false").optional(),
+                                parameterWithName("evaluationStatus").description(
+                                        "지원자 평가 유무: ALL(default), NOT_EVALUATION, EVALUATED, required=false").optional(),
+                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: DESC(default), ASC, required=false").optional(),
+                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: DESC(default), ASC, required=false").optional()
+                        ),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
                                 fieldWithPath("processes").description("프로세스 목록"),

@@ -3,8 +3,12 @@ package com.cruru.applicant.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.Evaluation;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.EvaluationFixture;
+import com.cruru.util.fixture.ProcessFixture;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,9 @@ class EvaluationRepositoryTest extends RepositoryTest {
 
     @Autowired
     private EvaluationRepository evaluationRepository;
+
+    @Autowired
+    private ProcessRepository processRepository;
 
     @BeforeEach
     void setUp() {
@@ -51,5 +58,26 @@ class EvaluationRepositoryTest extends RepositoryTest {
 
         //then
         assertThat(savedEvaluation1.getId() + 1).isEqualTo(savedEvaluation2.getId());
+    }
+
+    @DisplayName("입력된 프로세스 목록에 해당하는 평가들을 삭제한다.")
+    @Test
+    void deleteAllByProcesses() {
+        // given
+        com.cruru.process.domain.Process process1 = processRepository.save(ProcessFixture.applyType());
+        com.cruru.process.domain.Process process2 = processRepository.save(ProcessFixture.interview(null));
+        com.cruru.process.domain.Process process3 = processRepository.save(ProcessFixture.approveType());
+        List<Process> processes = List.of(process1, process2);
+
+        Evaluation evaluation1 = evaluationRepository.save(EvaluationFixture.fivePoints(process1, null));
+        Evaluation evaluation2 = evaluationRepository.save(EvaluationFixture.fivePoints(process2, null));
+        Evaluation evaluation3 = evaluationRepository.save(EvaluationFixture.fivePoints(process3, null));
+
+        // when
+        evaluationRepository.deleteAllByProcesses(processes);
+
+        // then
+        assertThat(evaluationRepository.findAll()).contains(evaluation3)
+                .doesNotContain(evaluation1, evaluation2);
     }
 }

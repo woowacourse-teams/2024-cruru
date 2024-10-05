@@ -93,6 +93,11 @@ public class ProcessService {
                 .orElseThrow(ProcessNotFoundException::new);
     }
 
+    public Process findByIdFetchingMember(Long processId) {
+        return processRepository.findByIdFetchingMember(processId)
+                .orElseThrow(ProcessNotFoundException::new);
+    }
+
     private boolean changeExists(ProcessUpdateRequest request, Process process) {
         return !(request.name().equals(process.getName()) && request.description().equals(process.getDescription()));
     }
@@ -116,5 +121,10 @@ public class ProcessService {
         if (applicantCount > ZERO) {
             throw new ProcessDeleteRemainingApplicantException();
         }
+    }
+
+    @Transactional
+    public void deleteAllInBatch(List<Process> processes) {
+        processRepository.deleteAllInBatch(processes);
     }
 }

@@ -166,4 +166,27 @@ class AnswerServiceTest extends ServiceTest {
                 () -> assertThat(actualAnswerResponses.get(0).answer()).contains(expectedAnswer3.getContent())
         );
     }
+
+    @DisplayName("지원자 목록에 따라 모두 삭제한다.")
+    @Test
+    void deleteAllByApplicants() {
+        // given
+        Question question = questionRepository.save(QuestionFixture.shortAnswerType(null));
+
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        List<Applicant> applicants = List.of(applicant1, applicant2);
+
+        Answer answer1 = answerRepository.save(AnswerFixture.first(question, applicant1));
+        Answer answer2 = answerRepository.save(AnswerFixture.second(question, applicant2));
+        Answer answer3 = answerRepository.save(AnswerFixture.second(question, applicant3));
+
+        // when
+        answerService.deleteAllByApplicants(applicants);
+
+        // then
+        assertThat(answerRepository.findAll()).contains(answer3)
+                .doesNotContain(answer1, answer2);
+    }
 }

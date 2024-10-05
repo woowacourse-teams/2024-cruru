@@ -4,19 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.applicant.domain.Applicant;
-import com.cruru.dashboard.domain.Dashboard;
-import com.cruru.dashboard.domain.repository.DashboardRepository;
-import com.cruru.process.domain.Process;
-import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.domain.dto.ApplicantCard;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.DashboardFixture;
-import com.cruru.util.fixture.ProcessFixture;
-import java.util.List;
 import com.cruru.util.fixture.EvaluationFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import java.util.List;
@@ -221,5 +217,32 @@ class ApplicantRepositoryTest extends RepositoryTest {
         // then
         assertThat(applicants).hasSize(3);
         assertThat(applicants).containsExactlyInAnyOrder(applicant1, applicant2, applicant3);
+    }
+
+    @DisplayName("지원자를 전부 불합격시킨다.")
+    @Test
+    void rejectAll() {
+        // given
+        Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Applicant applicant3 = applicantRepository.save(ApplicantFixture.pendingDobby());
+
+        List<Long> applicantIds = List.of(applicant1.getId(), applicant2.getId(), applicant3.getId());
+
+        // when
+        applicantRepository.updateRejectedStatusForApplicants(applicantIds, true);
+
+        // then
+        Applicant foundApplicant1 = applicantRepository.findById(applicant1.getId())
+                .orElseThrow();
+        Applicant foundApplicant2 = applicantRepository.findById(applicant2.getId())
+                .orElseThrow();
+        Applicant foundApplicant3 = applicantRepository.findById(applicant3.getId())
+                .orElseThrow();
+        assertAll(
+                () -> assertThat(foundApplicant1.isRejected()).isTrue(),
+                () -> assertThat(foundApplicant2.isRejected()).isTrue(),
+                () -> assertThat(foundApplicant3.isRejected()).isTrue()
+        );
     }
 }
