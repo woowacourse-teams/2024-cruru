@@ -102,7 +102,7 @@ module.exports = {
         },
         'og:image': {
           property: 'og:image',
-          content: 'https://www.cruru.kr/assets/images/ogCover_1200x630.png',
+          content: 'https://www.cruru.kr/static/images/ogCover_1200x630.png',
         },
         'og:image:alt': {
           property: 'og:image:alt',
