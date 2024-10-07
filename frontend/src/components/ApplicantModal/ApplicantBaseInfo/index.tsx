@@ -8,7 +8,9 @@ import specificApplicant from '@hooks/useSpecificApplicant';
 import formatDate from '@utils/formatDate';
 import { useModal } from '@contexts/ModalContext';
 
-import { DropdownListItem } from '@customTypes/common';
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
+
 import S from './style';
 
 interface ApplicantBaseInfoProps {
@@ -35,38 +37,15 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
 
   const { applicant, process } = applicantBaseInfo;
 
-  const items = processList
-    .filter(({ processName }) => processName !== process.name)
-    .map(
-      ({ processId, processName }) =>
-        ({
-          id: processId,
-          name: processName,
-          onClick: ({ targetProcessId }: { targetProcessId: number | string }) => {
-            moveApplicantProcess({ processId: Number(targetProcessId), applicants: [applicantId] });
-          },
-        }) as DropdownListItem,
-    );
-  items.push({
-    id: 'emailButton',
-    name: '이메일 보내기',
-    hasSeparate: true,
-    onClick: () => {
-      // TODO: 이메일 보내는 로직 추가
-      alert('오픈해야함');
+  const menuItems: DropdownItemType[] = processList.map(({ processName, processId }) => ({
+    type: 'clickable',
+    id: processId,
+    name: processName,
+    onClick: ({ targetProcessId }) => {
+      moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
     },
-  });
+  }));
 
-  items.push({
-    id: 'rejectButton',
-    name: '불합격 처리',
-    isHighlight: true,
-    hasSeparate: true,
-    onClick: () => {
-      // TODO: 불합격 로직 추가
-      alert('오픈해야함');
-    },
-  });
   const rejectAppHandler = () => {
     const confirmAction = (message: string, action: () => void) => {
       const isConfirmed = window.confirm(message);
@@ -90,11 +69,12 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
         <Dropdown
           initValue={process.name}
           size="sm"
-          items={items}
           width={112}
           isShadow={false}
           disabled={applicant.isRejected}
-        />
+        >
+          <DropdownItemRenderer items={menuItems} />
+        </Dropdown>
         <Button
           size="sm"
           color="error"

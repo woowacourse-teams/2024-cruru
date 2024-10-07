@@ -1,16 +1,13 @@
-import type { PopOverMenuItem } from '@customTypes/common';
-import DropdownItem from '@components/_common/atoms/DropdownItem';
+import { PropsWithChildren } from 'react';
 import S from './style';
 
-export interface PopOverMenuProps {
+export interface PopOverMenuProps extends PropsWithChildren {
   isOpen: boolean;
-  setClose: () => void;
   size?: 'sm' | 'md';
   popOverPosition?: string;
-  items: PopOverMenuItem[];
 }
 
-export default function PopOverMenu({ isOpen, setClose, size = 'sm', popOverPosition, items }: PopOverMenuProps) {
+export default function PopOverMenu({ isOpen, size = 'sm', popOverPosition, children }: PopOverMenuProps) {
   return (
     <S.Container
       size={size}
@@ -19,21 +16,7 @@ export default function PopOverMenu({ isOpen, setClose, size = 'sm', popOverPosi
     >
       {isOpen && (
         <S.ListWrapper>
-          <S.List size={size}>
-            {items.map(({ name, isHighlight, id, hasSeparate, onClick }) => (
-              <DropdownItem
-                size={size}
-                onClick={() => {
-                  setClose();
-                  onClick({ targetProcessId: id });
-                }}
-                key={id}
-                item={name}
-                isHighlight={isHighlight}
-                hasSeparate={hasSeparate}
-              />
-            ))}
-          </S.List>
+          <S.List size={size}>{children}</S.List>
         </S.ListWrapper>
       )}
     </S.Container>

@@ -7,6 +7,7 @@ const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   max-width: 28rem;
 
   height: 100%;
+
   padding: 1.2rem;
   border-radius: 0.8rem;
   border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};

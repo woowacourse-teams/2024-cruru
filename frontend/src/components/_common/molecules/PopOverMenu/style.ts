@@ -27,7 +27,7 @@ const ListWrapper = styled.div`
 
 const List = styled.div<{ size: 'sm' | 'md' }>`
   width: 100%;
-  padding: ${({ size }) => (size === 'md' ? '16px' : '8px')};
+  padding: ${({ size }) => (size === 'md' ? '16px 0px' : '8px 0px')};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};

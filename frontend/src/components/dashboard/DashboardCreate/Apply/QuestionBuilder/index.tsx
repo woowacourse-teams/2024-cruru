@@ -7,6 +7,8 @@ import Dropdown from '@components/_common/molecules/Dropdown';
 import ToggleSwitch from '@components/_common/atoms/ToggleSwitch';
 import { QUESTION_TYPE_NAME } from '@constants/constants';
 
+import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
 import CheckBoxField from '@components/recruitment/CheckBoxField';
 import RadioInputField from '@components/recruitment/RadioInputField';
 import QuestionController from '../QuestionController';
@@ -67,12 +69,12 @@ export default function QuestionBuilder({
     if (actionType === 'delete') deleteQuestion(index);
   };
 
-  const QUESTION_TYPES = [
+  const QUESTION_TYPES: DropdownItemType[] = [
     { id: 1, name: QUESTION_TYPE_NAME.SHORT_ANSWER, onClick: () => handleChangeQuestionType('SHORT_ANSWER') },
     { id: 2, name: QUESTION_TYPE_NAME.LONG_ANSWER, onClick: () => handleChangeQuestionType('LONG_ANSWER') },
     { id: 3, name: QUESTION_TYPE_NAME.SINGLE_CHOICE, onClick: () => handleChangeQuestionType('SINGLE_CHOICE') },
     { id: 4, name: QUESTION_TYPE_NAME.MULTIPLE_CHOICE, onClick: () => handleChangeQuestionType('MULTIPLE_CHOICE') },
-  ];
+  ].map((value) => ({ type: 'clickable', ...value }));
 
   return (
     <S.Wrapper>
@@ -88,10 +90,11 @@ export default function QuestionBuilder({
           <Dropdown
             initValue={QUESTION_TYPE_NAME[currentQuestionType]}
             size="sm"
-            items={QUESTION_TYPES}
             width={200}
             isShadow={false}
-          />
+          >
+            <DropdownItemRenderer items={QUESTION_TYPES} />
+          </Dropdown>
         </S.InputBox>
 
         {currentQuestionType === 'SINGLE_CHOICE' && (
