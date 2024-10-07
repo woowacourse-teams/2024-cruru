@@ -5,7 +5,7 @@ const Item = styled.button<{ isHighlight: boolean; size: 'sm' | 'md'; hasSeparat
   text-align: left;
   width: 100%;
 
-  padding: ${({ size }) => (size === 'md' ? '6px 8px' : '6px 4px')};
+  padding: ${({ size }) => (size === 'md' ? '6px 24px' : '6px 12px')};
   ${({ theme, size }) => (size === 'md' ? theme.typography.common.default : theme.typography.common.small)};
 
   color: ${({ isHighlight, theme }) => (isHighlight ? theme.baseColors.redscale[500] : 'none')};

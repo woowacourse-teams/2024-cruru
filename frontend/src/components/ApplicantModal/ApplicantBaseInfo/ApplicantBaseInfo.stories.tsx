@@ -30,7 +30,3 @@ export const Default: Story = {
     applicantId: 1,
   },
 };
-
-Default.parameters = {
-  docs: {},
-};
