@@ -1,5 +1,6 @@
 import StarMarker from '@components/_common/atoms/StarMarker';
 import { useState } from 'react';
+import S from './style';
 
 const MAX_RATING = 5;
 
@@ -24,7 +25,7 @@ export default function StarRating({ rating, handleRating }: StarRatingProps) {
   };
 
   return (
-    <>
+    <S.Container>
       {Array.from({ length: MAX_RATING }).map((_, index) => {
         const currentRating = index + 1;
         const isSelected = currentRating <= (hoverRating || rating);
@@ -39,6 +40,6 @@ export default function StarRating({ rating, handleRating }: StarRatingProps) {
           />
         );
       })}
-    </>
+    </S.Container>
   );
 }

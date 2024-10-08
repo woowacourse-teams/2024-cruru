@@ -25,7 +25,7 @@ const evaluationApis = {
   }: {
     processId: number;
     applicantId: number;
-    score: string;
+    score: number;
     content: string;
   }) =>
     apiClient.post({

@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 
 const StarButton = styled.button`
   svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2rem;
+    height: 2rem;
     color: ${({ theme }) => theme.colors.brand.primary};
   }
 `;
