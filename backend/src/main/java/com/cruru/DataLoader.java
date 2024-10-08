@@ -2,7 +2,6 @@ package com.cruru;
 
 import static com.cruru.question.domain.QuestionType.LONG_ANSWER;
 import static com.cruru.question.domain.QuestionType.MULTIPLE_CHOICE;
-import static com.cruru.question.domain.QuestionType.SHORT_ANSWER;
 import static com.cruru.question.domain.QuestionType.SINGLE_CHOICE;
 
 import com.cruru.applicant.domain.Applicant;
@@ -108,9 +107,6 @@ public class DataLoader implements ApplicationRunner {
         Applicant redpanda = new Applicant(8L, "렛서", "pand@mail.com", "01088888888", firstProcess, false);
         List<Applicant> applicants = List.of(lurgi, dobby, arrr, chocochip, myungoh, rush, nyangin, redpanda);
         applicantRepository.saveAll(applicants);
-
-        Question essayQuestion = questionRepository.save(
-                new Question(SHORT_ANSWER, "좋아하는 숫자가 무엇인가요?", 1, false, applyForm));
 
         Question question1 = questionRepository.save(
                 new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", 1, false, applyForm)
