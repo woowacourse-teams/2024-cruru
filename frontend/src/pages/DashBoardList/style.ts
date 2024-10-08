@@ -4,7 +4,7 @@ import { hideScrollBar } from '@styles/utils';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.8rem 2.4rem;
+  padding: 3.2rem 1.6rem;
   gap: 2.4rem;
 
   height: 100%;

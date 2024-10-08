@@ -1,34 +1,47 @@
 import styled from '@emotion/styled';
 
-const LayoutBg = styled.div`
-  min-height: 100vh;
-  min-width: 100vw;
-
-  padding: 2.4rem;
-  background-color: ${({ theme }) => theme.baseColors.redscale[50]};
-
-  display: flex;
-`;
+interface SidebarStyleProps {
+  isSidebarOpen: boolean;
+}
 
 const Layout = styled.div`
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  flex: 1;
-  border-radius: 1.6rem;
-  overflow: hidden;
-
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 `;
 
-const MainContainer = styled.div`
-  width: 80%;
+const SidebarContainer = styled.div`
+  display: flex;
   height: 100%;
-  // INFO: 4.8rem = 바깥 컨테이너의 padding-top + padding-bottom
-  max-height: calc(100vh - 4.8rem);
+  width: fit-content;
+`;
+
+const Sidebar = styled.div``;
+
+const SidebarController = styled.div<SidebarStyleProps>`
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? '0px' : 'fit-content')};
+  transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translateX(-6rem)' : 'none')};
+  z-index: 1;
+`;
+
+const ToggleButton = styled.div`
+  padding: 3.3rem 0rem 0rem 1.6rem;
+`;
+
+const MainContainer = styled.div<SidebarStyleProps>`
+  flex: 1;
+  height: 100vh;
+
+  padding-left: ${({ isSidebarOpen }) => isSidebarOpen && '1rem'};
 `;
 
 const S = {
-  LayoutBg,
   Layout,
+  SidebarContainer,
+  Sidebar,
+  SidebarController,
+  ToggleButton,
   MainContainer,
 };
 

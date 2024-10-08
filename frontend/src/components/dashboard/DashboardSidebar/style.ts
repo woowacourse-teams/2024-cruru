@@ -3,9 +3,8 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   position: relative;
 
-  width: 20%;
-  min-width: 25rem;
-  max-width: 30rem;
+  width: 28rem;
+  height: 100%;
   border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   padding: 3.6rem 1.6rem;
 
