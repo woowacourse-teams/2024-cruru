@@ -1,25 +1,21 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import DashboardSidebar from '@components/dashboard/DashboardSidebar';
-import IconButton from '@components/_common/atoms/IconButton';
 import useGetDashboards from '@hooks/useGetDashboards';
-import { HiChevronDoubleLeft, HiOutlineMenu } from 'react-icons/hi';
 
 import { Outlet, useParams } from 'react-router-dom';
+import { getTimeStatus } from '@utils/compareTime';
 import S from './style';
 
 export default function DashboardLayout() {
   const { applyFormId: currentPostId } = useParams();
   const { data, isLoading } = useGetDashboards();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const sidebarRef = useRef<HTMLDivElement>(null);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!data) return <div>something wrong</div>;
-
-  const titleList = data.dashboards.map(({ title, dashboardId, applyFormId }) => ({
+  const applyFormList = data?.dashboards.map(({ title, dashboardId, applyFormId, startDate, endDate }) => ({
     text: title,
     isSelected: !!currentPostId && currentPostId === applyFormId,
+    status: getTimeStatus({ startDate, endDate }),
     applyFormId,
     dashboardId,
   }));
@@ -31,25 +27,18 @@ export default function DashboardLayout() {
 
   return (
     <S.Layout>
-      <S.SidebarContainer>
-        {isSidebarOpen && (
-          <S.Sidebar ref={sidebarRef}>
-            <DashboardSidebar options={titleList} />
-          </S.Sidebar>
+      <S.Sidebar>
+        {isLoading ? (
+          <div>Loading...</div> // TODO: Suspense로 리팩토링
+        ) : !applyFormList ? (
+          <div>something wrong</div> // TODO: ErrorBoundary로 리팩터링
+        ) : (
+          <DashboardSidebar
+            sidebarStyle={{ isSidebarOpen, onClickSidebarToggle: handleToggleSidebar }}
+            options={applyFormList}
+          />
         )}
-
-        <S.SidebarController isSidebarOpen={isSidebarOpen}>
-          <S.ToggleButton>
-            <IconButton
-              size="sm"
-              outline={false}
-              onClick={handleToggleSidebar}
-            >
-              {isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
-            </IconButton>
-          </S.ToggleButton>
-        </S.SidebarController>
-      </S.SidebarContainer>
+      </S.Sidebar>
 
       <S.MainContainer isSidebarOpen={isSidebarOpen}>
         <Outlet />

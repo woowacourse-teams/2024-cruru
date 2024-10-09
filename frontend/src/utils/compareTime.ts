@@ -6,7 +6,7 @@ interface GetRecruitmentStatusProps {
   endDate: string;
 }
 
-interface RecruitmentStatusObject {
+export interface RecruitmentStatusObject {
   status: RecruitmentStatusType;
   isPending: boolean;
   isOngoing: boolean;

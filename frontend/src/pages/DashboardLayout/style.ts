@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 interface SidebarStyleProps {
   isSidebarOpen: boolean;
+  sidebarWidth?: number;
 }
 
 const Layout = styled.div`
@@ -9,6 +10,8 @@ const Layout = styled.div`
   width: 100vw;
   display: flex;
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+  overflow-y: hidden;
 `;
 
 const SidebarContainer = styled.div`
@@ -30,9 +33,7 @@ const ToggleButton = styled.div`
 `;
 
 const MainContainer = styled.div<SidebarStyleProps>`
-  flex: 1;
-  height: 100vh;
-
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? 'calc(100% - 276px)' : 'calc(100% - 56px)')};
   padding-left: ${({ isSidebarOpen }) => isSidebarOpen && '1rem'};
 `;
 
