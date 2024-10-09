@@ -14,7 +14,7 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: error_logs
+          job: ${MONITORING_PROFILE}_error_logs
           __path__: /log/error/*.log
     pipeline_stages:
       - json:
@@ -22,39 +22,29 @@ scrape_configs:
             timestamp: timestamp
             level: level
             logger: logger
-            httpMethod: httpMethod
+            requestId: requestId
             requestUri: requestUri
+            requestMethod: requestMethod
             statusCode: statusCode
             sourceClass: sourceClass
             sourceMethod: sourceMethod
-            exceptionClass: exceptionClass
-            exceptionMessage: exceptionMessage
-            module: module
+            msg: message
             environment: environment
       - labels:
           level:
-          logger:
-          httpMethod:
           requestUri:
-          statusCode:
-          sourceClass:
-          sourceMethod:
-          exceptionClass:
-          exceptionMessage:
-          module:
           environment:
       - timestamp:
           source: timestamp
           format: 2006-01-02T15:04:05.000
           location: "Asia/Seoul"
 
-
   - job_name: info_logs
     static_configs:
       - targets:
           - localhost
         labels:
-          job: info_logs
+          job: ${MONITORING_PROFILE}_info_logs
           __path__: /log/info/*.log
     pipeline_stages:
       - json:
@@ -62,26 +52,17 @@ scrape_configs:
             timestamp: timestamp
             level: level
             logger: logger
-            httpMethod: httpMethod
+            requestId: requestId
             requestUri: requestUri
+            requestMethod: requestMethod
             statusCode: statusCode
             sourceClass: sourceClass
             sourceMethod: sourceMethod
-            exceptionClass: exceptionClass
-            exceptionMessage: exceptionMessage
-            module: module
+            msg: message
             environment: environment
       - labels:
           level:
-          logger:
-          httpMethod:
           requestUri:
-          statusCode:
-          sourceClass:
-          sourceMethod:
-          exceptionClass:
-          exceptionMessage:
-          module:
           environment:
       - timestamp:
           source: timestamp
@@ -94,7 +75,7 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: warn_logs
+          job: ${MONITORING_PROFILE}_warn_logs
           __path__: /log/warn/*.log
     pipeline_stages:
       - json:
@@ -102,26 +83,17 @@ scrape_configs:
             timestamp: timestamp
             level: level
             logger: logger
-            httpMethod: httpMethod
+            requestId: requestId
             requestUri: requestUri
+            requestMethod: requestMethod
             statusCode: statusCode
             sourceClass: sourceClass
             sourceMethod: sourceMethod
-            exceptionClass: exceptionClass
-            exceptionMessage: exceptionMessage
-            module: module
+            msg: message
             environment: environment
       - labels:
           level:
-          logger:
-          httpMethod:
           requestUri:
-          statusCode:
-          sourceClass:
-          sourceMethod:
-          exceptionClass:
-          exceptionMessage:
-          module:
           environment:
       - timestamp:
           source: timestamp
@@ -133,7 +105,7 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: http_logs
+          job: ${MONITORING_PROFILE}_http_logs
           __path__: /var/log/nginx/*.log
     pipeline_stages:
       - regex:
