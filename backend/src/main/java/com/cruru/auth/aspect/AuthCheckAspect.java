@@ -1,6 +1,5 @@
 package com.cruru.auth.aspect;
 
-import com.cruru.advice.CruruCustomException;
 import com.cruru.auth.annotation.RequireAuth;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.auth.util.SecureResource;
@@ -9,6 +8,7 @@ import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import java.lang.reflect.Field;
 import java.lang.reflect.InaccessibleObjectException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayDeque;
@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Aspect
 @Component
@@ -37,12 +36,10 @@ public class AuthCheckAspect {
     private static final String SERVICE_IDENTIFIER = "Service";
     private static final Map<Class<?>, Field[]> fieldCache = new ConcurrentHashMap<>();
 
-    @Lazy
     private final ApplicationContext applicationContext;
     private final MemberService memberService;
 
     @Before("@annotation(com.cruru.auth.annotation.ValidAuth) && within(com.cruru..controller..*)")
-    @Transactional(readOnly = true)
     public void checkAuthorization(JoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
@@ -69,7 +66,7 @@ public class AuthCheckAspect {
         }
     }
 
-    private void checkDto(LoginProfile loginProfile, Object dto) {
+    private void checkDto(LoginProfile loginProfile, Object dto) throws Throwable {
         Deque<Object> stack = new ArrayDeque<>();
         stack.push(dto);
         Set<Object> visited = ConcurrentHashMap.newKeySet(); // 순환 참조 방지를 위한 Set
@@ -104,7 +101,11 @@ public class AuthCheckAspect {
         }
     }
 
-    private void checkEachFields(LoginProfile loginProfile, Field field, Object fieldValue) {
+    private void checkEachFields(
+            LoginProfile loginProfile,
+            Field field,
+            Object fieldValue
+    ) throws Throwable {
         if (field.isAnnotationPresent(RequireAuth.class)) {
             RequireAuth requireAuth = field.getAnnotation(RequireAuth.class);
             if (fieldValue instanceof Long targetId) {
@@ -112,11 +113,11 @@ public class AuthCheckAspect {
                 return;
             }
             if (fieldValue instanceof Collection<?> collection) {
-                collection.stream()
-                        .filter(Objects::nonNull)
-                        .filter(Long.class::isInstance)
-                        .map(Long.class::cast)
-                        .forEach(id -> authorize(loginProfile, requireAuth.targetDomain(), id));
+                for (Object o : collection) {
+                    if (o instanceof Long id) {
+                        authorize(loginProfile, requireAuth.targetDomain(), id);
+                    }
+                }
             }
         }
     }
@@ -125,7 +126,6 @@ public class AuthCheckAspect {
         return fieldCache.computeIfAbsent(clazz, c -> {
             Field[] declaredFields = c.getDeclaredFields();
             Arrays.stream(declaredFields)
-                    .filter(field -> !field.getDeclaringClass().getName().startsWith("java.lang")) // 기본 클래스 필터링
                     .forEach(field -> {
                         try {
                             field.setAccessible(true);
@@ -145,19 +145,17 @@ public class AuthCheckAspect {
                 .orElseThrow(() -> new IllegalArgumentException("LoginProfile이 존재하지 않습니다."));
     }
 
-    private void authorize(LoginProfile loginProfile, Class<? extends SecureResource> domainClass, Long targetId) {
+    private void authorize(
+            LoginProfile loginProfile,
+            Class<? extends SecureResource> domainClass,
+            Long targetId
+    ) throws Throwable {
         try {
             checkAuthorizationForTarget(loginProfile, domainClass, targetId);
+        } catch (InvocationTargetException e) {
+            throw e.getCause();
         } catch (ReflectiveOperationException e) {
-            Throwable cause = e.getCause();
-            if (cause != null) {
-                if (cause instanceof CruruCustomException cruruCustomException) {
-                    throw cruruCustomException;
-                }
-                if (cause instanceof RuntimeException runtimeException) {
-                    throw runtimeException;
-                }
-            }
+            throw new IllegalArgumentException(domainClass + ": Service 또는 findById Method가 존재하지 않습니다.", e);
         }
     }
 
@@ -175,9 +173,8 @@ public class AuthCheckAspect {
         Object service = applicationContext.getBean(serviceName);
 
         Method findByIdMethod = service.getClass().getMethod("findByIdFetchingMember", Long.class);
+        Optional<SecureResource> secureResource = (Optional<SecureResource>) findByIdMethod.invoke(service, targetId);
 
-        SecureResource secureResource = (SecureResource) findByIdMethod.invoke(service, targetId);
-
-        AuthChecker.checkAuthority(secureResource, member);
+        secureResource.ifPresent(resource -> AuthChecker.checkAuthority(resource, member));
     }
 }
