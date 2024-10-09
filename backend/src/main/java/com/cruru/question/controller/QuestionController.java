@@ -1,5 +1,9 @@
 package com.cruru.question.controller;
 
+import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.auth.annotation.RequireAuth;
+import com.cruru.auth.annotation.ValidAuth;
+import com.cruru.global.LoginProfile;
 import com.cruru.question.controller.request.QuestionUpdateRequests;
 import com.cruru.question.facade.QuestionFacade;
 import jakarta.validation.Valid;
@@ -19,9 +23,11 @@ public class QuestionController {
     private final QuestionFacade questionFacade;
 
     @PatchMapping
+    @ValidAuth
     public ResponseEntity<Void> update(
-            @RequestParam(name = "applyformId") Long applyFormId,
-            @RequestBody @Valid QuestionUpdateRequests request
+            @RequireAuth(targetDomain = ApplyForm.class) @RequestParam(name = "applyformId") Long applyFormId,
+            @RequestBody @Valid QuestionUpdateRequests request,
+            LoginProfile loginProfile
     ) {
         questionFacade.update(request, applyFormId);
         return ResponseEntity.ok().build();

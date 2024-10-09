@@ -16,4 +16,8 @@ public class CruruCustomException extends RuntimeException {
     public String statusCode() {
         return status.toString();
     }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
 }

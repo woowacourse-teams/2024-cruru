@@ -391,6 +391,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
+                .cookie("token", token)
                 .contentType(ContentType.JSON)
                 .filter(document("applicant/read-applyform",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
