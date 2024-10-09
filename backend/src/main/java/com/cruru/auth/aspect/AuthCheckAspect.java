@@ -1,23 +1,33 @@
 package com.cruru.auth.aspect;
 
-import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.advice.CruruCustomException;
+import com.cruru.auth.annotation.RequireAuth;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.auth.util.SecureResource;
 import com.cruru.global.LoginProfile;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InaccessibleObjectException;
 import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.stream.IntStream;
+import java.lang.reflect.Parameter;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.hibernate.Hibernate;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Aspect
 @Component
@@ -25,86 +35,148 @@ import org.springframework.stereotype.Component;
 public class AuthCheckAspect {
 
     private static final String SERVICE_IDENTIFIER = "Service";
+    private static final Map<Class<?>, Field[]> fieldCache = new ConcurrentHashMap<>();
 
-    private final ApplicationContext applicationContext;  // 서비스 빈을 동적으로 가져오기 위해 ApplicationContext 사용
+    @Lazy
+    private final ApplicationContext applicationContext;
     private final MemberService memberService;
 
-    @Before("@annotation(com.cruru.auth.annotation.RequireAuthCheck)")
+    @Before("@annotation(com.cruru.auth.annotation.ValidAuth) && within(com.cruru..controller..*)")
+    @Transactional(readOnly = true)
     public void checkAuthorization(JoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        RequireAuthCheck authCheck = method.getAnnotation(RequireAuthCheck.class);
+        Parameter[] parameters = method.getParameters();
+        Object[] controllerArgs = joinPoint.getArgs();
+        LoginProfile loginProfile = getLoginProfile(controllerArgs);
 
-        Object[] args = joinPoint.getArgs();                        // 메서드의 실제 인자 값
-        String[] parameterNames = signature.getParameterNames();    // 메서드 파라미터 이름들
+        for (int i = 0; i < controllerArgs.length; i++) {
+            if (!Objects.nonNull(controllerArgs[i])) {
+                continue;
+            }
 
-        LoginProfile loginProfile = extractLoginProfile(parameterNames, args);
-        Long targetId = extractTargetId(parameterNames, args, authCheck.targetId());
+            Parameter parameter = parameters[i];
+            Object arg = controllerArgs[i];
 
-        Class<? extends SecureResource> domainClass = authCheck.targetDomain();
-        authorize(domainClass, targetId, loginProfile);
-    }
-
-    private LoginProfile extractLoginProfile(String[] parameterNames, Object[] args) {
-        return findParameterByName(parameterNames, args, "loginProfile", LoginProfile.class)
-                .orElseThrow(() -> new IllegalArgumentException("loginProfile가 존재하지 않습니다."));
-    }
-
-    private Long extractTargetId(String[] parameterNames, Object[] args, String targetIdParamName) {
-        return findParameterByName(parameterNames, args, targetIdParamName, Long.class)
-                .orElseThrow(() -> new IllegalArgumentException("targetId가 존재하지 않습니다."));
-    }
-
-    // 리소스에 대한 권한 검사 로직 분리
-    private void authorize(
-            Class<? extends SecureResource> domainClass,
-            Long targetId,
-            LoginProfile loginProfile
-    ) throws Throwable {
-        try {
-            checkAuthorizationForTarget(domainClass, targetId, loginProfile);
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalArgumentException(domainClass + ": Service 또는 findById Method가 존재하지 않습니다.");
+            if (parameter.isAnnotationPresent(RequireAuth.class) && arg instanceof Long targetId) {
+                RequireAuth requireAuth = parameter.getAnnotation(RequireAuth.class);
+                checkAuthorizationForTarget(loginProfile, requireAuth.targetDomain(), targetId);
+                continue;
+            }
+            if (!parameter.isAnnotationPresent(RequireAuth.class) && !(arg instanceof Long)) {
+                checkDto(loginProfile, arg);
+            }
         }
     }
 
-    // 파라미터 이름과 값을 기반으로 원하는 타입의 파라미터 추출
-    private <T> Optional<T> findParameterByName(
-            String[] parameterNames,
-            Object[] args,
-            String targetParamName,
-            Class<T> type
-    ) {
-        return IntStream.range(0, parameterNames.length)
-                .filter(i -> parameterNames[i].equals(targetParamName) && type.isInstance(args[i]))
-                .mapToObj(i -> type.cast(args[i]))
-                .findFirst();
+    private void checkDto(LoginProfile loginProfile, Object dto) {
+        Deque<Object> stack = new ArrayDeque<>();
+        stack.push(dto);
+        Set<Object> visited = ConcurrentHashMap.newKeySet(); // 순환 참조 방지를 위한 Set
+
+        while (!stack.isEmpty()) {
+            Object current = stack.pop();
+
+            // 이미 방문한 객체는 다시 처리하지 않음
+            if (!visited.add(System.identityHashCode(current))) {
+                continue;
+            }
+
+            Class<?> clazz = current.getClass();
+            Field[] fields = getFields(clazz);
+
+            for (Field field : fields) {
+                Object fieldValue;
+                try {
+                    fieldValue = field.get(current);
+                } catch (IllegalAccessException e) {
+                    continue;
+                }
+
+                // 필드 값이 null인 경우 스킵
+                if (fieldValue == null) {
+                    continue;
+                }
+
+                // 필드에 @RequireAuth 어노테이션이 붙어 있는 경우 권한 검사 수행
+                checkEachFields(loginProfile, field, fieldValue);
+            }
+        }
     }
 
-    // targetDomain에 따른 권한 검사 수행
+    private void checkEachFields(LoginProfile loginProfile, Field field, Object fieldValue) {
+        if (field.isAnnotationPresent(RequireAuth.class)) {
+            RequireAuth requireAuth = field.getAnnotation(RequireAuth.class);
+            if (fieldValue instanceof Long targetId) {
+                authorize(loginProfile, requireAuth.targetDomain(), targetId);
+                return;
+            }
+            if (fieldValue instanceof Collection<?> collection) {
+                collection.stream()
+                        .filter(Objects::nonNull)
+                        .filter(Long.class::isInstance)
+                        .map(Long.class::cast)
+                        .forEach(id -> authorize(loginProfile, requireAuth.targetDomain(), id));
+            }
+        }
+    }
+
+    private Field[] getFields(Class<?> clazz) {
+        return fieldCache.computeIfAbsent(clazz, c -> {
+            Field[] declaredFields = c.getDeclaredFields();
+            Arrays.stream(declaredFields)
+                    .filter(field -> !field.getDeclaringClass().getName().startsWith("java.lang")) // 기본 클래스 필터링
+                    .forEach(field -> {
+                        try {
+                            field.setAccessible(true);
+                        } catch (InaccessibleObjectException e) {
+                            // InaccessibleObjectException 발생 시 무시 (기본 자바 클래스의 필드 접근 시도 시 발생)
+                        }
+                    });
+            return declaredFields;
+        });
+    }
+
+    private LoginProfile getLoginProfile(Object[] args) {
+        return Arrays.stream(args, 0, args.length)
+                .filter(LoginProfile.class::isInstance)
+                .findFirst()
+                .map(LoginProfile.class::cast)
+                .orElseThrow(() -> new IllegalArgumentException("LoginProfile이 존재하지 않습니다."));
+    }
+
+    private void authorize(LoginProfile loginProfile, Class<? extends SecureResource> domainClass, Long targetId) {
+        try {
+            checkAuthorizationForTarget(loginProfile, domainClass, targetId);
+        } catch (ReflectiveOperationException e) {
+            Throwable cause = e.getCause();
+            if (cause != null) {
+                if (cause instanceof CruruCustomException cruruCustomException) {
+                    throw cruruCustomException;
+                }
+                if (cause instanceof RuntimeException runtimeException) {
+                    throw runtimeException;
+                }
+            }
+        }
+    }
+
     private void checkAuthorizationForTarget(
+            LoginProfile loginProfile,
             Class<? extends SecureResource> targetDomain,
-            Long targetId,
-            LoginProfile loginProfile
-    ) throws Exception {
+            Long targetId
+    ) throws ReflectiveOperationException {
         Member member = memberService.findByEmail(loginProfile.email());
 
-        // 도메인 이름을 기반으로 서비스 클래스의 이름을 동적으로 생성
         String targetDomainName = targetDomain.getSimpleName();
         String serviceName =
                 Character.toLowerCase(targetDomainName.charAt(0)) + targetDomainName.substring(1) + SERVICE_IDENTIFIER;
 
-        // ApplicationContext를 통해 해당 서비스 빈을 동적으로 가져옴
         Object service = applicationContext.getBean(serviceName);
 
-        // findById 메서드를 호출하여 해당 도메인 객체(SecureResource)를 가져옴
         Method findByIdMethod = service.getClass().getMethod("findByIdFetchingMember", Long.class);
-        SecureResource secureResource = (SecureResource) findByIdMethod.invoke(service, targetId);
 
-        // Lazy Loading된 연관 엔티티를 강제 로딩함
-        Hibernate.initialize(secureResource);
+        SecureResource secureResource = (SecureResource) findByIdMethod.invoke(service, targetId);
 
         AuthChecker.checkAuthority(secureResource, member);
     }
