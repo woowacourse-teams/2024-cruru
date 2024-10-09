@@ -62,7 +62,7 @@ const Divider = styled.div`
   border-bottom: 0.15rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
-const ContentSubTitle = styled.p`
+const ContentSubTitle = styled.div`
   height: 2rem;
   color: ${({ theme }) => theme.baseColors.grayscale[500]};
   ${({ theme }) => theme.typography.common.default}
