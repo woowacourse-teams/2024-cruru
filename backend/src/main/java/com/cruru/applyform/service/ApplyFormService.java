@@ -8,6 +8,7 @@ import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,9 +78,8 @@ public class ApplyFormService {
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 
-    public ApplyForm findByIdFetchingMember(Long applyFormId) {
-        return applyFormRepository.findByIdFetchingMember(applyFormId)
-                .orElseThrow(ApplyFormNotFoundException::new);
+    public Optional<ApplyForm> findByIdFetchingMember(Long applyFormId) {
+        return applyFormRepository.findByIdFetchingMember(applyFormId);
     }
 
     public ApplyForm findByDashboardId(Long dashboardId) {
