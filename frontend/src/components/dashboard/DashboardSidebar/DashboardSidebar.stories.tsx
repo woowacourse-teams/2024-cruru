@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-router';
 import type { Meta, StoryObj } from '@storybook/react';
 import DashboardSidebar from '.';
@@ -23,47 +25,89 @@ const meta: Meta<typeof DashboardSidebar> = {
     options: [
       {
         text: '첫번째 옵션',
-        isSelected: true,
+        isSelected: false,
         dashboardId: '1',
         applyFormId: '10',
+        status: {
+          isClosed: true,
+          isPending: false,
+          isOngoing: false,
+          status: 'Closed',
+        },
       },
       {
         text: '두번째 옵션',
         isSelected: false,
         dashboardId: '2',
         applyFormId: '11',
+        status: {
+          isClosed: true,
+          isPending: false,
+          isOngoing: false,
+          status: 'Closed',
+        },
+      },
+      {
+        text: '세번째 옵션',
+        isSelected: true,
+        dashboardId: '2',
+        applyFormId: '12',
+        status: {
+          isClosed: false,
+          isPending: false,
+          isOngoing: true,
+          status: 'Ongoing',
+        },
+      },
+      {
+        text: '네번째 옵션',
+        isSelected: false,
+        dashboardId: '2',
+        applyFormId: '13',
+        status: {
+          isClosed: false,
+          isPending: true,
+          isOngoing: false,
+          status: 'Pending',
+        },
       },
     ],
   },
   tags: ['autodocs'],
   decorators: [
     withRouter,
-    (Child) => (
-      <div
-        style={{
-          height: '1000px',
-          width: '400px',
-          backgroundColor: 'gray',
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}
-      >
-        <Child />
-      </div>
-    ),
+    (Child, context) => {
+      const [isOpen, setIsOpen] = useState(true);
+
+      const handleToggle = () => {
+        if (isOpen) setIsOpen(false);
+        if (!isOpen) setIsOpen(true);
+      };
+
+      return (
+        <div
+          style={{
+            height: '1000px',
+            width: '400px',
+            backgroundColor: 'gray',
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}
+        >
+          <Child
+            args={{
+              ...context.args,
+              sidebarStyle: { isSidebarOpen: isOpen, onClickSidebarToggle: handleToggle },
+            }}
+          />
+        </div>
+      );
+    },
   ],
 };
 
 export default meta;
 type Story = StoryObj<typeof DashboardSidebar>;
 
-export const Default: Story = {
-  args: {
-    options: [
-      { text: '우아한테크코스 6기 프론트엔드', isSelected: true, dashboardId: '1', applyFormId: '10' },
-      { text: '우아한테크코스 6기 백엔드', isSelected: false, dashboardId: '2', applyFormId: '11' },
-      { text: '우아한테크코스 6기 안드로이드', isSelected: false, dashboardId: '3', applyFormId: '12' },
-    ],
-  },
-};
+export const Default: Story = {};
