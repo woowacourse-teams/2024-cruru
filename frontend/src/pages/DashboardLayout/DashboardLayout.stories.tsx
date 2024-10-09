@@ -20,9 +20,6 @@ type Story = StoryObj<typeof DashboardLayout>;
 export const PostListStory: Story = {
   parameters: {
     reactRouter: reactRouterParameters({
-      location: {
-        pathParams: { dashboardId: '1' },
-      },
       routing: reactRouterOutlet(<DashboardList />),
     }),
   },
@@ -31,9 +28,6 @@ export const PostListStory: Story = {
 export const DashboardStory: Story = {
   parameters: {
     reactRouter: reactRouterParameters({
-      location: {
-        pathParams: { dashboardId: '1' },
-      },
       routing: reactRouterOutlet(<Dashboard />),
     }),
   },
