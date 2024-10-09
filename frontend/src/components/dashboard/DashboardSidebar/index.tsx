@@ -8,6 +8,7 @@ import { Fragment } from 'react/jsx-runtime';
 import { HiChevronDoubleLeft, HiOutlineHome } from 'react-icons/hi2';
 import { HiOutlineMenu } from 'react-icons/hi';
 import { GrDocumentTime, GrDocumentUser, GrDocumentVerified } from 'react-icons/gr';
+import type { IconType } from 'react-icons';
 
 import IconButton from '@components/_common/atoms/IconButton';
 import LogoutButton from './LogoutButton';
@@ -42,7 +43,14 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
     { title: '진행 중 공고 목록', posts: onGoingPosts },
     { title: '마감 된 공고 목록', posts: closedPosts },
   ];
+
   const location = useLocation();
+
+  const IconObj: Record<Option['status']['status'], IconType> = {
+    Pending: GrDocumentTime,
+    Ongoing: GrDocumentUser,
+    Closed: GrDocumentVerified,
+  };
 
   return (
     <S.Container isSidebarOpen={sidebarStyle.isSidebarOpen}>
@@ -86,31 +94,23 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
             return (
               <Fragment key={title}>
                 <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
-                {posts.map(({ text, isSelected, applyFormId, dashboardId, status }) => (
-                  <S.SidebarItem key={applyFormId}>
-                    <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>
-                      <S.SidebarItemLink isSelected={isSelected}>
-                        {status.isPending ? (
-                          <GrDocumentTime
+                {posts.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
+                  const Icon = IconObj[status.status];
+
+                  return (
+                    <S.SidebarItem key={applyFormId}>
+                      <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>
+                        <S.SidebarItemLink isSelected={isSelected}>
+                          <Icon
                             size={24}
                             strokeWidth={2}
                           />
-                        ) : status.isOngoing ? (
-                          <GrDocumentUser
-                            size={24}
-                            strokeWidth={2}
-                          />
-                        ) : status.isClosed ? (
-                          <GrDocumentVerified
-                            size={24}
-                            strokeWidth={2}
-                          />
-                        ) : null}
-                        {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
-                      </S.SidebarItemLink>
-                    </Link>
-                  </S.SidebarItem>
-                ))}
+                          {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
+                        </S.SidebarItemLink>
+                      </Link>
+                    </S.SidebarItem>
+                  );
+                })}
               </Fragment>
             );
           })}
