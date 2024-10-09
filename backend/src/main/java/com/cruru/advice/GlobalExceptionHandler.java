@@ -48,7 +48,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         int length = Math.min(stackTraceElements.length, STACK_TRACE_LIMIT);
 
         for (int i = 0; i < length; i++) {
-            sb.append(stackTraceElements[i].toString()).append("\n");
+            sb.append(stackTraceElements[i].toString());
         }
 
         if (stackTraceElements.length > STACK_TRACE_LIMIT) {
