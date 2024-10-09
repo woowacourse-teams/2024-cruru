@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import DashboardSidebar from '@components/dashboard/DashboardSidebar';
 import useGetDashboards from '@hooks/useGetDashboards';
+import useElementRect from '@hooks/useElementRect';
 
 import { Outlet, useParams } from 'react-router-dom';
 import { getTimeStatus } from '@utils/compareTime';
@@ -11,6 +12,7 @@ export default function DashboardLayout() {
   const { applyFormId: currentPostId } = useParams();
   const { data, isLoading } = useGetDashboards();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [ref, rect] = useElementRect();
 
   const applyFormList = data?.dashboards.map(({ title, dashboardId, applyFormId, startDate, endDate }) => ({
     text: title,
@@ -27,7 +29,7 @@ export default function DashboardLayout() {
 
   return (
     <S.Layout>
-      <S.Sidebar>
+      <S.Sidebar ref={ref}>
         {isLoading ? (
           <div>Loading...</div> // TODO: Suspense로 리팩토링
         ) : !applyFormList ? (
@@ -40,7 +42,10 @@ export default function DashboardLayout() {
         )}
       </S.Sidebar>
 
-      <S.MainContainer isSidebarOpen={isSidebarOpen}>
+      <S.MainContainer
+        isSidebarOpen={isSidebarOpen}
+        sidebarWidth={rect?.width}
+      >
         <Outlet />
       </S.MainContainer>
     </S.Layout>
