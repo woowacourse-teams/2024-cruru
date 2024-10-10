@@ -43,6 +43,7 @@ services:
     environment:
       TZ: Asia/Seoul
       MONITORING_INSTANCE_ADDR_LOKI_PORT: ${MONITORING_INSTANCE_ADDR_LOKI_PORT}
+      MONITORING_PROFILE: ${MONITORING_PROFILE}
     container_name: promtail
     image: grafana/promtail:latest
     volumes:
