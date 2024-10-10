@@ -1,5 +1,6 @@
 package com.cruru.auth.aspect;
 
+import com.cruru.advice.NotFoundException;
 import com.cruru.auth.annotation.RequireAuth;
 import com.cruru.auth.util.AuthChecker;
 import com.cruru.auth.util.SecureResource;
@@ -32,13 +33,13 @@ import org.springframework.stereotype.Component;
 public class AuthCheckAspect {
 
     private static final String SERVICE_IDENTIFIER = "Service";
-    private static final Map<Class<?>, Field[]> fieldCache = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Field[]> FIELD_CACHE = new ConcurrentHashMap<>();
 
     private final ApplicationContext applicationContext;
     private final MemberService memberService;
 
     @Before("@annotation(com.cruru.auth.annotation.ValidAuth) && within(com.cruru..controller..*)")
-    public void checkAuthorization(JoinPoint joinPoint) throws Throwable {
+    public void checkAuthorization(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Parameter[] parameters = method.getParameters();
@@ -55,7 +56,7 @@ public class AuthCheckAspect {
 
             if (parameter.isAnnotationPresent(RequireAuth.class) && arg instanceof Long targetId) {
                 RequireAuth requireAuth = parameter.getAnnotation(RequireAuth.class);
-                checkAuthorizationForTarget(loginProfile, requireAuth.targetDomain(), targetId);
+                authorize(loginProfile, requireAuth.targetDomain(), targetId);
                 continue;
             }
             if (!parameter.isAnnotationPresent(RequireAuth.class) && !(arg instanceof Long)) {
@@ -65,7 +66,7 @@ public class AuthCheckAspect {
     }
 
     private LoginProfile getLoginProfile(Object[] args) {
-        return Arrays.stream(args, 0, args.length)
+        return Arrays.stream(args)
                 .filter(LoginProfile.class::isInstance)
                 .findFirst()
                 .map(LoginProfile.class::cast)
@@ -99,7 +100,7 @@ public class AuthCheckAspect {
     }
 
     private Field[] getFields(Class<?> clazz) {
-        return fieldCache.computeIfAbsent(clazz, c -> {
+        return FIELD_CACHE.computeIfAbsent(clazz, c -> {
             Field[] declaredFields = c.getDeclaredFields();
             Arrays.stream(declaredFields)
                     .forEach(field -> {
@@ -156,6 +157,9 @@ public class AuthCheckAspect {
 
         Method findByIdMethod = service.getClass().getMethod("findByIdFetchingMember", Long.class);
         Optional<SecureResource> secureResource = (Optional<SecureResource>) findByIdMethod.invoke(service, targetId);
+        if (secureResource.isEmpty()) {
+            throw new NotFoundException(targetDomainName);
+        }
 
         secureResource.ifPresent(resource -> AuthChecker.checkAuthority(resource, member));
     }
