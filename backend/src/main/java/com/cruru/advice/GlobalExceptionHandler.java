@@ -1,8 +1,10 @@
 package com.cruru.advice;
 
 import com.cruru.global.util.MdcUtils;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
 
         return handleExceptionWithMdc(e, problemDetail,
-                ex -> log.info("CRURU-EXCEPTION [errorMessage = {}]", ex.getMessage())
+                ex -> log.info("CRURU_EXCEPTION [errorMessage = {}]", ex.getMessage())
         );
     }
 
@@ -37,25 +39,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류입니다.");
 
         return handleExceptionWithMdc(e, problemDetail,
-                ex -> log.error("SERVER-EXCEPTION [errorMessage = {}, stackTrace = {}]", ex.getMessage(),
+                ex -> log.error("SERVER_EXCEPTION [errorMessage = {}, stackTrace = {}]",
+                        ex.getMessage(),
                         getLimitedStackTrace(ex))
         );
     }
 
     private String getLimitedStackTrace(Exception e) {
         StackTraceElement[] stackTraceElements = e.getStackTrace();
-        StringBuilder sb = new StringBuilder();
-        int length = Math.min(stackTraceElements.length, STACK_TRACE_LIMIT);
 
-        for (int i = 0; i < length; i++) {
-            sb.append(stackTraceElements[i].toString());
-        }
-
-        if (stackTraceElements.length > STACK_TRACE_LIMIT) {
-            sb.append("... (stack trace truncated)");
-        }
-
-        return sb.toString();
+        return Arrays.stream(stackTraceElements)
+                .limit(STACK_TRACE_LIMIT)
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining());
     }
 
     @Override
@@ -72,7 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, validation.toString());
 
         return handleExceptionWithMdc(e, problemDetail,
-                ex -> log.warn("METHOD_ARGUMENT-EXCEPTION [errorMessage = {}]", validation)
+                ex -> log.warn("METHOD_ARGUMENT_EXCEPTION [errorMessage = {}]", validation)
         );
     }
 
