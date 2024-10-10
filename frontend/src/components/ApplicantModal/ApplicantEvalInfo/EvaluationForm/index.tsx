@@ -57,7 +57,10 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    submitNewEvaluation({ processId, applicantId, ...formState });
+
+    if (window.confirm('평가를 등록한 후에는 수정하거나 삭제할 수 없습니다.\n등록하시겠습니까?')) {
+      submitNewEvaluation({ processId, applicantId, ...formState });
+    }
   };
 
   return (
