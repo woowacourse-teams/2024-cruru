@@ -20,8 +20,8 @@ import S from './style';
 interface Option {
   text: string;
   isSelected: boolean;
-  applyFormId: string;
-  dashboardId: string;
+  applyFormId: number;
+  dashboardId: number;
   status: RecruitmentStatusObject;
 }
 
@@ -113,28 +113,31 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
             return (
               <Fragment key={title}>
                 <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
-                {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
-                  const Icon = IconObj[status.status];
-
-                  return (
-                    <S.SidebarItem key={applyFormId}>
-                      <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>
-                        <S.SidebarItemLink
-                          isSelected={isSelected}
-                          isSidebarOpen={sidebarStyle.isSidebarOpen}
-                        >
-                          <S.IconContainer>
-                            <Icon
-                              size={16}
-                              strokeWidth={4}
-                            />
-                          </S.IconContainer>
-                          {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
-                        </S.SidebarItemLink>
-                      </Link>
-                    </S.SidebarItem>
-                  );
-                })}
+                {posts?.map(
+                  ({ text, isSelected, applyFormId: applyFormIdNum, dashboardId: dashboardIdNum, status }) => {
+                    const Icon = IconObj[status.status];
+                    const dashboardId = String(dashboardIdNum);
+                    const applyFormId = String(applyFormIdNum);
+                    return (
+                      <S.SidebarItem key={applyFormId}>
+                        <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>
+                          <S.SidebarItemLink
+                            isSelected={isSelected}
+                            isSidebarOpen={sidebarStyle.isSidebarOpen}
+                          >
+                            <S.IconContainer>
+                              <Icon
+                                size={16}
+                                strokeWidth={4}
+                              />
+                            </S.IconContainer>
+                            {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
+                          </S.SidebarItemLink>
+                        </Link>
+                      </S.SidebarItem>
+                    );
+                  },
+                )}
               </Fragment>
             );
           })}
