@@ -25,6 +25,10 @@ const Logo = styled.img`
   height: 2.4rem;
 `;
 
+const SidebarToggleIcon = styled.div`
+  color: ${({ theme }) => theme.baseColors.grayscale[500]};
+`;
+
 const Contents = styled.ul`
   display: flex;
   flex-direction: column;
@@ -32,12 +36,18 @@ const Contents = styled.ul`
 `;
 
 const SidebarItem = styled.li`
-  list-style: none;
-`;
-
-const SidebarItemLink = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
+
+  list-style: none;
+  height: 2.4rem;
+`;
+
+const SidebarItemLink = styled.div<{ isSelected: boolean; isSidebarOpen?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: ${({ isSidebarOpen }) => (isSidebarOpen ? 'left' : 'center')};
+
   gap: 1rem;
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
   opacity: ${({ isSelected }) => (isSelected ? 0.99 : 0.4)};
@@ -49,13 +59,22 @@ const SidebarItemLink = styled.div<{ isSelected: boolean }>`
   }
 `;
 
-const SidebarItemText = styled.p`
+const SidebarItemTextHeader = styled.p`
   width: 21rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
   ${({ theme }) => theme.typography.common.largeAccent}
+`;
+
+const SidebarItemText = styled.p`
+  width: 21rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  ${({ theme }) => theme.typography.common.largeBlock}
 `;
 
 const Divider = styled.div`
@@ -65,7 +84,18 @@ const Divider = styled.div`
 const ContentSubTitle = styled.div`
   height: 2rem;
   color: ${({ theme }) => theme.baseColors.grayscale[500]};
-  ${({ theme }) => theme.typography.common.default}
+  ${({ theme }) => theme.typography.common.smallBlock}
+
+  margin-bottom: -0.6rem;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  aspect-ratio: 1/1;
 `;
 
 const Circle = styled.div`
@@ -76,7 +106,7 @@ const Circle = styled.div`
 
   &::before {
     content: '•';
-    scale: 1.3;
+    scale: 1;
   }
 `;
 
@@ -84,12 +114,15 @@ const S = {
   Container,
   SidebarHeader,
   Logo,
+  SidebarToggleIcon,
   Contents,
   SidebarItem,
   SidebarItemLink,
+  SidebarItemTextHeader,
   SidebarItemText,
   Divider,
   ContentSubTitle,
+  IconContainer,
   Circle,
 };
 

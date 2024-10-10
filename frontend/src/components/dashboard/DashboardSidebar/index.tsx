@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import Logo from '@assets/images/logo.svg';
 import { routes } from '@router/path';
 import { Link, useLocation } from 'react-router-dom';
@@ -7,7 +9,7 @@ import type { RecruitmentStatusObject } from '@utils/compareTime';
 import { Fragment } from 'react/jsx-runtime';
 import { HiChevronDoubleLeft, HiOutlineHome } from 'react-icons/hi2';
 import { HiOutlineMenu } from 'react-icons/hi';
-import { GrDocumentTime, GrDocumentUser, GrDocumentVerified } from 'react-icons/gr';
+import { GrDocumentLocked, GrDocumentTime, GrDocumentUser } from 'react-icons/gr';
 import type { IconType } from 'react-icons';
 
 import IconButton from '@components/_common/atoms/IconButton';
@@ -30,13 +32,13 @@ interface SidebarStyle {
 
 interface DashboardSidebarProps {
   sidebarStyle: SidebarStyle;
-  options: Option[];
+  options?: Option[];
 }
 
 export default function DashboardSidebar({ sidebarStyle, options }: DashboardSidebarProps) {
-  const pendingPosts = options.filter(({ status }) => status.isPending);
-  const onGoingPosts = options.filter(({ status }) => status.isOngoing);
-  const closedPosts = options.filter(({ status }) => status.isClosed);
+  const pendingPosts = useMemo(() => options?.filter(({ status }) => status.isPending), [options]);
+  const onGoingPosts = useMemo(() => options?.filter(({ status }) => status.isOngoing), [options]);
+  const closedPosts = useMemo(() => options?.filter(({ status }) => status.isClosed), [options]);
 
   const sidebarContentList = [
     { title: '모집 예정 공고 목록', posts: pendingPosts },
@@ -46,10 +48,10 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
 
   const location = useLocation();
 
-  const IconObj: Record<Option['status']['status'], IconType> = {
+  const IconObj: Record<RecruitmentStatusObject['status'], IconType> = {
     Pending: GrDocumentTime,
     Ongoing: GrDocumentUser,
-    Closed: GrDocumentVerified,
+    Closed: GrDocumentLocked,
   };
 
   return (
@@ -69,7 +71,19 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
           outline={false}
           onClick={sidebarStyle.onClickSidebarToggle}
         >
-          {sidebarStyle.isSidebarOpen ? <HiChevronDoubleLeft /> : <HiOutlineMenu />}
+          <S.SidebarToggleIcon>
+            {sidebarStyle.isSidebarOpen ? (
+              <HiChevronDoubleLeft
+                size={24}
+                strokeWidth={0.8}
+              />
+            ) : (
+              <HiOutlineMenu
+                size={24}
+                strokeWidth={2.4}
+              />
+            )}
+          </S.SidebarToggleIcon>
         </IconButton>
       </S.SidebarHeader>
 
@@ -77,34 +91,44 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
         <S.Contents>
           <S.SidebarItem>
             <Link to={routes.dashboard.list()}>
-              <S.SidebarItemLink isSelected={location.pathname === routes.dashboard.list()}>
-                <HiOutlineHome
-                  size={24}
-                  strokeWidth={2.4}
-                />
-                {sidebarStyle.isSidebarOpen && <S.SidebarItemText>모집 공고</S.SidebarItemText>}
+              <S.SidebarItemLink
+                isSelected={location.pathname === routes.dashboard.list()}
+                isSidebarOpen={sidebarStyle.isSidebarOpen}
+              >
+                <S.IconContainer>
+                  <HiOutlineHome
+                    size={22}
+                    strokeWidth={2}
+                  />
+                </S.IconContainer>
+                {sidebarStyle.isSidebarOpen && <S.SidebarItemTextHeader>모집 공고</S.SidebarItemTextHeader>}
               </S.SidebarItemLink>
             </Link>
           </S.SidebarItem>
 
-          <S.Divider />
+          {!!options?.length && <S.Divider />}
 
           {sidebarContentList.map(({ title, posts }) => {
-            if (posts.length === 0) return;
+            if (posts?.length === 0) return null;
             return (
               <Fragment key={title}>
                 <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
-                {posts.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
+                {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
                   const Icon = IconObj[status.status];
 
                   return (
                     <S.SidebarItem key={applyFormId}>
                       <Link to={routes.dashboard.post({ dashboardId, applyFormId })}>
-                        <S.SidebarItemLink isSelected={isSelected}>
-                          <Icon
-                            size={24}
-                            strokeWidth={2}
-                          />
+                        <S.SidebarItemLink
+                          isSelected={isSelected}
+                          isSidebarOpen={sidebarStyle.isSidebarOpen}
+                        >
+                          <S.IconContainer>
+                            <Icon
+                              size={16}
+                              strokeWidth={4}
+                            />
+                          </S.IconContainer>
                           {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
                         </S.SidebarItemLink>
                       </Link>
