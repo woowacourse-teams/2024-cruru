@@ -64,6 +64,14 @@ public class AuthCheckAspect {
         }
     }
 
+    private LoginProfile getLoginProfile(Object[] args) {
+        return Arrays.stream(args, 0, args.length)
+                .filter(LoginProfile.class::isInstance)
+                .findFirst()
+                .map(LoginProfile.class::cast)
+                .orElseThrow(() -> new IllegalArgumentException("LoginProfile이 존재하지 않습니다."));
+    }
+
     private void checkDto(LoginProfile loginProfile, Object dto) {
         Deque<Object> stack = new ArrayDeque<>();
         stack.push(dto);
@@ -90,6 +98,21 @@ public class AuthCheckAspect {
         }
     }
 
+    private Field[] getFields(Class<?> clazz) {
+        return fieldCache.computeIfAbsent(clazz, c -> {
+            Field[] declaredFields = c.getDeclaredFields();
+            Arrays.stream(declaredFields)
+                    .forEach(field -> {
+                        try {
+                            field.setAccessible(true);
+                        } catch (InaccessibleObjectException e) {
+                            // InaccessibleObjectException 발생 시 무시 (기본 자바 클래스의 필드 접근 시도 시 발생)
+                        }
+                    });
+            return declaredFields;
+        });
+    }
+
     private void checkEachFields(LoginProfile loginProfile, Field field, Object fieldValue) {
         if (field.isAnnotationPresent(RequireAuth.class)) {
             RequireAuth requireAuth = field.getAnnotation(RequireAuth.class);
@@ -108,29 +131,6 @@ public class AuthCheckAspect {
                     .map(Long.class::cast)
                     .forEach(id -> authorize(loginProfile, requireAuth.targetDomain(), id));
         }
-    }
-
-    private Field[] getFields(Class<?> clazz) {
-        return fieldCache.computeIfAbsent(clazz, c -> {
-            Field[] declaredFields = c.getDeclaredFields();
-            Arrays.stream(declaredFields)
-                    .forEach(field -> {
-                        try {
-                            field.setAccessible(true);
-                        } catch (InaccessibleObjectException e) {
-                            // InaccessibleObjectException 발생 시 무시 (기본 자바 클래스의 필드 접근 시도 시 발생)
-                        }
-                    });
-            return declaredFields;
-        });
-    }
-
-    private LoginProfile getLoginProfile(Object[] args) {
-        return Arrays.stream(args, 0, args.length)
-                .filter(LoginProfile.class::isInstance)
-                .findFirst()
-                .map(LoginProfile.class::cast)
-                .orElseThrow(() -> new IllegalArgumentException("LoginProfile이 존재하지 않습니다."));
     }
 
     private void authorize(LoginProfile loginProfile, Class<? extends SecureResource> domainClass, Long targetId) {
