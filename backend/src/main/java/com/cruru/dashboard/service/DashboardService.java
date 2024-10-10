@@ -12,7 +12,6 @@ import com.cruru.process.domain.Process;
 import com.cruru.process.domain.ProcessFactory;
 import com.cruru.process.domain.repository.ProcessRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,10 +39,6 @@ public class DashboardService {
     public Dashboard findById(Long id) {
         return dashboardRepository.findById(id)
                 .orElseThrow(DashboardNotFoundException::new);
-    }
-
-    public Optional<Dashboard> findByIdFetchingMember(Long id) {
-        return dashboardRepository.findByIdFetchingMember(id);
     }
 
     public List<DashboardApplyFormDto> findAllByClub(long clubId) {

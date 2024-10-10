@@ -14,7 +14,6 @@ import com.cruru.process.exception.badrequest.ProcessCountException;
 import com.cruru.process.exception.badrequest.ProcessDeleteFixedException;
 import com.cruru.process.exception.badrequest.ProcessDeleteRemainingApplicantException;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,10 +91,6 @@ public class ProcessService {
     public Process findById(Long processId) {
         return processRepository.findById(processId)
                 .orElseThrow(ProcessNotFoundException::new);
-    }
-
-    public Optional<Process> findByIdFetchingMember(Long processId) {
-        return processRepository.findByIdFetchingMember(processId);
     }
 
     private boolean changeExists(ProcessUpdateRequest request, Process process) {

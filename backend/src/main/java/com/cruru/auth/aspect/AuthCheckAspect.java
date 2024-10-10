@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,16 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Aspect
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthCheckAspect {
 
-    private static final String SERVICE_IDENTIFIER = "Service";
+    private static final String REPOSITORY_SUFFIX = "Repository";
+    private static final String REPOSITORY_METHOD_NAME = "findByIdFetchingMember";
     private static final Map<Class<?>, Field[]> FIELD_CACHE = new ConcurrentHashMap<>();
 
     private final ApplicationContext applicationContext;
@@ -40,88 +42,81 @@ public class AuthCheckAspect {
 
     @Before("@annotation(com.cruru.auth.annotation.ValidAuth) && within(com.cruru..controller..*)")
     public void checkAuthorization(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        Parameter[] parameters = method.getParameters();
+        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
         Object[] controllerArgs = joinPoint.getArgs();
-        LoginProfile loginProfile = getLoginProfile(controllerArgs);
+        LoginProfile loginProfile = extractLoginProfile(controllerArgs);
 
         for (int i = 0; i < controllerArgs.length; i++) {
-            if (!Objects.nonNull(controllerArgs[i])) {
+            if (controllerArgs[i] == null) {
                 continue;
             }
 
-            Parameter parameter = parameters[i];
+            Parameter parameter = method.getParameters()[i];
             Object arg = controllerArgs[i];
 
             if (parameter.isAnnotationPresent(RequireAuth.class) && arg instanceof Long targetId) {
-                RequireAuth requireAuth = parameter.getAnnotation(RequireAuth.class);
-                authorize(loginProfile, requireAuth.targetDomain(), targetId);
-                continue;
-            }
-            if (!parameter.isAnnotationPresent(RequireAuth.class) && !(arg instanceof Long)) {
-                checkDto(loginProfile, arg);
+                authorize(loginProfile, parameter.getAnnotation(RequireAuth.class).targetDomain(), targetId);
+            } else if (!(arg instanceof Long)) {
+                processDtoFields(loginProfile, arg);
             }
         }
     }
 
-    private LoginProfile getLoginProfile(Object[] args) {
+    private LoginProfile extractLoginProfile(Object[] args) {
         return Arrays.stream(args)
                 .filter(LoginProfile.class::isInstance)
-                .findFirst()
                 .map(LoginProfile.class::cast)
+                .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("LoginProfile이 존재하지 않습니다."));
     }
 
-    private void checkDto(LoginProfile loginProfile, Object dto) {
-        Deque<Object> stack = new ArrayDeque<>();
-        stack.push(dto);
+    private void processDtoFields(LoginProfile loginProfile, Object dto) {
+        Deque<Object> dtoStack = new ArrayDeque<>();
+        dtoStack.push(dto);
 
-        while (!stack.isEmpty()) {
-            Object current = stack.pop();
-            Class<?> clazz = current.getClass();
-            Field[] fields = getFields(clazz);
-
-            for (Field field : fields) {
-                Object fieldValue;
-                try {
-                    fieldValue = field.get(current);
-                } catch (IllegalAccessException e) {
-                    continue;
-                }
-
+        while (!dtoStack.isEmpty()) {
+            Object currentDto = dtoStack.pop();
+            for (Field field : retrieveFields(currentDto.getClass())) {
+                Object fieldValue = safelyGetFieldValue(field, currentDto);
                 if (fieldValue == null) {
                     continue;
                 }
-
-                checkEachFields(loginProfile, field, fieldValue);
+                processField(loginProfile, field, fieldValue);
             }
         }
     }
 
-    private Field[] getFields(Class<?> clazz) {
+    private Field[] retrieveFields(Class<?> clazz) {
         return FIELD_CACHE.computeIfAbsent(clazz, c -> {
             Field[] declaredFields = c.getDeclaredFields();
             Arrays.stream(declaredFields)
                     .forEach(field -> {
                         try {
                             field.setAccessible(true);
-                        } catch (InaccessibleObjectException e) {
-                            // InaccessibleObjectException 발생 시 무시 (기본 자바 클래스의 필드 접근 시도 시 발생)
+                        } catch (InaccessibleObjectException ignored) {
+                            // Java 기본 클래스 접근시 발생 예외 무시
                         }
                     });
             return declaredFields;
         });
     }
 
-    private void checkEachFields(LoginProfile loginProfile, Field field, Object fieldValue) {
-        if (field.isAnnotationPresent(RequireAuth.class)) {
-            RequireAuth requireAuth = field.getAnnotation(RequireAuth.class);
-            checkAndAuthorizeField(loginProfile, requireAuth, fieldValue);
+    private Object safelyGetFieldValue(Field field, Object obj) {
+        try {
+            return field.get(obj);
+        } catch (IllegalAccessException ignored) {
+            return null;
         }
     }
 
-    private void checkAndAuthorizeField(LoginProfile loginProfile, RequireAuth requireAuth, Object fieldValue) {
+    private void processField(LoginProfile loginProfile, Field field, Object fieldValue) {
+        if (field.isAnnotationPresent(RequireAuth.class)) {
+            RequireAuth requireAuth = field.getAnnotation(RequireAuth.class);
+            authorizeField(loginProfile, requireAuth, fieldValue);
+        }
+    }
+
+    private void authorizeField(LoginProfile loginProfile, RequireAuth requireAuth, Object fieldValue) {
         if (fieldValue instanceof Long targetId) {
             authorize(loginProfile, requireAuth.targetDomain(), targetId);
             return;
@@ -136,31 +131,29 @@ public class AuthCheckAspect {
 
     private void authorize(LoginProfile loginProfile, Class<? extends SecureResource> domainClass, Long targetId) {
         try {
-            checkAuthorizationForTarget(loginProfile, domainClass, targetId);
+            Member member = memberService.findByEmail(loginProfile.email());
+            String domainName = domainClass.getSimpleName();
+            String repositoryName = getServiceName(domainName);
+            Object repository = applicationContext.getBean(repositoryName);
+            Method findByIdFetchingMember = repository.getClass().getMethod(REPOSITORY_METHOD_NAME, Long.class);
+            Optional<SecureResource> resourceOpt = (Optional<SecureResource>) findByIdFetchingMember.invoke(
+                    repository,
+                    targetId
+            );
+
+            resourceOpt.ifPresentOrElse(
+                    resource -> AuthChecker.checkAuthority(resource, member),
+                    () -> {
+                        throw new NotFoundException(domainClass.getSimpleName());
+                    }
+            );
         } catch (ReflectiveOperationException e) {
-            throw new IllegalArgumentException(domainClass + ": Service 또는 findById Method가 존재하지 않습니다.", e);
+            throw new IllegalArgumentException(
+                    domainClass.getSimpleName() + ": Repository 또는 findByIdFetchingMember Method가 존재하지 않습니다.");
         }
     }
 
-    private void checkAuthorizationForTarget(
-            LoginProfile loginProfile,
-            Class<? extends SecureResource> targetDomain,
-            Long targetId
-    ) throws ReflectiveOperationException {
-        Member member = memberService.findByEmail(loginProfile.email());
-
-        String targetDomainName = targetDomain.getSimpleName();
-        String serviceName =
-                Character.toLowerCase(targetDomainName.charAt(0)) + targetDomainName.substring(1) + SERVICE_IDENTIFIER;
-
-        Object service = applicationContext.getBean(serviceName);
-
-        Method findByIdMethod = service.getClass().getMethod("findByIdFetchingMember", Long.class);
-        Optional<SecureResource> secureResource = (Optional<SecureResource>) findByIdMethod.invoke(service, targetId);
-        if (secureResource.isEmpty()) {
-            throw new NotFoundException(targetDomainName);
-        }
-
-        secureResource.ifPresent(resource -> AuthChecker.checkAuthority(resource, member));
+    private String getServiceName(String domainName) {
+        return Character.toLowerCase(domainName.charAt(0)) + domainName.substring(1) + REPOSITORY_SUFFIX;
     }
 }

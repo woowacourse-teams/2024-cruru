@@ -14,7 +14,6 @@ import com.cruru.applicant.exception.badrequest.ApplicantRejectException;
 import com.cruru.applicant.exception.badrequest.ApplicantUnrejectException;
 import com.cruru.process.domain.Process;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,10 +45,6 @@ public class ApplicantService {
     public Applicant findById(Long applicantId) {
         return applicantRepository.findById(applicantId)
                 .orElseThrow(ApplicantNotFoundException::new);
-    }
-
-    public Optional<Applicant> findByIdFetchingMember(Long applicantId) {
-        return applicantRepository.findByIdFetchingMember(applicantId);
     }
 
     private boolean changeExists(ApplicantUpdateRequest request, Applicant applicant) {

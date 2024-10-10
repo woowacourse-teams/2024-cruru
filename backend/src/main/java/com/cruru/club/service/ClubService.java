@@ -5,7 +5,6 @@ import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.club.exception.ClubNotFoundException;
 import com.cruru.member.domain.Member;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,9 +34,5 @@ public class ClubService {
     public Club findByMember(Member member) {
         return clubRepository.findByMember(member)
                 .orElseThrow(ClubNotFoundException::new);
-    }
-
-    public Optional<Club> findByIdFetchingMember(Long id) {
-        return clubRepository.findByIdFetchingMember(id);
     }
 }

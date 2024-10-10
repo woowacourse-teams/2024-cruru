@@ -8,7 +8,6 @@ import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applicant.exception.EvaluationNotFoundException;
 import com.cruru.process.domain.Process;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +22,6 @@ public class EvaluationService {
     public Evaluation findById(Long evaluationId) {
         return evaluationRepository.findById(evaluationId)
                 .orElseThrow(EvaluationNotFoundException::new);
-    }
-
-    public Optional<Evaluation> findByIdFetchingMember(Long evaluationId) {
-        return evaluationRepository.findByIdFetchingMember(evaluationId);
     }
 
     @Transactional
