@@ -10,7 +10,7 @@ interface ProcessHeaderProps {
   handleChangeProcess: (direction: 1 | -1) => void;
 }
 
-export default function ProcessHeader({
+export default function InquireEvalHeader({
   processName,
   isCurrentProcess,
   isLastProcess,

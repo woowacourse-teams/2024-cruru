@@ -3,12 +3,12 @@ import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 
 import BaseModal from './BaseModal';
 
-import ProcessHeader from './ProcessHeader';
 import ApplicantBaseInfo from './ApplicantBaseInfo';
 import ApplicatnModalHeader from './ModalHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
 import ApplicantEvalInfo from './ApplicantEvalInfo';
 import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
+import InquireEvalHeader from './InquireEvalHeader';
 
 import S from './style';
 import usePaginatedEvaluation from './usePaginatedEvaluation';
@@ -52,7 +52,7 @@ export default function ApplicantModal() {
         </S.ModalEvalHeader>
 
         <S.ModalAsideHeader>
-          <ProcessHeader
+          <InquireEvalHeader
             isLastProcess={isLastProcess}
             isFirstProcess={isFirstProcess}
             isCurrentProcess={isCurrentProcess}
