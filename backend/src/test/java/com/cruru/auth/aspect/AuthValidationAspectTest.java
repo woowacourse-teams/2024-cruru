@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("인가 AOP 테스트")
-class AuthCheckAspectTest extends ControllerTest {
+class AuthValidationAspectTest extends ControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;

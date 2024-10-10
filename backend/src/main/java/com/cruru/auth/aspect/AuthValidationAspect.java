@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AuthCheckAspect {
+public class AuthValidationAspect {
 
     private static final String REPOSITORY_SUFFIX = "Repository";
     private static final String REPOSITORY_METHOD_NAME = "findByIdFetchingMember";
