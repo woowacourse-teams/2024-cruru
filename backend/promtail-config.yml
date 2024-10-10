@@ -99,14 +99,3 @@ scrape_configs:
           source: timestamp
           format: 2006-01-02T15:04:05.000
           location: "Asia/Seoul"
-
-  - job_name: http_logs
-    static_configs:
-      - targets:
-          - localhost
-        labels:
-          job: ${MONITORING_PROFILE}_http_logs
-          __path__: /var/log/nginx/*.log
-    pipeline_stages:
-      - regex:
-          expression: '^(?P<remote_addr>[^\s]+) - - \[(?P<timestamp>[^\]]+)\] "(?P<method>[A-Z]+) (?P<request>[^ ]+) HTTP/[^"]+" (?P<status>\d+) (?P<body_bytes_sent>\d+)'
