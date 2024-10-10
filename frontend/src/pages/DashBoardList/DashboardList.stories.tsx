@@ -17,7 +17,7 @@ const meta: Meta<typeof DashboardList> = {
       location: {
         pathParams: { dashboardId: '1' },
       },
-      routing: { path: '/dashboardId/:dashboardId' },
+      routing: { path: '/dashboardId' },
     }),
   },
   tags: ['autodocs'],

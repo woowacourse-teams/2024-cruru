@@ -43,8 +43,8 @@ interface Stats {
 }
 
 interface Dashboard {
-  dashboardId: string;
-  applyFormId: string;
+  dashboardId: number;
+  applyFormId: number;
   title: string;
   stats: Stats;
   startDate: string;

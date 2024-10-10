@@ -26,6 +26,7 @@ const preview: Preview = {
   loaders: [mswLoader],
   decorators: [
     (Story) => {
+      localStorage.setItem('clubId', '1');
       return (
         <ModalProvider>
           <QueryClientProvider client={new QueryClient()}>

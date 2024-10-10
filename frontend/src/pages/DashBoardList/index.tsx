@@ -19,12 +19,12 @@ export default function DashboardList() {
         {data?.dashboards.map((dashboard) => (
           <RecruitmentCard
             key={`${dashboard.dashboardId}-${dashboard.applyFormId}`}
-            dashboardId={dashboard.dashboardId}
+            dashboardId={String(dashboard.dashboardId)}
             title={dashboard.title}
             postStats={dashboard.stats}
             startDate={dashboard.startDate}
             endDate={dashboard.endDate}
-            onClick={() => handleCardClick(dashboard.dashboardId, dashboard.applyFormId)}
+            onClick={() => handleCardClick(String(dashboard.dashboardId), String(dashboard.applyFormId))}
           />
         ))}
         <S.AddCard onClick={() => navigate(routes.dashboard.create())}>
