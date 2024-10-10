@@ -72,6 +72,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception e,
+            Object body,
+            HttpHeaders headers,
+            HttpStatusCode statusCode,
+            WebRequest request
+    ) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(statusCode, "오류가 발생했습니다. 다시 시도해 주세요.");
+
+        return handleExceptionWithMdc(e, problemDetail,
+                ex -> log.warn("SPRING_BASIC_EXCEPTION [errorMessage = {}]", ex.getMessage())
+        );
+    }
+
     private ResponseEntity<Object> handleExceptionWithMdc(
             Exception e,
             ProblemDetail problemDetail,
