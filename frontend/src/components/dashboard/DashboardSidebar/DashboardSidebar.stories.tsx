@@ -26,8 +26,8 @@ const meta: Meta<typeof DashboardSidebar> = {
       {
         text: '첫번째 옵션',
         isSelected: false,
-        dashboardId: '1',
-        applyFormId: '10',
+        dashboardId: 1,
+        applyFormId: 10,
         status: {
           isClosed: true,
           isPending: false,
@@ -38,8 +38,8 @@ const meta: Meta<typeof DashboardSidebar> = {
       {
         text: '두번째 옵션',
         isSelected: false,
-        dashboardId: '2',
-        applyFormId: '11',
+        dashboardId: 2,
+        applyFormId: 11,
         status: {
           isClosed: true,
           isPending: false,
@@ -50,8 +50,8 @@ const meta: Meta<typeof DashboardSidebar> = {
       {
         text: '세번째 옵션',
         isSelected: true,
-        dashboardId: '2',
-        applyFormId: '12',
+        dashboardId: 2,
+        applyFormId: 12,
         status: {
           isClosed: false,
           isPending: false,
@@ -62,8 +62,8 @@ const meta: Meta<typeof DashboardSidebar> = {
       {
         text: '네번째 옵션',
         isSelected: false,
-        dashboardId: '2',
-        applyFormId: '13',
+        dashboardId: 2,
+        applyFormId: 13,
         status: {
           isClosed: false,
           isPending: true,

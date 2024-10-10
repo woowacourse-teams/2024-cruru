@@ -16,7 +16,7 @@ export default function DashboardLayout() {
 
   const applyFormList = data?.dashboards.map(({ title, dashboardId, applyFormId, startDate, endDate }) => ({
     text: title,
-    isSelected: !!currentPostId && currentPostId === applyFormId,
+    isSelected: !!currentPostId && currentPostId === String(applyFormId),
     status: getTimeStatus({ startDate, endDate }),
     applyFormId,
     dashboardId,
