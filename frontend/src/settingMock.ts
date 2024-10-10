@@ -23,10 +23,10 @@ export default async function settingMock() {
       zIndex: '9999',
     });
 
-    floatingMSWActiveButton.textContent = 'MSW';
+    const currentValue = window.localStorage.getItem(MSW_ACTIVE_ID);
+    floatingMSWActiveButton.textContent = `MSW ${currentValue ? 'ON' : 'OFF'}`;
 
     floatingMSWActiveButton.addEventListener('click', () => {
-      const currentValue = window.localStorage.getItem(MSW_ACTIVE_ID);
       if (currentValue) {
         window.localStorage.removeItem(MSW_ACTIVE_ID);
       } else {
