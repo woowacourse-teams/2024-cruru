@@ -54,7 +54,7 @@ public class DashboardController {
     @DeleteMapping("/{dashboardId}")
     @ValidAuth
     public ResponseEntity<Void> delete(
-            @RequireAuth(targetDomain = Dashboard.class)@PathVariable Long dashboardId,
+            @RequireAuth(targetDomain = Dashboard.class) @PathVariable Long dashboardId,
             LoginProfile loginProfile
     ) {
         dashboardFacade.delete(dashboardId);
