@@ -1,6 +1,7 @@
 package com.cruru.dashboard.controller;
 
-import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.auth.annotation.RequireAuth;
+import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.club.domain.Club;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.controller.response.DashboardCreateResponse;
@@ -29,22 +30,21 @@ public class DashboardController {
     private final DashboardFacade dashboardFacade;
 
     @PostMapping
-    @RequireAuthCheck(targetId = "clubId", targetDomain = Club.class)
+    @ValidAuth
     public ResponseEntity<DashboardCreateResponse> create(
-            @RequestParam(name = "clubId") Long clubId,
+            @RequireAuth(targetDomain = Club.class) @RequestParam(name = "clubId") Long clubId,
             @RequestBody @Valid DashboardCreateRequest request,
             LoginProfile loginProfile
     ) {
-
         DashboardCreateResponse dashboardCreateResponse = dashboardFacade.create(clubId, request);
         return ResponseEntity.created(URI.create("/v1/dashboards/" + dashboardCreateResponse.dashboardId()))
                 .body(dashboardCreateResponse);
     }
 
     @GetMapping
-    @RequireAuthCheck(targetId = "clubId", targetDomain = Club.class)
+    @ValidAuth
     public ResponseEntity<DashboardsOfClubResponse> readDashboards(
-            @RequestParam(name = "clubId") Long clubId,
+            @RequireAuth(targetDomain = Club.class) @RequestParam(name = "clubId") Long clubId,
             LoginProfile loginProfile
     ) {
         DashboardsOfClubResponse dashboards = dashboardFacade.findAllDashboardsByClubId(clubId);
@@ -52,8 +52,11 @@ public class DashboardController {
     }
 
     @DeleteMapping("/{dashboardId}")
-    @RequireAuthCheck(targetId = "dashboardId", targetDomain = Dashboard.class)
-    public ResponseEntity<Void> delete(@PathVariable Long dashboardId, LoginProfile loginProfile) {
+    @ValidAuth
+    public ResponseEntity<Void> delete(
+            @RequireAuth(targetDomain = Dashboard.class) @PathVariable Long dashboardId,
+            LoginProfile loginProfile
+    ) {
         dashboardFacade.delete(dashboardId);
         return ResponseEntity.noContent().build();
     }

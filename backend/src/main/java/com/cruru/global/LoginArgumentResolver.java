@@ -1,7 +1,7 @@
 package com.cruru.global;
 
 import com.cruru.advice.UnauthorizedException;
-import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.auth.service.AuthService;
 import com.cruru.global.util.CookieManager;
 import com.cruru.member.domain.MemberRole;
@@ -22,7 +22,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return Objects.requireNonNull(parameter.getMethod()).isAnnotationPresent(RequireAuthCheck.class);
+        return Objects.requireNonNull(parameter.getMethod()).isAnnotationPresent(ValidAuth.class);
     }
 
     @Override

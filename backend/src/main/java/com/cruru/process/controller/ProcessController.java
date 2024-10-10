@@ -1,6 +1,7 @@
 package com.cruru.process.controller;
 
-import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.auth.annotation.RequireAuth;
+import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.global.LoginProfile;
 import com.cruru.process.controller.request.ProcessCreateRequest;
@@ -30,16 +31,16 @@ public class ProcessController {
 
     private final ProcessFacade processFacade;
 
-    @RequireAuthCheck(targetId = "dashboardId", targetDomain = Dashboard.class)
     @GetMapping
+    @ValidAuth
     public ResponseEntity<ProcessResponses> read(
-            LoginProfile loginProfile,
-            @RequestParam(name = "dashboardId") Long dashboardId,
+            @RequireAuth(targetDomain = Dashboard.class) @RequestParam(name = "dashboardId") Long dashboardId,
             @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
             @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
             @RequestParam(name = "evaluationStatus", required = false, defaultValue = "ALL") String evaluationStatus,
             @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "DESC") String sortByCreatedAt,
-            @RequestParam(name = "sortByScore", required = false, defaultValue = "DESC") String sortByScore
+            @RequestParam(name = "sortByScore", required = false, defaultValue = "DESC") String sortByScore,
+            LoginProfile loginProfile
     ) {
         ProcessResponses processes = processFacade.readAllByDashboardId(
                 dashboardId, minScore, maxScore, evaluationStatus, sortByCreatedAt, sortByScore
@@ -47,31 +48,34 @@ public class ProcessController {
         return ResponseEntity.ok().body(processes);
     }
 
-    @RequireAuthCheck(targetId = "dashboardId", targetDomain = Dashboard.class)
     @PostMapping
+    @ValidAuth
     public ResponseEntity<Void> create(
-            LoginProfile loginProfile,
-            @RequestParam(name = "dashboardId") Long dashboardId,
-            @RequestBody @Valid ProcessCreateRequest request
+            @RequireAuth(targetDomain = Dashboard.class) @RequestParam(name = "dashboardId") Long dashboardId,
+            @RequestBody @Valid ProcessCreateRequest request,
+            LoginProfile loginProfile
     ) {
         processFacade.create(request, dashboardId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @PatchMapping("/{processId}")
+    @ValidAuth
     public ResponseEntity<ProcessResponse> update(
-            LoginProfile loginProfile,
-            @PathVariable Long processId,
-            @RequestBody @Valid ProcessUpdateRequest request
+            @RequireAuth(targetDomain = Process.class) @PathVariable Long processId,
+            @RequestBody @Valid ProcessUpdateRequest request,
+            LoginProfile loginProfile
     ) {
         ProcessResponse response = processFacade.update(request, processId);
         return ResponseEntity.ok().body(response);
     }
 
-    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @DeleteMapping("/{processId}")
-    public ResponseEntity<Void> delete(LoginProfile loginProfile, @PathVariable Long processId) {
+    @ValidAuth
+    public ResponseEntity<Void> delete(
+            @RequireAuth(targetDomain = Process.class) @PathVariable Long processId,
+            LoginProfile loginProfile
+    ) {
         processFacade.delete(processId);
         return ResponseEntity.noContent().build();
     }

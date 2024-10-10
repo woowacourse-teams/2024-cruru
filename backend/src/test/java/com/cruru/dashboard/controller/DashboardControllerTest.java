@@ -15,7 +15,6 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.domain.repository.EvaluationRepository;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
-import com.cruru.club.domain.Club;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.dashboard.controller.request.DashboardCreateRequest;
 import com.cruru.dashboard.domain.Dashboard;
@@ -34,7 +33,6 @@ import com.cruru.util.fixture.AnswerFixture;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ChoiceFixture;
-import com.cruru.util.fixture.ClubFixture;
 import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.EmailFixture;
 import com.cruru.util.fixture.EvaluationFixture;
@@ -45,7 +43,6 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.util.List;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -111,8 +108,6 @@ class DashboardControllerTest extends ControllerTest {
     @Autowired
     private EvaluationRepository evaluationRepository;
 
-    private Club club;
-
     private static Stream<QuestionCreateRequest> InvalidQuestionCreateRequest() {
         String validChoice = "선택지1";
         int validOrderIndex = 0;
@@ -123,33 +118,39 @@ class DashboardControllerTest extends ControllerTest {
         boolean validRequired = false;
         return Stream.of(
                 new QuestionCreateRequest(null, validQuestion,
-                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                        validChoiceCreateRequests, validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest("", validQuestion,
-                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                        validChoiceCreateRequests, validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, null,
-                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                        validChoiceCreateRequests, validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, "",
-                        validChoiceCreateRequests, validOrderIndex, validRequired),
+                        validChoiceCreateRequests, validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        List.of(new ChoiceCreateRequest(null, validOrderIndex)), validOrderIndex, validRequired),
+                        List.of(new ChoiceCreateRequest(null, validOrderIndex)), validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        List.of(new ChoiceCreateRequest("", validOrderIndex)), validOrderIndex, validRequired),
+                        List.of(new ChoiceCreateRequest("", validOrderIndex)), validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        List.of(new ChoiceCreateRequest(validChoice, null)), validOrderIndex, validRequired),
+                        List.of(new ChoiceCreateRequest(validChoice, null)), validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        List.of(new ChoiceCreateRequest(validChoice, -1)), validOrderIndex, validRequired),
+                        List.of(new ChoiceCreateRequest(validChoice, -1)), validOrderIndex, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        validChoiceCreateRequests, null, validRequired),
+                        validChoiceCreateRequests, null, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        validChoiceCreateRequests, -1, validRequired),
+                        validChoiceCreateRequests, -1, validRequired
+                ),
                 new QuestionCreateRequest(validType, validQuestion,
-                        validChoiceCreateRequests, validOrderIndex, null)
+                        validChoiceCreateRequests, validOrderIndex, null
+                )
         );
-    }
-
-    @BeforeEach
-    void setUp() {
-        club = clubRepository.save(ClubFixture.create(defaultMember));
     }
 
     @DisplayName("대시보드 생성 성공 시, 201을 응답한다.")
@@ -166,14 +167,15 @@ class DashboardControllerTest extends ControllerTest {
                 LocalDateFixture.oneDayLater(),
                 LocalDateFixture.oneWeekLater()
         );
-        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
+        String url = String.format("/v1/dashboards?clubId=%d", defaultClub.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .cookie("token", token)
                 .body(request)
-                .filter(document("dashboard/create",
+                .filter(document(
+                        "dashboard/create",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         requestFields(
@@ -206,14 +208,15 @@ class DashboardControllerTest extends ControllerTest {
                 LocalDateFixture.oneDayLater(),
                 LocalDateFixture.oneWeekLater()
         );
-        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
+        String url = String.format("/v1/dashboards?clubId=%d", defaultClub.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .cookie("token", token)
                 .body(request)
-                .filter(document("dashboard/create-fail/invalid-question",
+                .filter(document(
+                        "dashboard/create-fail/invalid-question",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         requestFields(
@@ -251,7 +254,8 @@ class DashboardControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .cookie("token", token)
                 .body(request)
-                .filter(document("dashboard/create-fail/club-not-found",
+                .filter(document(
+                        "dashboard/create-fail/club-not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("존재하지 않는 동아리 id")),
                         requestFields(
@@ -271,14 +275,15 @@ class DashboardControllerTest extends ControllerTest {
     @Test
     void readDashboards_success() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        String url = String.format("/v1/dashboards?clubId=%d", club.getId());
+        String url = String.format("/v1/dashboards?clubId=%d", defaultClub.getId());
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("dashboard/read",
+                .filter(document(
+                        "dashboard/read",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         responseFields(
@@ -294,20 +299,21 @@ class DashboardControllerTest extends ControllerTest {
     @Test
     void delete() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(club));
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
         Question question = questionRepository.save(QuestionFixture.singleChoiceType(applyForm));
         choiceRepository.save(ChoiceFixture.first(question));
         Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         answerRepository.save(AnswerFixture.first(question, applicant));
-        emailRepository.save(EmailFixture.rejectEmail(club, applicant));
+        emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
         evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("dashboard/delete",
+                .filter(document(
+                        "dashboard/delete",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("dashboardId").description("삭제할 대시보드의 id"))
                 ))
@@ -319,12 +325,13 @@ class DashboardControllerTest extends ControllerTest {
     @Test
     void delete_notFound() {
         // given
-        long invalidId = -1;
+        Long invalidId = -1L;
 
         // when&then
         RestAssured.given(spec).log().all()
                 .cookie("token", token)
-                .filter(document("dashboard/delete/not-found",
+                .filter(document(
+                        "dashboard/delete/not-found",
                         requestCookies(cookieWithName("token").description("사용자 토큰")),
                         pathParameters(parameterWithName("dashboardId").description("존재하지 않는 대시보드의 id"))
                 ))
