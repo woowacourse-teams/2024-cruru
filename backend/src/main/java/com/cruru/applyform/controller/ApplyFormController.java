@@ -3,7 +3,11 @@ package com.cruru.applyform.controller;
 import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.response.ApplyFormResponse;
+import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.facade.ApplyFormFacade;
+import com.cruru.auth.annotation.RequireAuth;
+import com.cruru.auth.annotation.ValidAuth;
+import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -33,15 +37,21 @@ public class ApplyFormController {
     }
 
     @GetMapping("/{applyformId}")
-    public ResponseEntity<ApplyFormResponse> read(@PathVariable("applyformId") long applyFormId) {
+    @ValidAuth
+    public ResponseEntity<ApplyFormResponse> read(
+            @RequireAuth(targetDomain = ApplyForm.class) @PathVariable("applyformId") long applyFormId,
+            LoginProfile loginProfile
+    ) {
         ApplyFormResponse response = applyFormFacade.readApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{applyformId}")
+    @ValidAuth
     public ResponseEntity<Void> update(
             @RequestBody @Valid ApplyFormWriteRequest request,
-            @PathVariable("applyformId") Long applyFormId
+            @RequireAuth(targetDomain = ApplyForm.class) @PathVariable("applyformId") Long applyFormId,
+            LoginProfile loginProfile
     ) {
         applyFormFacade.update(request, applyFormId);
         return ResponseEntity.ok().build();

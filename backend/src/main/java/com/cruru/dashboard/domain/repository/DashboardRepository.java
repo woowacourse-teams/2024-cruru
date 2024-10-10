@@ -10,5 +10,5 @@ public interface DashboardRepository extends JpaRepository<Dashboard, Long> {
 
     @EntityGraph(attributePaths = {"club.member"})
     @Query("SELECT d FROM Dashboard d WHERE d.id = :id")
-    Optional<Dashboard> findByIdFetchingMember(long id);
+    Optional<Dashboard> findByIdFetchingMember(Long id);
 }

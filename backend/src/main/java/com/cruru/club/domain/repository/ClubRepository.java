@@ -13,5 +13,5 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     @EntityGraph(attributePaths = "member")
     @Query("SELECT c FROM Club c WHERE c.id = :id")
-    Optional<Club> findByIdFetchingMember(long id);
+    Optional<Club> findByIdFetchingMember(Long id);
 }
