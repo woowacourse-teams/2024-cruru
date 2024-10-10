@@ -6,10 +6,11 @@ const Container = styled.div`
 
   display: grid;
   grid-template-columns: 4fr 9fr 5fr;
-  grid-template-rows: 1fr 1.5fr 14fr;
+  grid-template-rows: 1fr 1.5fr 1fr 14fr;
   grid-template-areas:
     'header header header'
     'sidebar nav evalHeader'
+    'sidebar main asideHeader'
     'sidebar main aside';
 `;
 
@@ -62,6 +63,12 @@ const ModalMain = styled.div`
   overflow: auto;
 `;
 
+const ModalAsideHeader = styled.div`
+  grid-area: asideHeader;
+  padding: 1.6rem;
+  border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[600]};
+`;
+
 const ModalAside = styled.div`
   grid-area: aside;
   padding: 1.6rem; //TODO: Refactor
@@ -83,6 +90,7 @@ const S = {
   ModalNavHeader,
   ModalNavContent,
   ModalMain,
+  ModalAsideHeader,
   ModalAside,
   ModalEvalHeader,
 };
