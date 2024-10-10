@@ -10,7 +10,7 @@ import S from './style';
 
 export default function DashboardLayout() {
   const { applyFormId: currentPostId } = useParams();
-  const { data, isLoading } = useGetDashboards();
+  const { data } = useGetDashboards();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [ref, rect] = useElementRect();
 
@@ -30,16 +30,10 @@ export default function DashboardLayout() {
   return (
     <S.Layout>
       <S.Sidebar ref={ref}>
-        {isLoading ? (
-          <div>Loading...</div> // TODO: Suspense로 리팩토링
-        ) : !applyFormList ? (
-          <div>something wrong</div> // TODO: ErrorBoundary로 리팩터링
-        ) : (
-          <DashboardSidebar
-            sidebarStyle={{ isSidebarOpen, onClickSidebarToggle: handleToggleSidebar }}
-            options={applyFormList}
-          />
-        )}
+        <DashboardSidebar
+          sidebarStyle={{ isSidebarOpen, onClickSidebarToggle: handleToggleSidebar }}
+          options={applyFormList}
+        />
       </S.Sidebar>
 
       <S.MainContainer
