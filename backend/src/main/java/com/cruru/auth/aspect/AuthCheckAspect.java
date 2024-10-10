@@ -8,7 +8,6 @@ import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import java.lang.reflect.Field;
 import java.lang.reflect.InaccessibleObjectException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayDeque;
@@ -18,7 +17,6 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
@@ -66,19 +64,12 @@ public class AuthCheckAspect {
         }
     }
 
-    private void checkDto(LoginProfile loginProfile, Object dto) throws Throwable {
+    private void checkDto(LoginProfile loginProfile, Object dto) {
         Deque<Object> stack = new ArrayDeque<>();
         stack.push(dto);
-        Set<Object> visited = ConcurrentHashMap.newKeySet(); // 순환 참조 방지를 위한 Set
 
         while (!stack.isEmpty()) {
             Object current = stack.pop();
-
-            // 이미 방문한 객체는 다시 처리하지 않음
-            if (!visited.add(System.identityHashCode(current))) {
-                continue;
-            }
-
             Class<?> clazz = current.getClass();
             Field[] fields = getFields(clazz);
 
@@ -90,35 +81,32 @@ public class AuthCheckAspect {
                     continue;
                 }
 
-                // 필드 값이 null인 경우 스킵
                 if (fieldValue == null) {
                     continue;
                 }
 
-                // 필드에 @RequireAuth 어노테이션이 붙어 있는 경우 권한 검사 수행
                 checkEachFields(loginProfile, field, fieldValue);
             }
         }
     }
 
-    private void checkEachFields(
-            LoginProfile loginProfile,
-            Field field,
-            Object fieldValue
-    ) throws Throwable {
+    private void checkEachFields(LoginProfile loginProfile, Field field, Object fieldValue) {
         if (field.isAnnotationPresent(RequireAuth.class)) {
             RequireAuth requireAuth = field.getAnnotation(RequireAuth.class);
-            if (fieldValue instanceof Long targetId) {
-                authorize(loginProfile, requireAuth.targetDomain(), targetId);
-                return;
-            }
-            if (fieldValue instanceof Collection<?> collection) {
-                for (Object o : collection) {
-                    if (o instanceof Long id) {
-                        authorize(loginProfile, requireAuth.targetDomain(), id);
-                    }
-                }
-            }
+            checkAndAuthorizeField(loginProfile, requireAuth, fieldValue);
+        }
+    }
+
+    private void checkAndAuthorizeField(LoginProfile loginProfile, RequireAuth requireAuth, Object fieldValue) {
+        if (fieldValue instanceof Long targetId) {
+            authorize(loginProfile, requireAuth.targetDomain(), targetId);
+            return;
+        }
+        if (fieldValue instanceof Collection<?> collection) {
+            collection.stream()
+                    .filter(Long.class::isInstance)
+                    .map(Long.class::cast)
+                    .forEach(id -> authorize(loginProfile, requireAuth.targetDomain(), id));
         }
     }
 
@@ -145,15 +133,9 @@ public class AuthCheckAspect {
                 .orElseThrow(() -> new IllegalArgumentException("LoginProfile이 존재하지 않습니다."));
     }
 
-    private void authorize(
-            LoginProfile loginProfile,
-            Class<? extends SecureResource> domainClass,
-            Long targetId
-    ) throws Throwable {
+    private void authorize(LoginProfile loginProfile, Class<? extends SecureResource> domainClass, Long targetId) {
         try {
             checkAuthorizationForTarget(loginProfile, domainClass, targetId);
-        } catch (InvocationTargetException e) {
-            throw e.getCause();
         } catch (ReflectiveOperationException e) {
             throw new IllegalArgumentException(domainClass + ": Service 또는 findById Method가 존재하지 않습니다.", e);
         }
