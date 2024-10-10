@@ -21,7 +21,7 @@ const EvaluationListContainer = styled.ul`
   }
 
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 const S = {
