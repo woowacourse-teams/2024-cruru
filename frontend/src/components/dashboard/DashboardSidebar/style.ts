@@ -1,58 +1,129 @@
 import styled from '@emotion/styled';
 
-const Container = styled.div`
+const Container = styled.div<{ isSidebarOpen: boolean }>`
   position: relative;
-
-  width: 20%;
-  min-width: 25rem;
-  max-width: 30rem;
+  width: ${({ isSidebarOpen }) => (isSidebarOpen ? '276px' : '56px')};
+  height: 100%;
   border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   padding: 3.6rem 1.6rem;
 
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
-  border-radius: 1.6rem 0 0 1.6rem;
 
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 4rem;
+`;
+
+const SidebarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2.4rem;
 `;
 
 const Logo = styled.img`
   height: 2.4rem;
 `;
 
-const Contents = styled.nav`
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
+const SidebarToggleIcon = styled.div`
+  color: ${({ theme }) => theme.baseColors.grayscale[500]};
 `;
 
-const LinkContainer = styled.div<{ isSelected: boolean }>`
-  ${({ theme }) => theme.typography.common.block}
-  color: ${({ theme, isSelected }) => (isSelected ? theme.colors.brand.primary : theme.colors.text.default)};
-  margin-bottom: 0;
-
+const Contents = styled.ul`
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 2rem;
+`;
 
-  & > button > a {
-    text-align: start;
+const SidebarItem = styled.li`
+  display: flex;
+  align-items: center;
+
+  list-style: none;
+  height: 2.4rem;
+`;
+
+const SidebarItemLink = styled.div<{ isSelected: boolean; isSidebarOpen?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: ${({ isSidebarOpen }) => (isSidebarOpen ? 'left' : 'center')};
+
+  gap: 1rem;
+  color: ${({ theme }) => theme.baseColors.grayscale[900]};
+  opacity: ${({ isSelected }) => (isSelected ? 0.99 : 0.4)};
+
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.99;
   }
+`;
+
+const SidebarItemTextHeader = styled.p`
+  width: 21rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  ${({ theme }) => theme.typography.common.largeAccent}
+`;
+
+const SidebarItemText = styled.p`
+  width: 21rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  ${({ theme }) => theme.typography.common.largeBlock}
+`;
+
+const Divider = styled.div`
+  border-bottom: 0.15rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+`;
+
+const ContentSubTitle = styled.div`
+  height: 2rem;
+  color: ${({ theme }) => theme.baseColors.grayscale[500]};
+  ${({ theme }) => theme.typography.common.smallBlock}
+
+  margin-bottom: -0.6rem;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  aspect-ratio: 1/1;
+`;
+
+const Circle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 
   &::before {
     content: '•';
-    display: block;
-    width: 1rem;
-    aspect-ratio: 1/1;
-    margin: 0 0.8rem;
+    scale: 1;
   }
 `;
 
 const S = {
   Container,
+  SidebarHeader,
   Logo,
+  SidebarToggleIcon,
   Contents,
-  LinkContainer,
+  SidebarItem,
+  SidebarItemLink,
+  SidebarItemTextHeader,
+  SidebarItemText,
+  Divider,
+  ContentSubTitle,
+  IconContainer,
+  Circle,
 };
 
 export default S;
