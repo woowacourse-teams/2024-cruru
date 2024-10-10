@@ -18,8 +18,8 @@ const { PROD_URL, DEV_URL } = process.env;
 async function setPrev() {
   if (process.env.NODE_ENV === 'development') {
     Sentry.getCurrentScope().setLevel('info');
-    const worker = await import('@mocks/browser');
-    await worker.default.start();
+    // const worker = await import('@mocks/browser');
+    // await worker.default.start();
   }
   if (process.env.NODE_ENV === 'production') {
     ReactGA.initialize(process.env.GA_MEASUREMENT_ID);

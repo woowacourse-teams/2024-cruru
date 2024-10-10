@@ -8,26 +8,27 @@ import EvaluationCard from './EvaluationCard';
 interface ApplicantEvalInfoProps {
   applicantId: number;
   processId: number;
+  isCurrentProcess: boolean;
 }
 
-export default function ApplicantEvalInfo({ applicantId, processId }: ApplicantEvalInfoProps) {
+export default function ApplicantEvalInfo({ applicantId, processId, isCurrentProcess }: ApplicantEvalInfoProps) {
   const { evaluationList } = useEvaluationQuery({ applicantId, processId });
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false);
 
-  const FormSection = isFormOpened ? (
-    <EvaluationForm
-      processId={processId}
-      applicantId={applicantId}
-      onClose={() => setIsFormOpened(false)}
-    />
-  ) : (
-    <EvaluationAddButton onClick={() => setIsFormOpened(true)} />
-  );
+  const FormSection =
+    isCurrentProcess &&
+    (isFormOpened ? (
+      <EvaluationForm
+        processId={processId}
+        applicantId={applicantId}
+        onClose={() => setIsFormOpened(false)}
+      />
+    ) : (
+      <EvaluationAddButton onClick={() => setIsFormOpened(true)} />
+    ));
 
   return (
     <S.Wrapper>
-      <S.FormContainer>{FormSection}</S.FormContainer>
-
       <S.EvaluationListContainer>
         {evaluationList.map((evaluationResult) => (
           <EvaluationCard
@@ -36,6 +37,8 @@ export default function ApplicantEvalInfo({ applicantId, processId }: ApplicantE
           />
         ))}
       </S.EvaluationListContainer>
+
+      <S.FormContainer>{FormSection}</S.FormContainer>
     </S.Wrapper>
   );
 }

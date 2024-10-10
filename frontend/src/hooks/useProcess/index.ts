@@ -7,7 +7,7 @@ import QUERY_KEYS from '@hooks/queryKeys';
 import { routes } from '@router/path';
 import { DOMAIN_URL } from '../../constants/constants';
 
-interface SimpleProcess {
+export interface SimpleProcess {
   processName: string;
   processId: number;
 }
