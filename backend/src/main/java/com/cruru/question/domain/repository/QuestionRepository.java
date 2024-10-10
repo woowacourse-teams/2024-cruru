@@ -12,7 +12,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @EntityGraph(attributePaths = {"applyForm.dashboard.club.member"})
     @Query("SELECT q FROM Question q WHERE q.id = :id")
-    Optional<Question> findByIdFetchingMember(long id);
+    Optional<Question> findByIdFetchingMember(Long id);
 
     List<Question> findAllByApplyForm(ApplyForm applyForm);
 }

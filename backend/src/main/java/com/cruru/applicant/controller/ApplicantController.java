@@ -7,7 +7,8 @@ import com.cruru.applicant.controller.response.ApplicantAnswerResponses;
 import com.cruru.applicant.controller.response.ApplicantBasicResponse;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.facade.ApplicantFacade;
-import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.auth.annotation.RequireAuth;
+import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.global.LoginProfile;
 import com.cruru.process.domain.Process;
 import jakarta.validation.Valid;
@@ -28,27 +29,30 @@ public class ApplicantController {
 
     private final ApplicantFacade applicantFacade;
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
     @GetMapping("/{applicantId}")
-    public ResponseEntity<ApplicantBasicResponse> read(@PathVariable Long applicantId, LoginProfile loginProfile) {
+    @ValidAuth
+    public ResponseEntity<ApplicantBasicResponse> read(
+            @RequireAuth(targetDomain = Applicant.class) @PathVariable Long applicantId,
+            LoginProfile loginProfile
+    ) {
         ApplicantBasicResponse applicantResponse = applicantFacade.readBasicById(applicantId);
         return ResponseEntity.ok().body(applicantResponse);
     }
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
     @GetMapping("/{applicantId}/detail")
+    @ValidAuth
     public ResponseEntity<ApplicantAnswerResponses> readDetail(
-            @PathVariable Long applicantId,
+            @RequireAuth(targetDomain = Applicant.class) @PathVariable Long applicantId,
             LoginProfile loginProfile
     ) {
         ApplicantAnswerResponses applicantAnswerResponses = applicantFacade.readDetailById(applicantId);
         return ResponseEntity.ok().body(applicantAnswerResponses);
     }
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
     @PatchMapping("/{applicantId}")
+    @ValidAuth
     public ResponseEntity<Void> updateInformation(
-            @PathVariable Long applicantId,
+            @RequireAuth(targetDomain = Applicant.class) @PathVariable Long applicantId,
             @RequestBody @Valid ApplicantUpdateRequest request,
             LoginProfile loginProfile
     ) {
@@ -56,10 +60,10 @@ public class ApplicantController {
         return ResponseEntity.ok().build();
     }
 
-    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @PutMapping("/move-process/{processId}")
+    @ValidAuth
     public ResponseEntity<Void> updateProcess(
-            @PathVariable Long processId,
+            @RequireAuth(targetDomain = Process.class) @PathVariable Long processId,
             @RequestBody @Valid ApplicantMoveRequest moveRequest,
             LoginProfile loginProfile
     ) {
@@ -67,30 +71,37 @@ public class ApplicantController {
         return ResponseEntity.ok().build();
     }
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
     @PatchMapping("/{applicantId}/reject")
-    public ResponseEntity<Void> reject(@PathVariable Long applicantId, LoginProfile loginProfile) {
+    @ValidAuth
+    public ResponseEntity<Void> reject(
+            @RequireAuth(targetDomain = Applicant.class) @PathVariable Long applicantId,
+            LoginProfile loginProfile
+    ) {
         applicantFacade.reject(applicantId);
         return ResponseEntity.ok().build();
     }
 
-    @RequireAuthCheck(targetId = "applicantId", targetDomain = Applicant.class)
     @PatchMapping("/{applicantId}/unreject")
-    public ResponseEntity<Void> unreject(@PathVariable Long applicantId, LoginProfile loginProfile) {
+    @ValidAuth
+    public ResponseEntity<Void> unreject(
+            @RequireAuth(targetDomain = Applicant.class) @PathVariable Long applicantId,
+            LoginProfile loginProfile
+    ) {
         applicantFacade.unreject(applicantId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/reject")
+    @ValidAuth
     public ResponseEntity<Void> reject(@RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile) {
         applicantFacade.reject(request);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/unreject")
+    @ValidAuth
     public ResponseEntity<Void> unreject(
-            @RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile
-    ) {
+            @RequestBody @Valid ApplicantsRejectRequest request, LoginProfile loginProfile) {
         applicantFacade.unreject(request);
         return ResponseEntity.ok().build();
     }

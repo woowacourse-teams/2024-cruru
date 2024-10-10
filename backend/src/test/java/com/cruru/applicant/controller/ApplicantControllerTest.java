@@ -94,7 +94,8 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void updateApplicantProcess_processNotFound() {
         // given
-        Process now = processRepository.save(ProcessFixture.applyType());
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
+        Process now = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = ApplicantFixture.pendingDobby(now);
         applicantRepository.save(applicant);
         Long invalidProcessId = -1L;
@@ -166,7 +167,7 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void readDetail() {
         // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         Process process = processRepository.save(ProcessFixture.applyType(dashboard));
         Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
@@ -228,7 +229,7 @@ class ApplicantControllerTest extends ControllerTest {
     @Test
     void reject_applicantNotFound() {
         // given
-        long invalidApplicantId = 1;
+        long invalidApplicantId = -1;
 
         // when&then
         RestAssured.given(spec).log().all()

@@ -1,7 +1,9 @@
 package com.cruru.email.controller;
 
+import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.email.controller.dto.EmailRequest;
 import com.cruru.email.facade.EmailFacade;
+import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,11 @@ public class EmailController {
     private final EmailFacade emailFacade;
 
     @PostMapping("/send")
-    public ResponseEntity<Void> send(@Valid @ModelAttribute EmailRequest request) {
+    @ValidAuth
+    public ResponseEntity<Void> send(
+            @Valid @ModelAttribute EmailRequest request,
+            LoginProfile loginProfile
+    ) {
         emailFacade.send(request);
         return ResponseEntity.ok().build();
     }
