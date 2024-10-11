@@ -91,6 +91,8 @@ const ResultFlag = styled.div<{ $score: string }>`
 const ResultComment = styled.div`
   ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.colors.text.block};
+  white-space: pre-wrap;
+  line-height: 140%;
 `;
 
 const S = {
