@@ -135,6 +135,9 @@ dataloader:
   enable: true
 server:
   port: ${SERVER_PORT}
+  tomcat:
+    mbeanregistry:
+      enabled: true
 
 management:
   server:
@@ -221,6 +224,9 @@ dataloader:
   enable: false
 server:
   port: ${SERVER_PORT}
+  tomcat:
+    mbeanregistry:
+      enabled: true
 
 management:
   server:
@@ -306,6 +312,9 @@ dataloader:
   enable: false
 server:
   port: ${SERVER_PORT}
+  tomcat:
+    mbeanregistry:
+      enabled: true
 
 management:
   server:
