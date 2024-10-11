@@ -37,11 +37,7 @@ public class ApplyFormController {
     }
 
     @GetMapping("/{applyformId}")
-    @ValidAuth
-    public ResponseEntity<ApplyFormResponse> read(
-            @RequireAuth(targetDomain = ApplyForm.class) @PathVariable("applyformId") long applyFormId,
-            LoginProfile loginProfile
-    ) {
+    public ResponseEntity<ApplyFormResponse> read(@PathVariable("applyformId") long applyFormId) {
         ApplyFormResponse response = applyFormFacade.readApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
     }
