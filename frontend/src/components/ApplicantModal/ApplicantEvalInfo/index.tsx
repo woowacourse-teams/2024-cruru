@@ -15,17 +15,20 @@ export default function ApplicantEvalInfo({ applicantId, processId, isCurrentPro
   const { evaluationList } = useEvaluationQuery({ applicantId, processId });
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false);
 
-  const FormSection =
-    isCurrentProcess &&
-    (isFormOpened ? (
-      <EvaluationForm
-        processId={processId}
-        applicantId={applicantId}
-        onClose={() => setIsFormOpened(false)}
-      />
-    ) : (
-      <EvaluationAddButton onClick={() => setIsFormOpened(true)} />
-    ));
+  const renderFormSection = () => {
+    if (!isCurrentProcess) return null;
+
+    if (isFormOpened) {
+      return (
+        <EvaluationForm
+          processId={processId}
+          applicantId={applicantId}
+          onClose={() => setIsFormOpened(false)}
+        />
+      );
+    }
+    return <EvaluationAddButton onClick={() => setIsFormOpened(true)} />;
+  };
 
   return (
     <S.Wrapper>
@@ -38,7 +41,7 @@ export default function ApplicantEvalInfo({ applicantId, processId, isCurrentPro
         ))}
       </S.EvaluationListContainer>
 
-      <S.FormContainer>{FormSection}</S.FormContainer>
+      <S.FormContainer>{renderFormSection()}</S.FormContainer>
     </S.Wrapper>
   );
 }
