@@ -69,18 +69,18 @@ export default function Dashboard() {
               </SpecificProcessIdProvider>
             </SpecificApplicantIdProvider>
           </Tab.TabPanel>
-        </MultiApplicantContextProvider>
 
-        <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
-          <SpecificApplicantIdProvider>
-            <SpecificProcessIdProvider>
-              <ProcessBoard
-                processes={processes}
-                showRejectedApplicant
-              />
-            </SpecificProcessIdProvider>
-          </SpecificApplicantIdProvider>
-        </Tab.TabPanel>
+          <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
+            <SpecificApplicantIdProvider>
+              <SpecificProcessIdProvider>
+                <ProcessBoard
+                  processes={processes}
+                  showRejectedApplicant
+                />
+              </SpecificProcessIdProvider>
+            </SpecificApplicantIdProvider>
+          </Tab.TabPanel>
+        </MultiApplicantContextProvider>
       </FloatingEmailFormProvider>
 
       <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
