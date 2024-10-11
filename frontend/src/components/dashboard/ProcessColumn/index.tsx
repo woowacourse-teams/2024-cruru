@@ -89,9 +89,8 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
         {process.applicants
           .filter(({ isRejected }) => (showRejectedApplicant ? isRejected : !isRejected))
           .map(({ applicantId, applicantName, createdAt, evaluationCount, averageScore, isRejected }) => (
-            <DropdownProvider>
+            <DropdownProvider key={applicantId}>
               <ApplicantCard
-                key={applicantId}
                 name={applicantName}
                 isRejected={isRejected}
                 createdAt={createdAt}

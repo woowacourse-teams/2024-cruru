@@ -12,14 +12,15 @@ import globalStyles from './styles/globalStyles';
 import theme from './styles/theme';
 
 import AppRouter from './router/AppRouter';
+import settingMock from './settingMock';
 
 const { PROD_URL, DEV_URL } = process.env;
 
 async function setPrev() {
+  await settingMock();
+
   if (process.env.NODE_ENV === 'development') {
     Sentry.getCurrentScope().setLevel('info');
-    // const worker = await import('@mocks/browser');
-    // await worker.default.start();
   }
   if (process.env.NODE_ENV === 'production') {
     ReactGA.initialize(process.env.GA_MEASUREMENT_ID);
