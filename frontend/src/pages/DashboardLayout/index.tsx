@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 import DashboardSidebar from '@components/dashboard/DashboardSidebar';
+import LoadingPage from '@pages/LoadingPage';
+
 import useGetDashboards from '@hooks/useGetDashboards';
 import useElementRect from '@hooks/useElementRect';
 
@@ -36,12 +38,14 @@ export default function DashboardLayout() {
         />
       </S.Sidebar>
 
-      <S.MainContainer
-        isSidebarOpen={isSidebarOpen}
-        sidebarWidth={rect?.width}
-      >
-        <Outlet />
-      </S.MainContainer>
+      <Suspense fallback={<LoadingPage />}>
+        <S.MainContainer
+          isSidebarOpen={isSidebarOpen}
+          sidebarWidth={rect?.width}
+        >
+          <Outlet />
+        </S.MainContainer>
+      </Suspense>
     </S.Layout>
   );
 }
