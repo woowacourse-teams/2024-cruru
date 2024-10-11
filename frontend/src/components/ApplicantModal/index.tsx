@@ -8,12 +8,18 @@ import ApplicatnModalHeader from './ModalHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
 import ApplicantEvalInfo from './ApplicantEvalInfo';
 import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
+import InquireEvalHeader from './InquireEvalHeader';
 
 import S from './style';
+import usePaginatedEvaluation from './usePaginatedEvaluation';
 
 export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
   const { processId } = useSpecificProcessId();
+
+  const { currentProcess, isCurrentProcess, moveProcess, isLastProcess, isFirstProcess } =
+    usePaginatedEvaluation(processId);
+
   if (!applicantId || !processId) return null;
 
   return (
@@ -45,10 +51,21 @@ export default function ApplicantModal() {
           />
         </S.ModalEvalHeader>
 
+        <S.ModalAsideHeader>
+          <InquireEvalHeader
+            isLastProcess={isLastProcess}
+            isFirstProcess={isFirstProcess}
+            isCurrentProcess={isCurrentProcess}
+            handleChangeProcess={moveProcess}
+            processName={currentProcess.processName}
+          />
+        </S.ModalAsideHeader>
+
         <S.ModalAside>
           <ApplicantEvalInfo
             applicantId={applicantId}
-            processId={processId}
+            processId={currentProcess.processId}
+            isCurrentProcess={isCurrentProcess}
           />
         </S.ModalAside>
       </S.Container>
