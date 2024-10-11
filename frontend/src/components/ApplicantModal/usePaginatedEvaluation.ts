@@ -1,3 +1,4 @@
+import { useModal } from '@contexts/ModalContext';
 import useProcess, { SimpleProcess } from '@hooks/useProcess';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -5,6 +6,7 @@ import { useParams } from 'react-router-dom';
 export default function usePaginatedEvaluation(currentApplicantProcessId?: number) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { processList } = useProcess({ dashboardId, applyFormId });
+  const { isOpen } = useModal();
 
   const [currentProcess, setCurrentProcess] = useState<SimpleProcess>({} as SimpleProcess);
 
@@ -23,7 +25,7 @@ export default function usePaginatedEvaluation(currentApplicantProcessId?: numbe
 
   useEffect(() => {
     setCurrentProcess(processList.find((p) => p.processId === currentApplicantProcessId) || ({} as SimpleProcess));
-  }, [currentApplicantProcessId, JSON.stringify(processList)]);
+  }, [currentApplicantProcessId, JSON.stringify(processList), isOpen]);
 
   return { currentProcess, isCurrentProcess, isLastProcess, isFirstProcess, moveProcess };
 }
