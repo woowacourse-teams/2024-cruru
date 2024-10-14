@@ -101,7 +101,9 @@ class ProcessControllerTest extends ControllerTest {
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
                                 fieldWithPath("processes").description("프로세스 목록"),
-                                fieldWithPath("title").description("지원폼의 제목")
+                                fieldWithPath("title").description("지원폼의 제목"),
+                                fieldWithPath("startDate").description("지원폼 모집 시작일"),
+                                fieldWithPath("endDate").description("지원폼 모집 종료일")
                         ).andWithPrefix("processes[].", PROCESS_RESPONSE_FIELD_DESCRIPTORS)
                                 .andWithPrefix("processes[].applicants[]", APPLICANT_RESPONSE_FIELD_DESCRIPTORS)
                 ))
@@ -109,7 +111,7 @@ class ProcessControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("프로세스 필터링 및 정렬 조회 성공 시, 200을 응답한다.")
+    @DisplayName("프로세스 목록 조회 성공 시, 200을 응답한다.")
     @Test
     void read_filterAndOrder() {
         // given
@@ -147,7 +149,9 @@ class ProcessControllerTest extends ControllerTest {
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
                                 fieldWithPath("processes").description("프로세스 목록"),
-                                fieldWithPath("title").description("지원폼의 제목")
+                                fieldWithPath("title").description("지원폼의 제목"),
+                                fieldWithPath("startDate").description("지원폼 모집 시작일"),
+                                fieldWithPath("endDate").description("지원폼 모집 종료일")
                         ).andWithPrefix("processes[].", PROCESS_RESPONSE_FIELD_DESCRIPTORS)
                                 .andWithPrefix("processes[].applicants[]", APPLICANT_RESPONSE_FIELD_DESCRIPTORS)
                 ))
