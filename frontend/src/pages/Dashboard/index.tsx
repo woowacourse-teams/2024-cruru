@@ -11,12 +11,14 @@ import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
 
 import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
+import useGetDashboards from '@hooks/useGetDashboards';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 
+import DashboardHeader from '@components/dashboard/DashboardHeader';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
@@ -24,6 +26,15 @@ export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '�
 export default function Dashboard() {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { processes, isLoading, title, postUrl } = useProcess({ dashboardId, applyFormId });
+
+  // TODO: 현재는 모집 시작/마감일을 가져오기 위해 공고 목록 조회용 API를 임시로 사용하고 있습니다.
+  // 프로세스 목록 조회 API에 모집 시작/마감일 필드가 추가될 경우, useProcess 훅에서 바로 이 내용을 불러올 수 있게 됩니다.
+  // - 24/10/14 by 아르
+  const { data: dashboardsData } = useGetDashboards();
+  const currentDashboardData = dashboardsData!.dashboards.find(
+    (dashboard) => dashboard.applyFormId === Number(applyFormId),
+  );
+  const { startDate, endDate } = currentDashboardData!;
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
@@ -35,7 +46,11 @@ export default function Dashboard() {
   return (
     <S.AppContainer>
       <S.Header>
-        <S.Title>{title}</S.Title>
+        <DashboardHeader
+          title={title}
+          startDate={startDate}
+          endDate={endDate}
+        />
 
         <S.CopyWrapper>
           <OpenInNewTab

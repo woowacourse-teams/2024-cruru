@@ -11,10 +11,6 @@ const Header = styled.div`
   justify-content: space-between;
 `;
 
-const Title = styled.div`
-  ${({ theme }) => theme.typography.heading[700]}
-`;
-
 const CopyWrapper = styled.div`
   display: flex;
   gap: 0.8rem;
@@ -39,7 +35,6 @@ const DashboardPanel = styled.div<{ isVisible: boolean }>`
 const S = {
   AppContainer,
   Header,
-  Title,
   DashboardPanel,
   CopyWrapper,
 };
