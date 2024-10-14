@@ -2,6 +2,7 @@ package com.cruru.auth.service;
 
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.security.PasswordValidator;
+import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
 import java.util.HashMap;
@@ -20,13 +21,14 @@ public class AuthService {
 
     private final TokenProvider tokenProvider;
     private final PasswordValidator passwordValidator;
+    private final TokenProperties tokenProperties;
 
-    public String createToken(Member member) {
+    public String createAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(EMAIL_CLAIM, member.getEmail());
         claims.put(ROLE_CLAIM, member.getRole().name());
 
-        return tokenProvider.createToken(claims);
+        return tokenProvider.createToken(claims, tokenProperties.accessExpireLength());
     }
 
     public boolean isTokenValid(String token) {

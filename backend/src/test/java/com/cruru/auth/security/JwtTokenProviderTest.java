@@ -42,8 +42,11 @@ class JwtTokenProviderTest {
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
     @Test
     void create() {
-        // given&when
-        String token = jwtTokenProvider.createToken(claims);
+        // given
+        long expireLength = 1209600000;
+
+        // when
+        String token = jwtTokenProvider.createToken(claims, expireLength);
         Claims extractedClaims = Jwts.parser()
                 .setSigningKey(TEST_SECRET_KEY.getBytes())
                 .parseClaimsJws(token)
@@ -64,7 +67,8 @@ class JwtTokenProviderTest {
     @Test
     void extractEmailAndRole() {
         // given
-        String token = jwtTokenProvider.createToken(claims);
+        long expireLength = 1209600000;
+        String token = jwtTokenProvider.createToken(claims, expireLength);
 
         // when
         String email = jwtTokenProvider.extractClaim(token, EMAIL_CLAIM);
@@ -106,7 +110,8 @@ class JwtTokenProviderTest {
     @Test
     void isAlive_notValid() {
         // given
-        String notExpiredToken = jwtTokenProvider.createToken(claims);
+        long expireLength = 1209600000;
+        String notExpiredToken = jwtTokenProvider.createToken(claims, expireLength);
 
         // when&then
         assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isTrue();

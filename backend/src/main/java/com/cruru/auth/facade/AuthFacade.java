@@ -22,6 +22,6 @@ public class AuthFacade {
         if (authService.isNotVerifiedPassword(request.password(), member.getPassword())) {
             throw new LoginFailedException();
         }
-        return authService.createToken(member);
+        return authService.createAccessToken(member);
     }
 }

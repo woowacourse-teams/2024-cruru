@@ -50,7 +50,7 @@ security:
   jwt:
     token:
       secret-key: test
-      expire-length: 3600000
+      access-expire-length: 3600000
       algorithm: HS256
 
 cookie:
@@ -100,8 +100,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL_USERNAME} 
-    password: ${EMAIL_PASSWORD} 
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -119,7 +119,7 @@ security:
   jwt:
     token:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      access-expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
 
 cookie:
@@ -208,7 +208,7 @@ security:
   jwt:
     token:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      access-expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
 
 cookie:
@@ -277,8 +277,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL_USERNAME} 
-    password: ${EMAIL_PASSWORD} 
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -296,7 +296,7 @@ security:
   jwt:
     token:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      access-expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
 
 cookie:

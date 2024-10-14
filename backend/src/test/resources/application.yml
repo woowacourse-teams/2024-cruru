@@ -33,7 +33,7 @@ security:
   jwt:
     token:
       secret-key: test
-      expire-length: 1209600000
+      access-expire-length: 1209600000
       algorithm: HS256
 
 cookie:

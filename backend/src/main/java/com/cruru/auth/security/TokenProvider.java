@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface TokenProvider {
 
-    String createToken(Map<String, Object> claims);
+    String createToken(Map<String, Object> claims, Long expireLength);
 
     boolean isAlive(String token) throws IllegalTokenException;
 

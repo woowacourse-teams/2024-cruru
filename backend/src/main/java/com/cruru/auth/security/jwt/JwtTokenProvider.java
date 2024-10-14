@@ -20,9 +20,9 @@ public class JwtTokenProvider implements TokenProvider {
     private final TokenProperties tokenProperties;
 
     @Override
-    public String createToken(Map<String, Object> claims) {
+    public String createToken(Map<String, Object> claims, Long expireLength) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenProperties.expireLength());
+        Date validity = new Date(now.getTime() + expireLength);
 
         return Jwts.builder()
                 .addClaims(claims)
