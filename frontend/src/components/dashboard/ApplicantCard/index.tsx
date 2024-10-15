@@ -11,6 +11,7 @@ import { useDropdown } from '@contexts/DropdownContext';
 
 import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
+import CheckBox from '@components/_common/atoms/CheckBox';
 import S from './style';
 
 interface ApplicantCardProps {
@@ -20,7 +21,10 @@ interface ApplicantCardProps {
   evaluationCount: number;
   averageScore: number;
   popOverMenuItems: DropdownItemType[];
+  isSelectMode: boolean;
+  isSelected: boolean;
   onCardClick: () => void;
+  onSelectApplicant: (isChecked: boolean) => void;
 }
 
 export default function ApplicantCard({
@@ -30,7 +34,10 @@ export default function ApplicantCard({
   evaluationCount,
   averageScore,
   popOverMenuItems,
+  isSelectMode,
+  isSelected,
   onCardClick,
+  onSelectApplicant,
 }: ApplicantCardProps) {
   const { isOpen, open, close } = useDropdown();
   const optionButtonWrapperRef = useRef<HTMLDivElement>(null);
@@ -58,6 +65,10 @@ export default function ApplicantCard({
 
   const cardClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    if (isSelectMode) {
+      onSelectApplicant(!isSelected);
+      return;
+    }
     onCardClick();
   };
 
@@ -99,23 +110,33 @@ export default function ApplicantCard({
 
       <S.OptionButtonWrapper>
         <div ref={optionButtonWrapperRef}>
-          <IconButton
-            type="button"
-            outline={false}
-            onClick={handleClickPopOverButton}
-            disabled={isRejected}
-          >
-            <HiEllipsisVertical />
-          </IconButton>
-          <PopOverMenu
-            isOpen={isOpen}
-            popOverPosition="3.5rem 0 0 -6rem"
-          >
-            <DropdownItemRenderer
-              items={popOverMenuItems}
-              subContentPlacement="left"
+          {isSelectMode && (
+            <CheckBox
+              isChecked={isSelected}
+              onToggle={() => {}}
             />
-          </PopOverMenu>
+          )}
+          {!isSelectMode && (
+            <>
+              <IconButton
+                type="button"
+                outline={false}
+                onClick={handleClickPopOverButton}
+                disabled={isRejected}
+              >
+                <HiEllipsisVertical />
+              </IconButton>
+              <PopOverMenu
+                isOpen={isOpen}
+                popOverPosition="3.5rem 0 0 -6rem"
+              >
+                <DropdownItemRenderer
+                  items={popOverMenuItems}
+                  subContentPlacement="left"
+                />
+              </PopOverMenu>
+            </>
+          )}
         </div>
       </S.OptionButtonWrapper>
     </S.CardContainer>
