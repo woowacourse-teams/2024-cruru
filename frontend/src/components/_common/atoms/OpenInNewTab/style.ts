@@ -1,15 +1,9 @@
 import styled from '@emotion/styled';
 
 const Container = styled.div`
-  width: 100%;
-
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-
-  padding: 0.8rem;
-
-  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
+  gap: 0.4rem;
 
   & > svg {
     color: ${({ theme }) => theme.baseColors.purplescale[800]};
