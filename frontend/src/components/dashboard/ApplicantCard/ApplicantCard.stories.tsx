@@ -95,7 +95,10 @@ export const ApplicantCardDefault: Story = {
     averageScore: 3.86,
     isRejected: false,
     popOverMenuItems,
+    isSelectMode: false,
+    isSelected: false,
     onCardClick: () => console.log('지원자 카드가 클릭되었습니다.'),
+    onSelectApplicant: () => console.log('지원자 선택 체크박스가 클릭되었습니다.'),
   },
 };
 
@@ -107,6 +110,9 @@ export const RejectedApplicantCard: Story = {
     averageScore: 2.23,
     isRejected: true,
     popOverMenuItems,
+    isSelectMode: false,
+    isSelected: false,
     onCardClick: () => console.log('지원자 카드가 클릭되었습니다.'),
+    onSelectApplicant: () => console.log('지원자 선택 체크박스가 클릭되었습니다.'),
   },
 };

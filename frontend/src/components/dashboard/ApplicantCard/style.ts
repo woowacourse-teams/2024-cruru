@@ -38,15 +38,25 @@ const CardHeader = styled.h3`
   margin-bottom: 0;
 `;
 
-const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: number }>`
-  width: fit-content;
+const CardEvaluationFlag = styled.div<{ averageScore: number; isScoreExists: boolean }>`
+  width: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   border-radius: 0.4rem;
   padding: 0.3rem 0.4rem;
   margin-left: -0.1rem;
 
   ${({ theme }) => theme.colors.text.block};
 
-  ${({ theme, averageScore }) => {
+  ${({ theme, averageScore, isScoreExists }) => {
+    if (!isScoreExists) {
+      return css`
+        background: ${theme.baseColors.grayscale[300]};
+        color: ${theme.colors.text.block};
+      `;
+    }
+
     if (averageScore >= 1 && averageScore < 2) {
       return css`
         color: ${theme.baseColors.redscale[500]};
@@ -77,15 +87,18 @@ const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: n
 
     return css`
       background: ${theme.baseColors.grayscale[300]};
-      color: ${theme.colors.text.default};
     `;
   }}
+`;
+
+const CardEvaluationFlagScore = styled.span<{ isScoreExists: boolean }>`
+  padding-right: ${({ isScoreExists }) => (isScoreExists ? '0' : '0.2rem')};
 `;
 
 const CardInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 2.4rem;
+  gap: 1.6rem;
 
   ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
@@ -108,6 +121,7 @@ const S = {
   CardDetail,
   CardHeader,
   CardEvaluationFlag,
+  CardEvaluationFlagScore,
   CardInfoContainer,
   CardInfo,
   OptionButtonWrapper,
