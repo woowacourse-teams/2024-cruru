@@ -26,6 +26,7 @@ type Story = StoryObj<typeof meta>;
 export const DashboardHeaderDefault: Story = {
   args: {
     title: '우아한테크코스 7기 프론트엔드 모집',
+    postUrl: '#',
     startDate: '2024-07-15T09:00:00Z',
     endDate: '2024-12-15T09:00:00Z',
   },
