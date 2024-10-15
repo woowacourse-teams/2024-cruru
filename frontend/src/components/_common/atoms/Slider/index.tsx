@@ -26,16 +26,20 @@ export default function Slider({
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isDisabled) {
       const newMinValue = Math.min(Number(e.target.value), Number(maxValue - step));
-      setMinValue(newMinValue);
-      onRangeChange(newMinValue, maxValue);
+      if (newMinValue !== minValue) {
+        setMinValue(newMinValue);
+        onRangeChange(newMinValue, maxValue);
+      }
     }
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isDisabled) {
       const newMaxValue = Math.max(Number(e.target.value), Number(minValue + step));
-      setMaxValue(newMaxValue);
-      onRangeChange(minValue, newMaxValue);
+      if (newMaxValue !== maxValue) {
+        setMaxValue(newMaxValue);
+        onRangeChange(minValue, newMaxValue);
+      }
     }
   };
 
