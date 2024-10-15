@@ -6,8 +6,7 @@ import ProcessBoard from '@components/dashboard/ProcessBoard';
 import ApplyManagement from '@components/applyManagement';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import PostManageBoard from '@components/postManagement/PostManageBoard';
-import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
-import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
+import DashboardHeader from '@components/dashboard/DashboardHeader';
 
 import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
@@ -17,7 +16,6 @@ import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContex
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 
-import DashboardHeader from '@components/dashboard/DashboardHeader';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
@@ -35,21 +33,12 @@ export default function Dashboard() {
 
   return (
     <S.AppContainer>
-      <S.Header>
-        <DashboardHeader
-          title={title}
-          startDate={startDate}
-          endDate={endDate}
-        />
-
-        <S.CopyWrapper>
-          <OpenInNewTab
-            url={postUrl}
-            title="공고로 이동"
-          />
-          <CopyToClipboard url={postUrl} />
-        </S.CopyWrapper>
-      </S.Header>
+      <DashboardHeader
+        title={title}
+        postUrl={postUrl}
+        startDate={startDate}
+        endDate={endDate}
+      />
 
       <Tab>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (

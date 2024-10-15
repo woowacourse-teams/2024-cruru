@@ -6,18 +6,6 @@ const AppContainer = styled.div`
   height: 100%;
 `;
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CopyWrapper = styled.div`
-  display: flex;
-  gap: 0.8rem;
-
-  min-width: 30rem;
-`;
-
 const DashboardPanel = styled.div<{ isVisible: boolean }>`
   width: 100%;
   height: 80%;
@@ -34,9 +22,7 @@ const DashboardPanel = styled.div<{ isVisible: boolean }>`
 
 const S = {
   AppContainer,
-  Header,
   DashboardPanel,
-  CopyWrapper,
 };
 
 export default S;

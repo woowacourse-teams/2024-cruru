@@ -2,9 +2,15 @@ import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 1.2rem;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  margin-bottom: 1.2rem;
 `;
 
 const Title = styled.div`
@@ -28,11 +34,20 @@ const RecruitmentPeriod = styled.div`
   color: ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 
+const PostLinkContainer = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  min-width: 30rem;
+  height: fit-content;
+`;
+
 const S = {
   Wrapper,
+  TitleContainer,
   Title,
   RecruitmentStatusContainer,
   RecruitmentPeriod,
+  PostLinkContainer,
 };
 
 export default S;
