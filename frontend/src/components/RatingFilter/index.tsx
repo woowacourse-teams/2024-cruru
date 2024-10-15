@@ -10,7 +10,7 @@ import { HiStar } from 'react-icons/hi';
 import S from './style';
 
 export default function RatingFilter() {
-  const { ratingFilterType, ratingRange, setRatingFilterType, setRatingMaxRange, setRatingMinRange, reset } =
+  const { ratingFilterType, ratingRange, setRatingFilterType, setRatingMaxRange, setRatingMinRange } =
     useRatingFilter();
 
   const [currentRatingFilterType, setCurrentRatingFilterType] = useState<typeof ratingFilterType>(ratingFilterType);
@@ -67,7 +67,6 @@ export default function RatingFilter() {
   };
 
   const handleResetClick = () => {
-    reset();
     setCurrentRatingFilterType(INIT_TYPE);
     setCurrentRatingRangeMin(INIT_MIN);
     setCurrentRatingRangeMax(INIT_MAX);
