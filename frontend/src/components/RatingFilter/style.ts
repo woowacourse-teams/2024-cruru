@@ -26,6 +26,10 @@ const RatingNumbers = styled.div`
   align-items: center;
   gap: 0.4rem;
   ${({ theme }) => theme.typography.heading[400]};
+
+  & > svg:first-child {
+    fill: ${({ theme }) => theme.colors.brand.primary};
+  }
 `;
 
 const OptionsWrapper = styled.div`

@@ -6,6 +6,7 @@ import { INIT_MAX, INIT_MIN, useRatingFilter } from '@contexts/RatingFilterConte
 import type { RatingFilterType } from '@contexts/RatingFilterContext';
 import Button from '@components/_common/atoms/Button';
 import { usePopover } from '@contexts/PopoverContext';
+import { HiStar } from 'react-icons/hi';
 import S from './style';
 
 export default function RatingFilter() {
@@ -72,6 +73,7 @@ export default function RatingFilter() {
         <S.RangeLabel>
           <div>평점 범위</div>
           <S.RatingNumbers>
+            <HiStar size={16} />
             {currentRatingRangeMin.toFixed(1)} - {currentRatingRangeMax.toFixed(1)}
           </S.RatingNumbers>
         </S.RangeLabel>
