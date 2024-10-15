@@ -6,7 +6,7 @@ import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
 import Tab from '@components/_common/molecules/Tab';
 import ApplyManagement from '@components/applyManagement';
 import ProcessBoard from '@components/dashboard/ProcessBoard';
-import InputField from '@components/_common/molecules/InputField';
+// import InputField from '@components/_common/molecules/InputField';
 import PostManageBoard from '@components/postManagement/PostManageBoard';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
@@ -30,9 +30,9 @@ export default function Dashboard() {
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
-  // const { debouncedName } = useSearchApplicant();
+  const { debouncedName } = useSearchApplicant();
   // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
-  const { debouncedName, name, handleName } = useSearchApplicant();
+  // const { debouncedName, name, handleName } = useSearchApplicant();
 
   return (
     <S.AppContainer>
@@ -67,12 +67,12 @@ export default function Dashboard() {
         <MultiApplicantContextProvider>
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
             {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
-            <InputField
+            {/* <InputField
               type="search"
               placeholder="지원자 이름 검색"
               value={name}
               onChange={(e) => handleName(e.target.value)}
-            />
+            /> */}
 
             <SpecificApplicantIdProvider>
               <SpecificProcessIdProvider>
