@@ -109,6 +109,7 @@ jobs:
         MONITORING_BINDING_PORT=${{ secrets.MONITORING_BINDING_PORT }}
         MONITORING_PORT=${{ secrets.MONITORING_PORT }}
         MONITORING_BASE_PATH=${{ secrets.MONITORING_BASE_PATH }}
+        MONITORING_PROFILE=${{ secrets.MONITORING_PROFILE }}
         
         # Apply configuration server info from Github secrets
         APPLY_POST_BASE_URL=${{ secrets.APPLY_POST_BASE_URL }}

@@ -3,9 +3,11 @@ package com.cruru.applicant.controller;
 import com.cruru.applicant.controller.request.EvaluationCreateRequest;
 import com.cruru.applicant.controller.request.EvaluationUpdateRequest;
 import com.cruru.applicant.controller.response.EvaluationResponses;
+import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.Evaluation;
 import com.cruru.applicant.facade.EvaluationFacade;
-import com.cruru.auth.annotation.RequireAuthCheck;
+import com.cruru.auth.annotation.RequireAuth;
+import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.global.LoginProfile;
 import com.cruru.process.domain.Process;
 import jakarta.validation.Valid;
@@ -28,12 +30,12 @@ public class EvaluationController {
 
     private final EvaluationFacade evaluationFacade;
 
-    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @PostMapping
+    @ValidAuth
     public ResponseEntity<Void> create(
             @RequestBody @Valid EvaluationCreateRequest request,
-            @RequestParam(name = "processId") Long processId,
-            @RequestParam(name = "applicantId") Long applicantId,
+            @RequireAuth(targetDomain = Process.class) @RequestParam(name = "processId") Long processId,
+            @RequireAuth(targetDomain = Applicant.class) @RequestParam(name = "applicantId") Long applicantId,
             LoginProfile loginProfile
     ) {
         evaluationFacade.create(request, processId, applicantId);
@@ -41,22 +43,22 @@ public class EvaluationController {
         return ResponseEntity.created(URI.create(url)).build();
     }
 
-    @RequireAuthCheck(targetId = "processId", targetDomain = Process.class)
     @GetMapping
+    @ValidAuth
     public ResponseEntity<EvaluationResponses> read(
-            @RequestParam(name = "processId") Long processId,
-            @RequestParam(name = "applicantId") Long applicantId,
+            @RequireAuth(targetDomain = Process.class) @RequestParam(name = "processId") Long processId,
+            @RequireAuth(targetDomain = Applicant.class) @RequestParam(name = "applicantId") Long applicantId,
             LoginProfile loginProfile
     ) {
         EvaluationResponses response = evaluationFacade.readEvaluationsOfApplicantInProcess(processId, applicantId);
         return ResponseEntity.ok(response);
     }
 
-    @RequireAuthCheck(targetId = "evaluationId", targetDomain = Evaluation.class)
     @PatchMapping("/{evaluationId}")
+    @ValidAuth
     public ResponseEntity<Void> update(
             @RequestBody @Valid EvaluationUpdateRequest request,
-            @PathVariable Long evaluationId,
+            @RequireAuth(targetDomain = Evaluation.class) @PathVariable Long evaluationId,
             LoginProfile loginProfile
     ) {
         evaluationFacade.updateSingleEvaluation(request, evaluationId);
