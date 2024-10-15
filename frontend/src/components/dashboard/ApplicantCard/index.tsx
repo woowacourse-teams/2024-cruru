@@ -42,7 +42,7 @@ export default function ApplicantCard({
   const { isOpen, open, close } = useDropdown();
   const optionButtonWrapperRef = useRef<HTMLDivElement>(null);
 
-  const evaluationString = averageScore ? `★ ${averageScore.toFixed(1)}` : '평가 대기 중';
+  const evaluationString = evaluationCount > 0 ? averageScore.toFixed(1) : '―';
 
   const handleClickPopOverButton = (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -89,13 +89,16 @@ export default function ApplicantCard({
     >
       <S.CardDetail>
         <S.CardHeader>{name}</S.CardHeader>
-        <S.CardEvaluationFlag
-          averageScore={averageScore}
-          evaluationCount={evaluationCount}
-        >
-          {evaluationString}
-        </S.CardEvaluationFlag>
         <S.CardInfoContainer>
+          <S.CardEvaluationFlag
+            averageScore={averageScore}
+            isScoreExists={evaluationCount > 0}
+          >
+            ★
+            <S.CardEvaluationFlagScore isScoreExists={evaluationCount > 0}>
+              {evaluationString}
+            </S.CardEvaluationFlagScore>
+          </S.CardEvaluationFlag>
           <S.CardInfo>
             <HiOutlineClock size="1.2rem" />
             {formatDate(createdAt)}
