@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import RadioLabelField from '@components/_common/molecules/RadioLabelField';
 import Slider from '@components/_common/atoms/Slider';
-import { INIT_MAX, INIT_MIN, useRatingFilter } from '@contexts/RatingFilterContext';
+import { INIT_MAX, INIT_MIN, INIT_TYPE, useRatingFilter } from '@contexts/RatingFilterContext';
 import type { RatingFilterType } from '@contexts/RatingFilterContext';
 import Button from '@components/_common/atoms/Button';
 import { usePopover } from '@contexts/PopoverContext';
@@ -16,6 +16,9 @@ export default function RatingFilter() {
   const [currentRatingFilterType, setCurrentRatingFilterType] = useState<typeof ratingFilterType>(ratingFilterType);
   const [currentRatingRangeMin, setCurrentRatingRangeMin] = useState<number>(ratingRange.min);
   const [currentRatingRangeMax, setCurrentRatingRangeMax] = useState<number>(ratingRange.max);
+
+  // [24.10.15 - lurgi] Slider 컴포넌트의 강제 재 렌더링을 위한 key값을 저장하는 state
+  const [sliderKey, setSliderKey] = useState(0);
 
   const { close } = usePopover();
 
@@ -65,6 +68,12 @@ export default function RatingFilter() {
 
   const handleResetClick = () => {
     reset();
+    setCurrentRatingFilterType(INIT_TYPE);
+    setCurrentRatingRangeMin(INIT_MIN);
+    setCurrentRatingRangeMax(INIT_MAX);
+
+    // [24.10.15 - lurgi] Slider 컴포넌트의 강제 재 렌더링을 위해 state를 변경합니다.
+    setSliderKey(sliderKey + 1);
   };
 
   return (
@@ -78,6 +87,7 @@ export default function RatingFilter() {
           </S.RatingNumbers>
         </S.RangeLabel>
         <Slider
+          key={sliderKey}
           {...sliderProps}
           onRangeChange={handleRangeChange}
         />
@@ -99,6 +109,7 @@ export default function RatingFilter() {
         <Button
           size="sm"
           color="white"
+          type="reset"
           onClick={handleResetClick}
         >
           <S.ButtonInner>초기화</S.ButtonInner>
