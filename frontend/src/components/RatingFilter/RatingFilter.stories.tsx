@@ -2,6 +2,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { RatingFilterProvider, useRatingFilter } from '@contexts/RatingFilterContext';
 import { action } from '@storybook/addon-actions';
+import { PopoverProvider } from '@contexts/PopoverContext';
 import RatingFilter from '.';
 
 const meta: Meta<typeof RatingFilter> = {
@@ -18,11 +19,13 @@ const meta: Meta<typeof RatingFilter> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <RatingFilterProvider>
-        <div style={{ padding: '20px', backgroundColor: 'gray' }}>
-          <Story />
-        </div>
-      </RatingFilterProvider>
+      <PopoverProvider onClose={action('click close')}>
+        <RatingFilterProvider>
+          <div style={{ padding: '20px', backgroundColor: 'gray' }}>
+            <Story />
+          </div>
+        </RatingFilterProvider>
+      </PopoverProvider>
     ),
   ],
 };

@@ -1,5 +1,6 @@
 import { PropsWithChildren, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
+import { PopoverProvider } from '@contexts/PopoverContext';
 import S from './style';
 
 interface PopoverProps extends PropsWithChildren {
@@ -38,13 +39,15 @@ export default function Popover({ isOpen, onClose, anchorEl, children }: Popover
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <S.PopoverWrapper
-      ref={popoverRef}
-      role="dialog"
-      aria-modal="true"
-    >
-      {children}
-    </S.PopoverWrapper>,
+    <PopoverProvider onClose={onClose}>
+      <S.PopoverWrapper
+        ref={popoverRef}
+        role="dialog"
+        aria-modal="true"
+      >
+        {children}
+      </S.PopoverWrapper>
+    </PopoverProvider>,
     document.body,
   );
 }

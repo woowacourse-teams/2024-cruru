@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-one-expression-per-line */
+import { useState } from 'react';
 import RadioLabelField from '@components/_common/molecules/RadioLabelField';
 import Slider from '@components/_common/atoms/Slider';
-import { useRatingFilter } from '@contexts/RatingFilterContext';
+import { INIT_MAX, INIT_MIN, useRatingFilter } from '@contexts/RatingFilterContext';
 import type { RatingFilterType } from '@contexts/RatingFilterContext';
 import Button from '@components/_common/atoms/Button';
-import { useState } from 'react';
+import { usePopover } from '@contexts/PopoverContext';
 import S from './style';
 
 export default function RatingFilter() {
@@ -15,17 +16,20 @@ export default function RatingFilter() {
   const [currentRatingRangeMin, setCurrentRatingRangeMin] = useState<number>(ratingRange.min);
   const [currentRatingRangeMax, setCurrentRatingRangeMax] = useState<number>(ratingRange.max);
 
+  const { close } = usePopover();
+
   const handleRangeChange = (min: number, max: number) => {
     setCurrentRatingRangeMax(max);
     setCurrentRatingRangeMin(min);
   };
 
   const sliderProps = {
-    min: 0,
-    max: 5,
+    min: INIT_MIN,
+    max: INIT_MAX,
     step: 0.5,
-    initialMin: 0,
-    initialMax: 5,
+    initialMin: INIT_MIN,
+    initialMax: INIT_MAX,
+    isDisabled: currentRatingFilterType === 'Pending',
   };
 
   const handleRadioClick = (type: RatingFilterType) => {
@@ -47,9 +51,15 @@ export default function RatingFilter() {
   ];
 
   const handleApplyClick = () => {
+    if (currentRatingFilterType === 'Pending') {
+      setRatingMaxRange(INIT_MAX);
+      setRatingMinRange(INIT_MIN);
+    } else {
+      setRatingMaxRange(currentRatingRangeMax);
+      setRatingMinRange(currentRatingRangeMin);
+    }
     setRatingFilterType(currentRatingFilterType);
-    setRatingMaxRange(currentRatingRangeMax);
-    setRatingMinRange(currentRatingRangeMin);
+    close();
   };
 
   const handleResetClick = () => {

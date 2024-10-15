@@ -7,6 +7,10 @@ interface RatingRange {
 
 export type RatingFilterType = 'All' | 'Pending' | 'InProgress';
 
+export const INIT_MIN = 0;
+export const INIT_MAX = 5;
+export const INIT_TYPE: RatingFilterType = 'All';
+
 interface InitRatingFilterContext {
   ratingRange: RatingRange;
   ratingFilterType: RatingFilterType;
@@ -18,10 +22,6 @@ interface RatingFilterContext extends InitRatingFilterContext {
   setRatingFilterType: (type: RatingFilterType) => void;
   reset: () => void;
 }
-
-const INIT_MIN = 0;
-const INIT_MAX = 5;
-const INIT_TYPE: RatingFilterType = 'All';
 
 const RatingFilterContext = createContext<RatingFilterContext | InitRatingFilterContext>({
   ratingRange: {
