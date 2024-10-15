@@ -25,6 +25,10 @@ spring:
     open-in-view: false
   mail:
     host: smtp.gmail.com
+  data:
+    redis:
+      port: 6379
+      host: localhost
 
 dataloader:
   enable: false

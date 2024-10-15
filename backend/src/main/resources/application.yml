@@ -45,6 +45,10 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
+  data:
+    redis:
+      port: 6379
+      host: localhost
 
 security:
   jwt:
