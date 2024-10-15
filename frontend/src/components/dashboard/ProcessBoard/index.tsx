@@ -1,6 +1,7 @@
-import { Process } from '@customTypes/process';
 import ApplicantModal from '@components/ApplicantModal';
+import { Process } from '@customTypes/process';
 
+import { useSearchApplicant } from '@contexts/SearchApplicantContext';
 import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
 import S from './style';
@@ -13,6 +14,8 @@ interface KanbanBoardProps {
 }
 
 export default function ProcessBoard({ processes, showRejectedApplicant = false }: KanbanBoardProps) {
+  const { debouncedName: searchedName } = useSearchApplicant();
+
   return (
     <S.Container>
       {/* TODO: isSubTab을 가져와서 SubTab을 렌더링 합니다. */}
@@ -23,6 +26,7 @@ export default function ProcessBoard({ processes, showRejectedApplicant = false 
             process={process}
             showRejectedApplicant={showRejectedApplicant}
             isPassedColumn={!showRejectedApplicant && index === processes.length - 1}
+            searchedName={searchedName}
           />
         ))}
 

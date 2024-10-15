@@ -8,6 +8,7 @@ import ProcessManageBoard from '@components/processManagement/ProcessManageBoard
 import PostManageBoard from '@components/postManagement/PostManageBoard';
 import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
 import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
+// import SearchApplicantInput from '@components/dashboard/SearchApplicantInput';
 
 import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
@@ -17,6 +18,7 @@ import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContex
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
+import { SearchApplicantContextProvider } from '@contexts/SearchApplicantContext';
 
 import S from './style';
 
@@ -60,14 +62,18 @@ export default function Dashboard() {
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  isSubTab
-                  processes={processes}
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
+            <SearchApplicantContextProvider>
+              {/* <SearchApplicantInput /> */}
+
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    isSubTab
+                    processes={processes}
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </SearchApplicantContextProvider>
           </Tab.TabPanel>
 
           <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
