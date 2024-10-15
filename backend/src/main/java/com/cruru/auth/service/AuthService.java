@@ -1,5 +1,9 @@
 package com.cruru.auth.service;
 
+import com.cruru.auth.domain.AccessToken;
+import com.cruru.auth.domain.RefreshToken;
+import com.cruru.auth.domain.Token;
+import com.cruru.auth.domain.repository.RefreshTokenRepository;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.security.PasswordValidator;
 import com.cruru.auth.security.TokenProperties;
@@ -22,13 +26,26 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final PasswordValidator passwordValidator;
     private final TokenProperties tokenProperties;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public String createAccessToken(Member member) {
+    public Token createAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(EMAIL_CLAIM, member.getEmail());
         claims.put(ROLE_CLAIM, member.getRole().name());
 
-        return tokenProvider.createToken(claims, tokenProperties.accessExpireLength());
+        String token = tokenProvider.createToken(claims, tokenProperties.accessExpireLength());
+        return new AccessToken(token);
+    }
+
+    @Transactional
+    public Token createRefreshToken(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(EMAIL_CLAIM, member.getEmail());
+        claims.put(ROLE_CLAIM, member.getRole().name());
+
+        String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
+
+        return refreshTokenRepository.save(new RefreshToken(token, member));
     }
 
     public boolean isTokenValid(String token) {

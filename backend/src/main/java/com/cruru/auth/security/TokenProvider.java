@@ -1,5 +1,6 @@
 package com.cruru.auth.security;
 
+import com.cruru.auth.domain.Token;
 import com.cruru.auth.exception.IllegalTokenException;
 import java.util.Map;
 

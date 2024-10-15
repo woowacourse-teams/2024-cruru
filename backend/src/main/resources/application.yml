@@ -51,10 +51,12 @@ security:
     token:
       secret-key: test
       access-expire-length: 3600000
+      refresh-expire-length: 3600000
       algorithm: HS256
 
 cookie:
-  access-token-key: token
+  access-token-key: accessToken
+  refresh-token-key: refreshToken
   http-only: false
   secure: false
   domain: localhost

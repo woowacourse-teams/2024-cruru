@@ -36,8 +36,19 @@ public class CookieManager {
         return cookieProperties.accessTokenKey().equals(cookie.getName());
     }
 
-    public ResponseCookie createTokenCookie(String token) {
+    public ResponseCookie createAccessTokenCookie(String token) {
         return ResponseCookie.from(cookieProperties.accessTokenKey(), token)
+                .httpOnly(cookieProperties.httpOnly())
+                .secure(cookieProperties.secure())
+                .domain(cookieProperties.domain())
+                .path(cookieProperties.path())
+                .sameSite(cookieProperties.sameSite())
+                .maxAge(cookieProperties.maxAge())
+                .build();
+    }
+
+    public ResponseCookie createRefreshTokenCookie(String refreshToken) {
+        return ResponseCookie.from(cookieProperties.refreshTokenKey(), refreshToken)
                 .httpOnly(cookieProperties.httpOnly())
                 .secure(cookieProperties.secure())
                 .domain(cookieProperties.domain())

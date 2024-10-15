@@ -66,7 +66,7 @@ public class ControllerTest {
         dbCleaner.truncateEveryTable();
         defaultMember = memberRepository.save(MemberFixture.ADMIN);
         defaultClub = clubRepository.save(ClubFixture.create(defaultMember));
-        token = authService.createAccessToken(defaultMember);
+        token = authService.createAccessToken(defaultMember).getToken();
     }
 
     @BeforeEach
