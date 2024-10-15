@@ -15,6 +15,10 @@ const TitleContainer = styled.div`
 
 const Title = styled.div`
   ${({ theme }) => theme.typography.heading[700]}
+
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
 `;
 
 const RecruitmentStatusContainer = styled.div`

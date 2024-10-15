@@ -1,9 +1,8 @@
-import { HiOutlineCalendar } from 'react-icons/hi';
 import formatDate from '@utils/formatDate';
+import { HiOutlineCalendar } from 'react-icons/hi';
 
-import RecruitmentStatusFlag from '@components/recruitment/RecruitmentStatusFlag';
 import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
-import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
+import RecruitmentStatusFlag from '@components/recruitment/RecruitmentStatusFlag';
 
 import S from './style';
 
@@ -18,7 +17,13 @@ export default function DashboardHeader({ title, postUrl, startDate, endDate }: 
   return (
     <S.Wrapper>
       <S.TitleContainer>
-        <S.Title>{title}</S.Title>
+        <S.Title>
+          {title}
+          <OpenInNewTab
+            url={postUrl}
+            title="공고로 이동"
+          />
+        </S.Title>
         <S.RecruitmentStatusContainer>
           <S.RecruitmentPeriod>
             <HiOutlineCalendar style={{ strokeWidth: '0.25rem' }} />
@@ -30,14 +35,6 @@ export default function DashboardHeader({ title, postUrl, startDate, endDate }: 
           />
         </S.RecruitmentStatusContainer>
       </S.TitleContainer>
-
-      <S.PostLinkContainer>
-        <OpenInNewTab
-          url={postUrl}
-          title="공고로 이동"
-        />
-        <CopyToClipboard url={postUrl} />
-      </S.PostLinkContainer>
     </S.Wrapper>
   );
 }
