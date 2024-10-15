@@ -27,7 +27,7 @@ const RatingNumbers = styled.div`
   gap: 0.4rem;
   ${({ theme }) => theme.typography.heading[400]};
 
-  & > svg:first-child {
+  & > svg:first-of-type {
     fill: ${({ theme }) => theme.colors.brand.primary};
   }
 `;
