@@ -3,6 +3,7 @@ import { reactRouterParameters, withRouter } from 'storybook-addon-remix-react-r
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
+import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import ProcessColumn from './index';
 
 const meta: Meta<typeof ProcessColumn> = {
@@ -38,7 +39,9 @@ const meta: Meta<typeof ProcessColumn> = {
       <SpecificApplicantIdProvider>
         <SpecificProcessIdProvider>
           <FloatingEmailFormProvider>
-            <Child />
+            <MultiApplicantContextProvider>
+              <Child />
+            </MultiApplicantContextProvider>
           </FloatingEmailFormProvider>
         </SpecificProcessIdProvider>
       </SpecificApplicantIdProvider>
