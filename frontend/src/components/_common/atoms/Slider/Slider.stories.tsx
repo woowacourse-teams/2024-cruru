@@ -9,6 +9,7 @@ const meta: Meta<typeof Slider> = {
   component: Slider,
   argTypes: {
     onRangeChange: { action: 'rangeChanged' },
+    isDisabled: { description: '비활성화 여부' },
   },
   decorators: [
     (Story, context) => {
@@ -73,6 +74,16 @@ export const NarrowRange: Story = {
 };
 
 export const CustomRange: Story = {
+  args: {
+    min: -50,
+    max: 50,
+    step: 5,
+    initialMin: -25,
+    initialMax: 25,
+  },
+};
+
+export const Disabled: Story = {
   args: {
     min: -50,
     max: 50,

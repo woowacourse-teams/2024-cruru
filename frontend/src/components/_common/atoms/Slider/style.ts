@@ -15,10 +15,10 @@ const SliderTrack = styled.div`
   height: 0.6rem;
   border-radius: 0.3rem;
 
-  background-color: ${({ theme }) => theme.baseColors.grayscale[200]};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[300]};
 `;
 
-const SliderRange = styled.div<{ left: number; right: number }>`
+const SliderRange = styled.div<{ left: number; right: number; isDisabled: boolean }>`
   position: absolute;
   top: 50%;
   left: ${({ left }) => `${left}%`};
@@ -27,10 +27,11 @@ const SliderRange = styled.div<{ left: number; right: number }>`
 
   height: 0.6rem;
   border-radius: 0.3rem;
-  background-color: ${({ theme }) => theme.baseColors.purplescale[200]};
+  background-color: ${({ theme, isDisabled }) =>
+    isDisabled ? theme.baseColors.grayscale[400] : theme.baseColors.purplescale[200]};
 `;
 
-const SliderThumb = styled.input`
+const SliderThumb = styled.input<{ isDisabled: boolean }>`
   position: absolute;
   top: 50%;
   width: 100%;
@@ -42,13 +43,14 @@ const SliderThumb = styled.input`
   appearance: none;
 
   &::-moz-range-thumb {
-    width: 1.6rem;
+    width: 1rem;
     aspect-ratio: 1/1;
     background: ${({ theme }) => theme.baseColors.grayscale[50]};
-    cursor: pointer;
+    cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
     pointer-events: auto;
 
-    border: 0.4rem solid ${({ theme }) => theme.baseColors.purplescale[700]};
+    border: 0.4rem solid
+      ${({ theme, isDisabled }) => (isDisabled ? theme.baseColors.grayscale[600] : theme.baseColors.purplescale[700])};
     border-radius: 100%;
   }
 
@@ -56,11 +58,12 @@ const SliderThumb = styled.input`
     width: 1.6rem;
     aspect-ratio: 1/1;
     background: ${({ theme }) => theme.baseColors.grayscale[50]};
-    cursor: pointer;
+    cursor: ${({ isDisabled }) => (isDisabled ? 'default' : 'pointer')};
     border-radius: 100%;
     pointer-events: auto;
 
-    border: 0.4rem solid ${({ theme }) => theme.baseColors.purplescale[700]};
+    border: 0.4rem solid
+      ${({ theme, isDisabled }) => (isDisabled ? theme.baseColors.grayscale[600] : theme.baseColors.purplescale[700])};
     border-radius: 100%;
 
     -webkit-appearance: none;

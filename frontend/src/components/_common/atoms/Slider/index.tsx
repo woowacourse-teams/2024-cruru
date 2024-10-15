@@ -7,23 +7,36 @@ interface SliderProps {
   step: number;
   initialMin: number;
   initialMax: number;
+  isDisabled?: boolean;
   onRangeChange: (min: number, max: number) => void;
 }
 
-export default function Slider({ min, max, step, initialMin, initialMax, onRangeChange }: SliderProps) {
+export default function Slider({
+  min,
+  max,
+  step,
+  initialMin,
+  initialMax,
+  isDisabled = false,
+  onRangeChange,
+}: SliderProps) {
   const [minValue, setMinValue] = useState(initialMin);
   const [maxValue, setMaxValue] = useState(initialMax);
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMinValue = Math.min(Number(e.target.value), Number(maxValue - step));
-    setMinValue(newMinValue);
-    onRangeChange(newMinValue, maxValue);
+    if (!isDisabled) {
+      const newMinValue = Math.min(Number(e.target.value), Number(maxValue - step));
+      setMinValue(newMinValue);
+      onRangeChange(newMinValue, maxValue);
+    }
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMaxValue = Math.max(Number(e.target.value), Number(minValue + step));
-    setMaxValue(newMaxValue);
-    onRangeChange(minValue, newMaxValue);
+    if (!isDisabled) {
+      const newMaxValue = Math.max(Number(e.target.value), Number(minValue + step));
+      setMaxValue(newMaxValue);
+      onRangeChange(minValue, newMaxValue);
+    }
   };
 
   const sliderRangeLeft = ((minValue - min) / (max - min)) * 100;
@@ -35,6 +48,7 @@ export default function Slider({ min, max, step, initialMin, initialMax, onRange
       <S.SliderRange
         left={sliderRangeLeft}
         right={sliderRangeRight}
+        isDisabled={isDisabled}
       />
       <S.SliderThumb
         type="range"
@@ -43,6 +57,7 @@ export default function Slider({ min, max, step, initialMin, initialMax, onRange
         step={step}
         value={minValue}
         onChange={handleMinChange}
+        isDisabled={isDisabled}
       />
       <S.SliderThumb
         type="range"
@@ -51,6 +66,7 @@ export default function Slider({ min, max, step, initialMin, initialMax, onRange
         step={step}
         value={maxValue}
         onChange={handleMaxChange}
+        isDisabled={isDisabled}
       />
     </S.SliderContainer>
   );
