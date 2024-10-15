@@ -1,17 +1,19 @@
 import { useParams } from 'react-router-dom';
 
-import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
-import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 import { Process } from '@customTypes/process';
+import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
-import { useModal } from '@contexts/ModalContext';
-
-import { DropdownProvider } from '@contexts/DropdownContext';
-
-import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import specificApplicant from '@hooks/useSpecificApplicant';
+
+import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
+import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
+import { useModal } from '@contexts/ModalContext';
+import { DropdownProvider } from '@contexts/DropdownContext';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
+import { useMultiApplicant } from '@contexts/MultiApplicantContext';
+
 import ApplicantCard from '../ApplicantCard';
 import ProcessDescription from './ProcessDescription';
 import S from './style';
@@ -32,6 +34,7 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
   const { setProcessId } = useSpecificProcessId();
   const { open } = useModal();
   const { open: sideEmailFormOpen } = useFloatingEmailForm();
+  const { isMultiType, applicants, addApplicant, removeApplicant } = useMultiApplicant();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) => {
     const menuItems: DropdownItemType[] = [
@@ -73,6 +76,14 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
     return menuItems;
   };
 
+  const applicantSelectHandler = (id: number, isChecked: boolean) => {
+    if (isChecked) {
+      addApplicant(id);
+    } else {
+      removeApplicant(id);
+    }
+  };
+
   const cardClickHandler = (id: number) => {
     setApplicantId(id);
     setProcessId(process.processId);
@@ -97,7 +108,10 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
                 evaluationCount={evaluationCount}
                 averageScore={averageScore}
                 popOverMenuItems={menuItemsList({ applicantId })}
+                isSelectMode={isMultiType}
+                isSelected={applicants.includes(applicantId)}
                 onCardClick={() => cardClickHandler(applicantId)}
+                onSelectApplicant={(isChecked: boolean) => applicantSelectHandler(applicantId, isChecked)}
               />
             </DropdownProvider>
           ))}
