@@ -90,7 +90,7 @@ export default function ProcessColumn({
     () =>
       process.applicants.filter(({ applicantName, isRejected }) => {
         const matchesName = searchedName ? applicantName.includes(searchedName) : true;
-        const matchesRejection = showRejectedApplicant ? isRejected : !isRejected;
+        const matchesRejection = showRejectedApplicant === isRejected;
         return matchesName && matchesRejection;
       }),
     [searchedName, showRejectedApplicant, process.applicants],
