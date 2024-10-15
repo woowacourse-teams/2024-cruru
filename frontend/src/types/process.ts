@@ -19,4 +19,6 @@ export interface ProcessResponse {
   applyFormId: string;
   title: string;
   processes: Process[];
+  startDate: string;
+  endDate: string;
 }
