@@ -1,7 +1,6 @@
 import ApplicantModal from '@components/ApplicantModal';
 import { Process } from '@customTypes/process';
 
-import { useSearchApplicant } from '@contexts/SearchApplicantContext';
 import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
 import S from './style';
@@ -11,11 +10,14 @@ interface KanbanBoardProps {
   // eslint-disable-next-line react/no-unused-prop-types
   isSubTab?: boolean;
   showRejectedApplicant?: boolean;
+  searchedName?: string;
 }
 
-export default function ProcessBoard({ processes, showRejectedApplicant = false }: KanbanBoardProps) {
-  const { debouncedName: searchedName } = useSearchApplicant();
-
+export default function ProcessBoard({
+  processes,
+  showRejectedApplicant = false,
+  searchedName = '',
+}: KanbanBoardProps) {
   return (
     <S.Container>
       {/* TODO: isSubTab을 가져와서 SubTab을 렌더링 합니다. */}

@@ -1,24 +1,24 @@
 /* eslint-disable no-trailing-spaces */
 import { useParams } from 'react-router-dom';
 
-import Tab from '@components/_common/molecules/Tab';
-import ProcessBoard from '@components/dashboard/ProcessBoard';
-import ApplyManagement from '@components/applyManagement';
-import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
-import PostManageBoard from '@components/postManagement/PostManageBoard';
-import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
 import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
-// import SearchApplicantInput from '@components/dashboard/SearchApplicantInput';
+import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
+import Tab from '@components/_common/molecules/Tab';
+import ApplyManagement from '@components/applyManagement';
+import ProcessBoard from '@components/dashboard/ProcessBoard';
+import InputField from '@components/_common/molecules/InputField';
+import PostManageBoard from '@components/postManagement/PostManageBoard';
+import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
+import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
 
 import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
-import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
-import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
-import { SearchApplicantContextProvider } from '@contexts/SearchApplicantContext';
+import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
+import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 
 import S from './style';
 
@@ -29,6 +29,10 @@ export default function Dashboard() {
   const { processes, title, postUrl } = useProcess({ dashboardId, applyFormId });
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
+
+  // const { debouncedName } = useSearchApplicant();
+  // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
+  const { debouncedName, name, handleName } = useSearchApplicant();
 
   return (
     <S.AppContainer>
@@ -62,18 +66,23 @@ export default function Dashboard() {
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
-            <SearchApplicantContextProvider>
-              {/* <SearchApplicantInput /> */}
+            {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
+            <InputField
+              type="search"
+              placeholder="지원자 이름 검색"
+              value={name}
+              onChange={(e) => handleName(e.target.value)}
+            />
 
-              <SpecificApplicantIdProvider>
-                <SpecificProcessIdProvider>
-                  <ProcessBoard
-                    isSubTab
-                    processes={processes}
-                  />
-                </SpecificProcessIdProvider>
-              </SpecificApplicantIdProvider>
-            </SearchApplicantContextProvider>
+            <SpecificApplicantIdProvider>
+              <SpecificProcessIdProvider>
+                <ProcessBoard
+                  isSubTab
+                  processes={processes}
+                  searchedName={debouncedName}
+                />
+              </SpecificProcessIdProvider>
+            </SpecificApplicantIdProvider>
           </Tab.TabPanel>
 
           <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
