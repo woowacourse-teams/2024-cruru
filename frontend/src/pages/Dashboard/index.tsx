@@ -1,18 +1,16 @@
 /* eslint-disable no-trailing-spaces */
 import { useParams } from 'react-router-dom';
 
-import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
-import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
 import Tab from '@components/_common/molecules/Tab';
-import ApplyManagement from '@components/applyManagement';
 import ProcessBoard from '@components/dashboard/ProcessBoard';
-// import InputField from '@components/_common/molecules/InputField';
-import PostManageBoard from '@components/postManagement/PostManageBoard';
+import ApplyManagement from '@components/applyManagement';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
-import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
+import PostManageBoard from '@components/postManagement/PostManageBoard';
+import DashboardHeader from '@components/dashboard/DashboardHeader';
 
-import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
+import useTab from '@components/_common/molecules/Tab/useTab';
+import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
@@ -26,7 +24,7 @@ export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '�
 
 export default function Dashboard() {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processes, title, postUrl } = useProcess({ dashboardId, applyFormId });
+  const { processes, title, postUrl, startDate, endDate } = useProcess({ dashboardId, applyFormId });
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
@@ -36,17 +34,12 @@ export default function Dashboard() {
 
   return (
     <S.AppContainer>
-      <S.Header>
-        <S.Title>{title}</S.Title>
-
-        <S.CopyWrapper>
-          <OpenInNewTab
-            url={postUrl}
-            title="공고로 이동"
-          />
-          <CopyToClipboard url={postUrl} />
-        </S.CopyWrapper>
-      </S.Header>
+      <DashboardHeader
+        title={title}
+        postUrl={postUrl}
+        startDate={startDate}
+        endDate={endDate}
+      />
 
       <Tab>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (

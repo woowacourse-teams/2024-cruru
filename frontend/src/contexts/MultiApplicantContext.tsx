@@ -21,22 +21,17 @@ export function MultiApplicantContextProvider({ children }: PropsWithChildren) {
     if (!isOpen) setIsOpen(true);
   }, [isOpen]);
 
-  const addApplicant = (applicantId: number) => {
-    setApplicants((prev) => [...prev, applicantId]);
-  };
-
-  const removeApplicant = useCallback(
-    () => (applicantId: number) => {
+  const addApplicant = useCallback(
+    (applicantId: number) => {
       if (applicants.includes(applicantId)) return;
-      setApplicants((prev) => {
-        const temp = [...prev];
-        const index = prev.findIndex((id) => id === applicantId);
-        temp.splice(index, 1);
-        return temp;
-      });
+      setApplicants((prev) => [...prev, applicantId]);
     },
     [applicants],
   );
+
+  const removeApplicant = useCallback((applicantId: number) => {
+    setApplicants((prev) => [...prev].filter((id) => id !== applicantId));
+  }, []);
 
   const resetApplicants = () => setApplicants([]);
 
@@ -49,7 +44,7 @@ export function MultiApplicantContextProvider({ children }: PropsWithChildren) {
       removeApplicant,
       resetApplicants,
     }),
-    [isOpen, toggleIsMultiType, removeApplicant],
+    [isOpen, toggleIsMultiType, applicants, addApplicant, removeApplicant],
   );
 
   return <MultiApplicantContext.Provider value={obj}>{children}</MultiApplicantContext.Provider>;
