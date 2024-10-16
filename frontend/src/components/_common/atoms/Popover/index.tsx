@@ -20,11 +20,11 @@ export default function Popover({ isOpen, onClose, anchorEl, children }: Popover
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('mouseup', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mouseup', handleClickOutside);
     };
   }, [isOpen, onClose, anchorEl]);
 
