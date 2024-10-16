@@ -29,7 +29,7 @@ public class JwtTokenProvider implements TokenProvider {
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.valueOf(tokenProperties.algorithm()),
-                        tokenProperties.secretKey().getBytes())
+                        tokenProperties.secretKey())
                 .compact();
     }
 
@@ -44,7 +44,7 @@ public class JwtTokenProvider implements TokenProvider {
     private Claims extractClaims(String token) {
         try {
             return Jwts.parser()
-                    .setSigningKey(tokenProperties.secretKey().getBytes())
+                    .setSigningKey(tokenProperties.secretKey())
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {

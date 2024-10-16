@@ -102,7 +102,7 @@ class JwtTokenProviderTest {
                 .addClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY.getBytes())
+                .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY)
                 .compact();
     }
 
