@@ -1,5 +1,5 @@
-import { Process } from '@customTypes/process';
 import ApplicantModal from '@components/ApplicantModal';
+import { Process } from '@customTypes/process';
 
 import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
@@ -10,9 +10,14 @@ interface KanbanBoardProps {
   // eslint-disable-next-line react/no-unused-prop-types
   isSubTab?: boolean;
   showRejectedApplicant?: boolean;
+  searchedName?: string;
 }
 
-export default function ProcessBoard({ processes, showRejectedApplicant = false }: KanbanBoardProps) {
+export default function ProcessBoard({
+  processes,
+  showRejectedApplicant = false,
+  searchedName = '',
+}: KanbanBoardProps) {
   return (
     <S.Container>
       {/* TODO: isSubTab을 가져와서 SubTab을 렌더링 합니다. */}
@@ -23,6 +28,7 @@ export default function ProcessBoard({ processes, showRejectedApplicant = false 
             process={process}
             showRejectedApplicant={showRejectedApplicant}
             isPassedColumn={!showRejectedApplicant && index === processes.length - 1}
+            searchedName={searchedName}
           />
         ))}
 

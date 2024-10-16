@@ -29,7 +29,7 @@ export default function Finish({ dashboardId, applyFormId }: FinishProps) {
         onClick={handleClickButton}
       >
         <S.ButtonContent>
-          공고로 이동
+          대시보드로 이동
           <HiChevronRight size={24} />
         </S.ButtonContent>
       </Button>
