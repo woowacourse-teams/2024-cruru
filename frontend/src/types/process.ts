@@ -24,19 +24,22 @@ export interface ProcessResponse {
 }
 
 export type EvaluationStatus = 'ALL' | 'NOT_EVALUATION' | 'EVALUATED';
-export type SortOption = 'ASC' | 'DESC';
 
-export type ProcessFilterOptions = {
+type FilterParams = {
   minScore?: string;
   maxScore?: string;
   evaluationStatus?: EvaluationStatus;
 };
-export type ProcessSortOptions = {
+export type ProcessFilterOptions = FilterParams;
+
+type SortOption = 'ASC' | 'DESC';
+type SortParams = {
   sortByCreatedAt?: SortOption;
   sortByScore?: SortOption;
 };
+export type ProcessSortOption = keyof SortParams;
 
 export type ProcessQueryParams = {
   dashboardId: string;
-} & ProcessFilterOptions &
-  ProcessSortOptions;
+} & FilterParams &
+  SortParams;

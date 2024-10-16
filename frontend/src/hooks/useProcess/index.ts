@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process, ProcessQueryParams, ProcessResponse } from '@customTypes/process';
+import type { Process, ProcessFilterOptions, ProcessResponse, ProcessSortOption } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
@@ -12,8 +12,11 @@ export interface SimpleProcess {
   processId: number;
 }
 
-interface UseProcessProps extends ProcessQueryParams {
+interface UseProcessProps {
   applyFormId: string;
+  dashboardId: string;
+  sortOption?: ProcessSortOption;
+  filterOption?: ProcessFilterOptions;
 }
 
 interface UseProcessReturn {
@@ -27,10 +30,26 @@ interface UseProcessReturn {
   endDate: string;
 }
 
-export default function useProcess({ dashboardId, applyFormId }: UseProcessProps): UseProcessReturn {
+export default function useProcess({
+  dashboardId,
+  applyFormId,
+  sortOption,
+  filterOption,
+}: UseProcessProps): UseProcessReturn {
   const { data, error, isLoading } = useQuery<ProcessResponse>({
-    queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId],
-    queryFn: () => processApis.get({ dashboardId }),
+    queryKey: [
+      QUERY_KEYS.DASHBOARD,
+      dashboardId,
+      applyFormId,
+      sortOption ?? 'defaultSortOption',
+      filterOption ?? 'defaultFilterOption',
+    ],
+    queryFn: () =>
+      processApis.get({
+        dashboardId,
+        ...(sortOption && { [sortOption]: 'ASC' }),
+        ...(filterOption && { filterOption }),
+      }),
   });
 
   const processes = data?.processes || [];
