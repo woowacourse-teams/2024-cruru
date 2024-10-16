@@ -12,4 +12,11 @@ public class AccessToken implements Token {
     public String getToken() {
         return token;
     }
+
+    @Override
+    public String toString() {
+        return "AccessToken{" +
+                "token='" + token + '\'' +
+                '}';
+    }
 }

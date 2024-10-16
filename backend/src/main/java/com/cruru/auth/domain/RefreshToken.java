@@ -57,4 +57,13 @@ public class RefreshToken extends BaseEntity implements Token {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+
+    @Override
+    public String toString() {
+        return "RefreshToken{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", member=" + member +
+                '}';
+    }
 }
