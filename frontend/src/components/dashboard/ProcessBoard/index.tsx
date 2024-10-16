@@ -1,5 +1,5 @@
-import { Process } from '@customTypes/process';
 import ApplicantModal from '@components/ApplicantModal';
+import { Process } from '@customTypes/process';
 
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
 import ProcessColumn from '../ProcessColumn';
@@ -12,9 +12,14 @@ interface ProcessBoardProps {
   // eslint-disable-next-line react/no-unused-prop-types
   isSubTab?: boolean;
   showRejectedApplicant?: boolean;
+  searchedName?: string;
 }
 
-export default function ProcessBoard({ processes, showRejectedApplicant = false }: ProcessBoardProps) {
+export default function ProcessBoard({
+  processes,
+  showRejectedApplicant = false,
+  searchedName = '',
+}: ProcessBoardProps) {
   const { isMultiType, toggleIsMultiType, resetApplicants } = useMultiApplicant();
 
   const handleToggleMultiType = () => {
@@ -36,6 +41,7 @@ export default function ProcessBoard({ processes, showRejectedApplicant = false 
             process={process}
             showRejectedApplicant={showRejectedApplicant}
             isPassedColumn={!showRejectedApplicant && index === processes.length - 1}
+            searchedName={searchedName}
           />
         ))}
 
