@@ -17,9 +17,6 @@ export default function RatingFilter() {
   const [currentRatingRangeMin, setCurrentRatingRangeMin] = useState<number>(ratingRange.min);
   const [currentRatingRangeMax, setCurrentRatingRangeMax] = useState<number>(ratingRange.max);
 
-  // [24.10.15 - lurgi] Slider 컴포넌트의 강제 재 렌더링을 위한 key값을 저장하는 state
-  const [sliderKey, setSliderKey] = useState(0);
-
   const { close } = usePopover();
 
   const handleRangeChange = (min: number, max: number) => {
@@ -31,8 +28,8 @@ export default function RatingFilter() {
     min: INIT_MIN,
     max: INIT_MAX,
     step: 0.5,
-    initialMin: INIT_MIN,
-    initialMax: INIT_MAX,
+    minValue: currentRatingRangeMin,
+    maxValue: currentRatingRangeMax,
     isDisabled: currentRatingFilterType === 'Pending',
   };
 
@@ -70,9 +67,6 @@ export default function RatingFilter() {
     setCurrentRatingFilterType(INIT_TYPE);
     setCurrentRatingRangeMin(INIT_MIN);
     setCurrentRatingRangeMax(INIT_MAX);
-
-    // [24.10.15 - lurgi] Slider 컴포넌트의 강제 재 렌더링을 위해 state를 변경합니다.
-    setSliderKey(sliderKey + 1);
   };
 
   return (
@@ -86,7 +80,6 @@ export default function RatingFilter() {
           </S.RatingNumbers>
         </S.RangeLabel>
         <Slider
-          key={sliderKey}
           {...sliderProps}
           onRangeChange={handleRangeChange}
         />
@@ -108,7 +101,6 @@ export default function RatingFilter() {
         <Button
           size="sm"
           color="white"
-          type="reset"
           onClick={handleResetClick}
         >
           <S.ButtonInner>초기화</S.ButtonInner>

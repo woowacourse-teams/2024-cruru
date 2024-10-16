@@ -14,8 +14,8 @@ const meta: Meta<typeof Slider> = {
   decorators: [
     (Story, context) => {
       const [range, setRange] = useState({
-        min: context.args.initialMin,
-        max: context.args.initialMax,
+        min: context.args.minValue,
+        max: context.args.maxValue,
       });
 
       const handleRangeChange = (min: number, max: number) => {
@@ -28,6 +28,8 @@ const meta: Meta<typeof Slider> = {
           <Story
             args={{
               ...context.args,
+              minValue: range.min,
+              maxValue: range.max,
               onRangeChange: handleRangeChange,
             }}
           />
@@ -48,8 +50,8 @@ export const Default: Story = {
     min: 0,
     max: 5,
     step: 0.5,
-    initialMin: 0,
-    initialMax: 5,
+    minValue: 0,
+    maxValue: 5,
   },
 };
 
@@ -58,8 +60,8 @@ export const DecimalStep: Story = {
     min: 0,
     max: 5,
     step: 0.1,
-    initialMin: 0,
-    initialMax: 5,
+    minValue: 0,
+    maxValue: 5,
   },
 };
 
@@ -68,8 +70,8 @@ export const NarrowRange: Story = {
     min: 0,
     max: 100,
     step: 1,
-    initialMin: 40,
-    initialMax: 60,
+    minValue: 40,
+    maxValue: 60,
   },
 };
 
@@ -78,8 +80,8 @@ export const CustomRange: Story = {
     min: -50,
     max: 50,
     step: 5,
-    initialMin: -25,
-    initialMax: 25,
+    minValue: -25,
+    maxValue: 25,
   },
 };
 
@@ -88,7 +90,7 @@ export const Disabled: Story = {
     min: -50,
     max: 50,
     step: 5,
-    initialMin: -25,
-    initialMax: 25,
+    minValue: -25,
+    maxValue: 25,
   },
 };

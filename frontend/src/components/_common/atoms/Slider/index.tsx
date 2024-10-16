@@ -1,33 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import S from './style';
 
 interface SliderProps {
   min: number;
   max: number;
   step: number;
-  initialMin: number;
-  initialMax: number;
+  minValue: number;
+  maxValue: number;
   isDisabled?: boolean;
   onRangeChange: (min: number, max: number) => void;
 }
 
-export default function Slider({
-  min,
-  max,
-  step,
-  initialMin,
-  initialMax,
-  isDisabled = false,
-  onRangeChange,
-}: SliderProps) {
-  const [minValue, setMinValue] = useState(initialMin);
-  const [maxValue, setMaxValue] = useState(initialMax);
-
+export default function Slider({ min, max, step, minValue, maxValue, isDisabled = false, onRangeChange }: SliderProps) {
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isDisabled) {
       const newMinValue = Math.min(Number(e.target.value), Number(maxValue - step));
       if (newMinValue !== minValue) {
-        setMinValue(newMinValue);
         onRangeChange(newMinValue, maxValue);
       }
     }
@@ -37,7 +25,6 @@ export default function Slider({
     if (!isDisabled) {
       const newMaxValue = Math.max(Number(e.target.value), Number(minValue + step));
       if (newMaxValue !== maxValue) {
-        setMaxValue(newMaxValue);
         onRangeChange(minValue, newMaxValue);
       }
     }
