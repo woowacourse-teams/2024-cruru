@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ isHover: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,14 +16,16 @@ const CardContainer = styled.div`
 
   transition: all 0.2s;
 
-  &:hover {
-    scale: 1.01;
-    transform: translateY(-0.1rem);
-    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.1);
-    border: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
-    cursor: pointer;
-    z-index: 9;
-  }
+  ${({ theme, isHover }) =>
+    isHover &&
+    css`
+      scale: 1.01;
+      transform: translateY(-0.1rem);
+      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.1);
+      border: 1px solid ${theme.baseColors.grayscale[500]};
+      cursor: pointer;
+      z-index: 9;
+    `}
 `;
 
 const CardDetail = styled.div`
@@ -116,6 +118,12 @@ const OptionButtonWrapper = styled.div`
   position: relative;
 `;
 
+const PopoverWrapper = styled.div`
+  padding: 0.8rem 0rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+`;
+
 const S = {
   CardContainer,
   CardDetail,
@@ -125,6 +133,7 @@ const S = {
   CardInfoContainer,
   CardInfo,
   OptionButtonWrapper,
+  PopoverWrapper,
 };
 
 export default S;
