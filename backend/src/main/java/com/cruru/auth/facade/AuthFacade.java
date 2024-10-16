@@ -33,4 +33,18 @@ public class AuthFacade {
         Token refreshToken = authService.createRefreshToken(member);
         return new TokenResponse(accessToken.getToken(), refreshToken.getToken());
     }
+
+    public TokenResponse refresh(String refreshToken) {
+        authService.checkRefreshTokenExists(refreshToken);
+
+        String email = authService.extractEmail(refreshToken);
+        Member member = memberService.findByEmail(email);
+        return refreshTokens(member);
+    }
+
+    private TokenResponse refreshTokens(Member member) {
+        Token accessToken = authService.createAccessToken(member);
+        Token refreshToken = authService.rotate(member);
+        return new TokenResponse(accessToken.getToken(), refreshToken.getToken());
+    }
 }

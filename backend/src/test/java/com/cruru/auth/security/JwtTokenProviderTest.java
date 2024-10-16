@@ -48,7 +48,7 @@ class JwtTokenProviderTest {
         // when
         String token = jwtTokenProvider.createToken(claims, expireLength);
         Claims extractedClaims = Jwts.parser()
-                .setSigningKey(TEST_SECRET_KEY.getBytes())
+                .setSigningKey(TEST_SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
 

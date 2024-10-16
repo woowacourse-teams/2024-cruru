@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,19 @@ public class AuthController {
         ResponseCookie cookie = cookieManager.clearTokenCookie();
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .build();
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<Void> refresh(@CookieValue("refreshToken") String refreshToken) {
+        TokenResponse tokenResponse = authFacade.refresh(refreshToken);
+
+        ResponseCookie accessTokenCookie = cookieManager.createAccessTokenCookie(tokenResponse.accessToken());
+        ResponseCookie newRefreshTokenCookie = cookieManager.createRefreshTokenCookie(tokenResponse.refreshToken());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, newRefreshTokenCookie.toString())
                 .build();
     }
 }

@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.cruru.auth.domain.AccessToken;
+import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
+import com.cruru.auth.domain.repository.RefreshTokenRepository;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -24,6 +26,9 @@ class AuthServiceTest extends ServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     private Member member;
 
@@ -120,5 +125,19 @@ class AuthServiceTest extends ServiceTest {
 
         // then
         assertThat(result).isTrue();
+    }
+
+    @DisplayName("토큰 rotate에 성공한다.")
+    @Test
+    void rotate() throws InterruptedException {
+        // given
+        Token refreshToken = refreshTokenRepository.save((RefreshToken) authService.createRefreshToken(member));
+
+        // when
+        Thread.sleep(1000);
+        Token rotatedRefreshToken = authService.rotate(member);
+
+        // then
+        assertThat(refreshToken.getToken()).isNotEqualTo(rotatedRefreshToken.getToken());
     }
 }
