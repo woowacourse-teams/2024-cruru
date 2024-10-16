@@ -1,7 +1,7 @@
 import { HiOutlineClock, HiOutlineChat } from 'react-icons/hi';
 import { HiEllipsisVertical } from 'react-icons/hi2';
 
-import { useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import IconButton from '@components/_common/atoms/IconButton';
 import PopOverMenu from '@components/_common/molecules/PopOverMenu';
