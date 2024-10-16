@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   const { debouncedName } = useSearchApplicant();
   // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
-  // const { debouncedName, name, handleName } = useSearchApplicant();
+  // const { debouncedName, name, updateName } = useSearchApplicant();
 
   return (
     <S.AppContainer>
@@ -71,7 +71,7 @@ export default function Dashboard() {
               type="search"
               placeholder="지원자 이름 검색"
               value={name}
-              onChange={(e) => handleName(e.target.value)}
+              onChange={(e) => updateName(e.target.value)}
             /> */}
 
             <SpecificApplicantIdProvider>

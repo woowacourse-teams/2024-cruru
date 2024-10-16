@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 export const useSearchApplicant = () => {
   const [name, setName] = useState('');
 
-  const handleName = useCallback((newName: string) => {
+  const updateName = useCallback((newName: string) => {
     setName(newName);
   }, []);
 
@@ -13,6 +13,6 @@ export const useSearchApplicant = () => {
   return {
     name,
     debouncedName,
-    handleName,
+    updateName,
   };
 };
