@@ -11,6 +11,8 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
 
     boolean existsByToken(String token);
 
+    boolean existsByMember(Member member);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE RefreshToken rt SET rt.token = :refreshToken WHERE rt.member = :member")
     void updateRefreshTokenByMember(@Param("refreshToken") String refreshToken, @Param("member") Member member);

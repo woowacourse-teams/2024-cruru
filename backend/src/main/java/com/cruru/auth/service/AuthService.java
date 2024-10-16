@@ -5,7 +5,6 @@ import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
 import com.cruru.auth.domain.repository.RefreshTokenRepository;
 import com.cruru.auth.exception.IllegalTokenException;
-import com.cruru.auth.exception.LoginUnauthorizedException;
 import com.cruru.auth.security.PasswordValidator;
 import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
@@ -30,20 +29,18 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public Token createAccessToken(Member member) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(EMAIL_CLAIM, member.getEmail());
-        claims.put(ROLE_CLAIM, member.getRole().name());
-
+        Map<String, Object> claims = getClaims(member);
         String token = tokenProvider.createToken(claims, tokenProperties.accessExpireLength());
         return new AccessToken(token);
     }
 
     @Transactional
     public Token createRefreshToken(Member member) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(EMAIL_CLAIM, member.getEmail());
-        claims.put(ROLE_CLAIM, member.getRole().name());
+        if (refreshTokenRepository.existsByMember(member)) {
+            return rotate(member);
+        }
 
+        Map<String, Object> claims = getClaims(member);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
 
         return refreshTokenRepository.save(new RefreshToken(token, member));
@@ -51,15 +48,19 @@ public class AuthService {
 
     @Transactional
     public Token rotate(Member member) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(EMAIL_CLAIM, member.getEmail());
-        claims.put(ROLE_CLAIM, member.getRole().name());
-
+        Map<String, Object> claims = getClaims(member);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
         RefreshToken refreshToken = new RefreshToken(token, member);
 
         refreshTokenRepository.updateRefreshTokenByMember(refreshToken.getToken(), member);
         return refreshToken;
+    }
+
+    private Map<String, Object> getClaims(Member member) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(EMAIL_CLAIM, member.getEmail());
+        claims.put(ROLE_CLAIM, member.getRole().name());
+        return claims;
     }
 
     public boolean isTokenValid(String token) {
