@@ -6,17 +6,17 @@ import ProcessBoard from '@components/dashboard/ProcessBoard';
 import ApplyManagement from '@components/applyManagement';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 import PostManageBoard from '@components/postManagement/PostManageBoard';
-import OpenInNewTab from '@components/_common/atoms/OpenInNewTab';
-import CopyToClipboard from '@components/_common/atoms/CopyToClipboard';
+import DashboardHeader from '@components/dashboard/DashboardHeader';
 
-import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
+import useTab from '@components/_common/molecules/Tab/useTab';
+import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
-import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
-import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
+import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
+import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 
 import S from './style';
 
@@ -24,23 +24,22 @@ export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '�
 
 export default function Dashboard() {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processes, title, postUrl } = useProcess({ dashboardId, applyFormId });
+  const { processes, title, postUrl, startDate, endDate } = useProcess({ dashboardId, applyFormId });
 
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
 
+  const { debouncedName } = useSearchApplicant();
+  // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
+  // const { debouncedName, name, updateName } = useSearchApplicant();
+
   return (
     <S.AppContainer>
-      <S.Header>
-        <S.Title>{title}</S.Title>
-
-        <S.CopyWrapper>
-          <OpenInNewTab
-            url={postUrl}
-            title="공고로 이동"
-          />
-          <CopyToClipboard url={postUrl} />
-        </S.CopyWrapper>
-      </S.Header>
+      <DashboardHeader
+        title={title}
+        postUrl={postUrl}
+        startDate={startDate}
+        endDate={endDate}
+      />
 
       <Tab>
         {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
@@ -60,11 +59,20 @@ export default function Dashboard() {
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
+            {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
+            {/* <InputField
+              type="search"
+              placeholder="지원자 이름 검색"
+              value={name}
+              onChange={(e) => updateName(e.target.value)}
+            /> */}
+
             <SpecificApplicantIdProvider>
               <SpecificProcessIdProvider>
                 <ProcessBoard
                   isSubTab
                   processes={processes}
+                  searchedName={debouncedName}
                 />
               </SpecificProcessIdProvider>
             </SpecificApplicantIdProvider>
