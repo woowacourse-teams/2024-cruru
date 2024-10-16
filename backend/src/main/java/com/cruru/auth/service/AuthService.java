@@ -99,4 +99,12 @@ public class AuthService {
             throw new IllegalTokenException();
         }
     }
+
+    public void validMemberRefreshToken(String refreshToken, Member member) {
+        RefreshToken foundToken = refreshTokenRepository.findByMember(member)
+                .orElseThrow(IllegalTokenException::new);
+        if (!foundToken.isSameToken(refreshToken)) {
+            throw new IllegalTokenException();
+        }
+    }
 }

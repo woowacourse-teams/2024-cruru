@@ -39,6 +39,7 @@ public class AuthFacade {
 
         String email = authService.extractEmail(refreshToken);
         Member member = memberService.findByEmail(email);
+        authService.validMemberRefreshToken(refreshToken, member);
         return refreshTokens(member);
     }
 

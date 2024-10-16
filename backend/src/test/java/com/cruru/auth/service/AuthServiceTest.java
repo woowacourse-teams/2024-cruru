@@ -140,4 +140,16 @@ class AuthServiceTest extends ServiceTest {
         // then
         assertThat(refreshToken.getToken()).isNotEqualTo(rotatedRefreshToken.getToken());
     }
+
+    @DisplayName("사용자의 Refresh Token이 아닐 경우, 예외를 반환한다.")
+    @Test
+    void validMemberRefreshToken() {
+        // given
+        Member member1 = memberRepository.save(MemberFixture.RUSH);
+        Token refreshToken = refreshTokenRepository.save((RefreshToken) authService.createRefreshToken(member1));
+
+        // when&then
+        assertThatThrownBy(() -> authService.validMemberRefreshToken(refreshToken.getToken(), member))
+                .isInstanceOf(IllegalTokenException.class);
+    }
 }
