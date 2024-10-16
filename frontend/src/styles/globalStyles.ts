@@ -146,6 +146,7 @@ const globalStyles = () => css`
       'Segoe UI',
       'Roboto',
       sans-serif;
+    overflow: hidden;
   }
 
   button {
