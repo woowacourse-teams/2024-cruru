@@ -1,4 +1,4 @@
-import { ProcessResponse } from '@customTypes/process';
+import { ProcessQueryParams, ProcessResponse } from '@customTypes/process';
 import { PROCESSES } from '../endPoint';
 import { createParams } from '../utils';
 import APIClient from '../APIClient';
@@ -6,9 +6,9 @@ import APIClient from '../APIClient';
 const apiClient = new APIClient(PROCESSES);
 
 const processApis = {
-  get: async ({ dashboardId }: { dashboardId: string }): Promise<ProcessResponse> =>
+  get: async ({ dashboardId, ...params }: ProcessQueryParams): Promise<ProcessResponse> =>
     apiClient.get({
-      path: `?${createParams({ dashboardId })}`,
+      path: `?${createParams({ dashboardId, ...params })}`,
     }),
 
   create: async (params: { dashboardId: number; orderIndex: number; name: string; description?: string }) =>

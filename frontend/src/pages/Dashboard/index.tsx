@@ -18,6 +18,7 @@ import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 
+import { ProcessQueryParamsProvider } from '@contexts/ProcessQueryParamsProvider';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
@@ -58,36 +59,38 @@ export default function Dashboard() {
       파일 맨 첫줄 주석도 삭제해야합니다. */}
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
-          <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
-            {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
-            {/* <InputField
+          <ProcessQueryParamsProvider>
+            <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
+              {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
+              {/* <InputField
               type="search"
               placeholder="지원자 이름 검색"
               value={name}
               onChange={(e) => updateName(e.target.value)}
             /> */}
 
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  isSubTab
-                  processes={processes}
-                  searchedName={debouncedName}
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
-          </Tab.TabPanel>
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    isSubTab
+                    processes={processes}
+                    searchedName={debouncedName}
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </Tab.TabPanel>
 
-          <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  processes={processes}
-                  showRejectedApplicant
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
-          </Tab.TabPanel>
+            <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    processes={processes}
+                    showRejectedApplicant
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </Tab.TabPanel>
+          </ProcessQueryParamsProvider>
         </MultiApplicantContextProvider>
       </FloatingEmailFormProvider>
 

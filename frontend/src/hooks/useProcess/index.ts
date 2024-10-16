@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process, ProcessResponse } from '@customTypes/process';
+import type { Process, ProcessQueryParams, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
@@ -12,8 +12,7 @@ export interface SimpleProcess {
   processId: number;
 }
 
-interface UseProcessProps {
-  dashboardId: string;
+interface UseProcessProps extends ProcessQueryParams {
   applyFormId: string;
 }
 
@@ -37,6 +36,7 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
   const processes = data?.processes || [];
 
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
+
   return {
     title: data?.title ?? '',
     postUrl: `${DOMAIN_URL}${routes.post({ applyFormId: data?.applyFormId ?? '' })}`,
