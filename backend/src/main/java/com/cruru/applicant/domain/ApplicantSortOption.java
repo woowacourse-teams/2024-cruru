@@ -16,7 +16,7 @@ public enum ApplicantSortOption {
         this.comparator = comparator;
     }
 
-    public static Comparator<ApplicantCard> getCombinedComparator(String sortByCreatedAt, String sortByScore) {
+    public static Comparator<ApplicantCard> getComparator(String sortByCreatedAt, String sortByScore) {
         Optional<ApplicantSortOption> createdAtOption = convertToSortOption(sortByCreatedAt);
         Optional<ApplicantSortOption> scoreOption = convertToSortOption(sortByScore);
 

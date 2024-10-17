@@ -32,7 +32,7 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard2, applicantCard1);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
+            applicantCards.sort(ApplicantSortOption.getComparator(
                     sortByCreatedAt,
                     null
             ));
@@ -53,7 +53,7 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard1, applicantCard2);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
+            applicantCards.sort(ApplicantSortOption.getComparator(
                     sortByCreatedAt,
                     null
             ));
@@ -78,7 +78,7 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard1, applicantCard2);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
+            applicantCards.sort(ApplicantSortOption.getComparator(
                     null,
                     sortByScore
             ));
@@ -98,7 +98,7 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard2, applicantCard1);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
+            applicantCards.sort(ApplicantSortOption.getComparator(
                     null,
                     sortByScore
             ));
