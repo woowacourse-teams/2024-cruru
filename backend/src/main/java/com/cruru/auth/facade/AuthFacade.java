@@ -19,6 +19,7 @@ public class AuthFacade {
     private final AuthService authService;
     private final MemberService memberService;
 
+    @Transactional
     public TokenResponse login(LoginRequest request) {
         Member member = memberService.findByEmail(request.email());
         if (authService.isNotVerifiedPassword(request.password(), member.getPassword())) {
