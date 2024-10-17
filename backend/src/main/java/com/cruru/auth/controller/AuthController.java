@@ -41,22 +41,9 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-        ResponseCookie cookie = cookieManager.clearTokenCookie();
+        ResponseCookie cookie = cookieManager.clearAccessTokenCookie();
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .build();
-    }
-
-    @GetMapping("/refresh")
-    public ResponseEntity<Void> refresh(@CookieValue("refreshToken") String refreshToken) {
-        TokenResponse tokenResponse = authFacade.refresh(refreshToken);
-
-        ResponseCookie accessTokenCookie = cookieManager.createAccessTokenCookie(tokenResponse.accessToken());
-        ResponseCookie newRefreshTokenCookie = cookieManager.createRefreshTokenCookie(tokenResponse.refreshToken());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
-                .header(HttpHeaders.SET_COOKIE, newRefreshTokenCookie.toString())
                 .build();
     }
 }

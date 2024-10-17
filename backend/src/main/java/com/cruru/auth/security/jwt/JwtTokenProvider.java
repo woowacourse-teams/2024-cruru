@@ -34,11 +34,23 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean isAlive(String token) throws IllegalTokenException {
+    public boolean isValid(String token) throws IllegalTokenException {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isTokenExpired(String token) throws IllegalTokenException {
         Claims claims = extractClaims(token);
         Date expiration = claims.getExpiration();
         Date now = new Date();
-        return expiration.after(now);
+        return !expiration.after(now);
     }
 
     private Claims extractClaims(String token) {

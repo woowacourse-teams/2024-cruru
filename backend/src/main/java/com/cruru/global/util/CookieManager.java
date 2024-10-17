@@ -14,7 +14,7 @@ public class CookieManager {
 
     private final CookieProperties cookieProperties;
 
-    public String extractToken(HttpServletRequest request) {
+    public String extractAccessToken(HttpServletRequest request) {
         Cookie[] cookies = extractCookie(request);
         return Arrays.stream(cookies)
                 .filter(this::isAccessTokenCookie)
@@ -35,6 +35,20 @@ public class CookieManager {
     private boolean isAccessTokenCookie(Cookie cookie) {
         return cookieProperties.accessTokenKey().equals(cookie.getName());
     }
+
+    public String extractRefreshToken(HttpServletRequest request) {
+        Cookie[] cookies = extractCookie(request);
+        return Arrays.stream(cookies)
+                .filter(this::isRefreshTokenCookie)
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(IllegalCookieException::new);
+    }
+
+    private boolean isRefreshTokenCookie(Cookie cookie) {
+        return cookieProperties.refreshTokenKey().equals(cookie.getName());
+    }
+
 
     public ResponseCookie createAccessTokenCookie(String token) {
         return ResponseCookie.from(cookieProperties.accessTokenKey(), token)
@@ -58,7 +72,7 @@ public class CookieManager {
                 .build();
     }
 
-    public ResponseCookie clearTokenCookie() {
+    public ResponseCookie clearAccessTokenCookie() {
         return ResponseCookie.from(cookieProperties.accessTokenKey())
                 .httpOnly(cookieProperties.httpOnly())
                 .secure(cookieProperties.secure())

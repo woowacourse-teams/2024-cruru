@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.cruru.auth.controller.response.TokenResponse;
 import com.cruru.auth.domain.AccessToken;
 import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
@@ -13,6 +14,11 @@ import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.MemberFixture;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +26,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @DisplayName("AuthService 테스트")
 class AuthServiceTest extends ServiceTest {
+
+    private static final String TEST_SECRET_KEY = "test";
+    private static final String EMAIL_CLAIM = "email";
+    private static final String ROLE_CLAIM = "role";
 
     @Autowired
     private AuthService authService;
@@ -32,9 +42,14 @@ class AuthServiceTest extends ServiceTest {
 
     private Member member;
 
+    private Map<String, Object> claims;
+
     @BeforeEach
     void setUp() {
         member = memberRepository.save(MemberFixture.DOBBY);
+        claims = new HashMap<>();
+        claims.put(EMAIL_CLAIM, "email@example.com");
+        claims.put(ROLE_CLAIM, "ADMIN");
     }
 
     @DisplayName("AccessToken을 생성한다.")
@@ -127,29 +142,42 @@ class AuthServiceTest extends ServiceTest {
         assertThat(result).isTrue();
     }
 
-    @DisplayName("토큰 rotate에 성공한다.")
+    @DisplayName("Refresh Token 갱신에 성공한다.")
     @Test
-    void rotate() throws InterruptedException {
+    void refresh() throws InterruptedException {
         // given
         Token refreshToken = refreshTokenRepository.save((RefreshToken) authService.createRefreshToken(member));
 
         // when
         Thread.sleep(1000);
-        Token rotatedRefreshToken = authService.rotate(member);
+        TokenResponse tokenResponse = authService.refresh(refreshToken.getToken());
 
         // then
-        assertThat(refreshToken.getToken()).isNotEqualTo(rotatedRefreshToken.getToken());
+        assertThat(refreshToken.getToken()).isNotEqualTo(tokenResponse.refreshToken());
     }
 
-    @DisplayName("사용자의 Refresh Token이 아닐 경우, 예외를 반환한다.")
+    @DisplayName("토큰의 만료 여부를 검증한다.")
     @Test
-    void validMemberRefreshToken() {
+    void isTokenNotExpired() {
         // given
-        Member member1 = memberRepository.save(MemberFixture.RUSH);
-        Token refreshToken = refreshTokenRepository.save((RefreshToken) authService.createRefreshToken(member1));
+        String expiredToken = generateExpiredToken();
 
-        // when&then
-        assertThatThrownBy(() -> authService.validMemberRefreshToken(refreshToken.getToken(), member))
-                .isInstanceOf(IllegalTokenException.class);
+        // when
+        boolean expired = authService.isTokenNotExpired(expiredToken);
+
+        // then
+        assertThat(expired).isFalse();
+    }
+
+    private String generateExpiredToken() {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() - 3600000); // 1시간 전 만료
+
+        return Jwts.builder()
+                .addClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY)
+                .compact();
     }
 }

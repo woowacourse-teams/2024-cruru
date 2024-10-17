@@ -1,5 +1,6 @@
 package com.cruru.auth.service;
 
+import com.cruru.auth.controller.response.TokenResponse;
 import com.cruru.auth.domain.AccessToken;
 import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
@@ -9,6 +10,7 @@ import com.cruru.auth.security.PasswordValidator;
 import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
+import com.cruru.member.domain.repository.MemberRepository;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class AuthService {
     private final PasswordValidator passwordValidator;
     private final TokenProperties tokenProperties;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberRepository memberRepository;
 
     public Token createAccessToken(Member member) {
         Map<String, Object> claims = getClaims(member);
@@ -37,7 +40,7 @@ public class AuthService {
     @Transactional
     public Token createRefreshToken(Member member) {
         if (refreshTokenRepository.existsByMember(member)) {
-            return rotate(member);
+            return rotateRefreshToken(member);
         }
 
         Map<String, Object> claims = getClaims(member);
@@ -47,7 +50,32 @@ public class AuthService {
     }
 
     @Transactional
-    public Token rotate(Member member) {
+    public TokenResponse refresh(String refreshToken) {
+        checkRefreshTokenExists(refreshToken);
+
+        String email = extractEmail(refreshToken);
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow();
+        validMemberRefreshToken(refreshToken, member);
+        return rotateTokens(member);
+    }
+
+    private void checkRefreshTokenExists(String refreshToken) {
+        if (!isTokenValid(refreshToken)) {
+            throw new IllegalTokenException();
+        }
+        if (!refreshTokenRepository.existsByToken(refreshToken)) {
+            throw new IllegalTokenException();
+        }
+    }
+
+    private TokenResponse rotateTokens(Member member) {
+        Token accessToken = createAccessToken(member);
+        Token refreshToken = rotateRefreshToken(member);
+        return new TokenResponse(accessToken.getToken(), refreshToken.getToken());
+    }
+
+    private Token rotateRefreshToken(Member member) {
         Map<String, Object> claims = getClaims(member);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
         RefreshToken refreshToken = new RefreshToken(token, member);
@@ -63,9 +91,13 @@ public class AuthService {
         return claims;
     }
 
+    public boolean isTokenNotExpired(String token) {
+        return !tokenProvider.isTokenExpired(token);
+    }
+
     public boolean isTokenValid(String token) {
         try {
-            return tokenProvider.isAlive(token);
+            return tokenProvider.isValid(token);
         } catch (IllegalTokenException e) {
             return false;
         }
@@ -73,6 +105,10 @@ public class AuthService {
 
     public String extractEmail(String token) {
         return extractClaim(token, EMAIL_CLAIM);
+    }
+
+    public String extractMemberRole(String token) {
+        return extractClaim(token, ROLE_CLAIM);
     }
 
     private String extractClaim(String token, String key) {
@@ -83,24 +119,11 @@ public class AuthService {
         return claim;
     }
 
-    public String extractMemberRole(String token) {
-        return extractClaim(token, ROLE_CLAIM);
-    }
-
     public boolean isNotVerifiedPassword(String rawPassword, String encodedPassword) {
         return !passwordValidator.matches(rawPassword, encodedPassword);
     }
 
-    public void checkRefreshTokenExists(String refreshToken) {
-        if (!isTokenValid(refreshToken)) {
-            throw new IllegalTokenException();
-        }
-        if (!refreshTokenRepository.existsByToken(refreshToken)) {
-            throw new IllegalTokenException();
-        }
-    }
-
-    public void validMemberRefreshToken(String refreshToken, Member member) {
+    private void validMemberRefreshToken(String refreshToken, Member member) {
         RefreshToken foundToken = refreshTokenRepository.findByMember(member)
                 .orElseThrow(IllegalTokenException::new);
         if (!foundToken.isSameToken(refreshToken)) {

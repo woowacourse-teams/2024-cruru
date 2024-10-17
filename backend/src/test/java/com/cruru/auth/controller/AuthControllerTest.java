@@ -139,41 +139,4 @@ class AuthControllerTest extends ControllerTest {
                 .when().post("/v1/auth/logout")
                 .then().log().all().statusCode(401);
     }
-
-    @DisplayName("refreshToken으로 토큰 갱신에 성공한다.")
-    @Test
-    void refresh() {
-        // given
-        Token refreshToken = authService.createRefreshToken(member);
-
-        // when&then
-        RestAssured.given(spec).log().all()
-                .cookie("refreshToken", refreshToken.getToken())
-                .contentType(ContentType.JSON)
-                .filter(document("auth/refresh",
-                        requestCookies(cookieWithName("refreshToken").description("Refresh Token")),
-                        responseHeaders(headerWithName("Set-Cookie").description("인증 쿠키 설정")),
-                        responseCookies(
-                                cookieWithName("accessToken").description("Access Token"),
-                                cookieWithName("refreshToken").description("Refresh Token")
-                        ))
-                )
-                .when().get("/v1/auth/refresh")
-                .then().log().all().statusCode(200);
-    }
-
-    @DisplayName("부적절한 refreshToken으로 토큰 갱신 시, 401을 반환한다.")
-    @Test
-    void refresh_invalidToken() {
-        // given&when&then
-        RestAssured.given(spec).log().all()
-                .cookie("refreshToken", "invalidToken")
-                .contentType(ContentType.JSON)
-                .filter(document("auth/refresh-fail/token-not-found",
-                                requestCookies(cookieWithName("refreshToken").description("부적절한 토큰"))
-                        )
-                )
-                .when().get("/v1/auth/refresh")
-                .then().log().all().statusCode(401);
-    }
 }
