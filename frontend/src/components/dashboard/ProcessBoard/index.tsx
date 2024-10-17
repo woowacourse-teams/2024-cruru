@@ -5,7 +5,7 @@ import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
 import S from './style';
 
-interface KanbanBoardProps {
+interface ProcessBoardProps {
   processes: Process[];
   // eslint-disable-next-line react/no-unused-prop-types
   isSubTab?: boolean;
@@ -17,7 +17,7 @@ export default function ProcessBoard({
   processes,
   showRejectedApplicant = false,
   searchedName = '',
-}: KanbanBoardProps) {
+}: ProcessBoardProps) {
   return (
     <S.Container>
       {/* TODO: isSubTab을 가져와서 SubTab을 렌더링 합니다. */}
