@@ -23,13 +23,3 @@ operation::auth/logout[snippets="http-request,request-cookies,http-response,resp
 ==== 실패: 존재하지 않는 토큰
 
 operation::auth/logout-fail/token-not-found[snippets="http-request,http-response"]
-
-=== RefreshToken 갱신
-
-==== 성공
-
-operation::auth/refresh[snippets="http-request,request-cookies,http-response,response-headers,response-cookies"]
-
-==== 실패: 존재하지 않는 토큰
-
-operation::auth/refresh-fail/token-not-found[snippets="http-request,request-cookies,http-response"]
