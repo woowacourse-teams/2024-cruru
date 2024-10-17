@@ -25,7 +25,14 @@ const meta = {
   decorators: [
     (Child) => (
       <div
-        style={{ width: '500px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}
+        style={{
+          width: '60rem',
+          height: '3.6rem',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         <MultiApplicantContextProvider>
           <DropdownProvider>
