@@ -1,9 +1,9 @@
 package com.cruru.applicant.domain;
 
 import com.cruru.applicant.domain.dto.ApplicantCard;
-import com.cruru.applicant.exception.badrequest.ApplicantSortException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 
 public enum ApplicantSortOption {
 
@@ -16,19 +16,26 @@ public enum ApplicantSortOption {
         this.comparator = comparator;
     }
 
-    public static Comparator<ApplicantCard> getCombinedComparator(String sortByCreatedAt, String sortByScore) {
-        ApplicantSortOption createdAtOption = convertToSortOption(sortByCreatedAt);
-        ApplicantSortOption scoreOption = convertToSortOption(sortByScore);
+    public static Comparator<ApplicantCard> getComparator(String sortByCreatedAt, String sortByScore) {
+        Optional<ApplicantSortOption> createdAtOption = convertToSortOption(sortByCreatedAt);
+        Optional<ApplicantSortOption> scoreOption = convertToSortOption(sortByScore);
 
-        return createdAtOption.getCreatedAtComparator()
-                .thenComparing(scoreOption.getScoreComparator());
+        if (createdAtOption.isPresent()) {
+            return createdAtOption.get().getCreatedAtComparator();
+        }
+        if (scoreOption.isPresent()) {
+            return scoreOption.get().getScoreComparator();
+        }
+        return Comparator.comparing(ApplicantCard::createdAt, DESC.comparator);
     }
 
-    private static ApplicantSortOption convertToSortOption(String sortOption) {
+    private static Optional<ApplicantSortOption> convertToSortOption(String sortOption) {
+        if (sortOption == null || sortOption.isEmpty()) {
+            return Optional.empty();
+        }
         return Arrays.stream(ApplicantSortOption.values())
                 .filter(option -> option.name().equalsIgnoreCase(sortOption))
-                .findAny()
-                .orElseThrow(ApplicantSortException::new);
+                .findAny();
     }
 
     private Comparator<ApplicantCard> getCreatedAtComparator() {

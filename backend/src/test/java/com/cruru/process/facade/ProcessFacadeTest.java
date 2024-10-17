@@ -93,6 +93,8 @@ class ProcessFacadeTest extends ServiceTest {
                 EvaluationFixture.fourPoints(process2, applicant2)
         );
         evaluationRepository.saveAll(evaluations2);
+        String sortByCreatedAt = "DESC";
+        String sortByScore = null;
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(
@@ -100,8 +102,8 @@ class ProcessFacadeTest extends ServiceTest {
                 DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+                sortByCreatedAt,
+                sortByScore
         );
 
         // then

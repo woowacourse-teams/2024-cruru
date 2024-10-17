@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cruru.applicant.domain.dto.ApplicantCard;
 import com.cruru.util.fixture.ApplicantCardFixture;
-import com.cruru.util.fixture.DefaultFilterAndOrderFixture;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -33,9 +32,9 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard2, applicantCard1);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
+            applicantCards.sort(ApplicantSortOption.getComparator(
                     sortByCreatedAt,
-                    DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+                    null
             ));
 
             // then
@@ -54,10 +53,9 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard1, applicantCard2);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
+            applicantCards.sort(ApplicantSortOption.getComparator(
                     sortByCreatedAt,
-                    DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
-
+                    null
             ));
 
             // then
@@ -72,7 +70,7 @@ class ApplicantSortOptionTest {
         @DisplayName("지원자의 평균 점수 기준으로 오름차순으로 정렬한다.")
         @ParameterizedTest
         @ValueSource(strings = {"ASC", "asc"})
-        void getScoreComparator_asc(String sortByCreatedAt) {
+        void getScoreComparator_asc(String sortByScore) {
             // given
             LocalDateTime createdAt = LocalDateTime.of(2024, 10, 2, 20, 0);
             ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
@@ -80,9 +78,9 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard1, applicantCard2);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
-                    DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                    sortByCreatedAt
+            applicantCards.sort(ApplicantSortOption.getComparator(
+                    null,
+                    sortByScore
             ));
 
             // then
@@ -92,7 +90,7 @@ class ApplicantSortOptionTest {
         @DisplayName("지원자의 평균 점수 기준으로 내림차순으로 정렬한다.")
         @ParameterizedTest
         @ValueSource(strings = {"DESC", "desc"})
-        void getScoreComparator_desc(String sortByCreatedAt) {
+        void getScoreComparator_desc(String sortByScore) {
             // given
             LocalDateTime createdAt = LocalDateTime.of(2024, 10, 2, 20, 0);
             ApplicantCard applicantCard1 = ApplicantCardFixture.evaluatedApplicantCard(createdAt);
@@ -100,9 +98,9 @@ class ApplicantSortOptionTest {
             List<ApplicantCard> applicantCards = Arrays.asList(applicantCard2, applicantCard1);
 
             // when
-            applicantCards.sort(ApplicantSortOption.getCombinedComparator(
-                    DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                    sortByCreatedAt
+            applicantCards.sort(ApplicantSortOption.getComparator(
+                    null,
+                    sortByScore
             ));
 
             // then

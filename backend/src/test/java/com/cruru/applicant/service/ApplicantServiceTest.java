@@ -106,6 +106,8 @@ class ApplicantServiceTest extends ServiceTest {
         evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant2));
 
         String evaluationStatus = "EVALUATED";
+        String sortByCreatedAt = "DESC";
+        String sortByScore = null;
 
         // when
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
@@ -113,8 +115,8 @@ class ApplicantServiceTest extends ServiceTest {
                 DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
                 evaluationStatus,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+                sortByCreatedAt,
+                sortByScore
         );
 
         // then
