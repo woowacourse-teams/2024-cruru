@@ -18,7 +18,9 @@ export default function DashboardFunctionTab({ onSearchName }: DashboardFunction
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
   const { debouncedName, name, updateName } = useSearchApplicant();
-  const { sortOption, updateSortOption } = useProcess({ dashboardId, applyFormId });
+  const {
+    applicantSortDropdownProps: { sortOption, updateSortOption },
+  } = useProcess({ dashboardId, applyFormId });
 
   useEffect(() => {
     onSearchName(debouncedName);

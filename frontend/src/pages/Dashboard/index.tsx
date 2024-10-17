@@ -75,16 +75,20 @@ export default function Dashboard() {
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
             <DashboardFunctionTab onSearchName={handleSearchName} />
             {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
-            {/* <InputField
-              type="search"
-              placeholder="지원자 이름 검색"
-              value={name}
-              onChange={(e) => updateName(e.target.value)}
-            /> */}
-            {/* <ApplicantSortDropdown
-              sortOption={sortOption}
-              updateSortOption={updateSortOption}
-            /> */}
+            {/* <button
+              type="button"
+              onClick={() => setIsPopoverOpen(true)}
+              ref={buttonRef}
+            >
+              임시
+            </button>
+            <Popover
+              isOpen={isPopoverOpen}
+              onClose={() => setIsPopoverOpen(false)}
+              anchorEl={buttonRef.current}
+            >
+              <RatingFilter {...ratingFilterProps} />
+            </Popover> */}
 
             <SpecificApplicantIdProvider>
               <SpecificProcessIdProvider>
