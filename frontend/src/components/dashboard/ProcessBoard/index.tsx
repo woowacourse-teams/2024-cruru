@@ -1,11 +1,9 @@
-import ApplicantModal from '@components/ApplicantModal';
-import { Process } from '@customTypes/process';
+import type { Process } from '@customTypes/process';
 
-import { useMultiApplicant } from '@contexts/MultiApplicantContext';
+import ApplicantModal from '@components/ApplicantModal';
 import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
 import S from './style';
-import MultiSelectToggle from '../MultiSelectToggle';
 
 interface ProcessBoardProps {
   processes: Process[];
@@ -20,20 +18,9 @@ export default function ProcessBoard({
   showRejectedApplicant = false,
   searchedName = '',
 }: ProcessBoardProps) {
-  const { isMultiType, toggleIsMultiType, resetApplicants } = useMultiApplicant();
-
-  const handleToggleMultiType = () => {
-    if (isMultiType) resetApplicants();
-    toggleIsMultiType();
-  };
-
   return (
     <S.Container>
       {/* TODO: isSubTab을 가져와서 SubTab을 렌더링 합니다. */}
-      <MultiSelectToggle
-        onToggle={handleToggleMultiType}
-        isSelectMode={isMultiType}
-      />
       <S.ColumnWrapper>
         {processes.map((process, index) => (
           <ProcessColumn
