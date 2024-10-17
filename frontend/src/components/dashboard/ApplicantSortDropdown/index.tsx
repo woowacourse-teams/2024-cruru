@@ -23,7 +23,7 @@ const sortOptions: SortOptionsType[] = [
 
 export default function ApplicantSortDropdown({ sortOption, updateSortOption }: ApplicantSortDropdownProps) {
   const selectedOption = sortOptions.find(
-    (option) => sortOption && option.id in sortOption && option.value === sortOption[option.id],
+    (option) => sortOption && option.id && option.value === sortOption[option.id],
   );
 
   return (
