@@ -30,7 +30,6 @@ export type DropdownItemType = ClickableItem | SubTrigger;
 interface DropdownItemRendererProps {
   items: DropdownItemType[];
   size?: 'sm' | 'md';
-  // subContentPlacement?: 'left' | 'right';
 }
 
 function Clickable({ item, size }: { item: ClickableItem; size: 'sm' | 'md' }) {
