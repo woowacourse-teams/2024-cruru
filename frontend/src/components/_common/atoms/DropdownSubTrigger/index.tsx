@@ -46,12 +46,7 @@ export default function DropdownSubTrigger({
           placement={placement}
           width={ref.current?.offsetWidth || 0}
         >
-          <S.SubItemContainer
-            size={size}
-            width={ref.current?.offsetWidth || 0}
-          >
-            {children}
-          </S.SubItemContainer>
+          <S.SubItemContainer size={size}>{children}</S.SubItemContainer>
         </S.SubItemBoundary>
       )}
     </S.Item>
