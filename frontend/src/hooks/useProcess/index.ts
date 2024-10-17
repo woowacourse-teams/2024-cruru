@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process, ProcessFilterOptions, ProcessResponse, ProcessSortOption } from '@customTypes/process';
+import type { Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
+import useSortApplicant from '@components/dashboard/useSortApplicant';
 import QUERY_KEYS from '@hooks/queryKeys';
 import { routes } from '@router/path';
+import { useEffect } from 'react';
 import { DOMAIN_URL } from '../../constants/constants';
 
 export interface SimpleProcess {
@@ -15,8 +17,6 @@ export interface SimpleProcess {
 interface UseProcessProps {
   applyFormId: string;
   dashboardId: string;
-  sortOption?: ProcessSortOption;
-  filterOption?: ProcessFilterOptions;
 }
 
 interface UseProcessReturn {
@@ -33,24 +33,26 @@ interface UseProcessReturn {
 export default function useProcess({
   dashboardId,
   applyFormId,
-  sortOption,
-  filterOption,
-}: UseProcessProps): UseProcessReturn {
-  const { data, error, isLoading } = useQuery<ProcessResponse>({
-    queryKey: [
-      QUERY_KEYS.DASHBOARD,
-      dashboardId,
-      applyFormId,
-      sortOption ?? 'defaultSortOption',
-      filterOption ?? 'defaultFilterOption',
-    ],
+}: UseProcessProps): UseProcessReturn & ReturnType<typeof useSortApplicant> {
+  const { sortOption, updateSortOption } = useSortApplicant();
+
+  const { data, error, isLoading, refetch } = useQuery<ProcessResponse>({
+    // [10.17-lesser]
+    // sortOption을 queryKey에 추가하면 기존 요청까지 다시 보내게 되어
+    // queryKey에 sortOption을 추가하지 않고, refetch로 재요청 보내도록 수정합니다.
+    // eslint-disable-next-line
+    queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId],
     queryFn: () =>
       processApis.get({
         dashboardId,
-        ...(sortOption && { [sortOption]: 'ASC' }),
-        ...(filterOption && { filterOption }),
+        ...(sortOption && { [sortOption as string]: 'ASC' }),
+        // ...(filterOption && { filterOption: filterOption as ProcessFilterOptions }),
       }),
   });
+
+  useEffect(() => {
+    refetch();
+  }, [sortOption]);
 
   const processes = data?.processes || [];
 
@@ -65,5 +67,7 @@ export default function useProcess({
     isLoading,
     startDate: data?.startDate ?? '0',
     endDate: data?.endDate ?? '0',
+    sortOption,
+    updateSortOption,
   };
 }

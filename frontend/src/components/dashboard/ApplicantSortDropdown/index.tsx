@@ -28,7 +28,7 @@ export default function ApplicantSortDropdown({ sortOption, updateSortOption }: 
     >
       <DropdownItemRenderer
         items={[
-          { type: 'clickable', id: 'all', name: '전체', onClick: () => updateSortOption() },
+          { type: 'clickable', id: '', name: '기본 순', onClick: () => updateSortOption() },
           ...((Object.entries(sortOptions) as Entries<DropdownSortOptions>).map(([id, name]) => ({
             type: 'clickable',
             id,

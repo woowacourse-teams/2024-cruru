@@ -19,7 +19,6 @@ import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContex
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import ApplicantSortDropdown from '@components/dashboard/ApplicantSortDropdown';
-import useSortApplicant from '@components/dashboard/useSortApplicant';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
@@ -31,12 +30,10 @@ export default function Dashboard() {
   // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
   // const { debouncedName, name, updateName } = useSearchApplicant();
 
-  const { sortOption, updateSortOption } = useSortApplicant();
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processes, title, postUrl, startDate, endDate } = useProcess({
+  const { processes, title, postUrl, startDate, endDate, sortOption, updateSortOption } = useProcess({
     dashboardId,
     applyFormId,
-    sortOption,
   });
 
   return (
