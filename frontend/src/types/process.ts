@@ -33,7 +33,7 @@ type FilterParams = {
 export type ProcessFilterOptions = FilterParams;
 
 export type SortOption = 'ASC' | 'DESC';
-type SortParams = {
+export type SortParams = {
   sortByCreatedAt?: SortOption;
   sortByScore?: SortOption;
 };
