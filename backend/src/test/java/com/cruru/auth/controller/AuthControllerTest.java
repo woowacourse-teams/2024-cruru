@@ -35,9 +35,6 @@ class AuthControllerTest extends ControllerTest {
     @Autowired
     private ClubRepository clubRepository;
 
-    @Autowired
-    private AuthService authService;
-
     private Member member;
 
     @BeforeEach
