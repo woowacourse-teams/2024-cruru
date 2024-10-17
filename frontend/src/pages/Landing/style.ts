@@ -1,5 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import media from '@styles/media';
 
 const dropdownShadow = css`
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
@@ -50,6 +51,8 @@ const getBubblePosition = (index: number) => {
 };
 
 const Container = styled.div`
+  position: relative;
+
   width: 100vw;
 
   display: flex;
@@ -58,6 +61,38 @@ const Container = styled.div`
   align-items: center;
 
   white-space: nowrap;
+`;
+
+const MobileHeader = styled.header`
+  display: none;
+  position: fixed;
+  top: 1.6rem;
+  padding: 2.4rem 2.2rem;
+  width: 90%;
+  border-radius: 1.6rem;
+
+  z-index: 10;
+  box-shadow: 0px 4px 4px rgba(144, 144, 144, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 6%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border: 1px solid linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+
+  ${media('mobile')`
+    display: flex;
+    justify-content: space-between;
+  `}
+`;
+
+const ServiceLogo = styled.img`
+  width: 5rem;
+`;
+
+const HeaderLogin = styled.div`
+  ${({ theme }) => theme.typography.common.small};
 `;
 
 // Main Section
@@ -77,6 +112,11 @@ const MainSection = styled.section`
   background: linear-gradient(90deg, #f5f5ff 0%, ${({ theme }) => theme.baseColors.grayscale[50]} 49%);
 
   overflow: hidden;
+
+  ${media('mobile')`
+    padding: 20vh 1.6rem;
+    gap: 1.6rem;
+  `}
 `;
 
 const Catchphrase = styled.h1`
@@ -111,6 +151,11 @@ const Catchphrase = styled.h1`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  ${media('mobile')(`
+    font-size: 3.5rem;
+    line-height: 1.4;
+  `)}
 `;
 
 const Supporting = styled.p`
@@ -123,6 +168,10 @@ const Supporting = styled.p`
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease-in-out forwards;
   animation-delay: 0.6s;
+
+  ${media('mobile')(`
+    font-size: 1.6rem;
+  `)}
 `;
 
 const CtaButtons = styled.div`
@@ -140,15 +189,16 @@ const CtaButtons = styled.div`
 `;
 
 const MainImg = styled.img`
-  width: 60vw;
+  width: 60%;
   min-width: 80rem;
-  position: absolute;
-  bottom: -18rem;
-  z-index: 0;
 
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease-in-out forwards;
   animation-delay: 0.6s;
+
+  ${media('mobile')`
+    min-width: 40rem;
+  `}
 `;
 
 const ScrollDownArea = styled.div`
@@ -187,6 +237,10 @@ const PainPointSection = styled.section`
 
   background: linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
     linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+
+  ${media('mobile')`
+    padding: 0 1.6rem;
+  `}
 `;
 
 const MessageImg = styled.img`
@@ -240,6 +294,10 @@ const ProductIntroSection = styled.section`
   align-items: center;
   justify-content: center;
   gap: 3.6rem;
+
+  ${media('mobile')`
+    padding: 0 1.6rem;
+  `}
 `;
 
 const IntroText = styled.p`
@@ -305,6 +363,10 @@ const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
       );
     `;
   }}
+
+  ${media('mobile')`
+    padding: 0 1.6rem;
+  `}
 `;
 
 const FeatureTitle = styled.h2`
@@ -383,6 +445,10 @@ const StartButtonWrapper = styled.div`
 `;
 
 const S = {
+  MobileHeader,
+  ServiceLogo,
+  HeaderLogin,
+
   Container,
   MainSection,
   Catchphrase,

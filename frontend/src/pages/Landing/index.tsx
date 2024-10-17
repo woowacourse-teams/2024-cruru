@@ -1,6 +1,7 @@
 import { routes } from '@router/path';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import Logo from '@assets/images/logo.svg';
 import DashboardWebp from '@assets/images/dashboard.webp';
 import Feature1Webp from '@assets/images/feature1.webp';
 import Feature2Webp from '@assets/images/feature2.webp';
@@ -13,15 +14,15 @@ import Button from '@components/_common/atoms/Button';
 import IconButton from '@components/_common/atoms/IconButton';
 import S from './style';
 
+const SPEECH_BUBBLE_TEXTS = [
+  '면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?',
+  '지원자들에게 일일이 연락하는게 너무 번거로워..',
+  '지원자 정보랑 평가가 한눈에 안들어와...',
+  '여러 공고를 한 번에 관리하기가 힘드네..',
+];
+
 export default function Landing() {
   const navigate = useNavigate();
-
-  const SPEECH_BUBBLE_TEXTS = [
-    '면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?',
-    '지원자들에게 일일이 연락하는게 너무 번거로워..',
-    '지원자 정보랑 평가가 한눈에 안들어와...',
-    '여러 공고를 한 번에 관리하기가 힘드네..',
-  ];
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -39,6 +40,16 @@ export default function Landing() {
         <HiChevronUp />
       </IconButton>
 
+      <S.MobileHeader>
+        <S.ServiceLogo
+          src={Logo}
+          alt="크루루 서비스 로고"
+        />
+        <S.HeaderLogin>
+          <Link to={routes.signIn()}>로그인</Link>
+        </S.HeaderLogin>
+      </S.MobileHeader>
+
       <S.MainSection>
         <S.Catchphrase>
           <span>복잡했던 </span>
@@ -52,11 +63,6 @@ export default function Landing() {
           <br />
           리크루팅의 모든 단계를 크루루와 함께 해결하세요.
         </S.Supporting>
-
-        <S.MainImg
-          src={DashboardWebp}
-          alt="지원자 현황을 한 눈에 확인할 수 있는 대시보드 페이지"
-        />
 
         <S.CtaButtons>
           <Button
@@ -74,6 +80,11 @@ export default function Landing() {
             크루루 새로 시작하기
           </Button>
         </S.CtaButtons>
+
+        <S.MainImg
+          src={DashboardWebp}
+          alt="지원자 현황을 한 눈에 확인할 수 있는 대시보드 페이지"
+        />
 
         <S.ScrollDownArea>
           <HiChevronDown />
