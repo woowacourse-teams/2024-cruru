@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  overflow-x: scroll;
+  overflow-y: visible;
+
+  height: 100%;
 `;
 
 const ColumnWrapper = styled.div`
@@ -10,12 +15,9 @@ const ColumnWrapper = styled.div`
   height: 100%;
   background-color: white;
   display: flex;
-  gap: 2.4rem;
+  gap: 2rem;
 
   padding-bottom: 1.2rem;
-
-  overflow-x: scroll;
-  overflow-y: visible;
 `;
 
 const S = {
