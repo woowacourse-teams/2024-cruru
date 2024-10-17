@@ -7,7 +7,7 @@ import QUERY_KEYS from '@hooks/queryKeys';
 import { routes } from '@router/path';
 import { DOMAIN_URL } from '../../constants/constants';
 
-interface SimpleProcess {
+export interface SimpleProcess {
   processName: string;
   processId: number;
 }
@@ -24,6 +24,8 @@ interface UseProcessReturn {
   error: Error | null;
   isLoading: boolean;
   postUrl: string;
+  startDate: string;
+  endDate: string;
 }
 
 export default function useProcess({ dashboardId, applyFormId }: UseProcessProps): UseProcessReturn {
@@ -42,5 +44,7 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
     processList,
     error,
     isLoading,
+    startDate: data?.startDate ?? '0',
+    endDate: data?.endDate ?? '0',
   };
 }

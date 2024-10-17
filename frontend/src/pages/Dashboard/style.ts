@@ -2,24 +2,8 @@ import styled from '@emotion/styled';
 import { hiddenStyles, hideScrollBar, visibleStyles } from '@styles/utils';
 
 const AppContainer = styled.div`
-  padding: 3.6rem 2rem;
-  height: 100vh;
-`;
-
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Title = styled.div`
-  ${({ theme }) => theme.typography.heading[700]}
-`;
-
-const CopyWrapper = styled.div`
-  display: flex;
-  gap: 0.8rem;
-
-  min-width: 30rem;
+  padding: 3.2rem 1.6rem;
+  height: 100%;
 `;
 
 const DashboardPanel = styled.div<{ isVisible: boolean }>`
@@ -38,10 +22,7 @@ const DashboardPanel = styled.div<{ isVisible: boolean }>`
 
 const S = {
   AppContainer,
-  Header,
-  Title,
   DashboardPanel,
-  CopyWrapper,
 };
 
 export default S;

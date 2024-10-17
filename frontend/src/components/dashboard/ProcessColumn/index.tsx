@@ -1,17 +1,20 @@
 import { useParams } from 'react-router-dom';
 
-import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
-import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 import { Process } from '@customTypes/process';
+import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
-import { useModal } from '@contexts/ModalContext';
-
-import { DropdownProvider } from '@contexts/DropdownContext';
-
-import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import specificApplicant from '@hooks/useSpecificApplicant';
+
+import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
+import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
+import { useModal } from '@contexts/ModalContext';
+import { DropdownProvider } from '@contexts/DropdownContext';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
+import { useMultiApplicant } from '@contexts/MultiApplicantContext';
+
+import { useMemo } from 'react';
 import ApplicantCard from '../ApplicantCard';
 import ProcessDescription from './ProcessDescription';
 import S from './style';
@@ -20,9 +23,15 @@ interface ProcessColumnProps {
   process: Process;
   showRejectedApplicant: boolean;
   isPassedColumn: boolean;
+  searchedName?: string;
 }
 
-export default function ProcessColumn({ process, showRejectedApplicant, isPassedColumn = false }: ProcessColumnProps) {
+export default function ProcessColumn({
+  process,
+  showRejectedApplicant,
+  isPassedColumn = false,
+  searchedName = '',
+}: ProcessColumnProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { processList } = useProcess({ dashboardId, applyFormId });
   const { mutate: moveApplicantProcess } = useApplicant({});
@@ -32,6 +41,7 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
   const { setProcessId } = useSpecificProcessId();
   const { open } = useModal();
   const { open: sideEmailFormOpen } = useFloatingEmailForm();
+  const { isMultiType, applicants, addApplicant, removeApplicant } = useMultiApplicant();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) => {
     const menuItems: DropdownItemType[] = [
@@ -73,11 +83,29 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
     return menuItems;
   };
 
+  const applicantSelectHandler = (id: number, isChecked: boolean) => {
+    if (isChecked) {
+      addApplicant(id);
+    } else {
+      removeApplicant(id);
+    }
+  };
+
   const cardClickHandler = (id: number) => {
     setApplicantId(id);
     setProcessId(process.processId);
     open();
   };
+
+  const filteredApplicants = useMemo(
+    () =>
+      process.applicants.filter(({ applicantName, isRejected }) => {
+        const matchesName = searchedName ? applicantName.includes(searchedName) : true;
+        const matchesRejection = showRejectedApplicant === isRejected;
+        return matchesName && matchesRejection;
+      }),
+    [searchedName, showRejectedApplicant, process.applicants],
+  );
 
   return (
     <S.ProcessWrapper isPassedColumn={isPassedColumn}>
@@ -86,22 +114,24 @@ export default function ProcessColumn({ process, showRejectedApplicant, isPassed
         <ProcessDescription description={process.description} />
       </S.Header>
       <S.ApplicantList>
-        {process.applicants
-          .filter(({ isRejected }) => (showRejectedApplicant ? isRejected : !isRejected))
-          .map(({ applicantId, applicantName, createdAt, evaluationCount, averageScore, isRejected }) => (
-            <DropdownProvider>
+        {filteredApplicants.map(
+          ({ applicantId, applicantName, createdAt, evaluationCount, averageScore, isRejected }) => (
+            <DropdownProvider key={applicantId}>
               <ApplicantCard
-                key={applicantId}
                 name={applicantName}
                 isRejected={isRejected}
                 createdAt={createdAt}
                 evaluationCount={evaluationCount}
                 averageScore={averageScore}
                 popOverMenuItems={menuItemsList({ applicantId })}
+                isSelectMode={isMultiType}
+                isSelected={applicants.includes(applicantId)}
                 onCardClick={() => cardClickHandler(applicantId)}
+                onSelectApplicant={(isChecked: boolean) => applicantSelectHandler(applicantId, isChecked)}
               />
             </DropdownProvider>
-          ))}
+          ),
+        )}
       </S.ApplicantList>
     </S.ProcessWrapper>
   );

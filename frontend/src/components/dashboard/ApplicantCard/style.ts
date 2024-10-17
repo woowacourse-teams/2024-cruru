@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 
-const CardContainer = styled.div`
+const CardContainer = styled.div<{ isHover: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,14 +16,16 @@ const CardContainer = styled.div`
 
   transition: all 0.2s;
 
-  &:hover {
-    scale: 1.01;
-    transform: translateY(-0.1rem);
-    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.1);
-    border: 1px solid ${({ theme }) => theme.baseColors.grayscale[500]};
-    cursor: pointer;
-    z-index: 9;
-  }
+  ${({ theme, isHover }) =>
+    isHover &&
+    css`
+      scale: 1.01;
+      transform: translateY(-0.1rem);
+      box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.1);
+      border: 1px solid ${theme.baseColors.grayscale[500]};
+      cursor: pointer;
+      z-index: 9;
+    `}
 `;
 
 const CardDetail = styled.div`
@@ -38,15 +40,25 @@ const CardHeader = styled.h3`
   margin-bottom: 0;
 `;
 
-const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: number }>`
-  width: fit-content;
+const CardEvaluationFlag = styled.div<{ averageScore: number; isScoreExists: boolean }>`
+  width: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   border-radius: 0.4rem;
   padding: 0.3rem 0.4rem;
   margin-left: -0.1rem;
 
   ${({ theme }) => theme.colors.text.block};
 
-  ${({ theme, averageScore }) => {
+  ${({ theme, averageScore, isScoreExists }) => {
+    if (!isScoreExists) {
+      return css`
+        background: ${theme.baseColors.grayscale[300]};
+        color: ${theme.colors.text.block};
+      `;
+    }
+
     if (averageScore >= 1 && averageScore < 2) {
       return css`
         color: ${theme.baseColors.redscale[500]};
@@ -77,15 +89,18 @@ const CardEvaluationFlag = styled.div<{ averageScore: number; evaluationCount: n
 
     return css`
       background: ${theme.baseColors.grayscale[300]};
-      color: ${theme.colors.text.default};
     `;
   }}
+`;
+
+const CardEvaluationFlagScore = styled.span<{ isScoreExists: boolean }>`
+  padding-right: ${({ isScoreExists }) => (isScoreExists ? '0' : '0.2rem')};
 `;
 
 const CardInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 2.4rem;
+  gap: 1.6rem;
 
   ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
@@ -103,14 +118,22 @@ const OptionButtonWrapper = styled.div`
   position: relative;
 `;
 
+const PopoverWrapper = styled.div`
+  padding: 0.8rem 0rem;
+  border-radius: 0.8rem;
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+`;
+
 const S = {
   CardContainer,
   CardDetail,
   CardHeader,
   CardEvaluationFlag,
+  CardEvaluationFlagScore,
   CardInfoContainer,
   CardInfo,
   OptionButtonWrapper,
+  PopoverWrapper,
 };
 
 export default S;
