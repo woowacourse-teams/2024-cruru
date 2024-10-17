@@ -99,7 +99,6 @@ const HeaderLogin = styled.div`
 const MainSection = styled.section`
   position: relative;
   width: 100%;
-  height: 100vh;
   padding-top: 20vh;
 
   display: flex;
@@ -111,9 +110,8 @@ const MainSection = styled.section`
 
   background: linear-gradient(90deg, #f5f5ff 0%, ${({ theme }) => theme.baseColors.grayscale[50]} 49%);
 
-  overflow: hidden;
-
   ${media('mobile')`
+    height: 100vh;
     padding: 20vh 1.6rem;
     gap: 1.6rem;
   `}
@@ -198,6 +196,7 @@ const MainImg = styled.img`
 
   ${media('mobile')`
     min-width: 40rem;
+    margin-top: 1.6rem;
   `}
 `;
 
