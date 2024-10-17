@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import type { Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
-import useSortApplicant from '@components/dashboard/useSortApplicant';
 import QUERY_KEYS from '@hooks/queryKeys';
+import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import { routes } from '@router/path';
 import { useEffect } from 'react';
 import { DOMAIN_URL } from '../../constants/constants';
