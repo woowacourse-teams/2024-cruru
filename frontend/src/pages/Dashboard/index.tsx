@@ -1,5 +1,6 @@
 /* eslint-disable no-trailing-spaces */
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 import Tab from '@components/_common/molecules/Tab';
 import ApplyManagement from '@components/applyManagement';
@@ -9,7 +10,7 @@ import PostManageBoard from '@components/postManagement/PostManageBoard';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 
 import useTab from '@components/_common/molecules/Tab/useTab';
-import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
+// import { useSearchApplicant } from '@components/dashboard/useSearchApplicant';
 import useProcess from '@hooks/useProcess';
 
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
@@ -18,14 +19,16 @@ import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
+import DashboardFunctionTab from '@components/dashboard/DashboardFunctionTab';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
 
 export default function Dashboard() {
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
+  const [searchedName, setSearchedName] = useState<string>('');
 
-  const { debouncedName } = useSearchApplicant();
+  // const { debouncedName } = useSearchApplicant();
   // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
   // const { debouncedName, name, updateName } = useSearchApplicant();
   // const { processes, title, postUrl, startDate, endDate, sortOption, updateSortOption } = useProcess({
@@ -38,6 +41,10 @@ export default function Dashboard() {
     dashboardId,
     applyFormId,
   });
+
+  const handleSearchName = (name: string) => {
+    setSearchedName(name);
+  };
 
   return (
     <S.AppContainer>
@@ -66,6 +73,7 @@ export default function Dashboard() {
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
+            <DashboardFunctionTab onSearchName={handleSearchName} />
             {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
             {/* <InputField
               type="search"
@@ -83,7 +91,7 @@ export default function Dashboard() {
                 <ProcessBoard
                   isSubTab
                   processes={processes}
-                  searchedName={debouncedName}
+                  searchedName={searchedName}
                 />
               </SpecificProcessIdProvider>
             </SpecificApplicantIdProvider>
