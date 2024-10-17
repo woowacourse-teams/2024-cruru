@@ -95,14 +95,10 @@ export default function MultiSelectToggle({ isToggled, processes, selectedApplic
           <Dropdown
             initValue="실행할 작업"
             width={120}
-            headerPadding="0.5rem 0.4rem 0.5rem 0.8rem"
             isShadow={false}
             disabled={selectedApplicantIds.length === 0}
           >
-            <DropdownItemRenderer
-              items={menuItems}
-              subContentPlacement="left"
-            />
+            <DropdownItemRenderer items={menuItems} />
           </Dropdown>
         </DropdownProvider>
       </S.DropdownWrapper>

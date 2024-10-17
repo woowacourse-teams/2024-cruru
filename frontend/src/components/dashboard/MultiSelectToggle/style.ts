@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 const Wrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  position: relative;
 `;
 
 const ToggleWrapper = styled.div<{ isVisible: boolean }>`
