@@ -18,7 +18,6 @@ import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
 import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
-import ApplicantSortDropdown from '@components/dashboard/ApplicantSortDropdown';
 import S from './style';
 
 export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
@@ -29,9 +28,13 @@ export default function Dashboard() {
   const { debouncedName } = useSearchApplicant();
   // TODO: [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다.
   // const { debouncedName, name, updateName } = useSearchApplicant();
+  // const { processes, title, postUrl, startDate, endDate, sortOption, updateSortOption } = useProcess({
+  //   dashboardId,
+  //   applyFormId,
+  // });
 
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processes, title, postUrl, startDate, endDate, sortOption, updateSortOption } = useProcess({
+  const { processes, title, postUrl, startDate, endDate } = useProcess({
     dashboardId,
     applyFormId,
   });
@@ -70,10 +73,10 @@ export default function Dashboard() {
               value={name}
               onChange={(e) => updateName(e.target.value)}
             /> */}
-            <ApplicantSortDropdown
+            {/* <ApplicantSortDropdown
               sortOption={sortOption}
               updateSortOption={updateSortOption}
-            />
+            /> */}
 
             <SpecificApplicantIdProvider>
               <SpecificProcessIdProvider>

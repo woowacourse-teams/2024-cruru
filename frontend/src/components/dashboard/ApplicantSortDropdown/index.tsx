@@ -1,41 +1,45 @@
 import Dropdown from '@components/_common/molecules/Dropdown';
-import DropdownItemRenderer, { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
-import { ProcessSortOption } from '@customTypes/process';
-import { Entries } from '@customTypes/utilTypes';
+import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
+import { ProcessSortOption, SortOption } from '@customTypes/process';
+import { SortOptionState } from '@hooks/useProcess/useSortApplicant';
 
 interface ApplicantSortDropdownProps {
-  sortOption: ProcessSortOption | undefined;
-  updateSortOption: (option?: ProcessSortOption) => void;
+  sortOption: SortOptionState;
+  updateSortOption: (option?: SortOptionState) => void;
 }
 
-type DropdownSortOptions = {
-  sortByScore: string;
-  sortByCreatedAt: string;
-};
+interface SortOptionsType {
+  id: ProcessSortOption;
+  name: string;
+  value: SortOption;
+}
 
-const sortOptions: DropdownSortOptions = {
-  sortByScore: '평점 높은 순',
-  sortByCreatedAt: '지원 날짜 순',
-};
+const sortOptions: SortOptionsType[] = [
+  { id: 'sortByScore', name: '평점 높은 순', value: 'DESC' },
+  { id: 'sortByScore', name: '평점 낮은 순', value: 'ASC' },
+  { id: 'sortByCreatedAt', name: '지원일 최신 순', value: 'DESC' },
+  { id: 'sortByCreatedAt', name: '지원일 오래된 순', value: 'ASC' },
+];
 
 export default function ApplicantSortDropdown({ sortOption, updateSortOption }: ApplicantSortDropdownProps) {
+  const selectedOption = sortOptions.find(
+    (option) => sortOption && option.id in sortOption && option.value === sortOption[option.id],
+  );
+
   return (
     <Dropdown
-      initValue={sortOption ? sortOptions[sortOption] : '정렬'}
+      initValue={selectedOption?.name || '정렬'}
       size="sm"
       isShadow={false}
-      width={100}
+      width={118}
     >
       <DropdownItemRenderer
-        items={[
-          { type: 'clickable', id: '', name: '기본 순', onClick: () => updateSortOption() },
-          ...((Object.entries(sortOptions) as Entries<DropdownSortOptions>).map(([id, name]) => ({
-            type: 'clickable',
-            id,
-            name,
-            onClick: () => updateSortOption(id),
-          })) as DropdownItemType[]),
-        ]}
+        items={sortOptions.map(({ id, name, value }) => ({
+          type: 'clickable',
+          id,
+          name,
+          onClick: () => updateSortOption({ [id]: value } as SortOptionState),
+        }))}
       />
     </Dropdown>
   );

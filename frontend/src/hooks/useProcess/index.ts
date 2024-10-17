@@ -45,7 +45,7 @@ export default function useProcess({
     queryFn: () =>
       processApis.get({
         dashboardId,
-        ...(sortOption && { [sortOption as string]: 'ASC' }),
+        ...sortOption,
         // ...(filterOption && { filterOption: filterOption as ProcessFilterOptions }),
       }),
   });

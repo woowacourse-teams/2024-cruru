@@ -1,10 +1,12 @@
-import { ProcessSortOption } from '@customTypes/process';
+import { ProcessSortOption, SortOption } from '@customTypes/process';
 import { useCallback, useState } from 'react';
 
-export default function useSortApplicant() {
-  const [sortOption, setSortOption] = useState<ProcessSortOption | undefined>();
+export type SortOptionState = Record<ProcessSortOption, SortOption> | undefined;
 
-  const updateSortOption = useCallback((option?: ProcessSortOption) => {
+export default function useSortApplicant() {
+  const [sortOption, setSortOption] = useState<SortOptionState>();
+
+  const updateSortOption = useCallback((option?: SortOptionState) => {
     setSortOption(option);
   }, []);
 
