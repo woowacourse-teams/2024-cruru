@@ -22,3 +22,24 @@ export interface ProcessResponse {
   startDate: string;
   endDate: string;
 }
+
+export type EvaluationStatus = 'ALL' | 'NOT_EVALUATION' | 'EVALUATED';
+
+type FilterParams = {
+  minScore?: string;
+  maxScore?: string;
+  evaluationStatus?: EvaluationStatus;
+};
+export type ProcessFilterOptions = FilterParams;
+
+export type SortOption = 'ASC' | 'DESC';
+export type SortParams = {
+  sortByCreatedAt?: SortOption;
+  sortByScore?: SortOption;
+};
+export type ProcessSortOption = keyof SortParams;
+
+export type ProcessQueryParams = {
+  dashboardId: string;
+} & FilterParams &
+  SortParams;
