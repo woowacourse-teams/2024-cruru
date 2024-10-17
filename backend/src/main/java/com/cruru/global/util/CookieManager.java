@@ -49,7 +49,6 @@ public class CookieManager {
         return cookieProperties.refreshTokenKey().equals(cookie.getName());
     }
 
-
     public ResponseCookie createAccessTokenCookie(String token) {
         return ResponseCookie.from(cookieProperties.accessTokenKey(), token)
                 .httpOnly(cookieProperties.httpOnly())
