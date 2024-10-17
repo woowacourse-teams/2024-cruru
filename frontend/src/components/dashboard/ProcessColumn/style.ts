@@ -2,10 +2,8 @@ import styled from '@emotion/styled';
 import { hideScrollBar } from '@styles/utils';
 
 const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
-  width: 100%;
+  width: 28rem;
   min-width: 28rem;
-  max-width: 28rem;
-
   height: 100%;
 
   padding: 1.2rem;
@@ -13,10 +11,6 @@ const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   background-color: ${({ theme, isPassedColumn = false }) =>
     isPassedColumn ? '#F9FFF9' : theme.baseColors.grayscale[50]};
-
-  overflow-y: scroll;
-  overflow-x: visible;
-  ${hideScrollBar};
 `;
 
 const Header = styled.header`
@@ -38,11 +32,18 @@ const Title = styled.h2`
 
 const ApplicantList = styled.ul`
   width: 100%;
+  height: 100%;
+  max-height: 85%;
+
   display: flex;
   flex-direction: column;
   padding: 0.4rem;
 
   gap: 1.2rem;
+
+  overflow-y: scroll;
+  overflow-x: visible;
+  ${hideScrollBar};
 `;
 
 const S = {

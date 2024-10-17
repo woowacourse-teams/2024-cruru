@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Item = styled.div<{ isHighlight: boolean; size: 'sm' | 'md'; hasSeparate: boolean }>`
@@ -45,17 +45,24 @@ const SubItemBoundary = styled.div<{ width: number; placement: 'right' | 'left' 
   padding: 0.4rem;
 
   top: -0.36rem;
-  right: ${({ width, placement }) => (placement === 'left' ? `${width - 4}px` : `-${width + 4}px`)};
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${({ placement, width }) => {
+    if (placement === 'left') {
+      return css`
+        right: ${width - 4}px;
+      `;
+    }
+    if (placement === 'right') {
+      return css`
+        left: ${width - 4}px;
+      `;
+    }
+  }}
 
   animation: ${fadeIn} 0.3s ease-in-out;
 `;
 
-const SubItemContainer = styled.div<{ size: 'sm' | 'md'; width: number }>`
-  width: ${({ width }) => `${width}px`};
+const SubItemContainer = styled.div<{ size: 'sm' | 'md' }>`
+  max-width: 16rem;
   padding: ${({ size }) => (size === 'md' ? '16px 0px' : '8px 0px')};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
