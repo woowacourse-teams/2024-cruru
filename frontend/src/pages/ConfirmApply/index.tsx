@@ -28,7 +28,11 @@ export default function ConfirmApply() {
 
         <S.PostTitleContainer>
           <S.Title>{`"${state.title}"`}</S.Title>
-          <S.Information>모집 공고에 지원이 완료되었습니다.</S.Information>
+          <S.Information>
+            제출이 완료되었습니다.
+            <br />
+            좋은 결과 얻으시길 기원합니다.
+          </S.Information>
         </S.PostTitleContainer>
 
         <S.ButtonContainer>
@@ -37,7 +41,7 @@ export default function ConfirmApply() {
             size="fillContainer"
             onClick={navigateToPost}
           >
-            공고 화면으로 돌아가기
+            모집 공고로 돌아가기
           </Button>
         </S.ButtonContainer>
       </S.Wrapper>
