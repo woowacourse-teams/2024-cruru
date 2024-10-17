@@ -121,14 +121,16 @@ class ProcessControllerTest extends ControllerTest {
                 ProcessFixture.applyType(dashboard)
         ));
         applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
+        String sortByCreatedAt = "DESC";
+        String sortByScore = null;
         String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
                         + "&evaluationStatus=%s&sortByCreatedAt=%s&sortByScore=%s",
                 dashboard.getId(),
                 DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+                sortByCreatedAt,
+                sortByScore
         );
 
         // when&then
