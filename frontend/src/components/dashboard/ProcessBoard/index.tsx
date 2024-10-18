@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import type { Process } from '@customTypes/process';
+import type { SimpleProcess } from '@hooks/useProcess';
 
 import ApplicantModal from '@components/ApplicantModal';
+import DashboardFunctionTab from '../DashboardFunctionTab';
 import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
+
 import S from './style';
 
 interface ProcessBoardProps {
@@ -10,17 +14,27 @@ interface ProcessBoardProps {
   // eslint-disable-next-line react/no-unused-prop-types
   isSubTab?: boolean;
   showRejectedApplicant?: boolean;
-  searchedName?: string;
 }
 
-export default function ProcessBoard({
-  processes,
-  showRejectedApplicant = false,
-  searchedName = '',
-}: ProcessBoardProps) {
+export default function ProcessBoard({ processes, showRejectedApplicant = false }: ProcessBoardProps) {
+  const [searchedName, setSearchedName] = useState<string>('');
+
+  const processList: SimpleProcess[] = processes.map((process) => ({
+    processId: process.processId,
+    processName: process.name,
+  }));
+
+  const handleSearchName = (name: string) => {
+    setSearchedName(name);
+  };
+
   return (
     <S.Container>
-      {/* TODO: isSubTab을 가져와서 SubTab을 렌더링 합니다. */}
+      <DashboardFunctionTab
+        processList={processList}
+        onSearchName={(name) => handleSearchName(name)}
+      />
+
       <S.ColumnWrapper>
         {processes.map((process, index) => (
           <ProcessColumn

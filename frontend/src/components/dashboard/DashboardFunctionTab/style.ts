@@ -7,7 +7,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
 
   height: 4.8rem;
-  margin: -0.4rem 0 1.6rem;
 `;
 
 const FunctionsContainer = styled.section`

@@ -1,20 +1,20 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import useProcess from '@hooks/useProcess';
+import useProcess, { SimpleProcess } from '@hooks/useProcess';
 
 import InputField from '@components/_common/molecules/InputField';
-import ApplicantSortDropdown from '../ApplicantSortDropdown';
-
 import { useSearchApplicant } from '../useSearchApplicant';
+import ApplicantSortDropdown from '../ApplicantSortDropdown';
 
 import S from './style';
 
 interface DashboardFunctionTabProps {
+  processList: SimpleProcess[];
   onSearchName: (name: string) => void;
 }
 
-export default function DashboardFunctionTab({ onSearchName }: DashboardFunctionTabProps) {
+export default function DashboardFunctionTab({ processList, onSearchName }: DashboardFunctionTabProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
   const { debouncedName, name, updateName } = useSearchApplicant();
@@ -25,6 +25,8 @@ export default function DashboardFunctionTab({ onSearchName }: DashboardFunction
   useEffect(() => {
     onSearchName(debouncedName);
   }, [onSearchName, debouncedName]);
+
+  console.log(processList);
 
   return (
     <S.Wrapper>
