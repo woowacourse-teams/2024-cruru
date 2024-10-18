@@ -4,7 +4,7 @@ import S from './style';
 interface Option {
   optionLabel: string;
   isChecked: boolean;
-  onToggle: () => void;
+  onToggle: (isChecked: boolean) => void;
   name?: string;
 }
 
