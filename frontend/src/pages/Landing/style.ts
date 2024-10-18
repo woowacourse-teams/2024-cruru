@@ -419,6 +419,10 @@ const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
 
   ${media('mobile')`
     padding: 0 1.6rem;
+    height: fit-content;
+    text-align: center;
+    gap: 2.4rem;
+    margin-bottom: 4.8rem;
   `}
 `;
 
@@ -429,6 +433,10 @@ const FeatureTitle = styled.h2`
   line-height: 1.2;
 
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
+
+  ${media('mobile')`
+    font-size: 3rem;
+  `}
 `;
 
 const FeatureSubtitle = styled.h3<{ color: 'blue' | 'purple' | 'gray' }>`
@@ -453,12 +461,21 @@ const FeatureDescription = styled.p`
   line-height: 1.5;
 
   color: ${({ theme }) => theme.colors.text.default};
+
+  ${media('mobile')`
+    font-size: 1.4rem;
+  `}
 `;
 
 const FeatureImg = styled.img`
   width: 100%;
   max-width: 55rem;
   min-width: 40rem;
+
+  ${media('mobile')`
+    width: 90%;
+    min-width: auto;
+  `}
 `;
 
 // Footer
