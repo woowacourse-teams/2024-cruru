@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import useProcess, { SimpleProcess } from '@hooks/useProcess';
 
 import InputField from '@components/_common/molecules/InputField';
+import { useMultiApplicant } from '@contexts/MultiApplicantContext';
 import { useSearchApplicant } from '../useSearchApplicant';
 import ApplicantSortDropdown from '../ApplicantSortDropdown';
+import MultiSelectToggle from '../MultiSelectToggle';
 
 import S from './style';
 
@@ -18,6 +20,7 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
   const { debouncedName, name, updateName } = useSearchApplicant();
+  const { applicants: selectedApplicantIds, isMultiType } = useMultiApplicant();
   const {
     applicantSortDropdownProps: { sortOption, updateSortOption },
   } = useProcess({ dashboardId, applyFormId });
@@ -25,8 +28,6 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
   useEffect(() => {
     onSearchName(debouncedName);
   }, [onSearchName, debouncedName]);
-
-  console.log(processList);
 
   return (
     <S.Wrapper>
@@ -40,6 +41,14 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
         <ApplicantSortDropdown
           sortOption={sortOption}
           updateSortOption={updateSortOption}
+        />
+      </S.FunctionsContainer>
+
+      <S.FunctionsContainer>
+        <MultiSelectToggle
+          isToggled={isMultiType}
+          processes={processList}
+          selectedApplicantIds={selectedApplicantIds}
         />
       </S.FunctionsContainer>
     </S.Wrapper>
