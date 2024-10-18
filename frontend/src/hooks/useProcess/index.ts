@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process, ProcessResponse } from '@customTypes/process';
+import type { EvaluationStatus, Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
@@ -8,7 +8,7 @@ import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import { routes } from '@router/path';
 import { useEffect } from 'react';
 import { DOMAIN_URL } from '../../constants/constants';
-import useFilterApplicant from './useFilterApplicant';
+import useFilterApplicant, { RatingFilterType } from './useFilterApplicant';
 
 export interface SimpleProcess {
   processName: string;
@@ -33,6 +33,12 @@ interface UseProcessReturn {
   ratingFilterProps: ReturnType<typeof useFilterApplicant>;
 }
 
+const EVALUATION_STATUS: Record<RatingFilterType, EvaluationStatus> = {
+  All: 'ALL',
+  Pending: 'NOT_EVALUATED',
+  InProgress: 'EVALUATED',
+};
+
 export default function useProcess({ dashboardId, applyFormId }: UseProcessProps): UseProcessReturn {
   const applicantSortDropdownProps = useSortApplicant();
   const ratingFilterProps = useFilterApplicant();
@@ -49,7 +55,7 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
         ...applicantSortDropdownProps.sortOption,
         minScore: ratingFilterProps.ratingRange.min.toString(),
         maxScore: ratingFilterProps.ratingRange.max.toString(),
-        evaluationStatus: ratingFilterProps.ratingFilterType === 'All' ? 'ALL' : 'EVALUATED',
+        evaluationStatus: EVALUATION_STATUS[ratingFilterProps.ratingFilterType],
       }),
   });
 

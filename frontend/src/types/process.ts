@@ -23,7 +23,7 @@ export interface ProcessResponse {
   endDate: string;
 }
 
-export type EvaluationStatus = 'ALL' | 'NOT_EVALUATION' | 'EVALUATED';
+export type EvaluationStatus = 'ALL' | 'NOT_EVALUATED' | 'EVALUATED';
 
 export type FilterParams = {
   minScore?: string;
