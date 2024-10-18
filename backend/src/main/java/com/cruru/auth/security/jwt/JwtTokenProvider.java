@@ -5,8 +5,8 @@ import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.Map;
@@ -34,23 +34,29 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean isSignatureValid(String token) throws IllegalTokenException {
+    public boolean isSignatureValid(String token) {
         try {
             extractClaims(token);
             return true;
         } catch (ExpiredJwtException e) {
             return true;
-        } catch (Exception e) {
+        } catch (IllegalTokenException e) {
             return false;
         }
     }
 
     @Override
     public boolean isTokenExpired(String token) throws IllegalTokenException {
-        Claims claims = extractClaims(token);
-        Date expiration = claims.getExpiration();
-        Date now = new Date();
-        return !expiration.after(now);
+        try {
+            Claims claims = extractClaims(token);
+            Date expiration = claims.getExpiration();
+            Date now = new Date();
+            return !expiration.after(now);
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (IllegalTokenException e) {
+            return false;
+        }
     }
 
     private Claims extractClaims(String token) {
@@ -59,9 +65,7 @@ public class JwtTokenProvider implements TokenProvider {
                     .setSigningKey(tokenProperties.secretKey())
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (MalformedJwtException | IllegalArgumentException e) {
             throw new IllegalTokenException();
         }
     }

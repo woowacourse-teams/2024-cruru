@@ -169,6 +169,26 @@ class AuthServiceTest extends ServiceTest {
         assertThat(expired).isTrue();
     }
 
+    @DisplayName("만료된 토큰의 클레임을 추출한다.")
+    @Test
+    void getEmail_TokenExpired() {
+        // given
+        String token = generateExpiredToken();
+
+        // when
+        String email = authService.extractEmail(token);
+        String role = authService.extractMemberRole(token);
+
+        // then
+        String expectedRole = (String) claims.get(ROLE_CLAIM);
+        String expectedEmail = (String) claims.get(EMAIL_CLAIM);
+
+        assertAll(
+                () -> assertThat(email).isEqualTo(expectedEmail),
+                () -> assertThat(role).isEqualTo(expectedRole)
+        );
+    }
+
     private String generateExpiredToken() {
         Date now = new Date();
         Date validity = new Date(now.getTime() - 3600000); // 1시간 전 만료

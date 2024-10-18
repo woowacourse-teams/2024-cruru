@@ -12,6 +12,8 @@ import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -118,7 +120,13 @@ public class AuthService {
     }
 
     private String extractClaim(String token, String key) {
-        String claim = tokenProvider.extractClaim(token, key);
+        String claim;
+        try {
+            claim = tokenProvider.extractClaim(token, key);
+        } catch (ExpiredJwtException e) {
+            Claims claims = e.getClaims();
+            return claims.get(key, String.class);
+        }
         if (claim == null) {
             throw new IllegalTokenException();
         }
