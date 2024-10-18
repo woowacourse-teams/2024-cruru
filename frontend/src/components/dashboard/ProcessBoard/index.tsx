@@ -16,7 +16,7 @@ interface ProcessBoardProps {
   showRejectedApplicant?: boolean;
 }
 
-export default function ProcessBoard({ processes, showRejectedApplicant = false }: ProcessBoardProps) {
+export default function ProcessBoard({ processes, isSubTab, showRejectedApplicant = false }: ProcessBoardProps) {
   const [searchedName, setSearchedName] = useState<string>('');
 
   const processList: SimpleProcess[] = processes.map((process) => ({
@@ -30,10 +30,12 @@ export default function ProcessBoard({ processes, showRejectedApplicant = false 
 
   return (
     <S.Container>
-      <DashboardFunctionTab
-        processList={processList}
-        onSearchName={(name) => handleSearchName(name)}
-      />
+      {isSubTab && (
+        <DashboardFunctionTab
+          processList={processList}
+          onSearchName={(name) => handleSearchName(name)}
+        />
+      )}
 
       <S.ColumnWrapper>
         {processes.map((process, index) => (
