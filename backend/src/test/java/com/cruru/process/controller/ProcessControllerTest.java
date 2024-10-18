@@ -121,14 +121,16 @@ class ProcessControllerTest extends ControllerTest {
                 ProcessFixture.applyType(dashboard)
         ));
         applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
+        String sortByCreatedAt = "DESC";
+        String sortByScore = null;
         String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
                         + "&evaluationStatus=%s&sortByCreatedAt=%s&sortByScore=%s",
                 dashboard.getId(),
                 DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+                sortByCreatedAt,
+                sortByScore
         );
 
         // when&then
@@ -142,9 +144,9 @@ class ProcessControllerTest extends ControllerTest {
                                 parameterWithName("minScore").description("지원자 최소 평균 점수: 0.00(default) ~ 5.00, required=false").optional(),
                                 parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default), required=false").optional(),
                                 parameterWithName("evaluationStatus").description(
-                                        "지원자 평가 유무: ALL(default), NOT_EVALUATION, EVALUATED, required=false").optional(),
-                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: DESC(default), ASC, required=false").optional(),
-                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: DESC(default), ASC, required=false").optional()
+                                        "지원자 평가 유무: ALL(default), NOT_EVALUATED, EVALUATED, required=false").optional(),
+                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: DESC, ASC, required=false").optional(),
+                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: DESC, ASC, required=false").optional()
                         ),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
