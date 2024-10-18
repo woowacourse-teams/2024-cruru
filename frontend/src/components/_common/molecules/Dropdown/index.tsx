@@ -52,6 +52,7 @@ function DropdownBase({ width, size = 'sm', isShadow = true, disabled = false, c
       disabled={disabled}
     >
       <S.Header
+        className="dropdown-header"
         onClick={toggleDropdown}
         size={size}
         isOpen={isOpen}

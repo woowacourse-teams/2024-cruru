@@ -90,7 +90,10 @@ export default function MultiSelectToggle({ isToggled, processes, selectedApplic
         />
       </S.ToggleWrapper>
 
-      <S.DropdownWrapper isVisible={isDropdownVisible}>
+      <S.DropdownWrapper
+        isVisible={isDropdownVisible}
+        isDisabled={selectedApplicantIds.length === 0}
+      >
         <DropdownProvider>
           <Dropdown
             initValue="실행할 작업"

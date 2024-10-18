@@ -18,7 +18,7 @@ const ToggleLabel = styled.span`
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
-const DropdownWrapper = styled.div<{ isVisible: boolean }>`
+const DropdownWrapper = styled.div<{ isVisible: boolean; isDisabled: boolean }>`
   position: absolute;
 
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0.01)};
@@ -28,6 +28,12 @@ const DropdownWrapper = styled.div<{ isVisible: boolean }>`
     visibility 0.3s ease-in-out;
 
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
+
+  & .dropdown-header {
+    padding: 4px 4px 4px 8px;
+    color: ${({ theme, isDisabled }) => (isDisabled ? 'inherit' : theme.baseColors.grayscale[900])};
+    background-color: ${({ theme, isDisabled }) => (isDisabled ? 'inherit' : theme.baseColors.grayscale[50])};
+  }
 `;
 
 const S = {

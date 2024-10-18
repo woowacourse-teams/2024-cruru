@@ -2,17 +2,24 @@
 import { useState } from 'react';
 import RadioLabelField from '@components/_common/molecules/RadioLabelField';
 import Slider from '@components/_common/atoms/Slider';
-import { INIT_MAX, INIT_MIN, INIT_TYPE, useRatingFilter } from '@contexts/RatingFilterContext';
-import type { RatingFilterType } from '@contexts/RatingFilterContext';
 import Button from '@components/_common/atoms/Button';
 import { usePopover } from '@contexts/PopoverContext';
 import { HiStar } from 'react-icons/hi';
+import useFilterApplicant, {
+  INIT_MAX,
+  INIT_MIN,
+  INIT_TYPE,
+  RatingFilterType,
+} from '@hooks/useProcess/useFilterApplicant';
 import S from './style';
 
-export default function RatingFilter() {
-  const { ratingFilterType, ratingRange, setRatingFilterType, setRatingMaxRange, setRatingMinRange } =
-    useRatingFilter();
-
+export default function RatingFilter({
+  ratingFilterType,
+  ratingRange,
+  setRatingFilterType,
+  setRatingMaxRange,
+  setRatingMinRange,
+}: ReturnType<typeof useFilterApplicant>) {
   const [currentRatingFilterType, setCurrentRatingFilterType] = useState<typeof ratingFilterType>(ratingFilterType);
   const [currentRatingRangeMin, setCurrentRatingRangeMin] = useState<number>(ratingRange.min);
   const [currentRatingRangeMax, setCurrentRatingRangeMax] = useState<number>(ratingRange.max);
@@ -67,6 +74,12 @@ export default function RatingFilter() {
     setCurrentRatingFilterType(INIT_TYPE);
     setCurrentRatingRangeMin(INIT_MIN);
     setCurrentRatingRangeMax(INIT_MAX);
+
+    setRatingFilterType(INIT_TYPE);
+    setRatingMinRange(INIT_MIN);
+    setRatingMaxRange(INIT_MAX);
+
+    close();
   };
 
   return (
