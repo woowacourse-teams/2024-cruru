@@ -42,12 +42,14 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
   return (
     <S.Wrapper>
       <S.FunctionsContainer>
-        <InputField
-          type="search"
-          placeholder="지원자 이름 검색"
-          value={name}
-          onChange={(e) => updateName(e.target.value)}
-        />
+        <S.SearchInputContainer isValue={name.length > 0}>
+          <InputField
+            type="search"
+            placeholder="지원자 이름 검색"
+            value={name}
+            onChange={(e) => updateName(e.target.value)}
+          />
+        </S.SearchInputContainer>
 
         <ApplicantSortDropdown
           sortOption={sortOption}

@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
+import SearchIcon from '@assets/images/search.svg';
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,6 +18,28 @@ const FunctionsContainer = styled.section`
   gap: 1.2rem;
 
   width: fit-content;
+`;
+
+const SearchInputContainer = styled.div<{ isValue: boolean }>`
+  width: 18rem;
+
+  & input {
+    ${({ theme }) => theme.typography.common.block};
+    padding: 0.8rem 1.6rem;
+    margin-bottom: inherit;
+    background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+    ${({ isValue }) => {
+      if (!isValue) {
+        return css`
+          background-image: url(${SearchIcon});
+          background-repeat: no-repeat;
+          background-size: 1.4rem;
+          background-position: bottom 50% right 1.6rem;
+        `;
+      }
+    }};
+  }
 `;
 
 const FilterWrapper = styled.div`
@@ -44,6 +68,9 @@ const FilterContainer = styled.div`
 const S = {
   Wrapper,
   FunctionsContainer,
+
+  SearchInputContainer,
+
   FilterButtonContent,
   FilterWrapper,
   FilterContainer,
