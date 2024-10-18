@@ -5,8 +5,8 @@ import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.Map;
@@ -20,36 +20,52 @@ public class JwtTokenProvider implements TokenProvider {
     private final TokenProperties tokenProperties;
 
     @Override
-    public String createToken(Map<String, Object> claims) {
+    public String createToken(Map<String, Object> claims, Long expireLength) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + tokenProperties.expireLength());
+        Date validity = new Date(now.getTime() + expireLength);
 
         return Jwts.builder()
                 .addClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.valueOf(tokenProperties.algorithm()),
-                        tokenProperties.secretKey().getBytes())
+                        tokenProperties.secretKey())
                 .compact();
     }
 
     @Override
-    public boolean isAlive(String token) throws IllegalTokenException {
-        Claims claims = extractClaims(token);
-        Date expiration = claims.getExpiration();
-        Date now = new Date();
-        return expiration.after(now);
+    public boolean isSignatureValid(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (IllegalTokenException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isTokenExpired(String token) throws IllegalTokenException {
+        try {
+            Claims claims = extractClaims(token);
+            Date expiration = claims.getExpiration();
+            Date now = new Date();
+            return !expiration.after(now);
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (IllegalTokenException e) {
+            return false;
+        }
     }
 
     private Claims extractClaims(String token) {
         try {
             return Jwts.parser()
-                    .setSigningKey(tokenProperties.secretKey().getBytes())
+                    .setSigningKey(tokenProperties.secretKey())
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (ExpiredJwtException e) {
-            return e.getClaims();
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (MalformedJwtException | IllegalArgumentException e) {
             throw new IllegalTokenException();
         }
     }
