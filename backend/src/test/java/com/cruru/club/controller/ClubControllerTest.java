@@ -36,11 +36,11 @@ class ClubControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document("club/create/",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("memberId").description("동아리를 생성할 사용자의 id")),
                         requestFields(fieldWithPath("name").description("생성할 동아리의 이름"))
                 ))
@@ -59,11 +59,11 @@ class ClubControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document("club/create-fail/member-not-found/",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("memberId").description("존재하지 않는 사용자의 id")),
                         requestFields(fieldWithPath("name").description("생성할 동아리의 이름"))
                 ))
@@ -82,11 +82,11 @@ class ClubControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document("club/create-fail/invalid-name/",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("memberId").description("동아리를 생성할 사용자의 id")),
                         requestFields(fieldWithPath("name").description("조건에 맞지 않는 동아리의 이름"))
                 ))

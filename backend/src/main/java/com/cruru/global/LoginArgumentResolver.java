@@ -34,7 +34,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     ) throws UnauthorizedException {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
-        String token = cookieManager.extractToken(request);
+        String token = cookieManager.extractAccessToken(request);
         String emailPayload = authService.extractEmail(token);
         MemberRole memberRolePayload = MemberRole.valueOf(authService.extractMemberRole(token));
 

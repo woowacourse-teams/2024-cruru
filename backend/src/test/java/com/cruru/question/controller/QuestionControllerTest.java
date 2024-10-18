@@ -68,11 +68,11 @@ class QuestionControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(questionUpdateRequests)
                 .filter(document("question/update",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("applyformId").description("질문을 변경할 지원폼의 id")),
                         requestFields(fieldWithPath("questions").description("변경할 질문들"))
                                 .andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
@@ -103,11 +103,11 @@ class QuestionControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(questionUpdateRequests)
                 .filter(document("question/update",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("applyformId").description("존재하지 않는 지원폼의 id")),
                         requestFields(fieldWithPath("questions").description("변경할 질문들"))
                                 .andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)

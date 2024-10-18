@@ -2,6 +2,7 @@ package com.cruru.auth.controller;
 
 import com.cruru.auth.controller.request.LoginRequest;
 import com.cruru.auth.controller.response.LoginResponse;
+import com.cruru.auth.controller.response.TokenResponse;
 import com.cruru.auth.facade.AuthFacade;
 import com.cruru.club.facade.ClubFacade;
 import com.cruru.global.util.CookieManager;
@@ -26,19 +27,23 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-        String token = authFacade.login(request);
+        TokenResponse tokenResponse = authFacade.login(request);
         long clubId = clubFacade.findByMemberEmail(request.email());
-        ResponseCookie cookie = cookieManager.createTokenCookie(token);
+        ResponseCookie accessTokenCookie = cookieManager.createAccessTokenCookie(tokenResponse.accessToken());
+        ResponseCookie refreshTokenCookie = cookieManager.createRefreshTokenCookie(tokenResponse.refreshToken());
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(new LoginResponse(clubId));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-        ResponseCookie cookie = cookieManager.clearTokenCookie();
+        ResponseCookie accessTokenCookie = cookieManager.clearAccessTokenCookie();
+        ResponseCookie refreshTokenCookie = cookieManager.clearRefreshTokenCookie();
         return ResponseEntity.noContent()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, accessTokenCookie.toString())
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .build();
     }
 }

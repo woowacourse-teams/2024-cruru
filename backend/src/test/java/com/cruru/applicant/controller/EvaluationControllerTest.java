@@ -77,12 +77,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/create",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
                                 parameterWithName("applicantId").description("지원자의 id")
@@ -112,12 +112,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/create-fail/applicant-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
                                 parameterWithName("applicantId").description("존재하지 않는 지원자의 id")
@@ -147,12 +147,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/create-fail/process-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("존재하지 않는 프로세스의 id"),
                                 parameterWithName("applicantId").description("지원자의 id")
@@ -181,12 +181,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/create-fail/invalid-score",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
                                 parameterWithName("applicantId").description("지원자의 id")
@@ -209,11 +209,11 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .filter(document(
                         "evaluation/read",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
                                 parameterWithName("applicantId").description("지원자의 id")
@@ -239,11 +239,11 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .filter(document(
                         "evaluation/read-fail/applicant-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
                                 parameterWithName("applicantId").description("지원자의 id")
@@ -266,11 +266,11 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .filter(document(
                         "evaluation/read-fail/process-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("processId").description("프로세스의 id"),
                                 parameterWithName("applicantId").description("지원자의 id")
@@ -291,12 +291,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/update",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("평가의 id")),
                         requestFields(
                                 fieldWithPath("score").description("평가 점수"),
@@ -317,12 +317,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/update-fail/evaluation-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("존재하지 않는 평가의 id")),
                         requestFields(
                                 fieldWithPath("score").description("평가 점수"),
@@ -344,12 +344,12 @@ class EvaluationControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .filter(document(
                         "evaluation/update-fail/invalid-score",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("평가의 id")),
                         requestFields(
                                 fieldWithPath("score").description("적절하지 않은 평가 점수"),

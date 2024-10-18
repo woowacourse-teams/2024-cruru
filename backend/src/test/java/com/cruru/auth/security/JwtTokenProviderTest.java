@@ -42,10 +42,13 @@ class JwtTokenProviderTest {
     @DisplayName("토큰이 정상적으로 생성되는지 확인한다")
     @Test
     void create() {
-        // given&when
-        String token = jwtTokenProvider.createToken(claims);
+        // given
+        long expireLength = 1209600000;
+
+        // when
+        String token = jwtTokenProvider.createToken(claims, expireLength);
         Claims extractedClaims = Jwts.parser()
-                .setSigningKey(TEST_SECRET_KEY.getBytes())
+                .setSigningKey(TEST_SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -64,7 +67,8 @@ class JwtTokenProviderTest {
     @Test
     void extractEmailAndRole() {
         // given
-        String token = jwtTokenProvider.createToken(claims);
+        long expireLength = 1209600000;
+        String token = jwtTokenProvider.createToken(claims, expireLength);
 
         // when
         String email = jwtTokenProvider.extractClaim(token, EMAIL_CLAIM);
@@ -82,12 +86,12 @@ class JwtTokenProviderTest {
 
     @DisplayName("만료된 토큰을 검증한다.")
     @Test
-    void isAlive() {
+    void isTokenExpired() {
         // given
         String expiredToken = generateExpiredToken();
 
         // when&then
-        assertThat(jwtTokenProvider.isAlive(expiredToken)).isFalse();
+        assertThat(jwtTokenProvider.isTokenExpired(expiredToken)).isTrue();
     }
 
     private String generateExpiredToken() {
@@ -98,7 +102,7 @@ class JwtTokenProviderTest {
                 .addClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY.getBytes())
+                .signWith(SignatureAlgorithm.HS256, TEST_SECRET_KEY)
                 .compact();
     }
 
@@ -106,9 +110,10 @@ class JwtTokenProviderTest {
     @Test
     void isAlive_notValid() {
         // given
-        String notExpiredToken = jwtTokenProvider.createToken(claims);
+        long expireLength = 1209600000;
+        String notExpiredToken = jwtTokenProvider.createToken(claims, expireLength);
 
         // when&then
-        assertThat(jwtTokenProvider.isAlive(notExpiredToken)).isTrue();
+        assertThat(jwtTokenProvider.isTokenExpired(notExpiredToken)).isFalse();
     }
 }
