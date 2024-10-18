@@ -37,6 +37,8 @@ const Title = styled.h1`
 const Information = styled.p`
   ${({ theme }) => theme.typography.common.large};
   color: ${({ theme }) => theme.baseColors.grayscale[700]};
+  line-height: 140%;
+  text-align: center;
 `;
 
 const ButtonContainer = styled.div`
