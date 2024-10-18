@@ -40,14 +40,30 @@ const fadeInUp = keyframes`
   }
 `;
 
-const getBubblePosition = (index: number) => {
-  const positions = [
+const getBubblePosition = (index: number, isMobile?: boolean) => {
+  const desktopPositions = [
     { top: '10%', right: '10%' },
     { top: '10%', left: '10%' },
     { top: '40%', right: '5%' },
     { top: '40%', left: '5%' },
   ];
-  return positions[index] || positions[0];
+
+  const mobilePositions = [
+    { right: '5%', top: '10%' },
+    { left: '5%', top: '10%' },
+    { right: '0', top: '40%' },
+    { left: '0', top: '40%' },
+  ];
+
+  const position = isMobile
+    ? mobilePositions[index] || mobilePositions[0]
+    : desktopPositions[index] || desktopPositions[0];
+
+  return css`
+    ${position.top ? `top: ${position.top};` : ''}
+    ${position.right ? `right: ${position.right};` : ''}
+    ${position.left ? `left: ${position.left};` : ''}
+  `;
 };
 
 const Container = styled.div`
@@ -245,6 +261,10 @@ const PainPointSection = styled.section`
 
 const MessageImg = styled.img`
   width: 20%;
+
+  ${media('mobile')`
+    display: none;
+  `}
 `;
 
 const PersonImgWrapper = styled.div`
@@ -254,7 +274,13 @@ const PersonImgWrapper = styled.div`
   height: 80%;
   max-width: 85rem;
   max-height: 43rem;
+
+  ${media('mobile')`
+    display: flex;
+    justify-content: center;
+  `}
 `;
+
 const SpeechBubbleContainer = styled.div`
   position: relative;
   width: 100%;
@@ -266,7 +292,7 @@ const SpeechBubble = styled.div<{ index: number }>`
   ${({ theme }) => theme.typography.common.large};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   border-radius: 1rem;
-  max-width: 29rem;
+  max-width: 25rem;
   padding: 0.8rem;
 
   ${dropdownShadow}
@@ -276,12 +302,28 @@ const SpeechBubble = styled.div<{ index: number }>`
   ${({ index }) => getBubblePosition(index)};
 
   ${({ index }) => (index % 2 === 1 ? 'border-bottom-right-radius: 0;' : 'border-bottom-left-radius: 0;')};
+
+  ${({ index }) =>
+    media('mobile')(`
+    max-width: 40%;
+    font-size: 1.4rem;
+    ${index === 0 ? 'right: 5%;' : ''}
+    ${index === 1 ? 'left: 5%;' : ''}
+    ${index === 2 ? 'right: 0;' : ''}
+    ${index === 3 ? 'left: 0;' : ''}
+  `)}
 `;
 
 const PersonImg = styled.img`
   position: absolute;
   top: 25%;
   left: 25%;
+
+  ${media('mobile')`
+    width: 80%;
+    top: 20%;
+    left: 10%;
+  `}
 `;
 
 // Product Intro Section
