@@ -6,6 +6,7 @@ import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
 import com.cruru.auth.domain.repository.RefreshTokenRepository;
 import com.cruru.auth.exception.IllegalTokenException;
+import com.cruru.auth.exception.LoginExpiredException;
 import com.cruru.auth.security.PasswordValidator;
 import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
@@ -64,8 +65,13 @@ public class AuthService {
         if (!isTokenSignatureValid(refreshToken)) {
             throw new IllegalTokenException();
         }
+
         if (!refreshTokenRepository.existsByToken(refreshToken)) {
             throw new IllegalTokenException();
+        }
+
+        if (isTokenExpired(refreshToken)) {
+            throw new LoginExpiredException();
         }
     }
 
