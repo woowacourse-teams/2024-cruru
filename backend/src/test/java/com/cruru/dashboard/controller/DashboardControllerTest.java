@@ -172,11 +172,11 @@ class DashboardControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .body(request)
                 .filter(document(
                         "dashboard/create",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         requestFields(
                                 fieldWithPath("title").description("공고 제목"),
@@ -213,11 +213,11 @@ class DashboardControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .body(request)
                 .filter(document(
                         "dashboard/create-fail/invalid-question",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         requestFields(
                                 fieldWithPath("title").description("공고 제목"),
@@ -252,11 +252,11 @@ class DashboardControllerTest extends ControllerTest {
         // when&then
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .body(request)
                 .filter(document(
                         "dashboard/create-fail/club-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("존재하지 않는 동아리 id")),
                         requestFields(
                                 fieldWithPath("title").description("공고 제목"),
@@ -281,10 +281,10 @@ class DashboardControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "dashboard/read",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("clubId").description("동아리의 id")),
                         responseFields(
                                 fieldWithPath("clubName").description("동아리명"),
@@ -311,10 +311,10 @@ class DashboardControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "dashboard/delete",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("dashboardId").description("삭제할 대시보드의 id"))
                 ))
                 .when().delete("/v1/dashboards/{dashboardId}", dashboard.getId())
@@ -329,10 +329,10 @@ class DashboardControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "dashboard/delete/not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("dashboardId").description("존재하지 않는 대시보드의 id"))
                 ))
                 .when().delete("/v1/dashboards/{dashboardId}", invalidId)

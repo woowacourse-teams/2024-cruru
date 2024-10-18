@@ -11,6 +11,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.auth.controller.request.LoginRequest;
+import com.cruru.auth.domain.Token;
+import com.cruru.auth.service.AuthService;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -60,7 +62,10 @@ class AuthControllerTest extends ControllerTest {
                         ),
                         responseFields(fieldWithPath("clubId").description("동아리의 id")),
                         responseHeaders(headerWithName("Set-Cookie").description("인증 쿠키 설정")),
-                        responseCookies(cookieWithName("token").description("사용자 토큰"))
+                        responseCookies(
+                                cookieWithName("accessToken").description("Access Token"),
+                                cookieWithName("refreshToken").description("Refresh Token")
+                        )
                 ))
                 .when().post("/v1/auth/login")
                 .then().log().all().statusCode(200);
@@ -111,10 +116,10 @@ class AuthControllerTest extends ControllerTest {
     void logout() {
         // given&when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .filter(document("auth/logout",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         responseHeaders(headerWithName("Set-Cookie").description("인증 해제 쿠키 설정"))
                 ))
                 .when().post("/v1/auth/logout")

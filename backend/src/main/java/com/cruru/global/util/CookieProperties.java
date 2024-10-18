@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("cookie")
 public record CookieProperties(
         String accessTokenKey,
+        String refreshTokenKey,
         boolean httpOnly,
         boolean secure,
         String domain,

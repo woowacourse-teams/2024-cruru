@@ -70,7 +70,7 @@ class AuthValidationAspectTest extends ControllerTest {
     @BeforeEach
     void setUp() {
         Member unauthorizedMember = memberRepository.save(MemberFixture.RUSH);
-        unauthorizedToken = authService.createToken(unauthorizedMember);
+        unauthorizedToken = authService.createAccessToken(unauthorizedMember).getToken();
         clubRepository.save(ClubFixture.create(unauthorizedMember));
         dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
@@ -94,7 +94,7 @@ class AuthValidationAspectTest extends ControllerTest {
     @Test
     void testReadByRequestParam_Success() {
         RestAssured.given().log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .when().get("/auth-test/test1?applyformId=" + applyForm.getId())
                 .then().log().all().statusCode(200);
@@ -105,7 +105,7 @@ class AuthValidationAspectTest extends ControllerTest {
     void testReadByRequestParam_Forbidden() {
 
         RestAssured.given().log().all()
-                .cookie("token", unauthorizedToken)
+                .cookie("accessToken", unauthorizedToken)
                 .contentType(ContentType.JSON)
                 .when().get("/auth-test/test1?applyformId=" + applyForm.getId())
                 .then().log().all().statusCode(403);
@@ -115,7 +115,7 @@ class AuthValidationAspectTest extends ControllerTest {
     @Test
     void testReadByPathVariable_Success() {
         RestAssured.given().log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .when().get("/auth-test/test2/" + applyForm.getId())
                 .then().log().all().statusCode(200);
@@ -125,7 +125,7 @@ class AuthValidationAspectTest extends ControllerTest {
     @Test
     void testReadByPathVariable_Forbidden() {
         RestAssured.given().log().all()
-                .cookie("token", unauthorizedToken)
+                .cookie("accessToken", unauthorizedToken)
                 .contentType(ContentType.JSON)
                 .when().get("/auth-test/test2/" + applyForm.getId())
                 .then().log().all().statusCode(403);
@@ -137,7 +137,7 @@ class AuthValidationAspectTest extends ControllerTest {
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .body(authTestDto)
                 .when().get("/auth-test/test3")
                 .then().log().all().statusCode(200);
@@ -148,7 +148,7 @@ class AuthValidationAspectTest extends ControllerTest {
     void testReadByRequestBody_Forbidden() {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", unauthorizedToken)
+                .cookie("accessToken", unauthorizedToken)
                 .body(authTestDto)
                 .when().get("/auth-test/test3")
                 .then().log().all().statusCode(403);
@@ -159,7 +159,7 @@ class AuthValidationAspectTest extends ControllerTest {
     void testReadByAllRequestType_Success() {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .body(authTestDto)
                 .when().get("/auth-test/test4/" + dashboard.getId() + "?applyformId=" + applyForm.getId())
                 .then().log().all().statusCode(200);
@@ -170,7 +170,7 @@ class AuthValidationAspectTest extends ControllerTest {
     void testReadByAllRequestType_Forbidden() {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", unauthorizedToken)
+                .cookie("accessToken", unauthorizedToken)
                 .body(authTestDto)
                 .when().get("/auth-test/test4/" + dashboard.getId() + "?applyformId=" + applyForm.getId())
                 .then().log().all().statusCode(403);
@@ -201,7 +201,7 @@ class AuthValidationAspectTest extends ControllerTest {
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
-                .cookie("token", unauthorizedToken)
+                .cookie("accessToken", unauthorizedToken)
                 .param("applyformId", applyForm.getId())
                 .body(unauthorizedAuthTestDto)
                 .when().get("/auth-test/test4/" + dashboard.getId() + "?applyformId=" + applyForm.getId())
