@@ -6,7 +6,9 @@ interface MultiApplicantContextProps {
   toggleIsMultiType: () => void;
 
   addApplicant: (applicantId: number) => void;
+  addApplicants: (applicantIds: number[]) => void;
   removeApplicant: (applicantId: number) => void;
+  removeApplicants: (applicantIds: number[]) => void;
   resetApplicants: () => void;
 }
 
@@ -29,8 +31,16 @@ export function MultiApplicantContextProvider({ children }: PropsWithChildren) {
     [applicants],
   );
 
+  const addApplicants = useCallback((applicantIds: number[]) => {
+    setApplicants((prev) => Array.from(new Set([...prev, ...applicantIds])));
+  }, []);
+
   const removeApplicant = useCallback((applicantId: number) => {
     setApplicants((prev) => [...prev].filter((id) => id !== applicantId));
+  }, []);
+
+  const removeApplicants = useCallback((applicantIds: number[]) => {
+    setApplicants((prev) => [...prev].filter((id) => !applicantIds.includes(id)));
   }, []);
 
   const resetApplicants = () => setApplicants([]);
@@ -41,10 +51,12 @@ export function MultiApplicantContextProvider({ children }: PropsWithChildren) {
       applicants,
       toggleIsMultiType,
       addApplicant,
+      addApplicants,
       removeApplicant,
+      removeApplicants,
       resetApplicants,
     }),
-    [isOpen, toggleIsMultiType, applicants, addApplicant, removeApplicant],
+    [isOpen, toggleIsMultiType, applicants, addApplicants, addApplicant, removeApplicant, removeApplicants],
   );
 
   return <MultiApplicantContext.Provider value={obj}>{children}</MultiApplicantContext.Provider>;
