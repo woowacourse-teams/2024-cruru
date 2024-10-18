@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
+  position: relative;
+  display: contents;
 `;
 
 const ToggleWrapper = styled.div<{ isVisible: boolean }>`
@@ -10,7 +10,7 @@ const ToggleWrapper = styled.div<{ isVisible: boolean }>`
   gap: 1.2rem;
   align-items: center;
   transition: transform 0.3s ease-in-out;
-  transform: ${({ isVisible }) => (isVisible ? 'translateX(0)' : 'translateX(-13.8rem)')};
+  transform: ${({ isVisible }) => (isVisible ? 'translateX(0)' : 'translateX(-14.6rem)')};
 `;
 
 const ToggleLabel = styled.span`
@@ -20,7 +20,6 @@ const ToggleLabel = styled.span`
 
 const DropdownWrapper = styled.div<{ isVisible: boolean }>`
   position: absolute;
-  transform: translateX(0);
 
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0.01)};
   visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
