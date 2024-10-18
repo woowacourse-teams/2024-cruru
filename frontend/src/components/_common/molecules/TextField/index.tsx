@@ -34,7 +34,7 @@ export default function TextField({
             {label}
           </S.Label>
           {required && <S.Asterisk aria-hidden />}
-          {required && <HiddenElementForSR>필수 질문입니다.</HiddenElementForSR>}
+          {required && <HiddenElementForSR>필수 입력 요소입니다.</HiddenElementForSR>}
         </S.LabelWrapper>
       )}
 
