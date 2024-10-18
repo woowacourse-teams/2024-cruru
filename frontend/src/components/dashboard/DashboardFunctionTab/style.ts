@@ -21,13 +21,14 @@ const FunctionsContainer = styled.section`
 `;
 
 const SearchInputContainer = styled.div<{ isValue: boolean }>`
-  width: 18rem;
+  width: 20rem;
 
   & input {
     ${({ theme }) => theme.typography.common.block};
     padding: 0.6rem 1.6rem;
     margin-bottom: inherit;
     background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+    color: ${({ theme }) => theme.baseColors.grayscale[900]};
 
     ${({ isValue }) => {
       if (!isValue) {
@@ -44,12 +45,8 @@ const SearchInputContainer = styled.div<{ isValue: boolean }>`
       font-weight: 400;
     }
 
-    &:hover {
-      border-color: ${({ theme }) => theme.baseColors.grayscale[600]};
-    }
-
     &:focus {
-      border-color: ${({ theme }) => theme.baseColors.purplescale[500]};
+      border-color: ${({ theme }) => theme.baseColors.grayscale[600]};
     }
   }
 `;
@@ -59,6 +56,7 @@ const DropdownContainer = styled.div`
 
   & .dropdown-header {
     padding: 4px 4px 4px 8px;
+    color: ${({ theme }) => theme.baseColors.grayscale[900]};
     background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   }
 `;
@@ -67,10 +65,26 @@ const FilterWrapper = styled.div`
   position: relative;
 `;
 
+const FilterButton = styled.button`
+  width: 6.4rem;
+  height: 3.4rem;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: 0.8rem;
+
+  ${({ theme }) => theme.typography.heading[200]};
+  color: ${({ theme }) => theme.baseColors.grayscale[900]};
+
+  &:focus {
+    border-color: ${({ theme }) => theme.baseColors.grayscale[600]};
+  }
+`;
+
 const FilterButtonContent = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
 `;
 
@@ -93,6 +107,7 @@ const S = {
   SearchInputContainer,
   DropdownContainer,
 
+  FilterButton,
   FilterButtonContent,
   FilterWrapper,
   FilterContainer,

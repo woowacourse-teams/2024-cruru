@@ -31,6 +31,7 @@ const DropdownWrapper = styled.div<{ isVisible: boolean; isDisabled: boolean }>`
 
   & .dropdown-header {
     padding: 4px 4px 4px 8px;
+    color: ${({ theme, isDisabled }) => (isDisabled ? 'inherit' : theme.baseColors.grayscale[900])};
     background-color: ${({ theme, isDisabled }) => (isDisabled ? 'inherit' : theme.baseColors.grayscale[50])};
   }
 `;

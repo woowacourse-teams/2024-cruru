@@ -59,16 +59,19 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
         </S.DropdownContainer>
 
         <S.FilterWrapper>
-          <button
+          <S.FilterButton
             type="button"
             onClick={() => setIsFilterOpened(true)}
             ref={filterButtonRef}
           >
             <S.FilterButtonContent>
-              <HiOutlineFilter size={12} />
+              <HiOutlineFilter
+                size={14}
+                strokeWidth={2.5}
+              />
               필터
             </S.FilterButtonContent>
-          </button>
+          </S.FilterButton>
           <Popover
             isOpen={isFilterOpened}
             onClose={() => setIsFilterOpened(false)}
