@@ -59,6 +59,7 @@ const DropdownContainer = styled.div`
 
   & .dropdown-header {
     padding: 4px 4px 4px 8px;
+    background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   }
 `;
 
