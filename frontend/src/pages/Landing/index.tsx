@@ -12,6 +12,7 @@ import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 
 import Button from '@components/_common/atoms/Button';
 import IconButton from '@components/_common/atoms/IconButton';
+import { useRef } from 'react';
 import S from './style';
 
 const SPEECH_BUBBLE_TEXTS = [
@@ -22,10 +23,19 @@ const SPEECH_BUBBLE_TEXTS = [
 ];
 
 export default function Landing() {
+  const painPointRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToMain = () => {
+    if (painPointRef.current) {
+      painPointRef.current.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
   };
 
   return (
@@ -87,11 +97,16 @@ export default function Landing() {
         />
 
         <S.ScrollDownArea>
-          <HiChevronDown />
+          <button
+            type="button"
+            onClick={scrollToMain}
+          >
+            <HiChevronDown />
+          </button>
         </S.ScrollDownArea>
       </S.MainSection>
 
-      <S.PainPointSection>
+      <S.PainPointSection ref={painPointRef}>
         <S.MessageImg
           src={MessageWebp}
           alt="복잡한 모집과정에 괴로워하는 유저의 메시지 대화 내용"

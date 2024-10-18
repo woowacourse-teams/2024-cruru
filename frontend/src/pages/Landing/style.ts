@@ -211,7 +211,7 @@ const ScrollDownArea = styled.div`
   position: absolute;
   bottom: -10vh;
 
-  & > svg {
+  & > button > svg {
     display: block;
     position: relative;
     bottom: -3rem;
