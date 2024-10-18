@@ -212,7 +212,7 @@ const MainImg = styled.img`
 
   ${media('mobile')`
     width: 80%;
-    min-width: 40rem;
+    min-width: 35rem;
     margin-top: 1.6rem;
   `}
 `;
@@ -341,7 +341,7 @@ const ProductIntroSection = styled.section`
   ${media('mobile')`
     padding: 0 1.6rem;
     height: fit-content;
-    margin-bottom: 5.4rem;
+    margin-bottom: 20vh;
   `}
 `;
 
@@ -372,7 +372,7 @@ const StrongIntroText = styled.p`
   text-align: center;
 
   ${media('mobile')`
-    font-size: 3rem;
+    font-size: 2.8rem;
   `}
 `;
 
