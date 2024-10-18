@@ -1,6 +1,7 @@
 import S from './style';
 
 interface RadioProps {
+  id?: string;
   isChecked: boolean;
   isDisabled?: boolean;
   diameter?: string;
@@ -10,6 +11,7 @@ interface RadioProps {
 }
 
 export default function Radio({
+  id,
   isChecked,
   isDisabled = false,
   onToggle,
@@ -20,6 +22,7 @@ export default function Radio({
   return (
     <S.RadioContainer onClick={() => onToggle(!isChecked)}>
       <S.HiddenRadio
+        id={id}
         type="radio"
         checked={isChecked}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => onToggle(e.target.checked)}

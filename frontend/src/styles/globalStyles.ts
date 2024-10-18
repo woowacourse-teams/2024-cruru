@@ -173,6 +173,10 @@ const globalStyles = () => css`
     border: 0;
     outline: none;
   }
+
+  small {
+    color: #777676;
+  }
 `;
 
 export default globalStyles;

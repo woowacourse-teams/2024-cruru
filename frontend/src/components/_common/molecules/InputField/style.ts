@@ -83,10 +83,9 @@ const ErrorText = styled.p`
   ${({ theme }) => theme.typography.common.small};
 `;
 
-const LengthText = styled.p`
+const LengthText = styled.small`
   min-width: fit-content;
   ${({ theme }) => theme.typography.common.small};
-  color: ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 
 const S = {

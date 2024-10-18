@@ -50,7 +50,7 @@ const PeriodContainer = styled.p`
   }
 `;
 
-const Period = styled.span`
+const Period = styled.small`
   ${({ theme }) => theme.typography.common.default};
 `;
 
