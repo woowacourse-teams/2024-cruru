@@ -74,6 +74,12 @@ export default function RatingFilter({
     setCurrentRatingFilterType(INIT_TYPE);
     setCurrentRatingRangeMin(INIT_MIN);
     setCurrentRatingRangeMax(INIT_MAX);
+
+    setRatingFilterType(INIT_TYPE);
+    setRatingMinRange(INIT_MIN);
+    setRatingMaxRange(INIT_MAX);
+
+    close();
   };
 
   return (
