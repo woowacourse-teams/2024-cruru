@@ -112,10 +112,13 @@ jobs:
         # Security settings
         JWT_TOKEN_SECRET_KEY=${{ secrets.JWT_TOKEN_SECRET_KEY }}
         JWT_TOKEN_EXPIRE_CYCLE=${{ secrets.JWT_TOKEN_EXPIRE_CYCLE }}
+        ACCESS_TOKEN_EXPIRE_CYCLE=${{ secrets.ACCESS_TOKEN_EXPIRE_CYCLE }}
+        REFRESH_TOKEN_EXPIRE_CYCLE=${{ secrets.REFRESH_TOKEN_EXPIRE_CYCLE }}
         JWT_SIGN_ALGORITHM=${{ secrets.JWT_SIGN_ALGORITHM }}
         
         # Cookie settings
         COOKIE_ACCESS_TOKEN_KEY=${{ secrets.COOKIE_ACCESS_TOKEN_KEY }}
+        COOKIE_REFRESH_TOKEN_KEY=${{ secrets.COOKIE_REFRESH_TOKEN_KEY }}
         COOKIE_HTTP_ONLY=${{ secrets.COOKIE_HTTP_ONLY }}
         COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
         COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}
