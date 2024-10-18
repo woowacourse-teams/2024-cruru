@@ -218,22 +218,20 @@ export default function Landing() {
           src={Feature3Webp}
           alt="지원자를 사로잡는 스마트한 첫 만남"
         />
-
-        <S.StartButtonWrapper>
-          <Button
-            size="fillContainer"
-            onClick={() => navigate(routes.signUp())}
-            color="primary"
-            style={{ fontSize: '1.6rem' }}
-          >
-            크루루 새로 시작하기
-          </Button>
-        </S.StartButtonWrapper>
       </S.FeatureSection>
+
+      <S.StartButtonContainer>
+        <Button
+          size="fillContainer"
+          onClick={() => navigate(routes.signUp())}
+          color="primary"
+        >
+          크루루 새로 시작하기
+        </Button>
+      </S.StartButtonContainer>
 
       <S.Footer>
         <p>Copyright © 2024 Cruru, All rights reserved.</p>
-
         <p>
           Illustration by&nbsp;
           <a href="https://icons8.com/illustrations/author/zD2oqC8lLBBA">Icons 8</a>

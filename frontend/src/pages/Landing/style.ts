@@ -478,9 +478,25 @@ const FeatureImg = styled.img`
   `}
 `;
 
+const StartButtonContainer = styled.div`
+  width: 30%;
+  max-width: 30rem;
+  min-width: 20rem;
+  height: 4.2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 20rem;
+
+  ${media('mobile')`
+    margin-bottom: 5.4rem;
+  `}
+`;
+
 // Footer
 const Footer = styled.footer`
-  margin-top: 20rem;
   width: 100%;
   height: 20vh;
 
@@ -500,18 +516,6 @@ const Footer = styled.footer`
     ${({ theme }) => theme.typography.common.small};
     text-decoration: underline;
   }
-`;
-
-const StartButtonWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-
-  width: 30%;
-  height: 4.8rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const S = {
@@ -544,7 +548,7 @@ const S = {
   FeatureSubtitle,
   FeatureDescription,
   FeatureImg,
-  StartButtonWrapper,
+  StartButtonContainer,
 
   Footer,
 };
