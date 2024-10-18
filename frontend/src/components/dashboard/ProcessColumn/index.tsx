@@ -117,7 +117,7 @@ export default function ProcessColumn({
 
   const isAllApplicantsChecked = () => {
     const filteredApplicantsIds = filteredApplicants.map((applicant) => applicant.applicantId);
-    return filteredApplicantsIds.every((id) => selectedApplicantIds.includes(id));
+    return filteredApplicantsIds.length > 0 && filteredApplicantsIds.every((id) => selectedApplicantIds.includes(id));
   };
 
   const processSelectHandler = (isChecked: boolean) => {
@@ -140,6 +140,7 @@ export default function ProcessColumn({
               <CheckBox
                 isChecked={isAllApplicantsChecked()}
                 onToggle={(isChecked: boolean) => processSelectHandler(isChecked)}
+                isDisabled={filteredApplicants.length === 0}
               />
             </S.CheckboxContainer>
           )}
