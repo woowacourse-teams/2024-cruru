@@ -1,6 +1,6 @@
-import ApplicantModal from '@components/ApplicantModal';
-import { Process } from '@customTypes/process';
+import type { Process } from '@customTypes/process';
 
+import ApplicantModal from '@components/ApplicantModal';
 import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
 import S from './style';
