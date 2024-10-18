@@ -195,6 +195,7 @@ const MainImg = styled.img`
   animation-delay: 0.6s;
 
   ${media('mobile')`
+    width: 80%;
     min-width: 40rem;
     margin-top: 1.6rem;
   `}
