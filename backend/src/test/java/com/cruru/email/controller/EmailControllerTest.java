@@ -35,7 +35,7 @@ class EmailControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .multiPart("clubId", defaultClub.getId())
                 .multiPart("applicantIds", applicant.getId())
                 .multiPart("subject", subject)
@@ -43,7 +43,7 @@ class EmailControllerTest extends ControllerTest {
                 .multiPart("files", file)
                 .contentType(ContentType.MULTIPART)
                 .filter(document("email/send",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         requestParts(
                                 partWithName("clubId").description("발송 동아리 id"),
                                 partWithName("applicantIds").description("수신자 id 목록"),
@@ -67,7 +67,7 @@ class EmailControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .multiPart("clubId", defaultClub.getId())
                 .multiPart("applicantIds", invalidId)
                 .multiPart("subject", subject)
@@ -75,7 +75,7 @@ class EmailControllerTest extends ControllerTest {
                 .multiPart("files", file)
                 .contentType(ContentType.MULTIPART)
                 .filter(document("email/send-fail/invalid-email",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         requestParts(
                                 partWithName("clubId").description("발송 동아리 id"),
                                 partWithName("applicantIds").description("적절하지 않은 수신자 id가 포함된 목록"),
@@ -101,7 +101,7 @@ class EmailControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .multiPart("clubId", invalidId)
                 .multiPart("applicantIds", email)
                 .multiPart("subject", subject)
@@ -109,7 +109,7 @@ class EmailControllerTest extends ControllerTest {
                 .multiPart("files", file)
                 .contentType(ContentType.MULTIPART)
                 .filter(document("email/send-fail/club-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         requestParts(
                                 partWithName("clubId").description("존재하지 않는 발송 동아리 id"),
                                 partWithName("applicantIds").description("수신자 id 목록"),
