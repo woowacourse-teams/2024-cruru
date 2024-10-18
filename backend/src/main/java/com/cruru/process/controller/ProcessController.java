@@ -38,8 +38,8 @@ public class ProcessController {
             @RequestParam(name = "minScore", required = false, defaultValue = "0.00") Double minScore,
             @RequestParam(name = "maxScore", required = false, defaultValue = "5.00") Double maxScore,
             @RequestParam(name = "evaluationStatus", required = false, defaultValue = "ALL") String evaluationStatus,
-            @RequestParam(name = "sortByCreatedAt", required = false, defaultValue = "DESC") String sortByCreatedAt,
-            @RequestParam(name = "sortByScore", required = false, defaultValue = "DESC") String sortByScore,
+            @RequestParam(name = "sortByCreatedAt", required = false) String sortByCreatedAt,
+            @RequestParam(name = "sortByScore", required = false) String sortByScore,
             LoginProfile loginProfile
     ) {
         ProcessResponses processes = processFacade.readAllByDashboardId(
