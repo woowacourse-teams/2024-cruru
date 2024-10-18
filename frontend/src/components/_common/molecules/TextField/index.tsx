@@ -1,4 +1,5 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useId } from 'react';
+import HiddenElementForSR from '@components/_common/atoms/ScreenReaderHidden';
 import S from './style';
 
 interface TextFieldProps extends ComponentProps<'textarea'> {
@@ -20,16 +21,25 @@ export default function TextField({
   isLengthVisible,
   ...props
 }: TextFieldProps) {
+  const id = useId();
+
   return (
     <S.Wrapper>
       {label && (
         <S.LabelWrapper>
-          <S.Label disabled={!!disabled}>{label}</S.Label>
-          {required && <S.Asterisk />}
+          <S.Label
+            htmlFor={id}
+            disabled={!!disabled}
+          >
+            {label}
+          </S.Label>
+          {required && <S.Asterisk aria-hidden />}
+          {required && <HiddenElementForSR>필수 질문입니다.</HiddenElementForSR>}
         </S.LabelWrapper>
       )}
 
       <S.TextArea
+        id={id}
         value={value}
         onChange={onChange}
         disabled={disabled}
@@ -41,9 +51,11 @@ export default function TextField({
 
       {(isLengthVisible || error) && (
         <S.Footer isError={!!error}>
-          {error && <S.ErrorText>{error}</S.ErrorText>}
+          {error && <S.ErrorText role="alert">{error}</S.ErrorText>}
           {isLengthVisible && (
-            <S.LengthText>{`${value ? value.toString().length : 0} / ${props.maxLength}`}</S.LengthText>
+            <S.LengthText aria-live="polite">
+              {`${value ? value.toString().length : 0} / ${props.maxLength}`}
+            </S.LengthText>
           )}
         </S.Footer>
       )}
