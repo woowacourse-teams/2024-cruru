@@ -4,8 +4,11 @@ services:
   redis:
     image: redis:latest
     container_name: redis-local
+    env_file:
+      - .env
+    command: "redis-server --requirepass ${LOCAL_REDIS_PASSWORD}"
     ports:
-      - "6379:6379"
+      - "${LOCAL_REDIS_PORT}"
     networks:
       - redis_network
 
