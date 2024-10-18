@@ -1,7 +1,9 @@
 import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 
 import { Process } from '@customTypes/process';
 import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import CheckBox from '@components/_common/atoms/CheckBox';
 
 import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
@@ -14,7 +16,6 @@ import { DropdownProvider } from '@contexts/DropdownContext';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
 
-import { useMemo } from 'react';
 import ApplicantCard from '../ApplicantCard';
 import ProcessDescription from './ProcessDescription';
 import S from './style';
@@ -41,7 +42,14 @@ export default function ProcessColumn({
   const { setProcessId } = useSpecificProcessId();
   const { open } = useModal();
   const { open: sideEmailFormOpen } = useFloatingEmailForm();
-  const { isMultiType, applicants, addApplicant, removeApplicant } = useMultiApplicant();
+  const {
+    isMultiType,
+    applicants: selectedApplicantIds,
+    addApplicant,
+    addApplicants,
+    removeApplicant,
+    removeApplicants,
+  } = useMultiApplicant();
 
   const menuItemsList = ({ applicantId }: { applicantId: number }) => {
     const menuItems: DropdownItemType[] = [
@@ -107,10 +115,36 @@ export default function ProcessColumn({
     [searchedName, showRejectedApplicant, process.applicants],
   );
 
+  const isAllApplicantsChecked = () => {
+    const filteredApplicantsIds = filteredApplicants.map((applicant) => applicant.applicantId);
+    return filteredApplicantsIds.length > 0 && filteredApplicantsIds.every((id) => selectedApplicantIds.includes(id));
+  };
+
+  const processSelectHandler = (isChecked: boolean) => {
+    const filteredApplicantsIds = filteredApplicants.map((applicant) => applicant.applicantId);
+
+    if (isChecked) {
+      addApplicants(filteredApplicantsIds);
+    } else {
+      removeApplicants(filteredApplicantsIds);
+    }
+  };
+
   return (
     <S.ProcessWrapper isPassedColumn={isPassedColumn}>
       <S.Header>
-        <S.Title>{process.name}</S.Title>
+        <S.TitleContainer>
+          <S.Title>{process.name}</S.Title>
+          {isMultiType && (
+            <S.CheckboxContainer>
+              <CheckBox
+                isChecked={isAllApplicantsChecked()}
+                onToggle={(isChecked: boolean) => processSelectHandler(isChecked)}
+                isDisabled={filteredApplicants.length === 0}
+              />
+            </S.CheckboxContainer>
+          )}
+        </S.TitleContainer>
         <ProcessDescription description={process.description} />
       </S.Header>
       <S.ApplicantList>
@@ -125,7 +159,7 @@ export default function ProcessColumn({
                 averageScore={averageScore}
                 popOverMenuItems={menuItemsList({ applicantId })}
                 isSelectMode={isMultiType}
-                isSelected={applicants.includes(applicantId)}
+                isSelected={selectedApplicantIds.includes(applicantId)}
                 onCardClick={() => cardClickHandler(applicantId)}
                 onSelectApplicant={(isChecked: boolean) => applicantSelectHandler(applicantId, isChecked)}
               />

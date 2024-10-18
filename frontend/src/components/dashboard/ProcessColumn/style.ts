@@ -25,9 +25,22 @@ const Header = styled.header`
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.6rem;
+  width: 100%;
+`;
+
 const Title = styled.h2`
   ${({ theme }) => theme.typography.heading[500]};
   padding: 0.4rem;
+`;
+
+const CheckboxContainer = styled.div`
+  margin-top: 0.4rem;
 `;
 
 const ApplicantList = styled.ul`
@@ -50,6 +63,8 @@ const S = {
   ProcessWrapper,
   Header,
   Title,
+  TitleContainer,
+  CheckboxContainer,
   ApplicantList,
 };
 
