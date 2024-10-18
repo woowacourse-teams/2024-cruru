@@ -1,6 +1,7 @@
 import { routes } from '@router/path';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import Logo from '@assets/images/logo.svg';
 import DashboardWebp from '@assets/images/dashboard.webp';
 import Feature1Webp from '@assets/images/feature1.webp';
 import Feature2Webp from '@assets/images/feature2.webp';
@@ -11,20 +12,30 @@ import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
 
 import Button from '@components/_common/atoms/Button';
 import IconButton from '@components/_common/atoms/IconButton';
+import { useRef } from 'react';
 import S from './style';
 
-export default function Landing() {
-  const navigate = useNavigate();
+const SPEECH_BUBBLE_TEXTS = [
+  '면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?',
+  '지원자들에게 일일이 연락하는게 너무 번거로워..',
+  '지원자 정보랑 평가가 한눈에 안들어와...',
+  '여러 공고를 한 번에 관리하기가 힘드네..',
+];
 
-  const SPEECH_BUBBLE_TEXTS = [
-    '면접관 여러 명이 지원자 평가를 어떻게 남기고 공유할 수 있지?',
-    '지원자들에게 일일이 연락하는게 너무 번거로워..',
-    '지원자 정보랑 평가가 한눈에 안들어와...',
-    '여러 공고를 한 번에 관리하기가 힘드네..',
-  ];
+export default function Landing() {
+  const painPointRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const scrollToMain = () => {
+    if (painPointRef.current) {
+      painPointRef.current.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
   };
 
   return (
@@ -39,6 +50,16 @@ export default function Landing() {
         <HiChevronUp />
       </IconButton>
 
+      <S.MobileHeader>
+        <S.ServiceLogo
+          src={Logo}
+          alt="크루루 서비스 로고"
+        />
+        <S.HeaderLogin>
+          <Link to={routes.signIn()}>로그인</Link>
+        </S.HeaderLogin>
+      </S.MobileHeader>
+
       <S.MainSection>
         <S.Catchphrase>
           <span>복잡했던 </span>
@@ -52,11 +73,6 @@ export default function Landing() {
           <br />
           리크루팅의 모든 단계를 크루루와 함께 해결하세요.
         </S.Supporting>
-
-        <S.MainImg
-          src={DashboardWebp}
-          alt="지원자 현황을 한 눈에 확인할 수 있는 대시보드 페이지"
-        />
 
         <S.CtaButtons>
           <Button
@@ -75,12 +91,22 @@ export default function Landing() {
           </Button>
         </S.CtaButtons>
 
+        <S.MainImg
+          src={DashboardWebp}
+          alt="지원자 현황을 한 눈에 확인할 수 있는 대시보드 페이지"
+        />
+
         <S.ScrollDownArea>
-          <HiChevronDown />
+          <button
+            type="button"
+            onClick={scrollToMain}
+          >
+            <HiChevronDown />
+          </button>
         </S.ScrollDownArea>
       </S.MainSection>
 
-      <S.PainPointSection>
+      <S.PainPointSection ref={painPointRef}>
         <S.MessageImg
           src={MessageWebp}
           alt="복잡한 모집과정에 괴로워하는 유저의 메시지 대화 내용"
@@ -192,22 +218,20 @@ export default function Landing() {
           src={Feature3Webp}
           alt="지원자를 사로잡는 스마트한 첫 만남"
         />
-
-        <S.StartButtonWrapper>
-          <Button
-            size="fillContainer"
-            onClick={() => navigate(routes.signUp())}
-            color="primary"
-            style={{ fontSize: '1.6rem' }}
-          >
-            크루루 새로 시작하기
-          </Button>
-        </S.StartButtonWrapper>
       </S.FeatureSection>
+
+      <S.StartButtonContainer>
+        <Button
+          size="fillContainer"
+          onClick={() => navigate(routes.signUp())}
+          color="primary"
+        >
+          크루루 새로 시작하기
+        </Button>
+      </S.StartButtonContainer>
 
       <S.Footer>
         <p>Copyright © 2024 Cruru, All rights reserved.</p>
-
         <p>
           Illustration by&nbsp;
           <a href="https://icons8.com/illustrations/author/zD2oqC8lLBBA">Icons 8</a>
