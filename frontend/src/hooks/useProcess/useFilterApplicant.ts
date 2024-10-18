@@ -32,6 +32,8 @@ export default function useFilterApplicant() {
     _setRatingFilterType(INIT_TYPE);
   }, []);
 
+  const isFilterApplied = ratingRange.min !== INIT_MIN || ratingRange.max !== INIT_MAX || ratingFilterType !== 'All';
+
   return {
     ratingRange,
     ratingFilterType,
@@ -39,5 +41,6 @@ export default function useFilterApplicant() {
     setRatingMaxRange,
     setRatingFilterType,
     reset,
+    isFilterApplied,
   };
 }

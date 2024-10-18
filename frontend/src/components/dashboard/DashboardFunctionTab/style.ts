@@ -65,11 +65,9 @@ const FilterWrapper = styled.div`
   position: relative;
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button<{ isFilterApplied: boolean }>`
   width: 6.4rem;
   height: 3.4rem;
-  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
-  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-radius: 0.8rem;
 
   display: flex;
@@ -79,11 +77,25 @@ const FilterButton = styled.button`
   gap: 0.4rem;
 
   ${({ theme }) => theme.typography.heading[200]};
-  color: ${({ theme }) => theme.baseColors.grayscale[900]};
 
-  &:focus {
-    border-color: ${({ theme }) => theme.baseColors.grayscale[600]};
-  }
+  ${({ isFilterApplied, theme }) => {
+    if (isFilterApplied) {
+      return css`
+        background-color: ${theme.baseColors.purplescale[500]};
+        border: 0.1rem solid ${theme.baseColors.purplescale[600]};
+        color: ${theme.baseColors.grayscale[50]};
+      `;
+    }
+
+    return css`
+      background-color: ${theme.baseColors.grayscale[50]};
+      border: 0.1rem solid ${theme.baseColors.grayscale[400]};
+      color: ${theme.baseColors.grayscale[900]};
+      &:focus {
+        border-color: ${theme.baseColors.grayscale[600]};
+      }
+    `;
+  }}
 `;
 
 const FilterContainer = styled.div`

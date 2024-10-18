@@ -60,6 +60,7 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
 
         <S.FilterWrapper>
           <S.FilterButton
+            isFilterApplied={ratingFilterProps.isFilterApplied}
             type="button"
             onClick={() => setIsFilterOpened(true)}
             ref={filterButtonRef}
