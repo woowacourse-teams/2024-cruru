@@ -4,13 +4,18 @@ import { hideScrollBar } from '@styles/utils';
 const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   width: 28rem;
   min-width: 28rem;
-  height: 100%;
+  flex: 1;
+  overflow-y: hidden;
 
   padding: 1.2rem;
   border-radius: 0.8rem;
   border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   background-color: ${({ theme, isPassedColumn = false }) =>
     isPassedColumn ? '#F9FFF9' : theme.baseColors.grayscale[50]};
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 const Header = styled.header`
@@ -21,7 +26,6 @@ const Header = styled.header`
   gap: 0.8rem;
 
   padding: 0.8rem 0.4rem;
-  margin-bottom: 2rem;
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
@@ -45,8 +49,7 @@ const CheckboxContainer = styled.div`
 
 const ApplicantList = styled.ul`
   width: 100%;
-  height: 100%;
-  max-height: 85%;
+  flex: 1;
 
   display: flex;
   flex-direction: column;
