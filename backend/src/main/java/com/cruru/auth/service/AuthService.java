@@ -91,8 +91,8 @@ public class AuthService {
         return claims;
     }
 
-    public boolean isTokenNotExpired(String token) {
-        return !tokenProvider.isTokenExpired(token);
+    public boolean isTokenExpired(String token) {
+        return tokenProvider.isTokenExpired(token);
     }
 
     public boolean isTokenSignatureValid(String token) {

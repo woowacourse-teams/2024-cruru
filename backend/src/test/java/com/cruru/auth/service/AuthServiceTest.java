@@ -158,15 +158,15 @@ class AuthServiceTest extends ServiceTest {
 
     @DisplayName("토큰의 만료 여부를 검증한다.")
     @Test
-    void isTokenNotExpired() {
+    void isTokenExpired() {
         // given
         String expiredToken = generateExpiredToken();
 
         // when
-        boolean expired = authService.isTokenNotExpired(expiredToken);
+        boolean expired = authService.isTokenExpired(expiredToken);
 
         // then
-        assertThat(expired).isFalse();
+        assertThat(expired).isTrue();
     }
 
     private String generateExpiredToken() {
