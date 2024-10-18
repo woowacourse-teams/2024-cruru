@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  height: 4.8rem;
+  height: 3.4rem;
 `;
 
 const FunctionsContainer = styled.section`
@@ -25,7 +25,7 @@ const SearchInputContainer = styled.div<{ isValue: boolean }>`
 
   & input {
     ${({ theme }) => theme.typography.common.block};
-    padding: 0.8rem 1.6rem;
+    padding: 0.6rem 1.6rem;
     margin-bottom: inherit;
     background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
@@ -39,6 +39,26 @@ const SearchInputContainer = styled.div<{ isValue: boolean }>`
         `;
       }
     }};
+
+    &::placeholder {
+      font-weight: 400;
+    }
+
+    &:hover {
+      border-color: ${({ theme }) => theme.baseColors.grayscale[600]};
+    }
+
+    &:focus {
+      border-color: ${({ theme }) => theme.baseColors.purplescale[500]};
+    }
+  }
+`;
+
+const DropdownContainer = styled.div`
+  height: 3.4rem;
+
+  & .dropdown-header {
+    padding: 4px 4px 4px 8px;
   }
 `;
 
@@ -70,6 +90,7 @@ const S = {
   FunctionsContainer,
 
   SearchInputContainer,
+  DropdownContainer,
 
   FilterButtonContent,
   FilterWrapper,

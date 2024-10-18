@@ -51,10 +51,12 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
           />
         </S.SearchInputContainer>
 
-        <ApplicantSortDropdown
-          sortOption={sortOption}
-          updateSortOption={updateSortOption}
-        />
+        <S.DropdownContainer>
+          <ApplicantSortDropdown
+            sortOption={sortOption}
+            updateSortOption={updateSortOption}
+          />
+        </S.DropdownContainer>
 
         <S.FilterWrapper>
           <button

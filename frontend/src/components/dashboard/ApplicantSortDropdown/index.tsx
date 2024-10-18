@@ -31,7 +31,7 @@ export default function ApplicantSortDropdown({ sortOption, updateSortOption }: 
       initValue={selectedOption?.name || '정렬'}
       size="sm"
       isShadow={false}
-      width={160}
+      width={120}
     >
       <DropdownItemRenderer
         items={sortOptions.map(({ id, name, value }) => ({

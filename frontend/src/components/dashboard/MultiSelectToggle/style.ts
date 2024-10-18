@@ -28,6 +28,10 @@ const DropdownWrapper = styled.div<{ isVisible: boolean }>`
     visibility 0.3s ease-in-out;
 
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
+
+  & .dropdown-header {
+    padding: 4px 4px 4px 8px;
+  }
 `;
 
 const S = {
