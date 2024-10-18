@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-local
+    env_file:
+      - .env
+    command: "redis-server --requirepass ${LOCAL_REDIS_PASSWORD}"
+    ports:
+      - "${LOCAL_REDIS_PORT}"
+    networks:
+      - redis_network
+
+networks:
+  redis_network:
+    driver: bridge

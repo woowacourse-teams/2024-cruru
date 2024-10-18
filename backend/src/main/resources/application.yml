@@ -45,6 +45,11 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 
 security:
   jwt:
@@ -116,6 +121,11 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 
 security:
   jwt:
@@ -207,7 +217,11 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
-
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 security:
   jwt:
     token:
@@ -297,7 +311,11 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
-
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 security:
   jwt:
     token:
