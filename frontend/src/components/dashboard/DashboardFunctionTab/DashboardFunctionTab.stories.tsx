@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
 import type { Meta, StoryObj } from '@storybook/react';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
-import { action } from '@storybook/addon-actions';
 import DashboardFunctionTab from '.';
 
 const meta = {
