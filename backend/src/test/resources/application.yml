@@ -27,9 +27,9 @@ spring:
     host: smtp.gmail.com
   data:
     redis:
-      port: ${LOCAL_REDIS_PORT}
+      port: 6379
       host: localhost
-      password: ${LOCAL_REDIS_PASSWORD}
+      password: password
 
 dataloader:
   enable: false
