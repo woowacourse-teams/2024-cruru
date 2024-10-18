@@ -34,7 +34,7 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public boolean isValid(String token) throws IllegalTokenException {
+    public boolean isSignatureValid(String token) throws IllegalTokenException {
         try {
             extractClaims(token);
             return true;

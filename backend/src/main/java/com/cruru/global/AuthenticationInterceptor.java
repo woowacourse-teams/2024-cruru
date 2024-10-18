@@ -62,7 +62,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private boolean isAuthenticated(HttpServletRequest request) {
         try {
             String token = cookieManager.extractAccessToken(request);
-            return authService.isTokenValid(token) && authService.isTokenNotExpired(token);
+            return authService.isTokenSignatureValid(token) && !authService.isTokenExpired(token);
         } catch (IllegalCookieException e) {
             throw new LoginUnauthorizedException();
         }
@@ -71,7 +71,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     private boolean isValidTokenExpired(HttpServletRequest request) {
         try {
             String token = cookieManager.extractAccessToken(request);
-            return authService.isTokenValid(token) && !authService.isTokenNotExpired(token);
+            return authService.isTokenSignatureValid(token) && authService.isTokenExpired(token);
         } catch (IllegalCookieException e) {
             throw new LoginUnauthorizedException();
         }

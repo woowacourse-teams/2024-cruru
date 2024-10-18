@@ -67,12 +67,12 @@ class AuthServiceTest extends ServiceTest {
 
     @DisplayName("토큰이 유효한지 확인한다.")
     @Test
-    void isTokenValid() {
+    void isTokenSignatureValid() {
         // given
         Token accessToken = authService.createAccessToken(member);
 
         // when
-        boolean isValid = authService.isTokenValid(accessToken.getToken());
+        boolean isValid = authService.isTokenSignatureValid(accessToken.getToken());
 
         // then
         assertThat(isValid).isTrue();
@@ -85,7 +85,7 @@ class AuthServiceTest extends ServiceTest {
         String invalidToken = "invalidToken";
 
         // when
-        boolean isValid = authService.isTokenValid(invalidToken);
+        boolean isValid = authService.isTokenSignatureValid(invalidToken);
 
         // then
         assertThat(isValid).isFalse();

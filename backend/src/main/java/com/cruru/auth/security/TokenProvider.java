@@ -7,7 +7,7 @@ public interface TokenProvider {
 
     String createToken(Map<String, Object> claims, Long expireLength);
 
-    boolean isValid(String token) throws IllegalTokenException;
+    boolean isSignatureValid(String token) throws IllegalTokenException;
 
     boolean isTokenExpired(String token) throws IllegalTokenException;
 

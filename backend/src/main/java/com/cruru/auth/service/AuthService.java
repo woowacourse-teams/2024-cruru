@@ -61,7 +61,7 @@ public class AuthService {
     }
 
     private void checkRefreshTokenExists(String refreshToken) {
-        if (!isTokenValid(refreshToken)) {
+        if (!isTokenSignatureValid(refreshToken)) {
             throw new IllegalTokenException();
         }
         if (!refreshTokenRepository.existsByToken(refreshToken)) {
@@ -95,9 +95,9 @@ public class AuthService {
         return !tokenProvider.isTokenExpired(token);
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isTokenSignatureValid(String token) {
         try {
-            return tokenProvider.isValid(token);
+            return tokenProvider.isSignatureValid(token);
         } catch (IllegalTokenException e) {
             return false;
         }
