@@ -255,7 +255,9 @@ const PainPointSection = styled.section`
     linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
 
   ${media('mobile')`
-    padding: 0 1.6rem;
+    padding: 5.4rem 1.6rem 2.4rem;
+    height: fit-content;
+    background: none;
   `}
 `;
 
@@ -276,8 +278,7 @@ const PersonImgWrapper = styled.div`
   max-height: 43rem;
 
   ${media('mobile')`
-    display: flex;
-    justify-content: center;
+    height: 50vh;
   `}
 `;
 
@@ -339,6 +340,8 @@ const ProductIntroSection = styled.section`
 
   ${media('mobile')`
     padding: 0 1.6rem;
+    height: fit-content;
+    margin-bottom: 5.4rem;
   `}
 `;
 
@@ -356,6 +359,10 @@ const IntroText = styled.p`
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  ${media('mobile')`
+    font-size: 2.4rem;
+  `}
 `;
 
 const StrongIntroText = styled.p`
@@ -363,6 +370,10 @@ const StrongIntroText = styled.p`
   font-weight: 700;
   line-height: 1.5;
   text-align: center;
+
+  ${media('mobile')`
+    font-size: 3rem;
+  `}
 `;
 
 const StrongIntroHighlightText = styled.span`
