@@ -22,8 +22,6 @@ export default function InputField({
   ...props
 }: InputFieldProps) {
   const id = useId();
-  const descriptionId = description ? `${id}-description` : undefined;
-  const errorId = error ? `${id}-error` : undefined;
 
   return (
     <S.Wrapper>
@@ -35,25 +33,17 @@ export default function InputField({
           >
             {label}
           </S.Label>
-          {required && <S.Asterisk />}
+          {required && <S.Asterisk aria-hidden />}
           {required && <HiddenElementForSR>필수 질문입니다.</HiddenElementForSR>}
         </S.LabelWrapper>
       )}
 
-      {description && (
-        <S.Description
-          id={descriptionId}
-          disabled={!!disabled}
-        >
-          {description}
-        </S.Description>
-      )}
+      {description && <S.Description disabled={!!disabled}>{description}</S.Description>}
       <S.Input
         id={id}
         value={value}
         onChange={onChange}
         disabled={disabled}
-        aria-describedby={`${descriptionId || ''} ${errorId || ''}`}
         required={required}
         isError={!!error}
         {...props}
@@ -61,16 +51,12 @@ export default function InputField({
 
       {(isLengthVisible || error) && (
         <S.Footer isError={!!error}>
-          {error && (
-            <S.ErrorText
-              id={errorId}
-              role="alert"
-            >
-              {error}
-            </S.ErrorText>
-          )}
+          {error && <S.ErrorText role="alert">{error}</S.ErrorText>}
           {isLengthVisible && (
-            <S.LengthText aria-live="polite">
+            <S.LengthText
+              aria-live="polite"
+              aria-label="현재 글자 수"
+            >
               {`${value ? value.toString().length : 0} / ${props.maxLength}`}
             </S.LengthText>
           )}
