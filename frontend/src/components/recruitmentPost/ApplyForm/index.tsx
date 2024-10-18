@@ -10,7 +10,7 @@ import { applyMutations, applyQueries } from '@hooks/apply';
 import useForm from '@hooks/utils/useForm';
 import { useParams } from 'react-router-dom';
 
-import CheckBox from '@components/_common/atoms/CheckBox';
+import CheckboxLabelField from '@components/_common/molecules/CheckboxLabelField';
 import { useToast } from '@contexts/ToastContext';
 import C from '../style';
 import S from './style';
@@ -115,20 +115,19 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
         ))}
 
         <S.Divider />
-        {/* TODO: CheckBoxField를 만들어 보기 */}
-        <S.CheckBoxContainer>
-          <S.CheckBoxOption>
-            <CheckBox
-              isChecked={personalDataCollection}
-              onToggle={handlePersonalDataCollection}
-            />
-            <S.CheckBoxLabel required>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
-          </S.CheckBoxOption>
 
-          <S.PersonalDataCollectionDescription>
-            입력하신 정보는 지원자 식별, 본인 확인, 모집 전형 진행을 위해 사용됩니다.
-          </S.PersonalDataCollectionDescription>
-        </S.CheckBoxContainer>
+        <CheckboxLabelField
+          options={[
+            {
+              optionLabel: '개인정보 수집 및 이용 동의',
+              isChecked: personalDataCollection,
+              onToggle: handlePersonalDataCollection,
+            },
+          ]}
+          label="아래 항목을 확인해주세요."
+          description="입력하신 정보는 지원자 식별, 본인 확인, 모집 전형 진행을 위해 사용됩니다."
+          required
+        />
 
         <C.ButtonContainer>
           <Button
