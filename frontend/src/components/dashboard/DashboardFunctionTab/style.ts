@@ -72,20 +72,18 @@ const FilterButton = styled.button`
   border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-radius: 0.8rem;
 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+
   ${({ theme }) => theme.typography.heading[200]};
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
 
   &:focus {
     border-color: ${({ theme }) => theme.baseColors.grayscale[600]};
   }
-`;
-
-const FilterButtonContent = styled.span`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
 `;
 
 const FilterContainer = styled.div`
@@ -108,7 +106,6 @@ const S = {
   DropdownContainer,
 
   FilterButton,
-  FilterButtonContent,
   FilterWrapper,
   FilterContainer,
 };
