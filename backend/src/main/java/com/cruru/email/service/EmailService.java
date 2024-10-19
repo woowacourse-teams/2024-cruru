@@ -79,4 +79,21 @@ public class EmailService {
     public void deleteAllByTos(List<Applicant> applicants) {
         emailRepository.deleteAllByTos(applicants);
     }
+
+    @Async
+    public void sendVerificationCode(String to, String verificationCode) {
+        try {
+            String subject = "인증 코드 안내";
+            String content = String.format("인증 코드는 다음과 같습니다: %s", verificationCode);
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, false);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(content);
+            mailSender.send(message);
+        } catch (MessagingException | MailException e) {
+            log.error("이메일 전송 실패: to={}, subject={}", to, e.getMessage());
+        }
+    }
 }

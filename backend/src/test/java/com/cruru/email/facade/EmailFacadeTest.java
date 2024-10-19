@@ -7,7 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.domain.Email;
 import com.cruru.email.service.EmailService;
 import com.cruru.util.ServiceTest;

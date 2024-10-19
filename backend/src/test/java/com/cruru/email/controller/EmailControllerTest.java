@@ -2,12 +2,15 @@ package com.cruru.email.controller;
 
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.EmailFixture;
@@ -120,5 +123,40 @@ class EmailControllerTest extends ControllerTest {
                 ))
                 .when().post("/v1/emails/send")
                 .then().log().all().statusCode(404);
+    }
+
+    @DisplayName("이메일 인증 번호 발송 성공 시, 200을 응답한다.")
+    @Test
+    void sendVerificationCode() {
+        // given
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest("email@email.com");
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verification-code",
+                        requestFields(fieldWithPath("email").description("인증 번호를 전송할 이메일"))
+                ))
+                .when().post("/v1/emails/verification-code")
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("이메일 인증 번호 발송 성공 시, 이메일 형식이 올바르지 않을 경우 400을 응답한다.")
+    @Test
+    void sendVerificationCode_invalidEmailFormat() {
+        // given
+        String email = "invalidEmail";
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verification-code-fail/invalid-email",
+                        requestFields(fieldWithPath("email").description("부적절한 이메일"))
+                ))
+                .when().post("/v1/emails/verification-code")
+                .then().log().all().statusCode(400);
     }
 }

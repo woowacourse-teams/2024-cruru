@@ -4,13 +4,16 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
-import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.controller.request.EmailRequest;
+import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.exception.EmailAttachmentsException;
+import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ public class EmailFacade {
     private final EmailService emailService;
     private final ClubService clubService;
     private final ApplicantService applicantService;
+    private final EmailRedisClient emailRedisClient;
+    private final Random random = new Random();
 
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
@@ -51,5 +56,13 @@ public class EmailFacade {
         } catch (IOException e) {
             throw new EmailAttachmentsException(from.getId(), subject);
         }
+    }
+
+    public void sendVerificationCode(SendVerificationCodeRequest request) {
+        String email = request.email();
+        String verificationCode = String.format("%06d", random.nextInt(999999));
+
+        emailRedisClient.saveVerificationCode(email, verificationCode);
+        emailService.sendVerificationCode(email, verificationCode);
     }
 }
