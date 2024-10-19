@@ -23,3 +23,21 @@ operation::email/verification-code[snippets="http-request,request-fields,http-re
 ==== 실패: 이메일 형식이 올바르지 않은 이메일 형식
 
 operation::email/verification-code-fail/invalid-email[snippets="http-request,request-fields,http-response"]
+
+=== 이메일 인증 확인
+
+==== 성공
+
+operation::email/verify-code[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 이메일 형식이 올바르지 않은 이메일 형식
+
+operation::email/verify-code-fail/invalid-email[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 인증 번호가 없는 이메일
+
+operation::email/verify-code-fail/code-not-found[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 인증 번호가 다른 이메일
+
+operation::email/verify-code-fail/code-mismatch[snippets="http-request,request-fields,http-response"]

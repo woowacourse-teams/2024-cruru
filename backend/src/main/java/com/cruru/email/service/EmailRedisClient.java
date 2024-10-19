@@ -18,4 +18,8 @@ public class EmailRedisClient {
         redisTemplate.opsForValue()
                 .set(REDIS_PREFIX + email, verificationCode, VERIFICATION_CODE_EXPIRATION, TimeUnit.MINUTES);
     }
+
+    public String getVerificationCode(String email) {
+        return redisTemplate.opsForValue().get(REDIS_PREFIX + email);
+    }
 }

@@ -3,6 +3,7 @@ package com.cruru.email.controller;
 import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
+import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.facade.EmailFacade;
 import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
@@ -36,6 +37,12 @@ public class EmailController {
             @RequestBody @Valid SendVerificationCodeRequest request
     ) {
         emailFacade.sendVerificationCode(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/verify-code")
+    public ResponseEntity<Void> verifyCode(@Valid @RequestBody VerifyCodeRequest request) {
+        emailFacade.verifyCode(request);
         return ResponseEntity.ok().build();
     }
 }

@@ -11,6 +11,8 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
+import com.cruru.email.controller.request.VerifyCodeRequest;
+import com.cruru.email.service.EmailRedisClient;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.EmailFixture;
@@ -26,6 +28,9 @@ class EmailControllerTest extends ControllerTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private EmailRedisClient emailRedisClient;
 
     @DisplayName("이메일 발송 성공 시, 200을 응답한다.")
     @Test
@@ -142,7 +147,7 @@ class EmailControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("이메일 인증 번호 발송 성공 시, 이메일 형식이 올바르지 않을 경우 400을 응답한다.")
+    @DisplayName("이메일 인증 번호 발송 시, 이메일 형식이 올바르지 않을 경우 400을 응답한다.")
     @Test
     void sendVerificationCode_invalidEmailFormat() {
         // given
@@ -157,6 +162,101 @@ class EmailControllerTest extends ControllerTest {
                         requestFields(fieldWithPath("email").description("부적절한 이메일"))
                 ))
                 .when().post("/v1/emails/verification-code")
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("이메일 인증 성공 시, 200을 응답한다.")
+    @Test
+    void verifyCode() {
+        // given
+        String email = "email@email.com";
+        String verificationCode = "123456";
+
+        emailRedisClient.saveVerificationCode(email, verificationCode);
+        VerifyCodeRequest request = new VerifyCodeRequest(email, verificationCode);
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verify-code",
+                        requestFields(
+                                fieldWithPath("email").description("인증할 이메일"),
+                                fieldWithPath("verificationCode").description("인증 번호")
+                        )
+                ))
+                .when().post("/v1/emails/verify-code")
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("이메일 인증 시, 이메일 형식이 올바르지 않을 경우 400을 응답한다.")
+    @Test
+    void verifyCode_invalidEmailFormat() {
+        // given
+        String email = "invalidEmail";
+        String verificationCode = "123456";
+
+        emailRedisClient.saveVerificationCode(email, verificationCode);
+        VerifyCodeRequest request = new VerifyCodeRequest(email, verificationCode);
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verify-code-fail/invalid-email",
+                        requestFields(
+                                fieldWithPath("email").description("부적절한 이메일 형식"),
+                                fieldWithPath("verificationCode").description("인증 번호"))
+                ))
+                .when().post("/v1/emails/verify-code")
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("이메일 인증 시, 인증 번호가 없는 이메일일 경우 400을 응답한다.")
+    @Test
+    void verifyCode_codeNotFound() {
+        // given
+        String email = "email@email.com";
+        String invalidEmail = "no-code@mail.com";
+        String verificationCode = "123456";
+
+        emailRedisClient.saveVerificationCode(email, verificationCode);
+        VerifyCodeRequest request = new VerifyCodeRequest(invalidEmail, verificationCode);
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verify-code-fail/code-not-found",
+                        requestFields(
+                                fieldWithPath("email").description("인증 번호가 없는 이메일"),
+                                fieldWithPath("verificationCode").description("인증 번호"))
+                ))
+                .when().post("/v1/emails/verify-code")
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("이메일 인증 시, 인증 번호가 다른 이메일일 경우 400을 응답한다.")
+    @Test
+    void verifyCode_codeMisMatch() {
+        // given
+        String email = "email@email.com";
+        String verificationCode = "123456";
+        String invalidVerificationCode = "654321";
+
+        emailRedisClient.saveVerificationCode(email, verificationCode);
+        VerifyCodeRequest request = new VerifyCodeRequest(email, invalidVerificationCode);
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verify-code-fail/code-mismatch",
+                        requestFields(
+                                fieldWithPath("email").description("인증할 이메일"),
+                                fieldWithPath("verificationCode").description("적절하지 않은 인증 번호"))
+                ))
+                .when().post("/v1/emails/verify-code")
                 .then().log().all().statusCode(400);
     }
 }
