@@ -4,7 +4,6 @@ import { hideScrollBar } from '@styles/utils';
 const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   width: 28rem;
   min-width: 28rem;
-  flex: 1;
   overflow-y: hidden;
 
   padding: 1.2rem;
