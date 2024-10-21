@@ -17,6 +17,7 @@ const meta = {
   },
   argTypes: {
     processList: { description: '현재 공고의 모집 심사 단계별 정보를 나타냅니다.' },
+    searchedName: { description: '검색하려는 지원자 이름입니다.' },
     onSearchName: {
       description: '지원자 이름을 검색했을 때 사용되는 prop 함수입니다.',
     },
@@ -67,6 +68,7 @@ const processList = [
 export const DashboardFunctionTabDefault: Story = {
   args: {
     processList,
+    searchedName: '',
     onSearchName: (name: string) => console.log(`"${name}" 이름으로 검색하셨습니다.`),
   },
 };
