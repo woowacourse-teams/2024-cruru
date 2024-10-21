@@ -6,11 +6,8 @@ const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
   min-width: 28rem;
   height: 100%;
 
-  padding: 1.2rem;
-  border-radius: 0.8rem;
-  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
-  background-color: ${({ theme, isPassedColumn = false }) =>
-    isPassedColumn ? '#F9FFF9' : theme.baseColors.grayscale[50]};
+  padding: 1.2rem 2rem;
+  ${({ isPassedColumn, theme }) => isPassedColumn && `border-left: 1px solid ${theme.baseColors.grayscale[400]};`}
 `;
 
 const Header = styled.header`

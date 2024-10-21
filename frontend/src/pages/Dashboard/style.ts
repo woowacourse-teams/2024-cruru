@@ -7,6 +7,7 @@ const AppContainer = styled.div`
 
 const DashboardContainer = styled.div`
   padding: 0 1.6rem;
+  height: 100%;
 `;
 
 const S = {
