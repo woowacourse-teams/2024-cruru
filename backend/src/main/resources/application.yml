@@ -47,9 +47,9 @@ spring:
       max-request-size: 50MB
   data:
     redis:
-      port: ${REDIS_PORT}
-      host: ${REDIS_HOST}
-      password: ${REDIS_PASSWORD}
+      port: 6379
+      host: localhost
+      password: password
 
 security:
   jwt:
