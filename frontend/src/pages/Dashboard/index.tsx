@@ -65,7 +65,10 @@ export default function Dashboard() {
       파일 맨 첫줄 주석도 삭제해야합니다. */}
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
-          <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
+          <Tab.TabPanel
+            isVisible={currentMenu === '지원자 관리'}
+            color="gray"
+          >
             {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
             {/* <InputField
               type="search"
@@ -77,45 +80,66 @@ export default function Dashboard() {
               sortOption={sortOption}
               updateSortOption={updateSortOption}
             /> */}
-
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  isSubTab
-                  processes={processes}
-                  searchedName={debouncedName}
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
+            <S.DashboardContainer>
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    isSubTab
+                    processes={processes}
+                    searchedName={debouncedName}
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </S.DashboardContainer>
           </Tab.TabPanel>
 
-          <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  processes={processes}
-                  showRejectedApplicant
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
+          <Tab.TabPanel
+            isVisible={currentMenu === '불합격자 관리'}
+            color="gray"
+          >
+            <S.DashboardContainer>
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    processes={processes}
+                    showRejectedApplicant
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </S.DashboardContainer>
           </Tab.TabPanel>
         </MultiApplicantContextProvider>
       </FloatingEmailFormProvider>
 
-      <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
-        <ProcessManageBoard
-          dashboardId={dashboardId}
-          applyFormId={applyFormId}
-          processes={processes}
-        />
+      <Tab.TabPanel
+        isVisible={currentMenu === '모집 과정 관리'}
+        color="gray"
+      >
+        <S.DashboardContainer>
+          <ProcessManageBoard
+            dashboardId={dashboardId}
+            applyFormId={applyFormId}
+            processes={processes}
+          />
+        </S.DashboardContainer>
       </Tab.TabPanel>
 
-      <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
-        <PostManageBoard applyFormId={applyFormId} />
+      <Tab.TabPanel
+        isVisible={currentMenu === '공고 관리'}
+        color="gray"
+      >
+        <S.DashboardContainer>
+          <PostManageBoard applyFormId={applyFormId} />
+        </S.DashboardContainer>
       </Tab.TabPanel>
 
-      <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
-        <ApplyManagement />
+      <Tab.TabPanel
+        isVisible={currentMenu === '지원서 관리'}
+        color="gray"
+      >
+        <S.DashboardContainer>
+          <ApplyManagement />
+        </S.DashboardContainer>
       </Tab.TabPanel>
     </S.AppContainer>
   );

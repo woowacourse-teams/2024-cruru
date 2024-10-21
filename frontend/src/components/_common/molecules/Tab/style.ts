@@ -17,7 +17,7 @@ const Nav = styled.nav`
   justify-content: space-between;
 
   width: 100%;
-  padding: 1.6rem 0;
+  padding: 1.6rem;
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
@@ -61,7 +61,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
   }
 `;
 
-const TabPanel = styled.div`
+const TabPanel = styled.div<{ color: 'gray' | 'white' }>`
   width: 100%;
   height: 90%;
   padding: 2rem 0;
@@ -69,6 +69,8 @@ const TabPanel = styled.div`
   ${hideScrollBar};
 
   animation: ${showUp} 0.2s ease-in-out;
+  background-color: ${({ color, theme }) =>
+    color === 'gray' ? theme.baseColors.grayscale[100] : theme.baseColors.grayscale[50]};
 `;
 
 const S = {

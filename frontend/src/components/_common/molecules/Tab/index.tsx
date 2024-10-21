@@ -14,6 +14,7 @@ interface TabItemProps extends ComponentProps<'button'> {
 
 interface TabPanelProps {
   isVisible: boolean;
+  color?: 'gray' | 'white';
 }
 
 function Tab({ children }: TabProps) {
@@ -40,8 +41,8 @@ function TabItem({ label, isActive, name, handleClickTabItem, disabled }: TabIte
   );
 }
 
-function TabPanel({ isVisible, children }: React.PropsWithChildren<TabPanelProps>) {
-  return isVisible && <S.TabPanel>{children}</S.TabPanel>;
+function TabPanel({ isVisible, color = 'white', children }: React.PropsWithChildren<TabPanelProps>) {
+  return isVisible && <S.TabPanel color={color}>{children}</S.TabPanel>;
 }
 
 Tab.TabItem = TabItem;
