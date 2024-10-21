@@ -34,9 +34,27 @@ const TitleContainer = styled.div`
   width: 100%;
 `;
 
+const TitleBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+`;
+
 const Title = styled.h2`
   ${({ theme }) => theme.typography.heading[500]};
   padding: 0.4rem;
+`;
+
+const ApplicantNumber = styled.div`
+  ${({ theme }) => theme.typography.heading[100]};
+  color: ${({ theme }) => theme.colors.text.block};
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
+
+  padding: 0.2rem 0.8rem;
+  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: 0.8rem;
 `;
 
 const CheckboxContainer = styled.div`
@@ -63,6 +81,8 @@ const S = {
   ProcessWrapper,
   Header,
   Title,
+  TitleBox,
+  ApplicantNumber,
   TitleContainer,
   CheckboxContainer,
   ApplicantList,
