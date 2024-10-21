@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 const PageLayout = styled.div`
   width: 100vw;
   min-width: 30rem;
-  height: 100vh;
 
   display: flex;
   flex-direction: column;
