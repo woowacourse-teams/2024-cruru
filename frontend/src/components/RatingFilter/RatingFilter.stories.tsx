@@ -1,8 +1,8 @@
 /* eslint-disable no-shadow */
-import type { Meta, StoryObj } from '@storybook/react';
-import { RatingFilterProvider, useRatingFilter } from '@contexts/RatingFilterContext';
-import { action } from '@storybook/addon-actions';
 import { PopoverProvider } from '@contexts/PopoverContext';
+import { action } from '@storybook/addon-actions';
+import type { Meta, StoryObj } from '@storybook/react';
+import useFilterApplicant from '@hooks/useProcess/useFilterApplicant';
 import RatingFilter from '.';
 
 const meta: Meta<typeof RatingFilter> = {
@@ -18,15 +18,16 @@ const meta: Meta<typeof RatingFilter> = {
   },
   tags: ['autodocs'],
   decorators: [
-    (Story) => (
-      <PopoverProvider onClose={action('click close')}>
-        <RatingFilterProvider>
+    (Story) => {
+      const ratingFilterProps = useFilterApplicant();
+      return (
+        <PopoverProvider onClose={action('click close')}>
           <div style={{ padding: '20px', backgroundColor: 'gray' }}>
-            <Story />
+            <Story args={{ ...ratingFilterProps }} />
           </div>
-        </RatingFilterProvider>
-      </PopoverProvider>
-    ),
+        </PopoverProvider>
+      );
+    },
   ],
 };
 
@@ -36,7 +37,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   decorators: [
     (Story) => {
-      const { ratingFilterType, ratingRange } = useRatingFilter();
+      const { ratingFilterType, ratingRange } = useFilterApplicant();
       action('ratingFilter state가 변경되었습니다.')(
         `RatingFilterType: ${ratingFilterType}, 범위 최소값:${ratingRange.min}, 범위 최댓값: ${ratingRange.max}`,
       );
