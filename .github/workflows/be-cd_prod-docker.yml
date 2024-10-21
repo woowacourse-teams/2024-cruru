@@ -74,6 +74,82 @@ jobs:
       run:
         working-directory: backend
     steps:
+
+    - name: Set reviewer and sender variables
+      run: |
+        ASSIGNEE_LOGIN=${{ github.event.sender }}
+        echo "SENDER_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
+
+    - name: 배포시작 알림
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        channel-id: C07S8K0PHTQ
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "divider"
+              },
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "🚀 운영 배포 시작 🚀",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*배포자:*\n <@${{ env.SENDER_SLACK_ID }}>"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "🚀 *배포 버전:*\n${{ inputs.release-ver }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "🚀 *롤백 버전:*\n${{ inputs.rollback-ver }}"
+                  }
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "🕹️ Action 실행 현황 🕹️",
+                      "emoji": true
+                    },
+                    "value": "PR_LINK",
+                    "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                    "action_id": "actionId-1"
+                  }
+                ]
+              },
+              {
+                "type": "divider"
+              }
+            ]
+          }
+
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
     - name: Set docker-compose YAML script to runner
       uses: actions/download-artifact@v4
       with:
@@ -143,6 +219,41 @@ jobs:
       run: |
         chmod +x ../deploy.sh
         ../deploy.sh
+
+    - name: 배포시작 알림
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        channel-id: C07S8K0PHTQ
+        payload: |
+          {
+          "blocks": [
+              {
+                "type": "divider"
+              },
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "👍🏻 운영 배포 완료 👍🏻",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "🚀 *배포 버전:*\n${{ inputs.release-ver }}"
+                  }
+                ]
+              },
+              {
+                "type": "divider"
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
   roll-back-on-fail:
     environment: prod
@@ -216,3 +327,38 @@ jobs:
         run: |
           chmod +x ../deploy.sh
           ../deploy.sh
+
+      - name: 배포시작 알림
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: C07S8K0PHTQ
+          payload: |
+            {
+            "blocks": [
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "❌ 운영 배포 실패 및 롤백 ❌",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "🚀 *롤백 버전:*\n${{ inputs.rollback-ver }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
