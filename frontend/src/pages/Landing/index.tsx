@@ -157,7 +157,7 @@ export default function Landing() {
           <S.FeatureDescription>
             복잡한 엑셀 작업은 그만!
             <br />
-            클릭 한 번으로 지원자의 정보를 손쉽게 살펴보세요.
+            지원자 관리에 필요한 모든 기능을 한 화면에 담았습니다.
             <br />
             크루루와 함께라면, 오직 우수한 지원자를
             <br />
@@ -173,20 +173,20 @@ export default function Landing() {
 
       <S.FeatureSection color="gray">
         <div>
-          <S.FeatureSubtitle color="gray">한눈에 보는 지원자 평가</S.FeatureSubtitle>
+          <S.FeatureSubtitle color="gray">원클릭 프로파일링</S.FeatureSubtitle>
           <S.FeatureTitle>
-            간편하고 효율적인
+            모집 과정에 편의를 더하는
             <br />
-            지원자 평가
+            지원자 평가 기능
           </S.FeatureTitle>
           <S.FeatureDescription>
-            산발적인 지원자 평가도 그만!
+            클릭 한 번이면 충분합니다.
             <br />
-            별점과 간단한 코멘트로 지원자를 평가해보세요.
+            지원자의 모든 정보를 손쉽게 살펴보고,
             <br />
-            신속한 평가 과정을 통해
+            꼭 필요한 평가를 별점과 함께 남기실 수 있습니다.
             <br />
-            인재를 쉽게 찾아낼 수 있습니다.
+            크루루가 리크루터 여러분의 시간을 아껴드립니다.
           </S.FeatureDescription>
         </div>
 
