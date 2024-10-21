@@ -1,3 +1,5 @@
+import { useId } from 'react';
+import HiddenElementForSR from '@components/_common/atoms/ScreenReaderHidden';
 import Radio from '@components/_common/atoms/Radio';
 import S from './style';
 
@@ -25,14 +27,22 @@ export default function RadioLabelField({
   required = false,
   options,
 }: RadioLabelFieldProps) {
+  const id = useId();
+
   return (
     <S.Wrapper>
       <S.HeadWrapper>
         <S.HeadWrapper>
           {label && (
             <S.LabelWrapper>
-              <S.Label disabled={!!disabled}>{label}</S.Label>
+              <S.Label
+                htmlFor={id}
+                disabled={!!disabled}
+              >
+                {label}
+              </S.Label>
               {required && <S.Asterisk />}
+              {required && <HiddenElementForSR>필수 질문입니다.</HiddenElementForSR>}
             </S.LabelWrapper>
           )}
           {description && <S.DescriptionWrapper>{description}</S.DescriptionWrapper>}
@@ -44,6 +54,7 @@ export default function RadioLabelField({
           // eslint-disable-next-line react/no-array-index-key
           <S.Option key={index}>
             <Radio
+              id={id}
               isChecked={isChecked}
               onToggle={onToggle}
               isDisabled={disabled}

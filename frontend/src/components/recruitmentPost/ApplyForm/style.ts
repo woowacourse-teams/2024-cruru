@@ -52,6 +52,10 @@ const Divider = styled.div`
   background-color: ${({ theme }) => theme.baseColors.grayscale[500]};
 `;
 
+const AriaCustomQuestion = styled.div`
+  width: 100%;
+`;
+
 const S = {
   Form,
   Divider,
@@ -59,6 +63,7 @@ const S = {
   CheckBoxOption,
   CheckBoxLabel,
   PersonalDataCollectionDescription,
+  AriaCustomQuestion,
 };
 
 export default S;
