@@ -1,5 +1,7 @@
 package com.cruru.email.controller;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -22,6 +24,7 @@ import java.io.File;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("이메일 컨트롤러 테스트")
 class EmailControllerTest extends ControllerTest {
@@ -29,7 +32,7 @@ class EmailControllerTest extends ControllerTest {
     @Autowired
     private ApplicantRepository applicantRepository;
 
-    @Autowired
+    @MockBean
     private EmailRedisClient emailRedisClient;
 
     @DisplayName("이메일 발송 성공 시, 200을 응답한다.")
@@ -172,7 +175,9 @@ class EmailControllerTest extends ControllerTest {
         String email = "email@email.com";
         String verificationCode = "123456";
 
-        emailRedisClient.saveVerificationCode(email, verificationCode);
+        doNothing().when(emailRedisClient).saveVerificationCode(email, verificationCode);
+        when(emailRedisClient.getVerificationCode(email)).thenReturn(verificationCode);
+
         VerifyCodeRequest request = new VerifyCodeRequest(email, verificationCode);
 
         // when & then
