@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Process } from '@customTypes/process';
 import type { SimpleProcess } from '@hooks/useProcess';
 
@@ -8,6 +7,7 @@ import ProcessColumn from '../ProcessColumn';
 import SideFloatingMessageForm from '../SideFloatingMessageForm';
 
 import S from './style';
+import { useSearchApplicant } from '../useSearchApplicant';
 
 interface ProcessBoardProps {
   processes: Process[];
@@ -17,23 +17,20 @@ interface ProcessBoardProps {
 }
 
 export default function ProcessBoard({ processes, isSubTab, showRejectedApplicant = false }: ProcessBoardProps) {
-  const [searchedName, setSearchedName] = useState<string>('');
+  const { debouncedName, name, updateName } = useSearchApplicant();
 
   const processList: SimpleProcess[] = processes.map((process) => ({
     processId: process.processId,
     processName: process.name,
   }));
 
-  const handleSearchName = (name: string) => {
-    setSearchedName(name);
-  };
-
   return (
     <S.Container>
       {isSubTab && (
         <DashboardFunctionTab
           processList={processList}
-          onSearchName={(name) => handleSearchName(name)}
+          searchedName={name}
+          onSearchName={(newName) => updateName(newName)}
         />
       )}
 
@@ -44,7 +41,7 @@ export default function ProcessBoard({ processes, isSubTab, showRejectedApplican
             process={process}
             showRejectedApplicant={showRejectedApplicant}
             isPassedColumn={!showRejectedApplicant && index === processes.length - 1}
-            searchedName={searchedName}
+            searchedName={debouncedName}
           />
         ))}
 

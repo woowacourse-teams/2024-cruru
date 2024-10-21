@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { HiOutlineFilter } from 'react-icons/hi';
 
 import useProcess, { SimpleProcess } from '@hooks/useProcess';
@@ -9,7 +9,6 @@ import RatingFilter from '@components/RatingFilter';
 import Popover from '@components/_common/atoms/Popover';
 
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
-import { useSearchApplicant } from '../useSearchApplicant';
 
 import ApplicantSortDropdown from '../ApplicantSortDropdown';
 import MultiSelectToggle from '../MultiSelectToggle';
@@ -18,13 +17,13 @@ import S from './style';
 
 interface DashboardFunctionTabProps {
   processList: SimpleProcess[];
+  searchedName: string;
   onSearchName: (name: string) => void;
 }
 
-export default function DashboardFunctionTab({ processList, onSearchName }: DashboardFunctionTabProps) {
+export default function DashboardFunctionTab({ processList, searchedName, onSearchName }: DashboardFunctionTabProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
-  const { debouncedName, name, updateName } = useSearchApplicant();
   const { applicants: selectedApplicantIds, isMultiType } = useMultiApplicant();
 
   const [isFilterOpened, setIsFilterOpened] = useState<boolean>(false);
@@ -35,19 +34,15 @@ export default function DashboardFunctionTab({ processList, onSearchName }: Dash
     ratingFilterProps,
   } = useProcess({ dashboardId, applyFormId });
 
-  useEffect(() => {
-    onSearchName(debouncedName);
-  }, [onSearchName, debouncedName]);
-
   return (
     <S.Wrapper>
       <S.FunctionsContainer>
-        <S.SearchInputContainer isValue={name.length > 0}>
+        <S.SearchInputContainer isValue={searchedName.length > 0}>
           <InputField
             type="search"
             placeholder="지원자 이름 검색"
-            value={name}
-            onChange={(e) => updateName(e.target.value)}
+            value={searchedName}
+            onChange={(e) => onSearchName(e.target.value)}
           />
         </S.SearchInputContainer>
 
