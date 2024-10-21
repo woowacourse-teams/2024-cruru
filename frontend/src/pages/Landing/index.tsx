@@ -30,7 +30,7 @@ export default function Landing() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToMain = () => {
+  const scrollToPainPoint = () => {
     if (painPointRef.current) {
       painPointRef.current.scrollIntoView({
         behavior: 'smooth',
@@ -99,7 +99,7 @@ export default function Landing() {
         <S.ScrollDownArea>
           <button
             type="button"
-            onClick={scrollToMain}
+            onClick={scrollToPainPoint}
           >
             <HiChevronDown />
           </button>
