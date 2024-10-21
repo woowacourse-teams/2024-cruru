@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
+import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
 import { DropdownProvider } from '@contexts/DropdownContext';
 import type { SimpleProcess } from '@hooks/useProcess';
 
@@ -20,6 +21,7 @@ interface MultiSelectToggleProps {
 export default function MultiSelectToggle({ isToggled, processes, selectedApplicantIds }: MultiSelectToggleProps) {
   const { toggleIsMultiType, resetApplicants } = useMultiApplicant();
   const { mutate: moveApplicantProcess } = useApplicant({});
+  const { open: sideEmailFormOpen } = useFloatingEmailForm();
 
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const [isToggleVisible, setIsToggleVisible] = useState<boolean>(true);
@@ -61,8 +63,7 @@ export default function MultiSelectToggle({ isToggled, processes, selectedApplic
       name: '이메일 보내기',
       hasSeparate: true,
       onClick: () => {
-        // TODO: 복수 지원자에 대한 이메일 전송 구현이 필요합니다. (24/10/16 아르)
-        console.log(`${selectedApplicantIds.join(', ')} 지원자들에게 이메일을 보냅니다.`);
+        sideEmailFormOpen();
       },
     },
     {
