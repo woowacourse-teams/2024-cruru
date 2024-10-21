@@ -255,9 +255,11 @@ const PainPointSection = styled.section`
     linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
 
   ${media('mobile')`
-    padding: 5.4rem 1.6rem 2.4rem;
     height: fit-content;
     background: none;
+    
+    padding: 5.4rem 1.6rem 2.4rem;
+    margin-bottom: 10vh;
   `}
 `;
 
@@ -277,13 +279,18 @@ const PersonImgWrapper = styled.div`
   max-width: 85rem;
   max-height: 43rem;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   ${media('mobile')`
-    height: 50vh;
+    height: auto;
+    max-height: auto;
   `}
 `;
 
 const SpeechBubbleContainer = styled.div`
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
 `;
@@ -316,14 +323,14 @@ const SpeechBubble = styled.div<{ index: number }>`
 `;
 
 const PersonImg = styled.img`
-  position: absolute;
+  width: 60%;
   top: 25%;
   left: 25%;
 
   ${media('mobile')`
+    display: block;
+    margin: auto;
     width: 80%;
-    top: 20%;
-    left: 10%;
   `}
 `;
 

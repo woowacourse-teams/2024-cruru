@@ -112,11 +112,6 @@ export default function Landing() {
           alt="복잡한 모집과정에 괴로워하는 유저의 메시지 대화 내용"
         />
         <S.PersonImgWrapper>
-          <S.PersonImg
-            src={ManStrugglingWebp}
-            alt="복잡한 모집과정에 괴로워하는 유저의 모습"
-          />
-
           <S.SpeechBubbleContainer>
             {SPEECH_BUBBLE_TEXTS.map((text, index) => (
               <S.SpeechBubble
@@ -128,6 +123,11 @@ export default function Landing() {
               </S.SpeechBubble>
             ))}
           </S.SpeechBubbleContainer>
+
+          <S.PersonImg
+            src={ManStrugglingWebp}
+            alt="복잡한 모집과정에 괴로워하는 유저의 모습"
+          />
         </S.PersonImgWrapper>
       </S.PainPointSection>
 
