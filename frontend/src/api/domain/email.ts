@@ -6,18 +6,18 @@ const apiClient = new APIClient(EMAILS);
 const emailApis = {
   send: async ({
     clubId,
-    applicantId,
+    applicantIds,
     subject,
     content,
   }: {
     clubId: string;
-    applicantId: number;
+    applicantIds: number[];
     subject: string;
     content: string;
   }) =>
     apiClient.post({
       path: '/send',
-      body: { clubId, applicantIds: applicantId, subject, content },
+      body: { clubId, applicantIds, subject, content },
       isFormData: true,
     }),
 };
