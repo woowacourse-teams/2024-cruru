@@ -91,7 +91,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(content, true); // HTML 형식으로 전송
+            helper.setText(content, true);
             mailSender.send(message);
         } catch (MessagingException | MailException e) {
             log.error("이메일 전송 실패: to={}, subject={}", to, e.getMessage());
