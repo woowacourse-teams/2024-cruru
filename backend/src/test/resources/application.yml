@@ -25,6 +25,11 @@ spring:
     open-in-view: false
   mail:
     host: smtp.gmail.com
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password: password
 
 dataloader:
   enable: false
@@ -33,11 +38,13 @@ security:
   jwt:
     token:
       secret-key: test
-      expire-length: 1209600000
+      access-expire-length: 1209600000
+      refresh-expire-length: 1209600000
       algorithm: HS256
 
 cookie:
-  access-token-key: token
+  access-token-key: accessToken
+  refresh-token-key: refreshToken
   http-only: false
   secure: false
   domain: localhost

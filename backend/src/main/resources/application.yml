@@ -45,16 +45,23 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 
 security:
   jwt:
     token:
       secret-key: test
-      expire-length: 3600000
+      access-expire-length: 3600000
+      refresh-expire-length: 3600000
       algorithm: HS256
 
 cookie:
-  access-token-key: token
+  access-token-key: accessToken
+  refresh-token-key: refreshToken
   http-only: false
   secure: false
   domain: localhost
@@ -100,8 +107,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL_USERNAME} 
-    password: ${EMAIL_PASSWORD} 
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -114,16 +121,23 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 
 security:
   jwt:
     token:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      access-expire-length: ${ACCESS_TOKEN_EXPIRE_CYCLE}
+      refresh-expire-length: ${REFRESH_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
 
 cookie:
   access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  refresh-token-key: ${COOKIE_REFRESH_TOKEN_KEY}
   http-only: ${COOKIE_HTTP_ONLY}
   secure: ${COOKIE_SECURE}
   domain: ${COOKIE_DOMAIN}
@@ -203,16 +217,22 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
-
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 security:
   jwt:
     token:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      access-expire-length: ${ACCESS_TOKEN_EXPIRE_CYCLE}
+      refresh-expire-length: ${REFRESH_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
 
 cookie:
   access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  refresh-token-key: ${COOKIE_REFRESH_TOKEN_KEY}
   http-only: ${COOKIE_HTTP_ONLY}
   secure: ${COOKIE_SECURE}
   domain: ${COOKIE_DOMAIN}
@@ -277,8 +297,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL_USERNAME} 
-    password: ${EMAIL_PASSWORD} 
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -291,16 +311,22 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 25MB
       max-request-size: 50MB
-
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
 security:
   jwt:
     token:
       secret-key: ${JWT_TOKEN_SECRET_KEY}
-      expire-length: ${JWT_TOKEN_EXPIRE_CYCLE}
+      access-expire-length: ${ACCESS_TOKEN_EXPIRE_CYCLE}
+      refresh-expire-length: ${REFRESH_TOKEN_EXPIRE_CYCLE}
       algorithm: ${JWT_SIGN_ALGORITHM}
 
 cookie:
   access-token-key: ${COOKIE_ACCESS_TOKEN_KEY}
+  refresh-token-key: ${COOKIE_REFRESH_TOKEN_KEY}
   http-only: ${COOKIE_HTTP_ONLY}
   secure: ${COOKIE_SECURE}
   domain: ${COOKIE_DOMAIN}

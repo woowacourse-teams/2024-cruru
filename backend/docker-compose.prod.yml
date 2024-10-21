@@ -1,24 +1,54 @@
 version: '3.8'
-
 services:
-  application:
-    container_name: app_container
+  app_container-blue:
+    container_name: app_container-blue
     platform: linux/arm64
     restart: always
-    image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_VERSION_TAG}
+    image: cruru/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
-      - ${SERVER_BINDING_PORT}
-      - ${MONITORING_BINDING_PORT}
+      - ${BLUE_SERVER_BINDING_PORT}
+      - ${BLUE_MONITORING_BINDING_PORT}
     env_file:
       - .env
     environment:
-      PROFILE: prod
+      SERVER_PORT: ${BLUE_SERVER_PORT}
+      PROFILE: test
       TZ: Asia/Seoul
     volumes:
       - "./log:/log"
     networks:
-      cruru_network:
-        ipv4_address: ${APP_IP_ADDRESS}
+      - cruru_network
+
+  app_container-green:
+    container_name: app_container-green
+    platform: linux/arm64
+    restart: always
+    image: cruru/cruru:${DOCKER_IMAGE_VERSION_TAG}
+    ports:
+      - ${GREEN_SERVER_BINDING_PORT}
+      - ${GREEN_MONITORING_BINDING_PORT}
+    env_file:
+      - .env
+    environment:
+      SERVER_PORT: ${GREEN_SERVER_PORT}
+      PROFILE: test
+      TZ: Asia/Seoul
+    volumes:
+      - "./log:/log"
+    networks:
+      - cruru_network
+
+  nginx_container:
+    image: nginx:latest
+    container_name: nginx_container
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+      - ./html:/usr/share/nginx/html
+    networks:
+      - cruru_network
 
   promtail:
     environment:
@@ -32,12 +62,8 @@ services:
       - "./log:/log"
     command: -config.expand-env=true -config.file=/etc/promtail/config.yml
     networks:
-      cruru_network:
-        ipv4_address: 172.18.0.4
+      - cruru_network
 
 networks:
   cruru_network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: ${SUBNET}
+    external: true

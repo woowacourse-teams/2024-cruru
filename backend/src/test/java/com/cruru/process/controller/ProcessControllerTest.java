@@ -93,15 +93,17 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/read",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
                                 fieldWithPath("processes").description("프로세스 목록"),
-                                fieldWithPath("title").description("지원폼의 제목")
+                                fieldWithPath("title").description("지원폼의 제목"),
+                                fieldWithPath("startDate").description("지원폼 모집 시작일"),
+                                fieldWithPath("endDate").description("지원폼 모집 종료일")
                         ).andWithPrefix("processes[].", PROCESS_RESPONSE_FIELD_DESCRIPTORS)
                                 .andWithPrefix("processes[].applicants[]", APPLICANT_RESPONSE_FIELD_DESCRIPTORS)
                 ))
@@ -109,7 +111,7 @@ class ProcessControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("프로세스 필터링 및 정렬 조회 성공 시, 200을 응답한다.")
+    @DisplayName("프로세스 목록 조회 성공 시, 200을 응답한다.")
     @Test
     void read_filterAndOrder() {
         // given
@@ -119,35 +121,39 @@ class ProcessControllerTest extends ControllerTest {
                 ProcessFixture.applyType(dashboard)
         ));
         applicantRepository.save(ApplicantFixture.pendingDobby(processes.get(0)));
+        String sortByCreatedAt = "DESC";
+        String sortByScore = null;
         String url = String.format("/v1/processes?dashboardId=%d&minScore=%.2f&maxScore=%.2f"
                         + "&evaluationStatus=%s&sortByCreatedAt=%s&sortByScore=%s",
                 dashboard.getId(),
                 DefaultFilterAndOrderFixture.DEFAULT_MIN_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_MAX_SCORE,
                 DefaultFilterAndOrderFixture.DEFAULT_EVALUATION_STATUS,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_CREATED_AT,
-                DefaultFilterAndOrderFixture.DEFAULT_SORT_BY_SCORE
+                sortByCreatedAt,
+                sortByScore
         );
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/read-filter-and-order",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(
                                 parameterWithName("dashboardId").description("대시보드의 id, required=true"),
                                 parameterWithName("minScore").description("지원자 최소 평균 점수: 0.00(default) ~ 5.00, required=false").optional(),
                                 parameterWithName("maxScore").description("지원자 최대 평균 점수: 0.00 ~ 5.00(default), required=false").optional(),
                                 parameterWithName("evaluationStatus").description(
-                                        "지원자 평가 유무: ALL(default), NOT_EVALUATION, EVALUATED, required=false").optional(),
-                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: DESC(default), ASC, required=false").optional(),
-                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: DESC(default), ASC, required=false").optional()
+                                        "지원자 평가 유무: ALL(default), NOT_EVALUATED, EVALUATED, required=false").optional(),
+                                parameterWithName("sortByCreatedAt").description("지원자 지원 날짜 정렬 조건: DESC, ASC, required=false").optional(),
+                                parameterWithName("sortByScore").description("지원자 평균 점수 정렬 조건: DESC, ASC, required=false").optional()
                         ),
                         responseFields(
                                 fieldWithPath("applyFormId").description("지원폼의 id"),
                                 fieldWithPath("processes").description("프로세스 목록"),
-                                fieldWithPath("title").description("지원폼의 제목")
+                                fieldWithPath("title").description("지원폼의 제목"),
+                                fieldWithPath("startDate").description("지원폼 모집 시작일"),
+                                fieldWithPath("endDate").description("지원폼 모집 종료일")
                         ).andWithPrefix("processes[].", PROCESS_RESPONSE_FIELD_DESCRIPTORS)
                                 .andWithPrefix("processes[].applicants[]", APPLICANT_RESPONSE_FIELD_DESCRIPTORS)
                 ))
@@ -164,10 +170,10 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/read-fail/dashboard-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("존재하지 않는 대시보드의 id"))
                 ))
                 .when().get(url)
@@ -183,12 +189,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
                 .filter(document(
                         "process/create",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
                         requestFields(PROCESS_CREATE_FIELD_DESCRIPTORS)
                 ))
@@ -205,12 +211,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
                 .filter(document(
                         "process/create-fail/dashboard-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
                         requestFields(PROCESS_CREATE_FIELD_DESCRIPTORS)
                 ))
@@ -227,12 +233,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
                 .filter(document(
                         "process/create-fail/invalid-name",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("대시보드의 id")),
                         requestFields(
                                 fieldWithPath("processName").description("부적절한 프로세스명"),
@@ -261,12 +267,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processCreateRequest)
                 .filter(document(
                         "process/create-fail/process-count-overed/",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("dashboardId").description("생성할 프로세스의 대시보드 id")),
                         requestFields(PROCESS_CREATE_FIELD_DESCRIPTORS)
                 ))
@@ -284,12 +290,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
                 .filter(document(
                         "process/update",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("수정될 프로세스의 id")),
                         requestFields(
                                 fieldWithPath("processName").description("프로세스명"),
@@ -311,12 +317,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
                 .filter(document(
                         "process/update-fail/invalid-name",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("수정될 프로세스의 id")),
                         requestFields(
                                 fieldWithPath("processName").description("조건에 맞지 않는 프로세스 이름"),
@@ -337,12 +343,12 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(processUpdateRequest)
                 .filter(document(
                         "process/update-fail/process-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("수정될 프로세스의 id")),
                         requestFields(
                                 fieldWithPath("processName").description("조건에 맞지 않는 프로세스 이름"),
@@ -361,10 +367,10 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/delete",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("생성할 프로세스의 대시보드 id"))
                 ))
                 .when().delete("/v1/processes/{processId}", process.getId())
@@ -379,10 +385,10 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/delete-fail/process-not-found",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("삭제할 프로세스의 id"))
                 ))
                 .when().delete("/v1/processes/{processId}", invalidId)
@@ -397,10 +403,10 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/delete-fail/process-order-first-or-last",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("삭제할 프로세스의 id"))
                 ))
                 .when().delete("/v1/processes/{processId}", process.getId())
@@ -416,10 +422,10 @@ class ProcessControllerTest extends ControllerTest {
 
         // when&then
         RestAssured.given(spec).log().all()
-                .cookie("token", token)
+                .cookie("accessToken", token)
                 .filter(document(
                         "process/delete-fail/process-applicant-exist",
-                        requestCookies(cookieWithName("token").description("사용자 토큰")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("processId").description("삭제할 프로세스의 id"))
                 ))
                 .when().delete("/v1/processes/{processId}", process.getId())

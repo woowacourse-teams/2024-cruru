@@ -2,8 +2,13 @@ name: BE/CD - [PROD] Build & Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches: be/release
+    inputs:
+      release-ver:
+        description: 'Release version tag (ex. v0.0.1)'
+        required: true
+      rollback-ver:
+        description: 'Rollback version tag (ex. v0.0.0)'
+        required: true
 
 jobs:
   build:
@@ -42,15 +47,10 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Get current date and time
-      id: datetime
-      run: | 
-        echo "datetime=$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
-
     - name: Image build and push
       run: |
-        docker build --build-arg PROFILE=prod -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-${{ steps.datetime.outputs.datetime }} --platform linux/arm64 .
-        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:prod-${{ steps.datetime.outputs.datetime }}
+        docker build --build-arg PROFILE=prod -t ${{ secrets.DOCKER_REPO_NAME }}/cruru:${{ inputs.release-ver }} --platform linux/arm64 .
+        docker push ${{ secrets.DOCKER_REPO_NAME }}/cruru:${{ inputs.release-ver }}
 
     - name: Upload docker-compose yaml script to artifact
       uses: actions/upload-artifact@v4
@@ -59,8 +59,6 @@ jobs:
         path: |
           ${{ github.workspace }}/backend/docker-compose.prod.yml
           ${{ github.workspace }}/backend/promtail-config.yml
-    outputs:
-      BUILD_VERSION: ${{ steps.datetime.outputs.datetime }}
 
   deploy:
     environment: prod
@@ -76,6 +74,82 @@ jobs:
       run:
         working-directory: backend
     steps:
+
+    - name: Set reviewer and sender variables
+      run: |
+        ASSIGNEE_LOGIN=${{ github.event.sender }}
+        echo "SENDER_SLACK_ID=${ASSIGNEE_LOGIN@L}" >> ${GITHUB_ENV}
+
+    - name: 배포시작 알림
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        channel-id: C07S8K0PHTQ
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "divider"
+              },
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "🚀 운영 배포 시작 🚀",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*배포자:*\n <@${{ env.SENDER_SLACK_ID }}>"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "🚀 *배포 버전:*\n${{ inputs.release-ver }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "🚀 *롤백 버전:*\n${{ inputs.rollback-ver }}"
+                  }
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "🕹️ Action 실행 현황 🕹️",
+                      "emoji": true
+                    },
+                    "value": "PR_LINK",
+                    "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                    "action_id": "actionId-1"
+                  }
+                ]
+              },
+              {
+                "type": "divider"
+              }
+            ]
+          }
+
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
     - name: Set docker-compose YAML script to runner
       uses: actions/download-artifact@v4
       with:
@@ -87,7 +161,7 @@ jobs:
         cat <<EOF > .env
         # Docker Hub info from Github Secrets
         DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
-        DOCKER_IMAGE_VERSION_TAG=prod-${{ needs.build.outputs.BUILD_VERSION }}
+        DOCKER_IMAGE_VERSION_TAG=${{ inputs.release-ver }}
         
         # DB Configuration secrets info from Github Secrets
         DB_PORT=${{ secrets.DB_PORT }}
@@ -100,14 +174,15 @@ jobs:
 
         # DB server configuration secrets info from Github Secrets
         APP_IP_ADDRESS=${{ secrets.APP_IP_ADDRESS }}
-        SERVER_BINDING_PORT=${{ secrets.SERVER_BINDING_PORT }}
-        SERVER_PORT=${{ secrets.SERVER_PORT }}
-        SUBNET=${{ secrets.SUBNET }}
+        BLUE_SERVER_BINDING_PORT=${{ secrets.BLUE_SERVER_BINDING_PORT }}
+        GREEN_SERVER_BINDING_PORT=${{ secrets.GREEN_SERVER_BINDING_PORT }}
+        BLUE_SERVER_PORT=${{ secrets.BLUE_SERVER_PORT }}
+        GREEN_SERVER_PORT=${{ secrets.GREEN_SERVER_PORT }}
         
         # Monitoring configuration server info from Github secrets
         MONITORING_INSTANCE_ADDR_LOKI_PORT=${{ secrets.MONITORING_INSTANCE_ADDR_LOKI_PORT }}
-        MONITORING_BINDING_PORT=${{ secrets.MONITORING_BINDING_PORT }}
-        MONITORING_PORT=${{ secrets.MONITORING_PORT }}
+        BLUE_MONITORING_BINDING_PORT=${{ secrets.BLUE_MONITORING_BINDING_PORT }}
+        GREEN_MONITORING_BINDING_PORT=${{ secrets.GREEN_MONITORING_BINDING_PORT }}
         MONITORING_BASE_PATH=${{ secrets.MONITORING_BASE_PATH }}
         MONITORING_PROFILE=${{ secrets.MONITORING_PROFILE }}
         
@@ -121,25 +196,171 @@ jobs:
         # Security settings
         JWT_TOKEN_SECRET_KEY=${{ secrets.JWT_TOKEN_SECRET_KEY }}
         JWT_TOKEN_EXPIRE_CYCLE=${{ secrets.JWT_TOKEN_EXPIRE_CYCLE }}
+        ACCESS_TOKEN_EXPIRE_CYCLE=${{ secrets.ACCESS_TOKEN_EXPIRE_CYCLE }}
+        REFRESH_TOKEN_EXPIRE_CYCLE=${{ secrets.REFRESH_TOKEN_EXPIRE_CYCLE }}
         JWT_SIGN_ALGORITHM=${{ secrets.JWT_SIGN_ALGORITHM }}
         
         # Cookie settings
         COOKIE_ACCESS_TOKEN_KEY=${{ secrets.COOKIE_ACCESS_TOKEN_KEY }}
+        COOKIE_REFRESH_TOKEN_KEY=${{ secrets.COOKIE_REFRESH_TOKEN_KEY }}
         COOKIE_HTTP_ONLY=${{ secrets.COOKIE_HTTP_ONLY }}
         COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
         COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}
         COOKIE_PATH=${{ secrets.COOKIE_PATH }}
         COOKIE_SAME_SITE=${{ secrets.COOKIE_SAME_SITE }}
-        COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}        
+        COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }} 
+
+        # Redis
+        REDIS_PORT=${{ secrets.REDIS_PORT }}
+        REDIS_HOST=${{ secrets.REDIS_HOST }}
+        REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}          
         EOF
 
-    - name: Stop and remove existing containers
+    - name: Run zero down time Deploy Script
       run: |
-        sudo docker-compose -f docker-compose.prod.yml down --rmi all
+        chmod +x ../deploy.sh
+        ../deploy.sh
 
-    - name: Deploy docker container
-      run: |
-        sudo docker-compose --env-file .env -f docker-compose.prod.yml up -d
+    - name: 배포시작 알림
+      uses: slackapi/slack-github-action@v1.26.0
+      with:
+        channel-id: C07S8K0PHTQ
+        payload: |
+          {
+          "blocks": [
+              {
+                "type": "divider"
+              },
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "👍🏻 운영 배포 완료 👍🏻",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "🚀 *배포 버전:*\n${{ inputs.release-ver }}"
+                  }
+                ]
+              },
+              {
+                "type": "divider"
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-    - name: Run server status check script with timeout
-      run: ../check_server_status_with_timeout.sh
+  roll-back-on-fail:
+    environment: prod
+    strategy:
+      matrix:
+        runners: [be-prod-a, be-prod-b]
+
+    runs-on: [self-hosted, '${{ matrix.runners }}']
+    needs: deploy
+    if: failure()
+
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Extract secrets as .env file
+        run: |
+          cat <<EOF > .env
+          # Docker Hub info from Github Secrets
+          DOCKER_REPO_NAME=${{ secrets.DOCKER_REPO_NAME }}
+          DOCKER_IMAGE_VERSION_TAG=${{ inputs.rollback-ver }}
+          
+          # DB Configuration secrets info from Github Secrets
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_IP_ADDRESS=${{ secrets.DB_IP_ADDRESS }}
+          READ_DB_URL=${{ secrets.READ_DB_URL }}
+          WRITE_DB_URL=${{ secrets.WRITE_DB_URL }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DDL_AUTO=${{ secrets.DDL_AUTO }}
+  
+          # DB server configuration secrets info from Github Secrets
+          APP_IP_ADDRESS=${{ secrets.APP_IP_ADDRESS }}
+          BLUE_SERVER_BINDING_PORT=${{ secrets.BLUE_SERVER_BINDING_PORT }}
+          GREEN_SERVER_BINDING_PORT=${{ secrets.GREEN_SERVER_BINDING_PORT }}
+          BLUE_SERVER_PORT=${{ secrets.BLUE_SERVER_PORT }}
+          GREEN_SERVER_PORT=${{ secrets.GREEN_SERVER_PORT }}
+          
+          # Monitoring configuration server info from Github secrets
+          MONITORING_INSTANCE_ADDR_LOKI_PORT=${{ secrets.MONITORING_INSTANCE_ADDR_LOKI_PORT }}
+          BLUE_MONITORING_BINDING_PORT=${{ secrets.BLUE_MONITORING_BINDING_PORT }}
+          GREEN_MONITORING_BINDING_PORT=${{ secrets.GREEN_MONITORING_BINDING_PORT }}
+          MONITORING_BASE_PATH=${{ secrets.MONITORING_BASE_PATH }}
+          MONITORING_PROFILE=${{ secrets.MONITORING_PROFILE }}
+          
+          # Apply configuration server info from Github secrets
+          APPLY_POST_BASE_URL=${{ secrets.APPLY_POST_BASE_URL }}
+  
+          # Email Auth info
+          EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+          
+          # Security settings
+          JWT_TOKEN_SECRET_KEY=${{ secrets.JWT_TOKEN_SECRET_KEY }}
+          JWT_TOKEN_EXPIRE_CYCLE=${{ secrets.JWT_TOKEN_EXPIRE_CYCLE }}
+          ACCESS_TOKEN_EXPIRE_CYCLE=${{ secrets.ACCESS_TOKEN_EXPIRE_CYCLE }}
+          REFRESH_TOKEN_EXPIRE_CYCLE=${{ secrets.REFRESH_TOKEN_EXPIRE_CYCLE }}
+          JWT_SIGN_ALGORITHM=${{ secrets.JWT_SIGN_ALGORITHM }}
+          
+          # Cookie settings
+          COOKIE_ACCESS_TOKEN_KEY=${{ secrets.COOKIE_ACCESS_TOKEN_KEY }}
+          COOKIE_REFRESH_TOKEN_KEY=${{ secrets.COOKIE_REFRESH_TOKEN_KEY }}
+          COOKIE_HTTP_ONLY=${{ secrets.COOKIE_HTTP_ONLY }}
+          COOKIE_SECURE=${{ secrets.COOKIE_SECURE }}
+          COOKIE_DOMAIN=${{ secrets.COOKIE_DOMAIN }}
+          COOKIE_PATH=${{ secrets.COOKIE_PATH }}
+          COOKIE_SAME_SITE=${{ secrets.COOKIE_SAME_SITE }}
+          COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}
+          EOF
+
+      - name: Run zero down time Deploy Script
+        run: |
+          chmod +x ../deploy.sh
+          ../deploy.sh
+
+      - name: 배포시작 알림
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: C07S8K0PHTQ
+          payload: |
+            {
+            "blocks": [
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "❌ 운영 배포 실패 및 롤백 ❌",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "🚀 *롤백 버전:*\n${{ inputs.rollback-ver }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
