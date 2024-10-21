@@ -6,6 +6,7 @@ import DashboardWebp from '@assets/images/dashboard.webp';
 import Feature1Webp from '@assets/images/feature1.webp';
 import Feature2Webp from '@assets/images/feature2.webp';
 import Feature3Webp from '@assets/images/feature3.webp';
+import Feature4Webp from '@assets/images/feature4.webp';
 import ManStrugglingWebp from '@assets/images/manStruggling.webp';
 import MessageWebp from '@assets/images/message.webp';
 import { HiChevronDown, HiChevronUp } from 'react-icons/hi2';
@@ -167,6 +168,31 @@ export default function Landing() {
         <S.FeatureImg
           src={Feature1Webp}
           alt="한눈에 파악하고 빠르게 결정하는 리크루팅"
+        />
+      </S.FeatureSection>
+
+      <S.FeatureSection color="gray">
+        <div>
+          <S.FeatureSubtitle color="gray">한눈에 보는 지원자 평가</S.FeatureSubtitle>
+          <S.FeatureTitle>
+            간편하고 효율적인
+            <br />
+            지원자 평가
+          </S.FeatureTitle>
+          <S.FeatureDescription>
+            산발적인 지원자 평가도 그만!
+            <br />
+            별점과 간단한 코멘트로 지원자를 평가해보세요.
+            <br />
+            신속한 평가 과정을 통해
+            <br />
+            인재를 쉽게 찾아낼 수 있습니다.
+          </S.FeatureDescription>
+        </div>
+
+        <S.FeatureImg
+          src={Feature4Webp}
+          alt="간편하고 효율적인 지원자 평가"
         />
       </S.FeatureSection>
 

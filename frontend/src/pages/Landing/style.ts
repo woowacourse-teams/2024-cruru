@@ -209,11 +209,13 @@ const MainImg = styled.img`
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease-in-out forwards;
   animation-delay: 0.6s;
+  margin-bottom: 2.4rem;
 
   ${media('mobile')`
     width: 80%;
     min-width: 35rem;
     margin-top: 1.6rem;
+    margin-bottom: 0;
   `}
 `;
 
@@ -231,7 +233,6 @@ const ScrollDownArea = styled.div`
   & > button > svg {
     display: block;
     position: relative;
-    bottom: -3rem;
 
     font-size: 4rem;
     color: ${({ theme }) => theme.baseColors.purplescale[500]};
