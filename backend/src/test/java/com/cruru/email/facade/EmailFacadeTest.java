@@ -73,6 +73,23 @@ class EmailFacadeTest extends ServiceTest {
         });
     }
 
+    @DisplayName("이메일 인증 성공 시, 인증 코드가 검증된다.")
+    @Test
+    void verifyCode() {
+        // given
+        String email = "test@example.com";
+        String verificationCode = "123456";
+        VerifyCodeRequest request = new VerifyCodeRequest(email, verificationCode);
+
+        when(emailRedisClient.getVerificationCode(email)).thenReturn(verificationCode);
+
+        // when
+        emailFacade.verifyCode(request);
+
+        // then
+        verify(emailRedisClient, times(1)).getVerificationCode(email);
+    }
+
     @DisplayName("저장된 인증 코드가 없으면 예외가 발생한다.")
     @Test
     void verifyCode_verificationCodeNotFoundException() {
