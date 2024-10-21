@@ -27,6 +27,7 @@ const CheckBoxContainer = styled.div<ContainerProps>`
   border-radius: 0.4rem;
   background-color: ${({ isChecked, theme }) => (isChecked ? theme.baseColors.purplescale[600] : 'transparent')};
 
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
