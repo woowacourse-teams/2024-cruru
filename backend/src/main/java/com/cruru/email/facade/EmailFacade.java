@@ -8,8 +8,6 @@ import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.exception.EmailAttachmentsException;
-import com.cruru.email.exception.badrequest.VerificationCodeMismatchException;
-import com.cruru.email.exception.badrequest.VerificationCodeNotFoundException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
@@ -73,16 +71,6 @@ public class EmailFacade {
         String inputVerificationCode = request.verificationCode();
         String storedVerificationCode = emailRedisClient.getVerificationCode(email);
 
-        verify(storedVerificationCode, inputVerificationCode);
-    }
-
-    private void verify(String storedVerificationCode, String inputVerificationCode) {
-        if (storedVerificationCode == null) {
-            throw new VerificationCodeNotFoundException();
-        }
-
-        if (!storedVerificationCode.equals(inputVerificationCode)) {
-            throw new VerificationCodeMismatchException();
-        }
+        VerificationCodeUtil.verify(storedVerificationCode, inputVerificationCode);
     }
 }
