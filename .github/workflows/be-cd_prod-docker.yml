@@ -139,16 +139,10 @@ jobs:
         REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}          
         EOF
 
-    - name: Stop and remove existing containers
+    - name: Run zero down time Deploy Script
       run: |
-        sudo docker-compose -f docker-compose.prod.yml down --rmi all
-
-    - name: Deploy docker container
-      run: |
-        sudo docker-compose --env-file .env -f docker-compose.prod.yml up -d
-
-    - name: Run server status check script with timeout
-      run: ../check_server_status_with_timeout.sh
+        chmod +x ../deploy.sh
+        ../deploy.sh
 
   roll-back-on-fail:
     environment: prod
@@ -218,13 +212,7 @@ jobs:
           COOKIE_MAX_AGE=${{ secrets.COOKIE_MAX_AGE }}
           EOF
 
-      - name: Stop and remove existing containers
+      - name: Run zero down time Deploy Script
         run: |
-          sudo docker-compose -f docker-compose.prod.yml down --rmi all
-
-      - name: Deploy docker container
-        run: |
-          sudo docker-compose --env-file .env -f docker-compose.prod.yml up -d
-
-      - name: Run server status check script with timeout
-        run: ../check_server_status_with_timeout.sh
+          chmod +x ../deploy.sh
+          ../deploy.sh
