@@ -30,10 +30,6 @@ public class ApplicantService {
         return applicantRepository.save(new Applicant(request.name(), request.email(), request.phone(), firstProcess));
     }
 
-    public List<Applicant> findAllByProcess(Process process) {
-        return applicantRepository.findAllByProcess(process);
-    }
-
     @Transactional
     public void updateApplicantInformation(long applicantId, ApplicantUpdateRequest request) {
         Applicant applicant = findById(applicantId);
@@ -147,8 +143,16 @@ public class ApplicantService {
                 .toList();
     }
 
+    public List<Applicant> findAllByProcess(Process process) {
+        return applicantRepository.findAllByProcess(process);
+    }
+
     @Transactional
     public void deleteAllInBatch(List<Applicant> applicants) {
         applicantRepository.deleteAllInBatch(applicants);
+    }
+
+    public List<Applicant> findAllByIds(List<Long> ids) {
+        return applicantRepository.findAllById(ids);
     }
 }

@@ -31,10 +31,7 @@ public class EmailFacade {
 
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
-        List<Applicant> applicants = request.applicantIds()
-                .stream()
-                .map(applicantService::findById)
-                .toList();
+        List<Applicant> applicants = applicantService.findAllByIds(request.applicantIds());
         sendAndSave(from, applicants, request.subject(), request.content(), request.files());
     }
 
