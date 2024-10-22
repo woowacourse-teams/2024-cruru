@@ -20,7 +20,7 @@ import S from './style';
 interface Option {
   text: string;
   isSelected: boolean;
-  applyFormId: number;
+  applyFormId: string;
   dashboardId: number;
   status: RecruitmentStatusObject;
 }
