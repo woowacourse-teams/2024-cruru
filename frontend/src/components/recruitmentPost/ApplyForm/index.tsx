@@ -10,7 +10,7 @@ import { applyMutations, applyQueries } from '@hooks/apply';
 import useForm from '@hooks/utils/useForm';
 import { useParams } from 'react-router-dom';
 
-import CheckBox from '@components/_common/atoms/CheckBox';
+import CheckboxLabelField from '@components/_common/molecules/CheckboxLabelField';
 import { useToast } from '@contexts/ToastContext';
 import C from '../style';
 import S from './style';
@@ -78,59 +78,72 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   return (
     <C.ContentContainer>
       <S.Form onSubmit={handleSubmit}>
-        <InputField
-          {...register('name', { validate: { onBlur: validateName.onBlur, onChange: validateName.onChange } })}
-          name="name"
-          label="이름"
-          placeholder="이름을 입력해 주세요."
-          maxLength={32}
-          required
-        />
-        <InputField
-          {...register('email', { validate: { onBlur: validateEmail.onBlur } })}
-          label="이메일"
-          placeholder="지원 결과를 안내받을 이메일 주소를 입력해 주세요."
-          required
-        />
-        <InputField
-          {...register('phone', {
-            validate: {
-              onBlur: validatePhoneNumber.onBlur,
-              onChange: validatePhoneNumber.onChange,
-            },
-          })}
-          inputMode="numeric"
-          label="전화 번호"
-          placeholder="번호만 입력해 주세요."
-          maxLength={11}
-          required
-        />
-
-        {questions.map((question) => (
-          <CustomQuestion
-            key={question.questionId}
-            question={question}
-            value={answers[question.questionId]}
-            isLengthVisible
-            onChange={changeHandler[question.type]}
+        <S.AriaCustomQuestion aria-label={`총 ${questions.length}의 입력 중 1번째 입력입니다.`}>
+          <InputField
+            {...register('name', { validate: { onBlur: validateName.onBlur, onChange: validateName.onChange } })}
+            name="name"
+            label="이름"
+            placeholder="이름을 입력해 주세요."
+            maxLength={32}
+            required
           />
+        </S.AriaCustomQuestion>
+
+        <S.AriaCustomQuestion aria-label={`총 ${questions.length}의 입력 중 2번째 입력입니다.`}>
+          <InputField
+            {...register('email', { validate: { onBlur: validateEmail.onBlur } })}
+            label="이메일"
+            placeholder="지원 결과를 안내받을 이메일 주소를 입력해 주세요."
+            required
+          />
+        </S.AriaCustomQuestion>
+
+        <S.AriaCustomQuestion aria-label={`총 ${questions.length}의 입력 중 3번째 입력입니다.`}>
+          <InputField
+            {...register('phone', {
+              validate: {
+                onBlur: validatePhoneNumber.onBlur,
+                onChange: validatePhoneNumber.onChange,
+              },
+            })}
+            inputMode="numeric"
+            label="전화 번호"
+            placeholder="번호만 입력해 주세요."
+            maxLength={11}
+            required
+          />
+        </S.AriaCustomQuestion>
+
+        {questions.map((question, index) => (
+          <S.AriaCustomQuestion
+            key={question.questionId}
+            aria-label={`총 ${questions.length}의 입력 중 ${index + 4}번째 질문입니다.`}
+          >
+            <CustomQuestion
+              question={question}
+              value={answers[question.questionId]}
+              isLengthVisible
+              onChange={changeHandler[question.type]}
+            />
+          </S.AriaCustomQuestion>
         ))}
 
         <S.Divider />
-        {/* TODO: CheckBoxField를 만들어 보기 */}
-        <S.CheckBoxContainer>
-          <S.CheckBoxOption>
-            <CheckBox
-              isChecked={personalDataCollection}
-              onToggle={handlePersonalDataCollection}
-            />
-            <S.CheckBoxLabel required>개인정보 수집 및 이용 동의</S.CheckBoxLabel>
-          </S.CheckBoxOption>
 
-          <S.PersonalDataCollectionDescription>
-            입력하신 정보는 지원자 식별, 본인 확인, 모집 전형 진행을 위해 사용됩니다.
-          </S.PersonalDataCollectionDescription>
-        </S.CheckBoxContainer>
+        <S.AriaCustomQuestion aria-label="마지막 질문입니다.">
+          <CheckboxLabelField
+            options={[
+              {
+                optionLabel: '개인정보 수집 및 이용 동의',
+                isChecked: personalDataCollection,
+                onToggle: handlePersonalDataCollection,
+              },
+            ]}
+            label="아래 항목을 확인해주세요."
+            description="입력하신 정보는 지원자 식별, 본인 확인, 모집 전형 진행을 위해 사용됩니다."
+            required
+          />
+        </S.AriaCustomQuestion>
 
         <C.ButtonContainer>
           <Button
