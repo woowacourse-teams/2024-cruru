@@ -4,7 +4,7 @@
 
 ==== 성공
 
-operation::applyform/submit[snippets="http-request,path-parameters,request-fields,http-response"]
+operation::applyform/submit-id[snippets="http-request,path-parameters,request-fields,http-response"]
 
 ==== 실패: 개인정보 활용 거부
 
@@ -42,7 +42,7 @@ operation::applicant/submit-fail/required-not-replied[snippets="http-request,pat
 
 ==== 성공
 
-operation::applicant/read-applyform[snippets="http-request,path-parameters,http-response,response-fields"]
+operation::applicant/read-applyform-id[snippets="http-request,path-parameters,http-response,response-fields"]
 
 ==== 실패: 존재하지 않는 지원폼
 
@@ -52,7 +52,7 @@ operation::applicant/read-applyform-fail/applyform-not-found[snippets="http-requ
 
 ==== 성공
 
-operation::applicant/update[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
+operation::applicant/update-id[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 지원폼
 

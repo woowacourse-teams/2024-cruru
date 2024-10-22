@@ -54,7 +54,7 @@ public class ProcessFacade {
                 .map(process -> toProcessResponse(process, applicantCards))
                 .toList();
 
-        return new ProcessResponses(
+        return ProcessResponses.of(
                 applyForm.getId(),
                 processResponses,
                 applyForm.getTitle(),
