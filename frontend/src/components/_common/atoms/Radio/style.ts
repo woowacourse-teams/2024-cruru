@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const RadioContainer = styled.div`
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
