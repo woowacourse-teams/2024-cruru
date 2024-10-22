@@ -9,3 +9,7 @@ operation::member/signup[snippets="http-request,request-fields,http-response"]
 ==== 실패: 유효하지 않은 요청
 
 operation::member/signup-fail/invalid-request[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 인증되지 않은 이메일
+
+operation::member/signup-fail/not-verified-email[snippets="http-request,request-fields,http-response"]
