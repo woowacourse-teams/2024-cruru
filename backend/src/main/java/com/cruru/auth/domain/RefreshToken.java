@@ -1,41 +1,24 @@
 package com.cruru.auth.domain;
 
-import com.cruru.BaseEntity;
-import com.cruru.member.domain.Member;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import java.util.Objects;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RedisHash("refresh_token")
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class RefreshToken extends BaseEntity implements Token {
+public class RefreshToken implements Token {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "refresh_token_id")
-    private Long id;
-
-    @Column(nullable = false, unique = true)
+    @Indexed
     private String token;
 
-    @OneToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    public RefreshToken(String token, Member member) {
-        this(null, token, member);
-    }
+    @Id
+    private long memberId;
 
     public boolean isSameToken(String token) {
         return this.token.equals(token);
@@ -50,20 +33,19 @@ public class RefreshToken extends BaseEntity implements Token {
             return false;
         }
         RefreshToken that = (RefreshToken) o;
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(getToken(), that.getToken());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hashCode(getToken());
     }
 
     @Override
     public String toString() {
         return "RefreshToken{" +
-                "id=" + id +
-                ", token='" + token + '\'' +
-                ", member=" + member +
+                "token='" + token + '\'' +
+                ", memberId=" + memberId +
                 '}';
     }
 }

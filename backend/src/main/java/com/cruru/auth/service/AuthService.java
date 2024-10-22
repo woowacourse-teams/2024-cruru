@@ -42,14 +42,14 @@ public class AuthService {
 
     @Transactional
     public Token createRefreshToken(Member member) {
-        if (refreshTokenRepository.existsByMember(member)) {
+        if (refreshTokenRepository.existsByMemberId(member.getId())) {
             return rotateRefreshToken(member);
         }
 
         Map<String, Object> claims = getClaims(member);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
 
-        return refreshTokenRepository.save(new RefreshToken(token, member));
+        return refreshTokenRepository.save(new RefreshToken(token, member.getId()));
     }
 
     @Transactional
@@ -86,9 +86,9 @@ public class AuthService {
     private Token rotateRefreshToken(Member member) {
         Map<String, Object> claims = getClaims(member);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
-        RefreshToken refreshToken = new RefreshToken(token, member);
+        RefreshToken refreshToken = new RefreshToken(token, member.getId());
 
-        refreshTokenRepository.updateRefreshTokenByMember(refreshToken.getToken(), member);
+        refreshTokenRepository.save(new RefreshToken(refreshToken.getToken(), member.getId()));
         return refreshToken;
     }
 
@@ -138,7 +138,7 @@ public class AuthService {
     }
 
     private void validMemberRefreshToken(String refreshToken, Member member) {
-        RefreshToken foundToken = refreshTokenRepository.findByMember(member)
+        RefreshToken foundToken = refreshTokenRepository.findByMemberId(member.getId())
                 .orElseThrow(IllegalTokenException::new);
         if (!foundToken.isSameToken(refreshToken)) {
             throw new IllegalTokenException();
