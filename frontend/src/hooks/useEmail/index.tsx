@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 
 export default function useEmail() {
   const { success } = useToast();
+
   return useMutation({
     mutationFn: (prop: { clubId: string; applicantIds: number[]; subject: string; content: string }) =>
       emailApis.send(prop),
