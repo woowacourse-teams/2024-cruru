@@ -20,6 +20,18 @@ const emailApis = {
       body: { clubId, applicantIds, subject, content },
       isFormData: true,
     }),
+
+  postVerifyMail: async ({ email }: { email: string }) =>
+    apiClient.post({
+      path: '/verification-code',
+      body: { email },
+    }),
+
+  confirmVerifyCode: async ({ email, verificationCode }: { email: string; verificationCode: string }) =>
+    apiClient.post({
+      path: '/verify-code',
+      body: { email, verificationCode },
+    }),
 };
 
 export default emailApis;
