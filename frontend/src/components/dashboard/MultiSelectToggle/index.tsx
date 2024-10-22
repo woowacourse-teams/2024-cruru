@@ -6,6 +6,7 @@ import { DropdownProvider } from '@contexts/DropdownContext';
 import type { SimpleProcess } from '@hooks/useProcess';
 
 import useApplicant from '@hooks/useApplicant';
+import applicantsReject from '@hooks/useApplicantsReject';
 import ToggleSwitch from '@components/_common/atoms/ToggleSwitch';
 import Dropdown from '@components/_common/molecules/Dropdown';
 import DropdownItemRenderer, { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
@@ -13,15 +14,27 @@ import DropdownItemRenderer, { DropdownItemType } from '@components/_common/mole
 import S from './style';
 
 interface MultiSelectToggleProps {
+  dashboardId: string;
+  applyFormId: string;
   isToggled: boolean;
   processes: SimpleProcess[];
   selectedApplicantIds: number[];
+  isRejectedApplicantsTab: boolean;
 }
 
-export default function MultiSelectToggle({ isToggled, processes, selectedApplicantIds }: MultiSelectToggleProps) {
+export default function MultiSelectToggle({
+  dashboardId,
+  applyFormId,
+  isToggled,
+  processes,
+  selectedApplicantIds,
+  isRejectedApplicantsTab,
+}: MultiSelectToggleProps) {
   const { toggleIsMultiType, resetApplicants } = useMultiApplicant();
   const { mutate: moveApplicantProcess } = useApplicant({});
   const { open: sideEmailFormOpen } = useFloatingEmailForm();
+  const rejectApplicants = applicantsReject.useRejectApplicants({ dashboardId, applyFormId });
+  const unrejectApplicants = applicantsReject.useUnrejectApplicants({ dashboardId, applyFormId });
 
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const [isToggleVisible, setIsToggleVisible] = useState<boolean>(true);
@@ -73,8 +86,11 @@ export default function MultiSelectToggle({ isToggled, processes, selectedApplic
       isHighlight: true,
       hasSeparate: true,
       onClick: () => {
-        // TODO: 일괄 불합격/불합격 해제에 해당하는 API 연결 Mutation 구현이 필요합니다. (24/10/16 아르)
-        console.log(`${selectedApplicantIds.join(', ')} 지원자들을 모두 불합격 처리합니다.`);
+        if (isRejectedApplicantsTab) {
+          unrejectApplicants.mutate({ applicantIds: selectedApplicantIds });
+          return;
+        }
+        rejectApplicants.mutate({ applicantIds: selectedApplicantIds });
       },
     },
   ];

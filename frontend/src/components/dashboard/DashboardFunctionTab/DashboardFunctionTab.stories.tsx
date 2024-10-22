@@ -1,5 +1,6 @@
 /* eslint-disable no-shadow */
 import type { Meta, StoryObj } from '@storybook/react';
+import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import DashboardFunctionTab from '.';
 
@@ -31,9 +32,11 @@ const meta = {
           height: '10rem',
         }}
       >
-        <MultiApplicantContextProvider>
-          <Child />
-        </MultiApplicantContextProvider>
+        <FloatingEmailFormProvider>
+          <MultiApplicantContextProvider>
+            <Child />
+          </MultiApplicantContextProvider>
+        </FloatingEmailFormProvider>
       </div>
     ),
   ],
@@ -70,5 +73,6 @@ export const DashboardFunctionTabDefault: Story = {
     processList,
     searchedName: '',
     onSearchName: (name: string) => console.log(`"${name}" 이름으로 검색하셨습니다.`),
+    isRejectedApplicantsTab: false,
   },
 };

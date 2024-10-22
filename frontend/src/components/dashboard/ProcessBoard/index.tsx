@@ -31,6 +31,7 @@ export default function ProcessBoard({ processes, isSubTab, showRejectedApplican
           processList={processList}
           searchedName={name}
           onSearchName={(newName) => updateName(newName)}
+          isRejectedApplicantsTab={showRejectedApplicant}
         />
       )}
 
