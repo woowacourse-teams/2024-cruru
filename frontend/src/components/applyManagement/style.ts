@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
-  // 스크롤 버그 방지를 위한 속성입니다. [10.17 - 아르]
-  position: relative;
-
   width: 100%;
   height: 100%;
   padding: 2rem 6rem;
