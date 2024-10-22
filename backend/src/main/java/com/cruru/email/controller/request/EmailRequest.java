@@ -1,4 +1,4 @@
-package com.cruru.email.controller.dto;
+package com.cruru.email.controller.request;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.auth.annotation.RequireAuth;
