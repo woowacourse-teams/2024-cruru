@@ -39,10 +39,7 @@ export default function DashboardLayout() {
       </S.Sidebar>
 
       <Suspense fallback={<LoadingPage />}>
-        <S.MainContainer
-          isSidebarOpen={isSidebarOpen}
-          sidebarWidth={rect?.width}
-        >
+        <S.MainContainer sidebarWidth={rect?.width}>
           <Outlet />
         </S.MainContainer>
       </Suspense>

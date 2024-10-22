@@ -31,24 +31,26 @@ export default function Dashboard() {
 
   return (
     <S.AppContainer>
-      <DashboardHeader
-        title={title}
-        postUrl={postUrl}
-        startDate={startDate}
-        endDate={endDate}
-      />
+      <S.DashboardHeaderWrapper>
+        <DashboardHeader
+          title={title}
+          postUrl={postUrl}
+          startDate={startDate}
+          endDate={endDate}
+        />
 
-      <Tab>
-        {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
-          <Tab.TabItem
-            key={label}
-            label={label}
-            name={label}
-            isActive={currentMenu === label}
-            handleClickTabItem={moveTab}
-          />
-        ))}
-      </Tab>
+        <Tab>
+          {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
+            <Tab.TabItem
+              key={label}
+              label={label}
+              name={label}
+              isActive={currentMenu === label}
+              handleClickTabItem={moveTab}
+            />
+          ))}
+        </Tab>
+      </S.DashboardHeaderWrapper>
 
       {/* TODO: [08.21-lurgi] 현재 모달이 여러개를 컨트롤 할 수 없는 관계로 새로 렌더링 합니다.
       추후에 Modal에 id값을 부여하여 여러개의 모달을 컨트롤 할 수 있게 변경해야합니다.
@@ -56,43 +58,53 @@ export default function Dashboard() {
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
           <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  isSubTab
-                  processes={processes}
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
+            <S.DashboardContainer>
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    isSubTab
+                    processes={processes}
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </S.DashboardContainer>
           </Tab.TabPanel>
 
           <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
-            <SpecificApplicantIdProvider>
-              <SpecificProcessIdProvider>
-                <ProcessBoard
-                  processes={processes}
-                  showRejectedApplicant
-                />
-              </SpecificProcessIdProvider>
-            </SpecificApplicantIdProvider>
+            <S.DashboardContainer>
+              <SpecificApplicantIdProvider>
+                <SpecificProcessIdProvider>
+                  <ProcessBoard
+                    processes={processes}
+                    showRejectedApplicant
+                  />
+                </SpecificProcessIdProvider>
+              </SpecificApplicantIdProvider>
+            </S.DashboardContainer>
           </Tab.TabPanel>
         </MultiApplicantContextProvider>
       </FloatingEmailFormProvider>
 
       <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
-        <ProcessManageBoard
-          dashboardId={dashboardId}
-          applyFormId={applyFormId}
-          processes={processes}
-        />
+        <S.DashboardContainer>
+          <ProcessManageBoard
+            dashboardId={dashboardId}
+            applyFormId={applyFormId}
+            processes={processes}
+          />
+        </S.DashboardContainer>
       </Tab.TabPanel>
 
       <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
-        <PostManageBoard applyFormId={applyFormId} />
+        <S.DashboardContainer>
+          <PostManageBoard applyFormId={applyFormId} />
+        </S.DashboardContainer>
       </Tab.TabPanel>
 
       <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
-        <ApplyManagement />
+        <S.DashboardContainer>
+          <ApplyManagement />
+        </S.DashboardContainer>
       </Tab.TabPanel>
     </S.AppContainer>
   );
