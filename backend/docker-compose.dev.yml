@@ -23,6 +23,7 @@ services:
     platform: linux/arm64
     depends_on:
       - database-mysql
+      - redis
     restart: always
     image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
@@ -38,6 +39,19 @@ services:
     networks:
       cruru_network:
         ipv4_address: ${APP_IP_ADDRESS}
+
+  redis:
+    container_name: redis-container
+    image: redis:latest
+    environment:
+      TZ: Asia/Seoul
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    ports:
+      - ${REDIS_PORT}:6379
+    command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
+    networks:
+      cruru_network:
+        ipv4_address: ${REDIS_IP_ADDRESS}
 
   promtail:
     environment:
