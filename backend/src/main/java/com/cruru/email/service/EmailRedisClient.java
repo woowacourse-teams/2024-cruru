@@ -43,7 +43,7 @@ public class EmailRedisClient {
 
     public void verifyEmail(String email) {
         String verifiedStatus = redisTemplate.opsForValue().get(VERIFIED_EMAIL_PREFIX + email);
-        VerificationStatus status = VerificationStatus.fromString(verifiedStatus);
+        VerificationStatus status = VerificationStatus.fromValue(verifiedStatus);
         checkVerification(status);
     }
 

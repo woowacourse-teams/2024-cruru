@@ -1,16 +1,26 @@
 package com.cruru.email.service;
 
+import java.util.Arrays;
+import lombok.Getter;
+
+@Getter
 public enum VerificationStatus {
-    VERIFIED,
-    NOT_VERIFIED,
+
+    VERIFIED("verified"),
+    NOT_VERIFIED("not_verified"),
     ;
 
-    public static VerificationStatus fromString(String status) {
-        try {
-            return VerificationStatus.valueOf(status);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            return NOT_VERIFIED;
-        }
+    private final String value;
+
+    VerificationStatus(String value) {
+        this.value = value;
+    }
+
+    public static VerificationStatus fromValue(String value) {
+        return Arrays.stream(VerificationStatus.values())
+                .filter(status -> status.getValue().equalsIgnoreCase(value))
+                .findFirst()
+                .orElse(NOT_VERIFIED);
     }
 
     public boolean isVerified() {
