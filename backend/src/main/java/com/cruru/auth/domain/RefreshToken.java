@@ -8,17 +8,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
-@RedisHash("refresh_token")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class RefreshToken implements Token {
 
-    @Indexed
     private String token;
 
-    @Id
-    private long memberId;
+    private String email;
 
     public boolean isSameToken(String token) {
         return this.token.equals(token);
@@ -45,7 +42,7 @@ public class RefreshToken implements Token {
     public String toString() {
         return "RefreshToken{" +
                 "token='" + token + '\'' +
-                ", memberId=" + memberId +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

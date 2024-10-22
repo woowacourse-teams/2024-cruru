@@ -4,14 +4,12 @@ import com.cruru.auth.controller.response.TokenResponse;
 import com.cruru.auth.domain.AccessToken;
 import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
-import com.cruru.auth.domain.repository.RefreshTokenRepository;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.auth.exception.LoginExpiredException;
 import com.cruru.auth.security.PasswordValidator;
 import com.cruru.auth.security.TokenProperties;
 import com.cruru.auth.security.TokenProvider;
-import com.cruru.member.domain.Member;
-import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.member.domain.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.util.HashMap;
@@ -31,44 +29,42 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final PasswordValidator passwordValidator;
     private final TokenProperties tokenProperties;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final MemberRepository memberRepository;
+    private final TokenRedisClient tokenRedisClient;
 
-    public Token createAccessToken(Member member) {
-        Map<String, Object> claims = getClaims(member);
+    public Token createAccessToken(String email, MemberRole role) {
+        Map<String, Object> claims = getClaims(email, role);
         String token = tokenProvider.createToken(claims, tokenProperties.accessExpireLength());
         return new AccessToken(token);
     }
 
     @Transactional
-    public Token createRefreshToken(Member member) {
-        if (refreshTokenRepository.existsByMemberId(member.getId())) {
-            return rotateRefreshToken(member);
+    public Token createRefreshToken(String email, MemberRole role) {
+        if (tokenRedisClient.existsByEmail(email)) {
+            return rotateRefreshToken(email, role);
         }
 
-        Map<String, Object> claims = getClaims(member);
+        Map<String, Object> claims = getClaims(email, role);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
+        tokenRedisClient.saveToken(email, token);
 
-        return refreshTokenRepository.save(new RefreshToken(token, member.getId()));
+        return new RefreshToken(token, email);
     }
 
     @Transactional
     public TokenResponse refresh(String refreshToken) {
-        checkRefreshTokenExists(refreshToken);
-
         String email = extractEmail(refreshToken);
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow();
-        validMemberRefreshToken(refreshToken, member);
-        return rotateTokens(member);
+        checkRefreshTokenExists(email, refreshToken);
+        MemberRole role = MemberRole.valueOf(extractMemberRole(refreshToken));
+        validMemberRefreshToken(refreshToken, email);
+        return rotateTokens(email, role);
     }
 
-    private void checkRefreshTokenExists(String refreshToken) {
+    private void checkRefreshTokenExists(String email, String refreshToken) {
         if (!isTokenSignatureValid(refreshToken)) {
             throw new IllegalTokenException();
         }
 
-        if (!refreshTokenRepository.existsByToken(refreshToken)) {
+        if (!tokenRedisClient.existsByToken(email, refreshToken)) {
             throw new IllegalTokenException();
         }
 
@@ -77,25 +73,25 @@ public class AuthService {
         }
     }
 
-    private TokenResponse rotateTokens(Member member) {
-        Token accessToken = createAccessToken(member);
-        Token refreshToken = rotateRefreshToken(member);
+    private TokenResponse rotateTokens(String email, MemberRole role) {
+        Token accessToken = createAccessToken(email, role);
+        Token refreshToken = rotateRefreshToken(email, role);
         return new TokenResponse(accessToken.getToken(), refreshToken.getToken());
     }
 
-    private Token rotateRefreshToken(Member member) {
-        Map<String, Object> claims = getClaims(member);
+    private Token rotateRefreshToken(String email, MemberRole role) {
+        Map<String, Object> claims = getClaims(email, role);
         String token = tokenProvider.createToken(claims, tokenProperties.refreshExpireLength());
-        RefreshToken refreshToken = new RefreshToken(token, member.getId());
+        RefreshToken refreshToken = new RefreshToken(token, email);
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken.getToken(), member.getId()));
+        tokenRedisClient.saveToken(email, refreshToken.getToken());
         return refreshToken;
     }
 
-    private Map<String, Object> getClaims(Member member) {
+    private Map<String, Object> getClaims(String email, MemberRole role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(EMAIL_CLAIM, member.getEmail());
-        claims.put(ROLE_CLAIM, member.getRole().name());
+        claims.put(EMAIL_CLAIM, email);
+        claims.put(ROLE_CLAIM, role.name());
         return claims;
     }
 
@@ -137,10 +133,10 @@ public class AuthService {
         return !passwordValidator.matches(rawPassword, encodedPassword);
     }
 
-    private void validMemberRefreshToken(String refreshToken, Member member) {
-        RefreshToken foundToken = refreshTokenRepository.findByMemberId(member.getId())
+    private void validMemberRefreshToken(String refreshToken, String email) {
+        String foundToken = tokenRedisClient.getToken(email)
                 .orElseThrow(IllegalTokenException::new);
-        if (!foundToken.isSameToken(refreshToken)) {
+        if (!foundToken.equals(refreshToken)) {
             throw new IllegalTokenException();
         }
     }

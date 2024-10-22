@@ -13,6 +13,7 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 import com.cruru.auth.controller.request.LoginRequest;
 import com.cruru.auth.domain.Token;
 import com.cruru.auth.service.AuthService;
+import com.cruru.auth.service.TokenRedisClient;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("인증 컨트롤러 테스트")
 class AuthControllerTest extends ControllerTest {
@@ -36,6 +38,9 @@ class AuthControllerTest extends ControllerTest {
     private ClubRepository clubRepository;
 
     private Member member;
+
+    @MockBean
+    private TokenRedisClient tokenRedisClient;
 
     @BeforeEach
     void setup() {
