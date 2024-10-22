@@ -23,14 +23,13 @@ export interface ProcessResponse {
   endDate: string;
 }
 
-export type EvaluationStatus = 'ALL' | 'NOT_EVALUATION' | 'EVALUATED';
+export type EvaluationStatus = 'ALL' | 'NOT_EVALUATED' | 'EVALUATED';
 
-type FilterParams = {
+export type FilterParams = {
   minScore?: string;
   maxScore?: string;
   evaluationStatus?: EvaluationStatus;
 };
-export type ProcessFilterOptions = FilterParams;
 
 export type SortOption = 'ASC' | 'DESC';
 export type SortParams = {

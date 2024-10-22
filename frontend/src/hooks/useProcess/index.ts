@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { Process, ProcessResponse } from '@customTypes/process';
+import type { EvaluationStatus, Process, ProcessResponse } from '@customTypes/process';
 
 import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
@@ -8,6 +8,7 @@ import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import { routes } from '@router/path';
 import { useEffect } from 'react';
 import { DOMAIN_URL } from '../../constants/constants';
+import useFilterApplicant, { RatingFilterType } from './useFilterApplicant';
 
 export interface SimpleProcess {
   processName: string;
@@ -28,13 +29,19 @@ interface UseProcessReturn {
   postUrl: string;
   startDate: string;
   endDate: string;
+  applicantSortDropdownProps: ReturnType<typeof useSortApplicant>;
+  ratingFilterProps: ReturnType<typeof useFilterApplicant>;
 }
 
-export default function useProcess({
-  dashboardId,
-  applyFormId,
-}: UseProcessProps): UseProcessReturn & ReturnType<typeof useSortApplicant> {
-  const { sortOption, updateSortOption } = useSortApplicant();
+const EVALUATION_STATUS: Record<RatingFilterType, EvaluationStatus> = {
+  All: 'ALL',
+  Pending: 'NOT_EVALUATED',
+  InProgress: 'EVALUATED',
+};
+
+export default function useProcess({ dashboardId, applyFormId }: UseProcessProps): UseProcessReturn {
+  const applicantSortDropdownProps = useSortApplicant();
+  const ratingFilterProps = useFilterApplicant();
 
   const { data, error, isLoading, refetch } = useQuery<ProcessResponse>({
     // [10.17-lesser]
@@ -45,14 +52,16 @@ export default function useProcess({
     queryFn: () =>
       processApis.get({
         dashboardId,
-        ...sortOption,
-        // ...(filterOption && { filterOption: filterOption as ProcessFilterOptions }),
+        ...applicantSortDropdownProps.sortOption,
+        minScore: ratingFilterProps.ratingRange.min.toString(),
+        maxScore: ratingFilterProps.ratingRange.max.toString(),
+        evaluationStatus: EVALUATION_STATUS[ratingFilterProps.ratingFilterType],
       }),
   });
 
   useEffect(() => {
     refetch();
-  }, [sortOption]);
+  }, [applicantSortDropdownProps.sortOption, ratingFilterProps.ratingRange, ratingFilterProps.ratingFilterType]);
 
   const processes = data?.processes || [];
 
@@ -67,7 +76,7 @@ export default function useProcess({
     isLoading,
     startDate: data?.startDate ?? '0',
     endDate: data?.endDate ?? '0',
-    sortOption,
-    updateSortOption,
+    applicantSortDropdownProps,
+    ratingFilterProps,
   };
 }

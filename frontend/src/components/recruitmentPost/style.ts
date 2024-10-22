@@ -7,15 +7,15 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.6rem;
+  gap: 4.8rem;
+
+  padding-bottom: 4.8rem;
 `;
 
 const ButtonContainer = styled.div`
   width: 100%;
   max-width: 30rem;
-  height: 5.2rem;
-
-  margin-bottom: 4.8rem;
+  height: 4.2rem;
 `;
 
 const C = {

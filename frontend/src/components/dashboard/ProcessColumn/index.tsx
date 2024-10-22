@@ -134,7 +134,10 @@ export default function ProcessColumn({
     <S.ProcessWrapper isPassedColumn={isPassedColumn}>
       <S.Header>
         <S.TitleContainer>
-          <S.Title>{process.name}</S.Title>
+          <S.TitleBox>
+            <S.Title>{process.name}</S.Title>
+            <S.ApplicantNumber>{filteredApplicants.length}</S.ApplicantNumber>
+          </S.TitleBox>
           {isMultiType && (
             <S.CheckboxContainer>
               <CheckBox

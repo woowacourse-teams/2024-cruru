@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
 const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
   padding: 3.2rem 0;
   height: 100%;
 `;
