@@ -82,40 +82,6 @@ class QuestionControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("존재하는 질문의 변경 성공시, 200을 응답한다.")
-    @Test
-    void updateByTsid() {
-        // given
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
-        questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
-        QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(
-                List.of(
-                        new QuestionCreateRequest(
-                                QuestionType.LONG_ANSWER.name(),
-                                "new",
-                                List.of(new ChoiceCreateRequest("좋아하는 음식은?", 0)),
-                                0,
-                                true
-                        )
-                )
-        );
-
-        // when&then
-        RestAssured.given(spec).log().all()
-                .cookie("accessToken", token)
-                .contentType(ContentType.JSON)
-                .body(questionUpdateRequests)
-                .filter(document("question/update-tsid",
-                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
-                        queryParameters(parameterWithName("applyformId").description("질문을 변경할 지원폼의 id")),
-                        requestFields(fieldWithPath("questions").description("변경할 질문들"))
-                                .andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
-                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
-                ))
-                .when().patch("/v1/questions?applyformId={applyformId}", applyForm.toStringId())
-                .then().log().all().statusCode(200);
-    }
-
     @DisplayName("존재하는 않는 지원폼의 질문 변경 시, 404를 응답한다.")
     @Test
     void update_applyFormNotFound() {

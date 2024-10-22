@@ -80,10 +80,6 @@ public class ApplyForm extends BaseEntity implements SecureResource {
         return dashboard.isAuthorizedBy(member);
     }
 
-    public String toStringId() {
-        return String.valueOf(this.id);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

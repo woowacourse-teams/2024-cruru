@@ -21,4 +21,14 @@ public record DashboardPreviewResponse(
         LocalDateTime endDate
 ) {
 
+    public static DashboardPreviewResponse of(
+            long dashboardId,
+            long applyFormId,
+            String title,
+            StatsResponse stats,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        return new DashboardPreviewResponse(dashboardId, String.valueOf(applyFormId), title, stats, startDate, endDate);
+    }
 }

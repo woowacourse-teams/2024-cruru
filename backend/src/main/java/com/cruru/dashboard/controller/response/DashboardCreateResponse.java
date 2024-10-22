@@ -5,4 +5,7 @@ public record DashboardCreateResponse(
         long dashboardId
 ) {
 
+    public static DashboardCreateResponse of(long applyFormId, long dashboardId) {
+        return new DashboardCreateResponse(String.valueOf(applyFormId), dashboardId);
+    }
 }

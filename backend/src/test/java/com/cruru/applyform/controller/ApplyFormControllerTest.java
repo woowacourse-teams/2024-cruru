@@ -141,39 +141,6 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(201);
     }
 
-    @DisplayName("지원서 폼 제출 시, 201을 반환한다.")
-    @Test
-    void submitByTsid() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.applyType(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.frontend(dashboard));
-        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
-        Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
-
-        List<AnswerCreateRequest> answerCreateRequests = List.of(
-                new AnswerCreateRequest(question1.getId(), List.of("안녕하세요, 맛있는 초코칩입니다.")),
-                new AnswerCreateRequest(question2.getId(), List.of("온라인"))
-        );
-        ApplyFormSubmitRequest request = new ApplyFormSubmitRequest(
-                new ApplicantCreateRequest("초코칩", "dev.chocochip@gmail.com", "01000000000"),
-                answerCreateRequests,
-                true
-        );
-
-        // when&then
-        RestAssured.given(spec).log().all()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .filter(document("applyform/submit-tsid",
-                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
-                                .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
-                ))
-                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.toStringId())
-                .then().log().all().statusCode(201);
-    }
-
     @DisplayName("지원서 폼 제출 시, 개인정보 활용을 거부할 경우 400을 반환한다.")
     @Test
     void submit_rejectPersonalDataCollection() {
@@ -441,36 +408,6 @@ class ApplyFormControllerTest extends ControllerTest {
                 .then().log().all().statusCode(200);
     }
 
-    @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
-    @Test
-    void readByTsid() {
-        // given
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        processRepository.save(ProcessFixture.applyType(dashboard));
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
-        Question question2 = questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
-        choiceRepository.saveAll(ChoiceFixture.fiveChoices(question2));
-
-        // when&then
-        RestAssured.given(spec).log().all()
-                .cookie("accessToken", token)
-                .contentType(ContentType.JSON)
-                .filter(document("applicant/read-applyform-tsid",
-                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        responseFields(
-                                fieldWithPath("title").description("지원폼의 제목"),
-                                fieldWithPath("postingContent").description("지원자의 내용(본문)"),
-                                fieldWithPath("startDate").description("지원 가능 날짜"),
-                                fieldWithPath("endDate").description("지원 마감 날짜"),
-                                fieldWithPath("questions").description("지원폼의 질문들")
-                        ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
-                                .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
-                ))
-                .when().get("/v1/applyform/{applyFormId}", applyForm.toStringId())
-                .then().log().all().statusCode(200);
-    }
-
     @DisplayName("지원서 폼 조회 시, 지원서 폼이 존재하지 않을 경우 404을 반환한다.")
     @Test
     void read_notFound() {
@@ -513,34 +450,6 @@ class ApplyFormControllerTest extends ControllerTest {
                         requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
                 ))
                 .when().patch("/v1/applyform/{applyFormId}", applyForm.getId())
-                .then().log().all().statusCode(200);
-    }
-
-    @DisplayName("지원서 폼을 성공적으로 수정하면, 200을 응답한다.")
-    @Test
-    void updateByTsid() {
-        // given
-        String toChangeTitle = "크루루 백엔드 모집 공고~~";
-        String toChangeDescription = "# 모집 공고 설명 #";
-        LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
-        LocalDateTime toChangeEndDate = LocalDateFixture.oneWeekLater();
-        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
-        ApplyFormWriteRequest request = new ApplyFormWriteRequest(
-                toChangeTitle, toChangeDescription, toChangeStartDate, toChangeEndDate
-        );
-
-        // when&then
-        RestAssured.given(spec).log().all()
-                .contentType(ContentType.JSON)
-                .cookie("accessToken", token)
-                .body(request)
-                .filter(document("applicant/update-tsid",
-                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
-                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
-                        requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
-                ))
-                .when().patch("/v1/applyform/{applyFormId}", applyForm.toStringId())
                 .then().log().all().statusCode(200);
     }
 
