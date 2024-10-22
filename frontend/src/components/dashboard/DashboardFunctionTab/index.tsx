@@ -19,9 +19,15 @@ interface DashboardFunctionTabProps {
   processList: SimpleProcess[];
   searchedName: string;
   onSearchName: (name: string) => void;
+  isRejectedApplicantsTab: boolean;
 }
 
-export default function DashboardFunctionTab({ processList, searchedName, onSearchName }: DashboardFunctionTabProps) {
+export default function DashboardFunctionTab({
+  processList,
+  searchedName,
+  onSearchName,
+  isRejectedApplicantsTab,
+}: DashboardFunctionTabProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
   const { applicants: selectedApplicantIds, isMultiType } = useMultiApplicant();
@@ -80,9 +86,12 @@ export default function DashboardFunctionTab({ processList, searchedName, onSear
 
       <S.FunctionsContainer>
         <MultiSelectToggle
+          dashboardId={dashboardId}
+          applyFormId={applyFormId}
           isToggled={isMultiType}
           processes={processList}
           selectedApplicantIds={selectedApplicantIds}
+          isRejectedApplicantsTab={isRejectedApplicantsTab}
         />
       </S.FunctionsContainer>
     </S.Wrapper>

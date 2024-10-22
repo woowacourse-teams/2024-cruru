@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import { DropdownProvider } from '@contexts/DropdownContext';
 import MultiSelectToggle from '.';
@@ -20,6 +21,9 @@ const meta = {
     selectedApplicantIds: {
       description: '선택된 지원자들의 ID값 목록을 나타냅니다.',
     },
+    isRejectedApplicantsTab: {
+      description: '현재 공고 대시보드 화면의 위치가 불합격자 관리 탭인지 여부를 나타냅니다.',
+    },
   },
   tags: ['autodocs'],
   decorators: [
@@ -34,11 +38,13 @@ const meta = {
           justifyContent: 'center',
         }}
       >
-        <MultiApplicantContextProvider>
-          <DropdownProvider>
-            <Child />
-          </DropdownProvider>
-        </MultiApplicantContextProvider>
+        <FloatingEmailFormProvider>
+          <MultiApplicantContextProvider>
+            <DropdownProvider>
+              <Child />
+            </DropdownProvider>
+          </MultiApplicantContextProvider>
+        </FloatingEmailFormProvider>
       </div>
     ),
   ],
@@ -74,8 +80,11 @@ const selectedApplicantIds = [1, 2, 3];
 
 export const MultiSelectToggleDefault: Story = {
   args: {
+    dashboardId: '1',
+    applyFormId: '1',
     isToggled: false,
     processes,
     selectedApplicantIds,
+    isRejectedApplicantsTab: false,
   },
 };
