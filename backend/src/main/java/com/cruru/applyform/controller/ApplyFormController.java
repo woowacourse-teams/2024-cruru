@@ -30,14 +30,14 @@ public class ApplyFormController {
     @PostMapping("/{applyformId}/submit")
     public ResponseEntity<Void> submit(
             @RequestBody @Valid ApplyFormSubmitRequest request,
-            @PathVariable("applyformId") long applyFormId
+            @PathVariable("applyformId") String applyFormId
     ) {
         applyFormFacade.submit(applyFormId, request);
         return ResponseEntity.created(URI.create("/v1/applyform/" + applyFormId)).build();
     }
 
     @GetMapping("/{applyformId}")
-    public ResponseEntity<ApplyFormResponse> read(@PathVariable("applyformId") long applyFormId) {
+    public ResponseEntity<ApplyFormResponse> read(@PathVariable("applyformId") String applyFormId) {
         ApplyFormResponse response = applyFormFacade.readApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
     }
@@ -46,7 +46,7 @@ public class ApplyFormController {
     @ValidAuth
     public ResponseEntity<Void> update(
             @RequestBody @Valid ApplyFormWriteRequest request,
-            @RequireAuth(targetDomain = ApplyForm.class) @PathVariable("applyformId") Long applyFormId,
+            @RequireAuth(targetDomain = ApplyForm.class) @PathVariable("applyformId") String applyFormId,
             LoginProfile loginProfile
     ) {
         applyFormFacade.update(request, applyFormId);

@@ -78,7 +78,7 @@ class QuestionControllerTest extends ControllerTest {
                                 .andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
                                 .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
                 ))
-                .when().patch("/v1/questions?applyformId={applyformId}", applyForm.getId())
+                .when().patch("/v1/questions?applyformId={applyformId}", applyForm.getTsid())
                 .then().log().all().statusCode(200);
     }
 
@@ -86,7 +86,7 @@ class QuestionControllerTest extends ControllerTest {
     @Test
     void update_applyFormNotFound() {
         // given
-        Long invalidApplyFormId = -1L;
+        String invalidApplyFormId = "";
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
         QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(

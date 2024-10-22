@@ -1,8 +1,10 @@
 package com.cruru.applyform.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
+import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.LocalDateFixture;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -23,5 +25,16 @@ class ApplyFormTest {
         // when&then
         assertThatThrownBy(() -> new ApplyForm(title, description, startDate, endDate, null))
                 .isInstanceOf(StartDateAfterEndDateException.class);
+    }
+
+    @DisplayName("지원서 폼 생성 시, 생성되는 Tsid는 고유하다.")
+    @Test
+    void tsid() {
+        // given
+        ApplyForm backend = ApplyFormFixture.backend();
+        ApplyForm notStarted = ApplyFormFixture.notStarted();
+
+        // when&then
+        assertThat(backend.getTsid()).isNotEqualTo(notStarted.getTsid());
     }
 }

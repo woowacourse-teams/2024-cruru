@@ -33,4 +33,6 @@ public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
            WHERE c.id = :clubId
            """)
     List<DashboardApplyFormDto> findAllByClub(@Param("clubId") Long clubId);
+
+    Optional<ApplyForm> findByTsid(String tsid);
 }

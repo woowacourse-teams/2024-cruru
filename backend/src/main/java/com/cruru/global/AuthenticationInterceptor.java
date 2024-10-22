@@ -16,7 +16,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @RequiredArgsConstructor
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
-    private static final String APPLYFORM_REQUEST_URI = "^/v1/applyform/\\d+$";
+    private static final String APPLYFORM_REQUEST_URI = "^/v1/applyform/[^/]+$";
 
     private final AuthService authService;
     private final CookieManager cookieManager;

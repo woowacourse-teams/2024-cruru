@@ -72,8 +72,8 @@ public class ApplyFormService {
         );
     }
 
-    public ApplyForm findById(Long applyFormId) {
-        return applyFormRepository.findById(applyFormId)
+    public ApplyForm findByTsid(String applyFormId) {
+        return applyFormRepository.findByTsid(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
 

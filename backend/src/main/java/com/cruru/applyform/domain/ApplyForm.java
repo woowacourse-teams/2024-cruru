@@ -5,6 +5,7 @@ import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
 import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.member.domain.Member;
+import io.hypersistence.tsid.TSID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,13 +17,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 public class ApplyForm extends BaseEntity implements SecureResource {
 
@@ -46,6 +45,39 @@ public class ApplyForm extends BaseEntity implements SecureResource {
     @JoinColumn(name = "dashboard_id")
     private Dashboard dashboard;
 
+    @Column(unique = true)
+    private String tsid;
+
+    private ApplyForm(
+            Long id,
+            String title,
+            String description,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Dashboard dashboard,
+            String tsid
+    ) {
+        validateDate(startDate, endDate);
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.dashboard = dashboard;
+        this.tsid = tsid;
+    }
+
+    public ApplyForm(
+            Long id,
+            String title,
+            String description,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Dashboard dashboard
+    ) {
+        this(id, title, description, startDate, endDate, dashboard, TSID.fast().toString());
+    }
+
     public ApplyForm(
             String title,
             String description,
@@ -53,12 +85,7 @@ public class ApplyForm extends BaseEntity implements SecureResource {
             LocalDateTime endDate,
             Dashboard dashboard
     ) {
-        validateDate(startDate, endDate);
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.dashboard = dashboard;
+        this(null, title, description, startDate, endDate, dashboard, TSID.fast().toString());
     }
 
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
@@ -105,6 +132,7 @@ public class ApplyForm extends BaseEntity implements SecureResource {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", dashboard=" + dashboard +
+                ", tsid='" + tsid + '\'' +
                 '}';
     }
 }

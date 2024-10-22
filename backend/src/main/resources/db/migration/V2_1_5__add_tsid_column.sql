@@ -1,0 +1,2 @@
+ALTER TABLE apply_form
+    ADD COLUMN tsid VARCHAR(255);

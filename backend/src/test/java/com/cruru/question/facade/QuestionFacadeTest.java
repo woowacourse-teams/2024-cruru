@@ -63,7 +63,7 @@ class QuestionFacadeTest extends ServiceTest {
                 )));
 
         // when
-        questionFacade.update(questionUpdateRequest, applyForm.getId());
+        questionFacade.update(questionUpdateRequest, applyForm.getTsid());
 
         // then
         List<Question> actualQuestions = questionRepository.findAllByApplyForm(applyForm);
@@ -104,7 +104,7 @@ class QuestionFacadeTest extends ServiceTest {
                 )));
 
         // when&then
-        assertThatThrownBy(() -> questionFacade.update(questionUpdateRequest, applyForm.getId()))
+        assertThatThrownBy(() -> questionFacade.update(questionUpdateRequest, applyForm.getTsid()))
                 .isInstanceOf(QuestionUnmodifiableException.class);
     }
 }
