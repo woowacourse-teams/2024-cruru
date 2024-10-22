@@ -4,7 +4,7 @@ import { HiChevronDown } from 'react-icons/hi';
 import { DropdownProvider, useDropdown } from '@contexts/DropdownContext';
 import S from './style';
 
-interface DropdownBaseProps extends PropsWithChildren {
+export interface DropdownBaseProps extends PropsWithChildren {
   value: string;
   width?: number;
   size?: 'sm' | 'md';
@@ -53,6 +53,7 @@ function DropdownBase({ value, width, size = 'sm', isShadow = true, disabled = f
       disabled={disabled}
     >
       <S.Header
+        className="dropdown-header"
         onClick={toggleDropdown}
         size={size}
         isOpen={isOpen}
@@ -73,11 +74,7 @@ function DropdownBase({ value, width, size = 'sm', isShadow = true, disabled = f
   );
 }
 
-export interface DropdownProps extends DropdownBaseProps {
-  initValue: string;
-}
-
-export default function Dropdown({ ...props }: DropdownProps) {
+export default function Dropdown({ ...props }: DropdownBaseProps) {
   return (
     <DropdownProvider>
       <DropdownBase {...props} />

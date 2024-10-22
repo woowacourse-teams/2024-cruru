@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DropdownItemRenderer from '@components/_common/molecules/DropdownItemRenderer';
 import type { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
-import Dropdown, { DropdownProps } from '.';
+import Dropdown, { DropdownBaseProps } from '.';
 
 export default {
   component: Dropdown,
@@ -25,9 +25,9 @@ export default {
   args: {
     value: 'Dropdown에 들어갈 string',
   },
-} as Meta<DropdownProps>;
+} as Meta<DropdownBaseProps>;
 
-const Template: StoryObj<DropdownProps> = {
+const Template: StoryObj<DropdownBaseProps> = {
   render: (args) => <Dropdown {...args} />,
 };
 
@@ -65,7 +65,7 @@ const createSampleItems: DropdownItemType[] = [
   },
 ];
 
-export const Default: StoryObj<DropdownProps> = {
+export const Default: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'md',
@@ -78,7 +78,7 @@ export const Default: StoryObj<DropdownProps> = {
   },
 };
 
-export const SmallSize: StoryObj<DropdownProps> = {
+export const SmallSize: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'sm',
@@ -91,11 +91,11 @@ export const SmallSize: StoryObj<DropdownProps> = {
   },
 };
 
-export const WithInitValue: StoryObj<DropdownProps> = {
+export const WithInitValue: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'md',
-    initValue: '선택된 옵션',
+    value: '선택된 옵션',
     children: (
       <DropdownItemRenderer
         items={createSampleItems}
@@ -105,7 +105,7 @@ export const WithInitValue: StoryObj<DropdownProps> = {
   },
 };
 
-export const WithSeparator: StoryObj<DropdownProps> = {
+export const WithSeparator: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'sm',
@@ -127,7 +127,7 @@ export const WithSeparator: StoryObj<DropdownProps> = {
   },
 };
 
-export const Disabled: StoryObj<DropdownProps> = {
+export const Disabled: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'md',
@@ -141,7 +141,7 @@ export const Disabled: StoryObj<DropdownProps> = {
   },
 };
 
-export const CustomWidth: StoryObj<DropdownProps> = {
+export const CustomWidth: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'md',
@@ -155,7 +155,7 @@ export const CustomWidth: StoryObj<DropdownProps> = {
   },
 };
 
-export const WithoutShadow: StoryObj<DropdownProps> = {
+export const WithoutShadow: StoryObj<DropdownBaseProps> = {
   ...Template,
   args: {
     size: 'md',

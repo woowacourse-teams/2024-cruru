@@ -8,7 +8,7 @@ import type { SimpleProcess } from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
 import applicantsReject from '@hooks/useApplicantsReject';
 import ToggleSwitch from '@components/_common/atoms/ToggleSwitch';
-import Dropdown from '@components/_common/molecules/Dropdown';
+import Dropdown from '@components/_common/molecules/Dropdown2';
 import DropdownItemRenderer, { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 
 import S from './style';
@@ -113,7 +113,7 @@ export default function MultiSelectToggle({
       >
         <DropdownProvider>
           <Dropdown
-            initValue="실행할 작업"
+            value="실행할 작업"
             width={120}
             isShadow={false}
             disabled={selectedApplicantIds.length === 0}
