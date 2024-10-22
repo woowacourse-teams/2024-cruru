@@ -16,6 +16,7 @@ const QuestionBuilderContainer = styled.div`
   padding: 2.4rem;
   border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-radius: 0.8rem 0 0.8rem 0.8rem;
+  background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 `;
 
 const InputBox = styled.div`

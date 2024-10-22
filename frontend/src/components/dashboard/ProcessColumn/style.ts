@@ -8,9 +8,7 @@ const ProcessWrapper = styled.section<{ isPassedColumn: boolean }>`
 
   padding: 1.2rem;
   border-radius: 0.8rem;
-  border: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
-  background-color: ${({ theme, isPassedColumn = false }) =>
-    isPassedColumn ? '#F9FFF9' : theme.baseColors.grayscale[50]};
+  background-color: ${({ theme, isPassedColumn }) => (isPassedColumn ? '#EEF5E4' : theme.baseColors.grayscale[100])};
 
   display: flex;
   flex-direction: column;

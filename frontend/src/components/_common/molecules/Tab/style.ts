@@ -61,7 +61,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
   }
 `;
 
-const TabPanel = styled.div`
+const TabPanel = styled.div<{ color: 'gray' | 'white' }>`
   width: 100%;
   flex: 1;
   min-height: 0;
@@ -71,6 +71,8 @@ const TabPanel = styled.div`
   ${hideScrollBar};
 
   animation: ${showUp} 0.2s ease-in-out;
+  background-color: ${({ color, theme }) =>
+    color === 'gray' ? theme.baseColors.grayscale[100] : theme.baseColors.grayscale[50]};
 `;
 
 const S = {

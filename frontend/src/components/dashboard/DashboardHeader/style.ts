@@ -4,7 +4,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: 1.2rem;
+  padding-bottom: 0 1.6rem 1.2rem 1.6rem;
 `;
 
 const TitleContainer = styled.div`
