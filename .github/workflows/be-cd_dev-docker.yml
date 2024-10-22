@@ -135,6 +135,7 @@ jobs:
         REDIS_PORT=${{ secrets.REDIS_PORT }}
         REDIS_HOST=${{ secrets.REDIS_HOST }}
         REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+        REDIS_IP_ADDRESS=${{ secrets.REDIS_IP_ADDRESS }}
         EOF
 
     # - name: Check if MySQL container is running
