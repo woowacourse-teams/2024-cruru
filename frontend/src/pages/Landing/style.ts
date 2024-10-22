@@ -115,6 +115,7 @@ const HeaderLogin = styled.div`
 const MainSection = styled.section`
   position: relative;
   width: 100%;
+  min-height: fit-content;
   padding-top: 20vh;
 
   display: flex;
@@ -205,6 +206,7 @@ const CtaButtons = styled.div`
 const MainImg = styled.img`
   width: 60%;
   min-width: 80rem;
+  aspect-ratio: 45 / 32;
 
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease-in-out forwards;

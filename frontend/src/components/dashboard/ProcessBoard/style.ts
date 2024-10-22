@@ -11,14 +11,13 @@ const ColumnWrapper = styled.div`
   width: 100%;
   flex: 1;
 
-  background-color: white;
   display: flex;
-  gap: 2rem;
 
   overflow-x: scroll;
   overflow-y: visible;
 
   padding-bottom: 1.2rem;
+  gap: 2.4rem;
 `;
 
 const S = {
