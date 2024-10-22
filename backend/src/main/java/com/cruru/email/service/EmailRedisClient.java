@@ -35,7 +35,7 @@ public class EmailRedisClient {
         redisTemplate.opsForValue()
                 .set(
                         VERIFIED_EMAIL_PREFIX + email,
-                        VerificationStatus.VERIFIED.name(),
+                        VerificationStatus.VERIFIED.getValue(),
                         VERIFIED_EMAIL_EXPIRATION,
                         TimeUnit.MINUTES
                 );
