@@ -4,15 +4,16 @@ import { HiChevronDown } from 'react-icons/hi';
 import { DropdownProvider, useDropdown } from '@contexts/DropdownContext';
 import S from './style';
 
-interface DropdownBaseProps extends PropsWithChildren {
+export interface DropdownBaseProps extends PropsWithChildren {
+  value: string;
   width?: number;
   size?: 'sm' | 'md';
   isShadow?: boolean;
   disabled?: boolean;
 }
 
-function DropdownBase({ width, size = 'sm', isShadow = true, disabled = false, children }: DropdownBaseProps) {
-  const { isOpen, open, close, selected } = useDropdown();
+function DropdownBase({ value, width, size = 'sm', isShadow = true, disabled = false, children }: DropdownBaseProps) {
+  const { isOpen, open, close } = useDropdown();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => {
@@ -57,7 +58,7 @@ function DropdownBase({ width, size = 'sm', isShadow = true, disabled = false, c
         size={size}
         isOpen={isOpen}
       >
-        {selected || 'Default'}
+        {value}
         <HiChevronDown size={sizeObj[size]} />
       </S.Header>
 
@@ -73,13 +74,9 @@ function DropdownBase({ width, size = 'sm', isShadow = true, disabled = false, c
   );
 }
 
-export interface DropdownProps extends DropdownBaseProps {
-  initValue: string;
-}
-
-export default function Dropdown({ initValue, ...props }: DropdownProps) {
+export default function Dropdown({ ...props }: DropdownBaseProps) {
   return (
-    <DropdownProvider initValue={initValue}>
+    <DropdownProvider>
       <DropdownBase {...props} />
     </DropdownProvider>
   );

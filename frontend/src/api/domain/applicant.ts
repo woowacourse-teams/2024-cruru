@@ -32,12 +32,30 @@ const getDetailApplicant = async ({ applicantId }: { applicantId: number }) =>
     path: `/${applicantId}/detail`,
   });
 
+const rejectApplicants = async ({ applicantIds }: { applicantIds: number[] }) =>
+  apiClient.patch<{ status: number }>({
+    path: '/reject',
+    body: {
+      applicantIds,
+    },
+  });
+
+const unrejectApplicants = async ({ applicantIds }: { applicantIds: number[] }) =>
+  apiClient.patch<{ status: number }>({
+    path: '/unreject',
+    body: {
+      applicantIds,
+    },
+  });
+
 const applicantApis = {
   move: moveApplicant,
   get: getSpecificApplicant,
   reject: rejectApplicant,
   unreject: unrejectApplicant,
   getDetail: getDetailApplicant,
+  rejectApplicants,
+  unrejectApplicants,
 };
 
 export default applicantApis;

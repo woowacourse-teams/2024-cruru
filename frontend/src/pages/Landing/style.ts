@@ -1,5 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import media from '@styles/media';
 
 const dropdownShadow = css`
   box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.25);
@@ -39,17 +40,35 @@ const fadeInUp = keyframes`
   }
 `;
 
-const getBubblePosition = (index: number) => {
-  const positions = [
+const getBubblePosition = (index: number, isMobile?: boolean) => {
+  const desktopPositions = [
     { top: '10%', right: '10%' },
     { top: '10%', left: '10%' },
     { top: '40%', right: '5%' },
     { top: '40%', left: '5%' },
   ];
-  return positions[index] || positions[0];
+
+  const mobilePositions = [
+    { right: '5%', top: '10%' },
+    { left: '5%', top: '10%' },
+    { right: '0', top: '40%' },
+    { left: '0', top: '40%' },
+  ];
+
+  const position = isMobile
+    ? mobilePositions[index] || mobilePositions[0]
+    : desktopPositions[index] || desktopPositions[0];
+
+  return css`
+    ${position.top ? `top: ${position.top};` : ''}
+    ${position.right ? `right: ${position.right};` : ''}
+    ${position.left ? `left: ${position.left};` : ''}
+  `;
 };
 
 const Container = styled.div`
+  position: relative;
+
   width: 100vw;
 
   display: flex;
@@ -60,11 +79,43 @@ const Container = styled.div`
   white-space: nowrap;
 `;
 
+const MobileHeader = styled.header`
+  display: none;
+  position: fixed;
+  top: 1.6rem;
+  padding: 2.4rem 2.2rem;
+  width: 90%;
+  border-radius: 1.6rem;
+
+  z-index: 10;
+  box-shadow: 0px 4px 4px rgba(144, 144, 144, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 6%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border: 1px solid linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+
+  ${media('mobile')`
+    display: flex;
+    justify-content: space-between;
+  `}
+`;
+
+const ServiceLogo = styled.img`
+  width: 5rem;
+`;
+
+const HeaderLogin = styled.div`
+  ${({ theme }) => theme.typography.common.small};
+`;
+
 // Main Section
 const MainSection = styled.section`
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: fit-content;
   padding-top: 20vh;
 
   display: flex;
@@ -76,7 +127,11 @@ const MainSection = styled.section`
 
   background: linear-gradient(90deg, #f5f5ff 0%, ${({ theme }) => theme.baseColors.grayscale[50]} 49%);
 
-  overflow: hidden;
+  ${media('mobile')`
+    height: 100vh;
+    padding: 20vh 1.6rem;
+    gap: 1.6rem;
+  `}
 `;
 
 const Catchphrase = styled.h1`
@@ -111,6 +166,11 @@ const Catchphrase = styled.h1`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  ${media('mobile')(`
+    font-size: 3.5rem;
+    line-height: 1.4;
+  `)}
 `;
 
 const Supporting = styled.p`
@@ -123,6 +183,10 @@ const Supporting = styled.p`
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease-in-out forwards;
   animation-delay: 0.6s;
+
+  ${media('mobile')(`
+    font-size: 1.6rem;
+  `)}
 `;
 
 const CtaButtons = styled.div`
@@ -140,15 +204,21 @@ const CtaButtons = styled.div`
 `;
 
 const MainImg = styled.img`
-  width: 60vw;
+  width: 60%;
   min-width: 80rem;
-  position: absolute;
-  bottom: -18rem;
-  z-index: 0;
+  aspect-ratio: 45 / 32;
 
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease-in-out forwards;
   animation-delay: 0.6s;
+  margin-bottom: 2.4rem;
+
+  ${media('mobile')`
+    width: 80%;
+    min-width: 35rem;
+    margin-top: 1.6rem;
+    margin-bottom: 0;
+  `}
 `;
 
 const ScrollDownArea = styled.div`
@@ -162,10 +232,9 @@ const ScrollDownArea = styled.div`
   position: absolute;
   bottom: -10vh;
 
-  & > svg {
+  & > button > svg {
     display: block;
     position: relative;
-    bottom: -3rem;
 
     font-size: 4rem;
     color: ${({ theme }) => theme.baseColors.purplescale[500]};
@@ -187,10 +256,22 @@ const PainPointSection = styled.section`
 
   background: linear-gradient(155deg, rgba(243, 217, 238, 1) 0%, rgba(255, 255, 255, 0) 100%),
     linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+
+  ${media('mobile')`
+    height: fit-content;
+    background: none;
+    
+    padding: 5.4rem 1.6rem 2.4rem;
+    margin-bottom: 10vh;
+  `}
 `;
 
 const MessageImg = styled.img`
   width: 20%;
+
+  ${media('mobile')`
+    display: none;
+  `}
 `;
 
 const PersonImgWrapper = styled.div`
@@ -200,9 +281,19 @@ const PersonImgWrapper = styled.div`
   height: 80%;
   max-width: 85rem;
   max-height: 43rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media('mobile')`
+    height: auto;
+    max-height: auto;
+  `}
 `;
+
 const SpeechBubbleContainer = styled.div`
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
 `;
@@ -212,7 +303,7 @@ const SpeechBubble = styled.div<{ index: number }>`
   ${({ theme }) => theme.typography.common.large};
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
   border-radius: 1rem;
-  max-width: 29rem;
+  max-width: 25rem;
   padding: 0.8rem;
 
   ${dropdownShadow}
@@ -222,12 +313,28 @@ const SpeechBubble = styled.div<{ index: number }>`
   ${({ index }) => getBubblePosition(index)};
 
   ${({ index }) => (index % 2 === 1 ? 'border-bottom-right-radius: 0;' : 'border-bottom-left-radius: 0;')};
+
+  ${({ index }) =>
+    media('mobile')(`
+    max-width: 40%;
+    font-size: 1.4rem;
+    ${index === 0 ? 'right: 5%;' : ''}
+    ${index === 1 ? 'left: 5%;' : ''}
+    ${index === 2 ? 'right: 0;' : ''}
+    ${index === 3 ? 'left: 0;' : ''}
+  `)}
 `;
 
 const PersonImg = styled.img`
-  position: absolute;
+  width: 60%;
   top: 25%;
   left: 25%;
+
+  ${media('mobile')`
+    display: block;
+    margin: auto;
+    width: 80%;
+  `}
 `;
 
 // Product Intro Section
@@ -240,6 +347,12 @@ const ProductIntroSection = styled.section`
   align-items: center;
   justify-content: center;
   gap: 3.6rem;
+
+  ${media('mobile')`
+    padding: 0 1.6rem;
+    height: fit-content;
+    margin-bottom: 20vh;
+  `}
 `;
 
 const IntroText = styled.p`
@@ -256,6 +369,10 @@ const IntroText = styled.p`
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  ${media('mobile')`
+    font-size: 2.4rem;
+  `}
 `;
 
 const StrongIntroText = styled.p`
@@ -263,6 +380,10 @@ const StrongIntroText = styled.p`
   font-weight: 700;
   line-height: 1.5;
   text-align: center;
+
+  ${media('mobile')`
+    font-size: 2.8rem;
+  `}
 `;
 
 const StrongIntroHighlightText = styled.span`
@@ -305,6 +426,14 @@ const FeatureSection = styled.section<{ color: 'blue' | 'purple' | 'gray' }>`
       );
     `;
   }}
+
+  ${media('mobile')`
+    padding: 0 1.6rem;
+    height: fit-content;
+    text-align: center;
+    gap: 2.4rem;
+    margin-bottom: 4.8rem;
+  `}
 `;
 
 const FeatureTitle = styled.h2`
@@ -314,6 +443,10 @@ const FeatureTitle = styled.h2`
   line-height: 1.2;
 
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
+
+  ${media('mobile')`
+    font-size: 3rem;
+  `}
 `;
 
 const FeatureSubtitle = styled.h3<{ color: 'blue' | 'purple' | 'gray' }>`
@@ -338,17 +471,42 @@ const FeatureDescription = styled.p`
   line-height: 1.5;
 
   color: ${({ theme }) => theme.colors.text.default};
+
+  ${media('mobile')`
+    font-size: 1.4rem;
+  `}
 `;
 
 const FeatureImg = styled.img`
   width: 100%;
   max-width: 55rem;
   min-width: 40rem;
+
+  ${media('mobile')`
+    width: 90%;
+    min-width: auto;
+  `}
+`;
+
+const StartButtonContainer = styled.div`
+  width: 30%;
+  max-width: 30rem;
+  min-width: 20rem;
+  height: 4.2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 20rem;
+
+  ${media('mobile')`
+    margin-bottom: 5.4rem;
+  `}
 `;
 
 // Footer
 const Footer = styled.footer`
-  margin-top: 20rem;
   width: 100%;
   height: 20vh;
 
@@ -370,19 +528,11 @@ const Footer = styled.footer`
   }
 `;
 
-const StartButtonWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-
-  width: 30%;
-  height: 4.8rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const S = {
+  MobileHeader,
+  ServiceLogo,
+  HeaderLogin,
+
   Container,
   MainSection,
   Catchphrase,
@@ -408,7 +558,7 @@ const S = {
   FeatureSubtitle,
   FeatureDescription,
   FeatureImg,
-  StartButtonWrapper,
+  StartButtonContainer,
 
   Footer,
 };

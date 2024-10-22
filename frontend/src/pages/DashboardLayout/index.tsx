@@ -18,7 +18,7 @@ export default function DashboardLayout() {
 
   const applyFormList = data?.dashboards.map(({ title, dashboardId, applyFormId, startDate, endDate }) => ({
     text: title,
-    isSelected: !!currentPostId && currentPostId === String(applyFormId),
+    isSelected: !!currentPostId && currentPostId === applyFormId,
     status: getTimeStatus({ startDate, endDate }),
     applyFormId,
     dashboardId,
@@ -39,10 +39,7 @@ export default function DashboardLayout() {
       </S.Sidebar>
 
       <Suspense fallback={<LoadingPage />}>
-        <S.MainContainer
-          isSidebarOpen={isSidebarOpen}
-          sidebarWidth={rect?.width}
-        >
+        <S.MainContainer sidebarWidth={rect?.width}>
           <Outlet />
         </S.MainContainer>
       </Suspense>

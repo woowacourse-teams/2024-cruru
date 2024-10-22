@@ -35,7 +35,7 @@ const specificApplicant = {
     return useMutation({
       mutationFn: ({ applicantId }: { applicantId: number }) => applicantApis.unreject({ applicantId }),
       onSuccess: () => {
-        toast.success('부활하였습니다. 👻예토전생👻');
+        toast.success('재검토 대상으로 변경되었습니다.');
         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
       },
     });

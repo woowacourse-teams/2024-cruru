@@ -32,9 +32,8 @@ const ToggleButton = styled.div`
   padding: 3.3rem 0rem 0rem 1.6rem;
 `;
 
-const MainContainer = styled.div<SidebarStyleProps>`
+const MainContainer = styled.div<Pick<SidebarStyleProps, 'sidebarWidth'>>`
   width: ${({ sidebarWidth }) => `calc(100% - ${sidebarWidth}px)`};
-  padding-left: ${({ isSidebarOpen }) => isSidebarOpen && '1rem'};
 `;
 
 const S = {

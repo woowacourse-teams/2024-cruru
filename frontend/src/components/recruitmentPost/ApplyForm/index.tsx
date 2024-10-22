@@ -54,19 +54,21 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
       return error('개인정보 수집 및 이용 동의에 체크해주세요.');
     }
 
-    apply({
-      body: {
-        applicant: {
-          ...applicant,
-          phone: applicant.phone,
-        },
-        answers: Object.entries(answers).map(([questionId, answer]) => ({
-          questionId,
-          replies: [...answer],
-        })),
-        personalDataCollection,
-      } as ApplyRequestBody,
-    });
+    if (window.confirm('제출 후엔 수정이나 재열람이 불가능하니 신중하게 확인 후 제출하세요.')) {
+      apply({
+        body: {
+          applicant: {
+            ...applicant,
+            phone: applicant.phone,
+          },
+          answers: Object.entries(answers).map(([questionId, answer]) => ({
+            questionId,
+            replies: [...answer],
+          })),
+          personalDataCollection,
+        } as ApplyRequestBody,
+      });
+    }
   };
 
   const handlePersonalDataCollection = (checked: boolean) => {
