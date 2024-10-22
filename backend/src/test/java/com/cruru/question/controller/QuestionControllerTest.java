@@ -120,7 +120,7 @@ class QuestionControllerTest extends ControllerTest {
     @Test
     void update_applyFormNotFound() {
         // given
-        long invalidApplyFormId = 111111;
+        long invalidApplyFormId = -1;
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
         QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(

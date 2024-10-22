@@ -332,7 +332,7 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void submit_applyFormNotFound() {
         // given
-        int invalidApplyFormId = 11111111;
+        int invalidApplyFormId = -1;
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         Question question = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
@@ -475,7 +475,7 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void read_notFound() {
         // given
-        int invalidApplyFormId = 11111;
+        int invalidApplyFormId = -1;
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -548,7 +548,7 @@ class ApplyFormControllerTest extends ControllerTest {
     @Test
     void update_notFound() {
         // given
-        int invalidApplyFormId = 111111;
+        int invalidApplyFormId = -1;
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
         LocalDateTime toChangeStartDate = LocalDateFixture.oneDayLater();
