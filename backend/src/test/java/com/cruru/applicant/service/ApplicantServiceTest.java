@@ -258,4 +258,31 @@ class ApplicantServiceTest extends ServiceTest {
         assertThat(applicantRepository.findAll()).contains(applicant3)
                 .doesNotContain(applicant1, applicant2);
     }
+
+    @DisplayName("IN절을 활용하여 id로 지원자를 찾는다.")
+    @Test
+    void findAllByIds() {
+        // given
+        List<Applicant> applicants = applicantRepository.saveAll(List.of(
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby()
+        ));
+        List<Long> ids = applicants.stream()
+                .map(Applicant::getId)
+                .toList();
+
+        // when
+        List<Applicant> found = applicantRepository.findAllById(ids);
+
+        // then
+        assertThat(found).containsExactlyInAnyOrderElementsOf(applicants);
+    }
 }
