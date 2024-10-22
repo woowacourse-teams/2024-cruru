@@ -110,7 +110,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
     @DisplayName("지원서 폼 제출 시, 201을 반환한다.")
     @Test
-    void submit() {
+    void submitById() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         processRepository.save(ProcessFixture.applyType(dashboard));
@@ -132,7 +132,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("applyform/submit",
+                .filter(document("applyform/submit-id",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
                         requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
@@ -380,7 +380,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
     @DisplayName("지원서 폼 조회 시, 200을 반환한다.")
     @Test
-    void read() {
+    void readById() {
         // given
         Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
         processRepository.save(ProcessFixture.applyType(dashboard));
@@ -393,7 +393,7 @@ class ApplyFormControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
-                .filter(document("applicant/read-applyform",
+                .filter(document("applicant/read-applyform-id",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
                         responseFields(
                                 fieldWithPath("title").description("지원폼의 제목"),
@@ -427,7 +427,7 @@ class ApplyFormControllerTest extends ControllerTest {
 
     @DisplayName("지원서 폼을 성공적으로 수정하면, 200을 응답한다.")
     @Test
-    void update() {
+    void updateById() {
         // given
         String toChangeTitle = "크루루 백엔드 모집 공고~~";
         String toChangeDescription = "# 모집 공고 설명 #";
@@ -444,7 +444,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .contentType(ContentType.JSON)
                 .cookie("accessToken", token)
                 .body(request)
-                .filter(document("applicant/update",
+                .filter(document("applicant/update-id",
                         requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
                         requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)

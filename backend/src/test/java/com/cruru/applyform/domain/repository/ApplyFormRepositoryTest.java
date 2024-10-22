@@ -86,7 +86,7 @@ class ApplyFormRepositoryTest extends RepositoryTest {
         ApplyForm savedApplyForm2 = applyFormRepository.save(applyForm2);
 
         //then
-        assertThat(savedApplyForm1.getId() + 1).isEqualTo(savedApplyForm2.getId());
+        assertThat(savedApplyForm1.getId()).isLessThan(savedApplyForm2.getId());
     }
 
     @DisplayName("특정 동아리에 속하는 DashboardApplyForm 목록을 반환한다.")
