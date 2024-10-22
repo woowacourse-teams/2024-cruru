@@ -16,6 +16,7 @@ const ColumnWrapper = styled.div`
   display: flex;
 
   padding-bottom: 1.2rem;
+  gap: 2.4rem;
 `;
 
 const S = {

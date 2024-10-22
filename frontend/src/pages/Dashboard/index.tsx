@@ -65,10 +65,7 @@ export default function Dashboard() {
       파일 맨 첫줄 주석도 삭제해야합니다. */}
       <FloatingEmailFormProvider>
         <MultiApplicantContextProvider>
-          <Tab.TabPanel
-            isVisible={currentMenu === '지원자 관리'}
-            color="gray"
-          >
+          <Tab.TabPanel isVisible={currentMenu === '지원자 관리'}>
             {/* [10.15-lesser] sub tab이 구현되면 아래 코드를 사용합니다. */}
             {/* <InputField
               type="search"
@@ -93,10 +90,7 @@ export default function Dashboard() {
             </S.DashboardContainer>
           </Tab.TabPanel>
 
-          <Tab.TabPanel
-            isVisible={currentMenu === '불합격자 관리'}
-            color="gray"
-          >
+          <Tab.TabPanel isVisible={currentMenu === '불합격자 관리'}>
             <S.DashboardContainer>
               <SpecificApplicantIdProvider>
                 <SpecificProcessIdProvider>
@@ -111,10 +105,7 @@ export default function Dashboard() {
         </MultiApplicantContextProvider>
       </FloatingEmailFormProvider>
 
-      <Tab.TabPanel
-        isVisible={currentMenu === '모집 과정 관리'}
-        color="gray"
-      >
+      <Tab.TabPanel isVisible={currentMenu === '모집 과정 관리'}>
         <S.DashboardContainer>
           <ProcessManageBoard
             dashboardId={dashboardId}
@@ -124,19 +115,13 @@ export default function Dashboard() {
         </S.DashboardContainer>
       </Tab.TabPanel>
 
-      <Tab.TabPanel
-        isVisible={currentMenu === '공고 관리'}
-        color="gray"
-      >
+      <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
         <S.DashboardContainer>
           <PostManageBoard applyFormId={applyFormId} />
         </S.DashboardContainer>
       </Tab.TabPanel>
 
-      <Tab.TabPanel
-        isVisible={currentMenu === '지원서 관리'}
-        color="gray"
-      >
+      <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
         <S.DashboardContainer>
           <ApplyManagement />
         </S.DashboardContainer>
