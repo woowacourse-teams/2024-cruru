@@ -45,6 +45,44 @@ const applicantHandlers = [
   }),
 
   http.get(`${APPLICANTS}/:applicantId/detail`, () => HttpResponse.json(applicantDetail)),
+
+  http.patch(`${APPLICANTS}/reject`, async ({ request }) => {
+    const body = await request.json();
+
+    if (typeof body !== 'object' || !body?.applicantIds || body.applicantIds.length === 0) {
+      throw new Error('body로 주어진 값이 {applicantIds: number[]} 형식이 아닙니다.');
+    }
+
+    body.applicantIds.forEach((id: string) => {
+      if (!(typeof id === 'number')) {
+        throw new Error('body로 주어진 값이 {applicantIds: number[]} 형식이 아닙니다.');
+      }
+    });
+
+    const { applicantIds } = body;
+    console.log(`${applicantIds} 지원자들을 불합격 처리합니다.`);
+
+    return HttpResponse.json({ status: 200 });
+  }),
+
+  http.patch(`${APPLICANTS}/unreject`, async ({ request }) => {
+    const body = await request.json();
+
+    if (typeof body !== 'object' || !body?.applicantIds || body.applicantIds.length === 0) {
+      throw new Error('body로 주어진 값이 {applicantIds: number[]} 형식이 아닙니다.');
+    }
+
+    body.applicantIds.forEach((id: string) => {
+      if (!(typeof id === 'number')) {
+        throw new Error('body로 주어진 값이 {applicantIds: number[]} 형식이 아닙니다.');
+      }
+    });
+
+    const { applicantIds } = body;
+    console.log(`${applicantIds} 지원자들의 불합격을 취소 처리합니다.`);
+
+    return HttpResponse.json({ status: 200 });
+  }),
 ];
 
 export default applicantHandlers;
