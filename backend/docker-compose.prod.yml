@@ -7,7 +7,6 @@ services:
     image: cruru/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
       - ${BLUE_SERVER_BINDING_PORT}
-      - ${BLUE_MONITORING_BINDING_PORT}
     env_file:
       - .env
     environment:
@@ -26,7 +25,6 @@ services:
     image: cruru/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
       - ${GREEN_SERVER_BINDING_PORT}
-      - ${GREEN_MONITORING_BINDING_PORT}
     env_file:
       - .env
     environment:
@@ -44,6 +42,7 @@ services:
     restart: always
     ports:
       - "80:80"
+      - ${MONITORING_BINDING_PORT}
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d
       - ./html:/usr/share/nginx/html
