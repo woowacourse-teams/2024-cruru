@@ -25,7 +25,7 @@ public class QuestionController {
     @PatchMapping
     @ValidAuth
     public ResponseEntity<Void> update(
-            @RequireAuth(targetDomain = ApplyForm.class) @RequestParam(name = "applyformId") Long applyFormId,
+            @RequireAuth(targetDomain = ApplyForm.class) @RequestParam(name = "applyformId") String applyFormId,
             @RequestBody @Valid QuestionUpdateRequests request,
             LoginProfile loginProfile
     ) {

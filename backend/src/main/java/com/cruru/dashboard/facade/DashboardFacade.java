@@ -57,7 +57,7 @@ public class DashboardFacade {
         for (QuestionCreateRequest questionCreateRequest : request.questions()) {
             questionService.create(questionCreateRequest, applyForm);
         }
-        return new DashboardCreateResponse(applyForm.getId(), dashboard.getId());
+        return new DashboardCreateResponse(applyForm.toStringTsid(), dashboard.getId());
     }
 
     private ApplyFormWriteRequest toApplyFormWriteRequest(DashboardCreateRequest request) {
@@ -91,7 +91,7 @@ public class DashboardFacade {
         StatsResponse stats = calculateStats(applicants);
         return new DashboardPreviewResponse(
                 dashboard.getId(),
-                applyForm.getId(),
+                applyForm.toStringTsid(),
                 applyForm.getTitle(),
                 stats,
                 applyForm.getStartDate(),

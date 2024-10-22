@@ -23,7 +23,7 @@ public class QuestionFacade {
     private final Clock clock;
 
     @Transactional
-    public void update(QuestionUpdateRequests request, long applyFormId) {
+    public void update(QuestionUpdateRequests request, String applyFormId) {
         ApplyForm applyForm = applyFormService.findById(applyFormId);
         validateRecruitmentStarted(applyForm);
         questionService.deleteAllByApplyForm(applyForm);

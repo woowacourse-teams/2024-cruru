@@ -165,7 +165,7 @@ class DashboardFacadeTest extends ServiceTest {
                 () -> assertThat(dashboardsOfClubResponse.clubName()).isEqualTo(club.getName()),
                 () -> assertThat(dashboardPreview.dashboardId()).isEqualTo(dashboard.getId()),
                 () -> assertThat(dashboardPreview.title()).isEqualTo(applyForm.getTitle()),
-                () -> assertThat(dashboardPreview.applyFormId()).isEqualTo(applyForm.getId()),
+                () -> assertThat(dashboardPreview.applyFormId()).isEqualTo(applyForm.toStringTsid()),
                 () -> assertThat(dashboardPreview.endDate()).isEqualTo(applyForm.getEndDate()),
                 () -> assertThat(stats.accept()).isEqualTo(1),
                 () -> assertThat(stats.fail()).isEqualTo(2),

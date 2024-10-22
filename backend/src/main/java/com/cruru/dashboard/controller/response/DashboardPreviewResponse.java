@@ -8,7 +8,7 @@ public record DashboardPreviewResponse(
 
         long dashboardId,
 
-        long applyFormId,
+        String applyFormId,
 
         String title,
 

@@ -2,9 +2,13 @@
 
 === 질문 변경
 
-==== 성공
+==== 성공: Long type id
 
-operation::question/update[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
+operation::question/update-id[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
+
+==== 성공: String type id
+
+operation::question/update-id[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 지원폼
 

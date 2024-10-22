@@ -6,8 +6,10 @@ import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.applyform.exception.ApplyFormNotFoundException;
 import com.cruru.applyform.exception.badrequest.StartDatePastException;
 import com.cruru.dashboard.domain.Dashboard;
+import io.hypersistence.tsid.TSID;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ApplyFormService {
+
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
 
     private final ApplyFormRepository applyFormRepository;
     private final Clock clock;
@@ -72,7 +76,14 @@ public class ApplyFormService {
         );
     }
 
-    public ApplyForm findById(Long applyFormId) {
+    public ApplyForm findById(String applyFormId) {
+        if (NUMERIC_PATTERN.matcher(applyFormId).matches()) {
+            return findById(Long.parseLong(applyFormId));
+        }
+        return findById(TSID.from(applyFormId).toLong());
+    }
+
+    private ApplyForm findById(Long applyFormId) {
         return applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
