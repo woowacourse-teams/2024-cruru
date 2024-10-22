@@ -69,5 +69,6 @@ public class EmailFacade {
         String storedVerificationCode = emailRedisClient.getVerificationCode(email);
 
         VerificationCodeUtil.verify(storedVerificationCode, inputVerificationCode);
+        emailRedisClient.saveVerifiedEmail(email);
     }
 }
