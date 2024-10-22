@@ -4,11 +4,11 @@ import com.cruru.BaseEntity;
 import com.cruru.applyform.exception.badrequest.StartDateAfterEndDateException;
 import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.global.util.TsidSupplier;
 import com.cruru.member.domain.Member;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class ApplyForm extends BaseEntity implements SecureResource {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Tsid(TsidSupplier.class)
     @Column(name = "apply_form_id")
     private Long id;
 

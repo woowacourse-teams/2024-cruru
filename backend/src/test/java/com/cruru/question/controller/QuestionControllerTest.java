@@ -50,7 +50,7 @@ class QuestionControllerTest extends ControllerTest {
 
     @DisplayName("존재하는 질문의 변경 성공시, 200을 응답한다.")
     @Test
-    void update() {
+    void updateById() {
         // given
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
@@ -71,7 +71,7 @@ class QuestionControllerTest extends ControllerTest {
                 .cookie("accessToken", token)
                 .contentType(ContentType.JSON)
                 .body(questionUpdateRequests)
-                .filter(document("question/update",
+                .filter(document("question/update-id",
                         requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         queryParameters(parameterWithName("applyformId").description("질문을 변경할 지원폼의 id")),
                         requestFields(fieldWithPath("questions").description("변경할 질문들"))
@@ -86,7 +86,7 @@ class QuestionControllerTest extends ControllerTest {
     @Test
     void update_applyFormNotFound() {
         // given
-        Long invalidApplyFormId = -1L;
+        long invalidApplyFormId = -1;
         ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.notStarted());
         questionRepository.save(QuestionFixture.multipleChoiceType(applyForm));
         QuestionUpdateRequests questionUpdateRequests = new QuestionUpdateRequests(

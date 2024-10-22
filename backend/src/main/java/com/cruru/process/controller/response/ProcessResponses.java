@@ -6,7 +6,7 @@ import java.util.List;
 
 public record ProcessResponses(
 
-        long applyFormId,
+        String applyFormId,
 
         @JsonProperty("processes")
         List<ProcessResponse> processResponses,
@@ -18,4 +18,13 @@ public record ProcessResponses(
         LocalDateTime endDate
 ) {
 
+    public static ProcessResponses of(
+            long applyFormId,
+            List<ProcessResponse> processResponses,
+            String title,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        return new ProcessResponses(String.valueOf(applyFormId), processResponses, title, startDate, endDate);
+    }
 }

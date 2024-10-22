@@ -161,7 +161,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void submit_invalidApplyForm() {
         // given&when&then
-        assertThatThrownBy(() -> applyFormFacade.submit(-1, applyFormSubmitrequest))
+        assertThatThrownBy(() -> applyFormFacade.submit(-1L, applyFormSubmitrequest))
                 .isInstanceOf(ApplyFormNotFoundException.class);
     }
 
