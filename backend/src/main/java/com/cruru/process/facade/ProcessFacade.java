@@ -55,7 +55,7 @@ public class ProcessFacade {
                 .toList();
 
         return new ProcessResponses(
-                applyForm.getId(),
+                applyForm.toStringId(),
                 processResponses,
                 applyForm.getTitle(),
                 applyForm.getStartDate(),
