@@ -13,7 +13,7 @@ export default function useEmailVerify() {
   });
 
   const { mutate: confirmEmailVerifyMutate } = useMutation({
-    mutationFn: (prop: { email: string }) => emailApis.postVerifyMail(prop),
+    mutationFn: (prop: { email: string; verificationCode: string }) => emailApis.confirmVerifyCode(prop),
     onSuccess: () => {
       success('이메일 인증에 성공했습니다!');
     },
