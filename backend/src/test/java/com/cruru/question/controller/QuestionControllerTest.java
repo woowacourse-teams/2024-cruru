@@ -112,7 +112,7 @@ class QuestionControllerTest extends ControllerTest {
                                 .andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
                                 .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
                 ))
-                .when().patch("/v1/questions?applyformId={applyformId}", applyForm.toStringTsid())
+                .when().patch("/v1/questions?applyformId={applyformId}", applyForm.toStringId())
                 .then().log().all().statusCode(200);
     }
 

@@ -170,7 +170,7 @@ class ApplyFormControllerTest extends ControllerTest {
                         requestFields(APPLICANT_SUBMIT_FIELD_DESCRIPTORS)
                                 .andWithPrefix("answers[].", ANSWER_SUBMIT_FIELD_DESCRIPTORS)
                 ))
-                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.toStringTsid())
+                .when().post("/v1/applyform/{applyFormId}/submit", applyForm.toStringId())
                 .then().log().all().statusCode(201);
     }
 
@@ -467,7 +467,7 @@ class ApplyFormControllerTest extends ControllerTest {
                         ).andWithPrefix("questions[].", QUESTION_FIELD_DESCRIPTORS)
                                 .andWithPrefix("questions[].choices[].", CHOICE_FIELD_DESCRIPTORS)
                 ))
-                .when().get("/v1/applyform/{applyFormId}", applyForm.toStringTsid())
+                .when().get("/v1/applyform/{applyFormId}", applyForm.toStringId())
                 .then().log().all().statusCode(200);
     }
 
@@ -540,7 +540,7 @@ class ApplyFormControllerTest extends ControllerTest {
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
                         requestFields(APPLYFORM_WRITE_FIELD_DESCRIPTORS)
                 ))
-                .when().patch("/v1/applyform/{applyFormId}", applyForm.toStringTsid())
+                .when().patch("/v1/applyform/{applyFormId}", applyForm.toStringId())
                 .then().log().all().statusCode(200);
     }
 

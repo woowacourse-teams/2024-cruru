@@ -2,11 +2,7 @@
 
 === 질문 변경
 
-==== 성공: Long type id
-
-operation::question/update-id[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
-
-==== 성공: String type id
+==== 성공
 
 operation::question/update-id[snippets="http-request,request-cookies,query-parameters,request-fields,http-response"]
 

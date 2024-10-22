@@ -96,7 +96,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void submit() {
         // given&when
-        applyFormFacade.submit(applyForm.toStringTsid(), applyFormSubmitrequest);
+        applyFormFacade.submit(applyForm.getId(), applyFormSubmitrequest);
 
         // then
         assertAll(
@@ -114,7 +114,7 @@ class ApplyFormFacadeTest extends ServiceTest {
         ApplyForm emptyProcessApplyForm = applyFormRepository.save(ApplyFormFixture.backend(emptyProcessDashboard));
 
         // when&then
-        String emptyProcessApplyFormId = emptyProcessApplyForm.toStringTsid();
+        Long emptyProcessApplyFormId = emptyProcessApplyForm.getId();
         assertThatThrownBy(() -> applyFormFacade.submit(emptyProcessApplyFormId, applyFormSubmitrequest))
                 .isInstanceOf(InternalServerException.class);
     }
@@ -130,7 +130,7 @@ class ApplyFormFacadeTest extends ServiceTest {
         );
 
         // when&then
-        String applyFormId = applyForm.toStringTsid();
+        Long applyFormId = applyForm.getId();
         assertThatThrownBy(() -> applyFormFacade.submit(applyFormId, notAgreedRequest))
                 .isInstanceOf(PersonalDataCollectDisagreeException.class);
     }
@@ -150,9 +150,9 @@ class ApplyFormFacadeTest extends ServiceTest {
 
         // when&then
         assertAll(
-                () -> assertThatThrownBy(() -> applyFormFacade.submit(pastApplyForm.toStringTsid(), applyFormSubmitrequest))
+                () -> assertThatThrownBy(() -> applyFormFacade.submit(pastApplyForm.getId(), applyFormSubmitrequest))
                         .isInstanceOf(ApplyFormSubmitOutOfPeriodException.class),
-                () -> assertThatThrownBy(() -> applyFormFacade.submit(futureApplyForm.toStringTsid(), applyFormSubmitrequest))
+                () -> assertThatThrownBy(() -> applyFormFacade.submit(futureApplyForm.getId(), applyFormSubmitrequest))
                         .isInstanceOf(ApplyFormSubmitOutOfPeriodException.class)
         );
     }
@@ -161,7 +161,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void submit_invalidApplyForm() {
         // given&when&then
-        assertThatThrownBy(() -> applyFormFacade.submit("111111111", applyFormSubmitrequest))
+        assertThatThrownBy(() -> applyFormFacade.submit(-1L, applyFormSubmitrequest))
                 .isInstanceOf(ApplyFormNotFoundException.class);
     }
 
@@ -181,7 +181,7 @@ class ApplyFormFacadeTest extends ServiceTest {
         );
 
         // when
-        applyFormFacade.update(request, applyForm.toStringTsid());
+        applyFormFacade.update(request, applyForm.getId());
 
         // then
         ApplyForm actual = applyFormRepository.findById(applyForm.getId()).get();
@@ -197,7 +197,7 @@ class ApplyFormFacadeTest extends ServiceTest {
     @Test
     void readApplyFormById() {
         // given&when
-        ApplyFormResponse applyFormResponse = applyFormFacade.readApplyFormById(applyForm.toStringTsid());
+        ApplyFormResponse applyFormResponse = applyFormFacade.readApplyFormById(applyForm.getId());
 
         // then
         assertAll(

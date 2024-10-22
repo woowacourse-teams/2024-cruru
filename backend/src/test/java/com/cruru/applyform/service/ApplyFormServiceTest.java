@@ -98,7 +98,7 @@ class ApplyFormServiceTest extends ServiceTest {
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when
-        ApplyForm actualApplyForm = applyFormService.findById(applyForm.toStringTsid());
+        ApplyForm actualApplyForm = applyFormService.findById(applyForm.getId());
 
         // then
         assertAll(
@@ -117,7 +117,7 @@ class ApplyFormServiceTest extends ServiceTest {
         questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
 
         // when&then
-        assertThatThrownBy(() -> applyFormService.findById("111111"))
+        assertThatThrownBy(() -> applyFormService.findById(-1L))
                 .isInstanceOf(ApplyFormNotFoundException.class);
     }
 

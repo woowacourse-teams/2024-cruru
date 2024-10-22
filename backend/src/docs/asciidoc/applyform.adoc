@@ -2,13 +2,9 @@
 
 === 지원폼 제출
 
-==== 성공: Long type id
+==== 성공
 
 operation::applyform/submit-id[snippets="http-request,path-parameters,request-fields,http-response"]
-
-==== 성공: String type id
-
-operation::applyform/submit-tsid[snippets="http-request,path-parameters,request-fields,http-response"]
 
 ==== 실패: 개인정보 활용 거부
 
@@ -44,13 +40,9 @@ operation::applicant/submit-fail/required-not-replied[snippets="http-request,pat
 
 === 지원폼 조회
 
-==== 성공: Long type id
+==== 성공
 
 operation::applicant/read-applyform-id[snippets="http-request,path-parameters,http-response,response-fields"]
-
-==== 성공: String type id
-
-operation::applicant/read-applyform-tsid[snippets="http-request,path-parameters,http-response,response-fields"]
 
 ==== 실패: 존재하지 않는 지원폼
 
@@ -58,13 +50,9 @@ operation::applicant/read-applyform-fail/applyform-not-found[snippets="http-requ
 
 === 지원폼 수정
 
-==== 성공: Long type id
+==== 성공
 
 operation::applicant/update-id[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
-
-==== 성공: String type id
-
-operation::applicant/update-tsid[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
 
 ==== 실패: 존재하지 않는 지원폼
 

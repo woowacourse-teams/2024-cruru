@@ -6,7 +6,6 @@ import com.cruru.auth.util.SecureResource;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.global.util.TsidSupplier;
 import com.cruru.member.domain.Member;
-import io.hypersistence.tsid.TSID;
 import io.hypersistence.utils.hibernate.id.Tsid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -81,8 +80,8 @@ public class ApplyForm extends BaseEntity implements SecureResource {
         return dashboard.isAuthorizedBy(member);
     }
 
-    public String toStringTsid() {
-        return TSID.from(this.id).toString();
+    public String toStringId() {
+        return String.valueOf(this.id);
     }
 
     @Override

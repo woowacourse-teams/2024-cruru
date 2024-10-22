@@ -8,6 +8,7 @@ import com.cruru.question.exception.QuestionUnmodifiableException;
 import com.cruru.question.service.QuestionService;
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class QuestionFacade {
     private final Clock clock;
 
     @Transactional
-    public void update(QuestionUpdateRequests request, String applyFormId) {
+    public void update(QuestionUpdateRequests request, Long applyFormId) {
         ApplyForm applyForm = applyFormService.findById(applyFormId);
         validateRecruitmentStarted(applyForm);
         questionService.deleteAllByApplyForm(applyForm);

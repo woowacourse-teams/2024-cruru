@@ -18,7 +18,6 @@ import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ChoiceFixture;
 import com.cruru.util.fixture.QuestionFixture;
-import io.hypersistence.tsid.TSID;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +63,7 @@ class QuestionFacadeTest extends ServiceTest {
                 )));
 
         // when
-        questionFacade.update(questionUpdateRequest, applyForm.toStringTsid());
+        questionFacade.update(questionUpdateRequest, applyForm.getId());
 
         // then
         List<Question> actualQuestions = questionRepository.findAllByApplyForm(applyForm);
@@ -109,7 +108,7 @@ class QuestionFacadeTest extends ServiceTest {
                 )));
 
         // when
-        questionFacade.update(questionUpdateRequest, applyForm.toStringTsid());
+        questionFacade.update(questionUpdateRequest, applyForm.getId());
 
         // then
         List<Question> actualQuestions = questionRepository.findAllByApplyForm(applyForm);
@@ -150,7 +149,7 @@ class QuestionFacadeTest extends ServiceTest {
                 )));
 
         // when&then
-        assertThatThrownBy(() -> questionFacade.update(questionUpdateRequest, applyForm.toStringTsid()))
+        assertThatThrownBy(() -> questionFacade.update(questionUpdateRequest, applyForm.getId()))
                 .isInstanceOf(QuestionUnmodifiableException.class);
     }
 }

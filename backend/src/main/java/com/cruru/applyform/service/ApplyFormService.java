@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ApplyFormService {
 
-    private static final Pattern NUMERIC_PATTERN = Pattern.compile("\\d+");
-
     private final ApplyFormRepository applyFormRepository;
     private final Clock clock;
 
@@ -76,14 +74,7 @@ public class ApplyFormService {
         );
     }
 
-    public ApplyForm findById(String applyFormId) {
-        if (NUMERIC_PATTERN.matcher(applyFormId).matches()) {
-            return findById(Long.parseLong(applyFormId));
-        }
-        return findById(TSID.from(applyFormId).toLong());
-    }
-
-    private ApplyForm findById(Long applyFormId) {
+    public ApplyForm findById(Long applyFormId) {
         return applyFormRepository.findById(applyFormId)
                 .orElseThrow(ApplyFormNotFoundException::new);
     }
