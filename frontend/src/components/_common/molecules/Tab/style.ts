@@ -17,7 +17,7 @@ const Nav = styled.nav`
   justify-content: space-between;
 
   width: 100%;
-  padding: 1.6rem;
+  padding: 1.6rem 0;
   border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
