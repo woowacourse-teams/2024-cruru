@@ -33,7 +33,7 @@ export default function useClubId() {
     localStorage.removeItem(CLUB_ID_KEY);
   };
 
-  const clubId = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  const clubId = useSyncExternalStore(subscribe, getSnapshot);
 
   return {
     saveClubId,
