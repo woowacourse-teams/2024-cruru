@@ -54,6 +54,8 @@ const SidebarItemLink = styled.div<{ isSelected: boolean; isSidebarOpen?: boolea
 
   transition: opacity 0.2s ease;
 
+  cursor: pointer;
+
   &:hover {
     opacity: 0.99;
   }
