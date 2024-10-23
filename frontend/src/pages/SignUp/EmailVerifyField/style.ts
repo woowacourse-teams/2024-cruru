@@ -10,6 +10,12 @@ const FieldWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+
+  /* [10.24 - 러기]Safari 브라우저에서 발생한 버그를 고치기 위한 코드입니다. Sign-up 페이지에서 Input 버튼 컴포넌트가 벗어나는 현상*/
+  & > div > input,
+  & > div > div > input {
+    width: 100%;
+  }
 `;
 
 const ButtonWrapper = styled.div`
