@@ -89,10 +89,10 @@ public class AuthService {
     }
 
     private Map<String, Object> getClaims(String email, MemberRole role) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(EMAIL_CLAIM, email);
-        claims.put(ROLE_CLAIM, role.name());
-        return claims;
+        return Map.of(
+                EMAIL_CLAIM, email,
+                ROLE_CLAIM, role.name()
+        );
     }
 
     public boolean isTokenExpired(String token) {
