@@ -77,7 +77,7 @@ class ProcessFacadeTest extends ServiceTest {
         Process process1 = processRepository.save(ProcessFixture.applyType(defaultDashboard));
         Process process2 = processRepository.save(ProcessFixture.interview(defaultDashboard));
         Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
-        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process2));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
         List<Evaluation> evaluations1 = List.of(
                 EvaluationFixture.fivePoints(process1, applicant1),
                 EvaluationFixture.fourPoints(process1, applicant1),
@@ -87,14 +87,14 @@ class ProcessFacadeTest extends ServiceTest {
         evaluationRepository.saveAll(evaluations1);
 
         List<Evaluation> evaluations2 = List.of(
-                EvaluationFixture.fivePoints(process2, applicant2),
-                EvaluationFixture.fivePoints(process2, applicant2),
-                EvaluationFixture.fivePoints(process2, applicant2),
-                EvaluationFixture.fourPoints(process2, applicant2)
+                EvaluationFixture.fivePoints(process1, applicant2),
+                EvaluationFixture.fivePoints(process1, applicant2),
+                EvaluationFixture.fivePoints(process1, applicant2),
+                EvaluationFixture.fourPoints(process1, applicant2)
         );
         evaluationRepository.saveAll(evaluations2);
-        String sortByCreatedAt = "DESC";
-        String sortByScore = null;
+        String sortByCreatedAt = null;
+        String sortByScore = "DESC";
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(
