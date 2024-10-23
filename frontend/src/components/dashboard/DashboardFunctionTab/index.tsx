@@ -1,15 +1,17 @@
-import { useParams } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { HiOutlineFilter } from 'react-icons/hi';
+import { useParams } from 'react-router-dom';
 
-import useProcess, { SimpleProcess } from '@hooks/useProcess';
+import { SimpleProcess } from '@hooks/useProcess';
 
+import Popover from '@components/_common/atoms/Popover';
 import InputField from '@components/_common/molecules/InputField';
 import RatingFilter from '@components/RatingFilter';
-import Popover from '@components/_common/atoms/Popover';
 
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
 
+import useFilterApplicant from '@hooks/useProcess/useFilterApplicant';
+import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import ApplicantSortDropdown from '../ApplicantSortDropdown';
 import MultiSelectToggle from '../MultiSelectToggle';
 
@@ -20,6 +22,8 @@ interface DashboardFunctionTabProps {
   searchedName: string;
   onSearchName: (name: string) => void;
   isRejectedApplicantsTab: boolean;
+  applicantSortDropdownProps: ReturnType<typeof useSortApplicant>;
+  ratingFilterProps: ReturnType<typeof useFilterApplicant>;
 }
 
 export default function DashboardFunctionTab({
@@ -27,6 +31,8 @@ export default function DashboardFunctionTab({
   searchedName,
   onSearchName,
   isRejectedApplicantsTab,
+  applicantSortDropdownProps: { sortOption, updateSortOption },
+  ratingFilterProps,
 }: DashboardFunctionTabProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
 
@@ -34,11 +40,6 @@ export default function DashboardFunctionTab({
 
   const [isFilterOpened, setIsFilterOpened] = useState<boolean>(false);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
-
-  const {
-    applicantSortDropdownProps: { sortOption, updateSortOption },
-    ratingFilterProps,
-  } = useProcess({ dashboardId, applyFormId });
 
   return (
     <S.Wrapper>

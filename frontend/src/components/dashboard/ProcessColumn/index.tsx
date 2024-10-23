@@ -1,20 +1,20 @@
-import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { Process } from '@customTypes/process';
-import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
 import CheckBox from '@components/_common/atoms/CheckBox';
+import { DropdownItemType } from '@components/_common/molecules/DropdownItemRenderer';
+import { Process } from '@customTypes/process';
 
-import useProcess from '@hooks/useProcess';
 import useApplicant from '@hooks/useApplicant';
+import { SimpleProcess } from '@hooks/useProcess';
 import specificApplicant from '@hooks/useSpecificApplicant';
 
-import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
-import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
-import { useModal } from '@contexts/ModalContext';
 import { DropdownProvider } from '@contexts/DropdownContext';
 import { useFloatingEmailForm } from '@contexts/FloatingEmailFormContext';
+import { useModal } from '@contexts/ModalContext';
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
+import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
+import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 
 import ApplicantCard from '../ApplicantCard';
 import ProcessDescription from './ProcessDescription';
@@ -22,6 +22,7 @@ import S from './style';
 
 interface ProcessColumnProps {
   process: Process;
+  processList: SimpleProcess[];
   showRejectedApplicant: boolean;
   isPassedColumn: boolean;
   searchedName?: string;
@@ -29,12 +30,12 @@ interface ProcessColumnProps {
 
 export default function ProcessColumn({
   process,
+  processList,
   showRejectedApplicant,
   isPassedColumn = false,
   searchedName = '',
 }: ProcessColumnProps) {
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processList } = useProcess({ dashboardId, applyFormId });
   const { mutate: moveApplicantProcess } = useApplicant({});
   const { mutate: rejectMutate } = specificApplicant.useRejectApplicant({ dashboardId, applyFormId });
 

@@ -6,7 +6,6 @@ import processApis from '@api/domain/process';
 import QUERY_KEYS from '@hooks/queryKeys';
 import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import { routes } from '@router/path';
-import { useEffect } from 'react';
 import { DOMAIN_URL } from '../../constants/constants';
 import useFilterApplicant, { RatingFilterType } from './useFilterApplicant';
 
@@ -43,12 +42,16 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
   const applicantSortDropdownProps = useSortApplicant();
   const ratingFilterProps = useFilterApplicant();
 
-  const { data, error, isLoading, refetch } = useQuery<ProcessResponse>({
-    // [10.17-lesser]
-    // sortOption을 queryKey에 추가하면 기존 요청까지 다시 보내게 되어
-    // queryKey에 sortOption을 추가하지 않고, refetch로 재요청 보내도록 수정합니다.
+  const { data, error, isLoading } = useQuery<ProcessResponse>({
     // eslint-disable-next-line
-    queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId],
+    queryKey: [
+      QUERY_KEYS.DASHBOARD,
+      dashboardId,
+      applyFormId,
+      JSON.stringify(applicantSortDropdownProps.sortOption),
+      JSON.stringify(ratingFilterProps.ratingRange),
+      JSON.stringify(ratingFilterProps.ratingFilterType),
+    ],
     queryFn: () =>
       processApis.get({
         dashboardId,
@@ -59,10 +62,6 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
       }),
   });
 
-  useEffect(() => {
-    refetch();
-  }, [applicantSortDropdownProps.sortOption, ratingFilterProps.ratingRange, ratingFilterProps.ratingFilterType]);
-
   const processes = data?.processes || [];
 
   const processList = processes.map((p) => ({ processName: p.name, processId: p.processId }));
@@ -70,7 +69,7 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
   return {
     title: data?.title ?? '',
     postUrl: `${DOMAIN_URL}${routes.post({ applyFormId: data?.applyFormId ?? '' })}`,
-    processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
+    processes,
     processList,
     error,
     isLoading,
