@@ -12,7 +12,7 @@ export default function useSignOut() {
     mutationFn: () => authApi.logout(),
     onSuccess: () => {
       clearClubId();
-      navigate(routes.signIn());
+      navigate(routes.home());
     },
   });
 }
