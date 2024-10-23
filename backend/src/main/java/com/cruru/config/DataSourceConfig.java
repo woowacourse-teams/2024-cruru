@@ -44,20 +44,16 @@ public class DataSourceConfig {
     @Bean(name = WRITE_DATASOURCE)
     @ConfigurationProperties(prefix = "spring.datasource.write")
     public DataSource writeDataSource() {
-        HikariDataSource build = DataSourceBuilder.create()
+        return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
-        build.setMaximumPoolSize(5);
-        return build;
     }
 
     @Bean(name = READ_DATASOURCE)
     @ConfigurationProperties(prefix = "spring.datasource.read")
     public DataSource readDataSource() {
-        HikariDataSource build = DataSourceBuilder.create()
+        return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
-        build.setMaximumPoolSize(10);
-        return build;
     }
 }
