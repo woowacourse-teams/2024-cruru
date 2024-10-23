@@ -2,6 +2,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
+import useFilterApplicant from '@hooks/useProcess/useFilterApplicant';
+import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import DashboardFunctionTab from '.';
 
 const meta = {
@@ -74,5 +76,7 @@ export const DashboardFunctionTabDefault: Story = {
     searchedName: '',
     onSearchName: (name: string) => console.log(`"${name}" 이름으로 검색하셨습니다.`),
     isRejectedApplicantsTab: false,
+    applicantSortDropdownProps: {} as ReturnType<typeof useSortApplicant>,
+    ratingFilterProps: {} as ReturnType<typeof useFilterApplicant>,
   },
 };
