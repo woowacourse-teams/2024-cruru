@@ -7,8 +7,8 @@ interface UseTimerProps {
 
 export default function useTimer({ initValue, onEndTimer }: UseTimerProps) {
   const [timer, setTimer] = useState(initValue);
-
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimestamp = useRef<number>(performance.now());
 
   const endTimer = () => {
     if (timerRef.current) {
@@ -22,6 +22,7 @@ export default function useTimer({ initValue, onEndTimer }: UseTimerProps) {
     if (timerRef.current) clearInterval(timerRef.current);
 
     timerRef.current = setInterval(() => {
+      const elapsedTime = Math.floor((performance.now() - startTimestamp.current) / 1000);
       setTimer((prevTimer) => {
         if (prevTimer <= 1) {
           endTimer();
@@ -29,18 +30,27 @@ export default function useTimer({ initValue, onEndTimer }: UseTimerProps) {
 
           return 0;
         }
-        return prevTimer - 1;
+        return initValue - elapsedTime;
       });
     }, 1000);
   };
 
-  // eslint-disable-next-line arrow-body-style
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && timerRef.current) {
+        const elapsedTime = Math.floor((performance.now() - startTimestamp.current) / 1000);
+        setTimer(initValue - elapsedTime);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     };
-  }, []);
+  }, [initValue]);
   return { timer, startTimer, endTimer };
 }
