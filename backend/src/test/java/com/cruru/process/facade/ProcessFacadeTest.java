@@ -87,14 +87,14 @@ class ProcessFacadeTest extends ServiceTest {
         evaluationRepository.saveAll(evaluations1);
 
         List<Evaluation> evaluations2 = List.of(
-                EvaluationFixture.fivePoints(process2, applicant2),
-                EvaluationFixture.fivePoints(process2, applicant2),
-                EvaluationFixture.fivePoints(process2, applicant2),
-                EvaluationFixture.fourPoints(process2, applicant2)
+                EvaluationFixture.fivePoints(process1, applicant2),
+                EvaluationFixture.fivePoints(process1, applicant2),
+                EvaluationFixture.fivePoints(process1, applicant2),
+                EvaluationFixture.fourPoints(process1, applicant2)
         );
         evaluationRepository.saveAll(evaluations2);
-        String sortByCreatedAt = "DESC";
-        String sortByScore = null;
+        String sortByCreatedAt = null;
+        String sortByScore = "DESC";
 
         // when
         ProcessResponses processResponses = processFacade.readAllByDashboardId(
@@ -114,7 +114,7 @@ class ProcessFacadeTest extends ServiceTest {
                 () -> assertThat(processResponses.processResponses()).hasSize(2),
                 () -> assertThat(processId).isEqualTo(process1.getId()),
                 () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant2.getId()),
-                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations1.size()),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations2.size()),
                 () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.75)
         );
     }
