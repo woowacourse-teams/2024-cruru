@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import Button from '@components/_common/atoms/Button';
 import Spinner from '@components/_common/atoms/Spinner';
@@ -7,6 +7,7 @@ import { HiCheck } from 'react-icons/hi2';
 import InputField from '@components/_common/molecules/InputField';
 import { validateEmail } from '@domain/validations/apply';
 import useEmailVerify from '@hooks/useEmailVerify';
+import useTimer from './useTimer';
 import S from './style';
 
 interface EmailVerifyFieldProps {
@@ -27,46 +28,17 @@ const formatTime = (seconds: number) => {
 export default function EmailVerifyField({ register, isVerify, setIsVerify }: EmailVerifyFieldProps) {
   const [isSendVerifyEmail, setIsSendVerifyEmail] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
-  const [timer, setTimer] = useState(INIT_TIMER_VALUE);
-
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const { timer, startTimer, endTimer } = useTimer({
+    initValue: INIT_TIMER_VALUE,
+    onEndTimer: () => {
+      setIsSendVerifyEmail(false);
+      setIsVerify(false);
+    },
+  });
 
   const handleVerificationCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVerificationCode(e.target.value);
   };
-
-  const endTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-
-  const startTimer = () => {
-    setTimer(INIT_TIMER_VALUE);
-    if (timerRef.current) clearInterval(timerRef.current);
-
-    timerRef.current = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer <= 1) {
-          endTimer();
-          setIsSendVerifyEmail(false);
-          setIsVerify(false);
-          return 0;
-        }
-        return prevTimer - 1;
-      });
-    }, 1000);
-  };
-
-  // eslint-disable-next-line arrow-body-style
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
 
   const emailRegister = register('email', { validate: validateEmail, placeholder: '이메일', type: 'email' });
 
@@ -131,6 +103,7 @@ export default function EmailVerifyField({ register, isVerify, setIsVerify }: Em
             value={verificationCode}
             onChange={handleVerificationCodeChange}
             disabled={!isSendVerifyEmail || isVerify}
+            type={isVerify ? 'password' : 'text'}
             placeholder="인증 번호"
             required
           />
