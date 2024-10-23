@@ -62,4 +62,8 @@ public class MemberService {
         return memberRepository.findByEmail(email)
                 .orElseThrow(MemberNotFoundException::new);
     }
+
+    public boolean existsByEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
 }
