@@ -102,12 +102,12 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingRush(process1));
         applicantRepository.save(ApplicantFixture.pendingDobby(process2));
 
-        evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant1));
-        evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant2));
+        evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant1));
+        evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant2));
 
         String evaluationStatus = "EVALUATED";
-        String sortByCreatedAt = "DESC";
-        String sortByScore = null;
+        String sortByCreatedAt = null;
+        String sortByScore = "DESC";
 
         // when
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
