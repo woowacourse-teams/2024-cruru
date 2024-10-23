@@ -80,7 +80,7 @@ const SidebarItemText = styled.p`
 `;
 
 const Divider = styled.div`
-  border-bottom: 0.15rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const ContentSubTitle = styled.div`
