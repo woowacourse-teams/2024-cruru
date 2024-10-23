@@ -1,4 +1,4 @@
-branchName: '${issue.number}-${issue.body[-20]}'
+branchName: '${issue.body[-20]}'
 gitSafeReplacementChar: ""
 openDraftPR: true
 autoLinkIssue: true
@@ -7,62 +7,62 @@ branches:
   - label: 
     - feature
     - backend
-    prefix: be-
+    prefix: ${issue.number}-be-
     name: be/develop
   - label:
     - feature
     - frontend
-    prefix: fe-
+    prefix: ${issue.number}-fe-
     name: fe/develop
   - label: 
     - refactor
     - backend
-    prefix: be-
+    prefix: ${issue.number}-be-
     name: be/develop
   - label: 
     - refactor
     - frontend
-    prefix: fe-
+    prefix: ${issue.number}-fe-
     name: fe/develop
   - label: 
     - chore
     - backend
-    prefix: be-
+    prefix: ${issue.number}-be-
     name: be/develop
   - label: 
     - chore
     - frontend
-    prefix: fe-
+    prefix: ${issue.number}-fe-
     name: fe/develop
   - label: 
     - test
     - backend
-    prefix: be-
+    prefix: ${issue.number}-be-
     name: be/develop
   - label: 
     - test
     - frontend
-    prefix: fe-
+    prefix: ${issue.number}-fe-
     name: fe/develop
   - label: 
     - fix
     - backend
-    prefix: be-
+    prefix: ${issue.number}-be-
     name: be/develop
   - label: 
     - fix
     - frontend
-    prefix: fe-
+    prefix: ${issue.number}-fe-
     name: fe/develop
   - label: 
     - hotfix
     - backend
-    prefix: be-hotfix-
+    prefix: ${issue.number}-be-hotfix-
     name: be/release
   - label: 
     - hotfix
     - frontend
-    prefix: fe-hotfix-
+    prefix: ${issue.number}-fe-hotfix-
     name: fe/release
   - label: docs
     skip: true
