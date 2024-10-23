@@ -13,3 +13,35 @@ operation::email/send-fail/invalid-email[snippets="http-request,request-cookies,
 ==== 실패: 존재하지 않는 동아리
 
 operation::email/send-fail/club-not-found[snippets="http-request,request-cookies,request-parts,http-response"]
+
+=== 이메일 인증 번호 발송
+
+==== 성공
+
+operation::email/verification-code[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 이메일 형식이 올바르지 않은 이메일 형식
+
+operation::email/verification-code-fail/invalid-email[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 이미 가입된 이메일
+
+operation::email/verification-code-fail/already-signed-up[snippets="http-request,request-fields,http-response"]
+
+=== 이메일 인증 확인
+
+==== 성공
+
+operation::email/verify-code[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 이메일 형식이 올바르지 않은 이메일 형식
+
+operation::email/verify-code-fail/invalid-email[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 인증 번호가 없는 이메일
+
+operation::email/verify-code-fail/code-not-found[snippets="http-request,request-fields,http-response"]
+
+==== 실패: 인증 번호가 다른 이메일
+
+operation::email/verify-code-fail/code-mismatch[snippets="http-request,request-fields,http-response"]

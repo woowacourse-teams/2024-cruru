@@ -4,6 +4,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
 import com.cruru.email.domain.Email;
 import com.cruru.email.domain.repository.EmailRepository;
+import com.cruru.email.util.EmailTemplate;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.File;
@@ -32,10 +33,10 @@ public class EmailService {
             Club from, Applicant to, String subject, String content, List<File> tempFiles) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(to.getEmail());
-            helper.setSubject(subject);
-            helper.setText(content);
+            helper.setSubject(EmailTemplate.defaultEmailSubject(from.getName(), subject));
+            helper.setText(EmailTemplate.generateDefaultEmailTemplate(from.getName(), subject, content), true);
             if (hasFile(tempFiles)) {
                 addAttachments(helper, tempFiles);
             }
@@ -78,5 +79,22 @@ public class EmailService {
     @Transactional
     public void deleteAllByTos(List<Applicant> applicants) {
         emailRepository.deleteAllByTos(applicants);
+    }
+
+    @Async
+    public void sendVerificationCode(String to, String verificationCode) {
+        try {
+            String subject = "[크루루] 인증 코드 안내";
+            String content = EmailTemplate.generateVerificationEmailContent(verificationCode);
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(content, true);
+            mailSender.send(message);
+        } catch (MessagingException | MailException e) {
+            log.error("이메일 전송 실패: to={}, subject={}", to, e.getMessage());
+        }
     }
 }

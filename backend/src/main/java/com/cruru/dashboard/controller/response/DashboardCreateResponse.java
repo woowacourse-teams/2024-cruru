@@ -1,8 +1,11 @@
 package com.cruru.dashboard.controller.response;
 
 public record DashboardCreateResponse(
-        long applyFormId,
+        String applyFormId,
         long dashboardId
 ) {
 
+    public static DashboardCreateResponse of(long applyFormId, long dashboardId) {
+        return new DashboardCreateResponse(String.valueOf(applyFormId), dashboardId);
+    }
 }

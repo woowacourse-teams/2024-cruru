@@ -102,12 +102,12 @@ class ApplicantServiceTest extends ServiceTest {
         Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingRush(process1));
         applicantRepository.save(ApplicantFixture.pendingDobby(process2));
 
-        evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant1));
-        evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant2));
+        evaluationRepository.save(EvaluationFixture.fourPoints(process1, applicant1));
+        evaluationRepository.save(EvaluationFixture.fivePoints(process1, applicant2));
 
         String evaluationStatus = "EVALUATED";
-        String sortByCreatedAt = "DESC";
-        String sortByScore = null;
+        String sortByCreatedAt = null;
+        String sortByScore = "DESC";
 
         // when
         List<ApplicantCard> applicantCards = applicantService.findApplicantCards(
@@ -257,5 +257,32 @@ class ApplicantServiceTest extends ServiceTest {
         // then
         assertThat(applicantRepository.findAll()).contains(applicant3)
                 .doesNotContain(applicant1, applicant2);
+    }
+
+    @DisplayName("IN절을 활용하여 id로 지원자를 찾는다.")
+    @Test
+    void findAllByIds() {
+        // given
+        List<Applicant> applicants = applicantRepository.saveAll(List.of(
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby(),
+                ApplicantFixture.pendingDobby(), ApplicantFixture.pendingDobby()
+        ));
+        List<Long> ids = applicants.stream()
+                .map(Applicant::getId)
+                .toList();
+
+        // when
+        List<Applicant> found = applicantRepository.findAllById(ids);
+
+        // then
+        assertThat(found).containsExactlyInAnyOrderElementsOf(applicants);
     }
 }

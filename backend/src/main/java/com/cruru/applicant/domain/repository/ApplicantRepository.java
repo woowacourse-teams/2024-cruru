@@ -24,11 +24,11 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
     long countByProcess(Process process);
 
     @Query("""
-           SELECT new com.cruru.applicant.domain.dto.ApplicantCard( 
+           SELECT new com.cruru.applicant.domain.dto.ApplicantCard(
                a.id, a.name, a.createdDate, a.isRejected, COUNT(e), COALESCE(AVG(e.score), 0.00), a.process.id
            )
            FROM Applicant a
-           LEFT JOIN Evaluation e ON e.applicant = a
+           LEFT JOIN Evaluation e ON e.applicant = a AND e.process = a.process
            WHERE a.process IN :processes
            GROUP BY a.id, a.name, a.createdDate, a.isRejected, a.process.id
            """)
@@ -39,7 +39,7 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
                       a.id, a.name, a.createdDate, a.isRejected, COUNT(e), COALESCE(AVG(e.score), 0.00), a.process.id
                   )
                   FROM Applicant a
-                  LEFT JOIN Evaluation e ON e.applicant = a
+                  LEFT JOIN Evaluation e ON e.applicant = a AND e.process = a.process
                   WHERE a.process = :process
                   GROUP BY a.id, a.name, a.createdDate, a.isRejected
            """)

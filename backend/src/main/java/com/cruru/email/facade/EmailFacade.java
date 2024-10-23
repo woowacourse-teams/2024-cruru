@@ -4,10 +4,16 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
 import com.cruru.club.domain.Club;
 import com.cruru.club.service.ClubService;
-import com.cruru.email.controller.dto.EmailRequest;
+import com.cruru.email.controller.request.EmailRequest;
+import com.cruru.email.controller.request.SendVerificationCodeRequest;
+import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.exception.EmailAttachmentsException;
+import com.cruru.email.exception.EmailConflictException;
+import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
+import com.cruru.email.util.VerificationCodeUtil;
+import com.cruru.member.service.MemberService;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -23,13 +29,12 @@ public class EmailFacade {
     private final EmailService emailService;
     private final ClubService clubService;
     private final ApplicantService applicantService;
+    private final MemberService memberService;
+    private final EmailRedisClient emailRedisClient;
 
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
-        List<Applicant> applicants = request.applicantIds()
-                .stream()
-                .map(applicantService::findById)
-                .toList();
+        List<Applicant> applicants = applicantService.findAllByIds(request.applicantIds());
         sendAndSave(from, applicants, request.subject(), request.content(), request.files());
     }
 
@@ -51,5 +56,28 @@ public class EmailFacade {
         } catch (IOException e) {
             throw new EmailAttachmentsException(from.getId(), subject);
         }
+    }
+
+    public void sendVerificationCode(SendVerificationCodeRequest request) {
+        String email = request.email();
+        String verificationCode = VerificationCodeUtil.generateVerificationCode();
+        validateEmailExists(email);
+        emailRedisClient.saveVerificationCode(email, verificationCode);
+        emailService.sendVerificationCode(email, verificationCode);
+    }
+
+    private void validateEmailExists(String email) {
+        if (memberService.existsByEmail(email)) {
+            throw new EmailConflictException();
+        }
+    }
+
+    public void verifyCode(VerifyCodeRequest request) {
+        String email = request.email();
+        String inputVerificationCode = request.verificationCode();
+        String storedVerificationCode = emailRedisClient.getVerificationCode(email);
+
+        VerificationCodeUtil.verify(storedVerificationCode, inputVerificationCode);
+        emailRedisClient.saveVerifiedEmail(email);
     }
 }
