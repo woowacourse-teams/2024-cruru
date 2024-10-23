@@ -12,10 +12,6 @@ public class RefreshToken implements Token {
 
     private String email;
 
-    public boolean isSameToken(String token) {
-        return this.token.equals(token);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
