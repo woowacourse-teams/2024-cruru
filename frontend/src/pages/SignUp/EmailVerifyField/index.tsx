@@ -105,6 +105,7 @@ export default function EmailVerifyField({ register, isVerify, setIsVerify }: Em
             disabled={!isSendVerifyEmail || isVerify}
             type={isVerify ? 'password' : 'text'}
             placeholder="인증 번호"
+            maxLength={6}
             required
           />
           {isSendVerifyEmail && !isVerify && <S.Timer>{formatTime(timer)}</S.Timer>}
