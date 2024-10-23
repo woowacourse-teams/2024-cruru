@@ -3,12 +3,7 @@ package com.cruru.auth.domain;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class RefreshToken implements Token {
