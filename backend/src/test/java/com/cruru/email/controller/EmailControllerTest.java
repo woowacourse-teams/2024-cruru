@@ -171,7 +171,7 @@ class EmailControllerTest extends ControllerTest {
                         requestFields(fieldWithPath("email").description("이미 가입된 이메일"))
                 ))
                 .when().post("/v1/emails/verification-code")
-                .then().log().all().statusCode(400);
+                .then().log().all().statusCode(409);
     }
 
     @DisplayName("이메일 인증 번호 발송 시, 이메일 형식이 올바르지 않을 경우 400을 응답한다.")
