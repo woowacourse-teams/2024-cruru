@@ -50,7 +50,7 @@ public class DataSourceConfig {
     }
 
     @Bean(name = READ_DATASOURCE)
-    @ConfigurationProperties(prefix = "spring.hikari.datasource.hikari")
+    @ConfigurationProperties(prefix = "spring.datasource.read.hikari")
     public DataSource readDataSource() {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
