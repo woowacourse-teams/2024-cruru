@@ -7,9 +7,11 @@ spring:
       enabled: true
   datasource:
     read:
-      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+      hikari:
+        jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
     write:
-      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+      hikari:
+        jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
   flyway:
     enabled: false
   jpa:
