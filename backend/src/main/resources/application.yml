@@ -12,9 +12,11 @@ spring:
       enabled: true
   datasource:
     read:
-      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+      hikari:
+        jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
     write:
-      jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+      hikari:
+        jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
   flyway:
     enabled: false
   jpa:
@@ -178,15 +180,19 @@ spring:
       on-profile: test
   datasource:
     read:
-      jdbc-url: ${DB_URL}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
+      hikari:
+        jdbc-url: ${DB_URL}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+        maximum-pool-size: 10
     write:
-      jdbc-url: ${DB_URL}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
+      hikari:
+        jdbc-url: ${DB_URL}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+        maximum-pool-size: 5
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -273,15 +279,19 @@ spring:
       on-profile: prod
   datasource:
     read:
-      jdbc-url: ${READ_DB_URL}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
+      hikari:
+        jdbc-url: ${READ_DB_URL}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+        maximum-pool-size: 10
     write:
-      jdbc-url: ${WRITE_DB_URL}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
+      hikari:
+        jdbc-url: ${WRITE_DB_URL}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+        maximum-pool-size: 5
   flyway:
     enabled: true
     baseline-on-migrate: true
