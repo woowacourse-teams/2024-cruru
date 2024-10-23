@@ -8,10 +8,12 @@ import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.exception.EmailAttachmentsException;
+import com.cruru.email.exception.badrequest.EmailAlreadySignedUpException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
 import com.cruru.email.util.VerificationCodeUtil;
+import com.cruru.member.service.MemberService;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +29,7 @@ public class EmailFacade {
     private final EmailService emailService;
     private final ClubService clubService;
     private final ApplicantService applicantService;
+    private final MemberService memberService;
     private final EmailRedisClient emailRedisClient;
 
     public void send(EmailRequest request) {
@@ -58,9 +61,15 @@ public class EmailFacade {
     public void sendVerificationCode(SendVerificationCodeRequest request) {
         String email = request.email();
         String verificationCode = VerificationCodeUtil.generateVerificationCode();
-
+        validateEmailExists(email);
         emailRedisClient.saveVerificationCode(email, verificationCode);
         emailService.sendVerificationCode(email, verificationCode);
+    }
+
+    private void validateEmailExists(String email) {
+        if (memberService.existsByEmail(email)) {
+            throw new EmailAlreadySignedUpException();
+        }
     }
 
     public void verifyCode(VerifyCodeRequest request) {
