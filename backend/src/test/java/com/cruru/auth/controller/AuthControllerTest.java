@@ -1,5 +1,7 @@
 package com.cruru.auth.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
@@ -11,6 +13,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.auth.controller.request.LoginRequest;
+import com.cruru.auth.service.TokenRedisClient;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -23,6 +26,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("인증 컨트롤러 테스트")
 class AuthControllerTest extends ControllerTest {
@@ -32,6 +36,9 @@ class AuthControllerTest extends ControllerTest {
 
     @Autowired
     private ClubRepository clubRepository;
+
+    @MockBean
+    private TokenRedisClient tokenRedisClient;
 
     private Member member;
 
@@ -48,6 +55,7 @@ class AuthControllerTest extends ControllerTest {
     void login() {
         // given
         LoginRequest request = new LoginRequest(member.getEmail(), "qwer1234");
+        doNothing().when(tokenRedisClient).saveToken(any(), any());
 
         // when&then
         RestAssured.given(spec).log().all()

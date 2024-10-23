@@ -10,15 +10,19 @@ import static org.mockito.Mockito.when;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.controller.request.EmailRequest;
+import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.domain.Email;
+import com.cruru.email.exception.EmailConflictException;
 import com.cruru.email.exception.badrequest.VerificationCodeMismatchException;
 import com.cruru.email.exception.badrequest.VerificationCodeNotFoundException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
+import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.EmailFixture;
+import com.cruru.util.fixture.MemberFixture;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +41,9 @@ class EmailFacadeTest extends ServiceTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private EmailFacade emailFacade;
@@ -71,6 +78,19 @@ class EmailFacadeTest extends ServiceTest {
             verify(javaMailSender, times(1)).send(any(MimeMessage.class));
             verify(emailService, times(1)).save(any(Email.class));
         });
+    }
+
+    @DisplayName("이미 가입된 이메일로 인증을 시도하면 예외가 발생한다.")
+    @Test
+    void sendVerificationCode() {
+        // given
+        String email = MemberFixture.DOBBY.getEmail();
+        memberRepository.save(MemberFixture.DOBBY);
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+
+        // when&then
+        assertThatThrownBy(() -> emailFacade.sendVerificationCode(request))
+                .isInstanceOf(EmailConflictException.class);
     }
 
     @DisplayName("이메일 인증 성공 시, 인증 코드가 검증된다.")
