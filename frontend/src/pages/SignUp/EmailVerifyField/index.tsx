@@ -71,7 +71,7 @@ export default function EmailVerifyField({ register, isVerify, setIsVerify }: Em
         <InputField
           {...emailRegister}
           label="이메일"
-          disabled={isVerify}
+          disabled={isSendVerifyEmail || isVerify}
           required
         />
         <S.ButtonWrapper>
