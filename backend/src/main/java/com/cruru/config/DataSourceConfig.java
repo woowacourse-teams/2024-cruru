@@ -19,20 +19,11 @@ public class DataSourceConfig {
     private static final String WRITE_DATASOURCE = "writeDataSource";
     private static final String ROUTE_DATASOURCE = "routeDataSource";
 
-    @Bean(name = READ_DATASOURCE)
-    @ConfigurationProperties(prefix = "spring.datasource.read")
-    public DataSource readDataSource() {
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
-    }
-
-    @Bean(name = WRITE_DATASOURCE)
-    @ConfigurationProperties(prefix = "spring.datasource.write")
-    public DataSource writeDataSource() {
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
+    @Bean
+    @Primary
+    @DependsOn(ROUTE_DATASOURCE)
+    public DataSource defaultDataSource() {
+        return new LazyConnectionDataSourceProxy(routeDataSource());
     }
 
     @Bean(name = ROUTE_DATASOURCE)
@@ -50,10 +41,19 @@ public class DataSourceConfig {
         return dataSourceRouter;
     }
 
-    @Bean
-    @Primary
-    @DependsOn(ROUTE_DATASOURCE)
-    public DataSource defaultDataSource() {
-        return new LazyConnectionDataSourceProxy(routeDataSource());
+    @Bean(name = WRITE_DATASOURCE)
+    @ConfigurationProperties(prefix = "spring.datasource.write")
+    public DataSource writeDataSource() {
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
+    }
+
+    @Bean(name = READ_DATASOURCE)
+    @ConfigurationProperties(prefix = "spring.datasource.read")
+    public DataSource readDataSource() {
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
     }
 }
