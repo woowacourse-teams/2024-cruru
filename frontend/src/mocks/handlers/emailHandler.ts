@@ -11,7 +11,6 @@ const emailHandlers = [
     if (!body.get('subject') || !body.get('content')) {
       return new Response(null, {
         status: 400,
-        statusText: 'malformed request body syntax',
       });
     }
 
@@ -26,10 +25,14 @@ const emailHandlers = [
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     if (!email) {
-      return new Response(null, {
-        status: 400,
-        statusText: 'malformed request body syntax',
-      });
+      return new Response(
+        JSON.stringify({
+          detail: '이메일 형식을 확인해주세요.',
+        }),
+        {
+          status: 400,
+        },
+      );
     }
 
     return new Response(null, {
@@ -45,8 +48,18 @@ const emailHandlers = [
     if (!email || !verificationCode) {
       return new Response(null, {
         status: 400,
-        statusText: 'malformed request body syntax',
       });
+    }
+
+    if (verificationCode !== '123456') {
+      return new Response(
+        JSON.stringify({
+          detail: '인증 코드가 존재하지 않거나 만료되었습니다.',
+        }),
+        {
+          status: 400,
+        },
+      );
     }
 
     return new Response(null, {
