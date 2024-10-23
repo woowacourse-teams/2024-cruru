@@ -157,7 +157,7 @@ class AuthServiceTest extends ServiceTest {
         TokenResponse tokenResponse = authService.refresh(refreshToken.getToken());
 
         // then
-        assertThat(refreshToken.getToken()).isNotEqualTo(tokenResponse.refreshToken());
+        assertThat(tokenResponse.refreshToken()).isNotEqualTo(refreshToken.getToken());
     }
 
     @DisplayName("토큰의 만료 여부를 검증한다.")
