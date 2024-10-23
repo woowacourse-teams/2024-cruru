@@ -9,6 +9,7 @@ export default function Button({
   type = 'button',
   size = 'md',
   color = 'white',
+  disabledColor = 'default',
   ...rest
 }: ButtonProps) {
   return (
@@ -17,6 +18,7 @@ export default function Button({
       color={color}
       type={type}
       onClick={onClick}
+      disabledColor={disabledColor}
       {...rest}
     >
       {children}

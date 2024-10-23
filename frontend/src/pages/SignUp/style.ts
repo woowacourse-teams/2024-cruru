@@ -116,6 +116,25 @@ const Message = styled.div<{ isValid: boolean }>`
   color: ${({ theme, isValid }) => (isValid ? theme.colors.feedback.success : theme.baseColors.grayscale[700])};
 `;
 
+const showUp = keyframes`
+  from {
+    height: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    height: 100%;
+    transform: translateY(0);
+  }
+`;
+
+const InnerAnimateForm = styled.div`
+  animation: ${showUp} 0.4s ease-in-out;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
 const S = {
   Layout,
   SignInContainer,
@@ -130,6 +149,7 @@ const S = {
   CheckIcon,
   Message,
   IconButton,
+  InnerAnimateForm,
 };
 
 export default S;

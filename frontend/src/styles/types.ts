@@ -11,6 +11,7 @@ export interface BaseColors {
   purplescale: ColorScaleMap;
   redscale: ColorScaleMap;
   bluescale: ColorScaleMap;
+  greenscale: ColorScaleMap;
 }
 
 export interface Colors {
