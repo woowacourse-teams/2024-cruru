@@ -30,8 +30,8 @@ public class AuthFacade {
     }
 
     private TokenResponse createTokens(Member member) {
-        Token accessToken = authService.createAccessToken(member);
-        Token refreshToken = authService.createRefreshToken(member);
+        Token accessToken = authService.createAccessToken(member.getEmail(), member.getRole());
+        Token refreshToken = authService.createRefreshToken(member.getEmail(), member.getRole());
         return new TokenResponse(accessToken.getToken(), refreshToken.getToken());
     }
 }

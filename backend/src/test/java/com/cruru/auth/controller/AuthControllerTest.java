@@ -11,8 +11,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.auth.controller.request.LoginRequest;
-import com.cruru.auth.domain.Token;
-import com.cruru.auth.service.AuthService;
 import com.cruru.club.domain.repository.ClubRepository;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;

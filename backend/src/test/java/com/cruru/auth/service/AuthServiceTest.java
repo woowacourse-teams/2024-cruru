@@ -3,12 +3,11 @@ package com.cruru.auth.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.doReturn;
 
 import com.cruru.auth.controller.response.TokenResponse;
 import com.cruru.auth.domain.AccessToken;
-import com.cruru.auth.domain.RefreshToken;
 import com.cruru.auth.domain.Token;
-import com.cruru.auth.domain.repository.RefreshTokenRepository;
 import com.cruru.auth.exception.IllegalTokenException;
 import com.cruru.member.domain.Member;
 import com.cruru.member.domain.repository.MemberRepository;
@@ -19,10 +18,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("AuthService 테스트")
 class AuthServiceTest extends ServiceTest {
@@ -37,8 +38,8 @@ class AuthServiceTest extends ServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
+    @MockBean
+    private TokenRedisClient tokenRedisClient;
 
     private Member member;
 
@@ -56,7 +57,7 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void createAccessToken() {
         // given&when
-        Token accessToken = authService.createAccessToken(member);
+        Token accessToken = authService.createAccessToken(member.getEmail(), member.getRole());
 
         // then
         assertAll(
@@ -69,7 +70,7 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void isTokenSignatureValid() {
         // given
-        Token accessToken = authService.createAccessToken(member);
+        Token accessToken = authService.createAccessToken(member.getEmail(), member.getRole());
 
         // when
         boolean isValid = authService.isTokenSignatureValid(accessToken.getToken());
@@ -95,7 +96,7 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void extractEmail() {
         // given
-        Token accessToken = authService.createAccessToken(member);
+        Token accessToken = authService.createAccessToken(member.getEmail(), member.getRole());
 
         // when
         String email = authService.extractEmail(accessToken.getToken());
@@ -108,7 +109,7 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void extractRole() {
         // given
-        Token accessToken = authService.createAccessToken(member);
+        Token accessToken = authService.createAccessToken(member.getEmail(), member.getRole());
 
         // when
         String role = authService.extractMemberRole(accessToken.getToken());
@@ -146,14 +147,17 @@ class AuthServiceTest extends ServiceTest {
     @Test
     void refresh() throws InterruptedException {
         // given
-        Token refreshToken = refreshTokenRepository.save((RefreshToken) authService.createRefreshToken(member));
+        Token refreshToken = authService.createRefreshToken(member.getEmail(), member.getRole());
+        tokenRedisClient.saveToken(member.getEmail(), refreshToken.getToken());
+        doReturn(true).when(tokenRedisClient).existsByToken(member.getEmail(), refreshToken.getToken());
+        doReturn(Optional.of(refreshToken.getToken())).when(tokenRedisClient).getToken(member.getEmail());
 
         // when
         Thread.sleep(1000);
         TokenResponse tokenResponse = authService.refresh(refreshToken.getToken());
 
         // then
-        assertThat(refreshToken.getToken()).isNotEqualTo(tokenResponse.refreshToken());
+        assertThat(tokenResponse.refreshToken()).isNotEqualTo(refreshToken.getToken());
     }
 
     @DisplayName("토큰의 만료 여부를 검증한다.")

@@ -70,7 +70,8 @@ class AuthValidationAspectTest extends ControllerTest {
     @BeforeEach
     void setUp() {
         Member unauthorizedMember = memberRepository.save(MemberFixture.RUSH);
-        unauthorizedToken = authService.createAccessToken(unauthorizedMember).getToken();
+        unauthorizedToken = authService.createAccessToken(unauthorizedMember.getEmail(), unauthorizedMember.getRole())
+                .getToken();
         clubRepository.save(ClubFixture.create(unauthorizedMember));
         dashboard = dashboardRepository.save(DashboardFixture.backend(defaultClub));
         applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
