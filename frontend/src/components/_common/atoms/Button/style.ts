@@ -3,10 +3,12 @@ import styled from '@emotion/styled';
 
 export type ButtonSize = 'sm' | 'md' | 'fillContainer';
 export type ButtonColor = 'white' | 'black' | 'primary' | 'secondary' | 'error';
+export type DisabledButtonColor = 'default' | 'success';
 
 export interface ButtonStyleProps {
   size: ButtonSize;
   color: ButtonColor;
+  disabledColor?: DisabledButtonColor;
 }
 
 const commonStyles = (theme: Theme) => css`
@@ -75,7 +77,7 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
     }
   `,
   secondary: (theme: Theme) => css`
-    color: ${theme.colors.text.default};
+    color: ${theme.baseColors.purplescale[500]};
     background-color: ${theme.baseColors.purplescale[50]};
     border: 1px solid ${theme.baseColors.purplescale[500]};
 
@@ -97,6 +99,20 @@ const colorStyles: { [key in ButtonColor]: (theme: Theme) => SerializedStyles } 
   `,
 };
 
+const DisabledColorStyle: { [key in DisabledButtonColor]: (theme: Theme) => SerializedStyles } = {
+  default: (theme: Theme) => css`
+    color: ${theme.baseColors.grayscale[600]};
+    background-color: ${theme.baseColors.grayscale[300]};
+    border: 1px solid ${theme.baseColors.grayscale[300]};
+  `,
+
+  success: (theme: Theme) => css`
+    color: ${theme.baseColors.greenscale[500]};
+    background-color: ${theme.baseColors.greenscale[100]};
+    border: 1px solid ${theme.baseColors.greenscale[500]};
+  `,
+};
+
 const Button = styled.button<ButtonStyleProps>`
   ${({ theme }) => commonStyles(theme)}
   ${({ size, theme }) => sizeStyles[size](theme)}
@@ -104,10 +120,7 @@ const Button = styled.button<ButtonStyleProps>`
   
   &:disabled {
     cursor: not-allowed;
-
-    color: ${({ theme }) => theme.baseColors.grayscale[600]};
-    background-color: ${({ theme }) => theme.baseColors.grayscale[300]};
-    border: 1px solid ${({ theme }) => theme.baseColors.grayscale[300]};
+    ${({ disabledColor, theme }) => DisabledColorStyle[disabledColor || 'default'](theme)};
   }
 `;
 
