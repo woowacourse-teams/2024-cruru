@@ -78,31 +78,31 @@ class ApplicantRepositoryTest extends RepositoryTest {
     @Test
     void findApplicantCardsByProcesses() {
         // given
-        Process process = processRepository.save(ProcessFixture.applyType());
+        Process process1 = processRepository.save(ProcessFixture.applyType());
+        Process process2 = processRepository.save(ProcessFixture.interview(null));
 
-        Applicant applicant1 = ApplicantFixture.pendingDobby(process);
-        Applicant applicant2 = ApplicantFixture.pendingRush(process);
+        Applicant applicant1 = ApplicantFixture.pendingDobby(process1);
+        Applicant applicant2 = ApplicantFixture.pendingRush(process1);
         applicantRepository.saveAll(List.of(applicant1, applicant2));
 
         List<Evaluation> evaluations = List.of(
-                EvaluationFixture.fivePoints(process, applicant1),
-                EvaluationFixture.fivePoints(process, applicant1),
-                EvaluationFixture.fivePoints(process, applicant2)
+                EvaluationFixture.fourPoints(process1, applicant1),
+                EvaluationFixture.fivePoints(process2, applicant1),
+                EvaluationFixture.fivePoints(process1, applicant2)
         );
         evaluationRepository.saveAll(evaluations);
 
         // when
-        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(List.of(process));
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcesses(List.of(process1));
 
         // then
         assertThat(applicantCards).hasSize(2);
-
         ApplicantCard applicantCard1 = applicantCards.get(0);
         assertAll(
                 () -> assertThat(applicantCard1.id()).isEqualTo(applicant1.getId()),
                 () -> assertThat(applicantCard1.name()).isEqualTo(applicant1.getName()),
-                () -> assertThat(applicantCard1.evaluationCount()).isEqualTo(2),
-                () -> assertThat(applicantCard1.averageScore()).isEqualTo(5.0)
+                () -> assertThat(applicantCard1.evaluationCount()).isEqualTo(1),
+                () -> assertThat(applicantCard1.averageScore()).isEqualTo(4.0)
         );
 
         ApplicantCard applicantCard2 = applicantCards.get(1);
@@ -140,39 +140,31 @@ class ApplicantRepositoryTest extends RepositoryTest {
     @Test
     void findApplicantCardsByProcess() {
         // given
-        Process process = processRepository.save(ProcessFixture.applyType());
+        Process process1 = processRepository.save(ProcessFixture.applyType());
+        Process process2 = processRepository.save(ProcessFixture.interview(null));
 
-        Applicant applicant1 = ApplicantFixture.pendingDobby(process);
-        Applicant applicant2 = ApplicantFixture.pendingRush(process);
+        Applicant applicant1 = ApplicantFixture.pendingDobby(process1);
+        Applicant applicant2 = ApplicantFixture.pendingRush(process2);
         applicantRepository.saveAll(List.of(applicant1, applicant2));
 
         List<Evaluation> evaluations = List.of(
-                EvaluationFixture.fivePoints(process, applicant1),
-                EvaluationFixture.fivePoints(process, applicant1),
-                EvaluationFixture.fivePoints(process, applicant2)
+                EvaluationFixture.fourPoints(process1, applicant1),
+                EvaluationFixture.fivePoints(process2, applicant1),
+                EvaluationFixture.fivePoints(process1, applicant2)
         );
         evaluationRepository.saveAll(evaluations);
 
         // when
-        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcess(process);
+        List<ApplicantCard> applicantCards = applicantRepository.findApplicantCardsByProcess(process1);
 
         // then
-        assertThat(applicantCards).hasSize(2);
-
-        ApplicantCard applicantCard1 = applicantCards.get(0);
+        assertThat(applicantCards).hasSize(1);
+        ApplicantCard applicantCard = applicantCards.get(0);
         assertAll(
-                () -> assertThat(applicantCard1.id()).isEqualTo(applicant1.getId()),
-                () -> assertThat(applicantCard1.name()).isEqualTo(applicant1.getName()),
-                () -> assertThat(applicantCard1.evaluationCount()).isEqualTo(2),
-                () -> assertThat(applicantCard1.averageScore()).isEqualTo(5.0)
-        );
-
-        ApplicantCard applicantCard2 = applicantCards.get(1);
-        assertAll(
-                () -> assertThat(applicantCard2.id()).isEqualTo(applicant2.getId()),
-                () -> assertThat(applicantCard2.name()).isEqualTo(applicant2.getName()),
-                () -> assertThat(applicantCard2.evaluationCount()).isEqualTo(1),
-                () -> assertThat(applicantCard2.averageScore()).isEqualTo(5.0)
+                () -> assertThat(applicantCard.id()).isEqualTo(applicant1.getId()),
+                () -> assertThat(applicantCard.name()).isEqualTo(applicant1.getName()),
+                () -> assertThat(applicantCard.evaluationCount()).isEqualTo(1),
+                () -> assertThat(applicantCard.averageScore()).isEqualTo(4.0)
         );
     }
 

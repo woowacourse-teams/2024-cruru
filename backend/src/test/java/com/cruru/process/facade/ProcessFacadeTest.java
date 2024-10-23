@@ -77,7 +77,7 @@ class ProcessFacadeTest extends ServiceTest {
         Process process1 = processRepository.save(ProcessFixture.applyType(defaultDashboard));
         Process process2 = processRepository.save(ProcessFixture.interview(defaultDashboard));
         Applicant applicant1 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
-        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process1));
+        Applicant applicant2 = applicantRepository.save(ApplicantFixture.pendingDobby(process2));
         List<Evaluation> evaluations1 = List.of(
                 EvaluationFixture.fivePoints(process1, applicant1),
                 EvaluationFixture.fourPoints(process1, applicant1),
@@ -114,7 +114,7 @@ class ProcessFacadeTest extends ServiceTest {
                 () -> assertThat(processResponses.processResponses()).hasSize(2),
                 () -> assertThat(processId).isEqualTo(process1.getId()),
                 () -> assertThat(applicantCardResponse.id()).isEqualTo(applicant2.getId()),
-                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations1.size()),
+                () -> assertThat(applicantCardResponse.evaluationCount()).isEqualTo(evaluations2.size()),
                 () -> assertThat(applicantCardResponse.averageScore()).isEqualTo(4.75)
         );
     }
