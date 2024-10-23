@@ -8,7 +8,7 @@ import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.exception.EmailAttachmentsException;
-import com.cruru.email.exception.badrequest.EmailAlreadySignedUpException;
+import com.cruru.email.exception.EmailConflictException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
@@ -68,7 +68,7 @@ public class EmailFacade {
 
     private void validateEmailExists(String email) {
         if (memberService.existsByEmail(email)) {
-            throw new EmailAlreadySignedUpException();
+            throw new EmailConflictException();
         }
     }
 

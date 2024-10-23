@@ -13,7 +13,7 @@ import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.domain.Email;
-import com.cruru.email.exception.badrequest.EmailAlreadySignedUpException;
+import com.cruru.email.exception.EmailConflictException;
 import com.cruru.email.exception.badrequest.VerificationCodeMismatchException;
 import com.cruru.email.exception.badrequest.VerificationCodeNotFoundException;
 import com.cruru.email.service.EmailRedisClient;
@@ -90,7 +90,7 @@ class EmailFacadeTest extends ServiceTest {
 
         // when&then
         assertThatThrownBy(() -> emailFacade.sendVerificationCode(request))
-                .isInstanceOf(EmailAlreadySignedUpException.class);
+                .isInstanceOf(EmailConflictException.class);
     }
 
     @DisplayName("이메일 인증 성공 시, 인증 코드가 검증된다.")
