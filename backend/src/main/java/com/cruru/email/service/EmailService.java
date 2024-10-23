@@ -33,10 +33,10 @@ public class EmailService {
             Club from, Applicant to, String subject, String content, List<File> tempFiles) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(to.getEmail());
-            helper.setSubject(subject);
-            helper.setText(content);
+            helper.setSubject(EmailTemplate.defaultEmailSubject(from.getName(), subject));
+            helper.setText(EmailTemplate.generateDefaultEmailTemplate(from.getName(), subject, content), true);
             if (hasFile(tempFiles)) {
                 addAttachments(helper, tempFiles);
             }
