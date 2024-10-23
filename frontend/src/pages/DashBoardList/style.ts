@@ -4,16 +4,16 @@ import { hideScrollBar } from '@styles/utils';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 1.6rem;
+  padding: 3.2rem 2.4rem;
   gap: 2.4rem;
 
   height: 100%;
 `;
 
 const Title = styled.h1`
-  ${({ theme }) => theme.typography.heading[700]}
-  padding-bottom: 2.4rem;
-  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[300]};
+  ${({ theme }) => theme.typography.heading[800]}
+  padding: 0.2rem 0 3.2rem;
+  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const CardGrid = styled.div`

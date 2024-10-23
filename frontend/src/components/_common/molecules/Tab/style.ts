@@ -66,7 +66,7 @@ const TabPanel = styled.div<{ color: 'gray' | 'white' }>`
   flex: 1;
   min-height: 0;
 
-  padding-top: 2rem;
+  padding-top: 2.4rem;
 
   ${hideScrollBar};
 

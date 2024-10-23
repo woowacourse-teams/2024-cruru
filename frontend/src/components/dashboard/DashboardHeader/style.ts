@@ -4,17 +4,18 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: 0 1.6rem 1.2rem 1.6rem;
+  padding: 0.2rem 0 3.4rem;
+  border-bottom: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[400]};
 `;
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1.8rem;
 `;
 
 const Title = styled.div`
-  ${({ theme }) => theme.typography.heading[700]}
+  ${({ theme }) => theme.typography.heading[800]}
 
   display: flex;
   align-items: baseline;
@@ -34,7 +35,7 @@ const RecruitmentPeriod = styled.div`
   align-items: center;
   gap: 0.6rem;
 
-  ${({ theme }) => theme.typography.heading[400]};
+  ${({ theme }) => theme.typography.heading[500]};
   color: ${({ theme }) => theme.baseColors.grayscale[600]};
 `;
 

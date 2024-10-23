@@ -6,13 +6,15 @@ import { Link, useLocation } from 'react-router-dom';
 
 import type { RecruitmentStatusObject } from '@utils/compareTime';
 
-import { Fragment } from 'react/jsx-runtime';
 import { HiChevronDoubleLeft, HiOutlineHome } from 'react-icons/hi2';
 import { HiOutlineMenu } from 'react-icons/hi';
 import { GrDocumentLocked, GrDocumentTime, GrDocumentUser } from 'react-icons/gr';
+import { FiUsers, FiUserX, FiTrello, FiClipboard, FiEdit3 } from 'react-icons/fi';
 import type { IconType } from 'react-icons';
+import type { DashboardTabItems } from '@pages/DashboardLayout';
 
 import IconButton from '@components/_common/atoms/IconButton';
+import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import LogoutButton from './LogoutButton';
 
 import S from './style';
@@ -33,9 +35,20 @@ interface SidebarStyle {
 interface DashboardSidebarProps {
   sidebarStyle: SidebarStyle;
   options?: Option[];
+  isDashboard: boolean;
+  currentMenu: DashboardTabItems;
+  onMoveTab: (tab: DashboardTabItems) => void;
+  onResetTab: () => void;
 }
 
-export default function DashboardSidebar({ sidebarStyle, options }: DashboardSidebarProps) {
+export default function DashboardSidebar({
+  sidebarStyle,
+  options,
+  isDashboard,
+  currentMenu,
+  onMoveTab,
+  onResetTab,
+}: DashboardSidebarProps) {
   const pendingPosts = useMemo(() => options?.filter(({ status }) => status.isPending), [options]);
   const onGoingPosts = useMemo(() => options?.filter(({ status }) => status.isOngoing), [options]);
   const closedPosts = useMemo(() => options?.filter(({ status }) => status.isClosed), [options]);
@@ -52,6 +65,14 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
     Pending: GrDocumentTime,
     Ongoing: GrDocumentUser,
     Closed: GrDocumentLocked,
+  };
+
+  const TabIconObj: Record<DashboardTabItems, IconType> = {
+    '지원자 관리': FiUsers,
+    '불합격자 관리': FiUserX,
+    '모집 과정 관리': FiTrello,
+    '공고 편집': FiClipboard,
+    '지원서 편집': FiEdit3,
   };
 
   return (
@@ -87,7 +108,7 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
         </IconButton>
       </S.SidebarHeader>
 
-      <nav>
+      <S.SidebarNav>
         <S.Contents>
           <S.SidebarItem>
             <Link to={routes.dashboard.list()}>
@@ -108,37 +129,71 @@ export default function DashboardSidebar({ sidebarStyle, options }: DashboardSid
 
           {!!options?.length && <S.Divider />}
 
-          {sidebarContentList.map(({ title, posts }) => {
-            if (posts?.length === 0) return null;
-            return (
-              <Fragment key={title}>
-                <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
-                {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
-                  const Icon = IconObj[status.status];
-                  return (
-                    <S.SidebarItem key={applyFormId}>
-                      <Link to={routes.dashboard.post({ dashboardId: String(dashboardId), applyFormId })}>
-                        <S.SidebarItemLink
-                          isSelected={isSelected}
-                          isSidebarOpen={sidebarStyle.isSidebarOpen}
+          {isDashboard && (
+            <>
+              <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? '공고 관리' : <S.Circle />}</S.ContentSubTitle>
+              {Object.values(DASHBOARD_TAB_MENUS).map((label) => {
+                const Icon = TabIconObj[label];
+
+                return (
+                  /* eslint-disable react/jsx-indent */
+                  <S.SidebarItem key={label}>
+                    <S.SidebarItemLink
+                      isSelected={currentMenu === label}
+                      isSidebarOpen={sidebarStyle.isSidebarOpen}
+                      onClick={() => onMoveTab(label)}
+                    >
+                      <S.IconContainer>
+                        <Icon
+                          size={16}
+                          strokeWidth={2.5}
+                        />
+                      </S.IconContainer>
+                      {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{label}</S.SidebarItemText>}
+                    </S.SidebarItemLink>
+                  </S.SidebarItem>
+                );
+              })}
+              <S.Divider />
+            </>
+          )}
+
+          <S.SidebarScrollBox>
+            {sidebarContentList.map(({ title, posts }) => {
+              if (posts?.length === 0) return null;
+              return (
+                <S.SidebarItemGroup key={title}>
+                  <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
+                  {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
+                    const Icon = IconObj[status.status];
+                    return (
+                      <S.SidebarItem key={applyFormId}>
+                        <Link
+                          to={routes.dashboard.post({ dashboardId: String(dashboardId), applyFormId })}
+                          onClick={onResetTab}
                         >
-                          <S.IconContainer>
-                            <Icon
-                              size={16}
-                              strokeWidth={4}
-                            />
-                          </S.IconContainer>
-                          {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
-                        </S.SidebarItemLink>
-                      </Link>
-                    </S.SidebarItem>
-                  );
-                })}
-              </Fragment>
-            );
-          })}
+                          <S.SidebarItemLink
+                            isSelected={isSelected}
+                            isSidebarOpen={sidebarStyle.isSidebarOpen}
+                          >
+                            <S.IconContainer>
+                              <Icon
+                                size={16}
+                                strokeWidth={4}
+                              />
+                            </S.IconContainer>
+                            {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
+                          </S.SidebarItemLink>
+                        </Link>
+                      </S.SidebarItem>
+                    );
+                  })}
+                </S.SidebarItemGroup>
+              );
+            })}
+          </S.SidebarScrollBox>
         </S.Contents>
-      </nav>
+      </S.SidebarNav>
 
       {sidebarStyle.isSidebarOpen && <LogoutButton />}
     </S.Container>

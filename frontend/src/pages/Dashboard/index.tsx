@@ -1,5 +1,7 @@
 /* eslint-disable no-trailing-spaces */
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
+
+import type { DashboardTabItems } from '@pages/DashboardLayout';
 
 import Tab from '@components/_common/molecules/Tab';
 import ApplyManagement from '@components/applyManagement';
@@ -8,10 +10,8 @@ import ProcessBoard from '@components/dashboard/ProcessBoard';
 import PostManageBoard from '@components/postManagement/PostManageBoard';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 
-import useTab from '@components/_common/molecules/Tab/useTab';
 import useProcess from '@hooks/useProcess';
 
-import { DASHBOARD_TAB_MENUS } from '@constants/constants';
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
@@ -19,10 +19,8 @@ import { SpecificProcessIdProvider } from '@contexts/SpecificProcessIdContext';
 
 import S from './style';
 
-export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '불합격자 관리' | '공고 관리' | '지원서 관리';
-
 export default function Dashboard() {
-  const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
+  const { currentMenu } = useOutletContext<{ currentMenu: DashboardTabItems }>();
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
   const { processes, title, postUrl, startDate, endDate, ratingFilterProps, applicantSortDropdownProps } = useProcess({
     dashboardId,
@@ -38,18 +36,6 @@ export default function Dashboard() {
           startDate={startDate}
           endDate={endDate}
         />
-
-        <Tab>
-          {Object.values(DASHBOARD_TAB_MENUS).map((label) => (
-            <Tab.TabItem
-              key={label}
-              label={label}
-              name={label}
-              isActive={currentMenu === label}
-              handleClickTabItem={moveTab}
-            />
-          ))}
-        </Tab>
       </S.DashboardHeaderWrapper>
 
       {/* TODO: [08.21-lurgi] 현재 모달이 여러개를 컨트롤 할 수 없는 관계로 새로 렌더링 합니다.
@@ -101,13 +87,13 @@ export default function Dashboard() {
         </S.DashboardContainer>
       </Tab.TabPanel>
 
-      <Tab.TabPanel isVisible={currentMenu === '공고 관리'}>
+      <Tab.TabPanel isVisible={currentMenu === '공고 편집'}>
         <S.DashboardContainer>
           <PostManageBoard applyFormId={applyFormId} />
         </S.DashboardContainer>
       </Tab.TabPanel>
 
-      <Tab.TabPanel isVisible={currentMenu === '지원서 관리'}>
+      <Tab.TabPanel isVisible={currentMenu === '지원서 편집'}>
         <S.DashboardContainer>
           <ApplyManagement />
         </S.DashboardContainer>

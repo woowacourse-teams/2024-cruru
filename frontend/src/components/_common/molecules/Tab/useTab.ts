@@ -12,5 +12,13 @@ export default function useTab<T>({ defaultValue }: useTabProps<T>) {
     setCurrentMenu(name as T);
   };
 
-  return { currentMenu, moveTab };
+  const moveTabByParam = (tab: T) => {
+    setCurrentMenu(tab);
+  };
+
+  const resetTab = () => {
+    setCurrentMenu(defaultValue);
+  };
+
+  return { currentMenu, moveTab, moveTabByParam, resetTab };
 }
