@@ -55,7 +55,7 @@ export default function DashboardLayout() {
 
       <Suspense fallback={<LoadingPage />}>
         <S.MainContainer sidebarWidth={rect?.width}>
-          <Outlet context={{ currentMenu, moveTabByParam }} />
+          <Outlet context={{ currentMenu }} />
         </S.MainContainer>
       </Suspense>
     </S.Layout>
