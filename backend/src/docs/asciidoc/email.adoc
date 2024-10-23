@@ -26,7 +26,7 @@ operation::email/verification-code-fail/invalid-email[snippets="http-request,req
 
 ==== 실패: 이미 가입된 이메일
 
-operation::email/verification-code-fail/already_signed_up[snippets="http-request,request-fields,http-response"]
+operation::email/verification-code-fail/already-signed-up[snippets="http-request,request-fields,http-response"]
 
 === 이메일 인증 확인
 

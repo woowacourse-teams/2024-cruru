@@ -167,7 +167,7 @@ class EmailControllerTest extends ControllerTest {
         RestAssured.given(spec).log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
-                .filter(document("email/verification-code-fail/already_signed_up",
+                .filter(document("email/verification-code-fail/already-signed-up",
                         requestFields(fieldWithPath("email").description("이미 가입된 이메일"))
                 ))
                 .when().post("/v1/emails/verification-code")
