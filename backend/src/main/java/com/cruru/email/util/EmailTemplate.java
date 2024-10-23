@@ -25,4 +25,28 @@ public class EmailTemplate {
                </div>
                """.formatted(verificationCode);
     }
+
+    public static String generateDefaultEmailTemplate(String sender, String title, String content) {
+        return """
+            <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #ffffff; border: 1px solid #e0e0e0; max-width: 1000px; margin: 0 auto;'>
+                    <div style='text-align: center; padding: 20px 0; border-top: 5px solid #AA2298; border-bottom: 5px solid #AA2298; color: Black;'>
+                        <h1 style='margin: 0;'>%s</h1>
+                    </div>
+                    <div style='padding: 30px;'>
+                        <h2 style='color: #333;'>%s</h2>
+                        <p style='font-size: 16px; color: #555;'>%s</p>
+                    </div>
+                    <hr style='border: none; border-top: 1px solid #ddd; margin: 20px 0;'>
+                    <div style='padding: 20px; text-align: center; font-size: 12px; color: #888;'>
+                        <p>본 메일은 수신 전용으로 답장이 불가하며, <a href="https://www.cruru.kr" style="color: #AA2298; text-decoration: none;">크루루(Cruru)</a>를 통해 발송되었습니다.</p>
+                        <p>복잡했던 리크루팅 하루만에 크루루!</p>
+                        <p>&copy; 2024 크루루. All Rights Reserved.</p>
+                    </div>
+                </div>
+            """.formatted(sender, title, content.replace(System.lineSeparator(), "<br/>"));
+    }
+
+    public static String defaultEmailSubject(String sender, String title) {
+        return "[%s] %s".formatted(sender, title);
+    }
 }
