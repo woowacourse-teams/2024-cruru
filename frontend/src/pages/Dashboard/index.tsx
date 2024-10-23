@@ -24,7 +24,7 @@ export type DashboardTabItems = '지원자 관리' | '모집 과정 관리' | '�
 export default function Dashboard() {
   const { currentMenu, moveTab } = useTab<DashboardTabItems>({ defaultValue: '지원자 관리' });
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processes, title, postUrl, startDate, endDate } = useProcess({
+  const { processes, title, postUrl, startDate, endDate, ratingFilterProps, applicantSortDropdownProps } = useProcess({
     dashboardId,
     applyFormId,
   });
@@ -64,6 +64,8 @@ export default function Dashboard() {
                   <ProcessBoard
                     isSubTab
                     processes={processes}
+                    applicantSortDropdownProps={applicantSortDropdownProps}
+                    ratingFilterProps={ratingFilterProps}
                   />
                 </FloatingEmailFormProvider>
               </MultiApplicantContextProvider>
