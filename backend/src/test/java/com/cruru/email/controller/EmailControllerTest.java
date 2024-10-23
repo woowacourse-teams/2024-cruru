@@ -15,9 +15,11 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.service.EmailRedisClient;
+import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.EmailFixture;
+import com.cruru.util.fixture.MemberFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.io.File;
@@ -31,6 +33,9 @@ class EmailControllerTest extends ControllerTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @MockBean
     private EmailRedisClient emailRedisClient;
@@ -148,6 +153,25 @@ class EmailControllerTest extends ControllerTest {
                 ))
                 .when().post("/v1/emails/verification-code")
                 .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("이메일 인증 번호 발송 시, 이미 가입된 이메일일 경우 400을 응답한다.")
+    @Test
+    void sendVerificationCode_alreadySignedUp() {
+        // given
+        String email = MemberFixture.DOBBY.getEmail();
+        memberRepository.save(MemberFixture.DOBBY);
+        SendVerificationCodeRequest request = new SendVerificationCodeRequest(email);
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .filter(document("email/verification-code-fail/already-signed-up",
+                        requestFields(fieldWithPath("email").description("이미 가입된 이메일"))
+                ))
+                .when().post("/v1/emails/verification-code")
+                .then().log().all().statusCode(409);
     }
 
     @DisplayName("이메일 인증 번호 발송 시, 이메일 형식이 올바르지 않을 경우 400을 응답한다.")
