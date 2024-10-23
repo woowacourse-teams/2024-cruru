@@ -5,9 +5,16 @@ import { useMutation } from '@tanstack/react-query';
 interface UseEmailVerifyProps {
   setIsSendVerifyEmail: (bol: boolean) => void;
   setIsVerify: (bol: boolean) => void;
+  startTimer: () => void;
+  endTimer: () => void;
 }
 
-export default function useEmailVerify({ setIsSendVerifyEmail, setIsVerify }: UseEmailVerifyProps) {
+export default function useEmailVerify({
+  setIsSendVerifyEmail,
+  setIsVerify,
+  startTimer,
+  endTimer,
+}: UseEmailVerifyProps) {
   const { success } = useToast();
 
   const { mutate: postVerifyEmailMutate, isPending: isPendingPostVerifyEmail } = useMutation({
@@ -15,6 +22,7 @@ export default function useEmailVerify({ setIsSendVerifyEmail, setIsVerify }: Us
     onSuccess: () => {
       success('메일 전송에 성공했습니다. 이메일을 확인해주세요!');
       setIsSendVerifyEmail(true);
+      startTimer();
     },
   });
 
@@ -23,6 +31,7 @@ export default function useEmailVerify({ setIsSendVerifyEmail, setIsVerify }: Us
     onSuccess: () => {
       success('이메일 인증에 성공했습니다!');
       setIsVerify(true);
+      endTimer();
     },
   });
 

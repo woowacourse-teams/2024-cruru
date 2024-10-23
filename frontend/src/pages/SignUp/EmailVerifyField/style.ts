@@ -31,12 +31,28 @@ const ConfirmButtonWrapper = styled.div`
   height: 4.6rem;
 `;
 
+const TimerInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const Timer = styled.div`
+  position: absolute;
+  right: 1.4rem;
+  top: 1.4rem;
+
+  ${({ theme }) => theme.typography.common.block}
+  color : ${({ theme }) => theme.baseColors.grayscale[700]}
+`;
+
 const S = {
   Wrapper,
   FieldWrapper,
   ButtonWrapper,
   ButtonInner,
   ConfirmButtonWrapper,
+  TimerInputWrapper,
+  Timer,
 };
 
 export default S;

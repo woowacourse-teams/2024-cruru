@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Button from '@components/_common/atoms/Button';
 import Spinner from '@components/_common/atoms/Spinner';
@@ -16,13 +16,57 @@ interface EmailVerifyFieldProps {
   setIsVerify: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const INIT_TIMER_VALUE = 60 * 10;
+
+const formatTime = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${String(minutes).padStart(2, '0')} : ${String(remainingSeconds).padStart(2, '0')}`;
+};
+
 export default function EmailVerifyField({ register, isVerify, setIsVerify }: EmailVerifyFieldProps) {
   const [isSendVerifyEmail, setIsSendVerifyEmail] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
+  const [timer, setTimer] = useState(INIT_TIMER_VALUE);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleVerificationCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVerificationCode(e.target.value);
   };
+
+  const endTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const startTimer = () => {
+    setTimer(INIT_TIMER_VALUE);
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    timerRef.current = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer <= 1) {
+          endTimer();
+          setIsSendVerifyEmail(false);
+          setIsVerify(false);
+          return 0;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
+  };
+
+  // eslint-disable-next-line arrow-body-style
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
 
   const emailRegister = register('email', { validate: validateEmail, placeholder: '이메일', type: 'email' });
 
@@ -34,6 +78,8 @@ export default function EmailVerifyField({ register, isVerify, setIsVerify }: Em
   } = useEmailVerify({
     setIsSendVerifyEmail,
     setIsVerify,
+    startTimer,
+    endTimer,
   });
 
   const handleClickSendVerifyEmail = async () => {
@@ -80,13 +126,16 @@ export default function EmailVerifyField({ register, isVerify, setIsVerify }: Em
         </S.ButtonWrapper>
       </S.FieldWrapper>
       <S.FieldWrapper>
-        <InputField
-          value={verificationCode}
-          onChange={handleVerificationCodeChange}
-          disabled={!isSendVerifyEmail || isVerify}
-          placeholder="인증 번호"
-          required
-        />
+        <S.TimerInputWrapper>
+          <InputField
+            value={verificationCode}
+            onChange={handleVerificationCodeChange}
+            disabled={!isSendVerifyEmail || isVerify}
+            placeholder="인증 번호"
+            required
+          />
+          {isSendVerifyEmail && !isVerify && <S.Timer>{formatTime(timer)}</S.Timer>}
+        </S.TimerInputWrapper>
         <S.ConfirmButtonWrapper>
           <Button
             type="button"
