@@ -69,7 +69,7 @@ export default function useProcess({ dashboardId, applyFormId }: UseProcessProps
   return {
     title: data?.title ?? '',
     postUrl: `${DOMAIN_URL}${routes.post({ applyFormId: data?.applyFormId ?? '' })}`,
-    processes,
+    processes: processes.sort((processA, processB) => processA.orderIndex - processB.orderIndex),
     processList,
     error,
     isLoading,

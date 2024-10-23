@@ -51,21 +51,22 @@ export default function ProcessColumn({
     removeApplicant,
     removeApplicants,
   } = useMultiApplicant();
-
   const menuItemsList = ({ applicantId }: { applicantId: number }) => {
     const menuItems: DropdownItemType[] = [
       {
         type: 'subTrigger',
         id: 'moveProcess',
         name: '단계 이동',
-        items: processList.map(({ processName, processId }) => ({
-          type: 'clickable',
-          id: processId,
-          name: processName,
-          onClick: ({ targetProcessId }) => {
-            moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
-          },
-        })),
+        items: processList
+          .filter((simpleProcess) => simpleProcess.processId !== process.processId)
+          .map(({ processName, processId }) => ({
+            type: 'clickable',
+            id: processId,
+            name: processName,
+            onClick: ({ targetProcessId }) => {
+              moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
+            },
+          })),
       },
       {
         type: 'clickable',

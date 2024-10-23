@@ -37,14 +37,16 @@ export default function ApplicantBaseInfo({ applicantId }: ApplicantBaseInfoProp
 
   const { applicant, process } = applicantBaseInfo;
 
-  const menuItems: DropdownItemType[] = processList.map(({ processName, processId }) => ({
-    type: 'clickable',
-    id: processId,
-    name: processName,
-    onClick: ({ targetProcessId }) => {
-      moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
-    },
-  }));
+  const menuItems: DropdownItemType[] = processList
+    .filter(({ processId }) => processId !== process.id)
+    .map(({ processName, processId }) => ({
+      type: 'clickable',
+      id: processId,
+      name: processName,
+      onClick: ({ targetProcessId }) => {
+        moveApplicantProcess({ processId: targetProcessId, applicants: [applicantId] });
+      },
+    }));
 
   const rejectAppHandler = () => {
     const confirmAction = (message: string, action: () => void) => {

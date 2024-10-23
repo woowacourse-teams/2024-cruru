@@ -12,6 +12,7 @@ export default function useApplicant({ applicantId }: { applicantId?: number }) 
   return useMutation({
     mutationFn: ({ processId, applicants }: { processId: number; applicants: number[] }) =>
       applicantApis.move({ processId, applicants }),
+
     onSuccess: (_, variables) => {
       const { processId } = variables;
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD, dashboardId, applyFormId] });
