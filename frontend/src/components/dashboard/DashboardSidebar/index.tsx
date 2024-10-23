@@ -6,7 +6,6 @@ import { Link, useLocation } from 'react-router-dom';
 
 import type { RecruitmentStatusObject } from '@utils/compareTime';
 
-import { Fragment } from 'react/jsx-runtime';
 import { HiChevronDoubleLeft, HiOutlineHome } from 'react-icons/hi2';
 import { HiOutlineMenu } from 'react-icons/hi';
 import { GrDocumentLocked, GrDocumentTime, GrDocumentUser } from 'react-icons/gr';
@@ -109,7 +108,7 @@ export default function DashboardSidebar({
         </IconButton>
       </S.SidebarHeader>
 
-      <nav>
+      <S.SidebarNav>
         <S.Contents>
           <S.SidebarItem>
             <Link to={routes.dashboard.list()}>
@@ -159,40 +158,42 @@ export default function DashboardSidebar({
             </>
           )}
 
-          {sidebarContentList.map(({ title, posts }) => {
-            if (posts?.length === 0) return null;
-            return (
-              <Fragment key={title}>
-                <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
-                {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
-                  const Icon = IconObj[status.status];
-                  return (
-                    <S.SidebarItem key={applyFormId}>
-                      <Link
-                        to={routes.dashboard.post({ dashboardId: String(dashboardId), applyFormId })}
-                        onClick={onResetTab}
-                      >
-                        <S.SidebarItemLink
-                          isSelected={isSelected}
-                          isSidebarOpen={sidebarStyle.isSidebarOpen}
+          <S.SidebarScrollBox>
+            {sidebarContentList.map(({ title, posts }) => {
+              if (posts?.length === 0) return null;
+              return (
+                <S.SidebarItemGroup key={title}>
+                  <S.ContentSubTitle>{sidebarStyle.isSidebarOpen ? title : <S.Circle />}</S.ContentSubTitle>
+                  {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
+                    const Icon = IconObj[status.status];
+                    return (
+                      <S.SidebarItem key={applyFormId}>
+                        <Link
+                          to={routes.dashboard.post({ dashboardId: String(dashboardId), applyFormId })}
+                          onClick={onResetTab}
                         >
-                          <S.IconContainer>
-                            <Icon
-                              size={16}
-                              strokeWidth={4}
-                            />
-                          </S.IconContainer>
-                          {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
-                        </S.SidebarItemLink>
-                      </Link>
-                    </S.SidebarItem>
-                  );
-                })}
-              </Fragment>
-            );
-          })}
+                          <S.SidebarItemLink
+                            isSelected={isSelected}
+                            isSidebarOpen={sidebarStyle.isSidebarOpen}
+                          >
+                            <S.IconContainer>
+                              <Icon
+                                size={16}
+                                strokeWidth={4}
+                              />
+                            </S.IconContainer>
+                            {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
+                          </S.SidebarItemLink>
+                        </Link>
+                      </S.SidebarItem>
+                    );
+                  })}
+                </S.SidebarItemGroup>
+              );
+            })}
+          </S.SidebarScrollBox>
         </S.Contents>
-      </nav>
+      </S.SidebarNav>
 
       {sidebarStyle.isSidebarOpen && <LogoutButton />}
     </S.Container>

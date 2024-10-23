@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
+import { hideScrollBar } from '@styles/utils';
 
 const Container = styled.div<{ isSidebarOpen: boolean }>`
   position: relative;
   width: ${({ isSidebarOpen }) => (isSidebarOpen ? '276px' : '56px')};
   height: 100%;
   border-right: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
-  padding: 3.6rem 1.6rem;
+  padding: 3.6rem 1.6rem 6.4rem;
 
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 
@@ -29,10 +30,28 @@ const SidebarToggleIcon = styled.div`
   color: ${({ theme }) => theme.baseColors.grayscale[500]};
 `;
 
+const SidebarNav = styled.nav`
+  flex: 1;
+  overflow: hidden;
+`;
+
 const Contents = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  max-height: 100%;
+`;
+
+const SidebarScrollBox = styled.div`
+  overflow-y: scroll;
+  ${hideScrollBar};
+`;
+
+const SidebarItemGroup = styled.li`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2.4rem;
 `;
 
 const SidebarItem = styled.li`
@@ -118,6 +137,9 @@ const S = {
   Logo,
   SidebarToggleIcon,
   Contents,
+  SidebarNav,
+  SidebarScrollBox,
+  SidebarItemGroup,
   SidebarItem,
   SidebarItemLink,
   SidebarItemTextHeader,
