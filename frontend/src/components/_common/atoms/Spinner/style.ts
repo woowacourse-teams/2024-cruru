@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 export interface StyleProps {
   width?: number;
-  color?: 'white' | 'primary';
+  color?: 'white' | 'primary' | 'black';
 }
 
 const bounceDelay = keyframes`
@@ -55,7 +55,11 @@ const Spinner = styled.div<StyleProps>`
   --design-width: ${({ width }) => (width ? `${width}px` : '100%')};
   --design-height: ${({ width }) => (width ? `${width * 0.23}px` : '1.8rem')};
   --design-color: ${({ theme, color }) =>
-    color === 'primary' ? theme.colors.brand.primary : theme.baseColors.grayscale[50]};
+    color === 'primary'
+      ? theme.colors.brand.primary
+      : color === 'white'
+        ? theme.baseColors.grayscale[50]
+        : theme.colors.text.default};
 
   display: flex;
   justify-content: center;
