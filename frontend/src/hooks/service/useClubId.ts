@@ -24,7 +24,7 @@ export default function useClubId() {
     const clubId = getSnapshot();
 
     if (!clubId) {
-      error('동아리 정보가 만료되었습니다. 다시 로그인해주세요.');
+      error('사용자 정보가 만료되었습니다. 다시 로그인해주세요.');
       navigate(routes.home());
     }
 
