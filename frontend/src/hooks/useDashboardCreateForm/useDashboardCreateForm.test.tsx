@@ -4,6 +4,11 @@ import { act, renderHook } from '@testing-library/react';
 import ToastProvider from '@contexts/ToastContext';
 import useDashboardCreateForm from '.';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+}));
+
 describe('useDashboardCreateForm', () => {
   beforeAll(() => {
     localStorage.setItem('clubId', '1');
