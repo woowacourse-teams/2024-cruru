@@ -125,7 +125,7 @@ export default function DashboardSidebar({
                 {sidebarStyle.isSidebarOpen && <S.SidebarItemTextHeader>모집 공고</S.SidebarItemTextHeader>}
               </S.SidebarItemLink>
             </Link>
-            <div className="sidebar-tooltip">모집 공고</div>
+            {!sidebarStyle.isSidebarOpen && <div className="sidebar-tooltip">모집 공고</div>}
           </S.SidebarItem>
 
           {!!options?.length && <S.Divider />}
@@ -155,7 +155,7 @@ export default function DashboardSidebar({
                       </S.IconContainer>
                       {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{label}</S.SidebarItemText>}
                     </S.SidebarItemLink>
-                    <div className="sidebar-tooltip">{label}</div>
+                    {!sidebarStyle.isSidebarOpen && <div className="sidebar-tooltip">{label}</div>}
                   </S.SidebarItem>
                 );
               })}
@@ -193,7 +193,7 @@ export default function DashboardSidebar({
                             {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
                           </S.SidebarItemLink>
                         </Link>
-                        <div className="sidebar-tooltip">{text}</div>
+                        {!sidebarStyle.isSidebarOpen && <div className="sidebar-tooltip">{text}</div>}
                       </S.SidebarItem>
                     );
                   })}
