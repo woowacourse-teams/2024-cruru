@@ -54,12 +54,37 @@ const SidebarItemGroup = styled.li`
   margin-bottom: 2.4rem;
 `;
 
-const SidebarItem = styled.li`
+const SidebarItem = styled.li<{ isSidebarOpen: boolean }>`
   display: flex;
   align-items: center;
 
   list-style: none;
   height: 2.4rem;
+
+  & .sidebar-tooltip {
+    position: absolute;
+    transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translate(26rem, 1.3rem)' : 'translate(4rem, 1.3rem)')};
+    transition: all 0.5s ease;
+    z-index: 5;
+
+    background: ${({ theme }) => theme.baseColors.grayscale[900]};
+    ${({ theme }) => theme.typography.common.block};
+    color: ${({ theme }) => theme.baseColors.grayscale[100]};
+    line-height: inherit;
+
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 0.8rem;
+    padding: 0.8rem 1.2rem;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  &:hover .sidebar-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translate(26.5rem, 1.3rem)' : 'translate(4.5rem, 1.3rem)')};
+  }
 `;
 
 const SidebarItemLink = styled.div<{ isSelected: boolean; isSidebarOpen?: boolean }>`
