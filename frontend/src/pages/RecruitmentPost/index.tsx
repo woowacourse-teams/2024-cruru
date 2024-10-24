@@ -19,10 +19,12 @@ export default function RecruitmentPost() {
     <S.PageLayout>
       <S.Wrapper>
         <S.Header>
-          <S.Title>{recruitmentPost?.title ?? ''}</S.Title>
+          <S.Title aria-label="모집 공고의 제목입니다. ">{recruitmentPost?.title ?? ''}</S.Title>
           <S.PeriodContainer>
             <HiOutlineClock />
-            <S.Period>{Object.values(recruitmentPeriod).join(' ~ ')}</S.Period>
+            <S.Period aria-label="모집 공고의 모집 날짜입니다.">
+              {Object.values(recruitmentPeriod).join(' ~ ')}
+            </S.Period>
           </S.PeriodContainer>
         </S.Header>
 

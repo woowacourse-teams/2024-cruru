@@ -42,12 +42,12 @@ const Contents = styled.ul`
   max-height: 100%;
 `;
 
-const SidebarScrollBox = styled.div`
+const SidebarScrollBox = styled.li`
   overflow-y: scroll;
   ${hideScrollBar};
 `;
 
-const SidebarItemGroup = styled.li`
+const SidebarItemGroup = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 2rem;
