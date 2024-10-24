@@ -63,7 +63,7 @@ const SidebarItem = styled.li<{ isSidebarOpen: boolean }>`
 
   & .sidebar-tooltip {
     position: absolute;
-    transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translate(26rem, 1.3rem)' : 'translate(4rem, 1.3rem)')};
+    transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translate(26rem, 1.4rem)' : 'translate(4rem, 1.4rem)')};
     transition: all 0.5s ease;
     z-index: 5;
 
@@ -80,20 +80,10 @@ const SidebarItem = styled.li<{ isSidebarOpen: boolean }>`
     pointer-events: none;
   }
 
-  & .sidebar-tooltip .arrow {
-    position: absolute;
-    left: -0.8rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1rem;
-    height: 1.4rem;
-    fill: ${({ theme }) => theme.baseColors.grayscale[900]};
-  }
-
   &:hover .sidebar-tooltip {
     opacity: 1;
     pointer-events: auto;
-    transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translate(26.5rem, 1.3rem)' : 'translate(4.5rem, 1.3rem)')};
+    transform: ${({ isSidebarOpen }) => (isSidebarOpen ? 'translate(26.5rem, 1.4rem)' : 'translate(4.5rem, 1.4rem)')};
   }
 `;
 

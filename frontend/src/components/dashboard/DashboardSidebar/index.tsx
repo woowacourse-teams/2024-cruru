@@ -75,15 +75,6 @@ export default function DashboardSidebar({
     '지원서 편집': FiEdit3,
   };
 
-  const LeftArrowIcon = (
-    <svg
-      className="arrow"
-      viewBox="0 0 10 20"
-    >
-      <path d="M10 0 L0 10 L10 20z" />
-    </svg>
-  );
-
   return (
     <S.Container isSidebarOpen={sidebarStyle.isSidebarOpen}>
       <S.SidebarHeader>
@@ -134,10 +125,7 @@ export default function DashboardSidebar({
                 {sidebarStyle.isSidebarOpen && <S.SidebarItemTextHeader>모집 공고</S.SidebarItemTextHeader>}
               </S.SidebarItemLink>
             </Link>
-            <div className="sidebar-tooltip">
-              {LeftArrowIcon}
-              모집 공고
-            </div>
+            <div className="sidebar-tooltip">모집 공고</div>
           </S.SidebarItem>
 
           {!!options?.length && <S.Divider />}
@@ -167,10 +155,7 @@ export default function DashboardSidebar({
                       </S.IconContainer>
                       {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{label}</S.SidebarItemText>}
                     </S.SidebarItemLink>
-                    <div className="sidebar-tooltip">
-                      {LeftArrowIcon}
-                      {label}
-                    </div>
+                    <div className="sidebar-tooltip">{label}</div>
                   </S.SidebarItem>
                 );
               })}
@@ -208,10 +193,7 @@ export default function DashboardSidebar({
                             {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
                           </S.SidebarItemLink>
                         </Link>
-                        <div className="sidebar-tooltip">
-                          {LeftArrowIcon}
-                          {text}
-                        </div>
+                        <div className="sidebar-tooltip">{text}</div>
                       </S.SidebarItem>
                     );
                   })}
