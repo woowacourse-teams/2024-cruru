@@ -40,13 +40,13 @@ const Tab = styled.li`
 
     position: absolute;
     transform: translateY(75%);
-    color: ${({ theme }) => theme.baseColors.grayscale[500]};
+    color: ${({ theme }) => theme.colors.text.small};
   }
 `;
 
 const TabButton = styled.button<{ isActive: boolean }>`
   ${({ theme }) => theme.typography.heading[500]};
-  color: ${({ isActive, theme }) => (isActive ? theme.baseColors.grayscale[950] : theme.baseColors.grayscale[500])};
+  color: ${({ isActive, theme }) => (isActive ? theme.baseColors.grayscale[950] : theme.colors.text.small)};
 
   cursor: pointer;
   transition: color 0.3s ease;
