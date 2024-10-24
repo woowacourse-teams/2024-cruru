@@ -18,6 +18,7 @@ export interface Colors {
   text: {
     default: string;
     block: string;
+    small: string;
   };
   feedback: {
     error: string;

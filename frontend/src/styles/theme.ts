@@ -69,6 +69,7 @@ const colors: Colors = {
   text: {
     default: '#172B4D',
     block: '#626F86',
+    small: '#777676',
   },
   feedback: {
     error: baseColors.redscale[500],
