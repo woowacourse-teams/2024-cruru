@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
-import ApiError from '@api/ApiError';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@contexts/ToastContext';
+import { routes } from '@router/path';
 
 const CLUB_ID_KEY = 'clubId';
 
@@ -13,6 +14,7 @@ const getSnapshot = () => localStorage.getItem(CLUB_ID_KEY);
 
 export default function useClubId() {
   const { error } = useToast();
+  const navigate = useNavigate();
 
   const saveClubId = (clubId: string) => {
     localStorage.setItem(CLUB_ID_KEY, clubId);
@@ -22,8 +24,8 @@ export default function useClubId() {
     const clubId = getSnapshot();
 
     if (!clubId) {
-      error('세션이 만료되었습니다. 다시 로그인해주세요.');
-      throw new ApiError({ message: '세션이 만료되었습니다. 다시 로그인해주세요.', statusCode: 401, method: 'GET' });
+      error('동아리 정보가 만료되었습니다. 다시 로그인해주세요.');
+      navigate(routes.home());
     }
 
     return clubId;
