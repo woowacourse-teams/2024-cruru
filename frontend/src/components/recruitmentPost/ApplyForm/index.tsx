@@ -39,6 +39,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
 
   const { error } = useToast();
 
+  const questionCount = questions.length + 4;
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
@@ -78,7 +80,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   return (
     <C.ContentContainer>
       <S.Form onSubmit={handleSubmit}>
-        <S.AriaCustomQuestion aria-label={`총 ${questions.length + 3}의 입력 중 1번째 입력입니다.`}>
+        <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 1번째 입력입니다.`}>
           <InputField
             {...register('name', { validate: { onBlur: validateName.onBlur, onChange: validateName.onChange } })}
             name="name"
@@ -89,7 +91,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
           />
         </S.AriaCustomQuestion>
 
-        <S.AriaCustomQuestion aria-label={`총 ${questions.length + 3}의 입력 중 2번째 입력입니다.`}>
+        <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 2번째 입력입니다.`}>
           <InputField
             {...register('email', { validate: { onBlur: validateEmail.onBlur } })}
             label="이메일"
@@ -98,7 +100,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
           />
         </S.AriaCustomQuestion>
 
-        <S.AriaCustomQuestion aria-label={`총 ${questions.length + 3}의 입력 중 3번째 입력입니다.`}>
+        <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 3번째 입력입니다.`}>
           <InputField
             {...register('phone', {
               validate: {
@@ -117,7 +119,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
         {questions.map((question, index) => (
           <S.AriaCustomQuestion
             key={question.questionId}
-            aria-label={`총 ${questions.length + 3}의 입력 중 ${index + 4}번째 질문입니다.`}
+            aria-label={`총 ${questionCount}의 입력 중 ${index + 4}번째 질문입니다.`}
           >
             <CustomQuestion
               question={question}
