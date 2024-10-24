@@ -11,10 +11,9 @@ const FieldWrapper = styled.div`
   justify-content: space-between;
   gap: 1rem;
 
-  /* [10.24 - 러기]Safari 브라우저에서 발생한 버그를 고치기 위한 코드입니다. Sign-up 페이지에서 Input 버튼 컴포넌트가 벗어나는 현상*/
-  & > div > input,
-  & > div > div > input {
-    width: 100%;
+  & > div:first-child {
+    min-width: 150px;
+    flex-grow: 1;
   }
 `;
 
@@ -39,7 +38,6 @@ const ConfirmButtonWrapper = styled.div`
 
 const TimerInputWrapper = styled.div`
   position: relative;
-  width: 100%;
 `;
 
 const Timer = styled.div`
@@ -48,7 +46,7 @@ const Timer = styled.div`
   top: 1.4rem;
 
   ${({ theme }) => theme.typography.common.block}
-  color : ${({ theme }) => theme.baseColors.grayscale[700]}
+  color : ${({ theme }) => theme.baseColors.grayscale[700]};
 `;
 
 const S = {
