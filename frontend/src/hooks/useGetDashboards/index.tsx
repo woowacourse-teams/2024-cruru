@@ -13,5 +13,8 @@ export default function useGetDashboards() {
     enabled: !!clubId,
   });
 
-  return { data, error, isLoading };
+  const findDashboard = (dashboardId: string) =>
+    data?.dashboards.find((dashboard) => String(dashboard.dashboardId) === dashboardId);
+
+  return { data, error, isLoading, findDashboard };
 }
