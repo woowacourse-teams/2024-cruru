@@ -110,7 +110,7 @@ export default function DashboardSidebar({
 
       <S.SidebarNav>
         <S.Contents>
-          <S.SidebarItem>
+          <S.SidebarItem isSidebarOpen={sidebarStyle.isSidebarOpen}>
             <Link to={routes.dashboard.list()}>
               <S.SidebarItemLink
                 isSelected={location.pathname === routes.dashboard.list()}
@@ -125,6 +125,7 @@ export default function DashboardSidebar({
                 {sidebarStyle.isSidebarOpen && <S.SidebarItemTextHeader>모집 공고</S.SidebarItemTextHeader>}
               </S.SidebarItemLink>
             </Link>
+            <div className="sidebar-tooltip">모집 공고</div>
           </S.SidebarItem>
 
           {!!options?.length && <S.Divider />}
@@ -137,7 +138,10 @@ export default function DashboardSidebar({
 
                 return (
                   /* eslint-disable react/jsx-indent */
-                  <S.SidebarItem key={label}>
+                  <S.SidebarItem
+                    isSidebarOpen={sidebarStyle.isSidebarOpen}
+                    key={label}
+                  >
                     <S.SidebarItemLink
                       isSelected={currentMenu === label}
                       isSidebarOpen={sidebarStyle.isSidebarOpen}
@@ -151,6 +155,7 @@ export default function DashboardSidebar({
                       </S.IconContainer>
                       {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{label}</S.SidebarItemText>}
                     </S.SidebarItemLink>
+                    <div className="sidebar-tooltip">{label}</div>
                   </S.SidebarItem>
                 );
               })}
@@ -167,7 +172,10 @@ export default function DashboardSidebar({
                   {posts?.map(({ text, isSelected, applyFormId, dashboardId, status }) => {
                     const Icon = IconObj[status.status];
                     return (
-                      <S.SidebarItem key={applyFormId}>
+                      <S.SidebarItem
+                        isSidebarOpen={sidebarStyle.isSidebarOpen}
+                        key={applyFormId}
+                      >
                         <Link
                           to={routes.dashboard.post({ dashboardId: String(dashboardId), applyFormId })}
                           onClick={onResetTab}
@@ -185,6 +193,7 @@ export default function DashboardSidebar({
                             {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
                           </S.SidebarItemLink>
                         </Link>
+                        <div className="sidebar-tooltip">{text}</div>
                       </S.SidebarItem>
                     );
                   })}
