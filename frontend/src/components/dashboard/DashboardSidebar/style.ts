@@ -80,6 +80,16 @@ const SidebarItem = styled.li<{ isSidebarOpen: boolean }>`
     pointer-events: none;
   }
 
+  & .sidebar-tooltip .arrow {
+    position: absolute;
+    left: -0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1.4rem;
+    fill: ${({ theme }) => theme.baseColors.grayscale[900]};
+  }
+
   &:hover .sidebar-tooltip {
     opacity: 1;
     pointer-events: auto;
