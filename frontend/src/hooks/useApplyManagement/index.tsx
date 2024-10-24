@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import type { Question, QuestionOptionValue } from '@customTypes/dashboard';
 import { Question as QuestionData } from '@customTypes/apply';
+import type { Question, QuestionOptionValue } from '@customTypes/dashboard';
+import { useEffect, useState } from 'react';
 
-import { applyQueries } from '@hooks/apply';
-import { DEFAULT_QUESTIONS } from '@constants/constants';
-import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 import questionApis from '@api/domain/question';
-import QUERY_KEYS from '@hooks/queryKeys';
+import { DEFAULT_QUESTIONS } from '@constants/constants';
+import { applyQueries } from '@hooks/apply';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useToast } from '@contexts/ToastContext';
 
 interface UseApplyManagementReturn {
@@ -49,7 +48,6 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
   const [applyState, setApplyState] = useState(getQuestions(data));
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
   const toast = useToast();
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -77,7 +75,6 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
         })),
       }),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECRUITMENT_INFO, applyFormId] });
       toast.success('지원서의 사전 질문 항목 수정에 성공했습니다.');
     },
     onError: () => {

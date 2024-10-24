@@ -11,6 +11,7 @@ import PostManageBoard from '@components/postManagement/PostManageBoard';
 import ProcessManageBoard from '@components/processManagement/ProcessManageBoard';
 
 import useProcess from '@hooks/useProcess';
+import useGetDashboards from '@hooks/useGetDashboards';
 
 import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
 import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
@@ -22,7 +23,11 @@ import S from './style';
 export default function Dashboard() {
   const { currentMenu } = useOutletContext<{ currentMenu: DashboardTabItems }>();
   const { dashboardId, applyFormId } = useParams() as { dashboardId: string; applyFormId: string };
-  const { processes, title, postUrl, startDate, endDate, ratingFilterProps, applicantSortDropdownProps } = useProcess({
+
+  const { findDashboard } = useGetDashboards();
+  const { title = '', startDate = '', endDate = '' } = findDashboard(dashboardId) || {};
+
+  const { processes, postUrl, ratingFilterProps, applicantSortDropdownProps } = useProcess({
     dashboardId,
     applyFormId,
   });
