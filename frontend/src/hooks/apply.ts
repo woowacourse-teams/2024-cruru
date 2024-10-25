@@ -7,10 +7,12 @@ import { routes } from '@router/path';
 import QUERY_KEYS from './queryKeys';
 
 const useGetRecruitmentInfo = ({ applyFormId }: { applyFormId: string }) => {
+  const TEN_MINUTE = 1000 * 60 * 10;
   const queryObj = useQuery({
     queryKey: [QUERY_KEYS.RECRUITMENT_INFO, applyFormId],
     queryFn: () => applyApis.get({ applyFormId }),
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: TEN_MINUTE,
+    gcTime: TEN_MINUTE,
   });
 
   return queryObj;

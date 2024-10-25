@@ -80,6 +80,7 @@ export default function AppRouter() {
       queries: {
         throwOnError: true,
         retry: 0,
+        gcTime: 0,
       },
       mutations: {
         onError: (error) => {
