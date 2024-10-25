@@ -79,7 +79,7 @@ export default function AppRouter() {
     defaultOptions: {
       queries: {
         throwOnError: true,
-        retry: 3,
+        retry: 0,
         gcTime: 0,
       },
       mutations: {
