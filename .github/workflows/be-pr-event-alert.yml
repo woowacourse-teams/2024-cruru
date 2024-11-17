@@ -22,6 +22,9 @@ env:
   xogns1514: "BE팀 러쉬"
   cutehumanS2:  "BE팀 냥인"
   HyungHoKim00: "BE팀 명오"
+  lurgi: "FE팀 러기"
+  llqqssttyy: "FE팀 렛서"
+  seongjinme: "FE팀 아르"
   
 jobs:
   find-slack-thread:
