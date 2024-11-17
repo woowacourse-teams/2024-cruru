@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import ApiError from '@api/ApiError';
 import Button from '@components/_common/atoms/Button';
 import { ButtonColor } from '@components/_common/atoms/Button/style';
@@ -106,6 +107,7 @@ export default function ErrorPage() {
   const error = useRouteError();
   const navigate = useNavigate();
   const { clearClubId } = useClubId();
+  const queryClient = useQueryClient();
 
   let status;
 
@@ -114,6 +116,7 @@ export default function ErrorPage() {
   } else if (error instanceof ApiError) {
     status = error.statusCode;
     if (status === 401) {
+      queryClient.clear();
       clearClubId();
     }
   }
