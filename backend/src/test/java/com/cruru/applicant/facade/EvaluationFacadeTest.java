@@ -103,4 +103,17 @@ class EvaluationFacadeTest extends ServiceTest {
         );
 
     }
+
+    @DisplayName("평가를 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
+
+        // when
+        evaluationFacade.delete(evaluation.getId());
+
+        // then
+        assertThat(evaluationRepository.findById(evaluation.getId())).isEmpty();
+    }
 }
