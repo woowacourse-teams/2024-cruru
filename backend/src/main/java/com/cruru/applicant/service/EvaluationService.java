@@ -53,6 +53,11 @@ public class EvaluationService {
     }
 
     @Transactional
+    public void delete(long evaluationId) {
+        evaluationRepository.deleteById(evaluationId);
+    }
+
+    @Transactional
     public void deleteByProcess(long processId) {
         evaluationRepository.deleteByProcessId(processId);
     }

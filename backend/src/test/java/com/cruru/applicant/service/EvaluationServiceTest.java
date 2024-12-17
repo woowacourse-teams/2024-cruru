@@ -151,4 +151,17 @@ class EvaluationServiceTest extends ServiceTest {
         assertThat(evaluationRepository.findAll()).contains(evaluation3)
                 .doesNotContain(evaluation1, evaluation2);
     }
+
+    @DisplayName("평가를 삭제한다.")
+    @Test
+    void delete() {
+        // given
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
+
+        // when
+        evaluationService.delete(evaluation.getId());
+
+        // then
+        assertThat(evaluationRepository.findById(evaluation.getId())).isEmpty();
+    }
 }

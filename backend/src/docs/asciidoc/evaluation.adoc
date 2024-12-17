@@ -45,3 +45,9 @@ operation::evaluation/update-fail/evaluation-not-found[snippets="http-request,re
 ==== 실패: 조건에 맞지 않는 평가 점수
 
 operation::evaluation/update-fail/invalid-score[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
+
+=== 평가 삭제
+
+==== 성공
+
+operation::evaluation/delete[snippets="http-request,request-cookies,path-parameters,http-response"]

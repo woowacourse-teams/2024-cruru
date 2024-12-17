@@ -359,4 +359,22 @@ class EvaluationControllerTest extends ControllerTest {
                 .when().patch("/v1/evaluations/{evaluationId}", evaluation.getId())
                 .then().log().all().statusCode(400);
     }
+
+    @DisplayName("평가 삭제 시 204를 응답한다.")
+    @Test
+    void delete() {
+        // given
+        Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("accessToken", token)
+                .filter(document(
+                        "evaluation/delete",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(parameterWithName("evaluationId").description("삭제할 평가 id"))
+                ))
+                .when().delete("/v1/evaluations/{evaluationId}", evaluation.getId())
+                .then().log().all().statusCode(204);
+    }
 }
