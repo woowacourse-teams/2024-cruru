@@ -27,6 +27,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
   const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '');
 
+  // TODO: useForm은 input으로 initialValues제공해야 한다. 따라서 SideEffect를 피하기 위해선 useForm외부에서 localStorage를 별도로 저장해야 한다.
   const {
     formData: applicant,
     register,
@@ -34,6 +35,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   } = useForm<ApplicantData>({
     initialValues: { name: '', email: '', phone: '' },
   });
+
   const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(questions);
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
 
