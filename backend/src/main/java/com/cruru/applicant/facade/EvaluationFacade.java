@@ -61,4 +61,9 @@ public class EvaluationFacade {
         Evaluation evaluation = evaluationService.findById(evaluationId);
         evaluationService.update(request, evaluation);
     }
+
+    @Transactional
+    public void delete(long evaluationId) {
+        evaluationService.delete(evaluationId);
+    }
 }
