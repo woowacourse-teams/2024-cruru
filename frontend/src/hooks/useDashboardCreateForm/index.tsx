@@ -40,6 +40,7 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
 };
 
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
+  // TODO: useLocalStorageState() 사용하기
   const [stepState, setStepState] = useState<StepState>('recruitmentForm');
   const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
   const [applyState, setApplyState] = useState<Question[]>(DEFAULT_QUESTIONS);

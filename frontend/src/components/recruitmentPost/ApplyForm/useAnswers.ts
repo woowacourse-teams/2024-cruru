@@ -1,22 +1,26 @@
 import { Question } from '@customTypes/apply';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface AnswerFormData {
   [key: string]: string[];
 }
 
 export const useAnswers = (questions: Question[]) => {
-  const [answers, setAnswers] = useState<AnswerFormData>({});
+  // const [answers, setAnswers] = useState<AnswerFormData>({});
+  // TODO: useLocalStorageState() 사용하기
+  const [answers, setAnswers] = useState<AnswerFormData>(
+    questions.reduce((acc, question) => ({ ...acc, [question.questionId]: [] }), {} as AnswerFormData),
+  );
 
-  useEffect(() => {
-    if (questions.length > 0) {
-      const initialAnswers = questions.reduce(
-        (acc, question) => ({ ...acc, [question.questionId]: [] }),
-        {} as AnswerFormData,
-      );
-      setAnswers(initialAnswers);
-    }
-  }, [questions]);
+  // useEffect(() => {
+  //   if (questions.length > 0) {
+  //     const initialAnswers = questions.reduce(
+  //       (acc, question) => ({ ...acc, [question.questionId]: [] }),
+  //       {} as AnswerFormData,
+  //     );
+  //     setAnswers(initialAnswers);
+  //   }
+  // }, [questions]);
 
   const handleText = (id: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [id]: [value] }));
