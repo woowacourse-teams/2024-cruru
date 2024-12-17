@@ -38,6 +38,7 @@ class EvaluationControllerTest extends ControllerTest {
 
     private static final FieldDescriptor[] EVALUATION_FIELD_DESCRIPTORS = {
             fieldWithPath("evaluationId").description("평가의 id"),
+            fieldWithPath("evaluator").description("평가자 이름"),
             fieldWithPath("score").description("평가 점수"),
             fieldWithPath("content").description("평가 내용"),
             fieldWithPath("createdDate").description("평가 생성 날짜")
@@ -70,10 +71,11 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void create() {
         // given
+        String evaluator = "김도엽";
         int score = 4;
         String content = "서류가 인상적입니다.";
         String url = String.format("/v1/evaluations?processId=%d&applicantId=%d", process.getId(), applicant.getId());
-        EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
+        EvaluationCreateRequest request = new EvaluationCreateRequest(evaluator, score, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -88,6 +90,7 @@ class EvaluationControllerTest extends ControllerTest {
                                 parameterWithName("applicantId").description("지원자의 id")
                         ),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )
@@ -100,6 +103,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void create_applicantNotFound() {
         // given
+        String evaluator = "김도엽";
         int score = 4;
         String content = "서류가 인상적입니다.";
         long invalidApplicantId = -1;
@@ -108,7 +112,7 @@ class EvaluationControllerTest extends ControllerTest {
                 process.getId(),
                 invalidApplicantId
         );
-        EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
+        EvaluationCreateRequest request = new EvaluationCreateRequest(evaluator, score, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -123,6 +127,7 @@ class EvaluationControllerTest extends ControllerTest {
                                 parameterWithName("applicantId").description("존재하지 않는 지원자의 id")
                         ),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )
@@ -135,6 +140,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void create_processNotFound() {
         // given
+        String evaluator = "김도엽";
         int score = 4;
         String content = "서류가 인상적입니다.";
         Long invalidProcessId = -1L;
@@ -143,7 +149,7 @@ class EvaluationControllerTest extends ControllerTest {
                 invalidProcessId,
                 applicant.getId()
         );
-        EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
+        EvaluationCreateRequest request = new EvaluationCreateRequest(evaluator, score, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -158,6 +164,7 @@ class EvaluationControllerTest extends ControllerTest {
                                 parameterWithName("applicantId").description("지원자의 id")
                         ),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )
@@ -170,6 +177,7 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void create_invalidScore() {
         // given
+        String evaluator = "김도엽";
         int invalidScore = -4;
         String content = "서류가 인상적입니다.";
         String url = String.format(
@@ -177,7 +185,7 @@ class EvaluationControllerTest extends ControllerTest {
                 process.getId(),
                 applicant.getId()
         );
-        EvaluationCreateRequest request = new EvaluationCreateRequest(invalidScore, content);
+        EvaluationCreateRequest request = new EvaluationCreateRequest(evaluator, invalidScore, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -192,6 +200,7 @@ class EvaluationControllerTest extends ControllerTest {
                                 parameterWithName("applicantId").description("지원자의 id")
                         ),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("적절하지 않은 평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )
@@ -284,10 +293,11 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void update() {
         // given
+        String evaluator = "김형호";
         Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints(process, applicant));
         int score = 2;
         String content = "맞춤법이 틀렸습니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(evaluator, score, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -299,6 +309,7 @@ class EvaluationControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("평가의 id")),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )
@@ -311,9 +322,10 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void update_evaluationNotFound() {
         // given
+        String evaluator = "김형호";
         int score = 2;
         String content = "맞춤법이 틀렸습니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(evaluator, score, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -325,6 +337,7 @@ class EvaluationControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("존재하지 않는 평가의 id")),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )
@@ -337,10 +350,11 @@ class EvaluationControllerTest extends ControllerTest {
     @Test
     void update_invalidScore() {
         // given
+        String evaluator = "김형호";
         Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
         int score = -1;
         String content = "맞춤법이 틀렸습니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(evaluator, score, content);
 
         // when&then
         RestAssured.given(spec).log().all()
@@ -352,6 +366,7 @@ class EvaluationControllerTest extends ControllerTest {
                         requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
                         pathParameters(parameterWithName("evaluationId").description("평가의 id")),
                         requestFields(
+                                fieldWithPath("evaluator").description("평가자 이름"),
                                 fieldWithPath("score").description("적절하지 않은 평가 점수"),
                                 fieldWithPath("content").description("평가 주관식 내용")
                         )

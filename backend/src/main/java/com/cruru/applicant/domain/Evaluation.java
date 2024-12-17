@@ -33,6 +33,8 @@ public class Evaluation extends BaseEntity implements SecureResource {
     @Column(name = "evaluation_id")
     private Long id;
 
+    private String evaluator;
+
     private Integer score;
 
     private String content;
@@ -45,8 +47,9 @@ public class Evaluation extends BaseEntity implements SecureResource {
     @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
-    public Evaluation(int score, String content, Process process, Applicant applicant) {
+    public Evaluation(String evaluator, int score, String content, Process process, Applicant applicant) {
         validateScore(score);
+        this.evaluator = evaluator;
         this.score = score;
         this.content = content;
         this.process = process;

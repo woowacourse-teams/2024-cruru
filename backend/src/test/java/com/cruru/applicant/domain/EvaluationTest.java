@@ -15,10 +15,11 @@ class EvaluationTest {
     @ParameterizedTest
     void invalidEvaluationScore(int invalidScore) {
         // given
+        String evaluator = "김도엽";
         String content = "포트폴리오가 인상적입니다.";
 
         // when&then
-        assertThatThrownBy(() -> new Evaluation(invalidScore, content, null, null))
+        assertThatThrownBy(() -> new Evaluation(evaluator, invalidScore, content, null, null))
                 .isInstanceOf(EvaluationScoreException.class);
     }
 }

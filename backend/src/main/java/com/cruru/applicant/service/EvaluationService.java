@@ -26,7 +26,13 @@ public class EvaluationService {
 
     @Transactional
     public void create(EvaluationCreateRequest request, Process process, Applicant applicant) {
-        evaluationRepository.save(new Evaluation(request.score(), request.content(), process, applicant));
+        evaluationRepository.save(new Evaluation(
+                request.evaluator(),
+                request.score(),
+                request.content(),
+                process,
+                applicant
+        ));
     }
 
     public List<Evaluation> findAllByProcessAndApplicant(Process process, Applicant applicant) {
@@ -39,6 +45,7 @@ public class EvaluationService {
             evaluationRepository.save(
                     new Evaluation(
                             evaluation.getId(),
+                            request.evaluator(),
                             request.score(),
                             request.content(),
                             evaluation.getProcess(),
@@ -49,7 +56,11 @@ public class EvaluationService {
     }
 
     private boolean changeExists(EvaluationUpdateRequest request, Evaluation evaluation) {
-        return !(evaluation.getContent().equals(request.content()) && evaluation.getScore().equals(request.score()));
+        return !(
+                evaluation.getContent().equals(request.content())
+                        && evaluation.getScore().equals(request.score())
+                        && evaluation.getEvaluator().equals(request.evaluator())
+        );
     }
 
     @Transactional

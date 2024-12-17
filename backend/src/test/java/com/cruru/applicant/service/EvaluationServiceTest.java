@@ -52,11 +52,12 @@ class EvaluationServiceTest extends ServiceTest {
     @Test
     void create() {
         // given
+        String evaluator = "김도엽";
         int score = 4;
         String content = "서류가 인상적입니다.";
 
         // when
-        EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
+        EvaluationCreateRequest request = new EvaluationCreateRequest(evaluator, score, content);
         evaluationService.create(request, process, applicant);
 
         // then
@@ -64,6 +65,7 @@ class EvaluationServiceTest extends ServiceTest {
         Evaluation evaluation = evaluations.get(0);
         assertAll(
                 () -> assertThat(evaluations).hasSize(1),
+                () -> assertThat(evaluation.getEvaluator()).isEqualTo(evaluator),
                 () -> assertThat(evaluation.getScore()).isEqualTo(score),
                 () -> assertThat(evaluation.getContent()).isEqualTo(content)
         );
@@ -73,9 +75,11 @@ class EvaluationServiceTest extends ServiceTest {
     @Test
     void findAllByProcessAndApplicant() {
         // given
+        String evaluator = "김도엽";
         int score = 1;
         String content = "인재상과 맞지 않습니다.";
-        Evaluation evaluation = evaluationRepository.save(new Evaluation(score, content, process, applicant));
+        Evaluation evaluation = evaluationRepository.save(
+                new Evaluation(evaluator, score, content, process, applicant));
 
         // when
         List<Evaluation> savedEvaluations = evaluationService.findAllByProcessAndApplicant(process, applicant);
@@ -85,6 +89,7 @@ class EvaluationServiceTest extends ServiceTest {
         assertAll(
                 () -> assertThat(savedEvaluations).hasSize(1),
                 () -> assertThat(actualEvaluation.getId()).isEqualTo(evaluation.getId()),
+                () -> assertThat(actualEvaluation.getEvaluator()).isEqualTo(evaluator),
                 () -> assertThat(actualEvaluation.getScore()).isEqualTo(score),
                 () -> assertThat(actualEvaluation.getContent()).isEqualTo(content)
         );
@@ -95,9 +100,10 @@ class EvaluationServiceTest extends ServiceTest {
     void update() {
         // given
         Evaluation evaluation = evaluationRepository.save(EvaluationFixture.fivePoints());
+        String evaluator = "김형호";
         int score = 1;
         String content = "수정된 평가입니다.";
-        EvaluationUpdateRequest request = new EvaluationUpdateRequest(score, content);
+        EvaluationUpdateRequest request = new EvaluationUpdateRequest(evaluator, score, content);
 
         // when
         evaluationService.update(request, evaluation);
@@ -107,6 +113,7 @@ class EvaluationServiceTest extends ServiceTest {
 
         assertAll(
                 () -> assertThat(updatedEvaluation).isPresent(),
+                () -> assertThat(updatedEvaluation.get().getEvaluator()).isEqualTo(evaluator),
                 () -> assertThat(updatedEvaluation.get().getScore()).isEqualTo(score),
                 () -> assertThat(updatedEvaluation.get().getContent()).isEqualTo(content)
         );
