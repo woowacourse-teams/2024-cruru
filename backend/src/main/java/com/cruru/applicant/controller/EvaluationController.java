@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,5 +64,15 @@ public class EvaluationController {
     ) {
         evaluationFacade.updateSingleEvaluation(request, evaluationId);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{evaluationId}")
+    @ValidAuth
+    public ResponseEntity<Void> delete(
+            @RequireAuth(targetDomain = Evaluation.class) @PathVariable Long evaluationId,
+            LoginProfile loginProfile
+    ) {
+        evaluationFacade.delete(evaluationId);
+        return ResponseEntity.noContent().build();
     }
 }
