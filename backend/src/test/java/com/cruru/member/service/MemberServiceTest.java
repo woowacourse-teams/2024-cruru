@@ -126,7 +126,7 @@ class MemberServiceTest extends ServiceTest {
         String changeEmail = "change@email.com";
 
         // when
-        memberService.update(member.getId(), changeEmail);
+        memberService.updateEmail(member.getId(), changeEmail);
 
         // then
         Optional<Member> emailChangedMember = memberRepository.findByEmail(changeEmail);

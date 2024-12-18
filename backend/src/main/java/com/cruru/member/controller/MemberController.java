@@ -3,6 +3,7 @@ package com.cruru.member.controller;
 import com.cruru.auth.annotation.RequireAuth;
 import com.cruru.member.controller.request.EmailChangeRequest;
 import com.cruru.member.controller.request.MemberCreateRequest;
+import com.cruru.member.controller.request.PasswordChangeRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.facade.MemberFacade;
 import jakarta.validation.Valid;
@@ -34,6 +35,14 @@ public class MemberController {
             @RequireAuth(targetDomain = Member.class) @PathVariable Long memberId,
             @RequestBody @Valid EmailChangeRequest request) {
         memberFacade.changeEmail(request, memberId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{memberId}/password")
+    public ResponseEntity<Void> changePassword(
+            @RequireAuth(targetDomain = Member.class) @PathVariable Long memberId,
+            @RequestBody @Valid PasswordChangeRequest request) {
+        memberFacade.changePassword(request, memberId);
         return ResponseEntity.ok().build();
     }
 }

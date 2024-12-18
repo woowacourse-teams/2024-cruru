@@ -4,6 +4,7 @@ import com.cruru.club.service.ClubService;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.member.controller.request.EmailChangeRequest;
 import com.cruru.member.controller.request.MemberCreateRequest;
+import com.cruru.member.controller.request.PasswordChangeRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class MemberFacade {
     @Transactional
     public void changeEmail(EmailChangeRequest request, long memberId) {
         emailRedisClient.verifyEmail(request.email());
-        memberService.update(memberId, request.email());
+        memberService.updateEmail(memberId, request.email());
+    }
+
+    @Transactional
+    public void changePassword(PasswordChangeRequest request, long memberId) {
+        memberService.updatePassword(memberId, request.password());
     }
 }

@@ -14,6 +14,7 @@ import com.cruru.email.exception.NotVerifiedEmailException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.member.controller.request.EmailChangeRequest;
 import com.cruru.member.controller.request.MemberCreateRequest;
+import com.cruru.member.controller.request.PasswordChangeRequest;
 import com.cruru.util.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -181,6 +182,48 @@ class MemberControllerTest extends ControllerTest {
                         requestFields(fieldWithPath("email").description("적절하지 않은 이메일 형식"))
                 ))
                 .when().patch("/v1/members/{memberId}/email", defaultMember.getId())
+                .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("사용자 비밀번호 변경 시 200을 응답한다.")
+    @Test
+    void changePassword() {
+        // given
+        String changePassword = "NewPassword123!!";
+        PasswordChangeRequest request = new PasswordChangeRequest(changePassword);
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .cookie("accessToken", token)
+                .body(request)
+                .filter(document("member/change-password",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(parameterWithName("memberId").description("비밀번호를 변경할 사용자의 id")),
+                        requestFields(fieldWithPath("password").description("변경할 비밀번호"))
+                ))
+                .when().patch("/v1/members/{memberId}/password", defaultMember.getId())
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("적절하지 않은 비밀번호 형식일 경우, 400을 반환한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"password", "Password", "password!!", "password123", "Password123"})
+    void changePassword_invalidPassword(String invalidPassword) {
+        // given
+        PasswordChangeRequest request = new PasswordChangeRequest(invalidPassword);
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .cookie("accessToken", token)
+                .body(request)
+                .filter(document("member/change-password-fail/invalid-password",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(parameterWithName("memberId").description("비밀번호를 변경할 사용자의 id")),
+                        requestFields(fieldWithPath("password").description("잘못된 비밀번호 형식"))
+                ))
+                .when().patch("/v1/members/{memberId}/password", defaultMember.getId())
                 .then().log().all().statusCode(400);
     }
 }
