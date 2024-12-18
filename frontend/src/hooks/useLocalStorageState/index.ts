@@ -19,7 +19,7 @@ function useLocalStorageState<T>(key: string, initialValue: T): [T, (value: T | 
   const setState = (value: T | ((prev: T) => T)) => {
     try {
       const newState = value instanceof Function ? value(state) : value;
-      _setState(newState);
+      _setState(value);
       window.localStorage.setItem(key, JSON.stringify(newState));
     } catch (error) {
       console.error(`"${key}":`, error);
