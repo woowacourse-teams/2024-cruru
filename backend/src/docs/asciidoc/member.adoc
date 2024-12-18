@@ -27,3 +27,13 @@ operation::member/change-email-fail/not-verified-email[snippets="http-request,re
 ==== 실패: 적절하지 않은 이메일 형식
 
 operation::member/change-email-fail/invalid-email[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
+
+=== 사용자 비밀번호 변경
+
+==== 성공
+
+operation::member/change-password[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
+
+==== 실패: 적절하지 않은 비밀번호 형식
+
+operation::member/change-password-fail/invalid-password[snippets="http-request,request-cookies,path-parameters,request-fields,http-response"]
