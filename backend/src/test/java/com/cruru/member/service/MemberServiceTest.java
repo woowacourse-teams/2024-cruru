@@ -117,4 +117,25 @@ class MemberServiceTest extends ServiceTest {
                 () -> assertThat(actualMember.getPassword()).isEqualTo(savedMember.getPassword())
         );
     }
+
+    @DisplayName("회원의 이메일을 갱신한다.")
+    @Test
+    void updateEmail() {
+        // given
+        Member member = memberRepository.save(MemberFixture.DOBBY);
+        String changeEmail = "change@email.com";
+
+        // when
+        memberService.update(member.getId(), changeEmail);
+
+        // then
+        Optional<Member> emailChangedMember = memberRepository.findByEmail(changeEmail);
+        assertAll(
+                () -> assertThat(emailChangedMember).isPresent(),
+                () -> assertThat(emailChangedMember.get().getId()).isEqualTo(member.getId()),
+                () -> assertThat(emailChangedMember.get().getEmail()).isEqualTo(changeEmail),
+                () -> assertThat(emailChangedMember.get().getPassword()).isEqualTo(member.getPassword()),
+                () -> assertThat(emailChangedMember.get().getPhone()).isEqualTo(member.getPhone())
+        );
+    }
 }

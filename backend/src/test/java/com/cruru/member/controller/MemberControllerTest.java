@@ -2,12 +2,17 @@ package com.cruru.member.controller;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.email.exception.NotVerifiedEmailException;
 import com.cruru.email.service.EmailRedisClient;
+import com.cruru.member.controller.request.EmailChangeRequest;
 import com.cruru.member.controller.request.MemberCreateRequest;
 import com.cruru.util.ControllerTest;
 import io.restassured.RestAssured;
@@ -17,6 +22,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @DisplayName("사용자 컨트롤러 테스트")
@@ -110,5 +116,71 @@ class MemberControllerTest extends ControllerTest {
                 ))
                 .when().post("/v1/members/signup")
                 .then().log().all().statusCode(401);
+    }
+
+    @DisplayName("사용자 이메일 변경 시 200을 응답한다.")
+    @Test
+    void changeEmail() {
+        // given
+        String changeEmail = "change@email.com";
+        EmailChangeRequest request = new EmailChangeRequest(changeEmail);
+        doNothing().when(emailRedisClient).verifyEmail(request.email());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .cookie("accessToken", token)
+                .body(request)
+                .filter(document("member/change-email",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(parameterWithName("memberId").description("이메일을 변경할 사용자의 id")),
+                        requestFields(fieldWithPath("email").description("변경할 이메일, 이메일 인증 필요"))
+                ))
+                .when().patch("/v1/members/{memberId}/email", defaultMember.getId())
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("인증되지 않은 사용자가 이메일 변경 시, 401을 반환한다.")
+    @Test
+    void changeEmail_notVerifiedEmail() {
+        // given
+        String changeEmail = "change@email.com";
+        EmailChangeRequest request = new EmailChangeRequest(changeEmail);
+        doThrow(new NotVerifiedEmailException()).when(emailRedisClient).verifyEmail(request.email());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .cookie("accessToken", token)
+                .body(request)
+                .filter(document("member/change-email-fail/not-verified-email",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(parameterWithName("memberId").description("이메일을 변경할 사용자의 id")),
+                        requestFields(fieldWithPath("email").description("인증되지 않은 사용자 이메일"))
+                ))
+                .when().patch("/v1/members/{memberId}/email", defaultMember.getId())
+                .then().log().all().statusCode(401);
+    }
+
+    @DisplayName("적절하지 않은 이메일 형식일 경우, 400을 반환한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"email", "email@", "@email.com"})
+    void changeEmail_invalidEmail(String email) {
+        // given
+        EmailChangeRequest request = new EmailChangeRequest(email);
+        doNothing().when(emailRedisClient).verifyEmail(request.email());
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .contentType(ContentType.JSON)
+                .cookie("accessToken", token)
+                .body(request)
+                .filter(document("member/change-email-fail/invalid-email",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(parameterWithName("memberId").description("이메일을 변경할 사용자의 id")),
+                        requestFields(fieldWithPath("email").description("적절하지 않은 이메일 형식"))
+                ))
+                .when().patch("/v1/members/{memberId}/email", defaultMember.getId())
+                .then().log().all().statusCode(400);
     }
 }
