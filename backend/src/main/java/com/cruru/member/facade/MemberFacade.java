@@ -2,7 +2,9 @@ package com.cruru.member.facade;
 
 import com.cruru.club.service.ClubService;
 import com.cruru.email.service.EmailRedisClient;
+import com.cruru.member.controller.request.EmailChangeRequest;
 import com.cruru.member.controller.request.MemberCreateRequest;
+import com.cruru.member.controller.request.PasswordChangeRequest;
 import com.cruru.member.domain.Member;
 import com.cruru.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +26,16 @@ public class MemberFacade {
         Member savedMember = memberService.create(request);
         clubService.create(request.clubName(), savedMember);
         return savedMember.getId();
+    }
+
+    @Transactional
+    public void changeEmail(EmailChangeRequest request, long memberId) {
+        emailRedisClient.verifyEmail(request.email());
+        memberService.updateEmail(memberId, request.email());
+    }
+
+    @Transactional
+    public void changePassword(PasswordChangeRequest request, long memberId) {
+        memberService.updatePassword(memberId, request.password());
     }
 }
