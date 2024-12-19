@@ -5,6 +5,28 @@ interface OptionProp {
   enableStorage?: boolean;
 }
 
+const safeParseJSON = <T>(value: string | null, fallback: T): T => {
+  try {
+    return value !== null ? JSON.parse(value) : fallback;
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('JSON 파싱 실패:', error);
+    }
+    return fallback;
+  }
+};
+
+const safeStringifyJSON = <T>(value: T): string | null => {
+  try {
+    return JSON.stringify(value);
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error('JSON 직렬화 실패:', error);
+    }
+    return null;
+  }
+};
+
 /**
  * useLocalStorageState
  * @param initialValue - 초기 상태 값
@@ -17,19 +39,14 @@ function useLocalStorageState<T>(initialValue: T, option: OptionProp): [T, (valu
   const [state, _setState] = useState<T>(() => {
     if (!enableStorage) return initialValue;
 
-    try {
-      const storedValue = window.localStorage.getItem(key);
-      return storedValue !== null ? JSON.parse(storedValue) : initialValue;
-    } catch (error) {
-      return initialValue;
-    }
+    const storedValue = window.localStorage.getItem(key);
+    return safeParseJSON(storedValue, initialValue);
   });
 
   const saveToLocalStorage = (value: T) => {
-    try {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(`"${key}":`, error);
+    const stringifiedValue = safeStringifyJSON(value);
+    if (stringifiedValue !== null) {
+      window.localStorage.setItem(key, stringifiedValue);
     }
   };
 
