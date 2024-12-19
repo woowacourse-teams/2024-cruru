@@ -50,6 +50,7 @@ public class EvaluationFacade {
     private EvaluationResponse toEvaluationResponse(Evaluation evaluation) {
         return new EvaluationResponse(
                 evaluation.getId(),
+                evaluation.getEvaluator(),
                 evaluation.getScore(),
                 evaluation.getContent(),
                 evaluation.getCreatedDate()

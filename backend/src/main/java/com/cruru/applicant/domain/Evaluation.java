@@ -33,6 +33,8 @@ public class Evaluation extends BaseEntity implements SecureResource {
     @Column(name = "evaluation_id")
     private Long id;
 
+    private String evaluator;
+
     private Integer score;
 
     private String content;
@@ -45,8 +47,9 @@ public class Evaluation extends BaseEntity implements SecureResource {
     @JoinColumn(name = "applicant_id")
     private Applicant applicant;
 
-    public Evaluation(int score, String content, Process process, Applicant applicant) {
+    public Evaluation(String evaluator, int score, String content, Process process, Applicant applicant) {
         validateScore(score);
+        this.evaluator = evaluator;
         this.score = score;
         this.content = content;
         this.process = process;
@@ -61,6 +64,18 @@ public class Evaluation extends BaseEntity implements SecureResource {
 
     private boolean isOutOfRange(int score) {
         return score < MIN_SCORE || score > MAX_SCORE;
+    }
+
+    public boolean isEvaluator(String evaluator) {
+        return this.evaluator.equals(evaluator);
+    }
+
+    public boolean isContent(String content) {
+        return this.content.equals(content);
+    }
+
+    public boolean isScore(int score) {
+        return this.score == score;
     }
 
     @Override
@@ -89,6 +104,7 @@ public class Evaluation extends BaseEntity implements SecureResource {
     public String toString() {
         return "Evaluation{" +
                 "id=" + id +
+                ", evaluator='" + evaluator + '\'' +
                 ", score=" + score +
                 ", content='" + content + '\'' +
                 ", process=" + process +

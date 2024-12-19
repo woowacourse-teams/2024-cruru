@@ -36,7 +36,7 @@ class EvaluationRepositoryTest extends RepositoryTest {
         Evaluation saved = evaluationRepository.save(evaluation);
 
         //when
-        Evaluation updatedEvaluation = new Evaluation(evaluation.getId(), 5, "포트폴리오가 인상 깊었습니다.", null, null);
+        Evaluation updatedEvaluation = new Evaluation(evaluation.getId(), "김도엽", 5, "포트폴리오가 인상 깊었습니다.", null, null);
         evaluationRepository.save(updatedEvaluation);
 
         //then
