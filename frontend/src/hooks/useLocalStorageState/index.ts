@@ -8,7 +8,7 @@ interface OptionProp {
  * useLocalStorageState
  * @param key - LocalStorage에 저장될 키 값
  * @param initialValue - 초기 상태 값
- * @param option - { use: boolean }
+ * @param option - { enableStorage: boolean }
  * @returns [상태 값, 상태를 변경하는 함수] useState의 반환값과 동일합니다.
  */
 function useLocalStorageState<T>(
@@ -27,14 +27,17 @@ function useLocalStorageState<T>(
     }
   });
 
-  const setState = (value: T | ((prev: T) => T)) => {
+  const saveToLocalStorage = (value: T) => {
     try {
-      const newState = value instanceof Function ? value(state) : value;
-      _setState(value);
-      window.localStorage.setItem(key, JSON.stringify(newState));
+      window.localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.error(`"${key}":`, error);
     }
+  };
+
+  const setState = (value: T | ((prev: T) => T)) => {
+    _setState(value);
+    saveToLocalStorage(value instanceof Function ? value(state) : value);
   };
 
   return [state, setState];
