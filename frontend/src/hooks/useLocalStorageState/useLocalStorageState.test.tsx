@@ -48,6 +48,15 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
       expect(result.current[0]).toBe(11);
       expect(window.localStorage.getItem('primitiveKey')).toBe('11');
     });
+
+    it('enableStorage 옵션을 false로 지정한 경우 localStorage를 사용하지 않는다', () => {
+      window.localStorage.setItem('primitiveKey', '10');
+
+      const { result } = renderHook(() => useLocalStorageState<number>('primitiveKey', 0, { enableStorage: false }));
+
+      expect(result.current[0]).toBe(0);
+      expect(window.localStorage.getItem('primitiveKey')).toBe('10');
+    });
   });
 
   describe('useLocalStorageState의 값이 객체인 경우에 대한 테스트', () => {
@@ -94,6 +103,17 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
 
       expect(result.current[0]).toEqual({ name: 'jeong woo', age: 29 });
       expect(window.localStorage.getItem('objectKey')).toBe(JSON.stringify({ name: 'jeong woo', age: 29 }));
+    });
+
+    it('enableStorage 옵션을 false로 지정한 경우 localStorage를 사용하지 않는다', () => {
+      const storedObject = JSON.stringify({ name: 'jeong woo', age: 28 });
+      window.localStorage.setItem('objectKey', storedObject);
+
+      const initialObject = { name: 'lurgi', age: 30 };
+      const { result } = renderHook(() => useLocalStorageState('objectKey', initialObject, { enableStorage: false }));
+
+      expect(result.current[0]).toEqual(initialObject);
+      expect(window.localStorage.getItem('objectKey')).toBe(storedObject);
     });
   });
 });
