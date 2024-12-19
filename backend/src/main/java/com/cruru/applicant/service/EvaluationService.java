@@ -57,9 +57,9 @@ public class EvaluationService {
 
     private boolean changeExists(EvaluationUpdateRequest request, Evaluation evaluation) {
         return !(
-                evaluation.getContent().equals(request.content())
-                        && evaluation.getScore().equals(request.score())
-                        && evaluation.getEvaluator().equals(request.evaluator())
+                evaluation.isContent(request.content())
+                        && evaluation.isScore(request.score())
+                        && evaluation.isEvaluator(request.evaluator())
         );
     }
 

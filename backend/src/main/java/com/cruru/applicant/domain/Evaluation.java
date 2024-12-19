@@ -66,6 +66,18 @@ public class Evaluation extends BaseEntity implements SecureResource {
         return score < MIN_SCORE || score > MAX_SCORE;
     }
 
+    public boolean isEvaluator(String evaluator) {
+        return this.evaluator.equals(evaluator);
+    }
+
+    public boolean isContent(String content) {
+        return this.content.equals(content);
+    }
+
+    public boolean isScore(int score) {
+        return this.score == score;
+    }
+
     @Override
     public boolean isAuthorizedBy(Member member) {
         return process.isAuthorizedBy(member);
@@ -92,6 +104,7 @@ public class Evaluation extends BaseEntity implements SecureResource {
     public String toString() {
         return "Evaluation{" +
                 "id=" + id +
+                ", evaluator='" + evaluator + '\'' +
                 ", score=" + score +
                 ", content='" + content + '\'' +
                 ", process=" + process +
