@@ -1,23 +1,21 @@
 import { useState } from 'react';
 
 interface OptionProp {
-  enableStorage: boolean;
+  key: string;
+  enableStorage?: boolean;
 }
 
 /**
  * useLocalStorageState
- * @param key - LocalStorage에 저장될 키 값
  * @param initialValue - 초기 상태 값
- * @param option - { enableStorage: boolean }
+ * @param option - { key: LocalStorage에 저장될 키 값, enableStorage: LocalStorage의 값을 사용할지 여부}
  * @returns [상태 값, 상태를 변경하는 함수] useState의 반환값과 동일합니다.
  */
-function useLocalStorageState<T>(
-  key: string,
-  initialValue: T,
-  option: OptionProp = { enableStorage: true },
-): [T, (value: T | ((prev: T) => T)) => void] {
+function useLocalStorageState<T>(initialValue: T, option: OptionProp): [T, (value: T | ((prev: T) => T)) => void] {
+  const { key, enableStorage = true } = option;
+
   const [state, _setState] = useState<T>(() => {
-    if (!option.enableStorage) return initialValue;
+    if (!enableStorage) return initialValue;
 
     try {
       const storedValue = window.localStorage.getItem(key);

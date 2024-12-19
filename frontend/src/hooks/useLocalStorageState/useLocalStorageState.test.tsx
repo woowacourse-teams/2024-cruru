@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 import { act } from 'react';
 import { renderHook } from '@testing-library/react';
 import useLocalStorageState from '.';
@@ -9,12 +10,12 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
 
   describe('Primitive Value Tests', () => {
     it('초기 상태를 설정한다', () => {
-      const { result } = renderHook(() => useLocalStorageState<number>('primitiveKey', 0));
+      const { result } = renderHook(() => useLocalStorageState(0, { key: 'primitiveKey' }));
       expect(result.current[0]).toBe(0);
     });
 
     it('[setState 인자 원시값] 상태 변경 시 localStorage에 저장한다', () => {
-      const { result } = renderHook(() => useLocalStorageState<number>('primitiveKey', 0));
+      const { result } = renderHook(() => useLocalStorageState(0, { key: 'primitiveKey' }));
 
       act(() => {
         result.current[1]((prev) => prev + 1);
@@ -25,7 +26,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
     });
 
     it('[setState 인자 함수] 상태 변경 시 localStorage에 저장한다', () => {
-      const { result } = renderHook(() => useLocalStorageState<number>('primitiveKey', 0));
+      const { result } = renderHook(() => useLocalStorageState(0, { key: 'primitiveKey' }));
 
       act(() => {
         result.current[1]((prev) => prev + 1);
@@ -38,7 +39,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
     it('localStorage에 값이 있으면 초기 상태로 사용한다', () => {
       window.localStorage.setItem('primitiveKey', '10');
 
-      const { result } = renderHook(() => useLocalStorageState<number>('primitiveKey', 0));
+      const { result } = renderHook(() => useLocalStorageState(0, { key: 'primitiveKey' }));
       expect(result.current[0]).toBe(10);
 
       act(() => {
@@ -52,7 +53,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
     it('enableStorage 옵션을 false로 지정한 경우 localStorage를 사용하지 않는다', () => {
       window.localStorage.setItem('primitiveKey', '10');
 
-      const { result } = renderHook(() => useLocalStorageState<number>('primitiveKey', 0, { enableStorage: false }));
+      const { result } = renderHook(() => useLocalStorageState(0, { key: 'primitiveKey', enableStorage: false }));
 
       expect(result.current[0]).toBe(0);
       expect(window.localStorage.getItem('primitiveKey')).toBe('10');
@@ -62,13 +63,13 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
   describe('useLocalStorageState의 값이 객체인 경우에 대한 테스트', () => {
     it('초기 상태를 설정한다', () => {
       const initialObject = { name: 'lurgi', age: 30 };
-      const { result } = renderHook(() => useLocalStorageState('objectKey', initialObject));
+      const { result } = renderHook(() => useLocalStorageState(initialObject, { key: 'objectKey' }));
       expect(result.current[0]).toEqual(initialObject);
     });
 
     it('[setState 인자 원시값] 상태 변경 시 localStorage에 저장한다', () => {
       const initialObject = { name: 'lurgi', age: 30 };
-      const { result } = renderHook(() => useLocalStorageState('objectKey', initialObject));
+      const { result } = renderHook(() => useLocalStorageState(initialObject, { key: 'objectKey' }));
 
       act(() => {
         result.current[1]({ name: 'lurgi', age: 31 });
@@ -80,7 +81,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
 
     it('[setState 인자 함수] 상태 변경 시 localStorage에 저장한다', () => {
       const initialObject = { name: 'lurgi', age: 30 };
-      const { result } = renderHook(() => useLocalStorageState('objectKey', initialObject));
+      const { result } = renderHook(() => useLocalStorageState(initialObject, { key: 'objectKey' }));
 
       act(() => {
         result.current[1]((prev) => ({ ...prev, age: prev.age + 1 }));
@@ -94,7 +95,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
       const storedObject = JSON.stringify({ name: 'jeong woo', age: 28 });
       window.localStorage.setItem('objectKey', storedObject);
 
-      const { result } = renderHook(() => useLocalStorageState('objectKey', { name: 'default', age: 0 }));
+      const { result } = renderHook(() => useLocalStorageState({ name: 'default', age: 0 }, { key: 'objectKey' }));
       expect(result.current[0]).toEqual({ name: 'jeong woo', age: 28 });
 
       act(() => {
@@ -110,7 +111,9 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
       window.localStorage.setItem('objectKey', storedObject);
 
       const initialObject = { name: 'lurgi', age: 30 };
-      const { result } = renderHook(() => useLocalStorageState('objectKey', initialObject, { enableStorage: false }));
+      const { result } = renderHook(() =>
+        useLocalStorageState(initialObject, { key: 'objectKey', enableStorage: false }),
+      );
 
       expect(result.current[0]).toEqual(initialObject);
       expect(window.localStorage.getItem('objectKey')).toBe(storedObject);
