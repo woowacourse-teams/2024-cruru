@@ -7,8 +7,75 @@ spring:
   config:
     activate:
       on-profile: local
-    import:
-      - config/application-local.yml
+  h2:
+    console:
+      enabled: true
+  datasource:
+    read:
+      hikari:
+        jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+    write:
+      hikari:
+        jdbc-url: jdbc:h2:mem:database;MODE=MySQL;
+  flyway:
+    enabled: false
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        max_fetch_depth: 15
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: false
+    open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME} # 테스트 시 직접 값 하드코딩 할 것
+    password: ${EMAIL_PASSWORD} # 테스트 시 직접 값 하드코딩 할 것
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 50MB
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      password: password
+
+security:
+  jwt:
+    token:
+      secret-key: test
+      access-expire-length: 3600000
+      refresh-expire-length: 3600000
+      algorithm: HS256
+
+cookie:
+  access-token-key: accessToken
+  refresh-token-key: refreshToken
+  http-only: false
+  secure: false
+  domain: localhost
+  path: /
+  same-site: none
+  max-age: 7200 #2시간
+
+dataloader:
+  enable: true
+
+monitoring-profile: local
+
 ---
 spring:
   config:
@@ -17,13 +84,6 @@ spring:
     import:
       - config/application-dev.yml
 
----
-spring:
-  config:
-    activate:
-      on-profile: test
-    import:
-      - config/application-test.yml
 ---
 spring:
   config:
