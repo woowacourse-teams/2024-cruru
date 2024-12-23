@@ -2,6 +2,7 @@ import dashboardApis from '@api/domain/dashboard';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
 import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
 import useClubId from '@hooks/service/useClubId';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -40,10 +41,39 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
 };
 
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
-  // TODO: useLocalStorageState() 사용하기
-  const [stepState, setStepState] = useState<StepState>('recruitmentForm');
-  const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
-  const [applyState, setApplyState] = useState<Question[]>(DEFAULT_QUESTIONS);
+  const [enableStorage] = useState(() => {
+    const Step = window.localStorage.getItem('step');
+    const Info = window.localStorage.getItem('info');
+    const Apply = window.localStorage.getItem('apply');
+
+    if (Step || Info || Apply) {
+      return window.confirm('이전 작성중인 공고기 있습니다. 이어서 진행하시겠습니까?');
+    }
+    return false;
+  });
+
+  const resetStorage = () => {
+    window.localStorage.removeItem('step');
+    window.localStorage.removeItem('info');
+    window.localStorage.removeItem('apply');
+  };
+
+  const [stepState, setStepState] = useLocalStorageState<StepState>('recruitmentForm', {
+    key: 'step',
+    enableStorage,
+  });
+  const [recruitmentInfoState, setRecruitmentInfoState] = useLocalStorageState<RecruitmentInfoState>(
+    initialRecruitmentInfoState,
+    {
+      key: 'info',
+      enableStorage,
+    },
+  );
+  const [applyState, setApplyState] = useLocalStorageState<Question[]>(DEFAULT_QUESTIONS, {
+    key: 'apply',
+    enableStorage,
+  });
+
   const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
 
@@ -63,7 +93,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
       }),
     onSuccess: async (data) => {
       setStepState('finished');
-      // TODO: Suspence 작업 해야함.
+      resetStorage();
       setFinishResJson(data);
     },
   });

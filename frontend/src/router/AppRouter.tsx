@@ -63,7 +63,11 @@ const router = createBrowserRouter(
         },
         {
           path: `${PATH.dashboard.list}${PATH.dashboard.create}`,
-          element: <DashboardCreate />,
+          element: (
+            <Suspense fallback={<LoadingPage />}>
+              <DashboardCreate />
+            </Suspense>
+          ),
         },
       ],
     },
