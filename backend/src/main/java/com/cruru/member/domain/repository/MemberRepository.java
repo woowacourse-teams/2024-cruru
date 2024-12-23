@@ -22,4 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("UPDATE Member m SET m.password = :password WHERE m.id = :memberId")
     void updatePasswordById(long memberId, String password);
+
+    @Query("SELECT m FROM Member m WHERE m.id = :id")
+    Optional<Member> findByIdFetchingMember(Long id);
 }
