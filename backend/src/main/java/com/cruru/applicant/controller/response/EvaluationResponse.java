@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 public record EvaluationResponse(
         long evaluationId,
 
+        String evaluator,
+
         int score,
 
         String content,
