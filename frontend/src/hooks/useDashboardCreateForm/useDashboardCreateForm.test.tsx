@@ -118,9 +118,9 @@ describe('useDashboardCreateForm', () => {
     jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
     // Arrange
-    localStorage.setItem('step', 'recruitmentForm');
+    localStorage.setItem('1-step', 'recruitmentForm');
     localStorage.setItem(
-      'info',
+      '1-info',
       JSON.stringify({
         startDate: '2024-12-01',
         endDate: '2024-12-31',
@@ -189,9 +189,9 @@ describe('useDashboardCreateForm', () => {
   it('confirm 입력으로 false를 입력하면 localStorage가 비워진다.', () => {
     jest.spyOn(window, 'confirm').mockImplementation(() => false);
 
-    localStorage.setItem('step', 'recruitmentForm');
+    localStorage.setItem('1-step', 'recruitmentForm');
     localStorage.setItem(
-      'info',
+      '1-info',
       JSON.stringify({
         startDate: '2024-12-01',
         endDate: '2024-12-31',
@@ -199,12 +199,12 @@ describe('useDashboardCreateForm', () => {
         postingContent: 'This is a test content',
       }),
     );
-    localStorage.setItem('apply', JSON.stringify([{ question: 'Test Question', type: 'SHORT_ANSWER' }]));
+    localStorage.setItem('1-apply', JSON.stringify([{ question: 'Test Question', type: 'SHORT_ANSWER' }]));
 
     renderHook(() => useDashboardCreateForm(), { wrapper: createWrapper() });
 
-    expect(localStorage.getItem('step')).toBeNull();
-    expect(localStorage.getItem('info')).toBeNull();
-    expect(localStorage.getItem('apply')).toBeNull();
+    expect(localStorage.getItem('1-step')).toBeNull();
+    expect(localStorage.getItem('1-info')).toBeNull();
+    expect(localStorage.getItem('1-apply')).toBeNull();
   });
 });

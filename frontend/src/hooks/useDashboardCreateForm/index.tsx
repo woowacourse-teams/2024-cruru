@@ -41,10 +41,17 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
 };
 
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
+  const clubId = useClubId().getClubId() || '';
+  const LOCALSTORAGE_KEYS = {
+    STEP: `${clubId}-step`,
+    INFO: `${clubId}-info`,
+    APPLY: `${clubId}-apply`,
+  } as const;
+
   const [enableStorage] = useState(() => {
-    const Step = window.localStorage.getItem('step');
-    const Info = window.localStorage.getItem('info');
-    const Apply = window.localStorage.getItem('apply');
+    const Step = window.localStorage.getItem(LOCALSTORAGE_KEYS.STEP);
+    const Info = window.localStorage.getItem(LOCALSTORAGE_KEYS.INFO);
+    const Apply = window.localStorage.getItem(LOCALSTORAGE_KEYS.APPLY);
 
     if (Step || Info || Apply) {
       return window.confirm('이전 작성중인 공고기 있습니다. 이어서 진행하시겠습니까?');
@@ -53,31 +60,29 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   });
 
   const resetStorage = () => {
-    window.localStorage.removeItem('step');
-    window.localStorage.removeItem('info');
-    window.localStorage.removeItem('apply');
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS.STEP);
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS.INFO);
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS.APPLY);
   };
 
   const [stepState, setStepState] = useLocalStorageState<StepState>('recruitmentForm', {
-    key: 'step',
+    key: LOCALSTORAGE_KEYS.STEP,
     enableStorage,
   });
   const [recruitmentInfoState, setRecruitmentInfoState] = useLocalStorageState<RecruitmentInfoState>(
     initialRecruitmentInfoState,
     {
-      key: 'info',
+      key: LOCALSTORAGE_KEYS.INFO,
       enableStorage,
     },
   );
   const [applyState, setApplyState] = useLocalStorageState<Question[]>(DEFAULT_QUESTIONS, {
-    key: 'apply',
+    key: LOCALSTORAGE_KEYS.APPLY,
     enableStorage,
   });
 
   const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
-
-  const clubId = useClubId().getClubId() || '';
 
   const submitMutator = useMutation({
     mutationFn: () =>
