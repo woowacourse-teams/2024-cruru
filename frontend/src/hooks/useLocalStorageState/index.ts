@@ -36,6 +36,10 @@ const safeStringifyJSON = <T>(value: T): string | null => {
 function useLocalStorageState<T>(initialValue: T, option: OptionProp): [T, (value: T | ((prev: T) => T)) => void] {
   const { key, enableStorage = true } = option;
 
+  if (!enableStorage) {
+    localStorage.removeItem(key);
+  }
+
   const [state, _setState] = useState<T>(() => {
     if (!enableStorage) return initialValue;
 
