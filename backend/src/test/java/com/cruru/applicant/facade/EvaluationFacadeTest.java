@@ -51,9 +51,10 @@ class EvaluationFacadeTest extends ServiceTest {
     void create() {
         // given
         Evaluation evaluation = EvaluationFixture.fivePoints();
+        String evaluator = evaluation.getEvaluator();
         Integer score = evaluation.getScore();
         String content = evaluation.getContent();
-        EvaluationCreateRequest request = new EvaluationCreateRequest(score, content);
+        EvaluationCreateRequest request = new EvaluationCreateRequest(evaluator, score, content);
 
         // when
         evaluationFacade.create(request, process.getId(), applicant.getId());
@@ -63,6 +64,7 @@ class EvaluationFacadeTest extends ServiceTest {
         Evaluation actualEvaluation = evaluations.get(0);
         assertAll(
                 () -> assertThat(evaluations).hasSize(1),
+                () -> assertThat(actualEvaluation.getEvaluator()).isEqualTo(evaluator),
                 () -> assertThat(actualEvaluation.getScore()).isEqualTo(score),
                 () -> assertThat(actualEvaluation.getContent()).isEqualTo(content)
         );
@@ -92,11 +94,13 @@ class EvaluationFacadeTest extends ServiceTest {
                 () -> assertThat(evaluationResponses).hasSize(2),
 
                 () -> assertThat(actualEvaluation1.evaluationId()).isEqualTo(savedEvaluation1.getId()),
+                () -> assertThat(actualEvaluation1.evaluator()).isEqualTo(savedEvaluation1.getEvaluator()),
                 () -> assertThat(actualEvaluation1.content()).isEqualTo(savedEvaluation1.getContent()),
                 () -> assertThat(actualEvaluation1.score()).isEqualTo(savedEvaluation1.getScore()),
                 () -> assertThat(actualEvaluation1.createdDate()).isEqualTo(savedEvaluation1.getCreatedDate()),
 
                 () -> assertThat(actualEvaluation2.evaluationId()).isEqualTo(savedEvaluation2.getId()),
+                () -> assertThat(actualEvaluation2.evaluator()).isEqualTo(savedEvaluation2.getEvaluator()),
                 () -> assertThat(actualEvaluation2.content()).isEqualTo(savedEvaluation2.getContent()),
                 () -> assertThat(actualEvaluation2.score()).isEqualTo(savedEvaluation2.getScore()),
                 () -> assertThat(actualEvaluation2.createdDate()).isEqualTo(savedEvaluation2.getCreatedDate())
