@@ -56,7 +56,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
       const { result } = renderHook(() => useLocalStorageState(0, { key: 'primitiveKey', enableStorage: false }));
 
       expect(result.current[0]).toBe(0);
-      expect(window.localStorage.getItem('primitiveKey')).toBe('10');
+      expect(window.localStorage.getItem('primitiveKey')).toBeNull();
     });
   });
 
@@ -116,7 +116,7 @@ describe('useLocalStorageState의 값이 원시값인 경우에 대한 테스트
       );
 
       expect(result.current[0]).toEqual(initialObject);
-      expect(window.localStorage.getItem('objectKey')).toBe(storedObject);
+      expect(window.localStorage.getItem('objectKey')).toBeNull();
     });
   });
 });
