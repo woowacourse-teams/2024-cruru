@@ -7,6 +7,9 @@ import com.cruru.club.service.ClubService;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
+import com.cruru.email.controller.response.EmailResponse;
+import com.cruru.email.controller.response.EmailResponses;
+import com.cruru.email.domain.Email;
 import com.cruru.email.exception.EmailAttachmentsException;
 import com.cruru.email.exception.EmailConflictException;
 import com.cruru.email.service.EmailRedisClient;
@@ -79,5 +82,23 @@ public class EmailFacade {
 
         VerificationCodeUtil.verify(storedVerificationCode, inputVerificationCode);
         emailRedisClient.saveVerifiedEmail(email);
+    }
+
+    public EmailResponses read(long clubId, long applicantId) {
+        Club club = clubService.findById(clubId);
+        Applicant applicant = applicantService.findById(applicantId);
+        List<Email> emails = emailService.findAllByFromAndTo(club, applicant);
+        return new EmailResponses(emails.stream()
+                .map(this::toEmailResponse)
+                .toList());
+    }
+
+    private EmailResponse toEmailResponse(Email email) {
+        return new EmailResponse(
+                email.getSubject(),
+                email.getContent(),
+                email.getCreatedDate(),
+                email.getIsSucceed()
+        );
     }
 }

@@ -1,7 +1,9 @@
 package com.cruru.email.facade;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,7 +14,10 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
+import com.cruru.email.controller.response.EmailResponse;
+import com.cruru.email.controller.response.EmailResponses;
 import com.cruru.email.domain.Email;
+import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.email.exception.EmailConflictException;
 import com.cruru.email.exception.badrequest.VerificationCodeMismatchException;
 import com.cruru.email.exception.badrequest.VerificationCodeNotFoundException;
@@ -44,6 +49,9 @@ class EmailFacadeTest extends ServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private EmailRepository emailRepository;
 
     @Autowired
     private EmailFacade emailFacade;
@@ -141,5 +149,25 @@ class EmailFacadeTest extends ServiceTest {
         assertThatThrownBy(() -> emailFacade.verifyCode(request))
                 .isInstanceOf(VerificationCodeMismatchException.class)
                 .hasMessage("인증 코드가 일치하지 않습니다.");
+    }
+
+    @DisplayName("동아리와 지원자 id로 이메일을 조회한다.")
+    @Test
+    void read() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Email email = emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
+
+        // when
+        EmailResponses emailResponses = emailFacade.read(defaultClub.getId(), applicant.getId());
+
+        // then
+        assertThat(emailResponses.emailResponses()).hasSize(1);
+        EmailResponse emailResponse = emailResponses.emailResponses().get(0);
+        assertAll(
+                () -> assertThat(emailResponse.subject()).isEqualTo(email.getSubject()),
+                () -> assertThat(emailResponse.content()).isEqualTo(email.getContent()),
+                () -> assertThat(emailResponse.isSucceed()).isEqualTo(email.getIsSucceed())
+        );
     }
 }
