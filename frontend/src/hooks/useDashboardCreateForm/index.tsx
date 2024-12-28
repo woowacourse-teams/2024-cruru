@@ -164,7 +164,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
   const setQuestionPrev = (index: number) => () => {
     setApplyState((prevState) => {
-      if (index > DEFAULT_QUESTIONS.length + 1) {
+      if (index > DEFAULT_QUESTIONS.length) {
         const questionsCopy = [...prevState];
         const temp = questionsCopy[index];
         questionsCopy[index] = questionsCopy[index - 1];

@@ -77,17 +77,17 @@ describe('useDashboardCreateForm', () => {
     expect(result.current.applyState).toEqual(initialQuestions);
   });
 
-  it('인덱스가 1에서 4인 질문은 prev할 수 없다.', () => {
+  it('인덱스가 0에서 3인 질문은 prev할 수 없다.', () => {
     const { result } = renderHook(() => useDashboardCreateForm(), { wrapper: createWrapper() });
 
     act(() => result.current.addQuestion());
     const expectQuestions = result.current.applyState;
 
     act(() => {
+      result.current.setQuestionPrev(0)();
       result.current.setQuestionPrev(1)();
       result.current.setQuestionPrev(2)();
       result.current.setQuestionPrev(3)();
-      result.current.setQuestionPrev(4)();
     });
 
     expect(result.current.applyState).toEqual(expectQuestions);
