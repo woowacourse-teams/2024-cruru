@@ -54,7 +54,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     const Apply = window.localStorage.getItem(LOCALSTORAGE_KEYS.APPLY);
 
     if (Step || Info || Apply) {
-      return window.confirm('이전 작성중인 공고기 있습니다. 이어서 진행하시겠습니까?');
+      return window.confirm('이전 작성중인 공고가 있습니다. 이어서 진행하시겠습니까?');
     }
     return false;
   });
