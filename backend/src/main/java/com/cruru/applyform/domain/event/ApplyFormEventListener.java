@@ -22,7 +22,6 @@ public class ApplyFormEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleApplyFormEvent(ApplyFormEvent event) {
 
-        log.info("시작");
         Club club = event.club();
         ApplyForm applyForm = event.applyForm();
         Applicant applicant = event.applicant();
