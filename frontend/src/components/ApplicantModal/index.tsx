@@ -1,22 +1,40 @@
 import { useSpecificApplicantId } from '@contexts/SpecificApplicnatIdContext';
 import { useSpecificProcessId } from '@contexts/SpecificProcessIdContext';
 
+import useTab from '@components/_common/molecules/Tab/useTab';
+import { FiFileText, FiMail } from 'react-icons/fi';
 import BaseModal from './BaseModal';
 
 import ApplicantBaseInfo from './ApplicantBaseInfo';
-import ApplicatnModalHeader from './ModalHeader';
 import QuestionSection from './ApplicantDetailInfo/QuestionSection';
 import ApplicantEvalInfo from './ApplicantEvalInfo';
 import EvaluationHeader from './ApplicantEvalInfo/EvaluationHeader';
 import InquireEvalHeader from './InquireEvalHeader';
+import ApplicantModalHeader from './ModalHeader';
 
 import S from './style';
 import usePaginatedEvaluation from './usePaginatedEvaluation';
+
+export type ApplicantModalTabItems = '지원서' | '이메일';
+
+const TabMenus = {
+  지원서: {
+    title: '지원서',
+    icon: FiFileText,
+    description: '지원 시 접수된 지원서 내용입니다.',
+  },
+  이메일: {
+    title: '이메일',
+    icon: FiMail,
+    description: '지원자에게 전송한 이메일 내역입니다.',
+  },
+} as const;
 
 export default function ApplicantModal() {
   const { applicantId } = useSpecificApplicantId();
   const { processId } = useSpecificProcessId();
 
+  const { currentMenu, moveTabByParam } = useTab<ApplicantModalTabItems>({ defaultValue: '지원서' });
   const { currentProcess, isCurrentProcess, moveProcess, isLastProcess, isFirstProcess } =
     usePaginatedEvaluation(processId);
 
@@ -26,23 +44,34 @@ export default function ApplicantModal() {
     <BaseModal>
       <S.Container>
         <S.ModalHeader>
-          <ApplicatnModalHeader title="지원서" />
+          <ApplicantModalHeader title="지원자 상세" />
         </S.ModalHeader>
 
         <S.ModalSidebar>
           <ApplicantBaseInfo applicantId={applicantId} />
+          <S.ModalMenus>
+            <S.ModalMenusTitle>메뉴</S.ModalMenusTitle>
+            {Object.values(TabMenus).map((menu) => (
+              <S.ModalMenusItem
+                key={menu.title}
+                isSelected={currentMenu === menu.title}
+                onClick={() => moveTabByParam(menu.title)}
+              >
+                <menu.icon size={20} />
+                {menu.title}
+              </S.ModalMenusItem>
+            ))}
+          </S.ModalMenus>
         </S.ModalSidebar>
 
         <S.ModalNav>
           <S.ModalNavHeaderContainer>
-            <S.ModalNavHeader>지원서</S.ModalNavHeader>
-            <S.ModalNavContent>지원 시 접수된 지원서 내용입니다.</S.ModalNavContent>
+            <S.ModalNavHeader>{TabMenus[currentMenu].title}</S.ModalNavHeader>
+            <S.ModalNavContent>{TabMenus[currentMenu].description}</S.ModalNavContent>
           </S.ModalNavHeaderContainer>
         </S.ModalNav>
 
-        <S.ModalMain>
-          <QuestionSection applicantId={applicantId} />
-        </S.ModalMain>
+        <S.ModalMain>{currentMenu === '지원서' && <QuestionSection applicantId={applicantId} />}</S.ModalMain>
 
         <S.ModalEvalHeader>
           <EvaluationHeader

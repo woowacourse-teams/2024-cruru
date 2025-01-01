@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 32px 16px;
   border-radius: 8px;
 `;
 
@@ -23,12 +22,12 @@ const ActionRow = styled.div`
 const DetailContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 
   border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
   border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
 
-  padding: 8px 0px;
+  padding: 10px 4px;
 `;
 
 const DetailRow = styled.div`
