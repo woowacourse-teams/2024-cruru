@@ -33,15 +33,14 @@ public class MemberService {
             throw new MemberEmailDuplicatedException();
         }
 
-        String encodedPassword = generateEncodedPassword(request);
+        String encodedPassword = encodePassword(request.password());
         Member newMember = new Member(request.email(), encodedPassword, request.phone());
         return memberRepository.save(newMember);
     }
 
-    private String generateEncodedPassword(MemberCreateRequest request) {
-        String rawPassword = request.password();
-        validatePassword(rawPassword);
-        return passwordValidator.encode(rawPassword);
+    private String encodePassword(String password) {
+        validatePassword(password);
+        return passwordValidator.encode(password);
     }
 
     private void validatePassword(String rawPassword) {
@@ -65,5 +64,14 @@ public class MemberService {
 
     public boolean existsByEmail(String email) {
         return memberRepository.existsByEmail(email);
+    }
+
+    public void updateEmail(long memberId, String email) {
+        memberRepository.updateEmailById(memberId, email);
+    }
+
+    public void updatePassword(long memberId, String password) {
+        String encodedPassword = encodePassword(password);
+        memberRepository.updatePasswordById(memberId, encodedPassword);
     }
 }

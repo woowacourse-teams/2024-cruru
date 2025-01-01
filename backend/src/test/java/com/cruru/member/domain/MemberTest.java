@@ -1,10 +1,12 @@
 package com.cruru.member.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.cruru.member.exception.badrequest.MemberIllegalPhoneNumberException;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -43,5 +45,23 @@ class MemberTest {
 
         // when&then
         assertThrows(MemberIllegalPhoneNumberException.class, () -> new Member(email, password, phone));
+    }
+
+    @DisplayName("id와 이메일이 같을 경우, 인가 가능하다.")
+    @Test
+    void isAuthorizedBy() {
+        // given
+        Long id = 1L;
+        String email = "test@example.com";
+        String password1 = "ValidPassword123!";
+        String phone1 = "01012345678";
+        String password2 = "ValidPassword123";
+        String phone2 = "01012345679";
+        Member member1 = new Member(id, email, password1, phone1);
+        Member member2 = new Member(id, email, password2, phone2);
+
+        // when&then
+        assertThat(member1.isAuthorizedBy(member2)).isTrue();
+        assertThat(member2.isAuthorizedBy(member1)).isTrue();
     }
 }
