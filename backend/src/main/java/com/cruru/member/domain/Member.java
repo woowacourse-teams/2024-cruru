@@ -3,6 +3,7 @@ package com.cruru.member.domain;
 import static com.cruru.member.domain.MemberRole.CLUB_OWNER;
 
 import com.cruru.BaseEntity;
+import com.cruru.auth.util.SecureResource;
 import com.cruru.member.exception.badrequest.MemberIllegalPhoneNumberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Member extends BaseEntity {
+public class Member extends BaseEntity implements SecureResource {
 
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile(
             "^(010)\\d{3,4}\\d{4}$|^(02|0[3-6][1-5])\\d{3,4}\\d{4}$");
@@ -60,6 +61,11 @@ public class Member extends BaseEntity {
         if (!VALID_PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()) {
             throw new MemberIllegalPhoneNumberException();
         }
+    }
+
+    @Override
+    public boolean isAuthorizedBy(Member member) {
+        return member.id.equals(this.id);
     }
 
     @Override
