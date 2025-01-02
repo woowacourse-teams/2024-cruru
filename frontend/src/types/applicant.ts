@@ -17,6 +17,12 @@ export interface SpecificApplicant {
   process: ApplicantProcessInfo;
 }
 
+export interface EmailHistory {
+  id: number;
+  email: string;
+  isSent: boolean;
+}
+
 interface DetailInfo {
   orderIndex: number;
   question: string;
