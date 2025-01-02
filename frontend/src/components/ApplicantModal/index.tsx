@@ -14,6 +14,7 @@ import ApplicantModalHeader from './ModalHeader';
 
 import S from './style';
 import usePaginatedEvaluation from './usePaginatedEvaluation';
+import EmailHistorySection from './ApplicantDetailInfo/EmailHistorySection';
 
 export type ApplicantModalTabItems = '지원서' | '이메일';
 
@@ -71,7 +72,10 @@ export default function ApplicantModal() {
           </S.ModalNavHeaderContainer>
         </S.ModalNav>
 
-        <S.ModalMain>{currentMenu === '지원서' && <QuestionSection applicantId={applicantId} />}</S.ModalMain>
+        <S.ModalMain>
+          {currentMenu === '지원서' && <QuestionSection applicantId={applicantId} />}
+          {currentMenu === '이메일' && <EmailHistorySection applicantId={applicantId} />}
+        </S.ModalMain>
 
         <S.ModalEvalHeader>
           <EvaluationHeader

@@ -5,19 +5,19 @@ import S from './style';
 interface EmailHistoryItemProps {
   title: string;
   content: string;
-  date: string;
+  createdDate: string;
   isSucceed: boolean;
 }
 
-export default function EmailHistoryItem({ title, content, date, isSucceed }: EmailHistoryItemProps) {
+export default function EmailHistoryItem({ title, content, createdDate, isSucceed }: EmailHistoryItemProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
 
-  const formattedDate = new Date(date).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
-  const formattedTime = new Date(date).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric' });
+  const formattedDate = new Date(createdDate).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' });
+  const formattedTime = new Date(createdDate).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric' });
 
   return (
     <S.Container>

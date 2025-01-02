@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { hideScrollBar } from '@styles/utils';
 
 const Container = styled.div`
   width: 80vw;
@@ -62,6 +63,7 @@ const ModalMain = styled.div`
   grid-area: main;
   border-right: 0.1rem solid ${({ theme }) => theme.baseColors.grayscale[600]};
   overflow: auto;
+  ${hideScrollBar}
 `;
 
 const ModalAsideHeader = styled.div`

@@ -1,4 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { FloatingEmailFormProvider } from '@contexts/FloatingEmailFormContext';
+import SideFloatingMessageForm from '@components/dashboard/SideFloatingMessageForm';
+import { SpecificApplicantIdProvider } from '@contexts/SpecificApplicnatIdContext';
+import { MultiApplicantContextProvider } from '@contexts/MultiApplicantContext';
 import EmailHistorySection from '.';
 
 const meta: Meta<typeof EmailHistorySection> = {
@@ -18,9 +22,16 @@ const meta: Meta<typeof EmailHistorySection> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div style={{ width: '600px', height: '500px' }}>
-        <Story />
-      </div>
+      <MultiApplicantContextProvider>
+        <SpecificApplicantIdProvider>
+          <FloatingEmailFormProvider>
+            <SideFloatingMessageForm />
+            <div style={{ width: '600px', height: '500px' }}>
+              <Story />
+            </div>
+          </FloatingEmailFormProvider>
+        </SpecificApplicantIdProvider>
+      </MultiApplicantContextProvider>
     ),
   ],
 };
