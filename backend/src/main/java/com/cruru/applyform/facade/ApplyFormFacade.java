@@ -8,9 +8,11 @@ import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
 import com.cruru.applyform.controller.response.ApplyFormResponse;
 import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.applyform.domain.event.ApplyFormEvent;
 import com.cruru.applyform.exception.badrequest.ApplyFormSubmitOutOfPeriodException;
 import com.cruru.applyform.exception.badrequest.PersonalDataCollectDisagreeException;
 import com.cruru.applyform.service.ApplyFormService;
+import com.cruru.club.domain.Club;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import com.cruru.process.service.ProcessService;
@@ -22,6 +24,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +39,7 @@ public class ApplyFormFacade {
     private final ProcessService processService;
     private final ApplicantService applicantService;
     private final AnswerService answerService;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final Clock clock;
 
     public ApplyFormResponse readApplyFormById(long applyFormId) {
@@ -68,6 +73,10 @@ public class ApplyFormFacade {
             AnswerCreateRequest answerCreateRequest = getAnswerCreateRequest(question, answerCreateRequests);
             answerService.saveAnswerReplies(answerCreateRequest, question, applicant);
         }
+
+        Club club = dashboard.getClub();
+        Hibernate.initialize(club);
+        applicationEventPublisher.publishEvent(new ApplyFormEvent(club, applyForm, applicant));
     }
 
     private void validatePersonalDataCollection(ApplyFormSubmitRequest request) {
