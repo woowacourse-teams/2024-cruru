@@ -18,6 +18,7 @@ interface ApplyAnswerContextType {
     SINGLE_CHOICE: (id: string, value: string) => void;
   };
   isRequiredFieldsIncomplete: () => boolean;
+  resetAnswerStorage: () => void;
 }
 
 const ApplyAnswerContext = createContext<ApplyAnswerContextType | null>(null);
@@ -29,7 +30,7 @@ interface ApplyAnswerContextProps extends PropsWithChildren {
 
 export function ApplyAnswerProvider({ questions, applyFormId, children }: ApplyAnswerContextProps) {
   const initialValues = useMemo(() => ({ name: '', email: '', phone: '' }), []);
-  const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(questions, applyFormId);
+  const { answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage } = useAnswers(questions, applyFormId);
 
   const valueObj = useMemo(
     () => ({
@@ -37,8 +38,9 @@ export function ApplyAnswerProvider({ questions, applyFormId, children }: ApplyA
       answers,
       changeHandler,
       isRequiredFieldsIncomplete,
+      resetAnswerStorage,
     }),
-    [initialValues, answers, changeHandler, isRequiredFieldsIncomplete],
+    [initialValues, answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage],
   );
 
   return <ApplyAnswerContext.Provider value={valueObj}>{children}</ApplyAnswerContext.Provider>;
