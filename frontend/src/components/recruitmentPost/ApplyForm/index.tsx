@@ -27,7 +27,7 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
   const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '');
 
-  const { initialValues, answers, changeHandler, isRequiredFieldsIncomplete } = useApplyAnswer();
+  const { initialValues, baseInfoHandlers, answers, changeHandler, isRequiredFieldsIncomplete } = useApplyAnswer();
   const {
     formData: applicant,
     register,
@@ -89,6 +89,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             placeholder="이름을 입력해 주세요."
             maxLength={32}
             required
+            value={initialValues.name}
+            onChange={baseInfoHandlers.handleName}
           />
         </S.AriaCustomQuestion>
 
@@ -98,6 +100,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             label="이메일"
             placeholder="지원 결과를 안내받을 이메일 주소를 입력해 주세요."
             required
+            value={initialValues.email}
+            onChange={baseInfoHandlers.handleEmail}
           />
         </S.AriaCustomQuestion>
 
@@ -114,6 +118,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             placeholder="번호만 입력해 주세요."
             maxLength={11}
             required
+            value={initialValues.phone}
+            onChange={baseInfoHandlers.handlePhone}
           />
         </S.AriaCustomQuestion>
 
