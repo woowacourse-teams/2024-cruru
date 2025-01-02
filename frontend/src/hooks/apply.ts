@@ -43,12 +43,13 @@ export const applyQueries = {
 };
 
 export const applyMutations = {
-  useApply: (applyFormId: string, title: string) => {
+  useApply: (applyFormId: string, title: string, resetStorage: () => void) => {
     const navigate = useNavigate();
 
     return useMutation({
       mutationFn: (params: { body: ApplyRequestBody }) => applyApis.apply({ ...params, applyFormId }),
       onSuccess: () => {
+        resetStorage();
         navigate(routes.confirmApply({ applyFormId }), { state: { title } });
       },
     });

@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import CheckboxLabelField from '@components/_common/molecules/CheckboxLabelField';
 import { useToast } from '@contexts/ToastContext';
 import { useApplyAnswer } from '@contexts/ApplyAnswerContext';
+
 import C from '../style';
 import S from './style';
 
@@ -25,9 +26,9 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { applyFormId } = useParams<{ applyFormId: string }>() as { applyFormId: string };
 
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
-  const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '');
 
-  const { initialValues, baseInfoHandlers, answers, changeHandler, isRequiredFieldsIncomplete } = useApplyAnswer();
+  const { initialValues, baseInfoHandlers, resetStorage, answers, changeHandler, isRequiredFieldsIncomplete } =
+    useApplyAnswer();
   const {
     formData: applicant,
     register,
@@ -35,6 +36,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   } = useForm<ApplicantData>({
     initialValues,
   });
+
+  const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '', resetStorage);
 
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
 

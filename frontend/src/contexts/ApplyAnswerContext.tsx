@@ -2,7 +2,7 @@ import { useAnswers } from '@components/recruitmentPost/ApplyForm/useAnswers';
 import { RecruitmentPostTabItems } from '@components/recruitmentPost/RecruitmentPostTab';
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
-import { createContext, useContext, useMemo, PropsWithChildren, useState } from 'react';
+import { createContext, useContext, useMemo, PropsWithChildren, useState, useCallback } from 'react';
 
 interface InitialValues {
   name: string;
@@ -21,6 +21,7 @@ interface ApplyAnswerContextType {
     handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handlePhone: (e: React.ChangeEvent<HTMLInputElement>) => void;
   };
+  resetStorage: () => void;
   answers: {
     [key: string]: string[];
   };
@@ -31,7 +32,6 @@ interface ApplyAnswerContextType {
     SINGLE_CHOICE: (id: string, value: string) => void;
   };
   isRequiredFieldsIncomplete: () => boolean;
-  resetAnswerStorage: () => void;
 }
 
 const ApplyAnswerContext = createContext<ApplyAnswerContextType | null>(null);
@@ -89,16 +89,21 @@ export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, ch
 
   const { answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage } = useAnswers(questions, applyFormId);
 
+  const resetStorage = useCallback(() => {
+    window.localStorage.removeItem(LOCALSTORAGE_KEY);
+    resetAnswerStorage();
+  }, [LOCALSTORAGE_KEY, resetAnswerStorage]);
+
   const valueObj = useMemo(
     () => ({
       initialValues,
       baseInfoHandlers,
+      resetStorage,
       answers,
       changeHandler,
       isRequiredFieldsIncomplete,
-      resetAnswerStorage,
     }),
-    [initialValues, baseInfoHandlers, answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage],
+    [initialValues, baseInfoHandlers, resetStorage, answers, changeHandler, isRequiredFieldsIncomplete],
   );
 
   return <ApplyAnswerContext.Provider value={valueObj}>{children}</ApplyAnswerContext.Provider>;
