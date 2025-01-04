@@ -45,3 +45,17 @@ operation::email/verify-code-fail/code-not-found[snippets="http-request,request-
 ==== 실패: 인증 번호가 다른 이메일
 
 operation::email/verify-code-fail/code-mismatch[snippets="http-request,request-fields,http-response"]
+
+=== 이메일 전송 내역 조회
+
+==== 성공
+
+operation::email/read[snippets="http-request,request-cookies,path-parameters,http-response,response-fields"]
+
+==== 실패: 존재하지 않는 동아리
+
+operation::email/read-fail/club-not-found[snippets="http-request,request-cookies,path-parameters,http-response"]
+
+==== 실패: 존재하지 않는 지원자
+
+operation::email/read-fail/applicant-not-found[snippets="http-request,request-cookies,path-parameters,http-response"]

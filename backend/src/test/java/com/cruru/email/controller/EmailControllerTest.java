@@ -6,7 +6,10 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWit
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
@@ -14,6 +17,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
+import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.member.domain.repository.MemberRepository;
 import com.cruru.util.ControllerTest;
@@ -36,6 +40,9 @@ class EmailControllerTest extends ControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private EmailRepository emailRepository;
 
     @MockBean
     private EmailRedisClient emailRedisClient;
@@ -287,5 +294,76 @@ class EmailControllerTest extends ControllerTest {
                 ))
                 .when().post("/v1/emails/verify-code")
                 .then().log().all().statusCode(400);
+    }
+
+    @DisplayName("이메일 조회 성공 시, 200을 응답한다.")
+    @Test
+    void read() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("accessToken", token)
+                .accept(ContentType.JSON)
+                .filter(document("email/read",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(
+                                parameterWithName("clubId").description("발송 동아리 id"),
+                                parameterWithName("applicantId").description("수신 지원자 id")
+                        ),
+                        responseFields(fieldWithPath("emailHistoryResponses").description("이메일 응답들"))
+                                .andWithPrefix("emailHistoryResponses[].",
+                                        fieldWithPath("subject").description("이메일 제목"),
+                                        fieldWithPath("content").description("이메일 본문"),
+                                        fieldWithPath("createdDate").description("전송 날짜"),
+                                        fieldWithPath("isSucceed").description("전송 성공 여부")
+                                )
+                ))
+                .when().get("/v1/emails/{clubId}/{applicantId}", defaultClub.getId(), applicant.getId())
+                .then().log().all().statusCode(200);
+    }
+
+    @DisplayName("존재하지 않는 동아리 id를 발송자로 조회한 경우 404를 응답한다.")
+    @Test
+    void read_clubNotFound() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("accessToken", token)
+                .filter(document("email/read-fail/club-not-found",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(
+                                parameterWithName("clubId").description("존재하지 않는 발송 동아리 id"),
+                                parameterWithName("applicantId").description("수신 지원자 id")
+                        )
+                ))
+                .when().get("/v1/emails/{clubId}/{applicantId}", -1, applicant.getId())
+                .then().log().all().statusCode(404);
+    }
+
+    @DisplayName("존재하지 않는 지원자 id를 수신자로 조회한 경우 404를 응답한다.")
+    @Test
+    void read_applicantNotFound() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
+
+        // when&then
+        RestAssured.given(spec).log().all()
+                .cookie("accessToken", token)
+                .filter(document("email/read-fail/applicant-not-found",
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰")),
+                        pathParameters(
+                                parameterWithName("clubId").description("발송 동아리 id"),
+                                parameterWithName("applicantId").description("존재하지 않는 수신 지원자 id")
+                        )
+                ))
+                .when().get("/v1/emails/{clubId}/{applicantId}", defaultClub.getId(), -1)
+                .then().log().all().statusCode(404);
     }
 }
