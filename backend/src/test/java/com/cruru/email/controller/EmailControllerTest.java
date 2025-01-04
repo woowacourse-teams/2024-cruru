@@ -313,8 +313,8 @@ class EmailControllerTest extends ControllerTest {
                                 parameterWithName("clubId").description("발송 동아리 id"),
                                 parameterWithName("applicantId").description("수신 지원자 id")
                         ),
-                        responseFields(fieldWithPath("emailResponses").description("이메일 응답들"))
-                                .andWithPrefix("emailResponses[].",
+                        responseFields(fieldWithPath("emailHistoryResponses").description("이메일 응답들"))
+                                .andWithPrefix("emailHistoryResponses[].",
                                         fieldWithPath("subject").description("이메일 제목"),
                                         fieldWithPath("content").description("이메일 본문"),
                                         fieldWithPath("createdDate").description("전송 날짜"),

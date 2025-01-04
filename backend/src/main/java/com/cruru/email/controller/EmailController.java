@@ -1,12 +1,13 @@
 package com.cruru.email.controller;
 
+import com.cruru.applicant.domain.Applicant;
 import com.cruru.auth.annotation.RequireAuth;
 import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.club.domain.Club;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
-import com.cruru.email.controller.response.EmailResponses;
+import com.cruru.email.controller.response.EmailHistoryResponses;
 import com.cruru.email.facade.EmailFacade;
 import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
@@ -53,12 +54,12 @@ public class EmailController {
 
     @GetMapping("/{clubId}/{applicantId}")
     @ValidAuth
-    public ResponseEntity<EmailResponses> read(
+    public ResponseEntity<EmailHistoryResponses> read(
             @RequireAuth(targetDomain = Club.class) @PathVariable Long clubId,
-            @PathVariable Long applicantId,
+            @RequireAuth(targetDomain = Applicant.class) @PathVariable Long applicantId,
             LoginProfile loginProfile
     ) {
-        EmailResponses emailResponses = emailFacade.read(clubId, applicantId);
-        return ResponseEntity.ok(emailResponses);
+        EmailHistoryResponses emailHistoryResponses = emailFacade.read(clubId, applicantId);
+        return ResponseEntity.ok(emailHistoryResponses);
     }
 }

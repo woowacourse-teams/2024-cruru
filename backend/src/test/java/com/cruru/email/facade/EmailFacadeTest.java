@@ -14,8 +14,8 @@ import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
-import com.cruru.email.controller.response.EmailResponse;
-import com.cruru.email.controller.response.EmailResponses;
+import com.cruru.email.controller.response.EmailHistoryResponse;
+import com.cruru.email.controller.response.EmailHistoryResponses;
 import com.cruru.email.domain.Email;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.email.exception.EmailConflictException;
@@ -159,15 +159,15 @@ class EmailFacadeTest extends ServiceTest {
         Email email = emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
 
         // when
-        EmailResponses emailResponses = emailFacade.read(defaultClub.getId(), applicant.getId());
+        EmailHistoryResponses emailHistoryResponses = emailFacade.read(defaultClub.getId(), applicant.getId());
 
         // then
-        assertThat(emailResponses.emailResponses()).hasSize(1);
-        EmailResponse emailResponse = emailResponses.emailResponses().get(0);
+        assertThat(emailHistoryResponses.emailHistoryResponses()).hasSize(1);
+        EmailHistoryResponse emailHistoryResponse = emailHistoryResponses.emailHistoryResponses().get(0);
         assertAll(
-                () -> assertThat(emailResponse.subject()).isEqualTo(email.getSubject()),
-                () -> assertThat(emailResponse.content()).isEqualTo(email.getContent()),
-                () -> assertThat(emailResponse.isSucceed()).isEqualTo(email.getIsSucceed())
+                () -> assertThat(emailHistoryResponse.subject()).isEqualTo(email.getSubject()),
+                () -> assertThat(emailHistoryResponse.content()).isEqualTo(email.getContent()),
+                () -> assertThat(emailHistoryResponse.isSucceed()).isEqualTo(email.getIsSucceed())
         );
     }
 }
