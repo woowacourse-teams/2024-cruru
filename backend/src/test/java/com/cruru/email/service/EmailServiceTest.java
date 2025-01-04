@@ -67,4 +67,19 @@ class EmailServiceTest extends ServiceTest {
         assertThat(emailRepository.findAll()).contains(email3)
                 .doesNotContain(email1, email2);
     }
+
+    @DisplayName("동아리와 지원자 id로 이메일을 조회한다.")
+    @Test
+    void findAllByFromAndTo() {
+        // given
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Email email = emailRepository.save(EmailFixture.rejectEmail(defaultClub, applicant));
+
+        // when
+        List<Email> founds = emailService.findAllByFromAndTo(email.getFrom(), email.getTo());
+
+        // then
+        assertThat(founds).hasSize(1);
+        assertThat(founds.get(0)).isEqualTo(email);
+    }
 }

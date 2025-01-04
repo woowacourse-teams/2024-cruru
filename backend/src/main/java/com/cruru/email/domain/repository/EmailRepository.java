@@ -1,6 +1,7 @@
 package com.cruru.email.domain.repository;
 
 import com.cruru.applicant.domain.Applicant;
+import com.cruru.club.domain.Club;
 import com.cruru.email.domain.Email;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface EmailRepository extends JpaRepository<Email, Long> {
+
+    List<Email> findAllByFromAndTo(Club from, Applicant to);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional

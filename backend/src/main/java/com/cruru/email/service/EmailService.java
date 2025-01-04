@@ -97,4 +97,8 @@ public class EmailService {
             log.error("이메일 전송 실패: to={}, subject={}", to, e.getMessage());
         }
     }
+
+    public List<Email> findAllByFromAndTo(Club from, Applicant to) {
+        return emailRepository.findAllByFromAndTo(from, to);
+    }
 }
