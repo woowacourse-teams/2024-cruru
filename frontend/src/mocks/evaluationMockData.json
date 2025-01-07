@@ -2,6 +2,7 @@
   "evaluations": [
     {
       "evaluationId": 1,
+      "evaluator": "아르",
       "score": 2,
       "content": "인재상과 맞지 않습니다.",
       "createdDate": "2024-08-14T16:59:26.648864"
@@ -14,6 +15,7 @@
     },
     {
       "evaluationId": 3,
+      "evaluator": "렛서",
       "score": 5,
       "content": "전 마음에 들어요",
       "createdDate": "2024-08-16T16:59:26.648864"
