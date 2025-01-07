@@ -20,11 +20,13 @@ const evaluationApis = {
   create: async ({
     processId,
     applicantId,
+    evaluator,
     score,
     content,
   }: {
     processId: number;
     applicantId: number;
+    evaluator: string;
     score: number;
     content: string;
   }) =>
@@ -33,7 +35,7 @@ const evaluationApis = {
         processId: processId.toString(),
         applicantId: applicantId.toString(),
       })}`,
-      body: { score, content },
+      body: { evaluator, score, content },
     }),
 };
 
