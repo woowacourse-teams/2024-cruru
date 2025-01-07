@@ -12,7 +12,10 @@ const CardContainer = styled.li`
 const EvaluatorDetailContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1.2rem;
+  gap: 1.6rem;
+
+  ${({ theme }) => theme.typography.common.small};
+  color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
 const EvaluatorImagePlaceholder = styled.div`
@@ -29,8 +32,11 @@ const EvaluatorDetail = styled.div`
 `;
 
 const EvaluatorName = styled.h3`
-  ${({ theme }) => theme.typography.common.default};
-  color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
 `;
 
 const EvaluatedDate = styled.div`
@@ -39,9 +45,6 @@ const EvaluatedDate = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 0.6rem;
-
-  ${({ theme }) => theme.typography.common.small};
-  color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
 const ResultFlag = styled.div<{ $score: string }>`
