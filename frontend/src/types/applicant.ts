@@ -29,7 +29,7 @@ export interface ApplicantDetail {
 
 export interface EvaluationResult {
   evaluationId: number;
-  evaluatorName: string;
+  evaluator: string;
   score: string;
   content: string;
   createdDate: string;

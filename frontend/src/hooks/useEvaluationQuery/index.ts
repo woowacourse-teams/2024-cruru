@@ -20,7 +20,7 @@ export default function useEvaluationQuery({ processId, applicantId }: UseEvalua
 
   const evaluationList: EvaluationResult[] = evaluations.map((e) => ({
     evaluationId: e.evaluationId,
-    evaluatorName: e.evaluatorName ?? undefined,
+    evaluator: e.evaluator ?? undefined,
     score: e.score,
     content: e.content,
     createdDate: e.createdDate ?? undefined,

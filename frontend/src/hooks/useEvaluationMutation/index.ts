@@ -12,6 +12,7 @@ interface UseEvaluationMutationParams {
 interface MutationParams {
   processId: number;
   applicantId: number;
+  evaluator: string;
   score: number;
   content: string;
 }
