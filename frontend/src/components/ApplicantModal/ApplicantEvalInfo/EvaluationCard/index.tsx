@@ -2,6 +2,8 @@ import { EvaluationResult } from '@customTypes/applicant';
 import formatDate from '@utils/formatDate';
 
 import { HiOutlineClock } from 'react-icons/hi';
+import { FiUser } from 'react-icons/fi';
+
 import { EVALUATION_SCORE } from '../constants';
 import S from './style';
 
@@ -17,6 +19,12 @@ export default function EvaluationCard({ evaluationResult }: EvaluationCardProps
       <S.ResultFlag $score={evaluationResult.score}>{EVALUATION_SCORE[evaluationResult.score]}</S.ResultFlag>
       <S.ResultComment>{evaluationResult.content}</S.ResultComment>
       <S.EvaluatorDetailContainer>
+        {evaluationResult.evaluator && (
+          <S.EvaluatorName>
+            <FiUser size="1.2rem" />
+            {evaluationResult.evaluator}
+          </S.EvaluatorName>
+        )}
         <S.EvaluatedDate>
           <HiOutlineClock size="1.2rem" />
           {createdDate}
