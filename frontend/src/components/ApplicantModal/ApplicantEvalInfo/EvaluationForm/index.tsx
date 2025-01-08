@@ -95,7 +95,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           onClick={onClose}
           disabled={isPending}
         >
-          입력 취소하기
+          입력 취소
         </S.CancelButton>
       </S.Header>
 
