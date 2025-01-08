@@ -5,7 +5,7 @@ import InputField from '@components/_common/molecules/InputField';
 import TextField from '@components/_common/molecules/TextField';
 
 import { validateEvalContent, validateEvaluator } from '@domain/validations/evaluation';
-import useEvaluationMutation from '@hooks/useEvaluationMutation';
+import { useCreateEvaluationMutation } from '@hooks/useEvaluationMutation';
 import ValidationError from '@utils/errors/ValidationError';
 
 import Spinner from '@components/_common/atoms/Spinner';
@@ -29,7 +29,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   const [formState, setFormState] = useState<EvaluationData>({ evaluator: '', score: 0, content: '' });
   const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
   const [evaluatorErrorMessage, setEvaluatorErrorMessage] = useState<string | undefined>();
-  const { mutate: submitNewEvaluation, isPending } = useEvaluationMutation({
+  const { mutate: submitNewEvaluation, isPending } = useCreateEvaluationMutation({
     processId,
     applicantId,
     closeOnSuccess: onClose,
