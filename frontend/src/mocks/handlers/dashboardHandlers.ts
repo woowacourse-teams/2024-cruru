@@ -10,7 +10,7 @@ const dashboardHandlers = [
     const clubId = url.searchParams.get('clubId');
     const body = (await request.json()) as DashboardFormInfo;
 
-    if (!body.startDate || !body.endDate || !body.postingContent || !body.title || clubId) {
+    if (!body.startDate || !body.endDate || !body.postingContent || !body.title || !clubId) {
       return new Response(null, {
         status: 400,
         statusText: 'The request body is missing required information.',

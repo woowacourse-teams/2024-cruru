@@ -2,6 +2,7 @@ import dashboardApis from '@api/domain/dashboard';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
 import type { Question, QuestionOptionValue, RecruitmentInfoState, StepState } from '@customTypes/dashboard';
 import useClubId from '@hooks/service/useClubId';
+import useLocalStorageState from '@hooks/useLocalStorageState';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -40,13 +41,48 @@ const initialRecruitmentInfoState: RecruitmentInfoState = {
 };
 
 export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
-  const [stepState, setStepState] = useState<StepState>('recruitmentForm');
-  const [recruitmentInfoState, setRecruitmentInfoState] = useState<RecruitmentInfoState>(initialRecruitmentInfoState);
-  const [applyState, setApplyState] = useState<Question[]>(DEFAULT_QUESTIONS);
+  const clubId = useClubId().getClubId() || '';
+  const LOCALSTORAGE_KEYS = {
+    STEP: `${clubId}-step`,
+    INFO: `${clubId}-info`,
+    APPLY: `${clubId}-apply`,
+  } as const;
+
+  const [enableStorage] = useState(() => {
+    const Step = window.localStorage.getItem(LOCALSTORAGE_KEYS.STEP);
+    const Info = window.localStorage.getItem(LOCALSTORAGE_KEYS.INFO);
+    const Apply = window.localStorage.getItem(LOCALSTORAGE_KEYS.APPLY);
+
+    if (Step || Info || Apply) {
+      return window.confirm('이전 작성중인 공고가 있습니다. 이어서 진행하시겠습니까?');
+    }
+    return false;
+  });
+
+  const resetStorage = () => {
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS.STEP);
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS.INFO);
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS.APPLY);
+  };
+
+  const [stepState, setStepState] = useLocalStorageState<StepState>('recruitmentForm', {
+    key: LOCALSTORAGE_KEYS.STEP,
+    enableStorage,
+  });
+  const [recruitmentInfoState, setRecruitmentInfoState] = useLocalStorageState<RecruitmentInfoState>(
+    initialRecruitmentInfoState,
+    {
+      key: LOCALSTORAGE_KEYS.INFO,
+      enableStorage,
+    },
+  );
+  const [applyState, setApplyState] = useLocalStorageState<Question[]>(DEFAULT_QUESTIONS, {
+    key: LOCALSTORAGE_KEYS.APPLY,
+    enableStorage,
+  });
+
   const [finishResJson, setFinishResJson] = useState<FinishResJson | null>(null);
   const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
-
-  const clubId = useClubId().getClubId() || '';
 
   const submitMutator = useMutation({
     mutationFn: () =>
@@ -62,7 +98,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
       }),
     onSuccess: async (data) => {
       setStepState('finished');
-      // TODO: Suspence 작업 해야함.
+      resetStorage();
       setFinishResJson(data);
     },
   });
