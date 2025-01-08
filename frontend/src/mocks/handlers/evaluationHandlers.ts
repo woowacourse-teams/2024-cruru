@@ -31,6 +31,20 @@ const evaluationHandlers = [
       statusText: 'Created',
     });
   }),
+
+  http.delete(`${EVALUATIONS}/:evaluationId`, async ({ params }) => {
+    if (!params.evaluationId) {
+      return new Response(null, {
+        status: 400,
+        statusText: 'Evaluation Id Not Found',
+      });
+    }
+
+    return new Response(null, {
+      status: 204,
+      statusText: 'No Content',
+    });
+  }),
 ];
 
 export default evaluationHandlers;
