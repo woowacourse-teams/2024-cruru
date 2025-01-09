@@ -7,7 +7,7 @@ import Spinner from '@components/_common/atoms/Spinner';
 import StarRating from '@components/_common/molecules/StarRating';
 
 import { validateEvalContent, validateEvaluator } from '@domain/validations/evaluation';
-import { useCreateEvaluationMutation } from '@hooks/useEvaluationMutation';
+import { evaluationMutations } from '@hooks/evaluations';
 import ValidationError from '@utils/errors/ValidationError';
 
 import { EVALUATION_CONTENT_MAX_LENGTH, EVALUATION_EVALUATOR_MAX_LENGTH } from '../constants';
@@ -29,7 +29,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   const [formState, setFormState] = useState<EvaluationData>({ evaluator: '', score: 0, content: '' });
   const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
   const [evaluatorErrorMessage, setEvaluatorErrorMessage] = useState<string | undefined>();
-  const { mutate: submitNewEvaluation, isPending } = useCreateEvaluationMutation({
+  const { mutate: submitNewEvaluation, isPending } = evaluationMutations.useCreateEvaluation({
     processId,
     applicantId,
     closeOnSuccess: onClose,

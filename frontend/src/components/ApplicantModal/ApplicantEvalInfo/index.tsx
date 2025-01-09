@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import useEvaluationQuery from '@hooks/useEvaluationQuery';
-import { useDeleteEvaluationMutation } from '@hooks/useEvaluationMutation';
+import { evaluationMutations, evaluationQueries } from '@hooks/evaluations';
 
 import EvaluationForm from './EvaluationForm';
 import EvaluationAddButton from './EvaluationAddButton';
@@ -16,10 +15,10 @@ interface ApplicantEvalInfoProps {
 }
 
 export default function ApplicantEvalInfo({ applicantId, processId, isCurrentProcess }: ApplicantEvalInfoProps) {
-  const { evaluationList } = useEvaluationQuery({ applicantId, processId });
+  const { evaluationList } = evaluationQueries.useGetEvaluations({ processId, applicantId });
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false);
 
-  const { mutate: deleteEvaluation, isPending: isDeletePending } = useDeleteEvaluationMutation({
+  const { mutate: deleteEvaluation, isPending: isDeletePending } = evaluationMutations.useDeleteEvaluation({
     processId,
     applicantId,
   });
