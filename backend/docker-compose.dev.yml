@@ -10,13 +10,12 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       TZ: ${MYSQL_TIME_ZONE}
     ports:
-      - ${DB_PORT}
+      - "${DB_PORT}:3306"
     command:
       - '--character-set-server=utf8mb4'
       - '--collation-server=utf8mb4_0900_ai_ci'
     networks:
-      cruru_network:
-        ipv4_address: ${DB_IP_ADDRESS}
+      - cruru_network
 
   application:
     container_name: app_container
@@ -27,8 +26,8 @@ services:
     restart: always
     image: ${DOCKER_REPO_NAME}/cruru:${DOCKER_IMAGE_VERSION_TAG}
     ports:
-      - ${SERVER_BINDING_PORT}
-      - ${MONITORING_BINDING_PORT}
+      - "${SERVER_BINDING_PORT}:8081"
+      - "${MONITORING_BINDING_PORT}:8328"
     env_file:
       - .env
     environment:
@@ -37,8 +36,7 @@ services:
     volumes:
       - "./log:/log"
     networks:
-      cruru_network:
-        ipv4_address: ${APP_IP_ADDRESS}
+      - cruru_network
 
   redis:
     container_name: redis-container
@@ -47,11 +45,10 @@ services:
       TZ: Asia/Seoul
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     ports:
-      - ${REDIS_PORT}:6379
+      - "${REDIS_PORT}:6379"
     command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
     networks:
-      cruru_network:
-        ipv4_address: ${REDIS_IP_ADDRESS}
+      - cruru_network
 
   promtail:
     environment:
@@ -65,12 +62,11 @@ services:
       - "./log:/log"
     command: -config.expand-env=true -config.file=/etc/promtail/config.yml
     networks:
-      cruru_network:
-        ipv4_address: 172.18.0.4
+      - cruru_network
 
 networks:
   cruru_network:
     driver: bridge
     ipam:
       config:
-        - subnet: ${SUBNET}
+        - subnet: "${SUBNET}"
