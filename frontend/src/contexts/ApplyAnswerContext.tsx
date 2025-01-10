@@ -7,9 +7,9 @@ import {
   useContext,
   useMemo,
   PropsWithChildren,
-  useState,
   useCallback,
   ChangeEventHandler,
+  useState,
 } from 'react';
 
 interface InitialValues {
@@ -50,10 +50,31 @@ interface ApplyAnswerContextProps extends PropsWithChildren {
   moveTabByParam: (value: RecruitmentPostTabItems) => void;
 }
 
+function createExecutionTracker() {
+  let hasExecuted = false;
+
+  return {
+    /**
+     * 초기 실행 여부를 확인하고, 상태를 갱신합니다.
+     * - 처음 호출 시 true를 반환하고, 이후 호출 시 false를 반환합니다.
+     */
+    executeIfFirst: () => {
+      if (!hasExecuted) {
+        hasExecuted = true;
+        return true;
+      }
+      return false;
+    },
+  };
+}
+
+const ExecutionTracker = createExecutionTracker();
+
 export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, children }: ApplyAnswerContextProps) {
   const LOCALSTORAGE_KEY = `${applyFormId}-initial-values`;
 
   const [enableStorage] = useState(() => {
+    if (!ExecutionTracker.executeIfFirst()) return true;
     if (window.localStorage.getItem(LOCALSTORAGE_KEY)) {
       if (window.confirm('이전 작성중인 지원서가 있습니다. 이어서 진행하시겠습니까?')) {
         moveTabByParam('지원하기');

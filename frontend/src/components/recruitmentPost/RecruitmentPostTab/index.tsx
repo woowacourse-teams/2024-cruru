@@ -34,11 +34,7 @@ export default function RecruitmentPostTab() {
       </Tab>
 
       {!!questions && (
-        <ApplyAnswerProvider
-          applyFormId={applyFormId}
-          questions={questions}
-          moveTabByParam={moveTabByParam}
-        >
+        <>
           <Tab.TabPanel isVisible={currentMenu === '모집 공고'}>
             <RecruitmentPostDetail
               recruitmentPost={recruitmentPost}
@@ -46,13 +42,20 @@ export default function RecruitmentPostTab() {
               moveTab={moveTab}
             />
           </Tab.TabPanel>
+
           <Tab.TabPanel isVisible={currentMenu === '지원하기'}>
-            <ApplyForm
-              isClosed={isClosed}
-              questions={questions ?? ([] as Question[])}
-            />
+            <ApplyAnswerProvider
+              applyFormId={applyFormId}
+              questions={questions}
+              moveTabByParam={moveTabByParam}
+            >
+              <ApplyForm
+                isClosed={isClosed}
+                questions={questions ?? ([] as Question[])}
+              />
+            </ApplyAnswerProvider>
           </Tab.TabPanel>
-        </ApplyAnswerProvider>
+        </>
       )}
     </>
   );
