@@ -84,6 +84,8 @@ spring:
     import:
       - config/application-dev.yml
 
+monitoring-profile: dev
+
 ---
 spring:
   config:
@@ -91,3 +93,5 @@ spring:
       on-profile: prod
     import:
       - config/application-prod.yml
+
+monitoring-profile: prod
