@@ -25,6 +25,12 @@ interface EvaluationFormProps {
   onClose: () => void;
 }
 
+interface ValidateEvaluatorParams {
+  name: string;
+  value: string;
+  trim?: 'none' | 'start' | 'both';
+}
+
 export default function EvaluationForm({ processId, applicantId, onClose }: EvaluationFormProps) {
   const [formState, setFormState] = useState<EvaluationData>({ evaluator: '', score: 0, content: '' });
   const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
@@ -42,21 +48,32 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
     }));
   };
 
-  const handleChangeEvaluator = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value: evaluator } = event.target;
+  const validateAndUpdateEvaluator = ({ name, value, trim = 'none' }: ValidateEvaluatorParams) => {
+    const trimmedValue = trim === 'both' ? value.trim() : trim === 'start' ? value.trimStart() : value;
+
     setFormState((prevState) => ({
       ...prevState,
-      [name]: evaluator,
+      [name]: trimmedValue,
     }));
 
     try {
-      validateEvaluator(evaluator);
+      validateEvaluator(trimmedValue);
       setEvaluatorErrorMessage(undefined);
     } catch (error) {
       if (error instanceof ValidationError) {
         setEvaluatorErrorMessage(error.message);
       }
     }
+  };
+
+  const handleChangeEvaluator = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    validateAndUpdateEvaluator({ name, value, trim: 'start' });
+  };
+
+  const handleBlurEvaluator = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    validateAndUpdateEvaluator({ name, value, trim: 'both' });
   };
 
   const handleChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -105,6 +122,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
         value={formState.evaluator}
         maxLength={EVALUATION_EVALUATOR_MAX_LENGTH}
         onChange={handleChangeEvaluator}
+        onBlur={handleBlurEvaluator}
         error={evaluatorErrorMessage}
       />
 
