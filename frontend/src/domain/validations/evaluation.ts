@@ -21,6 +21,13 @@ export const validateEvaluator = (evaluator: string) => {
     });
   }
 
+  if (trimmedEvaluator.length > 0 && /\s{2,}/.test(trimmedEvaluator)) {
+    throw new ValidationError({
+      inputName: 'evaluator',
+      message: '이름에 연속된 공백을 사용할 수 없습니다.',
+    });
+  }
+
   const allowedEvaluatorPattern = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+([ ]?[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)*$/;
 
   if (trimmedEvaluator.length > 0 && !allowedEvaluatorPattern.test(trimmedEvaluator)) {
