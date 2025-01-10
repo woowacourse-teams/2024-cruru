@@ -2,6 +2,7 @@ import { useAnswers } from '@components/recruitmentPost/ApplyForm/useAnswers';
 import { RecruitmentPostTabItems } from '@components/recruitmentPost/RecruitmentPostTab';
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
+import { createExecutionTracker } from '@utils/createExecutionTracker';
 import {
   createContext,
   useContext,
@@ -48,24 +49,6 @@ interface ApplyAnswerContextProps extends PropsWithChildren {
   questions: Question[];
   applyFormId: string;
   moveTabByParam: (value: RecruitmentPostTabItems) => void;
-}
-
-function createExecutionTracker() {
-  let hasExecuted = false;
-
-  return {
-    /**
-     * 초기 실행 여부를 확인하고, 상태를 갱신합니다.
-     * - 처음 호출 시 true를 반환하고, 이후 호출 시 false를 반환합니다.
-     */
-    executeIfFirst: () => {
-      if (!hasExecuted) {
-        hasExecuted = true;
-        return true;
-      }
-      return false;
-    },
-  };
 }
 
 const ExecutionTracker = createExecutionTracker();
