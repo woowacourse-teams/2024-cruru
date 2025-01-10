@@ -30,15 +30,6 @@ describe('validateEvaluator', () => {
     expect(() => validateEvaluator(whitespaceOnly)).toThrow('평가자 이름에 공백만 입력하는 것은 허용되지 않습니다.');
   });
 
-  it('앞뒤 공백이 있으면 에러가 발생한다.', () => {
-    const namesWithPadding = [' 홍길동', '홍길동 ', ' 홍길동 ', '  John Doe  '];
-
-    namesWithPadding.forEach((name) => {
-      expect(() => validateEvaluator(name)).toThrow(ValidationError);
-      expect(() => validateEvaluator(name)).toThrow('평가자 이름 앞뒤의 공백은 허용되지 않습니다.');
-    });
-  });
-
   it('허용되지 않는 문자가 포함되면 에러가 발생한다.', () => {
     const invalidNames = ['Hong!길동', 'John@Doe', '김철수#', '123Alice', '박*하나', 'Mary&Jane'];
 

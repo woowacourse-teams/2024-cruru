@@ -21,13 +21,6 @@ export const validateEvaluator = (evaluator: string) => {
     });
   }
 
-  if (evaluator.length > 0 && evaluator.length !== trimmedEvaluator.length) {
-    throw new ValidationError({
-      inputName: 'evaluator',
-      message: '평가자 이름 앞뒤의 공백은 허용되지 않습니다.',
-    });
-  }
-
   const allowedEvaluatorPattern = /^[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+([ ]?[a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]+)*$/;
 
   if (trimmedEvaluator.length > 0 && !allowedEvaluatorPattern.test(trimmedEvaluator)) {
