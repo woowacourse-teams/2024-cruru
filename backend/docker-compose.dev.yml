@@ -66,6 +66,7 @@ services:
 
 networks:
   cruru_network:
+    name: cruru_network
     driver: bridge
     ipam:
       config:
