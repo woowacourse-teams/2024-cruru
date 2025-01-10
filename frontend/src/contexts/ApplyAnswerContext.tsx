@@ -2,7 +2,15 @@ import { useAnswers } from '@components/recruitmentPost/ApplyForm/useAnswers';
 import { RecruitmentPostTabItems } from '@components/recruitmentPost/RecruitmentPostTab';
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
-import { createContext, useContext, useMemo, PropsWithChildren, useState, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useMemo,
+  PropsWithChildren,
+  useState,
+  useCallback,
+  ChangeEventHandler,
+} from 'react';
 
 interface InitialValues {
   name: string;
@@ -17,9 +25,9 @@ interface ApplyAnswerContextType {
     phone: string;
   };
   baseInfoHandlers: {
-    handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handlePhone: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleName: ChangeEventHandler<HTMLInputElement>;
+    handleEmail: ChangeEventHandler<HTMLInputElement>;
+    handlePhone: ChangeEventHandler<HTMLInputElement>;
   };
   resetStorage: () => void;
   answers: {
