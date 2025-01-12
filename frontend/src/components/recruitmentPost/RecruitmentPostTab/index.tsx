@@ -5,13 +5,14 @@ import { RECRUITMENT_POST_MENUS } from '@constants/constants';
 import { applyQueries } from '@hooks/apply';
 import { useParams } from 'react-router-dom';
 import { Question } from '@customTypes/apply';
+import { ApplyAnswerProvider } from '@contexts/ApplyAnswerContext';
 import RecruitmentPostDetail from '../RecruitmentPostDetail';
 import ApplyForm from '../ApplyForm';
 
 export type RecruitmentPostTabItems = '모집 공고' | '지원하기';
 
 export default function RecruitmentPostTab() {
-  const { currentMenu, moveTab } = useTab<RecruitmentPostTabItems>({ defaultValue: '모집 공고' });
+  const { currentMenu, moveTab, moveTabByParam } = useTab<RecruitmentPostTabItems>({ defaultValue: '모집 공고' });
 
   const { applyFormId } = useParams<{ applyFormId: string }>() as { applyFormId: string };
   const { data: questions } = applyQueries.useGetApplyForm({ applyFormId: applyFormId ?? '' });
@@ -32,19 +33,30 @@ export default function RecruitmentPostTab() {
         ))}
       </Tab>
 
-      <Tab.TabPanel isVisible={currentMenu === '모집 공고'}>
-        <RecruitmentPostDetail
-          recruitmentPost={recruitmentPost}
-          isClosed={isClosed}
-          moveTab={moveTab}
-        />
-      </Tab.TabPanel>
-      <Tab.TabPanel isVisible={currentMenu === '지원하기'}>
-        <ApplyForm
-          isClosed={isClosed}
-          questions={questions ?? ([] as Question[])}
-        />
-      </Tab.TabPanel>
+      {!!questions && (
+        <>
+          <Tab.TabPanel isVisible={currentMenu === '모집 공고'}>
+            <RecruitmentPostDetail
+              recruitmentPost={recruitmentPost}
+              isClosed={isClosed}
+              moveTab={moveTab}
+            />
+          </Tab.TabPanel>
+
+          <Tab.TabPanel isVisible={currentMenu === '지원하기'}>
+            <ApplyAnswerProvider
+              applyFormId={applyFormId}
+              questions={questions}
+              moveTabByParam={moveTabByParam}
+            >
+              <ApplyForm
+                isClosed={isClosed}
+                questions={questions ?? ([] as Question[])}
+              />
+            </ApplyAnswerProvider>
+          </Tab.TabPanel>
+        </>
+      )}
     </>
   );
 }

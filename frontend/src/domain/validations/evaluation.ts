@@ -21,10 +21,10 @@ export const validateEvaluator = (evaluator: string) => {
     });
   }
 
-  if (evaluator.length > 0 && evaluator.length !== trimmedEvaluator.length) {
+  if (trimmedEvaluator.length > 0 && /\s{2,}/.test(trimmedEvaluator)) {
     throw new ValidationError({
       inputName: 'evaluator',
-      message: '평가자 이름 앞뒤의 공백은 허용되지 않습니다.',
+      message: '평가자 이름에 연속된 공백을 사용할 수 없습니다.',
     });
   }
 
@@ -33,7 +33,7 @@ export const validateEvaluator = (evaluator: string) => {
   if (trimmedEvaluator.length > 0 && !allowedEvaluatorPattern.test(trimmedEvaluator)) {
     throw new ValidationError({
       inputName: 'name',
-      message: "한글/영문과 공백, 하이픈(-), 홑따옴표('), 마침표(.)만 허용됩니다.",
+      message: '평가자 이름에는 한글/영문과 공백 문자만 허용됩니다.',
     });
   }
 };

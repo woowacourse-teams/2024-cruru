@@ -1,22 +1,36 @@
 import { Question } from '@customTypes/apply';
-import { useEffect, useState } from 'react';
+import useLocalStorageState from '@hooks/useLocalStorageState';
+import { useState } from 'react';
 
 interface AnswerFormData {
   [key: string]: string[];
 }
 
-export const useAnswers = (questions: Question[]) => {
-  const [answers, setAnswers] = useState<AnswerFormData>({});
+export const useAnswers = (questions: Question[], applyFormId: string) => {
+  const LOCALSTORAGE_KEY = `${applyFormId}-apply-form`;
 
-  useEffect(() => {
-    if (questions.length > 0) {
-      const initialAnswers = questions.reduce(
-        (acc, question) => ({ ...acc, [question.questionId]: [] }),
-        {} as AnswerFormData,
-      );
-      setAnswers(initialAnswers);
+  const [enableStorage] = useState(() => {
+    const prevSavedAnswer = window.localStorage.getItem(LOCALSTORAGE_KEY);
+    if (!prevSavedAnswer) return false;
+
+    const prevSavedAnswerIds = Object.keys(JSON.parse(prevSavedAnswer));
+    if (prevSavedAnswerIds.every((id) => questions.some(({ questionId }) => questionId === id))) {
+      return window.confirm('이전 작성중인 지원서가 있습니다. 이어서 진행하시겠습니까?');
     }
-  }, [questions]);
+    return false;
+  });
+
+  const resetAnswerStorage = () => {
+    window.localStorage.removeItem(LOCALSTORAGE_KEY);
+  };
+
+  const [answers, setAnswers] = useLocalStorageState<AnswerFormData>(
+    (() => questions.reduce((acc, question) => ({ ...acc, [question.questionId]: [] }), {} as AnswerFormData))(),
+    {
+      key: LOCALSTORAGE_KEY,
+      enableStorage,
+    },
+  );
 
   const handleText = (id: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [id]: [value] }));
@@ -48,5 +62,6 @@ export const useAnswers = (questions: Question[]) => {
       SINGLE_CHOICE: handleRadio,
     },
     isRequiredFieldsIncomplete,
+    resetAnswerStorage,
   };
 };
