@@ -12,9 +12,10 @@ import { useParams } from 'react-router-dom';
 
 import CheckboxLabelField from '@components/_common/molecules/CheckboxLabelField';
 import { useToast } from '@contexts/ToastContext';
+import { useApplyAnswer } from '@contexts/ApplyAnswerContext';
+
 import C from '../style';
 import S from './style';
-import { useAnswers } from './useAnswers';
 
 interface ApplyFormProps {
   questions: Question[];
@@ -25,18 +26,19 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
   const { applyFormId } = useParams<{ applyFormId: string }>() as { applyFormId: string };
 
   const { data: recruitmentPost } = applyQueries.useGetRecruitmentPost({ applyFormId: applyFormId ?? '' });
-  const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '');
 
-  // TODO: useForm은 input으로 initialValues제공해야 한다. 따라서 SideEffect를 피하기 위해선 useForm외부에서 localStorage를 별도로 저장해야 한다.
+  const { initialValues, baseInfoHandlers, resetStorage, answers, changeHandler, isRequiredFieldsIncomplete } =
+    useApplyAnswer();
   const {
     formData: applicant,
     register,
     hasErrors,
   } = useForm<ApplicantData>({
-    initialValues: { name: '', email: '', phone: '' },
+    initialValues,
   });
 
-  const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(questions);
+  const { mutate: apply } = applyMutations.useApply(applyFormId, recruitmentPost?.title ?? '', resetStorage);
+
   const [personalDataCollection, setPersonalDataCollection] = useState(false);
 
   const { error } = useToast();
@@ -90,6 +92,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             placeholder="이름을 입력해 주세요."
             maxLength={32}
             required
+            value={initialValues.name}
+            onChange={baseInfoHandlers.handleName}
           />
         </S.AriaCustomQuestion>
 
@@ -99,6 +103,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             label="이메일"
             placeholder="지원 결과를 안내받을 이메일 주소를 입력해 주세요."
             required
+            value={initialValues.email}
+            onChange={baseInfoHandlers.handleEmail}
           />
         </S.AriaCustomQuestion>
 
@@ -115,6 +121,8 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
             placeholder="번호만 입력해 주세요."
             maxLength={11}
             required
+            value={initialValues.phone}
+            onChange={baseInfoHandlers.handlePhone}
           />
         </S.AriaCustomQuestion>
 
