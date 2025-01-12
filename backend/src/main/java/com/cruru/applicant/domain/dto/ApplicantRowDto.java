@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 public record ApplicantRowDto(
-        String email,
         String name,
+        String email,
         String phone,
         LocalDateTime submissionDate,
         Map<String, String> questionAnswers
