@@ -3,6 +3,7 @@ package com.cruru.applyform.facade;
 import com.cruru.applicant.controller.request.ApplicantCreateRequest;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.service.ApplicantService;
+import com.cruru.applicant.service.CsvExportService;
 import com.cruru.applyform.controller.request.AnswerCreateRequest;
 import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
@@ -19,6 +20,7 @@ import com.cruru.process.service.ProcessService;
 import com.cruru.question.domain.Question;
 import com.cruru.question.service.AnswerService;
 import com.cruru.question.service.QuestionService;
+import java.io.ByteArrayInputStream;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
@@ -40,6 +42,7 @@ public class ApplyFormFacade {
     private final ApplicantService applicantService;
     private final AnswerService answerService;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final CsvExportService csvExportService;
     private final Clock clock;
 
     public ApplyFormResponse readApplyFormById(long applyFormId) {
@@ -109,5 +112,9 @@ public class ApplyFormFacade {
     public void update(ApplyFormWriteRequest request, long applyFormId) {
         ApplyForm updateTargetApplyForm = applyFormService.findById(applyFormId);
         applyFormService.update(updateTargetApplyForm, request);
+    }
+
+    public ByteArrayInputStream exportApplicantsToCsv(long applyFormId) {
+        return csvExportService.exportApplicantsToCsv(applyFormId);
     }
 }

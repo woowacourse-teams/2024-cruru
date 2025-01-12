@@ -9,8 +9,13 @@ import com.cruru.auth.annotation.RequireAuth;
 import com.cruru.auth.annotation.ValidAuth;
 import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,6 +45,21 @@ public class ApplyFormController {
     public ResponseEntity<ApplyFormResponse> read(@PathVariable("applyformId") Long applyFormId) {
         ApplyFormResponse response = applyFormFacade.readApplyFormById(applyFormId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{applyformId}/export-csv")
+    @ValidAuth
+    public ResponseEntity<Resource> exportApplicantsToCsv(
+            @RequireAuth(targetDomain = ApplyForm.class) @PathVariable("applyformId") Long applyFormId,
+            LoginProfile loginProfile
+    ) {
+        ByteArrayInputStream csvStream = applyFormFacade.exportApplicantsToCsv(applyFormId);
+        InputStreamResource resource = new InputStreamResource(csvStream);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=applicants.csv")
+                .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
+                .body(resource);
     }
 
     @PatchMapping("/{applyformId}")
