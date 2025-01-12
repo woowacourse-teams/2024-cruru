@@ -6,7 +6,6 @@ import com.cruru.applicant.domain.dto.ApplicantRowDto;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applicant.util.CsvUtil;
 import com.cruru.question.domain.Question;
-import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -16,16 +15,17 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CsvExportService {
 
     private final QuestionRepository questionRepository;
     private final ApplicantRepository applicantRepository;
-    private final AnswerRepository answerRepository;
 
-    public ByteArrayInputStream exportApplicantsToCsv(Long applyFormId) {
+    public ByteArrayInputStream exportApplicantsToCsv(long applyFormId) {
         List<Question> questions = questionRepository.findByApplyFormId(applyFormId);
 
         List<ApplicantQuestionAnswerDto> rows = applicantRepository.findApplicantQuestionAnswers(applyFormId);
