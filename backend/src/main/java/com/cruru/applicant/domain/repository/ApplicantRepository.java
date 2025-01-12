@@ -2,6 +2,7 @@ package com.cruru.applicant.domain.repository;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.dto.ApplicantCard;
+import com.cruru.applicant.domain.dto.ApplicantQuestionAnswerDto;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.process.domain.Process;
 import java.util.List;
@@ -56,4 +57,21 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
            """)
     @Transactional
     void updateRejectedStatusForApplicants(List<Long> applicantIds, boolean isRejected);
+
+    @Query("""
+           SELECT new com.cruru.applicant.domain.dto.ApplicantQuestionAnswerDto(
+               a.id, a.name, a.email, a.phone, a.createdDate,
+               q.id, q.sequence, q.content,
+               ans.content
+           )
+           FROM Applicant a
+               JOIN a.process p
+               JOIN p.dashboard d
+               JOIN ApplyForm f ON f.dashboard = d
+               LEFT JOIN Question q ON q.applyForm = f
+               LEFT JOIN Answer ans ON ans.applicant = a AND ans.question = q
+           WHERE f.id = :applyFormId
+           ORDER BY a.id, q.sequence
+           """)
+    List<ApplicantQuestionAnswerDto> findApplicantQuestionAnswers(@Param("applyFormId") Long applyFormId);
 }
