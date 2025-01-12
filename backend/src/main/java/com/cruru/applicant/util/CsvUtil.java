@@ -1,6 +1,7 @@
 package com.cruru.applicant.util;
 
 import com.cruru.applicant.domain.dto.ApplicantCsvLine;
+import com.cruru.applicant.exception.CsvWriteException;
 import com.cruru.question.domain.Question;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -41,7 +42,7 @@ public class CsvUtil {
             }
             return new ByteArrayInputStream(outputStream.toByteArray());
         } catch (IOException e) {
-            throw new RuntimeException("CSV Writing Error", e);
+            throw new CsvWriteException();
         }
     }
 
