@@ -1,6 +1,8 @@
 import { EvaluationResult } from '@customTypes/applicant';
 import formatDate from '@utils/formatDate';
 
+import { evaluationMutations } from '@hooks/evaluations';
+
 import { HiOutlineClock } from 'react-icons/hi';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { FiUser } from 'react-icons/fi';
@@ -10,16 +12,27 @@ import S from './style';
 
 interface EvaluationCardProps {
   evaluationResult: EvaluationResult;
-  onDelete: () => void;
-  isDeletePending: boolean;
+  processId: number;
+  applicantId: number;
+  evaluationId: number;
 }
 
-export default function EvaluationCard({ evaluationResult, onDelete, isDeletePending }: EvaluationCardProps) {
+export default function EvaluationCard({
+  evaluationResult,
+  processId,
+  applicantId,
+  evaluationId,
+}: EvaluationCardProps) {
   const createdDate = evaluationResult.createdDate ? formatDate(evaluationResult.createdDate) : '날짜 정보 없음';
+
+  const { mutate: deleteEvaluation, isPending: isDeletePending } = evaluationMutations.useDeleteEvaluation({
+    processId,
+    applicantId,
+  });
 
   const handleClickDeleteButton = () => {
     if (window.confirm('삭제하신 평가는 다시 복구할 수 없습니다.\n삭제하시겠습니까?')) {
-      onDelete();
+      deleteEvaluation({ evaluationId });
     }
   };
 

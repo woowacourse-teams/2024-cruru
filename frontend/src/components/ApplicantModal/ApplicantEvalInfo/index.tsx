@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { evaluationMutations, evaluationQueries } from '@hooks/evaluations';
+import { evaluationQueries } from '@hooks/evaluations';
 
 import EvaluationForm from './EvaluationForm';
 import EvaluationAddButton from './EvaluationAddButton';
@@ -18,11 +18,6 @@ export default function ApplicantEvalInfo({ applicantId, processId, isCurrentPro
   const { evaluationList } = evaluationQueries.useGetEvaluations({ processId, applicantId });
   const [isFormOpened, setIsFormOpened] = useState<boolean>(false);
 
-  const { mutate: deleteEvaluation, isPending: isDeletePending } = evaluationMutations.useDeleteEvaluation({
-    processId,
-    applicantId,
-  });
-
   const renderFormSection = () => {
     if (!isCurrentProcess) return null;
 
@@ -38,19 +33,16 @@ export default function ApplicantEvalInfo({ applicantId, processId, isCurrentPro
     return <EvaluationAddButton onClick={() => setIsFormOpened(true)} />;
   };
 
-  const handleDeleteEvaluation = (evaluationId: number) => {
-    deleteEvaluation({ evaluationId });
-  };
-
   return (
     <S.Wrapper>
       <S.EvaluationListContainer>
         {evaluationList.map((evaluationResult) => (
           <EvaluationCard
             key={evaluationResult.evaluationId}
+            evaluationId={evaluationResult.evaluationId}
+            processId={processId}
+            applicantId={applicantId}
             evaluationResult={evaluationResult}
-            onDelete={() => handleDeleteEvaluation(evaluationResult.evaluationId)}
-            isDeletePending={isDeletePending}
           />
         ))}
       </S.EvaluationListContainer>
