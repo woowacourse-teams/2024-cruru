@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.ApplyForm;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
@@ -24,10 +26,14 @@ import com.cruru.email.exception.badrequest.VerificationCodeNotFoundException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.EmailFixture;
 import com.cruru.util.fixture.MemberFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +52,12 @@ class EmailFacadeTest extends ServiceTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private ProcessRepository processRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -68,7 +80,9 @@ class EmailFacadeTest extends ServiceTest {
             return null;
         }).when(javaMailSender).send(any(MimeMessage.class));
 
-        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         EmailRequest request = new EmailRequest(
                 defaultClub.getId(),
                 List.of(applicant.getId()),
@@ -86,6 +100,35 @@ class EmailFacadeTest extends ServiceTest {
             verify(javaMailSender, times(1)).send(any(MimeMessage.class));
             verify(emailService, times(1)).save(any(Email.class));
         });
+    }
+
+    @DisplayName("이메일 발송 시 키워드를 다른 단어로 변환하여 발송한다.")
+    @Test
+    void replaceEmailKeyword() {
+        // given
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
+        EmailRequest request = new EmailRequest(
+                defaultClub.getId(),
+                List.of(applicant.getId()),
+                EmailFixture.SUBJECT,
+                "{AP_NAME}, {CL_NAME}, {RC_TITLE}, {RC_STEP}",
+                null
+        );
+
+        // when
+        emailFacade.send(request);
+
+        // then
+        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() ->
+                verify(emailService, times(1)).save(any(Email.class))
+        );
+        assertThat(emailRepository.findById(1L).get().getContent())
+                .isEqualTo(applicant.getName() + ", "
+                        + defaultClub.getName() + ", "
+                        + applyForm.getTitle() + ", "
+                        + process.getName());
     }
 
     @DisplayName("이미 가입된 이메일로 인증을 시도하면 예외가 발생한다.")
