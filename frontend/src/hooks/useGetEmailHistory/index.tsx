@@ -1,4 +1,5 @@
 import emailApis from '@api/domain/email';
+import QUERY_KEYS from '@hooks/queryKeys';
 import useClubId from '@hooks/service/useClubId';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,7 +11,7 @@ export default function useGetEmailHistory({ applicantId }: UseGetEmailHistoryPr
   const clubId = useClubId().getClubId() || '';
 
   const { data: { emailResponses: emailHistory } = { emailResponses: [] } } = useQuery({
-    queryKey: ['emailHistory', clubId, applicantId],
+    queryKey: [QUERY_KEYS.EMAIL_HISTORY, clubId, applicantId],
     queryFn: () => emailApis.history({ clubId, applicantId }),
   });
 

@@ -4,6 +4,7 @@ const QUERY_KEYS = {
   DETAIL_APPLICANT: 'detailApplicant',
   EVALUATION: 'evaluation',
   RECRUITMENT_INFO: 'recruitmentInfo',
+  EMAIL_HISTORY: 'emailHistory',
 } as const;
 
 export default QUERY_KEYS;
