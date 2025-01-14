@@ -24,7 +24,7 @@ export default function EmailHistoryItem({ email }: EmailHistoryItemProps) {
         <S.Title>{subject}</S.Title>
         <S.RightSide>
           <S.Date>{`${formattedDate} / ${formattedTime}`}</S.Date>
-          <S.Status isSucceed={isSucceed}>{isSucceed ? '발송 완료' : '발송 실패'}</S.Status>
+          <S.Status isSucceed={isSucceed}>{isSucceed ? '발송완료' : '발송실패'}</S.Status>
           <S.ArrowIcon isOpen={isOpen}>
             <HiChevronDown />
           </S.ArrowIcon>

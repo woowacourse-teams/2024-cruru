@@ -21,7 +21,7 @@ const RightSide = styled.div`
 
 const Title = styled.div`
   ${({ theme }) => theme.typography.common.default};
-  color: ${({ theme }) => theme.baseColors.grayscale[700]};
+  color: ${({ theme }) => theme.baseColors.grayscale[900]};
 `;
 
 const Status = styled.div<{ isSucceed: boolean }>`
@@ -35,7 +35,7 @@ const Status = styled.div<{ isSucceed: boolean }>`
 `;
 
 const Date = styled.span`
-  ${({ theme }) => theme.typography.common.default};
+  ${({ theme }) => theme.typography.common.small};
   color: ${({ theme }) => theme.baseColors.grayscale[700]};
 `;
 
