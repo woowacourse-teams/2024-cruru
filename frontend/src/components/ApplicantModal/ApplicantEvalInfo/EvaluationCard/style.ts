@@ -9,6 +9,44 @@ const CardContainer = styled.li`
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 `;
 
+const CardHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const UtilButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 0.4rem;
+`;
+
+const DeleteButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+
+  padding: 0.4rem 0.6rem;
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: 0.4rem;
+
+  color: ${({ theme }) => theme.colors.text.block};
+  ${({ theme }) => theme.typography.common.small};
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.baseColors.redscale[300]};
+    color: ${({ theme }) => theme.baseColors.redscale[400]};
+  }
+`;
+
 const EvaluatorDetailContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -100,6 +138,9 @@ const ResultComment = styled.div`
 
 const S = {
   CardContainer,
+  CardHeaderContainer,
+  UtilButtonsContainer,
+  DeleteButton,
   EvaluatorDetailContainer,
   EvaluatorImagePlaceholder,
   EvaluatorDetail,

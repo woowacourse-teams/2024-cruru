@@ -3,13 +3,13 @@ import { useState } from 'react';
 import Button from '@components/_common/atoms/Button';
 import InputField from '@components/_common/molecules/InputField';
 import TextField from '@components/_common/molecules/TextField';
-
-import { validateEvalContent, validateEvaluator } from '@domain/validations/evaluation';
-import useEvaluationMutation from '@hooks/useEvaluationMutation';
-import ValidationError from '@utils/errors/ValidationError';
-
 import Spinner from '@components/_common/atoms/Spinner';
 import StarRating from '@components/_common/molecules/StarRating';
+
+import { validateEvalContent, validateEvaluator } from '@domain/validations/evaluation';
+import { evaluationMutations } from '@hooks/evaluations';
+import ValidationError from '@utils/errors/ValidationError';
+
 import { EVALUATION_CONTENT_MAX_LENGTH, EVALUATION_EVALUATOR_MAX_LENGTH } from '../constants';
 import S from './style';
 
@@ -35,7 +35,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   const [formState, setFormState] = useState<EvaluationData>({ evaluator: '', score: 0, content: '' });
   const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
   const [evaluatorErrorMessage, setEvaluatorErrorMessage] = useState<string | undefined>();
-  const { mutate: submitNewEvaluation, isPending } = useEvaluationMutation({
+  const { mutate: submitNewEvaluation, isPending } = evaluationMutations.useCreateEvaluation({
     processId,
     applicantId,
     closeOnSuccess: onClose,
@@ -95,7 +95,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (window.confirm('평가를 등록한 후에는 수정하거나 삭제할 수 없습니다.\n등록하시겠습니까?')) {
+    if (window.confirm('등록된 평가는 수정이 불가능하며, 삭제 후 재작성만 가능합니다.\n이대로 등록하시겠습니까?')) {
       submitNewEvaluation({ processId, applicantId, ...formState });
     }
   };

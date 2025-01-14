@@ -37,6 +37,11 @@ const evaluationApis = {
       })}`,
       body: { evaluator, score, content },
     }),
+
+  delete: async ({ evaluationId }: { evaluationId: number }) =>
+    apiClient.delete({
+      path: `/${evaluationId}`,
+    }),
 };
 
 export default evaluationApis;
