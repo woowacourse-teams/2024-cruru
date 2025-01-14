@@ -1,6 +1,7 @@
 /* eslint-disable no-promise-executor-return */
-import { http } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { EMAILS } from '@api/endPoint';
+import emailHistory from '../emailHistory.json';
 
 const emailHandlers = [
   http.post(`${EMAILS}/send`, async ({ request }) => {
@@ -65,6 +66,20 @@ const emailHandlers = [
     return new Response(null, {
       status: 200,
     });
+  }),
+
+  http.get(`${EMAILS}/:clubId/:applicantId`, ({ params }) => {
+    const { clubId, applicantId } = params;
+
+    if (!clubId || !applicantId) {
+      return new Response(
+        JSON.stringify({
+          message: `필수 입력 정보가 누락됨: ${!clubId && 'clubId'} ${!applicantId && 'applicantId'}`,
+        }),
+      );
+    }
+
+    return HttpResponse.json({ emailResponses: emailHistory });
   }),
 ];
 

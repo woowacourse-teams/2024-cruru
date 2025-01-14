@@ -35,7 +35,7 @@ const emailApis = {
     }),
 
   history: async (params: { clubId: string; applicantId: number }) =>
-    apiClient.get<{ emailResponses: Email[] }>({ path: `/emails/${params.clubId}/${params.applicantId}` }),
+    apiClient.get<{ emailResponses: Email[] }>({ path: `/${params.clubId}/${params.applicantId}` }),
 };
 
 export default emailApis;
