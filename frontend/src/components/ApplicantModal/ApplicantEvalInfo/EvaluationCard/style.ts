@@ -9,10 +9,51 @@ const CardContainer = styled.li`
   background-color: ${({ theme }) => theme.baseColors.grayscale[50]};
 `;
 
+const CardHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const UtilButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 0.4rem;
+`;
+
+const DeleteButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+
+  padding: 0.4rem 0.6rem;
+  border: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-radius: 0.4rem;
+
+  color: ${({ theme }) => theme.colors.text.block};
+  ${({ theme }) => theme.typography.common.small};
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.baseColors.redscale[300]};
+    color: ${({ theme }) => theme.baseColors.redscale[400]};
+  }
+`;
+
 const EvaluatorDetailContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1.2rem;
+  gap: 1.6rem;
+
+  ${({ theme }) => theme.typography.common.small};
+  color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
 const EvaluatorImagePlaceholder = styled.div`
@@ -29,8 +70,11 @@ const EvaluatorDetail = styled.div`
 `;
 
 const EvaluatorName = styled.h3`
-  ${({ theme }) => theme.typography.common.default};
-  color: black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
 `;
 
 const EvaluatedDate = styled.div`
@@ -39,9 +83,6 @@ const EvaluatedDate = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 0.6rem;
-
-  ${({ theme }) => theme.typography.common.small};
-  color: ${({ theme }) => theme.baseColors.grayscale[800]};
 `;
 
 const ResultFlag = styled.div<{ $score: string }>`
@@ -97,6 +138,9 @@ const ResultComment = styled.div`
 
 const S = {
   CardContainer,
+  CardHeaderContainer,
+  UtilButtonsContainer,
+  DeleteButton,
   EvaluatorDetailContainer,
   EvaluatorImagePlaceholder,
   EvaluatorDetail,

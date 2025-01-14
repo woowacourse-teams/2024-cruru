@@ -7,3 +7,5 @@ export const EVALUATION_SCORE: Record<string, string> = {
 } as const;
 
 export const EVALUATION_CONTENT_MAX_LENGTH = 1000;
+
+export const EVALUATION_EVALUATOR_MAX_LENGTH = 32;

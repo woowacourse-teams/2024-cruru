@@ -1,18 +1,20 @@
 import { useState } from 'react';
 
 import Button from '@components/_common/atoms/Button';
+import InputField from '@components/_common/molecules/InputField';
 import TextField from '@components/_common/molecules/TextField';
-
-import { validateEvalContent } from '@domain/validations/evaluation';
-import useEvaluationMutation from '@hooks/useEvaluationMutation';
-import ValidationError from '@utils/errors/ValidationError';
-
 import Spinner from '@components/_common/atoms/Spinner';
 import StarRating from '@components/_common/molecules/StarRating';
-import { EVALUATION_CONTENT_MAX_LENGTH } from '../constants';
+
+import { validateEvalContent, validateEvaluator } from '@domain/validations/evaluation';
+import { evaluationMutations } from '@hooks/evaluations';
+import ValidationError from '@utils/errors/ValidationError';
+
+import { EVALUATION_CONTENT_MAX_LENGTH, EVALUATION_EVALUATOR_MAX_LENGTH } from '../constants';
 import S from './style';
 
 interface EvaluationData {
+  evaluator: string;
   score: number;
   content: string;
 }
@@ -23,10 +25,17 @@ interface EvaluationFormProps {
   onClose: () => void;
 }
 
+interface ValidateEvaluatorParams {
+  name: string;
+  value: string;
+  trim?: 'none' | 'start' | 'both';
+}
+
 export default function EvaluationForm({ processId, applicantId, onClose }: EvaluationFormProps) {
-  const [formState, setFormState] = useState<EvaluationData>({ score: 0, content: '' });
+  const [formState, setFormState] = useState<EvaluationData>({ evaluator: '', score: 0, content: '' });
   const [contentErrorMessage, setContentErrorMessage] = useState<string | undefined>();
-  const { mutate: submitNewEvaluation, isPending } = useEvaluationMutation({
+  const [evaluatorErrorMessage, setEvaluatorErrorMessage] = useState<string | undefined>();
+  const { mutate: submitNewEvaluation, isPending } = evaluationMutations.useCreateEvaluation({
     processId,
     applicantId,
     closeOnSuccess: onClose,
@@ -37,6 +46,34 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
       ...prevState,
       score: value,
     }));
+  };
+
+  const validateAndUpdateEvaluator = ({ name, value, trim = 'none' }: ValidateEvaluatorParams) => {
+    const trimmedValue = trim === 'both' ? value.trim() : trim === 'start' ? value.trimStart() : value;
+
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: trimmedValue,
+    }));
+
+    try {
+      validateEvaluator(trimmedValue);
+      setEvaluatorErrorMessage(undefined);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        setEvaluatorErrorMessage(error.message);
+      }
+    }
+  };
+
+  const handleChangeEvaluator = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    validateAndUpdateEvaluator({ name, value, trim: 'start' });
+  };
+
+  const handleBlurEvaluator = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    validateAndUpdateEvaluator({ name, value, trim: 'both' });
   };
 
   const handleChangeContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -58,7 +95,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (window.confirm('평가를 등록한 후에는 수정하거나 삭제할 수 없습니다.\n등록하시겠습니까?')) {
+    if (window.confirm('등록된 평가는 수정이 불가능하며, 삭제 후 재작성만 가능합니다.\n이대로 등록하시겠습니까?')) {
       submitNewEvaluation({ processId, applicantId, ...formState });
     }
   };
@@ -75,9 +112,19 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           onClick={onClose}
           disabled={isPending}
         >
-          삭제
+          입력 취소
         </S.CancelButton>
       </S.Header>
+
+      <InputField
+        name="evaluator"
+        placeholder="평가자 이름을 입력해주세요."
+        value={formState.evaluator}
+        maxLength={EVALUATION_EVALUATOR_MAX_LENGTH}
+        onChange={handleChangeEvaluator}
+        onBlur={handleBlurEvaluator}
+        error={evaluatorErrorMessage}
+      />
 
       <TextField
         name="content"
@@ -95,7 +142,7 @@ export default function EvaluationForm({ processId, applicantId, onClose }: Eval
           type="submit"
           color="primary"
           size="fillContainer"
-          disabled={formState.score === 0 || !!contentErrorMessage}
+          disabled={formState.score === 0 || !!contentErrorMessage || !!evaluatorErrorMessage}
         >
           {isPending ? (
             <S.SpinnerContainer>

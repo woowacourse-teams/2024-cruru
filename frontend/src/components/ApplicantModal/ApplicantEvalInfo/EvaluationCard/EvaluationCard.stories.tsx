@@ -29,7 +29,7 @@ export const Default: Story = {
   args: {
     evaluationResult: {
       evaluationId: 1,
-      evaluatorName: '평가자 이름',
+      evaluator: '평가자 이름',
       score: '4',
       content: '지원자에 대한 평가자의 코멘트가 들어가는 영역입니다.',
       createdDate: '2024-07-16T05:46:08.328593',

@@ -8,7 +8,7 @@ interface ChoiceDto {
 }
 
 interface QuestionDto {
-  id: string;
+  id: number;
   type: QuestionType;
   label: string;
   description: string;
@@ -39,7 +39,7 @@ export function dtoToRecruitmentPost({ title, startDate, endDate, postingContent
 export function dtoToApplyForm(dto: ApplyDto): ApplyForm {
   return {
     questions: dto.questions.map(({ id, type, label, description, orderIndex, choices, required }) => ({
-      questionId: id,
+      questionId: String(id),
       type,
       label,
       description,

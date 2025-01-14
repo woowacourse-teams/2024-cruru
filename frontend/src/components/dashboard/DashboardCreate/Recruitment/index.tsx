@@ -29,8 +29,8 @@ export default function Recruitment({ recruitmentInfoState, setRecruitmentInfoSt
   const startDateText = startDate ? formatDate(startDate) : '';
   const endDateText = endDate ? formatDate(endDate) : '';
 
-  const { register, errors } = useForm<RecruitmentInfoState>({
-    initialValues: { title: '', startDate: '', endDate: '', postingContent: '' },
+  const { register, errors } = useForm<Pick<RecruitmentInfoState, 'title'>>({
+    initialValues: { title: recruitmentInfoState.title },
   });
 
   useEffect(() => {

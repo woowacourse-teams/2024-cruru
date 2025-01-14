@@ -14,11 +14,16 @@ const ErrorPage = lazy(() => import(/* webpackChunkName: "ErrorPage" */ '@pages/
 const SignIn = lazy(() => import(/* webpackChunkName: "SignIn" */ '@pages/SignIn'));
 const SignUp = lazy(() => import(/* webpackChunkName: "SignUp" */ '@pages/SignUp'));
 const Dashboard = lazy(() => import(/* webpackChunkName: "Dashboard" */ '@pages/Dashboard'));
-const RecruitmentPost = lazy(() => import(/* webpackChunkName: "RecruitmentPost" */ '@pages/RecruitmentPost'));
+// const RecruitmentPost = lazy(() => import(/* webpackChunkName: "RecruitmentPost" */ '@pages/RecruitmentPost'));
+// eslint-disable-next-line import/first, prettier/prettier, no-trailing-spaces, import/order
+import RecruitmentPost from '@pages/RecruitmentPost'; // TODO: [lurgi] - 25.01.02 중복 렌더링에 따른 동적 임포트 임시 제거
+
 const ConfirmApply = lazy(() => import(/* webpackChunkName: "SignConfirmApplyUp" */ '@pages/ConfirmApply'));
 const DashboardLayout = lazy(() => import(/* webpackChunkName: "DashboardLayout" */ '@pages/DashboardLayout'));
 const DashboardList = lazy(() => import(/* webpackChunkName: "DashBoardList" */ '@pages/DashBoardList'));
-const DashboardCreate = lazy(() => import(/* webpackChunkName: "DashboardCreate" */ '@pages/DashboardCreate'));
+// const DashboardCreate = lazy(() => import(/* webpackChunkName: "DashboardCreate" */ '@pages/DashboardCreate'));
+// eslint-disable-next-line import/first, prettier/prettier, no-trailing-spaces, import/order
+import DashboardCreate from '@pages/DashboardCreate'; // TODO: [lurgi] - 24.12.24 중복 렌더링에 따른 동적 임포트 임시 제거
 
 const router = createBrowserRouter(
   [

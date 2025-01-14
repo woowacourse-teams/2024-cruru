@@ -12,11 +12,12 @@ const evaluationHandlers = [
     const processId = url.searchParams.get('processId');
     const applicantId = url.searchParams.get('applicantId');
     const body = (await request.json()) as {
+      evaluator: string;
       score: string;
       content: string;
     };
 
-    if (!body.score || !body.content || !processId || !applicantId) {
+    if (!body.score || !processId || !applicantId) {
       return new Response(null, {
         status: 404,
         statusText: 'Evaluation Not Found',
@@ -28,6 +29,20 @@ const evaluationHandlers = [
     return new Response(null, {
       status: 201,
       statusText: 'Created',
+    });
+  }),
+
+  http.delete(`${EVALUATIONS}/:evaluationId`, async ({ params }) => {
+    if (!params.evaluationId) {
+      return new Response(null, {
+        status: 400,
+        statusText: 'Evaluation Id Not Found',
+      });
+    }
+
+    return new Response(null, {
+      status: 204,
+      statusText: 'No Content',
     });
   }),
 ];
