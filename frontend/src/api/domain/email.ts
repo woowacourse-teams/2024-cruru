@@ -1,3 +1,4 @@
+import { Email } from '@customTypes/email';
 import { EMAILS } from '../endPoint';
 import APIClient from '../APIClient';
 
@@ -32,6 +33,9 @@ const emailApis = {
       path: '/verify-code',
       body: { email, verificationCode },
     }),
+
+  history: async (params: { clubId: string; applicantId: number }) =>
+    apiClient.get<{ emailResponses: Email[] }>({ path: `/emails/${params.clubId}/${params.applicantId}` }),
 };
 
 export default emailApis;

@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { HiChevronDown } from 'react-icons/hi2';
+import { Email } from '@customTypes/email';
 import S from './style';
 
 interface EmailHistoryItemProps {
-  title: string;
-  content: string;
-  createdDate: string;
-  isSucceed: boolean;
+  email: Email;
 }
 
-export default function EmailHistoryItem({ title, content, createdDate, isSucceed }: EmailHistoryItemProps) {
+export default function EmailHistoryItem({ email }: EmailHistoryItemProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { subject, createdDate, isSucceed, content } = email;
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -22,7 +21,7 @@ export default function EmailHistoryItem({ title, content, createdDate, isSuccee
   return (
     <S.Container>
       <S.Header onClick={handleClick}>
-        <S.Title>{title}</S.Title>
+        <S.Title>{subject}</S.Title>
         <S.RightSide>
           <S.Date>{`${formattedDate} / ${formattedTime}`}</S.Date>
           <S.Status isSucceed={isSucceed}>{isSucceed ? '발송 완료' : '발송 실패'}</S.Status>
