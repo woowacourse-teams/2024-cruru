@@ -15,7 +15,7 @@ interface EmailHistorySectionProps {
 
 export default function EmailHistorySection({ applicantId }: EmailHistorySectionProps) {
   const [toggle, setToggle] = useState(false);
-  const { mutate: sendMutate, isPending } = useEmail();
+  const { mutate: sendMutate, isPending } = useEmail(() => setToggle(false));
   const { emailHistory } = useGetEmailHistory({ applicantId });
   const clubId = useClubId().getClubId();
 
