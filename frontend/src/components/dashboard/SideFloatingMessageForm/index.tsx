@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import useProcess from '@hooks/useProcess';
 import useEmail from '@hooks/useEmail';
 
+import useClubId from '@hooks/service/useClubId';
 import MessageForm, { SubmitProps } from './MessageForm';
 import S from './style';
 
@@ -18,12 +19,12 @@ export default function SideFloatingMessageForm() {
   };
   const { processes } = useProcess({ dashboardId, applyFormId });
   const { mutate: sendMutate, isPending } = useEmail();
-  const clubId = localStorage.getItem('clubId');
+  const clubId = useClubId().getClubId();
 
   const targetApplicantIds =
     applicantIds && applicantIds.length > 0 ? applicantIds : applicantId ? [applicantId] : null;
 
-  if (!clubId || !targetApplicantIds || targetApplicantIds.length === 0) return null;
+  if (!targetApplicantIds || targetApplicantIds.length === 0) return null;
 
   const findApplicantName = (id: number) =>
     processes.flatMap((process) => process.applicants).find((applicant) => applicant.applicantId === id)?.applicantName;
@@ -52,12 +53,18 @@ export default function SideFloatingMessageForm() {
   return (
     <S.SideFloatingContainer>
       {isOpen && recipientString && (
-        <MessageForm
-          recipient={recipientString}
-          onSubmit={handleSubmit}
-          onClose={close}
-          isPending={isPending}
-        />
+        <MessageForm>
+          <MessageForm.FloatingBody>
+            <MessageForm.Header
+              recipient={recipientString}
+              onClose={close}
+            />
+            <MessageForm.Form
+              onSubmit={handleSubmit}
+              isPending={isPending}
+            />
+          </MessageForm.FloatingBody>
+        </MessageForm>
       )}
     </S.SideFloatingContainer>
   );

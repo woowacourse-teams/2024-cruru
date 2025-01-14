@@ -9,6 +9,18 @@ const Container = styled.div`
   gap: 1.6rem;
 `;
 
+const EmailFormContainer = styled.div`
+  width: 100%;
+  padding: 1.6rem 0.8rem;
+  border-top: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+  border-bottom: 1px solid ${({ theme }) => theme.baseColors.grayscale[400]};
+`;
+
+const EmailButtonContainer = styled.div`
+  width: 6.4rem;
+  height: 3.2rem;
+`;
+
 const Header = styled.div`
   padding: 0 0.8rem;
 
@@ -33,6 +45,8 @@ const ContentContainer = styled.div`
 
 const S = {
   Container,
+  EmailFormContainer,
+  EmailButtonContainer,
   Header,
   Title,
   ContentContainer,

@@ -26,6 +26,7 @@ export default function useClubId() {
     if (!clubId) {
       error('사용자 정보가 만료되었습니다. 다시 로그인해주세요.');
       navigate(routes.home());
+      return '';
     }
 
     return clubId;
