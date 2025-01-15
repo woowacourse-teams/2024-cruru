@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
@@ -24,10 +25,14 @@ import com.cruru.email.exception.badrequest.VerificationCodeNotFoundException;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ServiceTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.EmailFixture;
 import com.cruru.util.fixture.MemberFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +51,12 @@ class EmailFacadeTest extends ServiceTest {
 
     @Autowired
     private ApplicantRepository applicantRepository;
+
+    @Autowired
+    private ProcessRepository processRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -68,7 +79,9 @@ class EmailFacadeTest extends ServiceTest {
             return null;
         }).when(javaMailSender).send(any(MimeMessage.class));
 
-        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         EmailRequest request = new EmailRequest(
                 defaultClub.getId(),
                 List.of(applicant.getId()),

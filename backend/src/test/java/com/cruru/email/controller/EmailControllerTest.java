@@ -15,15 +15,23 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
+import com.cruru.applyform.domain.repository.ApplyFormRepository;
+import com.cruru.dashboard.domain.Dashboard;
+import com.cruru.dashboard.domain.repository.DashboardRepository;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
 import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.member.domain.repository.MemberRepository;
+import com.cruru.process.domain.Process;
+import com.cruru.process.domain.repository.ProcessRepository;
 import com.cruru.util.ControllerTest;
 import com.cruru.util.fixture.ApplicantFixture;
+import com.cruru.util.fixture.ApplyFormFixture;
+import com.cruru.util.fixture.DashboardFixture;
 import com.cruru.util.fixture.EmailFixture;
 import com.cruru.util.fixture.MemberFixture;
+import com.cruru.util.fixture.ProcessFixture;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.io.File;
@@ -39,6 +47,15 @@ class EmailControllerTest extends ControllerTest {
     private ApplicantRepository applicantRepository;
 
     @Autowired
+    private ProcessRepository processRepository;
+
+    @Autowired
+    private ApplyFormRepository applyFormRepository;
+
+    @Autowired
+    private DashboardRepository dashboardRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
@@ -51,7 +68,10 @@ class EmailControllerTest extends ControllerTest {
     @Test
     void send() {
         // given
-        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby());
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
         String subject = EmailFixture.SUBJECT;
         String content = EmailFixture.APPROVE_CONTENT;
         File file = new File(getClass().getClassLoader().getResource("static/email_test.txt").getFile());

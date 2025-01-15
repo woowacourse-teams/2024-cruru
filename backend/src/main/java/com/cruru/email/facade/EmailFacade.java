@@ -12,6 +12,7 @@ import com.cruru.email.controller.response.EmailHistoryResponses;
 import com.cruru.email.domain.Email;
 import com.cruru.email.exception.EmailAttachmentsException;
 import com.cruru.email.exception.EmailConflictException;
+import com.cruru.email.service.EmailKeywordConverter;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
@@ -34,6 +35,7 @@ public class EmailFacade {
     private final ApplicantService applicantService;
     private final MemberService memberService;
     private final EmailRedisClient emailRedisClient;
+    private final EmailKeywordConverter emailKeywordConverter;
 
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
@@ -45,7 +47,10 @@ public class EmailFacade {
         List<File> tempFiles = saveTempFiles(from, subject, files);
 
         List<CompletableFuture<Void>> futures = tos.stream()
-                .map(to -> emailService.send(from, to, subject, text, tempFiles))
+                .map(to -> {
+                    String content = emailKeywordConverter.convert(text, from, to);
+                    return emailService.send(from, to, subject, content, tempFiles);
+                })
                 .map(future -> future.thenAccept(emailService::save))
                 .toList();
 
