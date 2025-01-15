@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
-import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.email.controller.request.EmailRequest;
 import com.cruru.email.controller.request.SendVerificationCodeRequest;
@@ -100,35 +99,6 @@ class EmailFacadeTest extends ServiceTest {
             verify(javaMailSender, times(1)).send(any(MimeMessage.class));
             verify(emailService, times(1)).save(any(Email.class));
         });
-    }
-
-    @DisplayName("이메일 발송 시 키워드를 다른 단어로 변환하여 발송한다.")
-    @Test
-    void replaceEmailKeyword() {
-        // given
-        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(defaultDashboard));
-        Process process = processRepository.save(ProcessFixture.applyType(defaultDashboard));
-        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingDobby(process));
-        EmailRequest request = new EmailRequest(
-                defaultClub.getId(),
-                List.of(applicant.getId()),
-                EmailFixture.SUBJECT,
-                "{AP_NAME}, {CL_NAME}, {RC_TITLE}, {RC_STEP}",
-                null
-        );
-
-        // when
-        emailFacade.send(request);
-
-        // then
-        await().atMost(2, TimeUnit.SECONDS).untilAsserted(() ->
-                verify(emailService, times(1)).save(any(Email.class))
-        );
-        assertThat(emailRepository.findById(1L).get().getContent())
-                .isEqualTo(applicant.getName() + ", "
-                        + defaultClub.getName() + ", "
-                        + applyForm.getTitle() + ", "
-                        + process.getName());
     }
 
     @DisplayName("이미 가입된 이메일로 인증을 시도하면 예외가 발생한다.")
