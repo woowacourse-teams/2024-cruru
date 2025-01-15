@@ -74,46 +74,18 @@ jobs:
         repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
         token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
         path: dev-files
-
-    - name: Copy dev files to backend
-      run: |
-        mkdir -p ${{ github.workspace }}/backend
-        cp ${{ github.workspace }}/dev-files/develop/docker-compose.dev.yml ${{ github.workspace }}/backend/docker-compose.dev.yml
-        cp ${{ github.workspace }}/dev-files/develop/promtail-config.yml ${{ github.workspace }}/backend/promtail-config.yml
-
+        
     - name: Extract secrets as .env file
       run: |
-        cat <<EOF > ${{ github.workspace }}/backend/.env
+        cat <<EOF > ./dev-files/develop/.env
         # Docker Hub info from Github Secrets
         DOCKER_IMAGE_VERSION_TAG=dev-${{ needs.build.outputs.BUILD_VERSION }}
         EOF
-    # - name: Check if MySQL container is running
-    #   id: mysql_running
-    #   run: |
-    #     if [ "$(sudo docker ps -q -f name=database-container)" ]; then
-    #       echo "mysql_running=true" >> $GITHUB_ENV
-    #     else
-    #       echo "mysql_running=false" >> $GITHUB_ENV
-    #     fi
-        
-    # - name: Start MySQL container if not running
-    #   if: env.mysql_running == 'false'
-    #   run: |
-    #     sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d database-mysql
-
-    # - name: Stop and remove existing application container
-    #   run: |
-    #     sudo docker-compose -f docker-compose.dev.yml stop application
-    #     sudo docker-compose -f docker-compose.dev.yml rm -f application
-        
-    # - name: Run application Server container
-    #   run: |
-    #     sudo docker-compose --env-file .env -f docker-compose.dev.yml up -d application
 
     - name: Stop and remove existing application container
       run: |
-        sudo docker-compose -f docker-compose.dev.yml down --rmi all
-        
+        sudo docker-compose -f ./dev-files/develop/docker-compose.dev.yml --env-file ./dev-files/develop/.env down --rmi all
+
     - name: Run application Server container
       run: |
-        sudo docker-compose -f docker-compose.dev.yml up -d
+        sudo docker-compose -f ./dev-files/develop/docker-compose.dev.yml --env-file ./dev-files/develop/.env up -d
