@@ -1,5 +1,4 @@
 import { useAnswers } from '@components/recruitmentPost/ApplyForm/useAnswers';
-import { RecruitmentPostTabItems } from '@components/recruitmentPost/RecruitmentPostTab';
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
 import { createExecutionTracker } from '@utils/createExecutionTracker';
@@ -40,29 +39,29 @@ const ApplyAnswerContext = createContext<ApplyAnswerContextType | null>(null);
 interface ApplyAnswerContextProps extends PropsWithChildren {
   questions: Question[];
   applyFormId: string;
-  moveTabByParam: (value: RecruitmentPostTabItems) => void;
 }
 
 const ExecutionTracker = createExecutionTracker();
 
-export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, children }: ApplyAnswerContextProps) {
-  const LOCALSTORAGE_KEY = `${applyFormId}-apply-form`;
+export function ApplyAnswerProvider({ questions, applyFormId, children }: ApplyAnswerContextProps) {
+  const LOCALSTORAGE_BASE_INFO_KEY = `${applyFormId}-base-info`;
+  const LOCALSTORAGE_ANSWER_KEY = `${applyFormId}-apply-form`;
 
   const [enableStorage] = useState(() => {
     if (!ExecutionTracker.executeIfFirst()) return true;
 
-    const prevSavedAnswer = window.localStorage.getItem(LOCALSTORAGE_KEY);
-    if (prevSavedAnswer) {
-      if (!isValidKey(prevSavedAnswer, questions)) {
+    const prevBaseInfo = window.localStorage.getItem(LOCALSTORAGE_BASE_INFO_KEY);
+    const prevAnswer = window.localStorage.getItem(LOCALSTORAGE_ANSWER_KEY);
+    if (prevBaseInfo || prevAnswer) {
+      if (prevBaseInfo && !isValidBaseInfo(prevBaseInfo)) {
         return false;
       }
 
-      if (!isValidValue(prevSavedAnswer)) {
+      if (prevAnswer && !isValidAnswers(prevAnswer, questions)) {
         return false;
       }
 
       if (window.confirm('이전 작성중인 지원서가 있습니다. 이어서 진행하시겠습니까?')) {
-        moveTabByParam('지원하기');
         return true;
       }
     }
@@ -72,7 +71,7 @@ export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, ch
   const [initialValues, setInitialValues] = useLocalStorageState<InitialValues>(
     { name: '', email: '', phone: '' },
     {
-      key: LOCALSTORAGE_KEY,
+      key: LOCALSTORAGE_BASE_INFO_KEY,
       enableStorage,
     },
   );
@@ -101,16 +100,16 @@ export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, ch
     [setInitialValues],
   );
 
-  const { answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage } = useAnswers(
+  const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(
     questions,
-    LOCALSTORAGE_KEY,
+    LOCALSTORAGE_ANSWER_KEY,
     enableStorage,
   );
 
   const resetStorage = useCallback(() => {
-    window.localStorage.removeItem(LOCALSTORAGE_KEY);
-    resetAnswerStorage();
-  }, [LOCALSTORAGE_KEY, resetAnswerStorage]);
+    window.localStorage.removeItem(LOCALSTORAGE_BASE_INFO_KEY);
+    window.localStorage.removeItem(LOCALSTORAGE_ANSWER_KEY);
+  }, [LOCALSTORAGE_BASE_INFO_KEY, LOCALSTORAGE_ANSWER_KEY]);
 
   const valueObj = useMemo(
     () => ({
@@ -135,14 +134,22 @@ export const useApplyAnswer = () => {
   return context;
 };
 
-function isValidKey(prevSavedAnswer: string, questions: Question[]) {
+function isValidBaseInfo(prevSavedAnswer: string) {
   const prevSavedAnswerKeys = Object.keys(JSON.parse(prevSavedAnswer));
-  return prevSavedAnswerKeys.every(
-    (key) => questions.some(({ questionId }) => questionId === key) || ['name', 'email', 'phone'].includes(key),
+  const prevSavedAnswerValues = Object.values(JSON.parse(prevSavedAnswer));
+
+  return (
+    prevSavedAnswerKeys.every((key) => ['name', 'email', 'phone'].includes(key)) &&
+    prevSavedAnswerValues.some((value) => value !== '')
   );
 }
 
-function isValidValue(prevSavedAnswer: string) {
+function isValidAnswers(prevSavedAnswer: string, questions: Question[]) {
   const prevSavedAnswerValues = Object.values(JSON.parse(prevSavedAnswer));
-  return prevSavedAnswerValues.some((value) => value !== '');
+  const prevSavedAnswerKeys = Object.keys(JSON.parse(prevSavedAnswer));
+
+  return (
+    prevSavedAnswerKeys.every((key) => questions.some(({ questionId }) => questionId === key)) &&
+    prevSavedAnswerValues.some((value) => value !== '')
+  );
 }
