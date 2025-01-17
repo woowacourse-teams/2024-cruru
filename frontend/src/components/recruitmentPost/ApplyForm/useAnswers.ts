@@ -6,10 +6,6 @@ interface AnswerFormData {
 }
 
 export const useAnswers = (questions: Question[], LOCALSTORAGE_KEY: string, enableStorage: boolean) => {
-  const resetAnswerStorage = () => {
-    window.localStorage.removeItem(LOCALSTORAGE_KEY);
-  };
-
   const [answers, setAnswers] = useLocalStorageState<AnswerFormData>(
     (() => questions.reduce((acc, question) => ({ ...acc, [question.questionId]: [] }), {} as AnswerFormData))(),
     {
@@ -48,6 +44,5 @@ export const useAnswers = (questions: Question[], LOCALSTORAGE_KEY: string, enab
       SINGLE_CHOICE: handleRadio,
     },
     isRequiredFieldsIncomplete,
-    resetAnswerStorage,
   };
 };
