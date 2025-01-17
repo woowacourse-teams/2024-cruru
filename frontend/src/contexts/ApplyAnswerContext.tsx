@@ -3,15 +3,7 @@ import { RecruitmentPostTabItems } from '@components/recruitmentPost/Recruitment
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
 import { createExecutionTracker } from '@utils/createExecutionTracker';
-import {
-  createContext,
-  useContext,
-  useMemo,
-  PropsWithChildren,
-  useCallback,
-  ChangeEventHandler,
-  useState,
-} from 'react';
+import { createContext, useContext, useMemo, PropsWithChildren, useCallback, useState } from 'react';
 
 interface InitialValues {
   name: string;
@@ -26,9 +18,9 @@ interface ApplyAnswerContextType {
     phone: string;
   };
   baseInfoHandlers: {
-    handleName: ChangeEventHandler<HTMLInputElement>;
-    handleEmail: ChangeEventHandler<HTMLInputElement>;
-    handlePhone: ChangeEventHandler<HTMLInputElement>;
+    handleName: (value: string) => void;
+    handleEmail: (value: string) => void;
+    handlePhone: (value: string) => void;
   };
   resetStorage: () => void;
   answers: {
@@ -77,22 +69,22 @@ export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, ch
 
   const baseInfoHandlers = useMemo(
     () => ({
-      handleName: (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleName: (value: string) => {
         setInitialValues((prev) => ({
           ...prev,
-          name: e.target.value,
+          name: value,
         }));
       },
-      handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleEmail: (value: string) => {
         setInitialValues((prev) => ({
           ...prev,
-          email: e.target.value,
+          email: value,
         }));
       },
-      handlePhone: (e: React.ChangeEvent<HTMLInputElement>) => {
+      handlePhone: (value: string) => {
         setInitialValues((prev) => ({
           ...prev,
-          phone: e.target.value,
+          phone: value,
         }));
       },
     }),
