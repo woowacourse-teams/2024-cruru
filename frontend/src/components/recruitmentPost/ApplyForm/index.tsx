@@ -187,7 +187,7 @@ function NameInput({ questionCount, register, value, error, baseInfoHandlers }: 
   useEffect(() => {
     if (error) baseInfoHandlers.handleName('');
     else baseInfoHandlers.handleName(value);
-  }, [error, value, baseInfoHandlers]);
+  }, [error, value]);
 
   return (
     <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 1번째 입력입니다.`}>
@@ -212,7 +212,7 @@ function EmailInput({ questionCount, register, value, error, baseInfoHandlers }:
   useEffect(() => {
     if (error) baseInfoHandlers.handleEmail('');
     else baseInfoHandlers.handleEmail(value);
-  }, [error, value, baseInfoHandlers]);
+  }, [error, value]);
 
   return (
     <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 2번째 입력입니다.`}>
@@ -238,7 +238,7 @@ function PhoneInput({ questionCount, register, value, error, baseInfoHandlers }:
   useEffect(() => {
     if (error) baseInfoHandlers.handlePhone('');
     else baseInfoHandlers.handlePhone(value);
-  }, [error, value, baseInfoHandlers]);
+  }, [error, value]);
 
   return (
     <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 3번째 입력입니다.`}>

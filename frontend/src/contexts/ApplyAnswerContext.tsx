@@ -46,11 +46,21 @@ interface ApplyAnswerContextProps extends PropsWithChildren {
 const ExecutionTracker = createExecutionTracker();
 
 export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, children }: ApplyAnswerContextProps) {
-  const LOCALSTORAGE_KEY = `${applyFormId}-initial-values`;
+  const LOCALSTORAGE_KEY = `${applyFormId}-apply-form`;
 
   const [enableStorage] = useState(() => {
     if (!ExecutionTracker.executeIfFirst()) return true;
-    if (window.localStorage.getItem(LOCALSTORAGE_KEY)) {
+
+    const prevSavedAnswer = window.localStorage.getItem(LOCALSTORAGE_KEY);
+    if (prevSavedAnswer) {
+      if (!isValidKey(prevSavedAnswer, questions)) {
+        return false;
+      }
+
+      if (!isValidValue(prevSavedAnswer)) {
+        return false;
+      }
+
       if (window.confirm('이전 작성중인 지원서가 있습니다. 이어서 진행하시겠습니까?')) {
         moveTabByParam('지원하기');
         return true;
@@ -91,7 +101,11 @@ export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, ch
     [setInitialValues],
   );
 
-  const { answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage } = useAnswers(questions, applyFormId);
+  const { answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage } = useAnswers(
+    questions,
+    LOCALSTORAGE_KEY,
+    enableStorage,
+  );
 
   const resetStorage = useCallback(() => {
     window.localStorage.removeItem(LOCALSTORAGE_KEY);
@@ -120,3 +134,15 @@ export const useApplyAnswer = () => {
   }
   return context;
 };
+
+function isValidKey(prevSavedAnswer: string, questions: Question[]) {
+  const prevSavedAnswerKeys = Object.keys(JSON.parse(prevSavedAnswer));
+  return prevSavedAnswerKeys.every(
+    (key) => questions.some(({ questionId }) => questionId === key) || ['name', 'email', 'phone'].includes(key),
+  );
+}
+
+function isValidValue(prevSavedAnswer: string) {
+  const prevSavedAnswerValues = Object.values(JSON.parse(prevSavedAnswer));
+  return prevSavedAnswerValues.some((value) => value !== '');
+}
