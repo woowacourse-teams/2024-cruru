@@ -2,7 +2,7 @@ import { useAnswers } from '@components/recruitmentPost/ApplyForm/useAnswers';
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
 import { createExecutionTracker } from '@utils/createExecutionTracker';
-import { createContext, useContext, useMemo, PropsWithChildren, useCallback, useState } from 'react';
+import { createContext, useContext, useMemo, PropsWithChildren, useCallback, useState, useEffect } from 'react';
 
 interface InitialValues {
   name: string;
@@ -48,7 +48,7 @@ export function ApplyAnswerProvider({ questions, applyFormId, children }: ApplyA
   const LOCALSTORAGE_ANSWER_KEY = `${applyFormId}-apply-form`;
 
   const [enableStorage] = useState(() => {
-    if (!ExecutionTracker.executeIfFirst()) return true;
+    if (ExecutionTracker.getHasExecuted()) return true;
 
     const prevBaseInfo = window.localStorage.getItem(LOCALSTORAGE_BASE_INFO_KEY);
     const prevAnswer = window.localStorage.getItem(LOCALSTORAGE_ANSWER_KEY);
@@ -67,6 +67,12 @@ export function ApplyAnswerProvider({ questions, applyFormId, children }: ApplyA
     }
     return false;
   });
+
+  useEffect(() => {
+    if (!ExecutionTracker.getHasExecuted()) {
+      ExecutionTracker.executet();
+    }
+  }, []);
 
   const [initialValues, setInitialValues] = useLocalStorageState<InitialValues>(
     { name: '', email: '', phone: '' },
