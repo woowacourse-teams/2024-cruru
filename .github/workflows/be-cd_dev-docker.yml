@@ -17,7 +17,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.PRIVATE_REPOSITORY_TOKEN }}
+        token: ${{ secrets.SUBMODULE_PAT }}
         submodules: true
 
     - name: Set timezone to Korea
