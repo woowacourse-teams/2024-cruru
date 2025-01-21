@@ -1,19 +1,5 @@
+import { TooltipPlacement, TooltipPosition } from './types';
 import { OPPOSITE_PLACEMENT, WINDOW_PADDING } from './constants';
-
-export type TooltipPlacement =
-  | 'top'
-  | 'topRight'
-  | 'right'
-  | 'bottomRight'
-  | 'bottom'
-  | 'bottomLeft'
-  | 'left'
-  | 'topLeft';
-
-interface TooltipPosition {
-  x: number;
-  y: number;
-}
 
 interface TooltipPositionProps {
   targetRect: DOMRect;

@@ -1,4 +1,4 @@
-import { TooltipPlacement } from './utils';
+import { TooltipPlacement } from './types';
 
 export const WINDOW_PADDING = 10;
 
