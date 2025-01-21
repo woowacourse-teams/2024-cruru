@@ -14,78 +14,102 @@ export function calculateTooltipPosition({
   placement,
   distanceFromTarget,
 }: TooltipPositionProps) {
+  const scrollX = window.scrollX || document.documentElement.scrollLeft;
+  const scrollY = window.scrollY || document.documentElement.scrollTop;
+
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
 
-  const basePosition = getBasePosition({ targetRect, tooltipRect, placement, distanceFromTarget });
+  const basePosition = getComputedPosition({
+    targetRect,
+    tooltipRect,
+    placement,
+    distanceFromTarget,
+    scrollX,
+    scrollY,
+  });
 
   if (isPositionWithinViewport({ position: basePosition, tooltipRect, viewportWidth, viewportHeight })) {
     return { ...basePosition, placement };
   }
 
-  const oppositeBasePosition = getBasePosition({
+  const oppositePosition = getComputedPosition({
     targetRect,
     tooltipRect,
     placement: OPPOSITE_PLACEMENT[placement],
     distanceFromTarget,
+    scrollX,
+    scrollY,
   });
 
-  if (isPositionWithinViewport({ position: oppositeBasePosition, tooltipRect, viewportWidth, viewportHeight })) {
-    return { ...oppositeBasePosition, placement: OPPOSITE_PLACEMENT[placement] };
+  if (isPositionWithinViewport({ position: oppositePosition, tooltipRect, viewportWidth, viewportHeight })) {
+    return { ...oppositePosition, placement: OPPOSITE_PLACEMENT[placement] };
   }
 
   return { ...basePosition, placement };
 }
 
-function getBasePosition({ targetRect, tooltipRect, placement, distanceFromTarget }: TooltipPositionProps) {
-  const targetCenterX = targetRect.left + targetRect.width / 2;
-  const targetCenterY = targetRect.top + targetRect.height / 2;
+interface ComputedPositionProps extends TooltipPositionProps {
+  scrollX: number;
+  scrollY: number;
+}
+
+function getComputedPosition({
+  targetRect,
+  tooltipRect,
+  placement,
+  distanceFromTarget,
+  scrollX,
+  scrollY,
+}: ComputedPositionProps) {
+  const targetCenterX = targetRect.left + targetRect.width / 2 + scrollX;
+  const targetCenterY = targetRect.top + targetRect.height / 2 + scrollY;
 
   switch (placement) {
     case 'top':
       return {
         x: targetCenterX - tooltipRect.width / 2,
-        y: targetRect.top - tooltipRect.height - distanceFromTarget,
+        y: targetRect.top + scrollY - tooltipRect.height - distanceFromTarget,
       };
     case 'topRight':
       return {
-        x: targetRect.right + distanceFromTarget,
-        y: targetRect.top - tooltipRect.height - distanceFromTarget,
+        x: targetRect.right + scrollX + distanceFromTarget,
+        y: targetRect.top + scrollY - tooltipRect.height - distanceFromTarget,
       };
     case 'right':
       return {
-        x: targetRect.right + distanceFromTarget,
+        x: targetRect.right + scrollX + distanceFromTarget,
         y: targetCenterY - tooltipRect.height / 2,
       };
     case 'bottomRight':
       return {
-        x: targetRect.right + distanceFromTarget,
-        y: targetRect.bottom + distanceFromTarget,
+        x: targetRect.right + scrollX + distanceFromTarget,
+        y: targetRect.bottom + scrollY + distanceFromTarget,
       };
     case 'bottom':
       return {
         x: targetCenterX - tooltipRect.width / 2,
-        y: targetRect.bottom + distanceFromTarget,
+        y: targetRect.bottom + scrollY + distanceFromTarget,
       };
     case 'bottomLeft':
       return {
-        x: targetRect.left - tooltipRect.width - distanceFromTarget,
-        y: targetRect.bottom + distanceFromTarget,
+        x: targetRect.left + scrollX - tooltipRect.width - distanceFromTarget,
+        y: targetRect.bottom + scrollY + distanceFromTarget,
       };
     case 'left':
       return {
-        x: targetRect.left - tooltipRect.width - distanceFromTarget,
+        x: targetRect.left + scrollX - tooltipRect.width - distanceFromTarget,
         y: targetCenterY - tooltipRect.height / 2,
       };
     case 'topLeft':
       return {
-        x: targetRect.left - tooltipRect.width - distanceFromTarget,
-        y: targetRect.top - tooltipRect.height - distanceFromTarget,
+        x: targetRect.left + scrollX - tooltipRect.width - distanceFromTarget,
+        y: targetRect.top + scrollY - tooltipRect.height - distanceFromTarget,
       };
     default:
       return {
         x: targetCenterX - tooltipRect.width / 2,
-        y: targetRect.top - tooltipRect.height - distanceFromTarget,
+        y: targetRect.top + scrollY - tooltipRect.height - distanceFromTarget,
       };
   }
 }
