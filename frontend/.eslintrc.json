@@ -54,7 +54,8 @@
     "no-confusing-arrow": 0,
     "indent": 0,
     "consistent-return": "off",
-    "function-paren-newline": "off"
+    "function-paren-newline": "off",
+    "no-use-before-define": "off"
   },
   "overrides": [
     {
