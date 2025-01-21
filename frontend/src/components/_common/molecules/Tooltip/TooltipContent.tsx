@@ -1,10 +1,10 @@
-import { forwardRef, ReactNode, RefObject, useEffect } from 'react';
+import { forwardRef, RefObject, useEffect } from 'react';
 
 import { TooltipPlacement } from './types';
 import S from './style';
 
 interface TooltipContentProps {
-  content: ReactNode;
+  content: string;
   placement: TooltipPlacement;
   zIndex?: number;
   maxWidth?: number;

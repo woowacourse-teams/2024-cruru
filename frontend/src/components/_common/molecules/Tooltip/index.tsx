@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
 
 import TooltipContent from './TooltipContent';
 import TooltipPortal from './TooltipPortal';
@@ -8,7 +8,7 @@ import { TooltipPlacement, TooltipPositionWithPlacement } from './types';
 import S from './style';
 
 export interface TooltipProps extends PropsWithChildren {
-  content: ReactNode;
+  content: string;
   placement?: TooltipPlacement;
   zIndex?: number;
   distanceFromTarget?: number;
