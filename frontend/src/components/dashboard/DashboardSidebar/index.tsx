@@ -15,6 +15,7 @@ import type { DashboardTabItems } from '@pages/DashboardLayout';
 
 import IconButton from '@components/_common/atoms/IconButton';
 import { DASHBOARD_TAB_MENUS } from '@constants/constants';
+import Tooltip from '@components/_common/molecules/Tooltip';
 import LogoutButton from './LogoutButton';
 
 import S from './style';
@@ -99,10 +100,16 @@ export default function DashboardSidebar({
                 strokeWidth={0.8}
               />
             ) : (
-              <HiOutlineMenu
-                size={24}
-                strokeWidth={2.4}
-              />
+              <Tooltip
+                content="사이드바 열기"
+                placement="right"
+                distanceFromTarget={20}
+              >
+                <HiOutlineMenu
+                  size={24}
+                  strokeWidth={2.4}
+                />
+              </Tooltip>
             )}
           </S.SidebarToggleIcon>
         </IconButton>
@@ -112,20 +119,40 @@ export default function DashboardSidebar({
         <S.Contents>
           <S.SidebarItem isSidebarOpen={sidebarStyle.isSidebarOpen}>
             <Link to={routes.dashboard.list()}>
-              <S.SidebarItemLink
-                isSelected={location.pathname === routes.dashboard.list()}
-                isSidebarOpen={sidebarStyle.isSidebarOpen}
-              >
-                <S.IconContainer>
-                  <HiOutlineHome
-                    size={22}
-                    strokeWidth={2}
-                  />
-                </S.IconContainer>
-                {sidebarStyle.isSidebarOpen && <S.SidebarItemTextHeader>모집 공고</S.SidebarItemTextHeader>}
-              </S.SidebarItemLink>
+              {sidebarStyle.isSidebarOpen && (
+                <S.SidebarItemLink
+                  isSelected={location.pathname === routes.dashboard.list()}
+                  isSidebarOpen={sidebarStyle.isSidebarOpen}
+                >
+                  <S.IconContainer>
+                    <HiOutlineHome
+                      size={22}
+                      strokeWidth={2}
+                    />
+                  </S.IconContainer>
+                  <S.SidebarItemTextHeader>모집 공고</S.SidebarItemTextHeader>
+                </S.SidebarItemLink>
+              )}
+              {!sidebarStyle.isSidebarOpen && (
+                <Tooltip
+                  content="모집 공고"
+                  placement="right"
+                  distanceFromTarget={20}
+                >
+                  <S.SidebarItemLink
+                    isSelected={location.pathname === routes.dashboard.list()}
+                    isSidebarOpen={sidebarStyle.isSidebarOpen}
+                  >
+                    <S.IconContainer>
+                      <HiOutlineHome
+                        size={22}
+                        strokeWidth={2}
+                      />
+                    </S.IconContainer>
+                  </S.SidebarItemLink>
+                </Tooltip>
+              )}
             </Link>
-            {!sidebarStyle.isSidebarOpen && <div className="sidebar-tooltip">모집 공고</div>}
           </S.SidebarItem>
 
           {!!options?.length && <S.Divider />}
@@ -142,20 +169,41 @@ export default function DashboardSidebar({
                     isSidebarOpen={sidebarStyle.isSidebarOpen}
                     key={label}
                   >
-                    <S.SidebarItemLink
-                      isSelected={currentMenu === label}
-                      isSidebarOpen={sidebarStyle.isSidebarOpen}
-                      onClick={() => onMoveTab(label)}
-                    >
-                      <S.IconContainer>
-                        <Icon
-                          size={16}
-                          strokeWidth={2.5}
-                        />
-                      </S.IconContainer>
-                      {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{label}</S.SidebarItemText>}
-                    </S.SidebarItemLink>
-                    {!sidebarStyle.isSidebarOpen && <div className="sidebar-tooltip">{label}</div>}
+                    {sidebarStyle.isSidebarOpen && (
+                      <S.SidebarItemLink
+                        isSelected={currentMenu === label}
+                        isSidebarOpen={sidebarStyle.isSidebarOpen}
+                        onClick={() => onMoveTab(label)}
+                      >
+                        <S.IconContainer>
+                          <Icon
+                            size={16}
+                            strokeWidth={2.5}
+                          />
+                        </S.IconContainer>
+                        <S.SidebarItemText>{label}</S.SidebarItemText>
+                      </S.SidebarItemLink>
+                    )}
+                    {!sidebarStyle.isSidebarOpen && (
+                      <Tooltip
+                        content={label}
+                        placement="right"
+                        distanceFromTarget={20}
+                      >
+                        <S.SidebarItemLink
+                          isSelected={currentMenu === label}
+                          isSidebarOpen={sidebarStyle.isSidebarOpen}
+                          onClick={() => onMoveTab(label)}
+                        >
+                          <S.IconContainer>
+                            <Icon
+                              size={16}
+                              strokeWidth={2.5}
+                            />
+                          </S.IconContainer>
+                        </S.SidebarItemLink>
+                      </Tooltip>
+                    )}
                   </S.SidebarItem>
                 );
               })}
@@ -180,20 +228,40 @@ export default function DashboardSidebar({
                           to={routes.dashboard.post({ dashboardId: String(dashboardId), applyFormId })}
                           onClick={onResetTab}
                         >
-                          <S.SidebarItemLink
-                            isSelected={isSelected}
-                            isSidebarOpen={sidebarStyle.isSidebarOpen}
-                          >
-                            <S.IconContainer>
-                              <Icon
-                                size={16}
-                                strokeWidth={4}
-                              />
-                            </S.IconContainer>
-                            {sidebarStyle.isSidebarOpen && <S.SidebarItemText>{text}</S.SidebarItemText>}
-                          </S.SidebarItemLink>
+                          {sidebarStyle.isSidebarOpen && (
+                            <S.SidebarItemLink
+                              isSelected={isSelected}
+                              isSidebarOpen={sidebarStyle.isSidebarOpen}
+                            >
+                              <S.IconContainer>
+                                <Icon
+                                  size={16}
+                                  strokeWidth={4}
+                                />
+                              </S.IconContainer>
+                              <S.SidebarItemText>{text}</S.SidebarItemText>
+                            </S.SidebarItemLink>
+                          )}
+                          {!sidebarStyle.isSidebarOpen && (
+                            <Tooltip
+                              content={text}
+                              placement="right"
+                              distanceFromTarget={20}
+                            >
+                              <S.SidebarItemLink
+                                isSelected={isSelected}
+                                isSidebarOpen={sidebarStyle.isSidebarOpen}
+                              >
+                                <S.IconContainer>
+                                  <Icon
+                                    size={16}
+                                    strokeWidth={4}
+                                  />
+                                </S.IconContainer>
+                              </S.SidebarItemLink>
+                            </Tooltip>
+                          )}
                         </Link>
-                        {!sidebarStyle.isSidebarOpen && <div className="sidebar-tooltip">{text}</div>}
                       </S.SidebarItem>
                     );
                   })}
