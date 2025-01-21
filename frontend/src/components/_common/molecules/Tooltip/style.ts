@@ -20,7 +20,6 @@ const ContentContainer = styled.div<ContentContainerProps>`
   ${({ theme }) => theme.typography.common.block};
   color: ${({ theme }) => theme.baseColors.grayscale[100]};
   line-height: inherit;
-  white-space: nowrap;
 
   transition: opacity 0.3s ease-in-out;
 
