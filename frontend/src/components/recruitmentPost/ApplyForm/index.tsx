@@ -81,48 +81,67 @@ export default function ApplyForm({ questions, isClosed }: ApplyFormProps) {
     setPersonalDataCollection(checked);
   };
 
+  const { onChange: onNameChange, ...nameRegister } = register('name', {
+    validate: { onBlur: validateName.onBlur, onChange: validateName.onChange },
+  });
+
+  const { onChange: onEmailChange, ...emailRegister } = register('email', {
+    validate: { onBlur: validateEmail.onBlur },
+  });
+
+  const { onChange: onPhoneChange, ...phoneRegister } = register('phone', {
+    validate: {
+      onBlur: validatePhoneNumber.onBlur,
+      onChange: validatePhoneNumber.onChange,
+    },
+  });
+
   return (
     <C.ContentContainer>
       <S.Form onSubmit={handleSubmit}>
         <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 1번째 입력입니다.`}>
           <InputField
-            {...register('name', { validate: { onBlur: validateName.onBlur, onChange: validateName.onChange } })}
+            {...nameRegister}
             name="name"
             label="이름"
             placeholder="이름을 입력해 주세요."
             maxLength={32}
             required
             value={initialValues.name}
-            onChange={baseInfoHandlers.handleName}
+            onChange={(e) => {
+              onNameChange(e);
+              baseInfoHandlers.handleName(e);
+            }}
           />
         </S.AriaCustomQuestion>
 
         <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 2번째 입력입니다.`}>
           <InputField
-            {...register('email', { validate: { onBlur: validateEmail.onBlur } })}
+            {...emailRegister}
             label="이메일"
             placeholder="지원 결과를 안내받을 이메일 주소를 입력해 주세요."
             required
             value={initialValues.email}
-            onChange={baseInfoHandlers.handleEmail}
+            onChange={(e) => {
+              onEmailChange(e);
+              baseInfoHandlers.handleEmail(e);
+            }}
           />
         </S.AriaCustomQuestion>
 
         <S.AriaCustomQuestion aria-label={`총 ${questionCount}의 입력 중 3번째 입력입니다.`}>
           <InputField
-            {...register('phone', {
-              validate: {
-                onBlur: validatePhoneNumber.onBlur,
-                onChange: validatePhoneNumber.onChange,
-              },
-            })}
+            {...phoneRegister}
             inputMode="numeric"
             label="전화 번호"
             placeholder="번호만 입력해 주세요."
             maxLength={11}
             required
             value={initialValues.phone}
-            onChange={baseInfoHandlers.handlePhone}
+            onChange={(e) => {
+              onPhoneChange(e);
+              baseInfoHandlers.handlePhone(e);
+            }}
           />
         </S.AriaCustomQuestion>
 
