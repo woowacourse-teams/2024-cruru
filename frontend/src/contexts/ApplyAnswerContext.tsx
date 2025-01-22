@@ -1,17 +1,8 @@
 import { useAnswers } from '@components/recruitmentPost/ApplyForm/useAnswers';
-import { RecruitmentPostTabItems } from '@components/recruitmentPost/RecruitmentPostTab';
 import { Question } from '@customTypes/apply';
 import useLocalStorageState from '@hooks/useLocalStorageState';
 import { createExecutionTracker } from '@utils/createExecutionTracker';
-import {
-  createContext,
-  useContext,
-  useMemo,
-  PropsWithChildren,
-  useCallback,
-  ChangeEventHandler,
-  useState,
-} from 'react';
+import { createContext, useContext, useMemo, PropsWithChildren, useCallback, useState, useEffect } from 'react';
 
 interface InitialValues {
   name: string;
@@ -26,9 +17,9 @@ interface ApplyAnswerContextType {
     phone: string;
   };
   baseInfoHandlers: {
-    handleName: ChangeEventHandler<HTMLInputElement>;
-    handleEmail: ChangeEventHandler<HTMLInputElement>;
-    handlePhone: ChangeEventHandler<HTMLInputElement>;
+    handleName: (value: string) => void;
+    handleEmail: (value: string) => void;
+    handlePhone: (value: string) => void;
   };
   resetStorage: () => void;
   answers: {
@@ -48,63 +39,83 @@ const ApplyAnswerContext = createContext<ApplyAnswerContextType | null>(null);
 interface ApplyAnswerContextProps extends PropsWithChildren {
   questions: Question[];
   applyFormId: string;
-  moveTabByParam: (value: RecruitmentPostTabItems) => void;
 }
 
 const ExecutionTracker = createExecutionTracker();
 
-export function ApplyAnswerProvider({ questions, applyFormId, moveTabByParam, children }: ApplyAnswerContextProps) {
-  const LOCALSTORAGE_KEY = `${applyFormId}-initial-values`;
+export function ApplyAnswerProvider({ questions, applyFormId, children }: ApplyAnswerContextProps) {
+  const LOCALSTORAGE_BASE_INFO_KEY = `${applyFormId}-base-info`;
+  const LOCALSTORAGE_ANSWER_KEY = `${applyFormId}-apply-form`;
 
   const [enableStorage] = useState(() => {
-    if (!ExecutionTracker.executeIfFirst()) return true;
-    if (window.localStorage.getItem(LOCALSTORAGE_KEY)) {
+    if (ExecutionTracker.getHasExecuted()) return true;
+
+    const prevBaseInfo = window.localStorage.getItem(LOCALSTORAGE_BASE_INFO_KEY);
+    const prevAnswer = window.localStorage.getItem(LOCALSTORAGE_ANSWER_KEY);
+    if (prevBaseInfo || prevAnswer) {
+      if (prevBaseInfo && !isValidBaseInfo(prevBaseInfo)) {
+        return false;
+      }
+
+      if (prevAnswer && !isValidAnswers(prevAnswer, questions)) {
+        return false;
+      }
+
       if (window.confirm('이전 작성중인 지원서가 있습니다. 이어서 진행하시겠습니까?')) {
-        moveTabByParam('지원하기');
         return true;
       }
     }
     return false;
   });
 
+  useEffect(() => {
+    if (!ExecutionTracker.getHasExecuted()) {
+      ExecutionTracker.executet();
+    }
+  }, []);
+
   const [initialValues, setInitialValues] = useLocalStorageState<InitialValues>(
     { name: '', email: '', phone: '' },
     {
-      key: LOCALSTORAGE_KEY,
+      key: LOCALSTORAGE_BASE_INFO_KEY,
       enableStorage,
     },
   );
 
   const baseInfoHandlers = useMemo(
     () => ({
-      handleName: (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleName: (value: string) => {
         setInitialValues((prev) => ({
           ...prev,
-          name: e.target.value,
+          name: value,
         }));
       },
-      handleEmail: (e: React.ChangeEvent<HTMLInputElement>) => {
+      handleEmail: (value: string) => {
         setInitialValues((prev) => ({
           ...prev,
-          email: e.target.value,
+          email: value,
         }));
       },
-      handlePhone: (e: React.ChangeEvent<HTMLInputElement>) => {
+      handlePhone: (value: string) => {
         setInitialValues((prev) => ({
           ...prev,
-          phone: e.target.value,
+          phone: value,
         }));
       },
     }),
     [setInitialValues],
   );
 
-  const { answers, changeHandler, isRequiredFieldsIncomplete, resetAnswerStorage } = useAnswers(questions, applyFormId);
+  const { answers, changeHandler, isRequiredFieldsIncomplete } = useAnswers(
+    questions,
+    LOCALSTORAGE_ANSWER_KEY,
+    enableStorage,
+  );
 
   const resetStorage = useCallback(() => {
-    window.localStorage.removeItem(LOCALSTORAGE_KEY);
-    resetAnswerStorage();
-  }, [LOCALSTORAGE_KEY, resetAnswerStorage]);
+    window.localStorage.removeItem(LOCALSTORAGE_BASE_INFO_KEY);
+    window.localStorage.removeItem(LOCALSTORAGE_ANSWER_KEY);
+  }, [LOCALSTORAGE_BASE_INFO_KEY, LOCALSTORAGE_ANSWER_KEY]);
 
   const valueObj = useMemo(
     () => ({
@@ -128,3 +139,23 @@ export const useApplyAnswer = () => {
   }
   return context;
 };
+
+function isValidBaseInfo(prevSavedAnswer: string) {
+  const prevSavedAnswerKeys = Object.keys(JSON.parse(prevSavedAnswer));
+  const prevSavedAnswerValues = Object.values(JSON.parse(prevSavedAnswer));
+
+  return (
+    prevSavedAnswerKeys.every((key) => ['name', 'email', 'phone'].includes(key)) &&
+    prevSavedAnswerValues.some((value) => value !== '')
+  );
+}
+
+function isValidAnswers(prevSavedAnswer: string, questions: Question[]) {
+  const prevSavedAnswerValues = Object.values(JSON.parse(prevSavedAnswer));
+  const prevSavedAnswerKeys = Object.keys(JSON.parse(prevSavedAnswer));
+
+  return (
+    prevSavedAnswerKeys.every((key) => questions.some(({ questionId }) => questionId === key)) &&
+    prevSavedAnswerValues.some((value) => value !== '')
+  );
+}
