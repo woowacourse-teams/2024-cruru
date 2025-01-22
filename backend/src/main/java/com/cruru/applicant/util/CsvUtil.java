@@ -23,23 +23,20 @@ public class CsvUtil {
             List<ApplicantCsvLine> data,
             List<Question> questions
     ) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8))) {
+
             outputStream.write(UTF8_BOM);
 
-            try (BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(outputStream, StandardCharsets.UTF_8))) {
+            writer.write(createHeaderLine(questions));
+            writer.newLine();
 
-                String headerLine = createHeaderLine(questions);
-                writer.write(headerLine);
+            for (ApplicantCsvLine line : data) {
+                writer.write(createDataLine(line));
                 writer.newLine();
-
-                for (ApplicantCsvLine line : data) {
-                    String dataLine = createDataLine(line);
-                    writer.write(dataLine);
-                    writer.newLine();
-                }
-                writer.flush();
             }
+            writer.flush();
+
             return new ByteArrayInputStream(outputStream.toByteArray());
         } catch (IOException e) {
             throw new CsvWriteException();
