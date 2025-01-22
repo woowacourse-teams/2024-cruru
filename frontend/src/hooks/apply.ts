@@ -65,9 +65,7 @@ export const applyMutations = {
         const a = document.createElement('a');
         a.href = url;
         a.download = `${new Date().toISOString().split('T')[0]}_지원자.csv`;
-        document.body.appendChild(a);
         a.click();
-        document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       },
       onError: (err) => {
