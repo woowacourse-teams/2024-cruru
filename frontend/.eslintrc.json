@@ -54,7 +54,16 @@
     "no-confusing-arrow": 0,
     "indent": 0,
     "consistent-return": "off",
-    "function-paren-newline": "off"
+    "function-paren-newline": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true,
+        "variables": true
+      }
+    ],
+    "no-use-before-define": "off"
   },
   "overrides": [
     {
