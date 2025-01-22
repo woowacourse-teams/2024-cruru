@@ -512,7 +512,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .filter(document("applyform/export-csv",
                         pathParameters(parameterWithName("applyFormId").description("지원폼의 id"))
                 ))
-                .cookie("accessToken", token) // 권한 필요 시
+                .cookie("accessToken", token)
                 .accept(ContentType.ANY)
                 .when().get("/v1/applyform/{applyFormId}/export-csv", applyForm.getId())
                 .then().log().all()
@@ -528,7 +528,7 @@ class ApplyFormControllerTest extends ControllerTest {
                 .filter(document("applyform/export-csv-fail/not-found",
                         pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼 id"))
                 ))
-                .cookie("accessToken", token) // 인증 필요 시
+                .cookie("accessToken", token)
                 .accept(ContentType.ANY)
                 .when().get("/v1/applyform/{applyFormId}/export-csv", -1)
                 .then().log().all()
