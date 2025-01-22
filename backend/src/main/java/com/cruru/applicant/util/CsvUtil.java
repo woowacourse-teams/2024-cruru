@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CsvUtil {
 
-    private static final String CSV_HEADER_BASE = "이름,이메일,전화번호,제출날짜";
+    private static final String CSV_HEADER_BASE = "이름,이메일,전화번호,제출일시";
     private static final byte[] UTF8_BOM = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
 
     public static ByteArrayInputStream writeToCsv(
