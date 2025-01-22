@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
@@ -15,4 +16,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findByIdFetchingMember(Long id);
 
     List<Question> findAllByApplyForm(ApplyForm applyForm);
+
+    @Query("SELECT q FROM Question q WHERE q.applyForm.id = :applyFormId ORDER BY q.sequence ASC")
+    List<Question> findByApplyFormId(@Param("applyFormId") Long applyFormId);
 }

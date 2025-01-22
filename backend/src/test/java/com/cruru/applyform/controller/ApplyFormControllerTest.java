@@ -10,6 +10,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.document;
 
 import com.cruru.applicant.controller.request.ApplicantCreateRequest;
+import com.cruru.applicant.domain.Applicant;
+import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.applyform.controller.request.AnswerCreateRequest;
 import com.cruru.applyform.controller.request.ApplyFormSubmitRequest;
 import com.cruru.applyform.controller.request.ApplyFormWriteRequest;
@@ -17,11 +19,16 @@ import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.applyform.domain.repository.ApplyFormRepository;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.dashboard.domain.repository.DashboardRepository;
+import com.cruru.process.domain.Process;
 import com.cruru.process.domain.repository.ProcessRepository;
+import com.cruru.question.domain.Answer;
 import com.cruru.question.domain.Question;
+import com.cruru.question.domain.repository.AnswerRepository;
 import com.cruru.question.domain.repository.ChoiceRepository;
 import com.cruru.question.domain.repository.QuestionRepository;
 import com.cruru.util.ControllerTest;
+import com.cruru.util.fixture.AnswerFixture;
+import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ChoiceFixture;
 import com.cruru.util.fixture.DashboardFixture;
@@ -88,7 +95,13 @@ class ApplyFormControllerTest extends ControllerTest {
     private ApplyFormRepository applyFormRepository;
 
     @Autowired
+    private ApplicantRepository applicantRepository;
+
+    @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @Autowired
     private ChoiceRepository choiceRepository;
@@ -477,5 +490,50 @@ class ApplyFormControllerTest extends ControllerTest {
                 ))
                 .when().patch("/v1/applyform/{applyFormId}", invalidApplyFormId)
                 .then().log().all().statusCode(404);
+    }
+
+    @Test
+    @DisplayName("정상 CSV 다운로드 시, 200과 text/csv 를 반환한다.")
+    void exportApplicantsToCsv_success() {
+        // given
+        Dashboard dashboard = dashboardRepository.save(DashboardFixture.backend());
+        Process process = processRepository.save(ProcessFixture.applyType(dashboard));
+
+        ApplyForm applyForm = applyFormRepository.save(ApplyFormFixture.backend(dashboard));
+        Question question1 = questionRepository.save(QuestionFixture.shortAnswerType(applyForm));
+        Question question2 = questionRepository.save(QuestionFixture.longAnswerType(applyForm));
+
+        Applicant applicant = applicantRepository.save(ApplicantFixture.pendingRush(process));
+        Answer ans1 = answerRepository.save(AnswerFixture.first(question1, applicant));
+        Answer ans2 = answerRepository.save(AnswerFixture.second(question2, applicant));
+
+        // when & then
+        RestAssured.given(spec).log().all()
+                .filter(document("applyform/export-csv",
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰"))
+                ))
+                .cookie("accessToken", token)
+                .accept(ContentType.ANY)
+                .when().get("/v1/applyform/{applyFormId}/export-csv", applyForm.getId())
+                .then().log().all()
+                .statusCode(200)
+                .contentType("text/csv; charset=UTF-8");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 지원폼 ID면 404를 반환한다.")
+    void exportApplicantsToCsv_notFound() {
+        // when & then
+        RestAssured.given(spec).log().all()
+                .filter(document("applyform/export-csv-fail/not-found",
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼 id")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰"))
+                ))
+                .cookie("accessToken", token)
+                .accept(ContentType.ANY)
+                .when().get("/v1/applyform/{applyFormId}/export-csv", -1)
+                .then().log().all()
+                .statusCode(404);
     }
 }
