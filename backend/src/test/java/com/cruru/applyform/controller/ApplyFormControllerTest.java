@@ -510,7 +510,8 @@ class ApplyFormControllerTest extends ControllerTest {
         // when & then
         RestAssured.given(spec).log().all()
                 .filter(document("applyform/export-csv",
-                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id"))
+                        pathParameters(parameterWithName("applyFormId").description("지원폼의 id")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰"))
                 ))
                 .cookie("accessToken", token)
                 .accept(ContentType.ANY)
@@ -526,7 +527,8 @@ class ApplyFormControllerTest extends ControllerTest {
         // when & then
         RestAssured.given(spec).log().all()
                 .filter(document("applyform/export-csv-fail/not-found",
-                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼 id"))
+                        pathParameters(parameterWithName("applyFormId").description("존재하지 않는 지원폼 id")),
+                        requestCookies(cookieWithName("accessToken").description("사용자 토큰"))
                 ))
                 .cookie("accessToken", token)
                 .accept(ContentType.ANY)
