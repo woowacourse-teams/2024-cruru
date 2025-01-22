@@ -40,6 +40,12 @@ export const applyQueries = {
       ...restQueryObj,
     };
   },
+
+  useGetAllApplicantsCsv: ({ applyFormId }: { applyFormId: string }) =>
+    useQuery({
+      queryFn: () => applyApis.exportAllApplicantsCsv({ applyFormId }),
+      queryKey: ['exportAllApplicantsCsv', applyFormId],
+    }),
 };
 
 export const applyMutations = {

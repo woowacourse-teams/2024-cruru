@@ -33,6 +33,11 @@ const applyApis = {
       path: `/${applyFormId}`,
       body,
     }),
+
+  exportAllApplicantsCsv: async ({ applyFormId }: { applyFormId: string }) =>
+    apiClient.get({
+      path: `/${applyFormId}/export-csv`,
+    }),
 };
 
 export default applyApis;
