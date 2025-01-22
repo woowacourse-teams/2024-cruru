@@ -49,7 +49,7 @@ class CsvExportServiceTest extends ServiceTest {
         ByteArrayInputStream csvStream = csvExportService.exportApplicantsToCsv(nonExistentApplyFormId);
         String csvText = toStringWithoutBom(csvStream);
 
-        assertThat(csvText).contains("이름,이메일,전화번호,제출날짜");
+        assertThat(csvText).contains("이름,이메일,전화번호,제출일시");
     }
 
     @Test
@@ -72,7 +72,7 @@ class CsvExportServiceTest extends ServiceTest {
 
         // then
         String expectedHeader = String.join(",",
-                "이름", "이메일", "전화번호", "제출날짜",
+                "이름", "이메일", "전화번호", "제출일시",
                 question1.getContent(), question2.getContent()
         );
 
