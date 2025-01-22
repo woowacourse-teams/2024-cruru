@@ -78,7 +78,12 @@ jobs:
         repository: ${{ secrets.PRIVATE_REPOSITORY_URL }}
         token: ${{ secrets.SUBMODULE_PAT }}
         fetch-depth: 0
-        path: dev-files
+        path: dev-files-temp
+        
+    - name: Sync deploy files
+      run: |
+        mkdir -p dev-files/develop
+        rsync -av --exclude='log' dev-files-temp/develop/ dev-files/develop/
         
     - name: Extract secrets as .env file
       run: |
