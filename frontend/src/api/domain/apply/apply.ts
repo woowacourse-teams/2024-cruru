@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApplyForm, ApplyRequestBody, RecruitmentPost } from '@customTypes/apply';
-import { dtoToApplyForm, dtoToRecruitmentPost } from './applyDto';
-import { APPLY } from '../../endPoint';
 import APIClient from '../../APIClient';
+import { APPLY } from '../../endPoint';
+import { dtoToApplyForm, dtoToRecruitmentPost } from './applyDto';
 
 const apiClient = new APIClient(APPLY);
 
@@ -35,7 +35,7 @@ const applyApis = {
     }),
 
   exportAllApplicantsCsv: async ({ applyFormId }: { applyFormId: string }) =>
-    apiClient.get({
+    apiClient.get<Blob>({
       path: `/${applyFormId}/export-csv`,
     }),
 };

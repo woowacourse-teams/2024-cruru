@@ -4,6 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { getTimeStatus } from '@utils/compareTime';
 import { routes } from '@router/path';
+import { useToast } from '@contexts/ToastContext';
 import QUERY_KEYS from './queryKeys';
 
 const useGetRecruitmentInfo = ({ applyFormId }: { applyFormId: string }) => {
@@ -40,12 +41,6 @@ export const applyQueries = {
       ...restQueryObj,
     };
   },
-
-  useGetAllApplicantsCsv: ({ applyFormId }: { applyFormId: string }) =>
-    useQuery({
-      queryFn: () => applyApis.exportAllApplicantsCsv({ applyFormId }),
-      queryKey: ['exportAllApplicantsCsv', applyFormId],
-    }),
 };
 
 export const applyMutations = {
@@ -57,6 +52,26 @@ export const applyMutations = {
       onSuccess: () => {
         resetStorage();
         navigate(routes.confirmApply({ applyFormId }), { state: { title } });
+      },
+    });
+  },
+
+  useDownloadCsv: () => {
+    const { error } = useToast();
+    return useMutation({
+      mutationFn: ({ applyFormId }: { applyFormId: string }) => applyApis.exportAllApplicantsCsv({ applyFormId }),
+      onSuccess: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${new Date().toISOString().split('T')[0]}_지원자.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      onError: (err) => {
+        error(`CSV 다운로드 실패: ${err.message}`);
       },
     });
   },
