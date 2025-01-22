@@ -45,7 +45,7 @@ export default function DashboardLayout() {
       <S.Sidebar ref={ref}>
         <DashboardSidebar
           sidebarStyle={{ isSidebarOpen, onClickSidebarToggle: handleToggleSidebar }}
-          options={applyFormList}
+          posts={applyFormList}
           isDashboard={!!currentPostId}
           currentMenu={currentMenu}
           onMoveTab={(tab) => moveTabByParam(tab)}
