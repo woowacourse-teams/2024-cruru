@@ -11,6 +11,8 @@ import com.cruru.global.LoginProfile;
 import jakarta.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApplyFormController {
 
     private final ApplyFormFacade applyFormFacade;
+    private static final DateTimeFormatter CSV_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final String CSV_FILE_SUFFIX = "_applicant.csv";
 
     @PostMapping("/{applyformId}/submit")
     public ResponseEntity<Void> submit(
@@ -54,10 +58,14 @@ public class ApplyFormController {
             LoginProfile loginProfile
     ) {
         ByteArrayInputStream csvStream = applyFormFacade.exportApplicantsToCsv(applyFormId);
+
+        String currentDate = LocalDate.now().format(CSV_DATE_FORMAT);
+        String fileName = currentDate + CSV_FILE_SUFFIX;
+
         InputStreamResource resource = new InputStreamResource(csvStream);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=applicants.csv")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .contentType(MediaType.parseMediaType("text/csv; charset=UTF-8"))
                 .body(resource);
     }
