@@ -61,7 +61,7 @@ public class CsvUtil {
                 .append(quoteCsvField(line.phone())).append(",")
                 .append(quoteCsvField(line.submissionDate().toString()));
 
-        for (String answer : line.questionColumns()) {
+        for (String answer : line.answers()) {
             lineBuilder.append(",").append(quoteCsvField(answer));
         }
         return lineBuilder.toString();

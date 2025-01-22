@@ -8,7 +8,7 @@ public record ApplicantCsvLine(
         String email,
         String phone,
         LocalDateTime submissionDate,
-        List<String> questionColumns
+        List<String> answers
 ) {
 
 }
