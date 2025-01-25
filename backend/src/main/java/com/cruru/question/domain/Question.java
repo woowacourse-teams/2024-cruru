@@ -36,6 +36,9 @@ public class Question implements SecureResource {
 
     private String content;
 
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     private Integer sequence;
 
     private boolean required;
@@ -47,12 +50,14 @@ public class Question implements SecureResource {
     public Question(
             QuestionType questionType,
             String content,
+            String description,
             Integer sequence,
             Boolean required,
             ApplyForm applyForm
     ) {
         this.questionType = questionType;
         this.content = content;
+        this.description = description;
         this.sequence = sequence;
         this.required = required;
         this.applyForm = applyForm;
@@ -98,6 +103,7 @@ public class Question implements SecureResource {
                 "id=" + id +
                 ", questionType=" + questionType +
                 ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
                 ", sequence=" + sequence +
                 ", applyForm=" + applyForm +
                 '}';

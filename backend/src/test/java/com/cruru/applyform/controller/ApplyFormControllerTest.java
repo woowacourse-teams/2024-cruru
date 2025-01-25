@@ -59,10 +59,11 @@ class ApplyFormControllerTest extends ControllerTest {
             fieldWithPath("id").description("질문의 id"),
             fieldWithPath("type").description("질문 유형"),
             fieldWithPath("label").description("질문의 내용"),
+            fieldWithPath("description").optional().description("질문 보조 설명"),
             fieldWithPath("orderIndex").description("질문 순서"),
             fieldWithPath("choices").description("질문의 선택지"),
-            fieldWithPath("required").description("질문 필수여부"),
-            };
+            fieldWithPath("required").description("질문 필수여부")
+    };
 
     private static final FieldDescriptor[] CHOICE_FIELD_DESCRIPTORS = {
             fieldWithPath("id").description("선택지의 id"),

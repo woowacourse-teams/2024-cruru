@@ -54,6 +54,7 @@ class QuestionFacadeTest extends ServiceTest {
                 new QuestionCreateRequest(
                         newQuestion.getQuestionType().name(),
                         newQuestion.getContent(),
+                        newQuestion.getDescription(),
                         List.of(new ChoiceCreateRequest(
                                 newChoice.getContent(),
                                 newChoice.getSequence()
@@ -74,6 +75,7 @@ class QuestionFacadeTest extends ServiceTest {
                 () -> assertThat(actualQuestions).hasSize(1),
                 () -> assertThat(actualQuestion.getQuestionType()).isEqualTo(newQuestion.getQuestionType()),
                 () -> assertThat(actualQuestion.getContent()).isEqualTo(newQuestion.getContent()),
+                () -> assertThat(actualQuestion.getDescription()).isEqualTo(newQuestion.getDescription()),
                 () -> assertThat(actualQuestion.getSequence()).isEqualTo(newQuestion.getSequence()),
                 () -> assertThat(actualQuestion.isRequired()).isEqualTo(newQuestion.isRequired()),
 
@@ -99,6 +101,7 @@ class QuestionFacadeTest extends ServiceTest {
                 new QuestionCreateRequest(
                         newQuestion.getQuestionType().name(),
                         newQuestion.getContent(),
+                        newQuestion.getDescription(),
                         List.of(new ChoiceCreateRequest(
                                 newChoice.getContent(),
                                 newChoice.getSequence()
@@ -119,6 +122,7 @@ class QuestionFacadeTest extends ServiceTest {
                 () -> assertThat(actualQuestions).hasSize(1),
                 () -> assertThat(actualQuestion.getQuestionType()).isEqualTo(newQuestion.getQuestionType()),
                 () -> assertThat(actualQuestion.getContent()).isEqualTo(newQuestion.getContent()),
+                () -> assertThat(actualQuestion.getDescription()).isEqualTo(newQuestion.getDescription()),
                 () -> assertThat(actualQuestion.getSequence()).isEqualTo(newQuestion.getSequence()),
                 () -> assertThat(actualQuestion.isRequired()).isEqualTo(newQuestion.isRequired()),
 
@@ -143,6 +147,7 @@ class QuestionFacadeTest extends ServiceTest {
                 new QuestionCreateRequest(
                         newQuestion.getQuestionType().name(),
                         newQuestion.getContent(),
+                        newQuestion.getDescription(),
                         List.of(),
                         newQuestion.getSequence(),
                         newQuestion.isRequired()
