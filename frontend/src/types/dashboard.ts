@@ -8,6 +8,7 @@ export interface QuestionChoice {
 export interface Question {
   type: QuestionType;
   question: string;
+  description: string;
   choices: QuestionChoice[];
   required: boolean;
   id?: number;

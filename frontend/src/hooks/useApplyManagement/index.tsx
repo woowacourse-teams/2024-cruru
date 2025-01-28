@@ -35,6 +35,7 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
       id: Number(question.questionId),
       type: question.type,
       question: question.label,
+      description: question.description,
       choices: question.choices.map((choice) => ({
         choice: choice.label,
         orderIndex: choice.orderIndex,
@@ -85,7 +86,7 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
   const addQuestion = () => {
     setApplyState((prev) => [
       ...prev,
-      { type: 'SHORT_ANSWER', question: '', choices: [], required: true, id: uniqueId },
+      { type: 'SHORT_ANSWER', question: '', description: '', choices: [], required: true, id: uniqueId },
     ]);
 
     setUniqueId(uniqueId + 1);

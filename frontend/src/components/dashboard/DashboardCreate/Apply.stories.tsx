@@ -22,6 +22,7 @@ const meta: Meta<typeof Apply> = {
         type: 'SHORT_ANSWER',
         question: '1. 프로그래밍 교육 경험',
         choices: [],
+        description: '본인만의 프로그래밍 교육 경험을 구체적 사례를 포함해 작성해주세요.',
         required: true,
         id: 1,
       },
@@ -29,12 +30,14 @@ const meta: Meta<typeof Apply> = {
         type: 'LONG_ANSWER',
         question: '2. 효과적인 학습 방식과 경험',
         choices: [],
+        description: '본인만의 학습 방식 경험을 구체적 사례를 포함해 작성해주세요.',
         required: true,
         id: 2,
       },
       {
         type: 'MULTIPLE_CHOICE',
         question: '3. 복수 선택 질문',
+        description: '해당 항목은 다양한 선택지를 고를 수 있는 질문입니다.',
         choices: [
           {
             choice: '옵션 1',
@@ -55,6 +58,7 @@ const meta: Meta<typeof Apply> = {
       {
         type: 'SINGLE_CHOICE',
         question: '4. 8/6일 오리엔테이션에 참여할 수 있습니다.',
+        description: '해당 항목은 하나의 선택지를 고를 수 있는 질문입니다.',
         choices: [
           {
             choice: '네',
@@ -94,6 +98,7 @@ export const Default: Story = {
     const DEFAULT_QUESTION: Question = {
       type: 'SHORT_ANSWER',
       question: '',
+      description: '',
       choices: [],
       required: true,
     };
