@@ -21,6 +21,7 @@ export default function ApplyManagement() {
     modifyApplyQuestionsMutator,
     addQuestion,
     setQuestionTitle,
+    setQuestionDescription,
     setQuestionType,
     setQuestionOptions,
     setQuestionRequiredToggle,
@@ -71,6 +72,7 @@ export default function ApplyManagement() {
                 <QuestionBuilder
                   index={index}
                   question={question}
+                  setQuestionDescription={setQuestionDescription}
                   setQuestionTitle={setQuestionTitle}
                   setQuestionType={setQuestionType}
                   setQuestionOptions={setQuestionOptions}

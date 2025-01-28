@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Question, QuestionControlActionType, QuestionOptionValue } from '@customTypes/dashboard';
 
 import InputField from '@components/_common/molecules/InputField';
+import TextField from '@components/_common/molecules/TextField';
 import Dropdown from '@components/_common/molecules/Dropdown';
 import ToggleSwitch from '@components/_common/atoms/ToggleSwitch';
 import { QUESTION_TYPE_NAME } from '@constants/constants';
@@ -19,6 +20,7 @@ interface QuestionBuilderProps {
   index: number;
   question: Question;
   setQuestionTitle: (index: number) => (title: string) => void;
+  setQuestionDescription: (index: number) => (description: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
   setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
   setQuestionRequiredToggle: (index: number) => () => void;
@@ -31,6 +33,7 @@ export default function QuestionBuilder({
   index,
   question,
   setQuestionTitle,
+  setQuestionDescription,
   setQuestionType,
   setQuestionOptions,
   setQuestionRequiredToggle,
@@ -39,12 +42,18 @@ export default function QuestionBuilder({
   deleteQuestion,
 }: QuestionBuilderProps) {
   const [title, setTitle] = useState<string>(question?.question || '');
+  const [description, setDescription] = useState<string>(question?.description || '');
   const [currentQuestionType, setCurrentQuestionType] = useState<Question['type']>(question?.type || 'SHORT_ANSWER');
   const [isRequired, setIsRequired] = useState<boolean>(question ? question.required : true);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
     setQuestionTitle(index)(event.target.value);
+  };
+
+  const handleChangeDescription = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+    setQuestionDescription(index)(event.target.value);
   };
 
   const handleChangeQuestionType = (type: Question['type']) => {
@@ -84,7 +93,9 @@ export default function QuestionBuilder({
             type="text"
             placeholder="질문을 입력하세요."
             onChange={handleChangeTitle}
+            maxLength={50}
             value={title}
+            isLengthVisible
             required
           />
           <Dropdown
@@ -95,6 +106,15 @@ export default function QuestionBuilder({
           >
             <DropdownItemRenderer items={QUESTION_TYPES} />
           </Dropdown>
+        </S.InputBox>
+        <S.InputBox>
+          <TextField
+            placeholder="질문 설명을 입력하세요."
+            onChange={handleChangeDescription}
+            maxLength={300}
+            value={description}
+            isLengthVisible
+          />
         </S.InputBox>
 
         {currentQuestionType === 'SINGLE_CHOICE' && (
