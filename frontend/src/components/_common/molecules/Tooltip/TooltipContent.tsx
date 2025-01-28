@@ -1,4 +1,4 @@
-import { forwardRef, RefObject, useEffect } from 'react';
+import { forwardRef } from 'react';
 
 import { TooltipPlacement } from './types';
 import S from './style';
@@ -15,17 +15,11 @@ interface TooltipContentProps {
 
 export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ content, placement, zIndex, maxWidth, isVisible, positionX, positionY }, ref) => {
-    useEffect(() => {
-      const tooltipObj = ref as RefObject<HTMLDivElement>;
-      if (!tooltipObj.current) return;
-
-      tooltipObj.current.style.left = `${positionX}px`;
-      tooltipObj.current.style.top = `${positionY}px`;
-
-      if (maxWidth) {
-        tooltipObj.current.style.maxWidth = `${maxWidth}px`;
-      }
-    }, [maxWidth, positionX, positionY, ref]);
+    const style: React.CSSProperties = {
+      left: `${positionX}px`,
+      top: `${positionY}px`,
+      maxWidth: maxWidth ? `${maxWidth}px` : undefined,
+    };
 
     return (
       <S.ContentContainer
@@ -33,6 +27,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
         placement={placement}
         zIndex={zIndex}
         data-visible={isVisible}
+        style={style}
       >
         {content}
       </S.ContentContainer>
