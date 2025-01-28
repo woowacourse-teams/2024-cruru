@@ -96,6 +96,12 @@ const FilterButton = styled.button<{ isFilterApplied: boolean }>`
       }
     `;
   }}
+
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.baseColors.grayscale[100]};
+  }
 `;
 
 const FilterContainer = styled.div`
