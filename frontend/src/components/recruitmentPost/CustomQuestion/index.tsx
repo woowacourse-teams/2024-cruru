@@ -19,7 +19,7 @@ export default function CustomQuestion({
   isLengthVisible = false,
   onChange = () => {},
 }: CustomQuestionProps) {
-  const { type, questionId, label, required } = question;
+  const { type, questionId, label, required, description } = question;
 
   if (type === 'SHORT_ANSWER') {
     const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -32,6 +32,7 @@ export default function CustomQuestion({
         onChange={handleChange}
         label={label}
         name={questionId}
+        description={description}
         maxLength={QUESTION_INPUT_LENGTH.SHORT_ANSWER}
         isLengthVisible={isLengthVisible}
         required={required}
@@ -48,6 +49,7 @@ export default function CustomQuestion({
       <TextField
         value={value[0] ?? ''}
         label={label}
+        description={description}
         name={questionId}
         onChange={handleChange}
         resize={false}
@@ -63,6 +65,7 @@ export default function CustomQuestion({
     return (
       <CheckboxLabelField
         label={question.label}
+        description={description}
         options={question.choices.map((choice) => ({
           optionLabel: choice.label,
           isChecked: value.includes(choice.label),
@@ -78,6 +81,7 @@ export default function CustomQuestion({
     return (
       <RadioLabelField
         label={question.label}
+        description={description}
         options={question.choices.map((choice) => ({
           optionLabel: choice.label,
           isChecked: value.includes(choice.label),

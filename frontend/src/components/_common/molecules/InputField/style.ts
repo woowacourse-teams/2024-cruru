@@ -42,8 +42,9 @@ const Asterisk = styled.span`
 `;
 
 const Description = styled.p<{ disabled: boolean }>`
-  ${({ theme }) => theme.typography.common.small};
+  ${({ theme }) => theme.typography.common.default};
   color: ${({ theme, disabled }) => (disabled ? theme.baseColors.grayscale[400] : theme.baseColors.grayscale[600])};
+  white-space: pre-wrap;
 `;
 
 const Input = styled.input<{ isError: boolean }>`
