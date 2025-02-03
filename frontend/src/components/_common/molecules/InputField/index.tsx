@@ -38,7 +38,7 @@ export default function InputField({
         </S.LabelWrapper>
       )}
 
-      {description && <S.Description disabled={!!disabled}>{description}</S.Description>}
+      {description && <S.Description>{description}</S.Description>}
       <S.Input
         id={id}
         value={value}

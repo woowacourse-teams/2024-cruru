@@ -40,7 +40,7 @@ export default function TextField({
         </S.LabelWrapper>
       )}
 
-      {description && <S.Description disabled={!!disabled}>{description}</S.Description>}
+      {description && <S.Description>{description}</S.Description>}
       <S.TextArea
         id={id}
         value={value}

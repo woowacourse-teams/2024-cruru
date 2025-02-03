@@ -31,9 +31,9 @@ const Label = styled.label<{ disabled: boolean }>`
   color: ${({ theme, disabled }) => (disabled ? theme.baseColors.grayscale[500] : theme.colors.text.default)};
 `;
 
-const Description = styled.p<{ disabled: boolean }>`
+const Description = styled.p`
   ${({ theme }) => theme.typography.common.default};
-  color: ${({ theme, disabled }) => (disabled ? theme.baseColors.grayscale[500] : theme.colors.text.default)};
+  color: ${({ theme }) => theme.baseColors.grayscale[800]};
   white-space: pre-wrap;
 `;
 
