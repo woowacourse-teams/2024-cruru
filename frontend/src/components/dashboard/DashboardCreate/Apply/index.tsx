@@ -11,6 +11,7 @@ interface ApplyProps {
   applyState: Question[];
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
+  setQuestionDescription: (index: number) => (description: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
   setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
   setQuestionRequiredToggle: (index: number) => () => void;
@@ -25,6 +26,7 @@ export default function Apply({
   applyState,
   addQuestion,
   setQuestionTitle,
+  setQuestionDescription,
   setQuestionType,
   setQuestionOptions,
   setQuestionRequiredToggle,
@@ -68,6 +70,7 @@ export default function Apply({
                   index={index}
                   question={question}
                   setQuestionTitle={setQuestionTitle}
+                  setQuestionDescription={setQuestionDescription}
                   setQuestionType={setQuestionType}
                   setQuestionOptions={setQuestionOptions}
                   setQuestionPrev={setQuestionPrev}

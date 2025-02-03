@@ -14,6 +14,7 @@ interface UseApplyManagementReturn {
   modifyApplyQuestionsMutator: UseMutationResult<unknown, Error, void, unknown>;
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
+  setQuestionDescription: (index: number) => (description: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
   setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
   setQuestionRequiredToggle: (index: number) => () => void;
@@ -35,6 +36,7 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
       id: Number(question.questionId),
       type: question.type,
       question: question.label,
+      description: question.description,
       choices: question.choices.map((choice) => ({
         choice: choice.label,
         orderIndex: choice.orderIndex,
@@ -70,6 +72,7 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
           orderIndex: index,
           type: value.type,
           question: value.question,
+          description: value.description,
           choices: value.choices.filter(({ choice }) => !!choice),
           required: value.required,
         })),
@@ -85,7 +88,7 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
   const addQuestion = () => {
     setApplyState((prev) => [
       ...prev,
-      { type: 'SHORT_ANSWER', question: '', choices: [], required: true, id: uniqueId },
+      { type: 'SHORT_ANSWER', question: '', description: '', choices: [], required: true, id: uniqueId },
     ]);
 
     setUniqueId(uniqueId + 1);
@@ -95,6 +98,14 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
       questionsCopy[index].question = string;
+      return questionsCopy;
+    });
+  };
+
+  const setQuestionDescription = (index: number) => (string: string) => {
+    setApplyState((prevState) => {
+      const questionsCopy = [...prevState];
+      questionsCopy[index].description = string;
       return questionsCopy;
     });
   };
@@ -170,6 +181,7 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
 
     addQuestion,
     setQuestionTitle,
+    setQuestionDescription,
     setQuestionType,
     setQuestionOptions,
     setQuestionRequiredToggle,
