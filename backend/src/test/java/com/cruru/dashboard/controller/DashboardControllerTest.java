@@ -68,6 +68,7 @@ class DashboardControllerTest extends ControllerTest {
     private static final FieldDescriptor[] QUESTION_FIELD_DESCRIPTORS = {
             fieldWithPath("type").description("질문 유형"),
             fieldWithPath("question").description("질문 내용"),
+            fieldWithPath("description").optional().description("질문 보조 설명"),
             fieldWithPath("choices").description("질문의 선택지들"),
             fieldWithPath("orderIndex").description("질문의 순서"),
             fieldWithPath("required").description("질문의 필수여부")
@@ -77,9 +78,6 @@ class DashboardControllerTest extends ControllerTest {
             fieldWithPath("choice").description("객관식 질문의 선택지"),
             fieldWithPath("orderIndex").description("선택지의 순서")
     };
-
-    @Autowired
-    private ClubRepository clubRepository;
 
     @Autowired
     private DashboardRepository dashboardRepository;
@@ -117,37 +115,37 @@ class DashboardControllerTest extends ControllerTest {
         String validQuestion = "객관식질문";
         boolean validRequired = false;
         return Stream.of(
-                new QuestionCreateRequest(null, validQuestion,
+                new QuestionCreateRequest(null, validQuestion, null,
                         validChoiceCreateRequests, validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest("", validQuestion,
+                new QuestionCreateRequest("", validQuestion, null,
                         validChoiceCreateRequests, validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, null,
+                new QuestionCreateRequest(validType, null, null,
                         validChoiceCreateRequests, validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, "",
+                new QuestionCreateRequest(validType, "", null,
                         validChoiceCreateRequests, validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         List.of(new ChoiceCreateRequest(null, validOrderIndex)), validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         List.of(new ChoiceCreateRequest("", validOrderIndex)), validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         List.of(new ChoiceCreateRequest(validChoice, null)), validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         List.of(new ChoiceCreateRequest(validChoice, -1)), validOrderIndex, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         validChoiceCreateRequests, null, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         validChoiceCreateRequests, -1, validRequired
                 ),
-                new QuestionCreateRequest(validType, validQuestion,
+                new QuestionCreateRequest(validType, validQuestion, null,
                         validChoiceCreateRequests, validOrderIndex, null
                 )
         );
@@ -159,7 +157,7 @@ class DashboardControllerTest extends ControllerTest {
         // given
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
-                new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
+                new QuestionCreateRequest("DROPDOWN", "객관식질문1", null, choiceCreateRequests, 1, false));
         DashboardCreateRequest request = new DashboardCreateRequest(
                 "크루루대시보드",
                 "# 공고 내용",
@@ -238,7 +236,7 @@ class DashboardControllerTest extends ControllerTest {
         // given
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
-                new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
+                new QuestionCreateRequest("DROPDOWN", "객관식질문1", null, choiceCreateRequests, 1, false));
         DashboardCreateRequest request = new DashboardCreateRequest(
                 "크루루대시보드",
                 "# 공고 내용",

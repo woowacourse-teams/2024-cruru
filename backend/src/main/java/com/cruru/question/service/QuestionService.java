@@ -38,6 +38,7 @@ public class QuestionService {
         return new Question(
                 QuestionType.valueOf(request.type()),
                 request.question(),
+                request.description(),
                 request.orderIndex(),
                 request.required(),
                 applyForm
@@ -75,6 +76,7 @@ public class QuestionService {
                 question.getId(),
                 question.getQuestionType().name(),
                 question.getContent(),
+                question.getDescription(),
                 question.getSequence(),
                 getChoiceResponses(question),
                 question.isRequired()

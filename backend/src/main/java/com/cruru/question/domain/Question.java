@@ -3,6 +3,7 @@ package com.cruru.question.domain;
 import com.cruru.applyform.domain.ApplyForm;
 import com.cruru.auth.util.SecureResource;
 import com.cruru.member.domain.Member;
+import com.cruru.question.exception.QuestionDescriptionLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +26,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Question implements SecureResource {
 
+    private static final int QUESTION_DESCRIPTION_MAX_LENGTH = 300;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
@@ -35,6 +38,8 @@ public class Question implements SecureResource {
     private QuestionType questionType;
 
     private String content;
+
+    private String description;
 
     private Integer sequence;
 
@@ -47,15 +52,24 @@ public class Question implements SecureResource {
     public Question(
             QuestionType questionType,
             String content,
+            String description,
             Integer sequence,
             Boolean required,
             ApplyForm applyForm
     ) {
+        validateDescriptionLength(description);
         this.questionType = questionType;
         this.content = content;
+        this.description = description;
         this.sequence = sequence;
         this.required = required;
         this.applyForm = applyForm;
+    }
+
+    private void validateDescriptionLength(String description) {
+        if (description != null && description.length() > QUESTION_DESCRIPTION_MAX_LENGTH) {
+            throw new QuestionDescriptionLengthException(QUESTION_DESCRIPTION_MAX_LENGTH, description.length());
+        }
     }
 
     public boolean hasChoice() {
@@ -98,6 +112,7 @@ public class Question implements SecureResource {
                 "id=" + id +
                 ", questionType=" + questionType +
                 ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
                 ", sequence=" + sequence +
                 ", applyForm=" + applyForm +
                 '}';
