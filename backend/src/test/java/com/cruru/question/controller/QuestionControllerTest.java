@@ -32,6 +32,7 @@ class QuestionControllerTest extends ControllerTest {
     private static final FieldDescriptor[] QUESTION_FIELD_DESCRIPTORS = {
             fieldWithPath("type").description("질문의 유형"),
             fieldWithPath("question").description("질문 내용"),
+            fieldWithPath("description").optional().description("질문 보조 설명"),
             fieldWithPath("choices").description("질문의 선택지들"),
             fieldWithPath("orderIndex").description("질문의 순서"),
             fieldWithPath("required").description("질문의 필수 여부")
@@ -59,6 +60,7 @@ class QuestionControllerTest extends ControllerTest {
                         new QuestionCreateRequest(
                                 QuestionType.LONG_ANSWER.name(),
                                 "new",
+                                null,
                                 List.of(new ChoiceCreateRequest("좋아하는 음식은?", 0)),
                                 0,
                                 true
@@ -94,6 +96,7 @@ class QuestionControllerTest extends ControllerTest {
                         new QuestionCreateRequest(
                                 QuestionType.LONG_ANSWER.name(),
                                 "new",
+                                null,
                                 List.of(new ChoiceCreateRequest("좋아하는 음식은?", 0)),
                                 0,
                                 true

@@ -100,7 +100,15 @@ class DashboardFacadeTest extends ServiceTest {
         // given
         List<ChoiceCreateRequest> choiceCreateRequests = List.of(new ChoiceCreateRequest("선택지1", 1));
         List<QuestionCreateRequest> questionCreateRequests = List.of(
-                new QuestionCreateRequest("DROPDOWN", "객관식질문1", choiceCreateRequests, 1, false));
+                new QuestionCreateRequest(
+                        "DROPDOWN",
+                        "객관식질문1",
+                        "이 질문은 여러 선택지 중 하나를 선택하는 질문입니다.",
+                        choiceCreateRequests,
+                        1,
+                        false
+                )
+        );
         String title = "크루루대시보드";
         String postingContent = "# 공고 내용";
         LocalDateTime startDate = LocalDateFixture.oneDayLater();

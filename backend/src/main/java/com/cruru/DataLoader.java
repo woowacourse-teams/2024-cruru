@@ -109,23 +109,23 @@ public class DataLoader implements ApplicationRunner {
         applicantRepository.saveAll(applicants);
 
         Question question1 = questionRepository.save(
-                new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", 1, false, applyForm)
+                new Question(LONG_ANSWER, "효과적인 학습 방식과 경험", "지원자가 학습 과정에서 어떤 방식이 효과적이었는지와 관련 경험을 기술해주세요.", 1, false, applyForm)
         );
 
         Question question2 = questionRepository.save(
-                new Question(LONG_ANSWER, "성장 중 겪은 실패와 극복", 2, false, applyForm)
+                new Question(LONG_ANSWER, "성장 중 겪은 실패와 극복", "성장 과정에서 겪은 실패와 이를 극복하기 위한 노력, 배운 점을 서술해주세요.", 2, false, applyForm)
         );
 
         Question question3 = questionRepository.save(
-                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", 3, false, applyForm)
+                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", "몰입했던 경험과 이를 통해 얻은 결과 및 배운 점에 대해 서술해주세요.", 3, false, applyForm)
         );
 
         Question question4 = questionRepository.save(
-                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", 4, false, applyForm)
+                new Question(LONG_ANSWER, "오랜 시간 몰입했던 경험 그리고 도전", "우아한테크코스에 지원하게 된 계기와 프로그램을 통해 이루고 싶은 목표를 작성해주세요.", 4, false, applyForm)
         );
 
         Question question5 = questionRepository.save(
-                new Question(MULTIPLE_CHOICE, "지원 경로", 5, false, applyForm)
+                new Question(MULTIPLE_CHOICE, "지원 경로", "우아한테크코스를 알게 된 경로를 선택해주세요.", 5, false, applyForm)
         );
 
         Choice homepage = choiceRepository.save(new Choice("우아한테크코스 홈페이지", 1, question5));
@@ -134,7 +134,7 @@ public class DataLoader implements ApplicationRunner {
         Choice socialMedia = choiceRepository.save(new Choice("소셜 미디어", 4, question5));
 
         Question question6 = questionRepository.save(
-                new Question(SINGLE_CHOICE, "모든 문항에 답했는지 확인해주세요. 제출 후에 수정이 불가능합니다.", 6, false, applyForm)
+                new Question(SINGLE_CHOICE, "모든 문항에 답했는지 확인해주세요. 제출 후에 수정이 불가능합니다.", null, 6, false, applyForm)
         );
 
         Choice yes = choiceRepository.save(new Choice("네, 확인했습니다.", 1, question6));

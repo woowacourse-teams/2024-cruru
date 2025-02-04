@@ -11,6 +11,8 @@ public record QuestionResponse(
         @JsonProperty("label")
         String content,
 
+        String description,
+
         int orderIndex,
 
         @JsonProperty("choices")
