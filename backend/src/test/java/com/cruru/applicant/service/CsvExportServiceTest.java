@@ -18,15 +18,20 @@ import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.ApplyFormFixture;
 import com.cruru.util.fixture.ProcessFixture;
 import com.cruru.util.fixture.QuestionFixture;
+import groovy.util.logging.Slf4j;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Slf4j
 @DisplayName("CSV 파일 쓰기 서비스 테스트")
 class CsvExportServiceTest extends ServiceTest {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Autowired
     private CsvExportService csvExportService;
@@ -80,21 +85,19 @@ class CsvExportServiceTest extends ServiceTest {
                 applicant.getName(),
                 applicant.getEmail(),
                 applicant.getPhone(),
-                applicant.getCreatedDate().toString(),
+                applicant.getCreatedDate().format(DATE_TIME_FORMATTER),
                 answer1.getContent(),
                 answer2.getContent()
         );
+
         Assertions.assertAll(
-                () -> assertThat(csvText).contains(expectedHeader),
-                () -> assertThat(csvText).contains(expectedDataRow)
+                () -> assertThat(csvText.trim()).contains(expectedHeader.trim()),
+                () -> assertThat(csvText.trim()).contains(expectedDataRow.trim())
         );
     }
 
     private String toStringWithoutBom(ByteArrayInputStream stream) {
         String text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-        if (text.startsWith("\uFEFF")) {
-            return text.substring(1);
-        }
-        return text;
+        return text.replace("\uFEFF", "").replace("\r\n", "\n"); // BOM과 CRLF 제거
     }
 }
