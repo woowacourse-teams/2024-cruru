@@ -54,9 +54,13 @@ public class CsvExportService {
                     )
             );
             ApplicantRowDto applicantRow = applicantMap.get(applicantId);
+            String key = String.valueOf(row.questionId());
 
-            String questionKey = String.valueOf(row.questionId());
-            applicantRow.questionAnswers().put(questionKey, row.answerContent() == null ? "" : row.answerContent());
+            applicantRow.questionAnswers().merge(
+                    key,
+                    row.answerContent(),
+                    (existingAnswer, newAnswer) -> existingAnswer + ", " + newAnswer
+            );
         }
 
         return applicantMap;
