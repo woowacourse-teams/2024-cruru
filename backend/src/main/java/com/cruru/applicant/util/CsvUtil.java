@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class CsvUtil {
 
     private static final String CSV_HEADER_BASE = "이름,이메일,전화번호,제출일시";
     private static final byte[] UTF8_BOM = new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static ByteArrayInputStream writeToCsv(
             List<ApplicantCsvLine> data,
@@ -56,7 +58,7 @@ public class CsvUtil {
                 .append(quoteCsvField(line.name())).append(",")
                 .append(quoteCsvField(line.email())).append(",")
                 .append(quoteCsvField(line.phone())).append(",")
-                .append(quoteCsvField(line.submissionDate().toString()));
+                .append(quoteCsvField(line.submissionDate().format(DATE_TIME_FORMATTER)));
 
         for (String answer : line.answers()) {
             lineBuilder.append(",").append(quoteCsvField(answer));
