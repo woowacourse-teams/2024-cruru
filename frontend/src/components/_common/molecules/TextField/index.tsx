@@ -8,10 +8,12 @@ interface TextFieldProps extends ComponentProps<'textarea'> {
   focus?: boolean;
   resize?: boolean;
   isLengthVisible?: boolean;
+  description?: string;
 }
 
 export default function TextField({
   label,
+  description,
   value,
   onChange,
   disabled,
@@ -38,6 +40,7 @@ export default function TextField({
         </S.LabelWrapper>
       )}
 
+      {description && <S.Description>{description}</S.Description>}
       <S.TextArea
         id={id}
         value={value}

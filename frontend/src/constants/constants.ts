@@ -46,9 +46,9 @@ export const QUESTION_INPUT_LENGTH = {
 } as const;
 
 export const DEFAULT_QUESTIONS: Question[] = [
-  { type: 'SHORT_ANSWER', question: '이름', choices: [], required: true, id: 0 },
-  { type: 'SHORT_ANSWER', question: '이메일', choices: [], required: true, id: 1 },
-  { type: 'SHORT_ANSWER', question: '전화번호', choices: [], required: true, id: 2 },
+  { type: 'SHORT_ANSWER', question: '이름', description: '', choices: [], required: true, id: 0 },
+  { type: 'SHORT_ANSWER', question: '이메일', description: '', choices: [], required: true, id: 1 },
+  { type: 'SHORT_ANSWER', question: '전화번호', description: '', choices: [], required: true, id: 2 },
 ] as const;
 
 export const EDITIONAL_QUESTION_LENGTH = 20;

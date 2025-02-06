@@ -22,8 +22,6 @@ const QuestionBuilderContainer = styled.div`
 const InputBox = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   gap: 2.8rem;
 `;
 

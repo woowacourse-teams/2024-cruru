@@ -18,6 +18,7 @@ export default function DashboardCreate() {
 
     addQuestion,
     setQuestionTitle,
+    setQuestionDescription,
     setQuestionType,
     setQuestionOptions,
     setQuestionRequiredToggle,
@@ -57,6 +58,7 @@ export default function DashboardCreate() {
             addQuestion={addQuestion}
             setQuestionTitle={setQuestionTitle}
             setQuestionType={setQuestionType}
+            setQuestionDescription={setQuestionDescription}
             setQuestionOptions={setQuestionOptions}
             setQuestionRequiredToggle={setQuestionRequiredToggle}
             setQuestionPrev={setQuestionPrev}

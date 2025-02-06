@@ -12,5 +12,6 @@ export interface ModifyQuestionData {
   type: QuestionType;
   question: string;
   choices: QuestionChoice[];
+  description: string;
   required: boolean;
 }

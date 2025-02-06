@@ -22,6 +22,7 @@ interface UseDashboardCreateFormReturn {
 
   addQuestion: () => void;
   setQuestionTitle: (index: number) => (title: string) => void;
+  setQuestionDescription: (index: number) => (description: string) => void;
   setQuestionType: (index: number) => (type: Question['type']) => void;
   setQuestionOptions: (index: number) => (Options: QuestionOptionValue[]) => void;
   setQuestionRequiredToggle: (index: number) => () => void;
@@ -119,7 +120,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
   const addQuestion = () => {
     setApplyState((prev) => [
       ...prev,
-      { type: 'SHORT_ANSWER', question: '', choices: [], required: true, id: uniqueId },
+      { type: 'SHORT_ANSWER', question: '', description: '', choices: [], required: true, id: uniqueId },
     ]);
 
     setUniqueId(uniqueId + 1);
@@ -129,6 +130,14 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
     setApplyState((prevState) => {
       const questionsCopy = [...prevState];
       questionsCopy[index].question = string;
+      return questionsCopy;
+    });
+  };
+
+  const setQuestionDescription = (index: number) => (string: string) => {
+    setApplyState((prevState) => {
+      const questionsCopy = [...prevState];
+      questionsCopy[index].description = string;
       return questionsCopy;
     });
   };
@@ -207,6 +216,7 @@ export default function useDashboardCreateForm(): UseDashboardCreateFormReturn {
 
     addQuestion,
     setQuestionTitle,
+    setQuestionDescription,
     setQuestionType,
     setQuestionOptions,
     setQuestionRequiredToggle,

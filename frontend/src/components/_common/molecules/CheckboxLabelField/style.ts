@@ -20,9 +20,10 @@ const LabelWrapper = styled.legend`
   gap: 0.4rem;
 `;
 
-const DescriptionWrapper = styled.div`
+const Description = styled.div`
   ${({ theme }) => theme.typography.common.default};
   color: ${({ theme }) => theme.baseColors.grayscale[800]};
+  white-space: pre-wrap;
 `;
 
 const Label = styled.label<{ disabled: boolean }>`
@@ -67,7 +68,7 @@ const OptionLabel = styled.div`
 
 const S = {
   LabelWrapper,
-  DescriptionWrapper,
+  Description,
   Label,
   HeadWrapper,
   Asterisk,

@@ -115,6 +115,9 @@ export default class APIClient implements APIClientType {
     if (contentType?.includes('application/json')) {
       return response.json();
     }
+    if (contentType?.includes('text/csv')) {
+      return (await response.blob()) as T;
+    }
 
     // JSON이 아닌 응답을 다루기 위해 다른 처리 추가
     return response.text() as T;

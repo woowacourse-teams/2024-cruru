@@ -12,7 +12,7 @@ import ApplyForm from '../ApplyForm';
 export type RecruitmentPostTabItems = '모집 공고' | '지원하기';
 
 export default function RecruitmentPostTab() {
-  const { currentMenu, moveTab, moveTabByParam } = useTab<RecruitmentPostTabItems>({ defaultValue: '모집 공고' });
+  const { currentMenu, moveTab } = useTab<RecruitmentPostTabItems>({ defaultValue: '모집 공고' });
 
   const { applyFormId } = useParams<{ applyFormId: string }>() as { applyFormId: string };
   const { data: questions } = applyQueries.useGetApplyForm({ applyFormId: applyFormId ?? '' });
@@ -47,7 +47,6 @@ export default function RecruitmentPostTab() {
             <ApplyAnswerProvider
               applyFormId={applyFormId}
               questions={questions}
-              moveTabByParam={moveTabByParam}
             >
               <ApplyForm
                 isClosed={isClosed}

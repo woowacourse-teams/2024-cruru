@@ -45,7 +45,7 @@ export default function RadioLabelField({
               {required && <HiddenElementForSR>필수 질문입니다.</HiddenElementForSR>}
             </S.LabelWrapper>
           )}
-          {description && <S.DescriptionWrapper>{description}</S.DescriptionWrapper>}
+          {description && <S.Description>{description}</S.Description>}
         </S.HeadWrapper>
       </S.HeadWrapper>
 

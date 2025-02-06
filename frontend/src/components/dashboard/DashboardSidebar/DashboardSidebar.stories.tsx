@@ -22,7 +22,7 @@ const meta: Meta<typeof DashboardSidebar> = {
     }),
   },
   args: {
-    options: [
+    posts: [
       {
         text: '첫번째 옵션',
         isSelected: false,

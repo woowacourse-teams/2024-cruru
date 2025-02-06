@@ -7,6 +7,7 @@ import { SimpleProcess } from '@hooks/useProcess';
 import Popover from '@components/_common/atoms/Popover';
 import InputField from '@components/_common/molecules/InputField';
 import RatingFilter from '@components/RatingFilter';
+import CSVDownloadButton from '@components/_common/molecules/CSVButton';
 
 import { useMultiApplicant } from '@contexts/MultiApplicantContext';
 
@@ -14,7 +15,6 @@ import useFilterApplicant from '@hooks/useProcess/useFilterApplicant';
 import useSortApplicant from '@hooks/useProcess/useSortApplicant';
 import ApplicantSortDropdown from '../ApplicantSortDropdown';
 import MultiSelectToggle from '../MultiSelectToggle';
-
 import S from './style';
 
 interface DashboardFunctionTabProps {
@@ -59,6 +59,8 @@ export default function DashboardFunctionTab({
             updateSortOption={updateSortOption}
           />
         </S.DropdownContainer>
+
+        <CSVDownloadButton />
 
         <S.FilterWrapper>
           <S.FilterButton

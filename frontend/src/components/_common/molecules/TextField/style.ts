@@ -1,7 +1,6 @@
 import { Theme, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-// TODO: InputField와 중복되는 부분이 다수 있어 공통으로 분리
 const commonInputStyles = (theme: Theme) => css`
   ${theme.typography.common.default};
 
@@ -30,6 +29,12 @@ const LabelWrapper = styled.div`
 const Label = styled.label<{ disabled: boolean }>`
   ${({ theme }) => theme.typography.heading[500]};
   color: ${({ theme, disabled }) => (disabled ? theme.baseColors.grayscale[500] : theme.colors.text.default)};
+`;
+
+const Description = styled.p`
+  ${({ theme }) => theme.typography.common.default};
+  color: ${({ theme }) => theme.baseColors.grayscale[800]};
+  white-space: pre-wrap;
 `;
 
 const Asterisk = styled.span`
@@ -91,6 +96,7 @@ const S = {
   LabelWrapper,
   Label,
   Asterisk,
+  Description,
   Wrapper,
   TextArea,
   Footer,
