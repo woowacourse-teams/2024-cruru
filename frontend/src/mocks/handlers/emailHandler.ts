@@ -79,7 +79,7 @@ const emailHandlers = [
       );
     }
 
-    return HttpResponse.json({ emailResponses: emailHistory });
+    return HttpResponse.json({ emailHistoryResponses: emailHistory });
   }),
 ];
 

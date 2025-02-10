@@ -10,7 +10,7 @@ interface UseGetEmailHistoryProps {
 export default function useGetEmailHistory({ applicantId }: UseGetEmailHistoryProps) {
   const clubId = useClubId().getClubId() || '';
 
-  const { data: { emailResponses: emailHistory } = { emailResponses: [] } } = useQuery({
+  const { data: { emailHistoryResponses: emailHistory } = { emailHistoryResponses: [] } } = useQuery({
     queryKey: [QUERY_KEYS.EMAIL_HISTORY, clubId, applicantId],
     queryFn: () => emailApis.history({ clubId, applicantId }),
   });
