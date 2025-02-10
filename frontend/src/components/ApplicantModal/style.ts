@@ -89,10 +89,6 @@ const ModalMenus = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const ModalMenusTitle = styled.div`
@@ -111,6 +107,10 @@ const ModalMenusItem = styled.div<{ isSelected: boolean }>`
   gap: 1rem;
 
   color: ${({ theme, isSelected }) => (isSelected ? theme.baseColors.grayscale[900] : theme.baseColors.grayscale[600])};
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const S = {
