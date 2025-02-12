@@ -1,7 +1,7 @@
 import emailApis from '@api/domain/email';
 import { useToast } from '@contexts/ToastContext';
 import { Email } from '@customTypes/email';
-import QUERY_KEYS from '@hooks/queryKeys';
+import { createEmailHistoryQueryKey } from '@hooks/useGetEmailHistory';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function useEmail(onSuccess?: () => void) {
@@ -11,13 +11,15 @@ export default function useEmail(onSuccess?: () => void) {
   return useMutation({
     mutationFn: (prop: { clubId: string; applicantIds: number[]; subject: string; content: string }) =>
       emailApis.send(prop),
+
     onMutate: async ({ clubId, applicantIds, subject, content }) => {
-      await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.EMAIL_HISTORY, clubId, applicantIds[0]] });
+      // 데이터 충돌을 방지하기 위해 cancelQueries 사용
+      await queryClient.cancelQueries({ queryKey: createEmailHistoryQueryKey(clubId, applicantIds[0]) });
 
-      const previousEmailHistory = queryClient.getQueryData([QUERY_KEYS.EMAIL_HISTORY, clubId, applicantIds[0]]);
-
+      // 낙관적 업데이트
+      const previousEmailHistory = queryClient.getQueryData(createEmailHistoryQueryKey(clubId, applicantIds[0]));
       queryClient.setQueryData(
-        [QUERY_KEYS.EMAIL_HISTORY, clubId, applicantIds[0]],
+        createEmailHistoryQueryKey(clubId, applicantIds[0]),
         (old: { emailHistoryResponses: Email[] }) => ({
           emailHistoryResponses: [
             ...old.emailHistoryResponses,
@@ -28,18 +30,20 @@ export default function useEmail(onSuccess?: () => void) {
 
       return { previousEmailHistory };
     },
-    onSuccess: (_, { applicantIds, clubId }) => {
-      if (onSuccess) onSuccess();
-      success('메일 전송에 성공했습니다');
 
+    onSuccess: (_, { applicantIds, clubId }) => {
       const FIVE_SECONDS = 5000;
       setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EMAIL_HISTORY, clubId, applicantIds[0]] });
+        if (onSuccess) onSuccess();
+        success('메일 전송에 성공했습니다');
+
+        queryClient.invalidateQueries({ queryKey: createEmailHistoryQueryKey(clubId, applicantIds[0]) });
       }, FIVE_SECONDS);
     },
+
     onError: (_, { clubId, applicantIds }, context) => {
-      if (context && context.previousEmailHistory) {
-        queryClient.setQueryData([QUERY_KEYS.EMAIL_HISTORY, clubId, applicantIds[0]], context.previousEmailHistory);
+      if (context) {
+        queryClient.setQueryData(createEmailHistoryQueryKey(clubId, applicantIds[0]), context.previousEmailHistory);
       }
     },
   });
