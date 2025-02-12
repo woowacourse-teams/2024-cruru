@@ -3,4 +3,5 @@ export interface Email {
   content: string;
   createdDate: string;
   isSucceed: boolean;
+  optimistic?: boolean;
 }

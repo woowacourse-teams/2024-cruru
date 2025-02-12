@@ -21,6 +21,7 @@ export interface EmailHistory {
   id: number;
   email: string;
   isSent: boolean;
+  status?: '전송 중' | '전송 완료' | '전송 실패';
 }
 
 interface DetailInfo {

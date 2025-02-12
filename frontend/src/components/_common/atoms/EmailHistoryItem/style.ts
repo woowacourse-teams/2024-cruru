@@ -24,14 +24,20 @@ const Title = styled.div`
   color: ${({ theme }) => theme.baseColors.grayscale[900]};
 `;
 
-const Status = styled.div<{ isSucceed: boolean }>`
+const Status = styled.div<{ status: '발송완료' | '발송실패' | '전송중' }>`
   ${({ theme }) => theme.typography.common.small};
   padding: 0.4rem 0.8rem;
   border-radius: 0.4rem;
 
-  background-color: ${({ theme, isSucceed }) =>
-    isSucceed ? theme.baseColors.grayscale[300] : theme.baseColors.redscale[50]};
-  color: ${({ theme, isSucceed }) => (isSucceed ? theme.baseColors.grayscale[800] : theme.baseColors.redscale[800])};
+  background-color: ${({ theme, status }) => {
+    if (status === '발송실패') return theme.baseColors.redscale[50];
+    if (status === '전송중') return theme.baseColors.grayscale[300];
+    return theme.baseColors.grayscale[300];
+  }};
+  color: ${({ theme, status }) => {
+    if (status === '발송실패') return theme.baseColors.redscale[800];
+    return theme.baseColors.grayscale[800];
+  }};
 `;
 
 const Date = styled.span`
