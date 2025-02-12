@@ -5,7 +5,7 @@ import { createEmailHistoryQueryKey } from '@hooks/useGetEmailHistory';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function useEmail(onSuccess?: () => void) {
-  const { success } = useToast();
+  const { success, error } = useToast();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -42,6 +42,8 @@ export default function useEmail(onSuccess?: () => void) {
     },
 
     onError: (_, { clubId, applicantIds }, context) => {
+      error('메일 전송에 실패했습니다');
+
       if (context) {
         queryClient.setQueryData(createEmailHistoryQueryKey(clubId, applicantIds[0]), context.previousEmailHistory);
       }
