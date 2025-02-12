@@ -16,9 +16,12 @@ export const createEmailHistoryQueryKey = (clubId: string, applicantId: number) 
 export default function useGetEmailHistory({ applicantId }: UseGetEmailHistoryProps) {
   const clubId = useClubId().getClubId() || '';
 
-  const { data: { emailHistoryResponses: emailHistory } = { emailHistoryResponses: [] } } = useQuery({
+  const {
+    data: { emailHistoryResponses: emailHistory },
+  } = useQuery({
     queryKey: createEmailHistoryQueryKey(clubId, applicantId),
     queryFn: () => emailApis.history({ clubId, applicantId }),
+    initialData: { emailHistoryResponses: [] },
   });
 
   return {
