@@ -7,6 +7,7 @@ import { DEFAULT_QUESTIONS } from '@constants/constants';
 import { applyQueries } from '@hooks/apply';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { useToast } from '@contexts/ToastContext';
+import ApiError from '@api/ApiError';
 
 interface UseApplyManagementReturn {
   isLoading: boolean;
@@ -80,7 +81,10 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
     onSuccess: async () => {
       toast.success('지원서의 사전 질문 항목 수정에 성공했습니다.');
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof ApiError) {
+        return toast.error(error.message);
+      }
       toast.error('지원서의 사전 질문 항목 수정에 실패했습니다.');
     },
   });
