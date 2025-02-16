@@ -36,9 +36,14 @@ export default function ApplyManagement() {
 
   const isNextBtnValid =
     applyState.length === DEFAULT_QUESTIONS.length ||
-    applyState
-      .slice(DEFAULT_QUESTIONS.length)
-      .every((question) => question.question.trim() && question.choices.length !== 1);
+    applyState.slice(DEFAULT_QUESTIONS.length).every((question) => {
+      const isQuestion = question.question.trim();
+      if (!(question.type === 'MULTIPLE_CHOICE' || question.type === 'SINGLE_CHOICE')) {
+        return isQuestion;
+      }
+      const isChoice = question.choices.some((choice) => choice.choice);
+      return isQuestion && isChoice;
+    });
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
