@@ -111,7 +111,7 @@ export default function QuestionBuilder({
           <TextField
             placeholder="질문 설명을 입력하세요."
             onChange={handleChangeDescription}
-            maxLength={500}
+            maxLength={300}
             value={description}
             isLengthVisible
           />
