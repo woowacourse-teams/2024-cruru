@@ -51,7 +51,7 @@ export const DEFAULT_QUESTIONS: Question[] = [
   { type: 'SHORT_ANSWER', question: '전화번호', description: '', choices: [], required: true, id: 2 },
 ] as const;
 
-export const EDITIONAL_QUESTION_LENGTH = 20;
+export const EDITIONAL_QUESTION_LENGTH = 50;
 
 export const MAX_QUESTION_LENGTH = EDITIONAL_QUESTION_LENGTH + DEFAULT_QUESTIONS.length;
 
