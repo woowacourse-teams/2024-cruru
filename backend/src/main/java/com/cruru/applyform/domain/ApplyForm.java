@@ -33,7 +33,7 @@ public class ApplyForm extends BaseEntity implements SecureResource {
 
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 
     @Column(name = "start_date")
