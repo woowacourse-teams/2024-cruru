@@ -39,7 +39,10 @@ export default function RecruitmentPostTab() {
             <RecruitmentPostDetail
               recruitmentPost={recruitmentPost}
               isClosed={isClosed}
-              moveTab={moveTab}
+              moveTab={(e) => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                moveTab(e);
+              }}
             />
           </Tab.TabPanel>
 
