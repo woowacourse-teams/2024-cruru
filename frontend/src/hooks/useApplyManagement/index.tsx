@@ -49,7 +49,7 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
 export default function useApplyManagement({ applyFormId }: UseApplyManagementProps): UseApplyManagementReturn {
   const { data, isLoading } = applyQueries.useGetApplyForm({ applyFormId: applyFormId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
-  const [uniqueId, setUniqueId] = useState(DEFAULT_QUESTIONS.length);
+  const [uniqueId, setUniqueId] = useState(applyState[applyState.length - 1]?.id || DEFAULT_QUESTIONS.length);
   const toast = useToast();
 
   useEffect(() => {
@@ -57,12 +57,12 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
       const newData = getQuestions(data);
       const newApplyState = [...DEFAULT_QUESTIONS, ...newData];
       setApplyState(newApplyState);
-      setUniqueId(newApplyState.length);
+      setUniqueId((prev) => prev + 1);
       return;
     }
 
     setApplyState([...DEFAULT_QUESTIONS]);
-    setUniqueId(DEFAULT_QUESTIONS.length);
+    setUniqueId((prev) => prev + 1);
   }, [data]);
 
   const modifyApplyQuestionsMutator = useMutation({
