@@ -1,6 +1,6 @@
 import { Question as QuestionData } from '@customTypes/apply';
 import type { Question, QuestionOptionValue } from '@customTypes/dashboard';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import questionApis from '@api/domain/question';
 import { DEFAULT_QUESTIONS } from '@constants/constants';
@@ -49,7 +49,7 @@ function getQuestions(data: QuestionData[] | undefined): Question[] {
 export default function useApplyManagement({ applyFormId }: UseApplyManagementProps): UseApplyManagementReturn {
   const { data, isLoading } = applyQueries.useGetApplyForm({ applyFormId: applyFormId ?? '' });
   const [applyState, setApplyState] = useState(getQuestions(data));
-  const [uniqueId, setUniqueId] = useState(applyState[applyState.length - 1]?.id || DEFAULT_QUESTIONS.length);
+  const randomNumberRef = useRef(Date.now() * 100 + Math.floor(Math.random() * 100));
   const toast = useToast();
 
   useEffect(() => {
@@ -57,12 +57,10 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
       const newData = getQuestions(data);
       const newApplyState = [...DEFAULT_QUESTIONS, ...newData];
       setApplyState(newApplyState);
-      setUniqueId((prev) => prev + 1);
       return;
     }
 
     setApplyState([...DEFAULT_QUESTIONS]);
-    setUniqueId((prev) => prev + 1);
   }, [data]);
 
   const modifyApplyQuestionsMutator = useMutation({
@@ -92,10 +90,16 @@ export default function useApplyManagement({ applyFormId }: UseApplyManagementPr
   const addQuestion = () => {
     setApplyState((prev) => [
       ...prev,
-      { type: 'SHORT_ANSWER', question: '', description: '', choices: [], required: true, id: uniqueId },
+      {
+        type: 'SHORT_ANSWER',
+        question: '',
+        description: '',
+        choices: [],
+        required: true,
+        id: randomNumberRef.current,
+      },
     ]);
-
-    setUniqueId(uniqueId + 1);
+    randomNumberRef.current += 1;
   };
 
   const setQuestionTitle = (index: number) => (string: string) => {
