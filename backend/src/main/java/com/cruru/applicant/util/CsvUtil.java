@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -57,13 +58,35 @@ public class CsvUtil {
         StringBuilder lineBuilder = new StringBuilder()
                 .append(quoteCsvField(line.name())).append(",")
                 .append(quoteCsvField(line.email())).append(",")
-                .append(quoteCsvField(line.phone())).append(",")
+                .append(quoteCsvField(formatPhoneNumber(line.phone()))).append(",")
                 .append(quoteCsvField(line.submissionDate().format(DATE_TIME_FORMATTER)));
 
         for (String answer : line.answers()) {
             lineBuilder.append(",").append(quoteCsvField(answer));
         }
         return lineBuilder.toString();
+    }
+
+    private static String formatPhoneNumber(String phone) {
+        if (phone == null || phone.isEmpty()) {
+            return "";
+        }
+
+        String onlyDigits = phone.replaceAll("[^0-9]", "");
+
+        if (onlyDigits.length() == 11 && onlyDigits.startsWith("01")) {
+            return onlyDigits.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+        }
+
+        if (onlyDigits.length() == 10) {
+            return onlyDigits.replaceFirst("(\\d{2,3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
+        }
+
+        if (Pattern.matches(".*-.*", phone)) {
+            return phone;
+        }
+
+        return phone;
     }
 
     private static String quoteCsvField(String field) {
