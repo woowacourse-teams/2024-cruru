@@ -22,6 +22,7 @@ import groovy.util.logging.Slf4j;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,7 +85,7 @@ class CsvExportServiceTest extends ServiceTest {
         String expectedDataRow = String.join(",",
                 applicant.getName(),
                 applicant.getEmail(),
-                applicant.getPhone(),
+                formatPhoneNumber(applicant.getPhone()),
                 applicant.getCreatedDate().format(DATE_TIME_FORMATTER),
                 answer1.getContent(),
                 answer2.getContent()
@@ -99,5 +100,27 @@ class CsvExportServiceTest extends ServiceTest {
     private String toStringWithoutBom(ByteArrayInputStream stream) {
         String text = new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         return text.replace("\uFEFF", "").replace("\r\n", "\n"); // BOM과 CRLF 제거
+    }
+
+    private static String formatPhoneNumber(String phone) {
+        if (phone == null || phone.isEmpty()) {
+            return "";
+        }
+
+        String onlyDigits = phone.replaceAll("[^0-9]", "");
+
+        if (onlyDigits.length() == 11 && onlyDigits.startsWith("01")) {
+            return onlyDigits.replaceFirst("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+        }
+
+        if (onlyDigits.length() == 10) {
+            return onlyDigits.replaceFirst("(\\d{2,3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
+        }
+
+        if (Pattern.matches(".*-.*", phone)) {
+            return phone;
+        }
+
+        return phone;
     }
 }
