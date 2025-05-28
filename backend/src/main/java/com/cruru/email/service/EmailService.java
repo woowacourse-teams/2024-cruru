@@ -3,6 +3,7 @@ package com.cruru.email.service;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
 import com.cruru.email.domain.Email;
+import com.cruru.email.domain.EmailStatus;
 import com.cruru.email.domain.repository.EmailRepository;
 import com.cruru.email.util.EmailTemplate;
 import jakarta.mail.MessagingException;
@@ -31,6 +32,10 @@ public class EmailService {
     @Async
     public CompletableFuture<Email> send(
             Club from, Applicant to, String subject, String content, List<File> tempFiles) {
+
+        Email email = new Email(from, to, subject, content, EmailStatus.PENDING);
+        emailRepository.save(email);
+
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -42,11 +47,13 @@ public class EmailService {
             }
             mailSender.send(message);
 
+            email.updateStatus(EmailStatus.DELIVERED);
             log.info("이메일 전송 성공: from={}, to={}, subject={}", from.getId(), to.getEmail(), subject);
-            return CompletableFuture.completedFuture(new Email(from, to, subject, content, true));
+            return CompletableFuture.completedFuture(email);
         } catch (MessagingException | MailException e) {
-            log.info("이메일 전송 실패: from={}, to={}, subject={}", from.getId(), to.getEmail(), e.getMessage());
-            return CompletableFuture.completedFuture(new Email(from, to, subject, content, false));
+            log.info("이메일 전송 실패: from={}, to={}, subject={}, error={}", from.getId(), to.getEmail(), subject, e.getMessage());
+            email.updateStatus(EmailStatus.FAILED);
+            return CompletableFuture.completedFuture(email);
         }
     }
 

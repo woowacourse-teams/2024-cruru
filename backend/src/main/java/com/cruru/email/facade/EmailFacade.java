@@ -10,9 +10,13 @@ import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.controller.response.EmailHistoryResponse;
 import com.cruru.email.controller.response.EmailHistoryResponses;
 import com.cruru.email.domain.Email;
+import com.cruru.email.domain.EmailStatus;
+import com.cruru.email.dto.EmailQueueMessage;
 import com.cruru.email.exception.EmailAttachmentsException;
 import com.cruru.email.exception.EmailConflictException;
+import com.cruru.email.exception.badrequest.EmailDuplicatedRequestException;
 import com.cruru.email.service.EmailKeywordConverter;
+import com.cruru.email.service.EmailQueueService;
 import com.cruru.email.service.EmailRedisClient;
 import com.cruru.email.service.EmailService;
 import com.cruru.email.util.FileUtil;
@@ -36,26 +40,34 @@ public class EmailFacade {
     private final MemberService memberService;
     private final EmailRedisClient emailRedisClient;
     private final EmailKeywordConverter emailKeywordConverter;
+    private final EmailQueueService emailQueueService;
 
     public void send(EmailRequest request) {
         Club from = clubService.findById(request.clubId());
         List<Applicant> applicants = applicantService.findAllByIds(request.applicantIds());
-        sendAndSave(from, applicants, request.subject(), request.content(), request.files());
+        sendAndQueue(from, applicants, request.subject(), request.content(), request.files());
     }
 
-    private void sendAndSave(Club from, List<Applicant> tos, String subject, String text, List<MultipartFile> files) {
+    private void sendAndQueue(Club from, List<Applicant> tos, String subject, String text, List<MultipartFile> files) {
         List<File> tempFiles = saveTempFiles(from, subject, files);
+        List<String> attachmentPaths = tempFiles.stream().map(File::getAbsolutePath).toList();
 
-        List<CompletableFuture<Void>> futures = tos.stream()
-                .map(to -> {
-                    String content = emailKeywordConverter.convert(text, from, to);
-                    return emailService.send(from, to, subject, content, tempFiles);
-                })
-                .map(future -> future.thenAccept(emailService::save))
-                .toList();
 
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .thenRun(() -> FileUtil.deleteFiles(tempFiles));
+        tos.forEach(to -> {
+            // 이메일 내용에 대해 동적 키워드 변환을 미리 적용
+            String convertedContent = emailKeywordConverter.convert(text, from, to);
+            // EmailQueueMessage 생성
+            EmailQueueMessage message = new EmailQueueMessage(
+                    from.getId(),
+                    to.getId(),
+                    to.getEmail(),
+                    subject,
+                    convertedContent,
+                    attachmentPaths
+            );
+            // 큐에 등록 (이미 등록된 요청은 중복으로 등록되지 않음)
+            emailQueueService.enqueueEmail(message);
+        });
     }
 
     private List<File> saveTempFiles(Club from, String subject, List<MultipartFile> files) {
@@ -103,7 +115,7 @@ public class EmailFacade {
                 email.getSubject(),
                 email.getContent(),
                 email.getCreatedDate(),
-                email.getIsSucceed()
+                email.getStatus().equals(EmailStatus.DELIVERED)
         );
     }
 }

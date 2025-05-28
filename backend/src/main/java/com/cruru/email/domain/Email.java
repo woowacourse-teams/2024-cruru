@@ -7,6 +7,8 @@ import com.cruru.email.exception.EmailContentLengthException;
 import com.cruru.email.exception.EmailSubjectLengthException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,17 +48,18 @@ public class Email extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "is_succeed")
-    private Boolean isSucceed;
+    @Column(name = "email_status")
+    @Enumerated(EnumType.STRING)
+    private EmailStatus status;
 
-    public Email(Club from, Applicant to, String subject, String content, Boolean isSucceed) {
+    public Email(Club from, Applicant to, String subject, String content, EmailStatus status) {
         validateSubjectLength(subject);
         validateContentLength(content);
         this.from = from;
         this.to = to;
         this.subject = subject;
         this.content = content;
-        this.isSucceed = isSucceed;
+        this.status = status;
     }
 
     private void validateSubjectLength(String subject) {
@@ -69,6 +72,10 @@ public class Email extends BaseEntity {
         if (content.length() > EMAIL_CONTENT_MAX_LENGTH) {
             throw new EmailContentLengthException(EMAIL_CONTENT_MAX_LENGTH, content.length());
         }
+    }
+
+    public void updateStatus(EmailStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -96,7 +103,7 @@ public class Email extends BaseEntity {
                 ", to=" + to +
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
-                ", isSucceed=" + isSucceed +
+                ", isSucceed=" + status +
                 '}';
     }
 }
