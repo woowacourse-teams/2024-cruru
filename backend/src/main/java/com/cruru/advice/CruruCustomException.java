@@ -4,7 +4,8 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class CruruCustomException extends RuntimeException {
+public class
+CruruCustomException extends RuntimeException {
 
     private final HttpStatus status;
 

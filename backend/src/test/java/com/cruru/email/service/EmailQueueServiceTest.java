@@ -131,7 +131,10 @@ class EmailQueueServiceTest {
                 List.of("/tmp/file1.txt")
         );
         String messageJson = objectMapper.writeValueAsString(message);
-        when(listOperations.leftPop("email_queue")).thenReturn(messageJson, null);
+        
+        // rightPopAndLeftPush를 사용하여 원자적으로 처리 중 상태로 이동하는 것을 모킹
+        when(listOperations.rightPopAndLeftPush("email_queue", "email_queue_processing"))
+            .thenReturn(messageJson, null);
 
         Club dummyClub = mock(Club.class);
         Applicant dummyApplicant = mock(Applicant.class);
@@ -140,17 +143,21 @@ class EmailQueueServiceTest {
 
         // emailService.send가 완료된 이메일 객체를 반환하도록 시뮬레이션
         Email dummyEmail = new Email(dummyClub, dummyApplicant, "Subject", "Content", EmailStatus.DELIVERED);
+        CompletableFuture<Email> emailFuture = CompletableFuture.completedFuture(dummyEmail);
         when(emailService.send(
                 eq(dummyClub),
                 eq(dummyApplicant),
                 eq("Subject"),
                 eq("Content"),
                 any(List.class)
-        )).thenReturn(CompletableFuture.completedFuture(dummyEmail));
+        )).thenReturn(emailFuture);
 
         // when
         emailQueueService.processQueue();
-
+        
+        // CompletableFuture가 완료될 때까지 대기
+        emailFuture.join();
+        
         // then
         verify(emailService, times(1)).send(
                 eq(dummyClub),
@@ -160,13 +167,16 @@ class EmailQueueServiceTest {
                 any(List.class)
         );
         verify(emailService, times(1)).save(any(Email.class));
+        
+        // 처리 중 큐에서 메시지가 제거되었는지 확인
+        verify(listOperations, times(1)).remove("email_queue_processing", 1, messageJson);
     }
 
     @Test
     @DisplayName("큐가 비어있으면 아무런 처리도 하지 않는다.")
     void processQueue_emptyQueue() {
-        // leftPop가 바로 null을 반환하도록 설정
-        when(listOperations.leftPop("email_queue")).thenReturn(null);
+        // rightPopAndLeftPush가 바로 null을 반환하도록 설정
+        when(listOperations.rightPopAndLeftPush("email_queue", "email_queue_processing")).thenReturn(null);
         // when
         emailQueueService.processQueue();
         // then: 이메일 전송 관련 메서드가 호출되지 않음
@@ -186,10 +196,10 @@ class EmailQueueServiceTest {
                 List.of("/tmp/file1.txt")
         );
         String messageJson = objectMapper.writeValueAsString(message);
-        when(listOperations.leftPop("email_queue")).thenReturn(messageJson);
+        when(listOperations.rightPopAndLeftPush("email_queue", "email_queue_processing")).thenReturn(messageJson);
 
         // 예외 발생 시뮬레이션
-        when(clubService.findById(1L)).thenThrow(new RuntimeException("테스트 예외"));
+        when(clubService.findById(any())).thenThrow(new RuntimeException("테스트 예외"));
 
         // when
         emailQueueService.processQueue();
@@ -206,7 +216,7 @@ class EmailQueueServiceTest {
         // given
         // 잘못된 JSON 형식의 메시지
         String invalidJson = "{invalid_json}";
-        when(listOperations.leftPop("email_queue")).thenReturn(invalidJson, null);
+        when(listOperations.rightPopAndLeftPush("email_queue", "email_queue_processing")).thenReturn(invalidJson, null);
 
         // when
         emailQueueService.processQueue();
