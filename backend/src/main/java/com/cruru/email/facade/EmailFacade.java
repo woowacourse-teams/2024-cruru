@@ -10,6 +10,7 @@ import com.cruru.email.controller.request.VerifyCodeRequest;
 import com.cruru.email.controller.response.EmailHistoryResponse;
 import com.cruru.email.controller.response.EmailHistoryResponses;
 import com.cruru.email.domain.Email;
+import com.cruru.email.domain.EmailStatus;
 import com.cruru.email.dto.EmailQueueMessage;
 import com.cruru.email.exception.EmailAttachmentsException;
 import com.cruru.email.exception.EmailConflictException;
@@ -114,7 +115,7 @@ public class EmailFacade {
                 email.getSubject(),
                 email.getContent(),
                 email.getCreatedDate(),
-                email.getStatus()
+                email.getStatus().equals(EmailStatus.DELIVERED)
         );
     }
 }
