@@ -338,7 +338,7 @@ class EmailControllerTest extends ControllerTest {
                                         fieldWithPath("subject").description("이메일 제목"),
                                         fieldWithPath("content").description("이메일 본문"),
                                         fieldWithPath("createdDate").description("전송 날짜"),
-                                        fieldWithPath("isSucceed").description("전송 성공 여부")
+                                        fieldWithPath("isSucceed").description("이메일 상태 (true, false)")
                                 )
                 ))
                 .when().get("/v1/emails/{clubId}/{applicantId}", defaultClub.getId(), applicant.getId())

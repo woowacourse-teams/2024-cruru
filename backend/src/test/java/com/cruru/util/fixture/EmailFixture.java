@@ -4,6 +4,7 @@ import com.cruru.applicant.domain.Applicant;
 import com.cruru.club.domain.Club;
 import com.cruru.dashboard.domain.Dashboard;
 import com.cruru.email.domain.Email;
+import com.cruru.email.domain.EmailStatus;
 
 public class EmailFixture {
 
@@ -21,7 +22,7 @@ public class EmailFixture {
                 null,
                 SUBJECT,
                 APPROVE_CONTENT,
-                true
+                EmailStatus.DELIVERED
         );
     }
 
@@ -31,7 +32,7 @@ public class EmailFixture {
                 null,
                 SUBJECT,
                 REJECT_CONTENT,
-                true
+                EmailStatus.DELIVERED
         );
     }
 
@@ -41,7 +42,7 @@ public class EmailFixture {
                 to,
                 SUBJECT,
                 REJECT_CONTENT,
-                true
+                EmailStatus.DELIVERED
         );
     }
 }

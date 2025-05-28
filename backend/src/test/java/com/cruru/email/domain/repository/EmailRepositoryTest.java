@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.cruru.applicant.domain.Applicant;
 import com.cruru.applicant.domain.repository.ApplicantRepository;
 import com.cruru.email.domain.Email;
+import com.cruru.email.domain.EmailStatus;
 import com.cruru.util.RepositoryTest;
 import com.cruru.util.fixture.ApplicantFixture;
 import com.cruru.util.fixture.EmailFixture;
@@ -42,7 +43,7 @@ class EmailRepositoryTest extends RepositoryTest {
                 null,
                 EmailFixture.SUBJECT,
                 EmailFixture.REJECT_CONTENT,
-                true
+                EmailStatus.DELIVERED
         );
         emailRepository.save(updatedEmail);
 

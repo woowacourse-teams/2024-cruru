@@ -26,7 +26,7 @@ class EmailTest {
         String content = EmailFixture.APPROVE_CONTENT;
 
         // when&then
-        assertThatThrownBy(() -> new Email(null, null, invalidSubject, content, true))
+        assertThatThrownBy(() -> new Email(null, null, invalidSubject, content, EmailStatus.DELIVERED))
                 .isInstanceOf(EmailSubjectLengthException.class);
     }
 
@@ -44,7 +44,7 @@ class EmailTest {
         String invalidContent = stringBuilder.append("!").toString();
 
         // when&then
-        assertThatThrownBy(() -> new Email(null, null, subject, invalidContent, true))
+        assertThatThrownBy(() -> new Email(null, null, subject, invalidContent, EmailStatus.DELIVERED))
                 .isInstanceOf(EmailContentLengthException.class);
     }
 }
